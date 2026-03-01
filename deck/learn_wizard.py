@@ -122,6 +122,7 @@ def print_header(device_id: str, output_path: str) -> None:
     print("- Press the Steam Deck control you want to map")
     print("- Watch the latest captured keycode")
     print("- Press Enter to confirm the latest captured keycode")
+    print("- Press Ctrl+X at any time to exit without saving")
     print("- If you hit Enter too early, the wizard will warn and keep waiting")
     print("")
 
@@ -192,6 +193,10 @@ def main(argv: list[str] | None = None) -> int:
                             )
                     else:
                         chars = os.read(sys.stdin.fileno(), 8)
+                        if b"\x18" in chars:
+                            print("")
+                            print("Wizard cancelled. No bindings were written.")
+                            return 1
                         if b"\n" not in chars and b"\r" not in chars:
                             continue
                         if candidate is None:
