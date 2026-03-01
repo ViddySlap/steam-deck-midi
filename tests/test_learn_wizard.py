@@ -20,6 +20,15 @@ class LoadActionsTests(unittest.TestCase):
             actions = load_actions(str(path))
         self.assertEqual(actions, ["BTN_A", "BTN_B"])
 
+    def test_preserves_action_order(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "actions.yaml"
+            path.write_text(
+                "actions:\n  - L3\n  - L4\n  - R3\n  - R4\n", encoding="utf-8"
+            )
+            actions = load_actions(str(path))
+        self.assertEqual(actions, ["L3", "L4", "R3", "R4"])
+
 
 class ParseKeyPressTests(unittest.TestCase):
     def test_parses_press(self) -> None:

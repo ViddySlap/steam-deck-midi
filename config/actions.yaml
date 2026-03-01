@@ -25,8 +25,8 @@ actions:
   - LEFT_STICK_CLICK
   - RIGHT_STICK_CLICK
   - L3
-  - R3
   - L4
+  - R3
   - R4
   - START
   - SELECT
