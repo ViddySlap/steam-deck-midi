@@ -4,34 +4,40 @@ Drop Windows branding assets for packaging here.
 
 ## Expected Files
 
-- `appicon.ico`
-  Primary Windows icon for:
+- `receiver.ico`
+  Primary Windows receiver icon for:
   - `STEAMDECK-MIDI-RECEIVER.exe`
-  - installer EXE
   - desktop and Start Menu shortcuts
 
-- `appicon.png`
-  Optional high-resolution source image for future exports and docs.
+- `receiver.png`
+  High-resolution source image for the receiver icon.
+
+- `install-wizard.ico`
+  Installer EXE icon.
+
+- `install-wizard.png`
+  High-resolution source image for the installer icon.
 
 - `wordmark.png`
   Optional logo/wordmark for docs or future installer branding.
 
 ## Recommendations
 
-- `appicon.ico`
+- `receiver.ico`
   Include multiple sizes if possible:
   - 16x16
   - 32x32
   - 48x48
   - 256x256
 
-- `appicon.png`
+- `receiver.png`
   Use a square source image when possible.
 
-- `wordmark.png`
-  Use a transparent background if possible.
+- `install-wizard.png`
+  Use a square source image when possible.
 
 ## Notes
 
-- The packaging scripts do not use these assets yet.
-- Once you add them, the next step is wiring them into PyInstaller and Inno Setup.
+- The Windows build uses `receiver.ico` for PyInstaller.
+- The Windows installer build uses `install-wizard.ico` for the setup executable.
+- The `.ico` files can be generated from the PNG sources when needed.

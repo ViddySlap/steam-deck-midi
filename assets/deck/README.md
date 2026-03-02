@@ -10,6 +10,9 @@ Drop Steam Deck launcher icons here.
 - `sender-icon.png`
   Used for the `STEAMDECK-MIDI-SENDER` desktop launcher.
 
+- `install-wizard-icon.png`
+  Used for the Deck installer bundle launcher.
+
 ## Recommendations
 
 - Use PNG files.

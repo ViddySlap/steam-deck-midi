@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 project_root = Path(SPECPATH)
-icon_path = project_root / "assets" / "windows" / "appicon.ico"
+icon_path = project_root / "assets" / "windows" / "receiver.ico"
 version_file_path = project_root / "build" / "windows-file-version.txt"
 
 datas = [
