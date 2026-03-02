@@ -4,9 +4,12 @@ This project can now build a standalone Windows receiver executable with PyInsta
 
 ## Scope
 
-This step builds the receiver into a console `.exe`.
+This flow now has two layers:
 
-It does not yet create a final installer. The executable still expects:
+- a standalone receiver `.exe`
+- a final installer `.exe`
+
+The standalone receiver still expects:
 
 - `loopMIDI` to already be installed on the target machine
 - a Windows MIDI map JSON file
@@ -17,7 +20,7 @@ It does not yet create a final installer. The executable still expects:
 - Windows
 - Python 3.12 available as `py -3.12`
 
-## Build
+## Build The Receiver EXE
 
 From PowerShell in the repo root:
 
@@ -49,8 +52,39 @@ The executable uses the same CLI options as the Python module:
 - `--dry-run`
 - `--verbose`
 
+## Build The Installer EXE
+
+Install Inno Setup 6 on the Windows build machine.
+
+Then run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\windows\build_installer.ps1 -RepoRoot (Get-Location).Path
+```
+
+This expects `dist\STEAMDECK-MIDI-RECEIVER.exe` to already exist.
+
+The installer build will:
+
+- package the receiver EXE
+- include default config files
+- include a launcher PowerShell script for the installed app
+- create `installer-output\STEAMDECK-MIDI-RECEIVER-Setup.exe`
+
+## What The Installer Produces
+
+The installer EXE installs:
+
+- `STEAMDECK-MIDI-RECEIVER.exe`
+- `config\windows_midi_map.json`
+- `config\windows_receiver_settings.example.json`
+- `scripts\start_installed_receiver.ps1`
+- desktop and Start Menu shortcuts
+
+The installed shortcut launches the packaged EXE using the installed config files.
+
 ## Notes
 
 - `loopMIDI` remains a third-party prerequisite.
-- The build bundles the Python runtime and receiver code into a standalone console executable.
-- The next packaging step is to wrap this executable in a proper installer.
+- The PyInstaller build bundles the Python runtime and receiver code into a standalone console executable.
+- The installer build wraps that executable into a single setup EXE for distribution.
