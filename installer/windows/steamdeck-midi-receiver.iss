@@ -16,6 +16,8 @@ AppSupportURL={#AppURL}
 AppUpdatesURL={#AppURL}
 DefaultDirName={autopf}\STEAMDECK MIDI Receiver
 DefaultGroupName={#AppName}
+SetupIconFile=..\..\assets\windows\appicon.ico
+UninstallDisplayIcon={app}\{#AppExeName}
 OutputDir=..\..\installer-output
 OutputBaseFilename=STEAMDECK-MIDI-RECEIVER-Setup
 Compression=lzma
@@ -34,8 +36,8 @@ Source: "..\..\config\windows_receiver_settings.example.json"; DestDir: "{app}\c
 Source: "..\..\scripts\windows\start_installed_receiver.ps1"; DestDir: "{app}\scripts"; Flags: ignoreversion
 
 [Icons]
-Name: "{autodesktop}\STEAMDECK MIDI Receiver"; Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -NoLogo -NoExit -File ""{app}\scripts\start_installed_receiver.ps1"" -InstallRoot ""{app}"""; WorkingDir: "{app}"; IconFilename: "{sys}\shell32.dll"; IconIndex: 70
-Name: "{group}\STEAMDECK MIDI Receiver"; Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -NoLogo -NoExit -File ""{app}\scripts\start_installed_receiver.ps1"" -InstallRoot ""{app}"""; WorkingDir: "{app}"; IconFilename: "{sys}\shell32.dll"; IconIndex: 70
+Name: "{autodesktop}\STEAMDECK MIDI Receiver"; Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -NoLogo -NoExit -File ""{app}\scripts\start_installed_receiver.ps1"" -InstallRoot ""{app}"""; WorkingDir: "{app}"; IconFilename: "{app}\{#AppExeName}"
+Name: "{group}\STEAMDECK MIDI Receiver"; Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -NoLogo -NoExit -File ""{app}\scripts\start_installed_receiver.ps1"" -InstallRoot ""{app}"""; WorkingDir: "{app}"; IconFilename: "{app}\{#AppExeName}"
 
 [Run]
 Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -NoLogo -NoExit -File ""{app}\scripts\start_installed_receiver.ps1"" -InstallRoot ""{app}"""; Description: "Launch STEAMDECK MIDI Receiver"; Flags: nowait postinstall skipifsilent

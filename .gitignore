@@ -15,6 +15,7 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+*:Zone.Identifier
 
 # VS Code
 .vscode/
