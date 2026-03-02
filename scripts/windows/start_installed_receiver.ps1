@@ -26,6 +26,18 @@ if (-not (Test-Path $settingsPath)) {
 
 $settings = Get-Content $settingsPath -Raw | ConvertFrom-Json
 $mapPath = Join-Path $InstallRoot $settings.map_path
+if (
+    $settings.map_path -eq "config/windows_midi_map.json" -and
+    -not (Test-Path $mapPath)
+) {
+    $mapPath = Join-Path $InstallRoot "config\windows_midi_map.local.json"
+}
+if (
+    $settings.map_path -eq "config/windows_midi_map.json" -and
+    (Test-Path (Join-Path $InstallRoot "config\windows_midi_map.local.json"))
+) {
+    $mapPath = Join-Path $InstallRoot "config\windows_midi_map.local.json"
+}
 if (-not (Test-Path $mapPath)) {
     throw "MIDI map file not found at '$mapPath'."
 }

@@ -13,3 +13,4 @@ Current status:
 Receiver docs: `docs/windows-receiver.md`
 Installer docs: `docs/windows-install.md`
 Packaging docs: `docs/windows-packaging.md`
+Release checklist: `docs/windows-release-checklist.md`
