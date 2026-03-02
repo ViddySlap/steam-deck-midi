@@ -20,6 +20,12 @@ python3 -m deck.learn_wizard \
   --out config/deck_bindings.json
 ```
 
+Desktop launcher flow:
+
+```bash
+python3 -m deck.launch_learn
+```
+
 ## Output Format
 
 Example `deck_bindings.json`:

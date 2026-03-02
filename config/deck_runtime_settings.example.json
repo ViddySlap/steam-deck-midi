@@ -1,0 +1,9 @@
+{
+  "device_id": null,
+  "bindings_path": "config/deck_bindings.json",
+  "actions_path": "config/actions.yaml",
+  "default_port": 45123,
+  "profile_name": "default",
+  "profile_hash": null,
+  "presets": []
+}

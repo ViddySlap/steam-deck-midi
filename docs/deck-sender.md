@@ -40,8 +40,15 @@ python3 -m deck.xinput_send \
   --target 10.10.10.15:45123
 ```
 
+Desktop launcher flow:
+
+```bash
+python3 -m deck.launch_send
+```
+
 ## Notes
 
 - Unmapped keycodes are ignored and printed to stdout.
 - Sequence numbers start at `1` each time the sender starts.
 - This is intended for SteamOS Desktop Mode / X11.
+- The launcher stores target presets in `config/deck_runtime_settings.local.json`.
