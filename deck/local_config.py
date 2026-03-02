@@ -42,7 +42,7 @@ def load_runtime_settings(path: str) -> DeckRuntimeSettings:
     with open(path, "r", encoding="utf-8") as handle:
         raw = json.load(handle)
 
-    device_id = raw.get("device_id")
+    device_id = raw.get("device_id", "5")
     bindings_path = raw.get("bindings_path", "config/deck_bindings.json")
     actions_path = raw.get("actions_path", "config/actions.yaml")
     default_port = raw.get("default_port", 45123)
@@ -186,3 +186,4 @@ def get_xinput_list_output() -> str:
     except (OSError, subprocess.CalledProcessError):
         return ""
     return result.stdout.strip()
+

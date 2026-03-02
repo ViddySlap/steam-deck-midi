@@ -29,7 +29,7 @@ class DeckLocalConfigTests(unittest.TestCase):
             example.write_text(
                 """
 {
-  "device_id": null,
+  "device_id": "5",
   "bindings_path": "config/deck_bindings.json",
   "actions_path": "config/actions.yaml",
   "default_port": 45123,
@@ -47,6 +47,7 @@ class DeckLocalConfigTests(unittest.TestCase):
             self.assertTrue(local.exists())
             self.assertEqual(settings.default_port, 45123)
             self.assertEqual(settings.presets, [])
+            self.assertEqual(settings.device_id, "5")
 
     def test_with_device_id_updates_settings(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:

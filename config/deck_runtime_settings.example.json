@@ -1,5 +1,5 @@
 {
-  "device_id": null,
+  "device_id": "5",
   "bindings_path": "config/deck_bindings.json",
   "actions_path": "config/actions.yaml",
   "default_port": 45123,
