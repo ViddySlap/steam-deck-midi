@@ -30,7 +30,7 @@ if (-not (Test-Path $venvPath)) {
 }
 
 $venvPython = Join-Path $venvPath "Scripts\python.exe"
-$specPath = Join-Path $RepoRoot "steam-deck-vj-receiver.spec"
+$specPath = Join-Path $RepoRoot "steamdeck-midi-receiver.spec"
 
 Write-Host "Installing build dependencies..."
 & $venvPython -m pip install --upgrade pip
@@ -54,7 +54,7 @@ try {
 }
 
 $distDir = Join-Path $RepoRoot "dist"
-$exePath = Join-Path $distDir "steam-deck-vj-receiver.exe"
+$exePath = Join-Path $distDir "STEAMDECK-MIDI-RECEIVER.exe"
 
 Write-Host ""
 Write-Host "Build complete."
@@ -62,4 +62,4 @@ Write-Host "Dist directory: $distDir"
 Write-Host "Executable:     $exePath"
 Write-Host ""
 Write-Host "Example run:"
-Write-Host ".\dist\steam-deck-vj-receiver.exe --map .\config\windows_midi_map.json --midi-port `"DECK_IN`" --verbose"
+Write-Host ".\dist\STEAMDECK-MIDI-RECEIVER.exe --map .\config\windows_midi_map.json --midi-port `"DECK_IN`" --verbose"

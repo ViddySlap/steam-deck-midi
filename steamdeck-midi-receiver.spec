@@ -38,7 +38,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name="steam-deck-vj-receiver",
+    name="STEAMDECK-MIDI-RECEIVER",
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

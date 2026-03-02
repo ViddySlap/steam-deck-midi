@@ -29,15 +29,15 @@ The build script will:
 
 - create `.venv-build`
 - install `requirements-build.txt`
-- run PyInstaller with `steam-deck-vj-receiver.spec`
-- write the output executable to `dist\steam-deck-vj-receiver.exe`
+- run PyInstaller with `steamdeck-midi-receiver.spec`
+- write the output executable to `dist\STEAMDECK-MIDI-RECEIVER.exe`
 
 ## Run The EXE
 
 From the repo root after building:
 
 ```powershell
-.\dist\steam-deck-vj-receiver.exe --map .\config\windows_midi_map.json --midi-port "DECK_IN" --verbose
+.\dist\STEAMDECK-MIDI-RECEIVER.exe --map .\config\windows_midi_map.json --midi-port "DECK_IN" --verbose
 ```
 
 The executable uses the same CLI options as the Python module:
