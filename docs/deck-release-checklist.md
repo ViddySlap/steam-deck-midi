@@ -17,7 +17,10 @@ bash ./scripts/deck/build_release_asset.sh
 
 Verify:
 
-- `release-output/STEAMDECK-MIDI-SENDER-SETUP.sh`
+- `release-output/steamdeck-midi-installer/STEAMDECK-MIDI-INSTALL.desktop`
+- `release-output/steamdeck-midi-installer/STEAMDECK-MIDI-SENDER-SETUP.sh`
+- `release-output/steamdeck-midi-installer/install-wizard-icon.png`
+- `release-output/STEAMDECK-MIDI-INSTALLER.tar.gz`
 
 ## What The Installer Does
 
@@ -33,16 +36,13 @@ The Deck release asset:
 
 On the target Steam Deck in Desktop Mode:
 
-1. Download `STEAMDECK-MIDI-SENDER-SETUP.sh`.
-2. Open a terminal in the download location.
-3. Run:
-
-```bash
-bash ./STEAMDECK-MIDI-SENDER-SETUP.sh
-```
-
-4. Use `Learn Steam Input Map` if bindings need to be rebuilt.
-5. Use `STEAMDECK-MIDI-SENDER` to create/select a target preset and start sending.
+1. Download `STEAMDECK-MIDI-INSTALLER.tar.gz`.
+2. Extract it in Desktop Mode.
+3. Open the extracted `steamdeck-midi-installer` folder.
+4. Double-click `STEAMDECK-MIDI-INSTALL.desktop`.
+5. If SteamOS prompts for trust/execute permission, allow launching once.
+6. Use `Learn Steam Input Map` if bindings need to be rebuilt.
+7. Use `STEAMDECK-MIDI-SENDER` to create/select a target preset and start sending.
 
 ## Upgrade Behavior
 

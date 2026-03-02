@@ -28,7 +28,7 @@ bash ./scripts/deck/build_release_asset.sh
 
 Verify:
 
-- `release-output/STEAMDECK-MIDI-SENDER-SETUP.sh`
+- `release-output/STEAMDECK-MIDI-INSTALLER.tar.gz`
 
 ## 3. Commit The Version Bump
 
@@ -58,7 +58,7 @@ On GitHub:
 - create a new release from tag `v<version>`
 - title it `STEAMDECK MIDI Receiver v<version>`
 - attach `installer-output\STEAMDECK-MIDI-RECEIVER-Setup.exe`
-- attach `release-output\STEAMDECK-MIDI-SENDER-SETUP.sh`
+- attach `release-output\STEAMDECK-MIDI-INSTALLER.tar.gz`
 
 ## 6. Release Notes
 

@@ -2,12 +2,18 @@
 
 Steam Deck uses a native Linux installer script, not a Windows `.exe`.
 
-## One-File Installer
+## Installer Bundle
 
-The downloadable installer entrypoint is:
+The downloadable Steam Deck installer bundle is:
 
 ```text
-STEAMDECK-MIDI-SENDER-SETUP.sh
+STEAMDECK-MIDI-INSTALLER.tar.gz
+```
+
+After extraction, the double-click installer entrypoint is:
+
+```text
+steamdeck-midi-installer/STEAMDECK-MIDI-INSTALL.desktop
 ```
 
 It will:
@@ -20,11 +26,13 @@ It will:
 
 ## Install
 
-From the Steam Deck terminal in Desktop Mode:
+From Steam Deck Desktop Mode:
 
-```bash
-bash ./STEAMDECK-MIDI-SENDER-SETUP.sh
-```
+1. Extract `STEAMDECK-MIDI-INSTALLER.tar.gz`.
+2. Open the extracted `steamdeck-midi-installer` folder.
+3. Double-click `STEAMDECK-MIDI-INSTALL.desktop`.
+
+SteamOS may ask for one-time permission to execute the launcher because it was downloaded from the internet.
 
 ## Sender Presets
 
