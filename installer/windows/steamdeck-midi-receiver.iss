@@ -1,6 +1,8 @@
 #define AppName "STEAMDECK MIDI Receiver"
 #define AppExeName "STEAMDECK-MIDI-RECEIVER.exe"
+#ifndef AppVersion
 #define AppVersion "0.1.0"
+#endif
 #define AppPublisher "ViddySlap"
 #define AppURL "https://github.com/ViddySlap/steam-deck-vj"
 
@@ -26,7 +28,9 @@ ArchitecturesInstallIn64BitMode=x64compatible
 [Files]
 Source: "..\..\dist\STEAMDECK-MIDI-RECEIVER.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\..\config\windows_midi_map.json"; DestDir: "{app}\config"; Flags: ignoreversion
+Source: "..\..\config\windows_midi_map.json"; DestDir: "{app}\config"; DestName: "windows_midi_map.local.json"; Flags: onlyifdoesntexist
 Source: "..\..\config\windows_receiver_settings.example.json"; DestDir: "{app}\config"; Flags: ignoreversion
+Source: "..\..\config\windows_receiver_settings.example.json"; DestDir: "{app}\config"; DestName: "windows_receiver_settings.local.json"; Flags: onlyifdoesntexist
 Source: "..\..\scripts\windows\start_installed_receiver.ps1"; DestDir: "{app}\scripts"; Flags: ignoreversion
 
 [Icons]

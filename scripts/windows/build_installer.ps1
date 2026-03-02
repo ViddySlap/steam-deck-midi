@@ -16,6 +16,15 @@ if (-not (Test-Path $exePath)) {
     throw "Packaged receiver EXE not found at '$exePath'. Build it first with build_exe.ps1."
 }
 
+$versionPath = Join-Path $RepoRoot "VERSION"
+if (-not (Test-Path $versionPath)) {
+    throw "VERSION file not found at '$versionPath'."
+}
+$appVersion = (Get-Content $versionPath -Raw).Trim()
+if ([string]::IsNullOrWhiteSpace($appVersion)) {
+    throw "VERSION file at '$versionPath' is empty."
+}
+
 $iscc = Get-Command ISCC.exe -ErrorAction SilentlyContinue
 if (-not $iscc) {
     $defaultIscc = Join-Path ${env:ProgramFiles(x86)} "Inno Setup 6\ISCC.exe"
@@ -37,7 +46,7 @@ $issPath = Join-Path $RepoRoot "installer\windows\steamdeck-midi-receiver.iss"
 
 Push-Location $RepoRoot
 try {
-    & $iscc.FullName $issPath
+    & $iscc.FullName "/DAppVersion=$appVersion" $issPath
     if ($LASTEXITCODE -ne 0) {
         throw "Inno Setup build failed."
     }
