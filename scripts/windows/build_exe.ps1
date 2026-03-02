@@ -92,8 +92,8 @@ if ($LASTEXITCODE -ne 0) {
 
 Push-Location $RepoRoot
 try {
-Write-Host "Building executable..."
-    & $venvPython -m PyInstaller --clean --noconfirm --version-file $versionInfoPath $specPath
+    Write-Host "Building executable..."
+    & $venvPython -m PyInstaller --clean --noconfirm $specPath
     if ($LASTEXITCODE -ne 0) {
         throw "PyInstaller build failed."
     }
