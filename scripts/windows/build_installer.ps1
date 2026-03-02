@@ -24,6 +24,12 @@ if (-not $iscc) {
     }
 }
 if (-not $iscc) {
+    $perUserIscc = Join-Path $env:LOCALAPPDATA "Programs\Inno Setup 6\ISCC.exe"
+    if (Test-Path $perUserIscc) {
+        $iscc = Get-Item $perUserIscc
+    }
+}
+if (-not $iscc) {
     throw "Inno Setup compiler (ISCC.exe) was not found. Install Inno Setup 6 first."
 }
 
