@@ -40,12 +40,12 @@ When `STEAMDECK-MIDI-SENDER` starts:
 
 Selecting a preset starts sender mode against that target IP on UDP port `45123`.
 
-## First-Run Device Setup
+## Device Selection
 
-If no xinput device id is saved yet, the launcher will:
+The Deck launcher currently uses xinput device id `5` by default.
 
-- show the current `xinput list` output
-- ask for the Steam Input xinput device id
-- save it into `config/deck_runtime_settings.local.json`
+That value is stored in:
 
-The value is reused by both the sender and the learn wizard.
+- `config/deck_runtime_settings.local.json`
+
+If needed later, it can be changed there manually.

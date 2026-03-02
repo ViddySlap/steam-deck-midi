@@ -7,13 +7,10 @@ import os
 import sys
 
 from deck.local_config import (
-    DeckRuntimeSettings,
     describe_preset,
     ensure_local_settings,
-    get_xinput_list_output,
     save_runtime_settings,
     with_added_preset,
-    with_device_id,
 )
 from deck.xinput_send import run_sender
 
@@ -32,29 +29,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     return parser
 
-
-def prompt_device_id(settings_path: str, settings: DeckRuntimeSettings) -> DeckRuntimeSettings:
-    print("STEAMDECK-MIDI-SENDER")
-    print("")
-    print("A Steam Input xinput device id is required before sending can start.")
-    xinput_output = get_xinput_list_output()
-    if xinput_output:
-        print("")
-        print("Current xinput devices:")
-        print(xinput_output)
-    print("")
-    while True:
-        device_id = input("Enter the xinput device id to use: ").strip()
-        if not device_id:
-            print("Device id cannot be empty.")
-            continue
-        updated = with_device_id(settings, device_id)
-        save_runtime_settings(settings_path, updated)
-        print(f"Saved device id: {device_id}")
-        return updated
-
-
-def prompt_new_preset(settings_path: str, settings: DeckRuntimeSettings) -> DeckRuntimeSettings:
+def prompt_new_preset(settings_path: str, settings):
     print("")
     print("Create New Preset")
     while True:
@@ -72,12 +47,12 @@ def prompt_new_preset(settings_path: str, settings: DeckRuntimeSettings) -> Deck
         return updated
 
 
-def prompt_for_preset(settings_path: str, settings: DeckRuntimeSettings):
+def prompt_for_preset(settings_path: str, settings, device_id: str):
     while True:
         print("")
         print("STEAMDECK-MIDI-SENDER")
         print(f"Bindings: {settings.bindings_path}")
-        print(f"Device ID: {settings.device_id or '(not set)'}")
+        print(f"Device ID: {device_id}")
         print("")
         print("Select a target preset:")
         if settings.presets:
@@ -116,16 +91,14 @@ def main(argv: list[str] | None = None) -> int:
         parser.error(str(exc))
         return 2
 
-    if settings.device_id is None:
-        settings = prompt_device_id(args.settings, settings)
-
     if not os.path.exists(settings.bindings_path):
         parser.error(
             f"bindings file not found: {settings.bindings_path}. Run Learn Steam Input Map first."
         )
         return 2
 
-    preset, settings = prompt_for_preset(args.settings, settings)
+    device_id = settings.device_id or "5"
+    preset, settings = prompt_for_preset(args.settings, settings, device_id)
     if preset is None:
         print("Sender cancelled.")
         return 0
@@ -136,7 +109,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Target: {target}")
     print("")
     return run_sender(
-        device_id=settings.device_id or "",
+        device_id=device_id,
         bindings_path=settings.bindings_path,
         target=target,
         profile_name=settings.profile_name,

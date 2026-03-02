@@ -6,7 +6,7 @@ import argparse
 import sys
 
 from deck.learn_wizard import main as learn_main
-from deck.local_config import ensure_local_settings, get_xinput_list_output, save_runtime_settings, with_device_id
+from deck.local_config import ensure_local_settings
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -23,28 +23,6 @@ def build_parser() -> argparse.ArgumentParser:
     )
     return parser
 
-
-def prompt_device_id(settings_path: str, settings):
-    print("Learn Steam Input Map")
-    print("")
-    print("A Steam Input xinput device id is required before learning can start.")
-    xinput_output = get_xinput_list_output()
-    if xinput_output:
-        print("")
-        print("Current xinput devices:")
-        print(xinput_output)
-    print("")
-    while True:
-        device_id = input("Enter the xinput device id to use: ").strip()
-        if not device_id:
-            print("Device id cannot be empty.")
-            continue
-        updated = with_device_id(settings, device_id)
-        save_runtime_settings(settings_path, updated)
-        print(f"Saved device id: {device_id}")
-        return updated
-
-
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
@@ -54,14 +32,12 @@ def main(argv: list[str] | None = None) -> int:
     except (OSError, ValueError) as exc:
         parser.error(str(exc))
         return 2
-
-    if settings.device_id is None:
-        settings = prompt_device_id(args.settings, settings)
+    device_id = settings.device_id or "5"
 
     return learn_main(
         [
             "--device-id",
-            settings.device_id or "",
+            device_id,
             "--actions",
             settings.actions_path,
             "--out",
