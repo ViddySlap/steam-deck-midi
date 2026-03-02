@@ -5,6 +5,7 @@ from pathlib import Path
 
 project_root = Path(SPECPATH)
 icon_path = project_root / "assets" / "windows" / "appicon.ico"
+version_file_path = project_root / "build" / "windows-file-version.txt"
 
 datas = [
     (str(project_root / "config" / "windows_midi_map.json"), "config"),
@@ -47,6 +48,7 @@ exe = EXE(
     upx_exclude=[],
     runtime_tmpdir=None,
     icon=str(icon_path),
+    version=str(version_file_path),
     console=True,
     disable_windowed_traceback=False,
     argv_emulation=False,
