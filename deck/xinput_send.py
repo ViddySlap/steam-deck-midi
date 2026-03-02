@@ -99,33 +99,37 @@ def send_action(
     print(f"sent action={action} state={state} seq={seq}")
 
 
-def main(argv: list[str] | None = None) -> int:
-    parser = build_parser()
-    args = parser.parse_args(argv)
-
+def run_sender(
+    *,
+    device_id: str,
+    bindings_path: str,
+    target: str,
+    profile_name: str | None,
+    profile_hash: str | None,
+) -> int:
     try:
-        profile_name, bindings = load_bindings(args.bindings)
-        target = parse_target(args.target)
+        loaded_profile_name, bindings = load_bindings(bindings_path)
+        resolved_target = parse_target(target)
     except (OSError, ValueError, json.JSONDecodeError) as exc:
-        parser.error(str(exc))
+        print(f"Error: {exc}")
         return 2
 
-    resolved_profile_name = args.profile_name or profile_name
+    resolved_profile_name = profile_name or loaded_profile_name
     seq = 1
 
     try:
         process = subprocess.Popen(
-            ["xinput", "test", str(args.device_id)],
+            ["xinput", "test", str(device_id)],
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
             bufsize=1,
         )
     except OSError as exc:
-        parser.error(f"failed to start xinput: {exc}")
+        print(f"Error: failed to start xinput: {exc}")
         return 2
 
-    print(f"watching xinput device {args.device_id} and sending to {args.target}")
+    print(f"watching xinput device {device_id} and sending to {target}")
 
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
         try:
@@ -141,12 +145,12 @@ def main(argv: list[str] | None = None) -> int:
                     continue
                 send_action(
                     sock,
-                    target,
+                    resolved_target,
                     action=action,
                     state=state,
                     seq=seq,
                     profile_name=resolved_profile_name,
-                    profile_hash=args.profile_hash,
+                    profile_hash=profile_hash,
                 )
                 seq += 1
         except KeyboardInterrupt:
@@ -155,6 +159,19 @@ def main(argv: list[str] | None = None) -> int:
             process.terminate()
             process.wait(timeout=2)
     return 0
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
+
+    return run_sender(
+        device_id=args.device_id,
+        bindings_path=args.bindings,
+        target=args.target,
+        profile_name=args.profile_name,
+        profile_hash=args.profile_hash,
+    )
 
 
 if __name__ == "__main__":
