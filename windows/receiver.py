@@ -9,7 +9,7 @@ from collections import deque
 from dataclasses import dataclass
 from typing import Callable
 
-from protocol.messages import ActionEvent, ProtocolError, parse_action_event
+from protocol.messages import ActionEvent, HeartbeatEvent, ProtocolError, parse_action_event
 from windows.config import ControlChangeMapping, MidiMapping, NoteMapping
 from windows.midi import MidiError, MidiOut
 
@@ -76,6 +76,9 @@ class ActionReceiver:
 
         sender.last_seq = event.seq
         sender.last_seen = timestamp
+        if isinstance(event, HeartbeatEvent):
+            LOGGER.debug("heartbeat seq=%s from %s:%s", event.seq, addr[0], addr[1])
+            return True
         if not self._allow_event(event, timestamp):
             return False
         try:

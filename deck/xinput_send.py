@@ -5,19 +5,22 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import selectors
 import socket
 import subprocess
 import sys
 import termios
+import time
 from dataclasses import dataclass
 
-from protocol.messages import encode_action_event
+from protocol.messages import encode_action_event, encode_heartbeat_event
 
 
 EVENT_HEADER_RE = re.compile(r"^EVENT type \d+ \((KeyPress|KeyRelease)\)$")
 DETAIL_RE = re.compile(r"^\s*detail:\s+(\d+)$")
 FLAGS_RE = re.compile(r"^\s*flags:\s*(.*)$")
 WINDOWS_RE = re.compile(r"^\s*windows:\s+")
+HEARTBEAT_INTERVAL_SECONDS = 0.5
 
 
 @dataclass(frozen=True)
@@ -190,6 +193,22 @@ def send_action(
     print(f"sent action={action} state={state} seq={seq}")
 
 
+def send_heartbeat(
+    sock: socket.socket,
+    target: tuple[str, int],
+    *,
+    seq: int,
+    profile_name: str | None,
+    profile_hash: str | None,
+) -> None:
+    payload = encode_heartbeat_event(
+        seq=seq,
+        profile_name=profile_name,
+        profile_hash=profile_hash,
+    )
+    sock.sendto(payload, target)
+
+
 def run_sender(
     *,
     device_id: str,
@@ -227,8 +246,29 @@ def run_sender(
         with TerminalNoEcho():
             try:
                 assert process.stdout is not None
+                selector = selectors.DefaultSelector()
+                selector.register(process.stdout, selectors.EVENT_READ)
                 block: list[str] = []
-                for raw_line in process.stdout:
+                next_heartbeat_at = time.monotonic() + HEARTBEAT_INTERVAL_SECONDS
+                while True:
+                    now = time.monotonic()
+                    timeout = max(0.0, next_heartbeat_at - now) if held_keys else None
+                    events = selector.select(timeout)
+                    if not events:
+                        send_heartbeat(
+                            sock,
+                            resolved_target,
+                            seq=seq,
+                            profile_name=resolved_profile_name,
+                            profile_hash=profile_hash,
+                        )
+                        seq += 1
+                        next_heartbeat_at = time.monotonic() + HEARTBEAT_INTERVAL_SECONDS
+                        continue
+
+                    raw_line = process.stdout.readline()
+                    if raw_line == "":
+                        break
                     line = raw_line.rstrip("\n")
                     if line.startswith("EVENT type ") and block:
                         parsed, action = flush_block(block, bindings, held_keys)
@@ -244,6 +284,7 @@ def run_sender(
                                 profile_hash=profile_hash,
                             )
                             seq += 1
+                            next_heartbeat_at = time.monotonic() + HEARTBEAT_INTERVAL_SECONDS
 
                     if line.strip():
                         block.append(line)
@@ -261,6 +302,9 @@ def run_sender(
                                     profile_hash=profile_hash,
                                 )
                                 seq += 1
+                                next_heartbeat_at = (
+                                    time.monotonic() + HEARTBEAT_INTERVAL_SECONDS
+                                )
                         continue
 
                     parsed, action = flush_block(block, bindings, held_keys)
@@ -276,6 +320,7 @@ def run_sender(
                             profile_hash=profile_hash,
                         )
                         seq += 1
+                        next_heartbeat_at = time.monotonic() + HEARTBEAT_INTERVAL_SECONDS
 
                 parsed, action = flush_block(block, bindings, held_keys)
                 if parsed is not None and action is not None:
@@ -288,6 +333,7 @@ def run_sender(
                         profile_name=resolved_profile_name,
                         profile_hash=profile_hash,
                     )
+                selector.close()
             except KeyboardInterrupt:
                 print("stopping sender")
             finally:
