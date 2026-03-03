@@ -5,6 +5,7 @@ import unittest
 from windows.config import NoteMapping
 from windows.receiver import ActionReceiver
 from windows.midi import MidiError
+from protocol.messages import encode_heartbeat_event
 
 
 class FakeMidiOut:
@@ -97,6 +98,22 @@ class ActionReceiverTests(unittest.TestCase):
             self.midi.calls,
             [("note_on", 0, 60, 127), ("note_off", 0, 60, 0), ("panic", -1, -1, -1)],
         )
+
+    def test_heartbeat_prevents_timeout_during_hold(self) -> None:
+        self.receiver.handle_datagram(
+            b'{"action":"BTN_A","state":"down","seq":1}', self.addr, now=0.0
+        )
+        self.receiver.handle_datagram(
+            encode_heartbeat_event(seq=2), self.addr, now=0.6
+        )
+        self.receiver.handle_datagram(
+            encode_heartbeat_event(seq=3), self.addr, now=1.2
+        )
+
+        timed_out = self.receiver.check_timeouts(now=1.8)
+
+        self.assertFalse(timed_out)
+        self.assertEqual(self.midi.calls, [("note_on", 0, 60, 127)])
 
     def test_survives_midi_send_failure_during_down_event(self) -> None:
         midi = FailingMidiOut(fail_note_on=True)
