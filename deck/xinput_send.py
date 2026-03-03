@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import pty
 import re
 import selectors
-import shutil
 import socket
 import subprocess
 import sys
@@ -236,30 +237,39 @@ def run_sender(
     seq = 1
     held_keys: set[str] = set()
     xinput_command = ["xinput", "test-xi2", str(device_id)]
-    if shutil.which("stdbuf") is not None:
-        xinput_command = ["stdbuf", "-oL", "-eL", *xinput_command]
+    master_fd: int | None = None
+    slave_fd: int | None = None
 
     try:
+        master_fd, slave_fd = pty.openpty()
         process = subprocess.Popen(
             xinput_command,
-            stdout=subprocess.PIPE,
+            stdout=slave_fd,
             stderr=subprocess.STDOUT,
             text=True,
-            bufsize=1,
+            close_fds=True,
         )
     except OSError as exc:
+        if master_fd is not None:
+            os.close(master_fd)
+        if slave_fd is not None:
+            os.close(slave_fd)
         print(f"Error: failed to start xinput: {exc}")
         return 2
+    finally:
+        if slave_fd is not None:
+            os.close(slave_fd)
 
     print(f"watching XI2 raw key events for device {device_id} and sending to {target}")
 
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
         with TerminalNoEcho():
             try:
-                assert process.stdout is not None
                 selector = selectors.DefaultSelector()
-                selector.register(process.stdout, selectors.EVENT_READ)
+                assert master_fd is not None
+                selector.register(master_fd, selectors.EVENT_READ)
                 block: list[str] = []
+                text_buffer = ""
                 next_heartbeat_at = time.monotonic() + HEARTBEAT_INTERVAL_SECONDS
                 while True:
                     now = time.monotonic()
@@ -282,11 +292,59 @@ def run_sender(
                         next_heartbeat_at = time.monotonic() + HEARTBEAT_INTERVAL_SECONDS
                         continue
 
-                    raw_line = process.stdout.readline()
-                    if raw_line == "":
+                    raw_bytes = os.read(master_fd, 4096)
+                    if not raw_bytes:
                         break
-                    line = raw_line.rstrip("\n")
-                    if line.startswith("EVENT type ") and block:
+                    text_buffer += raw_bytes.decode("utf-8", errors="replace")
+                    lines = text_buffer.splitlines(keepends=True)
+                    complete_lines: list[str] = []
+                    text_buffer = ""
+                    for item in lines:
+                        if item.endswith("\n") or item.endswith("\r"):
+                            complete_lines.append(item)
+                        else:
+                            text_buffer = item
+
+                    for raw_line in complete_lines:
+                        line = raw_line.rstrip("\r")
+                        line = line.rstrip("\n")
+                        if line.startswith("EVENT type ") and block:
+                            parsed, action = flush_block(block, bindings, held_keys)
+                            block = []
+                            if parsed is not None and action is not None:
+                                send_action(
+                                    sock,
+                                    resolved_target,
+                                    action=action,
+                                    state=parsed.state,
+                                    seq=seq,
+                                    profile_name=resolved_profile_name,
+                                    profile_hash=profile_hash,
+                                )
+                                seq += 1
+                                next_heartbeat_at = time.monotonic() + HEARTBEAT_INTERVAL_SECONDS
+
+                        if line.strip():
+                            block.append(line)
+                            if is_complete_xi2_event_block(block):
+                                parsed, action = flush_block(block, bindings, held_keys)
+                                block = []
+                                if parsed is not None and action is not None:
+                                    send_action(
+                                        sock,
+                                        resolved_target,
+                                        action=action,
+                                        state=parsed.state,
+                                        seq=seq,
+                                        profile_name=resolved_profile_name,
+                                        profile_hash=profile_hash,
+                                    )
+                                    seq += 1
+                                    next_heartbeat_at = (
+                                        time.monotonic() + HEARTBEAT_INTERVAL_SECONDS
+                                    )
+                            continue
+
                         parsed, action = flush_block(block, bindings, held_keys)
                         block = []
                         if parsed is not None and action is not None:
@@ -301,42 +359,6 @@ def run_sender(
                             )
                             seq += 1
                             next_heartbeat_at = time.monotonic() + HEARTBEAT_INTERVAL_SECONDS
-
-                    if line.strip():
-                        block.append(line)
-                        if is_complete_xi2_event_block(block):
-                            parsed, action = flush_block(block, bindings, held_keys)
-                            block = []
-                            if parsed is not None and action is not None:
-                                send_action(
-                                    sock,
-                                    resolved_target,
-                                    action=action,
-                                    state=parsed.state,
-                                    seq=seq,
-                                    profile_name=resolved_profile_name,
-                                    profile_hash=profile_hash,
-                                )
-                                seq += 1
-                                next_heartbeat_at = (
-                                    time.monotonic() + HEARTBEAT_INTERVAL_SECONDS
-                                )
-                        continue
-
-                    parsed, action = flush_block(block, bindings, held_keys)
-                    block = []
-                    if parsed is not None and action is not None:
-                        send_action(
-                            sock,
-                            resolved_target,
-                            action=action,
-                            state=parsed.state,
-                            seq=seq,
-                            profile_name=resolved_profile_name,
-                            profile_hash=profile_hash,
-                        )
-                        seq += 1
-                        next_heartbeat_at = time.monotonic() + HEARTBEAT_INTERVAL_SECONDS
 
                 parsed, action = flush_block(block, bindings, held_keys)
                 if parsed is not None and action is not None:
@@ -355,6 +377,8 @@ def run_sender(
             finally:
                 process.terminate()
                 process.wait(timeout=2)
+                if master_fd is not None:
+                    os.close(master_fd)
     return 0
 
 
