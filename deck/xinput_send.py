@@ -8,11 +8,41 @@ import re
 import socket
 import subprocess
 import sys
+import termios
+from dataclasses import dataclass
 
 from protocol.messages import encode_action_event
 
 
-KEY_EVENT_RE = re.compile(r"^key (press|release)\s+(\d+)$")
+EVENT_HEADER_RE = re.compile(r"^EVENT type \d+ \((KeyPress|KeyRelease)\)$")
+DETAIL_RE = re.compile(r"^\s*detail:\s+(\d+)$")
+FLAGS_RE = re.compile(r"^\s*flags:\s*(.*)$")
+
+
+@dataclass(frozen=True)
+class Xi2KeyEvent:
+    keycode: str
+    state: str
+    is_repeat: bool = False
+
+
+class TerminalNoEcho:
+    def __enter__(self) -> "TerminalNoEcho":
+        self._fd: int | None = None
+        self._old_attrs = None
+        if not sys.stdin.isatty():
+            return self
+        self._fd = sys.stdin.fileno()
+        self._old_attrs = termios.tcgetattr(self._fd)
+        new_attrs = termios.tcgetattr(self._fd)
+        new_attrs[3] &= ~(termios.ECHO | termios.ICANON)
+        termios.tcsetattr(self._fd, termios.TCSADRAIN, new_attrs)
+        return self
+
+    def __exit__(self, exc_type, exc, tb) -> None:
+        if self._fd is None or self._old_attrs is None:
+            return
+        termios.tcsetattr(self._fd, termios.TCSADRAIN, self._old_attrs)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -69,13 +99,47 @@ def load_bindings(path: str) -> tuple[str | None, dict[str, str]]:
     return profile_name, validated
 
 
-def parse_xinput_line(line: str) -> tuple[str, str] | None:
-    match = KEY_EVENT_RE.match(line.strip())
+def parse_xi2_event_block(block: list[str]) -> Xi2KeyEvent | None:
+    if not block:
+        return None
+
+    match = EVENT_HEADER_RE.match(block[0].strip())
     if match is None:
         return None
-    state_name, keycode = match.groups()
-    state = "down" if state_name == "press" else "up"
-    return keycode, state
+
+    state_name = match.group(1)
+    keycode: str | None = None
+    flags = ""
+    for line in block[1:]:
+        detail_match = DETAIL_RE.match(line)
+        if detail_match is not None:
+            keycode = detail_match.group(1)
+            continue
+        flags_match = FLAGS_RE.match(line)
+        if flags_match is not None:
+            flags = flags_match.group(1).strip()
+
+    if keycode is None:
+        return None
+
+    return Xi2KeyEvent(
+        keycode=keycode,
+        state="down" if state_name == "KeyPress" else "up",
+        is_repeat="repeat" in flags.split(),
+    )
+
+
+def should_emit_event(event: Xi2KeyEvent, held_keys: set[str]) -> bool:
+    if event.state == "down":
+        if event.is_repeat or event.keycode in held_keys:
+            return False
+        held_keys.add(event.keycode)
+        return True
+
+    if event.keycode not in held_keys:
+        return False
+    held_keys.remove(event.keycode)
+    return True
 
 
 def send_action(
@@ -116,10 +180,11 @@ def run_sender(
 
     resolved_profile_name = profile_name or loaded_profile_name
     seq = 1
+    held_keys: set[str] = set()
 
     try:
         process = subprocess.Popen(
-            ["xinput", "test", str(device_id)],
+            ["xinput", "test-xi2", "--root"],
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
@@ -129,35 +194,46 @@ def run_sender(
         print(f"Error: failed to start xinput: {exc}")
         return 2
 
-    print(f"watching xinput device {device_id} and sending to {target}")
+    print(f"watching X11 XI2 root events and sending to {target}")
 
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-        try:
-            assert process.stdout is not None
-            for raw_line in process.stdout:
-                parsed = parse_xinput_line(raw_line)
-                if parsed is None:
-                    continue
-                keycode, state = parsed
-                action = bindings.get(keycode)
-                if action is None:
-                    print(f"ignored keycode={keycode} state={state} (no binding)")
-                    continue
-                send_action(
-                    sock,
-                    resolved_target,
-                    action=action,
-                    state=state,
-                    seq=seq,
-                    profile_name=resolved_profile_name,
-                    profile_hash=profile_hash,
-                )
-                seq += 1
-        except KeyboardInterrupt:
-            print("stopping sender")
-        finally:
-            process.terminate()
-            process.wait(timeout=2)
+        with TerminalNoEcho():
+            try:
+                assert process.stdout is not None
+                block: list[str] = []
+                for raw_line in process.stdout:
+                    line = raw_line.rstrip("\n")
+                    if line.strip():
+                        block.append(line)
+                        continue
+
+                    parsed = parse_xi2_event_block(block)
+                    block = []
+                    if parsed is None:
+                        continue
+
+                    action = bindings.get(parsed.keycode)
+                    if action is None:
+                        continue
+
+                    if not should_emit_event(parsed, held_keys):
+                        continue
+
+                    send_action(
+                        sock,
+                        resolved_target,
+                        action=action,
+                        state=parsed.state,
+                        seq=seq,
+                        profile_name=resolved_profile_name,
+                        profile_hash=profile_hash,
+                    )
+                    seq += 1
+            except KeyboardInterrupt:
+                print("stopping sender")
+            finally:
+                process.terminate()
+                process.wait(timeout=2)
     return 0
 
 
