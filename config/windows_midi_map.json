@@ -6,22 +6,10 @@
       "note": 36,
       "velocity": 127
     },
-    "BTN_A_LAYER_2": {
-      "type": "note",
-      "channel": 0,
-      "note": 37,
-      "velocity": 127
-    },
     "BTN_B": {
       "type": "note",
       "channel": 0,
       "note": 38,
-      "velocity": 127
-    },
-    "BTN_B_LAYER_2": {
-      "type": "note",
-      "channel": 0,
-      "note": 39,
       "velocity": 127
     },
     "BTN_X": {
@@ -30,16 +18,28 @@
       "note": 40,
       "velocity": 127
     },
-    "BTN_X_LAYER_2": {
-      "type": "note",
-      "channel": 0,
-      "note": 41,
-      "velocity": 127
-    },
     "BTN_Y": {
       "type": "note",
       "channel": 0,
       "note": 42,
+      "velocity": 127
+    },
+    "BTN_A_LAYER_2": {
+      "type": "note",
+      "channel": 0,
+      "note": 37,
+      "velocity": 127
+    },
+    "BTN_B_LAYER_2": {
+      "type": "note",
+      "channel": 0,
+      "note": 39,
+      "velocity": 127
+    },
+    "BTN_X_LAYER_2": {
+      "type": "note",
+      "channel": 0,
+      "note": 41,
       "velocity": 127
     },
     "BTN_Y_LAYER_2": {
@@ -150,22 +150,10 @@
       "note": 60,
       "velocity": 127
     },
-    "L1_LAYER_2": {
-      "type": "note",
-      "channel": 0,
-      "note": 61,
-      "velocity": 127
-    },
     "R1": {
       "type": "note",
       "channel": 0,
       "note": 62,
-      "velocity": 127
-    },
-    "R1_LAYER_2": {
-      "type": "note",
-      "channel": 0,
-      "note": 63,
       "velocity": 127
     },
     "L2_SOFT": {
@@ -174,22 +162,10 @@
       "note": 64,
       "velocity": 127
     },
-    "L2_SOFT_LAYER_2": {
-      "type": "note",
-      "channel": 0,
-      "note": 65,
-      "velocity": 127
-    },
     "L2_FULL": {
       "type": "note",
       "channel": 0,
       "note": 66,
-      "velocity": 127
-    },
-    "L2_FULL_LAYER_2": {
-      "type": "note",
-      "channel": 0,
-      "note": 67,
       "velocity": 127
     },
     "R2_SOFT": {
@@ -198,16 +174,40 @@
       "note": 68,
       "velocity": 127
     },
-    "R2_SOFT_LAYER_2": {
-      "type": "note",
-      "channel": 0,
-      "note": 69,
-      "velocity": 127
-    },
     "R2_FULL": {
       "type": "note",
       "channel": 0,
       "note": 70,
+      "velocity": 127
+    },
+    "L1_LAYER_2": {
+      "type": "note",
+      "channel": 0,
+      "note": 61,
+      "velocity": 127
+    },
+    "R1_LAYER_2": {
+      "type": "note",
+      "channel": 0,
+      "note": 63,
+      "velocity": 127
+    },
+    "L2_SOFT_LAYER_2": {
+      "type": "note",
+      "channel": 0,
+      "note": 65,
+      "velocity": 127
+    },
+    "L2_FULL_LAYER_2": {
+      "type": "note",
+      "channel": 0,
+      "note": 67,
+      "velocity": 127
+    },
+    "R2_SOFT_LAYER_2": {
+      "type": "note",
+      "channel": 0,
+      "note": 69,
       "velocity": 127
     },
     "R2_FULL_LAYER_2": {
