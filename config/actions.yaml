@@ -1,12 +1,12 @@
 # Stable semantic actions shared between Deck and Windows.
 actions:
   - BTN_A
-  - BTN_A_LAYER_2
   - BTN_B
-  - BTN_B_LAYER_2
   - BTN_X
-  - BTN_X_LAYER_2
   - BTN_Y
+  - BTN_A_LAYER_2
+  - BTN_B_LAYER_2
+  - BTN_X_LAYER_2
   - BTN_Y_LAYER_2
   - DPAD_UP
   - DPAD_DOWN
@@ -25,16 +25,16 @@ actions:
   - R_STICK_LEFT
   - R_STICK_RIGHT
   - L1
-  - L1_LAYER_2
   - R1
-  - R1_LAYER_2
   - L2_SOFT
-  - L2_SOFT_LAYER_2
   - L2_FULL
-  - L2_FULL_LAYER_2
   - R2_SOFT
-  - R2_SOFT_LAYER_2
   - R2_FULL
+  - L1_LAYER_2
+  - R1_LAYER_2
+  - L2_SOFT_LAYER_2
+  - L2_FULL_LAYER_2
+  - R2_SOFT_LAYER_2
   - R2_FULL_LAYER_2
   - LEFT_STICK_CLICK_L3
   - RIGHT_STICK_CLICK_R3
