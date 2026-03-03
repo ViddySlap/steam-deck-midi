@@ -17,9 +17,8 @@ from dataclasses import dataclass
 from protocol.messages import encode_action_event, encode_heartbeat_event
 
 
-EVENT_HEADER_RE = re.compile(r"^EVENT type \d+ \((KeyPress|KeyRelease)\)$")
+EVENT_HEADER_RE = re.compile(r"^EVENT type \d+ \((RawKeyPress|RawKeyRelease)\)$")
 DETAIL_RE = re.compile(r"^\s*detail:\s+(\d+)$")
-FLAGS_RE = re.compile(r"^\s*flags:\s*(.*)$")
 HEARTBEAT_INTERVAL_SECONDS = 0.5
 
 
@@ -27,7 +26,6 @@ HEARTBEAT_INTERVAL_SECONDS = 0.5
 class Xi2KeyEvent:
     keycode: str
     state: str
-    is_repeat: bool = False
 
 
 class TerminalNoEcho:
@@ -113,23 +111,17 @@ def parse_xi2_event_block(block: list[str]) -> Xi2KeyEvent | None:
 
     state_name = match.group(1)
     keycode: str | None = None
-    flags = ""
     for line in block[1:]:
         detail_match = DETAIL_RE.match(line)
         if detail_match is not None:
             keycode = detail_match.group(1)
-            continue
-        flags_match = FLAGS_RE.match(line)
-        if flags_match is not None:
-            flags = flags_match.group(1).strip()
 
     if keycode is None:
         return None
 
     return Xi2KeyEvent(
         keycode=keycode,
-        state="down" if state_name == "KeyPress" else "up",
-        is_repeat="repeat" in flags.split(),
+        state="down" if state_name == "RawKeyPress" else "up",
     )
 
 
@@ -138,14 +130,12 @@ def is_complete_xi2_event_block(block: list[str]) -> bool:
         return False
     if EVENT_HEADER_RE.match(block[0].strip()) is None:
         return False
-    has_detail = any(DETAIL_RE.match(line) for line in block[1:])
-    has_flags = any(FLAGS_RE.match(line) for line in block[1:])
-    return has_detail and has_flags
+    return any(DETAIL_RE.match(line) for line in block[1:])
 
 
 def should_emit_event(event: Xi2KeyEvent, held_keys: set[str]) -> bool:
     if event.state == "down":
-        if event.is_repeat or event.keycode in held_keys:
+        if event.keycode in held_keys:
             return False
         held_keys.add(event.keycode)
         return True
@@ -245,7 +235,7 @@ def run_sender(
     resolved_profile_name = profile_name or loaded_profile_name
     seq = 1
     held_keys: set[str] = set()
-    xinput_command = ["xinput", "test-xi2", "--root"]
+    xinput_command = ["xinput", "test-xi2", str(device_id)]
     if shutil.which("stdbuf") is not None:
         xinput_command = ["stdbuf", "-oL", "-eL", *xinput_command]
 
@@ -261,7 +251,7 @@ def run_sender(
         print(f"Error: failed to start xinput: {exc}")
         return 2
 
-    print(f"watching X11 XI2 root events and sending to {target}")
+    print(f"watching XI2 raw key events for device {device_id} and sending to {target}")
 
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
         with TerminalNoEcho():
