@@ -20,7 +20,6 @@ from protocol.messages import encode_action_event, encode_heartbeat_event
 EVENT_HEADER_RE = re.compile(r"^EVENT type \d+ \((KeyPress|KeyRelease)\)$")
 DETAIL_RE = re.compile(r"^\s*detail:\s+(\d+)$")
 FLAGS_RE = re.compile(r"^\s*flags:\s*(.*)$")
-WINDOWS_RE = re.compile(r"^\s*windows:\s+")
 HEARTBEAT_INTERVAL_SECONDS = 0.5
 
 
@@ -135,10 +134,13 @@ def parse_xi2_event_block(block: list[str]) -> Xi2KeyEvent | None:
 
 
 def is_complete_xi2_event_block(block: list[str]) -> bool:
-    parsed = parse_xi2_event_block(block)
-    if parsed is None:
+    if not block:
         return False
-    return any(WINDOWS_RE.match(line) for line in block[1:])
+    if EVENT_HEADER_RE.match(block[0].strip()) is None:
+        return False
+    has_detail = any(DETAIL_RE.match(line) for line in block[1:])
+    has_flags = any(FLAGS_RE.match(line) for line in block[1:])
+    return has_detail and has_flags
 
 
 def should_emit_event(event: Xi2KeyEvent, held_keys: set[str]) -> bool:
