@@ -16,6 +16,7 @@ from windows.config import (
     MacroSettings,
     MidiMapping,
     NoteMapping,
+    RelativeCCMapping,
 )
 from windows.midi import MidiControlChange, MidiError, MidiIn, MidiOut
 
@@ -37,6 +38,16 @@ class ActiveMacroFade:
     target_value: int
     start_time: float
     duration_seconds: float
+
+
+@dataclass
+class ActiveRelativeCC:
+    action: str
+    channel: int
+    cc: int
+    step_value: int
+    repeat_interval_seconds: float
+    next_send_time: float
 
 
 class ActionReceiver:
@@ -71,6 +82,7 @@ class ActionReceiver:
         self._loop_guard_until = 0.0
         self._macro_values: dict[tuple[int, int], int] = {}
         self._active_macro_fades: dict[tuple[int, int], ActiveMacroFade] = {}
+        self._active_relative_ccs: dict[str, ActiveRelativeCC] = {}
         self._tracked_macro_keys = {
             (mapping.channel, mapping.cc)
             for mapping in mappings.values()
@@ -79,15 +91,23 @@ class ActionReceiver:
 
     @property
     def fade_poll_interval_seconds(self) -> float | None:
-        if not self._active_macro_fades:
+        intervals: list[float] = []
+        if self._active_macro_fades:
+            intervals.append(self._macro_settings.step_interval_seconds)
+        if self._active_relative_ccs:
+            intervals.extend(
+                active.repeat_interval_seconds for active in self._active_relative_ccs.values()
+            )
+        if not intervals:
             return None
-        return self._macro_settings.step_interval_seconds
+        return min(intervals)
 
     def handle_datagram(
         self, payload: bytes, addr: tuple[str, int], now: float | None = None
     ) -> bool:
         timestamp = self._clock() if now is None else now
         self.advance_fades(now=timestamp)
+        self.advance_relative_ccs(now=timestamp)
 
         try:
             event = parse_action_event(payload)
@@ -123,6 +143,7 @@ class ActionReceiver:
     def check_timeouts(self, now: float | None = None) -> bool:
         timestamp = self._clock() if now is None else now
         self.advance_fades(now=timestamp)
+        self.advance_relative_ccs(now=timestamp)
         if not self._sender_states:
             return False
 
@@ -146,6 +167,7 @@ class ActionReceiver:
                 LOGGER.error("MIDI output error while releasing %s: %s", action, exc)
         self._active_actions.clear()
         self._active_macro_fades.clear()
+        self._active_relative_ccs.clear()
         try:
             self._midi_out.panic()
         except MidiError as exc:
@@ -216,6 +238,16 @@ class ActionReceiver:
         )
         return True
 
+    def advance_relative_ccs(self, now: float | None = None) -> None:
+        timestamp = self._clock() if now is None else now
+        if not self._active_relative_ccs or timestamp < self._loop_guard_until:
+            return
+
+        for active in list(self._active_relative_ccs.values()):
+            while timestamp >= active.next_send_time:
+                self._midi_out.control_change(active.channel, active.cc, active.step_value)
+                active.next_send_time += active.repeat_interval_seconds
+
     def _allow_event(self, event: ActionEvent, timestamp: float) -> bool:
         if timestamp < self._loop_guard_until:
             LOGGER.warning(
@@ -270,6 +302,11 @@ class ActionReceiver:
             if handled:
                 LOGGER.info("action=%s state=%s seq=%s", event.action, event.state, event.seq)
             return handled
+        if isinstance(mapping, RelativeCCMapping):
+            handled = self._handle_relative_cc_event(event, mapping, timestamp)
+            if handled:
+                LOGGER.info("action=%s state=%s seq=%s", event.action, event.state, event.seq)
+            return handled
 
         if event.state == "down":
             self._apply_down(mapping)
@@ -291,6 +328,8 @@ class ActionReceiver:
             return
         if isinstance(mapping, MacroCCMapping):
             raise TypeError("macro mappings must be handled via _handle_macro_event")
+        if isinstance(mapping, RelativeCCMapping):
+            raise TypeError("relative CC mappings must be handled via _handle_relative_cc_event")
         raise TypeError(f"unsupported mapping type: {type(mapping)!r}")
 
     def _release_mapping(self, action: str, mapping: MidiMapping) -> None:
@@ -303,6 +342,8 @@ class ActionReceiver:
             LOGGER.info("released CC mapping for %s", action)
             return
         if isinstance(mapping, MacroCCMapping):
+            return
+        if isinstance(mapping, RelativeCCMapping):
             return
         raise TypeError(f"unsupported mapping type: {type(mapping)!r}")
 
@@ -335,6 +376,34 @@ class ActionReceiver:
         )
         self.advance_fades(now=timestamp)
         return True
+
+    def _handle_relative_cc_event(
+        self,
+        event: ActionEvent,
+        mapping: RelativeCCMapping,
+        timestamp: float,
+    ) -> bool:
+        if event.state == "up":
+            self._active_relative_ccs.pop(event.action, None)
+            return True
+
+        self._cancel_relative_ccs_for_target(mapping.channel, mapping.cc)
+        repeat_interval_seconds = mapping.repeat_interval_ms / 1000.0
+        self._midi_out.control_change(mapping.channel, mapping.cc, mapping.step_value)
+        self._active_relative_ccs[event.action] = ActiveRelativeCC(
+            action=event.action,
+            channel=mapping.channel,
+            cc=mapping.cc,
+            step_value=mapping.step_value,
+            repeat_interval_seconds=repeat_interval_seconds,
+            next_send_time=timestamp + repeat_interval_seconds,
+        )
+        return True
+
+    def _cancel_relative_ccs_for_target(self, channel: int, cc: int) -> None:
+        for action, active in list(self._active_relative_ccs.items()):
+            if active.channel == channel and active.cc == cc:
+                self._active_relative_ccs.pop(action, None)
 
     def _toggle_target(self, current_value: int) -> int:
         midpoint = (self._macro_settings.min_value + self._macro_settings.max_value) / 2

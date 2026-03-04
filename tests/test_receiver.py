@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from windows.config import MacroCCMapping, MacroSettings, NoteMapping
+from windows.config import MacroCCMapping, MacroSettings, NoteMapping, RelativeCCMapping
 from windows.receiver import ActionReceiver
 from windows.midi import MidiControlChange, MidiError
 from protocol.messages import encode_heartbeat_event
@@ -498,6 +498,108 @@ class ActionReceiverTests(unittest.TestCase):
         self.assertNotIn((0, 20), receiver._active_macro_fades)
         self.assertEqual(receiver._macro_values[(0, 20)], 90)
         self.assertEqual(self.midi.calls, [("cc", 0, 20, 0), ("cc", 0, 20, 64)])
+
+    def test_relative_cc_repeats_while_held_and_stops_on_release(self) -> None:
+        receiver = ActionReceiver(
+            self.midi,
+            {
+                "R_PAD_RIGHT_LONG_PRESS": RelativeCCMapping(
+                    action="R_PAD_RIGHT_LONG_PRESS",
+                    kind="relative_cc",
+                    channel=0,
+                    cc=47,
+                    step_value=1,
+                    repeat_interval_ms=40,
+                )
+            },
+            timeout_seconds=1.0,
+        )
+
+        receiver.handle_datagram(
+            b'{"action":"R_PAD_RIGHT_LONG_PRESS","state":"down","seq":1}',
+            self.addr,
+            now=0.0,
+        )
+        receiver.advance_relative_ccs(now=0.04)
+        receiver.advance_relative_ccs(now=0.08)
+        receiver.handle_datagram(
+            b'{"action":"R_PAD_RIGHT_LONG_PRESS","state":"up","seq":2}',
+            self.addr,
+            now=0.09,
+        )
+        receiver.advance_relative_ccs(now=0.12)
+
+        self.assertEqual(
+            self.midi.calls,
+            [("cc", 0, 47, 1), ("cc", 0, 47, 1), ("cc", 0, 47, 1)],
+        )
+
+    def test_relative_cc_left_uses_reverse_step_value(self) -> None:
+        receiver = ActionReceiver(
+            self.midi,
+            {
+                "R_PAD_LEFT_LONG_PRESS": RelativeCCMapping(
+                    action="R_PAD_LEFT_LONG_PRESS",
+                    kind="relative_cc",
+                    channel=0,
+                    cc=47,
+                    step_value=127,
+                    repeat_interval_ms=40,
+                )
+            },
+            timeout_seconds=1.0,
+        )
+
+        receiver.handle_datagram(
+            b'{"action":"R_PAD_LEFT_LONG_PRESS","state":"down","seq":1}',
+            self.addr,
+            now=0.0,
+        )
+        receiver.advance_relative_ccs(now=0.04)
+
+        self.assertEqual(self.midi.calls, [("cc", 0, 47, 127), ("cc", 0, 47, 127)])
+
+    def test_relative_cc_opposite_direction_cancels_existing_repeat(self) -> None:
+        receiver = ActionReceiver(
+            self.midi,
+            {
+                "R_PAD_RIGHT_LONG_PRESS": RelativeCCMapping(
+                    action="R_PAD_RIGHT_LONG_PRESS",
+                    kind="relative_cc",
+                    channel=0,
+                    cc=47,
+                    step_value=1,
+                    repeat_interval_ms=40,
+                ),
+                "R_PAD_LEFT_LONG_PRESS": RelativeCCMapping(
+                    action="R_PAD_LEFT_LONG_PRESS",
+                    kind="relative_cc",
+                    channel=0,
+                    cc=47,
+                    step_value=127,
+                    repeat_interval_ms=40,
+                ),
+            },
+            timeout_seconds=1.0,
+        )
+
+        receiver.handle_datagram(
+            b'{"action":"R_PAD_RIGHT_LONG_PRESS","state":"down","seq":1}',
+            self.addr,
+            now=0.0,
+        )
+        receiver.advance_relative_ccs(now=0.04)
+        receiver.handle_datagram(
+            b'{"action":"R_PAD_LEFT_LONG_PRESS","state":"down","seq":2}',
+            self.addr,
+            now=0.05,
+        )
+        receiver.advance_relative_ccs(now=0.09)
+
+        self.assertEqual(
+            self.midi.calls,
+            [("cc", 0, 47, 1), ("cc", 0, 47, 1), ("cc", 0, 47, 127), ("cc", 0, 47, 127)],
+        )
 
 
 class ServeForeverFeedbackTests(unittest.TestCase):

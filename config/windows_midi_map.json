@@ -355,16 +355,18 @@
       "velocity": 127
     },
     "R_PAD_LEFT_LONG_PRESS": {
-      "type": "note",
+      "type": "relative_cc",
       "channel": 0,
-      "note": 94,
-      "velocity": 127
+      "cc": 47,
+      "step_value": 127,
+      "repeat_interval_ms": 40
     },
     "R_PAD_RIGHT_LONG_PRESS": {
-      "type": "note",
+      "type": "relative_cc",
       "channel": 0,
-      "note": 95,
-      "velocity": 127
+      "cc": 47,
+      "step_value": 1,
+      "repeat_interval_ms": 40
     },
     "GYRO_FORWARD": {
       "type": "note",

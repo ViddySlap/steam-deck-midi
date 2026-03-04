@@ -52,7 +52,17 @@ class MacroCCMapping:
     gesture: str
 
 
-MidiMapping = NoteMapping | ControlChangeMapping | MacroCCMapping
+@dataclass(frozen=True)
+class RelativeCCMapping:
+    action: str
+    kind: str
+    channel: int
+    cc: int
+    step_value: int
+    repeat_interval_ms: int = 40
+
+
+MidiMapping = NoteMapping | ControlChangeMapping | MacroCCMapping | RelativeCCMapping
 
 
 @dataclass(frozen=True)
@@ -157,7 +167,22 @@ def _parse_mapping(action: str, spec: dict[str, object]) -> MidiMapping:
             cc=cc,
             gesture=gesture,
         )
-    raise ConfigError(f"mapping for {action} must have type 'note', 'cc', or 'macro_cc'")
+    if kind == "relative_cc":
+        channel = _read_byte(spec, "channel", maximum=15, default=0)
+        cc = _read_byte(spec, "cc")
+        step_value = _read_byte(spec, "step_value")
+        repeat_interval_ms = _read_positive_int(spec, "repeat_interval_ms", default=40)
+        return RelativeCCMapping(
+            action=action,
+            kind="relative_cc",
+            channel=channel,
+            cc=cc,
+            step_value=step_value,
+            repeat_interval_ms=repeat_interval_ms,
+        )
+    raise ConfigError(
+        f"mapping for {action} must have type 'note', 'cc', 'macro_cc', or 'relative_cc'"
+    )
 
 
 def _read_byte(
@@ -188,3 +213,17 @@ def _read_positive_number(
     if number <= 0:
         raise ConfigError(f"{key} must be greater than 0")
     return number
+
+
+def _read_positive_int(
+    spec: dict[str, object],
+    key: str,
+    *,
+    default: int,
+) -> int:
+    value = spec.get(key, default)
+    if not isinstance(value, int):
+        raise ConfigError(f"{key} must be an integer")
+    if value <= 0:
+        raise ConfigError(f"{key} must be greater than 0")
+    return value
