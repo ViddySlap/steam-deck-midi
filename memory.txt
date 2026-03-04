@@ -29,6 +29,17 @@ Current validated state
   - `R_PAD_RIGHT` repeats value `1` while held
   - `R_PAD_LEFT` repeats value `127` while held
   - `R_PAD_RIGHT_LONG_PRESS` and `R_PAD_LEFT_LONG_PRESS` were restored to their original note mappings
+- `DPAD_DOWN` click and long press are now intentionally split:
+  - `DPAD_DOWN_LONG_PRESS` remains the Layer 1 opacity `macro_cc` fade/toggle on CC 20
+  - `DPAD_DOWN` is now an independent note trigger on note 98 for manual Resolume mapping
+- Left-pad long press now uses a staged dual-channel transition macro:
+  - immediate Channel 1 modifier note on
+  - delayed Channel 2 trigger note on after `macro_delay_ms`
+  - Channel 1 modifier note off after `modifier_hold_ms`
+- Left-pad staged transition macro hold now refreshes from either short navigation click while active:
+  - `L_PAD_LEFT` refreshes the active modifier hold
+  - `L_PAD_RIGHT` refreshes the active modifier hold
+  - no extra modifier note-on is sent during refresh; only the release deadline moves
 
 Architecture decisions
 - Do not reintroduce repeated `down` messages for held buttons.
@@ -38,6 +49,12 @@ Architecture decisions
 - Learn Wizard was not migrated to direct XI2 yet; keep that scope separate unless explicitly requested.
 - Separate Resolume input/output loopMIDI ports are the chosen design because they avoid MIDI feedback loops while still allowing selective state feedback.
 - Cache/feedback remains intentionally limited to the tracked `macro_cc` subset; relative encoder-style CCs stay stateless.
+- Keep receiver behavior small and composable:
+  - `macro_cc` for cached fade/toggle controls
+  - `relative_cc` for stateless encoder-style scrolling
+  - simple `note` for manual Resolume triggers
+  - staged note macro for ordered multi-message transition workflows
+- For left-pad transition workflows, treat the Channel 1 modifier as a leased hold owned by the receiver; long press starts it and either short left/right click can extend it.
 
 Known deployment notes
 - Steam Deck install/update path pulls from GitHub and runs from the installed repo checkout.
@@ -61,6 +78,12 @@ Known deployment notes
   - output `DECK_OUT 2`
 - Current working repo-based Windows receiver command:
   py -3.12 -m windows.win_recv --map config/windows_midi_map.json --midi-port "DECK_IN" --feedback-port "DECK_OUT" --verbose
+- Current left-pad staged transition macro defaults in `config/windows_midi_map.json`:
+  - `macro_delay_ms`: 80
+  - `modifier_hold_ms`: 2000
+  - `L_PAD_LEFT_LONG_PRESS`: note 86, modifier channel 1, trigger channel 2
+  - `L_PAD_RIGHT_LONG_PRESS`: note 87, modifier channel 1, trigger channel 2
+  - `refresh_actions`: `L_PAD_LEFT`, `L_PAD_RIGHT`
 
 Recent validation
 - Rapid tap test on Deck sender looked correct: one `down` and one `up` per tap.
@@ -72,6 +95,13 @@ Recent validation
   - long-press fade on CC 20 completed cleanly with no false override while untouched
   - repeated mid-fade manual grabs worked and manual control reliably overrode the fade
 - Relative CC clip scroll mapping was validated by Ben as working well in live testing on `R_PAD_LEFT` / `R_PAD_RIGHT`.
+- D-pad Down split behavior was validated by Ben as the intended setup:
+  - long press remains Layer 1 opacity macro
+  - click is now a separate trigger for user-defined Resolume reset logic
+- Left-pad staged transition macro was validated by Ben in live testing:
+  - initial issue with transition modifier appearing stuck was traced to Resolume mappings not being set to Piano mode on some Channel 1 mappings, not a receiver bug
+  - after correcting Resolume mapping mode, the staged macro behaved correctly
+- Left-pad transition hold refresh-on-click feature was implemented to support long-press once, navigate across multiple columns, and keep the transition modifier alive until 2 seconds after the final left/right click.
 - Packaged Windows desktop shortcut/install was revalidated after rebuild:
   - 2-second hold produced `down`, heartbeat traffic, and clean `up`
   - sender-killed-mid-hold test produced timeout and automatic note release
