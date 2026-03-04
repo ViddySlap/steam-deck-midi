@@ -1,0 +1,71 @@
+Steam Deck MIDI - Persistent Project Context
+Last updated: 2026-03-03
+
+note for ben do not delete the following command ever: cd /home/viddyslap/workspace/steam-deck-vj
+
+Project
+- Repo: steam-deck-vj
+- Purpose: Steam Deck inputs are converted into stable Action events and sent over UDP to a Windows receiver, which emits MIDI for Resolume.
+- Reliability requirement: show-safe behavior is more important than cleverness.
+- GitHub repo name is `steam-deck-midi` even though the local folder name remains `steam-deck-vj`.
+
+Current validated state
+- Steam Deck sender preset workflow exists and launches correctly.
+- Learn Wizard still uses the older xinput-based capture path and was intentionally left unchanged during sender runtime fixes.
+- Deck sender runtime input backend was replaced with direct X11/XI2 raw key listening in Python via ctypes against libX11/libXi.
+- Sender now listens to the configured XI2 device id directly instead of parsing `xinput test` text output.
+- Sender emits one `down` on raw key press and one `up` on raw key release.
+- Sender sends heartbeat packets while any key is held.
+- Windows receiver now accepts heartbeat packets and uses them only to refresh sender liveness.
+- Receiver still times out and releases held MIDI state if sender heartbeats stop unexpectedly.
+
+Architecture decisions
+- Do not reintroduce repeated `down` messages for held buttons.
+- Heartbeat is the chosen design for long holds because it preserves disconnect safety.
+- Timeout must remain in the receiver as a fail-safe against stuck notes if sender/network dies mid-hold.
+- Direct XI2 input is preferred over shelling out to `xinput` because the subprocess/text path proved nondeterministic and unsafe.
+- Learn Wizard was not migrated to direct XI2 yet; keep that scope separate unless explicitly requested.
+
+Known deployment notes
+- Steam Deck install/update path pulls from GitHub and runs from the installed repo checkout.
+- Steam Deck installs into:
+  ~/steam-deck-midi
+- Windows source checkout used in this session is:
+  C:\Users\Ben\steam-deck-vj
+- Repo-based Windows receiver launcher that worked for testing:
+  C:\Users\Ben\steam-deck-vj\scripts\windows\start_receiver.ps1
+- Packaged Windows install path used by desktop shortcut:
+  C:\Program Files\STEAMDECK MIDI Receiver
+- Deck release asset is a bootstrap installer that pulls latest `main` on install/update.
+- Installed Windows receiver should use shipped `config/windows_midi_map.json`.
+- `windows_midi_map.local.json` is no longer part of the intended installed product flow.
+- Current working loopMIDI port name in this session was:
+  DECK_IN
+
+Recent validation
+- Rapid tap test on Deck sender looked correct: one `down` and one `up` per tap.
+- Long hold test on updated sender + updated repo-based receiver worked correctly with heartbeat traffic during hold and a clean `up` on release.
+- Disconnect fail-safe test worked: while holding a button, killing sender caused receiver timeout and automatic note release.
+- High-volume mash test on sender did not show obvious stuck actions or duplicate spam.
+- Packaged Windows desktop shortcut/install was revalidated after rebuild:
+  - 2-second hold produced `down`, heartbeat traffic, and clean `up`
+  - sender-killed-mid-hold test produced timeout and automatic note release
+  - installed receiver path behaved consistently with the repo-based receiver
+
+Packaging status
+- Current release line referenced during this session was v0.1.2.
+- Windows PyInstaller EXE and Inno Setup installer were rebuilt successfully from the Windows repo checkout during this session.
+- The updated installer output was:
+  C:\Users\Ben\steam-deck-vj\installer-output\STEAMDECK-MIDI-RECEIVER-Setup-0.1.2.exe
+
+Operator workflow notes
+- Long pasted commands have caused shell issues in Konsole and PowerShell before; prefer one command per paste and verify output before continuing.
+- Ben's direct Windows repo run command noted during prior sessions:
+  py -3.12 -m windows.win_recv --map config/windows_midi_map.json --midi-port "DECK_IN 1" --verbose
+- Ben's MIDI port listing command:
+  py -3.12 -m windows.list_midi_ports
+
+Recommended next steps
+- Confirm the packaged Windows desktop shortcut now launches the heartbeat-aware receiver build, not the stale one.
+- If packaging is confirmed good, update any docs that still describe the Deck sender as `xinput test`-based.
+- Consider reducing heartbeat log noise in verbose mode if it becomes distracting during shows.
