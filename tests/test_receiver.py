@@ -503,8 +503,8 @@ class ActionReceiverTests(unittest.TestCase):
         receiver = ActionReceiver(
             self.midi,
             {
-                "R_PAD_RIGHT_LONG_PRESS": RelativeCCMapping(
-                    action="R_PAD_RIGHT_LONG_PRESS",
+                "R_PAD_RIGHT": RelativeCCMapping(
+                    action="R_PAD_RIGHT",
                     kind="relative_cc",
                     channel=0,
                     cc=47,
@@ -516,14 +516,14 @@ class ActionReceiverTests(unittest.TestCase):
         )
 
         receiver.handle_datagram(
-            b'{"action":"R_PAD_RIGHT_LONG_PRESS","state":"down","seq":1}',
+            b'{"action":"R_PAD_RIGHT","state":"down","seq":1}',
             self.addr,
             now=0.0,
         )
         receiver.advance_relative_ccs(now=0.04)
         receiver.advance_relative_ccs(now=0.08)
         receiver.handle_datagram(
-            b'{"action":"R_PAD_RIGHT_LONG_PRESS","state":"up","seq":2}',
+            b'{"action":"R_PAD_RIGHT","state":"up","seq":2}',
             self.addr,
             now=0.09,
         )
@@ -538,8 +538,8 @@ class ActionReceiverTests(unittest.TestCase):
         receiver = ActionReceiver(
             self.midi,
             {
-                "R_PAD_LEFT_LONG_PRESS": RelativeCCMapping(
-                    action="R_PAD_LEFT_LONG_PRESS",
+                "R_PAD_LEFT": RelativeCCMapping(
+                    action="R_PAD_LEFT",
                     kind="relative_cc",
                     channel=0,
                     cc=47,
@@ -551,7 +551,7 @@ class ActionReceiverTests(unittest.TestCase):
         )
 
         receiver.handle_datagram(
-            b'{"action":"R_PAD_LEFT_LONG_PRESS","state":"down","seq":1}',
+            b'{"action":"R_PAD_LEFT","state":"down","seq":1}',
             self.addr,
             now=0.0,
         )
@@ -563,16 +563,16 @@ class ActionReceiverTests(unittest.TestCase):
         receiver = ActionReceiver(
             self.midi,
             {
-                "R_PAD_RIGHT_LONG_PRESS": RelativeCCMapping(
-                    action="R_PAD_RIGHT_LONG_PRESS",
+                "R_PAD_RIGHT": RelativeCCMapping(
+                    action="R_PAD_RIGHT",
                     kind="relative_cc",
                     channel=0,
                     cc=47,
                     step_value=1,
                     repeat_interval_ms=40,
                 ),
-                "R_PAD_LEFT_LONG_PRESS": RelativeCCMapping(
-                    action="R_PAD_LEFT_LONG_PRESS",
+                "R_PAD_LEFT": RelativeCCMapping(
+                    action="R_PAD_LEFT",
                     kind="relative_cc",
                     channel=0,
                     cc=47,
@@ -584,13 +584,13 @@ class ActionReceiverTests(unittest.TestCase):
         )
 
         receiver.handle_datagram(
-            b'{"action":"R_PAD_RIGHT_LONG_PRESS","state":"down","seq":1}',
+            b'{"action":"R_PAD_RIGHT","state":"down","seq":1}',
             self.addr,
             now=0.0,
         )
         receiver.advance_relative_ccs(now=0.04)
         receiver.handle_datagram(
-            b'{"action":"R_PAD_LEFT_LONG_PRESS","state":"down","seq":2}',
+            b'{"action":"R_PAD_LEFT","state":"down","seq":2}',
             self.addr,
             now=0.05,
         )
