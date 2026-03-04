@@ -262,16 +262,18 @@
       "velocity": 127
     },
     "START": {
-      "type": "note",
+      "type": "cc",
       "channel": 2,
-      "note": 78,
-      "velocity": 127
+      "cc": 78,
+      "on_value": 127,
+      "off_value": 0
     },
     "SELECT": {
-      "type": "note",
+      "type": "cc",
       "channel": 2,
-      "note": 79,
-      "velocity": 127
+      "cc": 79,
+      "on_value": 127,
+      "off_value": 0
     },
     "L_PAD_UP": {
       "type": "note",
