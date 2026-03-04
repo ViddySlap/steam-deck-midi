@@ -6,7 +6,9 @@ from unittest import mock
 
 from windows.midi import (
     MidiError,
+    get_input_port_names,
     get_output_port_names,
+    get_port_snapshot,
     resolve_available_output_port_name,
     resolve_output_port_name,
 )
@@ -38,6 +40,23 @@ class ResolveOutputPortNameTests(unittest.TestCase):
         fake_mido.get_output_names.return_value = ["DECK_IN 1", "DECK_OUT 2"]
         with mock.patch.dict("sys.modules", {"mido": fake_mido}):
             self.assertEqual(get_output_port_names(), ["DECK_IN 1", "DECK_OUT 2"])
+
+    def test_get_input_port_names_returns_mido_input_names(self) -> None:
+        fake_mido = mock.Mock()
+        fake_mido.get_input_names.return_value = ["DECK_IN 1", "DECK_OUT 2"]
+        with mock.patch.dict("sys.modules", {"mido": fake_mido}):
+            self.assertEqual(get_input_port_names(), ["DECK_IN 1", "DECK_OUT 2"])
+
+    def test_get_port_snapshot_returns_both_lists(self) -> None:
+        with mock.patch(
+            "windows.midi.get_input_port_names", return_value=["DECK_FEEDBACK 1"]
+        ), mock.patch(
+            "windows.midi.get_output_port_names", return_value=["DECK_IN 1"]
+        ):
+            snapshot = get_port_snapshot()
+
+        self.assertEqual(snapshot.input_names, ["DECK_FEEDBACK 1"])
+        self.assertEqual(snapshot.output_names, ["DECK_IN 1"])
 
     def test_resolve_available_output_port_name_uses_live_port_list(self) -> None:
         with mock.patch(

@@ -3,11 +3,17 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import NamedTuple
 from typing import Sequence
 
 
 class MidiError(RuntimeError):
     """Raised when MIDI output cannot be initialized or used."""
+
+
+class MidiPortSnapshot(NamedTuple):
+    input_names: list[str]
+    output_names: list[str]
 
 
 class MidiOut:
@@ -148,6 +154,24 @@ def get_output_port_names() -> list[str]:
         ) from exc
 
     return list_output_ports(mido.get_output_names())
+
+
+def get_input_port_names() -> list[str]:
+    try:
+        import mido
+    except ImportError as exc:
+        raise MidiError(
+            "mido is not installed; use --dry-run or install a MIDI backend"
+        ) from exc
+
+    return list_output_ports(mido.get_input_names())
+
+
+def get_port_snapshot() -> MidiPortSnapshot:
+    return MidiPortSnapshot(
+        input_names=get_input_port_names(),
+        output_names=get_output_port_names(),
+    )
 
 
 def resolve_available_output_port_name(port_name: str) -> str:
