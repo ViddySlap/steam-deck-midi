@@ -18,6 +18,17 @@ Current validated state
 - Sender sends heartbeat packets while any key is held.
 - Windows receiver now accepts heartbeat packets and uses them only to refresh sender liveness.
 - Receiver still times out and releases held MIDI state if sender heartbeats stop unexpectedly.
+- Windows receiver now supports separate MIDI output/input ports for Resolume:
+  - receiver writes control output to `DECK_IN`
+  - receiver listens for selected Resolume feedback on `DECK_OUT`
+- Resolume feedback handling is validated for tracked `macro_cc` parameters:
+  - matching fade feedback is ignored during active fades
+  - manual Resolume movement during a fade cancels the fade and wins
+- False manual-override detection from near-match feedback was fixed by adding a small feedback tolerance.
+- R-pad horizontal clip scrolling now uses stateless relative CC output on CC 47:
+  - `R_PAD_RIGHT` repeats value `1` while held
+  - `R_PAD_LEFT` repeats value `127` while held
+  - `R_PAD_RIGHT_LONG_PRESS` and `R_PAD_LEFT_LONG_PRESS` were restored to their original note mappings
 
 Architecture decisions
 - Do not reintroduce repeated `down` messages for held buttons.
@@ -25,6 +36,8 @@ Architecture decisions
 - Timeout must remain in the receiver as a fail-safe against stuck notes if sender/network dies mid-hold.
 - Direct XI2 input is preferred over shelling out to `xinput` because the subprocess/text path proved nondeterministic and unsafe.
 - Learn Wizard was not migrated to direct XI2 yet; keep that scope separate unless explicitly requested.
+- Separate Resolume input/output loopMIDI ports are the chosen design because they avoid MIDI feedback loops while still allowing selective state feedback.
+- Cache/feedback remains intentionally limited to the tracked `macro_cc` subset; relative encoder-style CCs stay stateless.
 
 Known deployment notes
 - Steam Deck install/update path pulls from GitHub and runs from the installed repo checkout.
@@ -41,22 +54,35 @@ Known deployment notes
 - `windows_midi_map.local.json` is no longer part of the intended installed product flow.
 - Current working loopMIDI port name in this session was:
   DECK_IN
+- Current working Windows MIDI port resolution in this session:
+  - input `DECK_IN 0`
+  - input `DECK_OUT 1`
+  - output `DECK_IN 1`
+  - output `DECK_OUT 2`
+- Current working repo-based Windows receiver command:
+  py -3.12 -m windows.win_recv --map config/windows_midi_map.json --midi-port "DECK_IN" --feedback-port "DECK_OUT" --verbose
 
 Recent validation
 - Rapid tap test on Deck sender looked correct: one `down` and one `up` per tap.
 - Long hold test on updated sender + updated repo-based receiver worked correctly with heartbeat traffic during hold and a clean `up` on release.
 - Disconnect fail-safe test worked: while holding a button, killing sender caused receiver timeout and automatic note release.
 - High-volume mash test on sender did not show obvious stuck actions or duplicate spam.
+- Windows D-pad opacity macro feature was validated by Ben as functioning correctly in live repo-based testing.
+- Windows Resolume feedback path was validated in repo-based testing:
+  - long-press fade on CC 20 completed cleanly with no false override while untouched
+  - repeated mid-fade manual grabs worked and manual control reliably overrode the fade
+- Relative CC clip scroll mapping was validated by Ben as working well in live testing on `R_PAD_LEFT` / `R_PAD_RIGHT`.
 - Packaged Windows desktop shortcut/install was revalidated after rebuild:
   - 2-second hold produced `down`, heartbeat traffic, and clean `up`
   - sender-killed-mid-hold test produced timeout and automatic note release
   - installed receiver path behaved consistently with the repo-based receiver
 
 Packaging status
-- Current backup release line is v0.1.3.
+- Current backup release line is v0.1.4.
 - Root VERSION was bumped to 0.1.3 and pushed to GitHub on main.
 - Git tag v0.1.3 was created and pushed as a restore point for the repo state.
 - GitHub Release for v0.1.3 was created and published.
+- Git tag v0.1.4 was created and pushed as a backup restore point after adding Windows D-pad opacity macro CC fades and the MIDI input/output port listing helper.
 - Attached release assets currently include:
   - STEAMDECK-MIDI-SENDER-SETUP.tar.gz
   - STEAMDECK-MIDI-RECEIVER-Setup-0.1.3.exe
@@ -68,7 +94,7 @@ Operator workflow notes
 - Long pasted commands have caused shell issues in Konsole and PowerShell before; prefer one command per paste and verify output before continuing.
 - Ben currently prefers GitHub-based syncing across WSL, Windows, and Steam Deck rather than manual file copying between environments.
 - Ben's direct Windows repo run command noted during prior sessions:
-  py -3.12 -m windows.win_recv --map config/windows_midi_map.json --midi-port "DECK_IN 1" --verbose
+  py -3.12 -m windows.win_recv --map config/windows_midi_map.json --midi-port "DECK_IN" --feedback-port "DECK_OUT" --verbose
 - Ben's MIDI port listing command:
   py -3.12 -m windows.list_midi_ports
 
