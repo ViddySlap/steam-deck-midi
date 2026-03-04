@@ -32,7 +32,7 @@ class LoadMidiMapTests(unittest.TestCase):
                                 "cc": 11,
                                 "gesture": "long_press",
                             },
-                            "R_PAD_RIGHT_LONG_PRESS": {
+                            "R_PAD_RIGHT": {
                                 "type": "relative_cc",
                                 "channel": 1,
                                 "cc": 47,
@@ -51,7 +51,7 @@ class LoadMidiMapTests(unittest.TestCase):
         self.assertIsInstance(config.mappings["BTN_A"], NoteMapping)
         self.assertIsInstance(config.mappings["DPAD_UP"], ControlChangeMapping)
         self.assertIsInstance(config.mappings["DPAD_UP_LONG_PRESS"], MacroCCMapping)
-        self.assertIsInstance(config.mappings["R_PAD_RIGHT_LONG_PRESS"], RelativeCCMapping)
+        self.assertIsInstance(config.mappings["R_PAD_RIGHT"], RelativeCCMapping)
 
     def test_rejects_missing_mappings_object(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
