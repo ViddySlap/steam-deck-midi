@@ -3,6 +3,7 @@ from __future__ import annotations
 import unittest
 
 from windows.config import (
+    ControlChangeMapping,
     MacroCCMapping,
     MacroSettings,
     NoteMapping,
@@ -778,7 +779,14 @@ class ActionReceiverTests(unittest.TestCase):
         receiver = ActionReceiver(
             self.midi,
             {
-                "START": NoteMapping(action="START", kind="note", channel=2, note=78),
+                "START": ControlChangeMapping(
+                    action="START",
+                    kind="cc",
+                    channel=2,
+                    cc=78,
+                    on_value=127,
+                    off_value=0,
+                ),
                 "BTN_A": NoteMapping(action="BTN_A", kind="note", channel=0, note=36),
                 "BTN_A_LAYER_2": NoteMapping(
                     action="BTN_A_LAYER_2",
@@ -807,15 +815,15 @@ class ActionReceiverTests(unittest.TestCase):
         self.assertEqual(
             self.midi.calls,
             [
-                ("note_on", 2, 78, 127),
-                ("note_off", 0, 78, 0),
-                ("note_on", 1, 78, 127),
+                ("cc", 2, 78, 127),
+                ("cc", 0, 78, 0),
+                ("cc", 1, 78, 127),
                 ("note_on", 0, 37, 127),
-                ("note_on", 0, 78, 127),
-                ("note_off", 1, 78, 0),
-                ("note_on", 2, 78, 127),
-                ("note_off", 0, 78, 0),
-                ("note_on", 1, 78, 127),
+                ("cc", 0, 78, 127),
+                ("cc", 1, 78, 0),
+                ("cc", 2, 78, 127),
+                ("cc", 0, 78, 0),
+                ("cc", 1, 78, 127),
                 ("note_on", 0, 37, 127),
             ],
         )
@@ -824,7 +832,14 @@ class ActionReceiverTests(unittest.TestCase):
         receiver = ActionReceiver(
             self.midi,
             {
-                "SELECT": NoteMapping(action="SELECT", kind="note", channel=2, note=79),
+                "SELECT": ControlChangeMapping(
+                    action="SELECT",
+                    kind="cc",
+                    channel=2,
+                    cc=79,
+                    on_value=127,
+                    off_value=0,
+                ),
                 "L1_LAYER_2": NoteMapping(
                     action="L1_LAYER_2",
                     kind="note",
@@ -843,8 +858,8 @@ class ActionReceiverTests(unittest.TestCase):
         self.assertEqual(
             self.midi.calls,
             [
-                ("note_off", 0, 79, 0),
-                ("note_on", 1, 79, 127),
+                ("cc", 0, 79, 0),
+                ("cc", 1, 79, 127),
                 ("note_on", 0, 61, 127),
             ],
         )

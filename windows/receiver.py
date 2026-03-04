@@ -87,7 +87,7 @@ class ActiveStagedNoteMacro:
 
 @dataclass
 class LayerStatePublisher:
-    note: int
+    cc: int
     raw_channel: int
     layer_1_channel: int
     layer_2_channel: int
@@ -583,8 +583,8 @@ class ActionReceiver:
             return
         if publisher.state not in {LAYER_UNKNOWN, state}:
             LOGGER.info(
-                "layer state resync for note=%s from=%s to=%s via=%s",
-                publisher.note,
+                "layer state resync for cc=%s from=%s to=%s via=%s",
+                publisher.cc,
                 publisher.state,
                 state,
                 source,
@@ -596,19 +596,19 @@ class ActionReceiver:
 
     def _publish_layer_state(self, publisher: LayerStatePublisher, timestamp: float) -> None:
         if publisher.state == LAYER_2:
-            self._midi_out.note_off(publisher.layer_1_channel, publisher.note, 0)
-            self._midi_out.note_on(publisher.layer_2_channel, publisher.note, 127)
+            self._midi_out.control_change(publisher.layer_1_channel, publisher.cc, 0)
+            self._midi_out.control_change(publisher.layer_2_channel, publisher.cc, 127)
         else:
-            self._midi_out.note_on(publisher.layer_1_channel, publisher.note, 127)
-            self._midi_out.note_off(publisher.layer_2_channel, publisher.note, 0)
+            self._midi_out.control_change(publisher.layer_1_channel, publisher.cc, 127)
+            self._midi_out.control_change(publisher.layer_2_channel, publisher.cc, 0)
         publisher.last_published_state = publisher.state
 
     def _build_layer_publisher(self, action: str) -> LayerStatePublisher | None:
         mapping = self._mappings.get(action)
-        if not isinstance(mapping, NoteMapping):
+        if not isinstance(mapping, ControlChangeMapping):
             return None
         return LayerStatePublisher(
-            note=mapping.note,
+            cc=mapping.cc,
             raw_channel=mapping.channel,
             layer_1_channel=0,
             layer_2_channel=1,
