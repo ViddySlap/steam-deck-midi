@@ -81,6 +81,7 @@ The receiver also maintains authoritative layer-state publishers for the Steam I
 - bumper/trigger layer state uses the `SELECT` note number on Channels 1 and 2 as explicit Layer 1 / Layer 2 lamps
 - raw `START` and `SELECT` button presses remain available on Channel 3 for MIDI Learn
 - layer state self-heals from ground-truth action IDs such as `BTN_A_LAYER_2` or `L1_LAYER_2`
+- lamp updates are sent on state change or resync only; the receiver does not continuously refresh them
 
 Tracked `macro_cc` parameters are also the current feedback/cache subset. When `--feedback-port` is
 configured, inbound CC feedback on the same channel/CC updates the cache. During an active fade, the

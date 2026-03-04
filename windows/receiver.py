@@ -93,7 +93,6 @@ class LayerStatePublisher:
     layer_2_channel: int
     state: str = LAYER_UNKNOWN
     last_published_state: str | None = None
-    last_publish_time: float = 0.0
 
 
 class ActionReceiver:
@@ -149,8 +148,6 @@ class ActionReceiver:
             )
         if self._active_staged_note_macros:
             intervals.append(0.01)
-        if self._has_known_layer_state():
-            intervals.append(self._macro_settings.layer_refresh_ms / 1000.0)
         if not intervals:
             return None
         return min(intervals)
@@ -162,7 +159,6 @@ class ActionReceiver:
         self.advance_fades(now=timestamp)
         self.advance_relative_ccs(now=timestamp)
         self.advance_staged_note_macros(now=timestamp)
-        self.advance_layer_state_publish(now=timestamp)
 
         try:
             event = parse_action_event(payload)
@@ -202,7 +198,6 @@ class ActionReceiver:
         self.advance_fades(now=timestamp)
         self.advance_relative_ccs(now=timestamp)
         self.advance_staged_note_macros(now=timestamp)
-        self.advance_layer_state_publish(now=timestamp)
         if not self._sender_states:
             return False
 
@@ -330,19 +325,6 @@ class ActionReceiver:
                 continue
             self._midi_out.note_off(active.modifier_channel, active.note, 0)
             self._active_staged_note_macros.pop(action, None)
-
-    def advance_layer_state_publish(self, now: float | None = None) -> None:
-        timestamp = self._clock() if now is None else now
-        refresh_interval = self._macro_settings.layer_refresh_ms / 1000.0
-        for publisher in (self._abxy_layer_publisher, self._bumper_layer_publisher):
-            if publisher is None or publisher.state == LAYER_UNKNOWN:
-                continue
-            if (
-                publisher.last_published_state == publisher.state
-                and (timestamp - publisher.last_publish_time) < refresh_interval
-            ):
-                continue
-            self._publish_layer_state(publisher, timestamp)
 
     def _allow_event(self, event: ActionEvent, timestamp: float) -> bool:
         if timestamp < self._loop_guard_until:
@@ -620,13 +602,6 @@ class ActionReceiver:
             self._midi_out.note_on(publisher.layer_1_channel, publisher.note, 127)
             self._midi_out.note_off(publisher.layer_2_channel, publisher.note, 0)
         publisher.last_published_state = publisher.state
-        publisher.last_publish_time = timestamp
-
-    def _has_known_layer_state(self) -> bool:
-        return any(
-            publisher is not None and publisher.state != LAYER_UNKNOWN
-            for publisher in (self._abxy_layer_publisher, self._bumper_layer_publisher)
-        )
 
     def _build_layer_publisher(self, action: str) -> LayerStatePublisher | None:
         mapping = self._mappings.get(action)
