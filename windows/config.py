@@ -17,6 +17,7 @@ class MacroSettings:
     update_hz: float = 30.0
     min_value: int = 0
     max_value: int = 127
+    feedback_match_tolerance: int = 2
 
     @property
     def step_interval_seconds(self) -> float:
@@ -98,6 +99,11 @@ def _parse_macro_settings(spec: object) -> MacroSettings:
     update_hz = _read_positive_number(spec, "update_hz", default=30.0)
     min_value = _read_byte(spec, "min_value", default=0)
     max_value = _read_byte(spec, "max_value", default=127)
+    feedback_match_tolerance = _read_byte(
+        spec,
+        "feedback_match_tolerance",
+        default=2,
+    )
     if min_value >= max_value:
         raise ConfigError("macro_settings min_value must be less than max_value")
 
@@ -106,6 +112,7 @@ def _parse_macro_settings(spec: object) -> MacroSettings:
         update_hz=update_hz,
         min_value=min_value,
         max_value=max_value,
+        feedback_match_tolerance=feedback_match_tolerance,
     )
 
 
