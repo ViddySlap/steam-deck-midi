@@ -23,3 +23,7 @@ Thumbs.db
 # Build artifacts
 dist/
 build/
+release-output/
+
+# Local working notes / agent instructions
+RESUME-NOTES.txt
