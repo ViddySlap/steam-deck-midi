@@ -186,7 +186,11 @@ class ActionReceiver:
         if fade is not None:
             expected_value = self._fade_value_at(fade, timestamp)
             current_value = self._macro_values.get(key)
-            if value == expected_value or value == current_value:
+            if self._feedback_matches_active_fade(
+                value,
+                expected_value=expected_value,
+                current_value=current_value,
+            ):
                 LOGGER.debug(
                     "ignored feedback for active fade channel=%s cc=%s value=%s",
                     channel,
@@ -344,6 +348,20 @@ class ActionReceiver:
         return round(
             fade.start_value + (fade.target_value - fade.start_value) * progress
         )
+
+    def _feedback_matches_active_fade(
+        self,
+        value: int,
+        *,
+        expected_value: int,
+        current_value: int | None,
+    ) -> bool:
+        tolerance = self._macro_settings.feedback_match_tolerance
+        if abs(value - expected_value) <= tolerance:
+            return True
+        if current_value is not None and abs(value - current_value) <= tolerance:
+            return True
+        return False
 
     def _send_macro_value(self, channel: int, cc: int, value: int) -> None:
         self._midi_out.control_change(channel, cc, value)

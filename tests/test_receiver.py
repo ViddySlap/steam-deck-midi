@@ -439,6 +439,35 @@ class ActionReceiverTests(unittest.TestCase):
         self.assertIn((0, 20), receiver._active_macro_fades)
         self.assertEqual(receiver._macro_values[(0, 20)], 64)
 
+    def test_nearby_feedback_is_ignored_while_fade_is_active(self) -> None:
+        receiver = ActionReceiver(
+            self.midi,
+            {
+                "DPAD_DOWN_LONG_PRESS": MacroCCMapping(
+                    action="DPAD_DOWN_LONG_PRESS",
+                    kind="macro_cc",
+                    channel=0,
+                    cc=20,
+                    gesture="long_press",
+                )
+            },
+            timeout_seconds=1.0,
+            macro_settings=MacroSettings(fade_duration_seconds=2.0, update_hz=10),
+        )
+
+        receiver.handle_datagram(
+            b'{"action":"DPAD_DOWN_LONG_PRESS","state":"down","seq":1}',
+            self.addr,
+            now=0.0,
+        )
+        receiver.advance_fades(now=0.42)
+
+        handled = receiver.handle_midi_feedback(0, 20, 28, now=0.44)
+
+        self.assertFalse(handled)
+        self.assertIn((0, 20), receiver._active_macro_fades)
+        self.assertEqual(receiver._macro_values[(0, 20)], 27)
+
     def test_non_matching_feedback_cancels_active_fade_as_manual_override(self) -> None:
         receiver = ActionReceiver(
             self.midi,
