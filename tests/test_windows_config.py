@@ -10,6 +10,7 @@ from windows.config import (
     ControlChangeMapping,
     MacroCCMapping,
     NoteMapping,
+    RelativeCCMapping,
     load_midi_map,
 )
 
@@ -31,6 +32,13 @@ class LoadMidiMapTests(unittest.TestCase):
                                 "cc": 11,
                                 "gesture": "long_press",
                             },
+                            "R_PAD_RIGHT_LONG_PRESS": {
+                                "type": "relative_cc",
+                                "channel": 1,
+                                "cc": 47,
+                                "step_value": 1,
+                                "repeat_interval_ms": 40,
+                            },
                         }
                     }
                 ),
@@ -43,6 +51,7 @@ class LoadMidiMapTests(unittest.TestCase):
         self.assertIsInstance(config.mappings["BTN_A"], NoteMapping)
         self.assertIsInstance(config.mappings["DPAD_UP"], ControlChangeMapping)
         self.assertIsInstance(config.mappings["DPAD_UP_LONG_PRESS"], MacroCCMapping)
+        self.assertIsInstance(config.mappings["R_PAD_RIGHT_LONG_PRESS"], RelativeCCMapping)
 
     def test_rejects_missing_mappings_object(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:

@@ -61,10 +61,15 @@ Supported mapping types:
 - `note`
 - `cc`
 - `macro_cc`
+- `relative_cc`
 
 `macro_cc` uses the same CC for click and long-press actions. A click toggles immediately between
 the configured min/max values, while a long press starts a receiver-side linear fade to the opposite
 value and continues to completion even after button release.
+
+`relative_cc` emits repeated CC ticks while the action is held. It is intended for Resolume
+relative encoder mappings such as clip browser scrolling. The receiver does not cache state for
+these mappings; each sent CC value is a standalone increment/decrement step.
 
 Tracked `macro_cc` parameters are also the current feedback/cache subset. When `--feedback-port` is
 configured, inbound CC feedback on the same channel/CC updates the cache. During an active fade, the
