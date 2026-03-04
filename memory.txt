@@ -107,6 +107,30 @@ Recent validation
   - sender-killed-mid-hold test produced timeout and automatic note release
   - installed receiver path behaved consistently with the repo-based receiver
 
+Intentional MIDI mapping conflicts
+- Do not remove or "fix" the following shared MIDI identities unless Ben explicitly asks to resolve that particular intentional conflict. These are design choices, not accidents.
+- `DPAD_UP` and `DPAD_UP_LONG_PRESS` intentionally share CC 22 on channel 1 (`channel: 0` in config).
+  Reason: click and long press are two gestures for the same Layer 2 opacity macro target, so they must point at the same CC identity.
+  Resolve only if Ben explicitly decides those gestures should target different Resolume mappings.
+- `DPAD_RIGHT` and `DPAD_RIGHT_LONG_PRESS` intentionally share CC 21 on channel 1 (`channel: 0` in config).
+  Reason: click and long press are two gestures for the same Layer 1/right-side opacity macro target, so they must stay paired.
+  Resolve only if Ben explicitly wants click vs long press split for that control.
+- `DPAD_LEFT` and `DPAD_LEFT_LONG_PRESS` intentionally share CC 23 on channel 1 (`channel: 0` in config).
+  Reason: click and long press are two gestures for the same left-side opacity macro target.
+  Resolve only if Ben explicitly wants that macro pair broken apart.
+- `R_PAD_LEFT` and `R_PAD_RIGHT` intentionally share CC 47 on channel 1 (`channel: 0` in config).
+  Reason: they emulate a single relative encoder, where left sends value 127 and right sends value 1 on the same CC identity.
+  Resolve only if Ben explicitly abandons the shared relative-encoder design.
+- `START` raw learn output on channel 3 and ABXY layer lamps on channels 1/2 intentionally share CC 78.
+  Reason: Ben wants to MIDI-learn once from the physical START button, then only change the channel in Resolume without changing the CC number.
+  Resolve only if Ben explicitly changes the learn workflow or wants dedicated lamp CCs.
+- `SELECT` raw learn output on channel 3 and trigger-layer lamps on channels 1/2 intentionally share CC 79.
+  Reason: same learn workflow as START; raw learn path and authoritative layer-state outputs must keep the same CC identity across different channels.
+  Resolve only if Ben explicitly changes that workflow.
+- The layer lamp outputs on channels 1 and 2 are authoritative state-machine outputs and should not be treated as duplicates of the raw channel 3 learn messages.
+  Reason: same CC number across different channels is intentional here; the channel split is the whole design.
+  Resolve only if Ben explicitly replaces the three-channel layer-indicator strategy.
+
 Packaging status
 - Current backup release line is v0.1.4.
 - Root VERSION was bumped to 0.1.3 and pushed to GitHub on main.
