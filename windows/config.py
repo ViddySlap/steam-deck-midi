@@ -62,7 +62,19 @@ class RelativeCCMapping:
     repeat_interval_ms: int = 40
 
 
-MidiMapping = NoteMapping | ControlChangeMapping | MacroCCMapping | RelativeCCMapping
+@dataclass(frozen=True)
+class TimedNoteMapping:
+    action: str
+    kind: str
+    channel: int
+    note: int
+    velocity: int = 127
+    hold_seconds: float = 2.0
+
+
+MidiMapping = (
+    NoteMapping | ControlChangeMapping | MacroCCMapping | RelativeCCMapping | TimedNoteMapping
+)
 
 
 @dataclass(frozen=True)
@@ -180,8 +192,22 @@ def _parse_mapping(action: str, spec: dict[str, object]) -> MidiMapping:
             step_value=step_value,
             repeat_interval_ms=repeat_interval_ms,
         )
+    if kind == "timed_note":
+        channel = _read_byte(spec, "channel", maximum=15, default=0)
+        note = _read_byte(spec, "note")
+        velocity = _read_byte(spec, "velocity", default=127)
+        hold_seconds = _read_positive_number(spec, "hold_seconds", default=2.0)
+        return TimedNoteMapping(
+            action=action,
+            kind="timed_note",
+            channel=channel,
+            note=note,
+            velocity=velocity,
+            hold_seconds=hold_seconds,
+        )
     raise ConfigError(
-        f"mapping for {action} must have type 'note', 'cc', 'macro_cc', or 'relative_cc'"
+        "mapping for"
+        f" {action} must have type 'note', 'cc', 'macro_cc', 'relative_cc', or 'timed_note'"
     )
 
 

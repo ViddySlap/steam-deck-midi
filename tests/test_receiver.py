@@ -2,7 +2,13 @@ from __future__ import annotations
 
 import unittest
 
-from windows.config import MacroCCMapping, MacroSettings, NoteMapping, RelativeCCMapping
+from windows.config import (
+    MacroCCMapping,
+    MacroSettings,
+    NoteMapping,
+    RelativeCCMapping,
+    TimedNoteMapping,
+)
 from windows.receiver import ActionReceiver
 from windows.midi import MidiControlChange, MidiError
 from protocol.messages import encode_heartbeat_event
@@ -611,6 +617,76 @@ class ActionReceiverTests(unittest.TestCase):
         self.assertEqual(
             self.midi.calls,
             [("cc", 0, 47, 1), ("cc", 0, 47, 1), ("cc", 0, 47, 127), ("cc", 0, 47, 127)],
+        )
+
+    def test_timed_note_turns_off_after_fixed_duration(self) -> None:
+        receiver = ActionReceiver(
+            self.midi,
+            {
+                "L_PAD_LEFT_LONG_PRESS": TimedNoteMapping(
+                    action="L_PAD_LEFT_LONG_PRESS",
+                    kind="timed_note",
+                    channel=0,
+                    note=86,
+                    velocity=127,
+                    hold_seconds=2.0,
+                )
+            },
+            timeout_seconds=1.0,
+        )
+
+        receiver.handle_datagram(
+            b'{"action":"L_PAD_LEFT_LONG_PRESS","state":"down","seq":1}',
+            self.addr,
+            now=0.0,
+        )
+        receiver.handle_datagram(
+            b'{"action":"L_PAD_LEFT_LONG_PRESS","state":"up","seq":2}',
+            self.addr,
+            now=0.1,
+        )
+        receiver.advance_timed_notes(now=1.9)
+        receiver.advance_timed_notes(now=2.0)
+
+        self.assertEqual(self.midi.calls, [("note_on", 0, 86, 127), ("note_off", 0, 86, 0)])
+
+    def test_timed_note_retrigger_restarts_timer(self) -> None:
+        receiver = ActionReceiver(
+            self.midi,
+            {
+                "L_PAD_RIGHT_LONG_PRESS": TimedNoteMapping(
+                    action="L_PAD_RIGHT_LONG_PRESS",
+                    kind="timed_note",
+                    channel=0,
+                    note=87,
+                    velocity=127,
+                    hold_seconds=2.0,
+                )
+            },
+            timeout_seconds=1.0,
+        )
+
+        receiver.handle_datagram(
+            b'{"action":"L_PAD_RIGHT_LONG_PRESS","state":"down","seq":1}',
+            self.addr,
+            now=0.0,
+        )
+        receiver.handle_datagram(
+            b'{"action":"L_PAD_RIGHT_LONG_PRESS","state":"down","seq":2}',
+            self.addr,
+            now=1.0,
+        )
+        receiver.advance_timed_notes(now=2.5)
+        receiver.advance_timed_notes(now=3.0)
+
+        self.assertEqual(
+            self.midi.calls,
+            [
+                ("note_on", 0, 87, 127),
+                ("note_off", 0, 87, 0),
+                ("note_on", 0, 87, 127),
+                ("note_off", 0, 87, 0),
+            ],
         )
 
 

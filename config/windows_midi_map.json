@@ -307,16 +307,18 @@
       "velocity": 127
     },
     "L_PAD_LEFT_LONG_PRESS": {
-      "type": "note",
+      "type": "timed_note",
       "channel": 0,
       "note": 86,
-      "velocity": 127
+      "velocity": 127,
+      "hold_seconds": 2.0
     },
     "L_PAD_RIGHT_LONG_PRESS": {
-      "type": "note",
+      "type": "timed_note",
       "channel": 0,
       "note": 87,
-      "velocity": 127
+      "velocity": 127,
+      "hold_seconds": 2.0
     },
     "R_PAD_UP": {
       "type": "note",
