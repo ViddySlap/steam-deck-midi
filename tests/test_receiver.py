@@ -788,7 +788,7 @@ class ActionReceiverTests(unittest.TestCase):
                 ),
             },
             timeout_seconds=1.0,
-            macro_settings=MacroSettings(layer_refresh_ms=500),
+            macro_settings=MacroSettings(),
         )
 
         receiver.handle_datagram(
@@ -820,7 +820,7 @@ class ActionReceiverTests(unittest.TestCase):
             ],
         )
 
-    def test_bumper_layer_state_publishes_and_refreshes(self) -> None:
+    def test_bumper_layer_state_publishes_on_ground_truth(self) -> None:
         receiver = ActionReceiver(
             self.midi,
             {
@@ -833,14 +833,12 @@ class ActionReceiverTests(unittest.TestCase):
                 ),
             },
             timeout_seconds=1.0,
-            macro_settings=MacroSettings(layer_refresh_ms=500),
+            macro_settings=MacroSettings(),
         )
 
         receiver.handle_datagram(
             b'{"action":"L1_LAYER_2","state":"down","seq":1}', self.addr, now=0.0
         )
-        receiver.advance_layer_state_publish(now=0.4)
-        receiver.advance_layer_state_publish(now=0.5)
 
         self.assertEqual(
             self.midi.calls,
@@ -848,8 +846,6 @@ class ActionReceiverTests(unittest.TestCase):
                 ("note_off", 0, 79, 0),
                 ("note_on", 1, 79, 127),
                 ("note_on", 0, 61, 127),
-                ("note_off", 0, 79, 0),
-                ("note_on", 1, 79, 127),
             ],
         )
 
