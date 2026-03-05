@@ -135,6 +135,7 @@ class ActionReceiver:
             for mapping in mappings.values()
             if isinstance(mapping, MacroCCMapping)
         }
+        self._publish_initial_layer_states()
 
     @property
     def fade_poll_interval_seconds(self) -> float | None:
@@ -627,8 +628,11 @@ class ActionReceiver:
         if publisher.state == LAYER_2:
             self._midi_out.control_change(publisher.layer_1_channel, publisher.cc, 0)
             self._midi_out.control_change(publisher.layer_2_channel, publisher.cc, 127)
-        else:
+        elif publisher.state == LAYER_1:
             self._midi_out.control_change(publisher.layer_1_channel, publisher.cc, 127)
+            self._midi_out.control_change(publisher.layer_2_channel, publisher.cc, 0)
+        else:
+            self._midi_out.control_change(publisher.layer_1_channel, publisher.cc, 0)
             self._midi_out.control_change(publisher.layer_2_channel, publisher.cc, 0)
         publisher.last_published_state = publisher.state
 
@@ -642,6 +646,11 @@ class ActionReceiver:
             layer_1_channel=0,
             layer_2_channel=1,
         )
+
+    def _publish_initial_layer_states(self) -> None:
+        timestamp = self._clock()
+        self._set_layer_state(self._abxy_layer_publisher, LAYER_UNKNOWN, timestamp, "startup")
+        self._set_layer_state(self._bumper_layer_publisher, LAYER_UNKNOWN, timestamp, "startup")
 
     def _toggle_target(self, current_value: int) -> int:
         midpoint = (self._macro_settings.min_value + self._macro_settings.max_value) / 2
