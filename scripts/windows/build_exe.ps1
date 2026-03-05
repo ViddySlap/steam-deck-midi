@@ -80,6 +80,30 @@ VSVersionInfo(
 "@
 Set-Content -Path $versionInfoPath -Value $versionText -Encoding ASCII
 
+$gitCommit = "unknown"
+$gitCommitShort = "unknown"
+try {
+    $gitCommit = (& git -C $RepoRoot rev-parse HEAD).Trim()
+    if (-not [string]::IsNullOrWhiteSpace($gitCommit)) {
+        $gitCommitShort = $gitCommit.Substring(0, [Math]::Min(12, $gitCommit.Length))
+    } else {
+        $gitCommit = "unknown"
+        $gitCommitShort = "unknown"
+    }
+} catch {
+    $gitCommit = "unknown"
+    $gitCommitShort = "unknown"
+}
+$buildTimestampUtc = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+$fingerprintPath = Join-Path $RepoRoot "build\windows-build-fingerprint.json"
+$fingerprint = [ordered]@{
+    app_version = $appVersion
+    git_commit = $gitCommit
+    git_commit_short = $gitCommitShort
+    build_time_utc = $buildTimestampUtc
+}
+$fingerprint | ConvertTo-Json | Set-Content -Path $fingerprintPath -Encoding UTF8
+
 Write-Host "Installing build dependencies..."
 & $venvPython -m pip install --upgrade pip
 if ($LASTEXITCODE -ne 0) {
