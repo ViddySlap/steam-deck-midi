@@ -18,12 +18,32 @@ if (-not (Test-Path $pythonExe)) {
 
 $localSettingsPath = Join-Path $RepoRoot "config\windows_receiver_settings.local.json"
 $exampleSettingsPath = Join-Path $RepoRoot "config\windows_receiver_settings.example.json"
-$settingsPath = $exampleSettingsPath
-if (Test-Path $localSettingsPath) {
-    $settingsPath = $localSettingsPath
+if (-not (Test-Path $exampleSettingsPath)) {
+    throw "Receiver default settings file not found at '$exampleSettingsPath'."
 }
 
-$settings = Get-Content $settingsPath -Raw | ConvertFrom-Json
+$defaultSettings = Get-Content $exampleSettingsPath -Raw | ConvertFrom-Json
+$settings = $null
+if (Test-Path $localSettingsPath) {
+    $settings = Get-Content $localSettingsPath -Raw | ConvertFrom-Json
+} else {
+    $settings = [pscustomobject]@{}
+}
+
+$settingsUpdated = $false
+foreach ($property in $defaultSettings.PSObject.Properties) {
+    if ($settings.PSObject.Properties.Name -contains $property.Name) {
+        continue
+    }
+    Add-Member -InputObject $settings -MemberType NoteProperty -Name $property.Name -Value $property.Value
+    $settingsUpdated = $true
+}
+
+if ($settingsUpdated -or -not (Test-Path $localSettingsPath)) {
+    $settings | ConvertTo-Json -Depth 10 | Set-Content -Path $localSettingsPath -Encoding UTF8
+}
+
+$settingsPath = $localSettingsPath
 $mapPath = Join-Path $RepoRoot $settings.map_path
 if (-not (Test-Path $mapPath)) {
     throw "MIDI map file not found at '$mapPath'."
