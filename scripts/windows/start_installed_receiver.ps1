@@ -17,14 +17,32 @@ if (-not (Test-Path $exePath)) {
 }
 
 $settingsPath = Join-Path $InstallRoot "config\windows_receiver_settings.local.json"
-if (-not (Test-Path $settingsPath)) {
-    $settingsPath = Join-Path $InstallRoot "config\windows_receiver_settings.example.json"
-}
-if (-not (Test-Path $settingsPath)) {
-    throw "Receiver settings file not found under '$InstallRoot\config'."
+$exampleSettingsPath = Join-Path $InstallRoot "config\windows_receiver_settings.example.json"
+if (-not (Test-Path $exampleSettingsPath)) {
+    throw "Receiver default settings file not found at '$exampleSettingsPath'."
 }
 
-$settings = Get-Content $settingsPath -Raw | ConvertFrom-Json
+$defaultSettings = Get-Content $exampleSettingsPath -Raw | ConvertFrom-Json
+$settings = $null
+if (Test-Path $settingsPath) {
+    $settings = Get-Content $settingsPath -Raw | ConvertFrom-Json
+} else {
+    $settings = [pscustomobject]@{}
+}
+
+$settingsUpdated = $false
+foreach ($property in $defaultSettings.PSObject.Properties) {
+    if ($settings.PSObject.Properties.Name -contains $property.Name) {
+        continue
+    }
+    Add-Member -InputObject $settings -MemberType NoteProperty -Name $property.Name -Value $property.Value
+    $settingsUpdated = $true
+}
+
+if ($settingsUpdated -or -not (Test-Path $settingsPath)) {
+    $settings | ConvertTo-Json -Depth 10 | Set-Content -Path $settingsPath -Encoding UTF8
+}
+
 $mapPath = Join-Path $InstallRoot $settings.map_path
 if (-not (Test-Path $mapPath)) {
     throw "MIDI map file not found at '$mapPath'."
