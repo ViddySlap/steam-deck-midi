@@ -240,6 +240,106 @@ class ActionReceiverTests(unittest.TestCase):
             [("note_on", 0, 98, 127), ("note_off", 0, 98, 0), ("note_on", 0, 98, 127)],
         )
 
+    def test_layer_domains_publish_unknown_as_both_lamps_off_on_startup(self) -> None:
+        ActionReceiver(
+            self.midi,
+            {
+                "START": ControlChangeMapping(
+                    action="START",
+                    kind="cc",
+                    channel=2,
+                    cc=78,
+                    on_value=127,
+                    off_value=0,
+                ),
+                "SELECT": ControlChangeMapping(
+                    action="SELECT",
+                    kind="cc",
+                    channel=2,
+                    cc=79,
+                    on_value=127,
+                    off_value=0,
+                ),
+            },
+            timeout_seconds=1.0,
+        )
+
+        self.assertEqual(
+            self.midi.calls,
+            [
+                ("cc", 0, 78, 0),
+                ("cc", 1, 78, 0),
+                ("cc", 0, 79, 0),
+                ("cc", 1, 79, 0),
+            ],
+        )
+        self.assertNotIn(("cc", 0, 78, 127), self.midi.calls)
+        self.assertNotIn(("cc", 1, 78, 127), self.midi.calls)
+        self.assertNotIn(("cc", 0, 79, 127), self.midi.calls)
+        self.assertNotIn(("cc", 1, 79, 127), self.midi.calls)
+
+    def test_unknown_layer_ignores_toggle_hint_without_republishing_lamps(self) -> None:
+        receiver = ActionReceiver(
+            self.midi,
+            {
+                "START": ControlChangeMapping(
+                    action="START",
+                    kind="cc",
+                    channel=2,
+                    cc=78,
+                    on_value=127,
+                    off_value=0,
+                ),
+            },
+            timeout_seconds=1.0,
+        )
+
+        self.assertEqual(self.midi.calls, [("cc", 0, 78, 0), ("cc", 1, 78, 0)])
+        receiver.handle_datagram(
+            b'{"action":"START","state":"down","seq":1}', self.addr, now=0.0
+        )
+
+        self.assertEqual(
+            self.midi.calls,
+            [("cc", 0, 78, 0), ("cc", 1, 78, 0), ("cc", 2, 78, 127)],
+        )
+
+    def test_layer_state_transition_to_unknown_publishes_off_and_dedupes(self) -> None:
+        receiver = ActionReceiver(
+            self.midi,
+            {
+                "START": ControlChangeMapping(
+                    action="START",
+                    kind="cc",
+                    channel=2,
+                    cc=78,
+                    on_value=127,
+                    off_value=0,
+                ),
+                "BTN_A": NoteMapping(action="BTN_A", kind="note", channel=0, note=36),
+            },
+            timeout_seconds=1.0,
+        )
+
+        receiver.handle_datagram(
+            b'{"action":"BTN_A","state":"down","seq":1}', self.addr, now=0.0
+        )
+        receiver._set_layer_state(receiver._abxy_layer_publisher, "unknown", 0.1, "test")
+        receiver._set_layer_state(receiver._abxy_layer_publisher, "unknown", 0.2, "test")
+
+        self.assertEqual(
+            self.midi.calls,
+            [
+                ("cc", 0, 78, 0),
+                ("cc", 1, 78, 0),
+                ("cc", 0, 78, 127),
+                ("cc", 1, 78, 0),
+                ("note_on", 0, 36, 127),
+                ("cc", 0, 78, 0),
+                ("cc", 1, 78, 0),
+            ],
+        )
+
     def test_layer_switch_does_not_force_release_of_held_control(self) -> None:
         receiver = ActionReceiver(
             self.midi,
@@ -284,6 +384,8 @@ class ActionReceiverTests(unittest.TestCase):
         self.assertEqual(
             self.midi.calls,
             [
+                ("cc", 0, 79, 0),
+                ("cc", 1, 79, 0),
                 ("cc", 0, 79, 127),
                 ("cc", 1, 79, 0),
                 ("note_on", 0, 70, 127),
@@ -386,6 +488,8 @@ class ActionReceiverTests(unittest.TestCase):
         self.assertEqual(
             self.midi.calls,
             [
+                ("cc", 0, 79, 0),
+                ("cc", 1, 79, 0),
                 ("note_on", 0, 76, 127),
                 ("note_on", 0, 74, 127),
                 ("cc", 2, 79, 127),
@@ -1042,6 +1146,8 @@ class ActionReceiverTests(unittest.TestCase):
         self.assertEqual(
             self.midi.calls,
             [
+                ("cc", 0, 78, 0),
+                ("cc", 1, 78, 0),
                 ("cc", 2, 78, 127),
                 ("cc", 0, 78, 0),
                 ("cc", 1, 78, 127),
@@ -1085,6 +1191,8 @@ class ActionReceiverTests(unittest.TestCase):
         self.assertEqual(
             self.midi.calls,
             [
+                ("cc", 0, 79, 0),
+                ("cc", 1, 79, 0),
                 ("cc", 0, 79, 0),
                 ("cc", 1, 79, 127),
                 ("note_on", 0, 61, 127),
