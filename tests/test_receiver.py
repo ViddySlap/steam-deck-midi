@@ -260,6 +260,14 @@ class ActionReceiverTests(unittest.TestCase):
                     on_value=127,
                     off_value=0,
                 ),
+                "L4": ControlChangeMapping(
+                    action="L4",
+                    kind="cc",
+                    channel=2,
+                    cc=74,
+                    on_value=127,
+                    off_value=0,
+                ),
             },
             timeout_seconds=1.0,
         )
@@ -271,12 +279,16 @@ class ActionReceiverTests(unittest.TestCase):
                 ("cc", 1, 78, 0),
                 ("cc", 0, 79, 0),
                 ("cc", 1, 79, 0),
+                ("cc", 0, 74, 0),
+                ("cc", 1, 74, 0),
             ],
         )
         self.assertNotIn(("cc", 0, 78, 127), self.midi.calls)
         self.assertNotIn(("cc", 1, 78, 127), self.midi.calls)
         self.assertNotIn(("cc", 0, 79, 127), self.midi.calls)
         self.assertNotIn(("cc", 1, 79, 127), self.midi.calls)
+        self.assertNotIn(("cc", 0, 74, 127), self.midi.calls)
+        self.assertNotIn(("cc", 1, 74, 127), self.midi.calls)
 
     def test_unknown_layer_ignores_toggle_hint_without_republishing_lamps(self) -> None:
         receiver = ActionReceiver(
@@ -337,6 +349,75 @@ class ActionReceiverTests(unittest.TestCase):
                 ("note_on", 0, 36, 127),
                 ("cc", 0, 78, 0),
                 ("cc", 1, 78, 0),
+            ],
+        )
+
+    def test_gyro_layer_unknown_ignores_l4_toggle_hint(self) -> None:
+        receiver = ActionReceiver(
+            self.midi,
+            {
+                "L4": ControlChangeMapping(
+                    action="L4",
+                    kind="cc",
+                    channel=2,
+                    cc=74,
+                    on_value=127,
+                    off_value=0,
+                ),
+            },
+            timeout_seconds=1.0,
+        )
+
+        self.assertEqual(self.midi.calls, [("cc", 0, 74, 0), ("cc", 1, 74, 0)])
+        receiver.handle_datagram(
+            b'{"action":"L4","state":"down","seq":1}', self.addr, now=0.0
+        )
+
+        self.assertEqual(
+            self.midi.calls,
+            [("cc", 0, 74, 0), ("cc", 1, 74, 0), ("cc", 2, 74, 127)],
+        )
+
+    def test_gyro_layer_ground_truth_then_l4_toggle_publishes_expected_lamps(self) -> None:
+        receiver = ActionReceiver(
+            self.midi,
+            {
+                "L4": ControlChangeMapping(
+                    action="L4",
+                    kind="cc",
+                    channel=2,
+                    cc=74,
+                    on_value=127,
+                    off_value=0,
+                ),
+                "GYRO_FORWARD": NoteMapping(
+                    action="GYRO_FORWARD",
+                    kind="note",
+                    channel=0,
+                    note=96,
+                ),
+            },
+            timeout_seconds=1.0,
+        )
+
+        receiver.handle_datagram(
+            b'{"action":"GYRO_FORWARD","state":"down","seq":1}', self.addr, now=0.0
+        )
+        receiver.handle_datagram(
+            b'{"action":"L4","state":"down","seq":2}', self.addr, now=0.1
+        )
+
+        self.assertEqual(
+            self.midi.calls,
+            [
+                ("cc", 0, 74, 0),
+                ("cc", 1, 74, 0),
+                ("cc", 0, 74, 0),
+                ("cc", 1, 74, 127),
+                ("note_on", 0, 96, 127),
+                ("cc", 0, 74, 127),
+                ("cc", 1, 74, 0),
+                ("cc", 2, 74, 127),
             ],
         )
 

@@ -45,6 +45,7 @@ BUMPER_LAYER_2_ACTIONS = {
     "R2_SOFT_LAYER_2",
     "R2_FULL_LAYER_2",
 }
+GYRO_LAYER_2_ACTIONS = {"GYRO_FORWARD", "GYRO_BACKWARD"}
 @dataclass
 class SenderState:
     last_seq: int = -1
@@ -130,6 +131,7 @@ class ActionReceiver:
         self._active_staged_note_macros: dict[str, ActiveStagedNoteMacro] = {}
         self._abxy_layer_publisher = self._build_layer_publisher("START")
         self._bumper_layer_publisher = self._build_layer_publisher("SELECT")
+        self._gyro_layer_publisher = self._build_layer_publisher("L4")
         self._tracked_macro_keys = {
             (mapping.channel, mapping.cc)
             for mapping in mappings.values()
@@ -578,6 +580,8 @@ class ActionReceiver:
             self._toggle_known_layer_state(self._abxy_layer_publisher, timestamp)
         elif action == "SELECT":
             self._toggle_known_layer_state(self._bumper_layer_publisher, timestamp)
+        elif action == "L4":
+            self._toggle_known_layer_state(self._gyro_layer_publisher, timestamp)
 
     def _handle_layer_ground_truth(self, action: str, timestamp: float) -> None:
         if action in ABXY_LAYER_1_ACTIONS:
@@ -589,6 +593,9 @@ class ActionReceiver:
             self._set_layer_state(self._bumper_layer_publisher, LAYER_1, timestamp, action)
         elif action in BUMPER_LAYER_2_ACTIONS:
             self._set_layer_state(self._bumper_layer_publisher, LAYER_2, timestamp, action)
+
+        if action in GYRO_LAYER_2_ACTIONS:
+            self._set_layer_state(self._gyro_layer_publisher, LAYER_2, timestamp, action)
 
     def _toggle_known_layer_state(
         self,
@@ -651,6 +658,7 @@ class ActionReceiver:
         timestamp = self._clock()
         self._set_layer_state(self._abxy_layer_publisher, LAYER_UNKNOWN, timestamp, "startup")
         self._set_layer_state(self._bumper_layer_publisher, LAYER_UNKNOWN, timestamp, "startup")
+        self._set_layer_state(self._gyro_layer_publisher, LAYER_UNKNOWN, timestamp, "startup")
 
     def _toggle_target(self, current_value: int) -> int:
         midpoint = (self._macro_settings.min_value + self._macro_settings.max_value) / 2
