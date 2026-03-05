@@ -240,7 +240,7 @@ class ActionReceiverTests(unittest.TestCase):
             [("note_on", 0, 98, 127), ("note_off", 0, 98, 0), ("note_on", 0, 98, 127)],
         )
 
-    def test_layer_switch_retriggers_held_control_for_base_and_layer_2_actions(self) -> None:
+    def test_layer_switch_does_not_force_release_of_held_control(self) -> None:
         receiver = ActionReceiver(
             self.midi,
             {
@@ -287,7 +287,6 @@ class ActionReceiverTests(unittest.TestCase):
                 ("cc", 0, 79, 127),
                 ("cc", 1, 79, 0),
                 ("note_on", 0, 70, 127),
-                ("note_off", 0, 70, 0),
                 ("cc", 0, 79, 0),
                 ("cc", 1, 79, 127),
                 ("cc", 2, 79, 127),
@@ -328,7 +327,7 @@ class ActionReceiverTests(unittest.TestCase):
             [("note_on", 0, 71, 127), ("note_off", 0, 71, 0)],
         )
 
-    def test_first_layer_toggle_releases_held_actions_even_when_layer_state_is_unknown(self) -> None:
+    def test_first_layer_toggle_with_unknown_state_does_not_release_held_actions(self) -> None:
         receiver = ActionReceiver(
             self.midi,
             {
@@ -389,8 +388,6 @@ class ActionReceiverTests(unittest.TestCase):
             [
                 ("note_on", 0, 76, 127),
                 ("note_on", 0, 74, 127),
-                ("note_off", 0, 76, 0),
-                ("note_off", 0, 74, 0),
                 ("cc", 2, 79, 127),
                 ("cc", 0, 79, 0),
                 ("cc", 1, 79, 127),
@@ -1049,7 +1046,6 @@ class ActionReceiverTests(unittest.TestCase):
                 ("cc", 0, 78, 0),
                 ("cc", 1, 78, 127),
                 ("note_on", 0, 37, 127),
-                ("note_off", 0, 37, 0),
                 ("cc", 0, 78, 127),
                 ("cc", 1, 78, 0),
                 ("cc", 2, 78, 127),

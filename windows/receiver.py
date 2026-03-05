@@ -574,10 +574,8 @@ class ActionReceiver:
 
     def _handle_layer_toggle_hint(self, action: str, timestamp: float) -> None:
         if action == "START":
-            self._retrigger_held_actions_on_layer_change(exclude_actions={action})
             self._toggle_known_layer_state(self._abxy_layer_publisher, timestamp)
         elif action == "SELECT":
-            self._retrigger_held_actions_on_layer_change(exclude_actions={action})
             self._toggle_known_layer_state(self._bumper_layer_publisher, timestamp)
 
     def _handle_layer_ground_truth(self, action: str, timestamp: float) -> None:
@@ -644,22 +642,6 @@ class ActionReceiver:
             layer_1_channel=0,
             layer_2_channel=1,
         )
-
-    def _retrigger_held_actions_on_layer_change(self, *, exclude_actions: set[str]) -> None:
-        # Layer switched while controls are still held: release active note/CC mappings so
-        # incoming down events from the new layer become fresh trigger edges.
-        for action, mapping in list(self._active_actions.items()):
-            if action in exclude_actions:
-                continue
-            try:
-                self._release_mapping(action, mapping)
-            except MidiError as exc:
-                LOGGER.error(
-                    "MIDI output error while releasing %s on layer change: %s",
-                    action,
-                    exc,
-                )
-            self._active_actions.pop(action, None)
 
     def _toggle_target(self, current_value: int) -> int:
         midpoint = (self._macro_settings.min_value + self._macro_settings.max_value) / 2
