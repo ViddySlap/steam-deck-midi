@@ -238,7 +238,35 @@ Recent commits (main)
 - `cacd998` Restore soft/full trigger MIDI emission.
 - `7bfed89` Remove layer-toggle retrigger behavior.
 - `d683750` Harden deck bindings: block duplicate tokens and audit sender mappings.
+- `85c7b5c` Update docs, tests, and memory for current runtime architecture.
+- `6859591` Publish unknown layer state as both lamps off.
+- `ae01193` Add gyro layer-state domain with L4 CC lamp publishing.
 
 Backup tags
 - New backup tag created and pushed: `v0.1.8` -> `d683750`.
 - `v0.1.8` should be treated as the latest restore point after sender/receiver simplification and binding hardening.
+- New backup tag created and pushed: `v0.1.9` (updated to point at `85c7b5c`).
+- `v0.1.9` is the current restore point created before gyro layer-state implementation work.
+
+Recent layer-state + gyro update (2026-03-05)
+- Layer-state lamp semantics were updated so `unknown` now publishes explicit OFF/OFF:
+  - Channel 1 lamp OFF, Channel 2 lamp OFF for the domain's configured CC identity.
+  - This applies at startup (initial publish) and any later transition/resync to `unknown`.
+  - Publish dedupe still applies; ignored toggle hints while already unknown do not republish lamps.
+- Existing ABXY (`START`/CC 78) and bumper-trigger (`SELECT`/CC 79) domains now publish startup unknown OFF/OFF, then self-heal to layer 1/2 from ground-truth action IDs as before.
+- Gyro was added as a third authoritative state domain in receiver:
+  - Toggle hint action: `L4`
+  - Lamp/learn CC identity: `L4` now mapped as CC 74 on raw learn channel 3 (`channel: 2` in config).
+  - Ground-truth ON actions: `GYRO_FORWARD`, `GYRO_BACKWARD` -> set gyro state to layer_2.
+  - Unknown startup state publishes OFF/OFF on channels 1/2 for CC 74.
+- Intentional identity pairing:
+  - raw `L4` (channel 3) and gyro lamp state channels 1/2 share CC 74 to preserve MIDI-learn-once workflow.
+- Validation:
+  - `python3 -m unittest tests.test_receiver` passed after each step.
+  - `python3 -m unittest discover -s tests -p 'test_*.py'` passed (`Ran 90 tests ... OK`).
+- Windows distribution updates completed for testing:
+  - pushed `main` through `ae01193`
+  - Windows repo pulled latest via `scripts/windows/ssh_task.sh pull`
+  - installer rebuilt via `scripts/windows/ssh_task.sh build_installer`
+  - output installer refreshed at:
+    `C:\Users\Ben\steam-deck-vj\installer-output\STEAMDECK-MIDI-RECEIVER-Setup-0.1.6.exe`
