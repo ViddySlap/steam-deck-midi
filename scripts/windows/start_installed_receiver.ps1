@@ -44,21 +44,33 @@ $args = @(
 if ($settings.verbose) {
     $args += "--verbose"
 }
+if ($settings.PSObject.Properties.Name -contains "feedback_port" -and -not [string]::IsNullOrWhiteSpace([string]$settings.feedback_port)) {
+    $args += "--feedback-port"
+    $args += [string]$settings.feedback_port
+}
 
 Write-Host "STEAMDECK MIDI Receiver"
 Write-Host "Install:   $InstallRoot"
 Write-Host "Settings:  $settingsPath"
 Write-Host "Map:       $mapPath"
 Write-Host "MIDI port: $($settings.midi_port)"
+if ($settings.PSObject.Properties.Name -contains "feedback_port" -and -not [string]::IsNullOrWhiteSpace([string]$settings.feedback_port)) {
+    Write-Host "Feedback:  $($settings.feedback_port)"
+}
 Write-Host ""
 
 Push-Location $InstallRoot
 try {
-    & $exePath --check-midi-port --midi-port ([string]$settings.midi_port)
+    $checkArgs = @("--check-midi-port", "--midi-port", [string]$settings.midi_port)
+    if ($settings.PSObject.Properties.Name -contains "feedback_port" -and -not [string]::IsNullOrWhiteSpace([string]$settings.feedback_port)) {
+        $checkArgs += "--feedback-port"
+        $checkArgs += [string]$settings.feedback_port
+    }
+    & $exePath @checkArgs
     if ($LASTEXITCODE -ne 0) {
         Write-Host ""
         Write-Host "Configured MIDI port check failed."
-        Write-Host "Install loopMIDI, create a DECK_IN port, then relaunch the receiver."
+        Write-Host "Install loopMIDI, create DECK_IN and DECK_OUT ports, then relaunch the receiver."
         exit $LASTEXITCODE
     }
 

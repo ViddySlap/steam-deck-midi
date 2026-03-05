@@ -54,6 +54,7 @@ Default settings:
 {
   "listen": "0.0.0.0:45123",
   "midi_port": "DECK_IN",
+  "feedback_port": "DECK_OUT",
   "map_path": "config/windows_midi_map.json",
   "timeout": 2.0,
   "verbose": true
