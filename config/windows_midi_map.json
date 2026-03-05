@@ -238,10 +238,11 @@
       "velocity": 127
     },
     "L4": {
-      "type": "note",
-      "channel": 0,
-      "note": 74,
-      "velocity": 127
+      "type": "cc",
+      "channel": 2,
+      "cc": 74,
+      "on_value": 127,
+      "off_value": 0
     },
     "L5": {
       "type": "note",
