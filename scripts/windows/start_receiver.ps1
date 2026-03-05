@@ -45,12 +45,19 @@ $args = @(
 if ($settings.verbose) {
     $args += "--verbose"
 }
+if ($settings.PSObject.Properties.Name -contains "feedback_port" -and -not [string]::IsNullOrWhiteSpace([string]$settings.feedback_port)) {
+    $args += "--feedback-port"
+    $args += [string]$settings.feedback_port
+}
 
 Write-Host "STEAMDECK MIDI receiver"
 Write-Host "Repo:     $RepoRoot"
 Write-Host "Settings: $settingsPath"
 Write-Host "Map:      $mapPath"
 Write-Host "Port:     $($settings.midi_port)"
+if ($settings.PSObject.Properties.Name -contains "feedback_port" -and -not [string]::IsNullOrWhiteSpace([string]$settings.feedback_port)) {
+    Write-Host "Feedback: $($settings.feedback_port)"
+}
 Write-Host ""
 
 Push-Location $RepoRoot
