@@ -270,3 +270,34 @@ Recent layer-state + gyro update (2026-03-05)
   - installer rebuilt via `scripts/windows/ssh_task.sh build_installer`
   - output installer refreshed at:
     `C:\Users\Ben\steam-deck-vj\installer-output\STEAMDECK-MIDI-RECEIVER-Setup-0.1.6.exe`
+
+Recent stick dedupe tuning (2026-03-06)
+- Receiver dedupe now uses a shorter window for stick-related actions only:
+  - global/default dedupe window remains 15ms
+  - stick action dedupe window is now 5ms for:
+    `L_STICK_*`, `R_STICK_*`, `LEFT_STICK_CLICK_L3`, `RIGHT_STICK_CLICK_R3`
+- Purpose: reduce dropped legitimate stick edge events during rapid stick flicks while preserving duplicate suppression for non-stick actions.
+- Tests:
+  - added receiver test coverage confirming non-stick duplicate behavior remains unchanged while stick actions use the shorter window.
+  - `python3 -m unittest tests.test_receiver` passed.
+- Packaging:
+  - pushed `main` through `7a56404`
+  - Windows repo pulled latest via `scripts/windows/ssh_task.sh pull`
+  - installer rebuilt via `scripts/windows/ssh_task.sh build_installer`
+  - updated installer output:
+    `C:\Users\Ben\steam-deck-vj\installer-output\STEAMDECK-MIDI-RECEIVER-Setup-0.1.6.exe`
+
+Recent release-safe dedupe update (2026-03-06)
+- Receiver duplicate suppression is now release-safe:
+  - duplicate `up` events are accepted when the action is currently active, even inside dedupe window.
+  - this prevents active note releases from being delayed until timeout in rapid-chatter scenarios.
+- Stick-specific shorter dedupe window remains in place (5ms for stick actions, 15ms default otherwise).
+- Tests:
+  - added/updated receiver tests for active-release-inside-dedupe behavior.
+  - `python3 -m unittest tests.test_receiver` passed.
+- Packaging:
+  - pushed `main` through `bd7a2de`
+  - Windows repo pulled latest via `scripts/windows/ssh_task.sh pull`
+  - installer rebuilt via `scripts/windows/ssh_task.sh build_installer`
+  - updated installer output:
+    `C:\Users\Ben\steam-deck-vj\installer-output\STEAMDECK-MIDI-RECEIVER-Setup-0.1.6.exe`
