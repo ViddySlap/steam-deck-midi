@@ -10,8 +10,9 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Callable
 
-from protocol.messages import ActionEvent, HeartbeatEvent, ProtocolError, parse_action_event
+from protocol.messages import ActionEvent, AxisEvent, HeartbeatEvent, ProtocolError, parse_action_event
 from windows.config import (
+    AxisToCCMapping,
     ControlChangeMapping,
     MacroCCMapping,
     MacroSettings,
@@ -138,6 +139,7 @@ class ActionReceiver:
         self._clock = clock
         self._sender_states: dict[tuple[str, int], SenderState] = {}
         self._active_actions: dict[str, MidiMapping] = {}
+        self._active_axis_actions: set[str] = set()
         self._recent_events: dict[tuple[str, str], float] = {}
         self._event_times: deque[float] = deque()
         self._loop_guard_until = 0.0
@@ -200,6 +202,8 @@ class ActionReceiver:
         if isinstance(event, HeartbeatEvent):
             LOGGER.debug("heartbeat seq=%s from %s:%s", event.seq, addr[0], addr[1])
             return True
+        if isinstance(event, AxisEvent):
+            return self._handle_axis_event(event)
         if not self._allow_event(event, timestamp):
             return False
         self._update_layer_state_from_action(event, timestamp)
@@ -717,6 +721,39 @@ class ActionReceiver:
         if current_value is not None and abs(value - current_value) <= tolerance:
             return True
         return False
+
+    def _handle_axis_event(self, event: AxisEvent) -> bool:
+        mapping = self._mappings.get(event.action)
+        if not isinstance(mapping, AxisToCCMapping):
+            LOGGER.debug("no axis_to_cc mapping for action %s", event.action)
+            return False
+
+        if abs(event.value) <= mapping.deadzone:
+            if event.action in self._active_axis_actions:
+                self._active_axis_actions.discard(event.action)
+                center_cc = self._axis_to_cc_value(0, mapping)
+                key = (mapping.channel, mapping.cc)
+                self._active_macro_fades.pop(key, None)
+                self._midi_out.control_change(mapping.channel, mapping.cc, center_cc)
+                LOGGER.debug("axis center action=%s cc=%s", event.action, center_cc)
+                return True
+            return False
+
+        self._active_axis_actions.add(event.action)
+        cc_value = self._axis_to_cc_value(event.value, mapping)
+        key = (mapping.channel, mapping.cc)
+        self._active_macro_fades.pop(key, None)
+        self._midi_out.control_change(mapping.channel, mapping.cc, cc_value)
+        LOGGER.debug("axis action=%s value=%s cc=%s", event.action, event.value, cc_value)
+        return True
+
+    def _axis_to_cc_value(self, value: int, mapping: AxisToCCMapping) -> int:
+        input_min, input_max = mapping.input_range
+        output_min, output_max = mapping.output_range
+        clamped = max(input_min, min(input_max, value))
+        t = (clamped - input_min) / (input_max - input_min)
+        cc = output_min + t * (output_max - output_min)
+        return max(0, min(127, round(cc)))
 
     def _send_macro_value(self, channel: int, cc: int, value: int) -> None:
         self._midi_out.control_change(channel, cc, value)

@@ -3,20 +3,29 @@
 from __future__ import annotations
 
 import argparse
+import array
 import ctypes
 import ctypes.util
+import fcntl
 import json
+import queue
 import selectors
 import socket
+import struct
 import sys
 import termios
+import threading
 import time
 from dataclasses import dataclass
 
-from protocol.messages import encode_action_event, encode_heartbeat_event
+from protocol.messages import encode_action_event, encode_axis_event, encode_heartbeat_event
 
 
 HEARTBEAT_INTERVAL_SECONDS = 0.5
+AXIS_MIN_INTERVAL = 1.0 / 60.0
+HIDRAW_DEVICE = "/dev/hidraw2"
+_HIDIOCSFEATURE = (1 << 30) | (65 << 16) | (0x48 << 8) | 0x06
+
 GENERIC_EVENT = 35
 XI_RAW_KEY_PRESS = 13
 XI_RAW_KEY_RELEASE = 14
@@ -232,6 +241,168 @@ class TerminalNoEcho:
         termios.tcsetattr(self._fd, termios.TCSADRAIN, self._old_attrs)
 
 
+@dataclass(frozen=True)
+class AxisSample:
+    action: str
+    value: int
+
+
+class HidrawAxisReader:
+    _STATIC_AXIS_MAP = [
+        # (action, byte_offset, center_offset, signed)
+        # center_offset = observed raw value at physical rest (calibrated 2026-04-28)
+        ("L_TRIGGER_PRESSURE", 44, 0, False),
+        ("R_TRIGGER_PRESSURE", 46, 0, False),
+        ("L_STICK_X_AXIS", 48, 118, True),
+        ("L_STICK_Y_AXIS", 50, 434, True),
+        ("R_STICK_X_AXIS", 52, 280, True),
+        ("R_STICK_Y_AXIS", 54, -336, True),
+    ]
+    _GYRO_OFFSETS = [
+        # (action, byte_offset) — angular velocity, integrated to position when active
+        # offsets confirmed empirically 2026-04-28; velocity is exactly 0 at rest
+        ("GYRO_PITCH", 30),
+        ("GYRO_YAW", 32),
+        ("GYRO_ROLL", 34),
+    ]
+
+    def __init__(self, deadzone: int = 1000) -> None:
+        self._deadzone = deadzone
+        self._queue: queue.Queue[AxisSample] = queue.Queue()
+        self._stop = threading.Event()
+        self._file: object = None
+        self._thread: threading.Thread | None = None
+        self._gyro_lock = threading.Lock()
+        self._gyro_active = False
+        self._gyro_position: dict[str, float] = {}
+        self._gyro_prev_pos: dict[str, int] = {}
+        self._gyro_last_time: float = 0.0
+
+    def __enter__(self) -> "HidrawAxisReader":
+        self._file = open(HIDRAW_DEVICE, "rb+", buffering=0)
+        self._send_feature([0x00, 0x81])
+        self._send_feature(
+            [
+                0x00, 0x87, 15,
+                7, 6, 0,
+                8, 6, 0,
+                52, 0xFF, 0xFF,
+                53, 0xFF, 0xFF,
+                71, 0, 0,
+            ]
+        )
+        self._thread = threading.Thread(target=self._read_loop, daemon=True)
+        self._thread.start()
+        return self
+
+    def __exit__(self, exc_type: object, exc: object, tb: object) -> bool:
+        self._stop.set()
+        if self._thread is not None:
+            self._thread.join(timeout=1.0)
+        if self._file is not None:
+            try:
+                self._send_feature([0x00, 0x85])
+            except OSError:
+                pass
+            self._file.close()
+            self._file = None
+        return False
+
+    def _send_feature(self, payload: list[int]) -> None:
+        buf = array.array("B", [0] * 65)
+        for i, b in enumerate(payload):
+            buf[i] = b
+        fcntl.ioctl(self._file, _HIDIOCSFEATURE, buf)
+
+    def _read_loop(self) -> None:
+        while not self._stop.is_set():
+            try:
+                data = self._file.read(64)
+            except OSError:
+                break
+            if len(data) < 64:
+                continue
+            self._parse_report(data)
+
+    def enable_gyro(self) -> None:
+        with self._gyro_lock:
+            self._gyro_active = True
+            self._gyro_position = {a: 0.0 for a, _ in self._GYRO_OFFSETS}
+            self._gyro_prev_pos = {}
+            self._gyro_last_time = time.monotonic()
+
+    def disable_gyro(self) -> None:
+        with self._gyro_lock:
+            self._gyro_active = False
+        for action, _ in self._GYRO_OFFSETS:
+            try:
+                self._queue.put_nowait(AxisSample(action=action, value=0))
+            except queue.Full:
+                pass
+
+    def _parse_report(self, data: bytes) -> None:
+        if data[0] != 0x01 or data[2] != 0x09:
+            return
+        for action, offset, center, signed in self._STATIC_AXIS_MAP:
+            if signed:
+                raw = struct.unpack_from("<h", data, offset)[0]
+            else:
+                raw = struct.unpack_from("<H", data, offset)[0]
+            value = raw - center
+            if abs(value) > self._deadzone:
+                try:
+                    self._queue.put_nowait(AxisSample(action=action, value=value))
+                except queue.Full:
+                    pass
+
+        if data[10] & 0x08:
+            for action, offset in (("L_PAD_X_POS", 16), ("L_PAD_Y_POS", 18)):
+                raw = struct.unpack_from("<h", data, offset)[0]
+                if abs(raw) > self._deadzone:
+                    try:
+                        self._queue.put_nowait(AxisSample(action=action, value=raw))
+                    except queue.Full:
+                        pass
+
+        if data[10] & 0x10:
+            for action, offset in (("R_PAD_X_POS", 20), ("R_PAD_Y_POS", 22)):
+                raw = struct.unpack_from("<h", data, offset)[0]
+                if abs(raw) > self._deadzone:
+                    try:
+                        self._queue.put_nowait(AxisSample(action=action, value=raw))
+                    except queue.Full:
+                        pass
+
+        with self._gyro_lock:
+            if not self._gyro_active:
+                return
+            now = time.monotonic()
+            # cap dt so a delayed first read can't cause a large position jump
+            dt = min(now - self._gyro_last_time, 1.0 / 30.0)
+            self._gyro_last_time = now
+            for action, offset in self._GYRO_OFFSETS:
+                velocity = struct.unpack_from("<h", data, offset)[0]
+                self._gyro_position[action] += velocity * dt
+                pos = max(-32767, min(32767, round(self._gyro_position[action])))
+                self._gyro_position[action] = float(pos)
+                if pos != self._gyro_prev_pos.get(action, 0):
+                    self._gyro_prev_pos[action] = pos
+                    try:
+                        self._queue.put_nowait(AxisSample(action=action, value=pos))
+                    except queue.Full:
+                        pass
+
+    def drain(self) -> dict[str, int]:
+        latest: dict[str, int] = {}
+        while True:
+            try:
+                sample = self._queue.get_nowait()
+                latest[sample.action] = sample.value
+            except queue.Empty:
+                break
+        return latest
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Watch XI2 raw key events and send mapped action events"
@@ -256,6 +427,11 @@ def build_parser() -> argparse.ArgumentParser:
         "--profile-hash",
         default=None,
         help="optional profile hash sent over the network",
+    )
+    parser.add_argument(
+        "--gyro-trigger",
+        default="L4",
+        help="action ID that toggles gyro position mode on/off (default: L4)",
     )
     return parser
 
@@ -376,6 +552,18 @@ def send_action(
     print(f"sent action={action} state={state} seq={seq}")
 
 
+def send_axis(
+    sock: socket.socket,
+    target: tuple[str, int],
+    *,
+    action: str,
+    value: int,
+    seq: int,
+) -> None:
+    payload = encode_axis_event(action=action, value=value, seq=seq)
+    sock.sendto(payload, target)
+
+
 def send_heartbeat(
     sock: socket.socket,
     target: tuple[str, int],
@@ -399,6 +587,7 @@ def run_sender(
     target: str,
     profile_name: str | None,
     profile_hash: str | None,
+    gyro_trigger: str,
 ) -> int:
     try:
         loaded_profile_name, bindings = load_bindings(bindings_path)
@@ -421,55 +610,90 @@ def run_sender(
 
     print_sender_binding_audit(bindings)
     print(f"watching XI2 raw key events for device {device_id} and sending to {target}")
+    print(f"gyro trigger: {gyro_trigger}")
+
+    axis_last_sent: dict[str, float] = {}
+    gyro_enabled = False
 
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
         with TerminalNoEcho():
-            try:
-                selector = selectors.DefaultSelector()
-                selector.register(listener.fileno(), selectors.EVENT_READ)
-                next_heartbeat_at = time.monotonic() + HEARTBEAT_INTERVAL_SECONDS
-                while True:
-                    now = time.monotonic()
-                    timeout = next_select_timeout(
-                        held_keys=held_keys,
-                        block=[],
-                        next_heartbeat_at=next_heartbeat_at,
-                        now=now,
-                    )
-                    events = selector.select(timeout)
-                    if not events:
-                        send_heartbeat(
-                            sock,
-                            resolved_target,
-                            seq=seq,
-                            profile_name=resolved_profile_name,
-                            profile_hash=profile_hash,
+            with HidrawAxisReader() as axis_reader:
+                try:
+                    selector = selectors.DefaultSelector()
+                    selector.register(listener.fileno(), selectors.EVENT_READ)
+                    next_heartbeat_at = time.monotonic() + HEARTBEAT_INTERVAL_SECONDS
+                    while True:
+                        now = time.monotonic()
+                        x11_timeout = next_select_timeout(
+                            held_keys=held_keys,
+                            block=[],
+                            next_heartbeat_at=next_heartbeat_at,
+                            now=now,
                         )
-                        seq += 1
-                        next_heartbeat_at = time.monotonic() + HEARTBEAT_INTERVAL_SECONDS
-                        continue
+                        timeout = (
+                            AXIS_MIN_INTERVAL
+                            if x11_timeout is None
+                            else min(x11_timeout, AXIS_MIN_INTERVAL)
+                        )
+                        events = selector.select(timeout)
+                        now = time.monotonic()
 
-                    parsed = listener.read_event()
-                    while parsed is not None:
-                        event, action = flush_block(parsed, bindings, held_keys)
-                        if event is not None and action is not None:
-                            send_action(
-                                sock,
-                                resolved_target,
-                                action=action,
-                                state=event.state,
-                                seq=seq,
-                                profile_name=resolved_profile_name,
-                                profile_hash=profile_hash,
-                            )
-                            seq += 1
-                            next_heartbeat_at = time.monotonic() + HEARTBEAT_INTERVAL_SECONDS
-                        parsed = listener.read_event()
-                selector.close()
-            except KeyboardInterrupt:
-                print("stopping sender")
-            finally:
-                listener.close()
+                        if not events:
+                            if now >= next_heartbeat_at:
+                                send_heartbeat(
+                                    sock,
+                                    resolved_target,
+                                    seq=seq,
+                                    profile_name=resolved_profile_name,
+                                    profile_hash=profile_hash,
+                                )
+                                seq += 1
+                                next_heartbeat_at = now + HEARTBEAT_INTERVAL_SECONDS
+                        else:
+                            parsed = listener.read_event()
+                            while parsed is not None:
+                                event, action = flush_block(parsed, bindings, held_keys)
+                                if event is not None and action is not None:
+                                    if action == gyro_trigger and event.state == "down":
+                                        gyro_enabled = not gyro_enabled
+                                        if gyro_enabled:
+                                            axis_reader.enable_gyro()
+                                            print("gyro on")
+                                        else:
+                                            axis_reader.disable_gyro()
+                                            print("gyro off")
+                                    send_action(
+                                        sock,
+                                        resolved_target,
+                                        action=action,
+                                        state=event.state,
+                                        seq=seq,
+                                        profile_name=resolved_profile_name,
+                                        profile_hash=profile_hash,
+                                    )
+                                    seq += 1
+                                    next_heartbeat_at = now + HEARTBEAT_INTERVAL_SECONDS
+                                parsed = listener.read_event()
+
+                        for axis_action, value in axis_reader.drain().items():
+                            last_sent = axis_last_sent.get(axis_action, 0.0)
+                            if now - last_sent >= AXIS_MIN_INTERVAL:
+                                send_axis(
+                                    sock,
+                                    resolved_target,
+                                    action=axis_action,
+                                    value=value,
+                                    seq=seq,
+                                )
+                                seq += 1
+                                axis_last_sent[axis_action] = now
+                                next_heartbeat_at = now + HEARTBEAT_INTERVAL_SECONDS
+
+                    selector.close()
+                except KeyboardInterrupt:
+                    print("stopping sender")
+                finally:
+                    listener.close()
     return 0
 
 
@@ -483,6 +707,7 @@ def main(argv: list[str] | None = None) -> int:
         target=args.target,
         profile_name=args.profile_name,
         profile_hash=args.profile_hash,
+        gyro_trigger=args.gyro_trigger,
     )
 
 

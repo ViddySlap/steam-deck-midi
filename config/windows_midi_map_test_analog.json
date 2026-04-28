@@ -1,0 +1,72 @@
+{
+  "analog_settings": {
+    "update_hz": 60,
+    "deadzone": 1000,
+    "curve": "linear"
+  },
+  "mappings": {
+    "L_STICK_X_AXIS": {
+      "type": "axis_to_cc",
+      "channel": 0,
+      "cc": 100,
+      "input_range": [-32767, 32767],
+      "output_range": [0, 127],
+      "deadzone": 3000,
+      "curve": "linear"
+    },
+    "L_STICK_Y_AXIS": {
+      "type": "axis_to_cc",
+      "channel": 0,
+      "cc": 101,
+      "input_range": [-32767, 32767],
+      "output_range": [0, 127],
+      "deadzone": 3000,
+      "curve": "linear"
+    },
+    "L_TRIGGER_PRESSURE": {
+      "type": "axis_to_cc",
+      "channel": 0,
+      "cc": 20,
+      "input_range": [3000, 32767],
+      "output_range": [0, 127],
+      "deadzone": 1000,
+      "curve": "linear"
+    },
+    "R_TRIGGER_PRESSURE": {
+      "type": "axis_to_cc",
+      "channel": 0,
+      "cc": 21,
+      "input_range": [3000, 32767],
+      "output_range": [0, 127],
+      "deadzone": 1000,
+      "curve": "linear"
+    },
+    "GYRO_PITCH": {
+      "type": "axis_to_cc",
+      "channel": 0,
+      "cc": 22,
+      "input_range": [-750, 750],
+      "output_range": [0, 127],
+      "deadzone": 100,
+      "curve": "linear"
+    },
+    "GYRO_YAW": {
+      "type": "axis_to_cc",
+      "channel": 0,
+      "cc": 23,
+      "input_range": [-750, 750],
+      "output_range": [0, 127],
+      "deadzone": 100,
+      "curve": "linear"
+    },
+    "GYRO_ROLL": {
+      "type": "axis_to_cc",
+      "channel": 0,
+      "cc": 24,
+      "input_range": [-750, 750],
+      "output_range": [0, 127],
+      "deadzone": 100,
+      "curve": "linear"
+    }
+  }
+}

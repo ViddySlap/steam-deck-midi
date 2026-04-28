@@ -3,12 +3,19 @@
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 
 class ConfigError(ValueError):
     """Raised when the Windows MIDI map is invalid."""
+
+
+@dataclass(frozen=True)
+class AnalogSettings:
+    update_hz: float = 60.0
+    deadzone: int = 1000
+    curve: str = "linear"
 
 
 @dataclass(frozen=True)
@@ -76,12 +83,25 @@ class StagedNoteMacroMapping:
     refresh_actions: tuple[str, ...] = ()
 
 
+@dataclass(frozen=True)
+class AxisToCCMapping:
+    action: str
+    kind: str
+    channel: int
+    cc: int
+    input_range: tuple[int, int]
+    output_range: tuple[int, int]
+    deadzone: int
+    curve: str
+
+
 MidiMapping = (
     NoteMapping
     | ControlChangeMapping
     | MacroCCMapping
     | RelativeCCMapping
     | StagedNoteMacroMapping
+    | AxisToCCMapping
 )
 
 
@@ -89,6 +109,7 @@ MidiMapping = (
 class ReceiverConfig:
     mappings: dict[str, MidiMapping]
     macro_settings: MacroSettings
+    analog_settings: AnalogSettings = field(default_factory=AnalogSettings)
 
 
 def load_midi_map(path: str | Path) -> ReceiverConfig:
@@ -105,6 +126,7 @@ def load_midi_map(path: str | Path) -> ReceiverConfig:
         raise ConfigError("mapping file must contain an object at 'mappings'")
 
     macro_settings = _parse_macro_settings(raw.get("macro_settings"))
+    analog_settings = _parse_analog_settings(raw.get("analog_settings"))
 
     validated: dict[str, MidiMapping] = {}
     for action, spec in mappings.items():
@@ -114,7 +136,11 @@ def load_midi_map(path: str | Path) -> ReceiverConfig:
             raise ConfigError(f"mapping for {action} must be an object")
         validated[action] = _parse_mapping(action, spec)
 
-    return ReceiverConfig(mappings=validated, macro_settings=macro_settings)
+    return ReceiverConfig(
+        mappings=validated,
+        macro_settings=macro_settings,
+        analog_settings=analog_settings,
+    )
 
 
 def _parse_macro_settings(spec: object) -> MacroSettings:
@@ -150,6 +176,20 @@ def _parse_macro_settings(spec: object) -> MacroSettings:
         modifier_hold_ms=modifier_hold_ms,
         layer_refresh_ms=layer_refresh_ms,
     )
+
+
+def _parse_analog_settings(spec: object) -> AnalogSettings:
+    if spec is None:
+        return AnalogSettings()
+    if not isinstance(spec, dict):
+        raise ConfigError("analog_settings must be an object")
+
+    update_hz = _read_positive_number(spec, "update_hz", default=60.0)
+    deadzone = _read_non_negative_int(spec, "deadzone", default=1000)
+    curve = spec.get("curve", "linear")
+    if curve not in {"linear", "quadratic", "s_curve"}:
+        raise ConfigError("analog_settings curve must be 'linear', 'quadratic', or 's_curve'")
+    return AnalogSettings(update_hz=update_hz, deadzone=deadzone, curve=curve)
 
 
 def _parse_mapping(action: str, spec: dict[str, object]) -> MidiMapping:
@@ -225,11 +265,34 @@ def _parse_mapping(action: str, spec: dict[str, object]) -> MidiMapping:
             velocity=velocity,
             refresh_actions=tuple(refresh_actions),
         )
+    if kind == "axis_to_cc":
+        channel = _read_byte(spec, "channel", maximum=15, default=0)
+        cc = _read_byte(spec, "cc")
+        input_range = _read_int_pair(spec, "input_range")
+        output_range = _read_int_pair(spec, "output_range")
+        if output_range[0] < 0 or output_range[1] > 127:
+            raise ConfigError(f"output_range for {action} must be within [0, 127]")
+        deadzone = _read_non_negative_int(spec, "deadzone", default=1000)
+        curve = spec.get("curve", "linear")
+        if curve not in {"linear", "quadratic", "s_curve"}:
+            raise ConfigError(
+                f"mapping for {action} curve must be 'linear', 'quadratic', or 's_curve'"
+            )
+        return AxisToCCMapping(
+            action=action,
+            kind="axis_to_cc",
+            channel=channel,
+            cc=cc,
+            input_range=input_range,
+            output_range=output_range,
+            deadzone=deadzone,
+            curve=curve,
+        )
     raise ConfigError(
         "mapping for"
         " "
-        f"{action} must have type 'note', 'cc', 'macro_cc', 'relative_cc', or"
-        " 'staged_note_macro'"
+        f"{action} must have type 'note', 'cc', 'macro_cc', 'relative_cc',"
+        " 'staged_note_macro', or 'axis_to_cc'"
     )
 
 
@@ -287,3 +350,34 @@ def _read_string_list(
     if not isinstance(value, list) or not all(isinstance(item, str) and item for item in value):
         raise ConfigError(f"{key} must be a list of non-empty strings")
     return list(value)
+
+
+def _read_non_negative_int(
+    spec: dict[str, object],
+    key: str,
+    *,
+    default: int,
+) -> int:
+    value = spec.get(key, default)
+    if not isinstance(value, int):
+        raise ConfigError(f"{key} must be an integer")
+    if value < 0:
+        raise ConfigError(f"{key} must be non-negative")
+    return value
+
+
+def _read_int_pair(
+    spec: dict[str, object],
+    key: str,
+) -> tuple[int, int]:
+    value = spec.get(key)
+    if (
+        not isinstance(value, list)
+        or len(value) != 2
+        or not all(isinstance(v, int) for v in value)
+    ):
+        raise ConfigError(f"{key} must be a list of two integers")
+    lo, hi = value
+    if lo >= hi:
+        raise ConfigError(f"{key} lower bound must be less than upper bound")
+    return lo, hi
