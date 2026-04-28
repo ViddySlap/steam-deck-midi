@@ -1,4 +1,4 @@
-"""Interactive CLI wizard for capturing Deck keycodes from `xinput test`."""
+"""Interactive CLI wizard for capturing Deck keycodes via X11 XI2 raw events."""
 
 from __future__ import annotations
 
@@ -7,12 +7,13 @@ import json
 import os
 import re
 import selectors
-import subprocess
 import sys
 import tempfile
 import termios
 import tty
 from dataclasses import dataclass
+
+from deck.xinput_send import Xi2RawListener
 
 
 KEY_PRESS_RE = re.compile(r"^key press\s+(\d+)$")
@@ -219,14 +220,10 @@ def _run_relearn(
             while True:
                 for key, _ in selector.select():
                     if key.data == "xinput":
-                        line = key.fileobj.readline()
-                        if line == "":
-                            print("\nxinput test exited unexpectedly.")
-                            return 2
-                        parsed = parse_key_press(line)
-                        if parsed is None:
+                        xi_event = key.fileobj.read_event()
+                        if xi_event is None or xi_event.state != "down":
                             continue
-                        candidate = parsed
+                        candidate = LearnCandidate(token=xi_event.keycode)
                         duplicate = find_duplicate_action(bindings, candidate.token)
                         print(
                             f"Latest candidate for {action}: keycode {candidate.token} — press Enter to commit"
@@ -284,13 +281,10 @@ def _run_full_learn(
             while action_index < len(actions):
                 for key, _ in selector.select():
                     if key.data == "xinput":
-                        line = key.fileobj.readline()
-                        if line == "":
-                            raise RuntimeError("xinput test exited unexpectedly")
-                        parsed = parse_key_press(line)
-                        if parsed is None:
+                        xi_event = key.fileobj.read_event()
+                        if xi_event is None or xi_event.state != "down":
                             continue
-                        candidate = parsed
+                        candidate = LearnCandidate(token=xi_event.keycode)
                         duplicate_action = find_duplicate_action(
                             bindings, candidate.token
                         )
@@ -386,21 +380,14 @@ def main(argv: list[str] | None = None) -> int:
                 relearn_action = menu_result
 
     try:
-        process = subprocess.Popen(
-            ["xinput", "test", str(args.device_id)],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            text=True,
-            bufsize=1,
-        )
+        listener = Xi2RawListener(int(args.device_id))
     except OSError as exc:
-        parser.error(f"failed to start xinput: {exc}")
+        parser.error(f"failed to open X11 display: {exc}")
         return 2
 
     selector = selectors.DefaultSelector()
     selector.register(sys.stdin, selectors.EVENT_READ, "stdin")
-    assert process.stdout is not None
-    selector.register(process.stdout, selectors.EVENT_READ, "xinput")
+    selector.register(listener, selectors.EVENT_READ, "xinput")
 
     try:
         if relearn_action is not None:
@@ -416,11 +403,7 @@ def main(argv: list[str] | None = None) -> int:
         )
     finally:
         selector.close()
-        process.terminate()
-        try:
-            process.wait(timeout=2)
-        except subprocess.TimeoutExpired:
-            process.kill()
+        listener.close()
 
 
 if __name__ == "__main__":
