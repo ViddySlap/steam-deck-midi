@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -9,7 +10,9 @@ from deck.local_config import (
     load_runtime_settings,
     validate_ipv4_address,
     with_added_preset,
+    with_deleted_preset,
     with_device_id,
+    with_renamed_preset,
 )
 
 
@@ -71,6 +74,64 @@ class DeckLocalConfigTests(unittest.TestCase):
             updated = with_device_id(settings, "5")
 
             self.assertEqual(updated.device_id, "5")
+
+    def _settings_with_presets(self, tmpdir: str, presets: list) -> object:
+        path = Path(tmpdir) / "settings.json"
+        payload = {
+            "device_id": "5",
+            "bindings_path": "config/deck_bindings.json",
+            "actions_path": "config/actions.yaml",
+            "default_port": 45123,
+            "profile_name": "default",
+            "profile_hash": None,
+            "presets": presets,
+        }
+        path.write_text(json.dumps(payload), encoding="utf-8")
+        return load_runtime_settings(str(path))
+
+    def test_with_renamed_preset_updates_name(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            settings = self._settings_with_presets(
+                tmpdir, [{"name": "Home", "host": "10.10.10.15", "port": 45123}]
+            )
+            updated = with_renamed_preset(settings, 0, "Studio")
+        self.assertEqual(updated.presets[0].name, "Studio")
+        self.assertEqual(updated.presets[0].host, "10.10.10.15")
+
+    def test_with_renamed_preset_rejects_empty_name(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            settings = self._settings_with_presets(
+                tmpdir, [{"name": "Home", "host": "10.10.10.15", "port": 45123}]
+            )
+            with self.assertRaises(ValueError):
+                with_renamed_preset(settings, 0, "")
+
+    def test_with_renamed_preset_rejects_out_of_range_index(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            settings = self._settings_with_presets(
+                tmpdir, [{"name": "Home", "host": "10.10.10.15", "port": 45123}]
+            )
+            with self.assertRaises(ValueError):
+                with_renamed_preset(settings, 5, "New Name")
+
+    def test_with_deleted_preset_removes_entry(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            settings = self._settings_with_presets(
+                tmpdir,
+                [
+                    {"name": "Home", "host": "10.10.10.15", "port": 45123},
+                    {"name": "Studio", "host": "10.10.10.20", "port": 45123},
+                ],
+            )
+            updated = with_deleted_preset(settings, 0)
+        self.assertEqual(len(updated.presets), 1)
+        self.assertEqual(updated.presets[0].name, "Studio")
+
+    def test_with_deleted_preset_rejects_out_of_range_index(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            settings = self._settings_with_presets(tmpdir, [])
+            with self.assertRaises(ValueError):
+                with_deleted_preset(settings, 0)
 
     def test_with_added_preset_appends_preset(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
