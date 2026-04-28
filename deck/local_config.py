@@ -175,6 +175,44 @@ def with_added_preset(
     )
 
 
+def with_renamed_preset(
+    settings: DeckRuntimeSettings, index: int, name: str
+) -> DeckRuntimeSettings:
+    normalized = name.strip()
+    if not normalized:
+        raise ValueError("preset name must be a non-empty string")
+    if not (0 <= index < len(settings.presets)):
+        raise ValueError(f"preset index out of range: {index}")
+    updated = list(settings.presets)
+    updated[index] = TargetPreset(
+        name=normalized, host=updated[index].host, port=updated[index].port
+    )
+    return DeckRuntimeSettings(
+        device_id=settings.device_id,
+        bindings_path=settings.bindings_path,
+        actions_path=settings.actions_path,
+        default_port=settings.default_port,
+        profile_name=settings.profile_name,
+        profile_hash=settings.profile_hash,
+        presets=updated,
+    )
+
+
+def with_deleted_preset(settings: DeckRuntimeSettings, index: int) -> DeckRuntimeSettings:
+    if not (0 <= index < len(settings.presets)):
+        raise ValueError(f"preset index out of range: {index}")
+    updated = [p for i, p in enumerate(settings.presets) if i != index]
+    return DeckRuntimeSettings(
+        device_id=settings.device_id,
+        bindings_path=settings.bindings_path,
+        actions_path=settings.actions_path,
+        default_port=settings.default_port,
+        profile_name=settings.profile_name,
+        profile_hash=settings.profile_hash,
+        presets=updated,
+    )
+
+
 def get_xinput_list_output() -> str:
     try:
         result = subprocess.run(

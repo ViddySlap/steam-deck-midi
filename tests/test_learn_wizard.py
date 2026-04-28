@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -8,6 +9,7 @@ from deck.learn_wizard import (
     find_duplicate_action,
     is_skip_input,
     load_actions,
+    load_existing_bindings,
     parse_key_press,
     write_bindings,
 )
@@ -60,6 +62,38 @@ class SkipInputTests(unittest.TestCase):
 
     def test_ignores_enter(self) -> None:
         self.assertFalse(is_skip_input(b"\n"))
+
+
+class LoadExistingBindingsTests(unittest.TestCase):
+    def test_loads_action_to_token_map_from_file(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "deck_bindings.json"
+            path.write_text(
+                json.dumps(
+                    {"profile_name": "default", "bindings": {"14": "BTN_A", "15": "BTN_B"}}
+                ),
+                encoding="utf-8",
+            )
+            bindings = load_existing_bindings(str(path))
+        self.assertEqual(bindings, {"BTN_A": "14", "BTN_B": "15"})
+
+    def test_returns_empty_dict_for_missing_file(self) -> None:
+        bindings = load_existing_bindings("/nonexistent/path/deck_bindings.json")
+        self.assertEqual(bindings, {})
+
+    def test_returns_empty_dict_for_invalid_json(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "deck_bindings.json"
+            path.write_text("not json", encoding="utf-8")
+            bindings = load_existing_bindings(str(path))
+        self.assertEqual(bindings, {})
+
+    def test_returns_empty_dict_when_bindings_key_missing(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "deck_bindings.json"
+            path.write_text(json.dumps({"profile_name": "default"}), encoding="utf-8")
+            bindings = load_existing_bindings(str(path))
+        self.assertEqual(bindings, {})
 
 
 class WriteBindingsTests(unittest.TestCase):

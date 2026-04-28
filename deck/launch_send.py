@@ -11,6 +11,8 @@ from deck.local_config import (
     ensure_local_settings,
     save_runtime_settings,
     with_added_preset,
+    with_deleted_preset,
+    with_renamed_preset,
 )
 from deck.xinput_send import run_sender
 
@@ -47,6 +49,65 @@ def prompt_new_preset(settings_path: str, settings):
         return updated
 
 
+def prompt_rename_preset(settings_path: str, settings):
+    if not settings.presets:
+        print("No presets to rename.")
+        return settings
+    print("")
+    print("Rename Preset")
+    for index, preset in enumerate(settings.presets, start=1):
+        print(describe_preset(index, preset))
+    while True:
+        choice = input(f"Rename which preset? (1-{len(settings.presets)}): ").strip()
+        try:
+            selected = int(choice)
+        except ValueError:
+            print("Invalid selection.")
+            continue
+        if not (1 <= selected <= len(settings.presets)):
+            print("Invalid selection.")
+            continue
+        old_name = settings.presets[selected - 1].name
+        new_name = input(f"New name for '{old_name}': ").strip()
+        try:
+            updated = with_renamed_preset(settings, selected - 1, new_name)
+        except ValueError as exc:
+            print(f"Error: {exc}")
+            continue
+        save_runtime_settings(settings_path, updated)
+        print(f"Renamed to: {updated.presets[selected - 1].name}")
+        return updated
+
+
+def prompt_delete_preset(settings_path: str, settings):
+    if not settings.presets:
+        print("No presets to delete.")
+        return settings
+    print("")
+    print("Delete Preset")
+    for index, preset in enumerate(settings.presets, start=1):
+        print(describe_preset(index, preset))
+    while True:
+        choice = input(f"Delete which preset? (1-{len(settings.presets)}): ").strip()
+        try:
+            selected = int(choice)
+        except ValueError:
+            print("Invalid selection.")
+            continue
+        if not (1 <= selected <= len(settings.presets)):
+            print("Invalid selection.")
+            continue
+        preset = settings.presets[selected - 1]
+        confirm = input(f"Delete '{preset.name}'? (y/n): ").strip().lower()
+        if confirm != "y":
+            print("Cancelled.")
+            return settings
+        updated = with_deleted_preset(settings, selected - 1)
+        save_runtime_settings(settings_path, updated)
+        print(f"Deleted: {preset.name}")
+        return updated
+
+
 def prompt_for_preset(settings_path: str, settings, device_id: str):
     while True:
         print("")
@@ -62,6 +123,9 @@ def prompt_for_preset(settings_path: str, settings, device_id: str):
             print("No presets saved yet.")
         create_index = len(settings.presets) + 1
         print(f"{create_index}. Create new preset")
+        if settings.presets:
+            print("r. Rename a preset")
+            print("d. Delete a preset")
         print("q. Quit")
         print("")
 
@@ -70,6 +134,12 @@ def prompt_for_preset(settings_path: str, settings, device_id: str):
             return None, settings
         if choice == str(create_index):
             settings = prompt_new_preset(settings_path, settings)
+            continue
+        if choice == "r" and settings.presets:
+            settings = prompt_rename_preset(settings_path, settings)
+            continue
+        if choice == "d" and settings.presets:
+            settings = prompt_delete_preset(settings_path, settings)
             continue
         try:
             selected_index = int(choice)
