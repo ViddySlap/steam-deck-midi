@@ -6,6 +6,8 @@ import unittest
 from pathlib import Path
 
 from windows.config import (
+    AnalogSettings,
+    AxisToCCMapping,
     ConfigError,
     ControlChangeMapping,
     MacroCCMapping,
@@ -74,6 +76,117 @@ class LoadMidiMapTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             path = Path(tmpdir) / "map.json"
             path.write_text(json.dumps({"bad": {}}), encoding="utf-8")
+            with self.assertRaises(ConfigError):
+                load_midi_map(path)
+
+    def test_loads_default_analog_settings_when_absent(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "map.json"
+            path.write_text(json.dumps({"mappings": {}}), encoding="utf-8")
+            config = load_midi_map(path)
+        self.assertEqual(config.analog_settings.update_hz, 60.0)
+        self.assertEqual(config.analog_settings.deadzone, 1000)
+        self.assertEqual(config.analog_settings.curve, "linear")
+
+    def test_loads_axis_to_cc_mapping(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "map.json"
+            path.write_text(
+                json.dumps(
+                    {
+                        "analog_settings": {"update_hz": 30.0, "deadzone": 500},
+                        "mappings": {
+                            "L_STICK_X_AXIS": {
+                                "type": "axis_to_cc",
+                                "channel": 0,
+                                "cc": 100,
+                                "input_range": [-32767, 32767],
+                                "output_range": [0, 127],
+                                "deadzone": 2000,
+                                "curve": "linear",
+                            }
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+            config = load_midi_map(path)
+        self.assertEqual(config.analog_settings.update_hz, 30.0)
+        self.assertEqual(config.analog_settings.deadzone, 500)
+        mapping = config.mappings["L_STICK_X_AXIS"]
+        self.assertIsInstance(mapping, AxisToCCMapping)
+        self.assertEqual(mapping.cc, 100)
+        self.assertEqual(mapping.input_range, (-32767, 32767))
+        self.assertEqual(mapping.output_range, (0, 127))
+        self.assertEqual(mapping.deadzone, 2000)
+        self.assertEqual(mapping.curve, "linear")
+
+    def test_axis_to_cc_defaults_deadzone_and_curve(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "map.json"
+            path.write_text(
+                json.dumps(
+                    {
+                        "mappings": {
+                            "R_TRIGGER_PRESSURE": {
+                                "type": "axis_to_cc",
+                                "channel": 0,
+                                "cc": 20,
+                                "input_range": [0, 32767],
+                                "output_range": [0, 127],
+                            }
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+            config = load_midi_map(path)
+        mapping = config.mappings["R_TRIGGER_PRESSURE"]
+        self.assertIsInstance(mapping, AxisToCCMapping)
+        self.assertEqual(mapping.deadzone, 1000)
+        self.assertEqual(mapping.curve, "linear")
+
+    def test_rejects_axis_to_cc_with_inverted_input_range(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "map.json"
+            path.write_text(
+                json.dumps(
+                    {
+                        "mappings": {
+                            "L_STICK_X_AXIS": {
+                                "type": "axis_to_cc",
+                                "channel": 0,
+                                "cc": 100,
+                                "input_range": [32767, -32767],
+                                "output_range": [0, 127],
+                            }
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaises(ConfigError):
+                load_midi_map(path)
+
+    def test_rejects_axis_to_cc_with_output_range_exceeding_midi_bounds(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "map.json"
+            path.write_text(
+                json.dumps(
+                    {
+                        "mappings": {
+                            "L_STICK_X_AXIS": {
+                                "type": "axis_to_cc",
+                                "channel": 0,
+                                "cc": 100,
+                                "input_range": [-32767, 32767],
+                                "output_range": [0, 200],
+                            }
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
             with self.assertRaises(ConfigError):
                 load_midi_map(path)
 

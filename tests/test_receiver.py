@@ -3,6 +3,7 @@ from __future__ import annotations
 import unittest
 
 from windows.config import (
+    AxisToCCMapping,
     ControlChangeMapping,
     MacroCCMapping,
     MacroSettings,
@@ -12,7 +13,7 @@ from windows.config import (
 )
 from windows.receiver import ActionReceiver
 from windows.midi import MidiControlChange, MidiError
-from protocol.messages import encode_heartbeat_event
+from protocol.messages import encode_axis_event, encode_heartbeat_event
 
 
 class FakeMidiOut:
@@ -1381,3 +1382,244 @@ class ServeForeverFeedbackTests(unittest.TestCase):
         _drain_midi_feedback(receiver, FakeMidiIn())
 
         self.assertEqual(receiver._macro_values[(0, 20)], 99)
+
+
+class AxisToCCReceiverTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.midi = FakeMidiOut()
+        self.addr = ("10.10.10.2", 45123)
+
+    def _make_receiver(
+        self,
+        *,
+        cc: int = 100,
+        input_range: tuple[int, int] = (-32767, 32767),
+        output_range: tuple[int, int] = (0, 127),
+        deadzone: int = 1000,
+    ) -> ActionReceiver:
+        mapping = AxisToCCMapping(
+            action="L_STICK_X_AXIS",
+            kind="axis_to_cc",
+            channel=0,
+            cc=cc,
+            input_range=input_range,
+            output_range=output_range,
+            deadzone=deadzone,
+            curve="linear",
+        )
+        return ActionReceiver(self.midi, {"L_STICK_X_AXIS": mapping}, timeout_seconds=1.0)
+
+    def test_full_right_deflection_maps_to_output_max(self) -> None:
+        receiver = self._make_receiver()
+        receiver.handle_datagram(
+            encode_axis_event(action="L_STICK_X_AXIS", value=32767, seq=1),
+            self.addr,
+            now=0.0,
+        )
+        self.assertEqual(self.midi.calls, [("cc", 0, 100, 127)])
+
+    def test_full_left_deflection_maps_to_output_min(self) -> None:
+        receiver = self._make_receiver()
+        receiver.handle_datagram(
+            encode_axis_event(action="L_STICK_X_AXIS", value=-32767, seq=1),
+            self.addr,
+            now=0.0,
+        )
+        self.assertEqual(self.midi.calls, [("cc", 0, 100, 0)])
+
+    def test_near_center_value_maps_to_output_midpoint(self) -> None:
+        receiver = self._make_receiver(deadzone=0)
+        receiver.handle_datagram(
+            encode_axis_event(action="L_STICK_X_AXIS", value=1, seq=1),
+            self.addr,
+            now=0.0,
+        )
+        self.assertEqual(len(self.midi.calls), 1)
+        _, _ch, _cc, value = self.midi.calls[0]
+        self.assertAlmostEqual(value, 64, delta=1)
+
+    def test_value_within_deadzone_does_not_emit(self) -> None:
+        receiver = self._make_receiver(deadzone=1000)
+        receiver.handle_datagram(
+            encode_axis_event(action="L_STICK_X_AXIS", value=500, seq=1),
+            self.addr,
+            now=0.0,
+        )
+        self.assertEqual(self.midi.calls, [])
+
+    def test_negative_value_within_deadzone_does_not_emit(self) -> None:
+        receiver = self._make_receiver(deadzone=1000)
+        receiver.handle_datagram(
+            encode_axis_event(action="L_STICK_X_AXIS", value=-999, seq=1),
+            self.addr,
+            now=0.0,
+        )
+        self.assertEqual(self.midi.calls, [])
+
+    def test_value_just_outside_deadzone_does_emit(self) -> None:
+        receiver = self._make_receiver(deadzone=1000)
+        receiver.handle_datagram(
+            encode_axis_event(action="L_STICK_X_AXIS", value=1001, seq=1),
+            self.addr,
+            now=0.0,
+        )
+        self.assertEqual(len(self.midi.calls), 1)
+        self.assertEqual(self.midi.calls[0][0], "cc")
+
+    def test_value_exceeding_input_range_is_clamped_to_output_max(self) -> None:
+        receiver = self._make_receiver()
+        receiver.handle_datagram(
+            encode_axis_event(action="L_STICK_X_AXIS", value=99999, seq=1),
+            self.addr,
+            now=0.0,
+        )
+        self.assertEqual(len(self.midi.calls), 1)
+        self.assertEqual(self.midi.calls[0][3], 127)
+
+    def test_restricted_output_range_is_respected(self) -> None:
+        receiver = self._make_receiver(output_range=(20, 100), deadzone=0)
+        receiver.handle_datagram(
+            encode_axis_event(action="L_STICK_X_AXIS", value=32767, seq=1),
+            self.addr,
+            now=0.0,
+        )
+        self.assertEqual(self.midi.calls[0][3], 100)
+        self.midi.calls.clear()
+        receiver.handle_datagram(
+            encode_axis_event(action="L_STICK_X_AXIS", value=-32767, seq=2),
+            self.addr,
+            now=0.1,
+        )
+        self.assertEqual(self.midi.calls[0][3], 20)
+
+    def test_trigger_maps_linearly_from_zero_to_max(self) -> None:
+        mapping = AxisToCCMapping(
+            action="R_TRIGGER_PRESSURE",
+            kind="axis_to_cc",
+            channel=0,
+            cc=20,
+            input_range=(0, 32767),
+            output_range=(0, 127),
+            deadzone=1000,
+            curve="linear",
+        )
+        receiver = ActionReceiver(
+            self.midi, {"R_TRIGGER_PRESSURE": mapping}, timeout_seconds=1.0
+        )
+        receiver.handle_datagram(
+            encode_axis_event(action="R_TRIGGER_PRESSURE", value=32767, seq=1),
+            self.addr,
+            now=0.0,
+        )
+        self.assertEqual(self.midi.calls, [("cc", 0, 20, 127)])
+
+    def test_axis_cancels_active_macro_cc_fade_on_same_cc(self) -> None:
+        midi = FakeMidiOut()
+        receiver = ActionReceiver(
+            midi,
+            {
+                "DPAD_DOWN_LONG_PRESS": MacroCCMapping(
+                    action="DPAD_DOWN_LONG_PRESS",
+                    kind="macro_cc",
+                    channel=0,
+                    cc=100,
+                    gesture="long_press",
+                ),
+                "L_STICK_X_AXIS": AxisToCCMapping(
+                    action="L_STICK_X_AXIS",
+                    kind="axis_to_cc",
+                    channel=0,
+                    cc=100,
+                    input_range=(-32767, 32767),
+                    output_range=(0, 127),
+                    deadzone=1000,
+                    curve="linear",
+                ),
+            },
+            timeout_seconds=1.0,
+            macro_settings=MacroSettings(fade_duration_seconds=2.0, update_hz=10),
+        )
+        addr = ("10.10.10.2", 45123)
+
+        receiver.handle_datagram(
+            b'{"action":"DPAD_DOWN_LONG_PRESS","state":"down","seq":1}', addr, now=0.0
+        )
+        self.assertIn((0, 100), receiver._active_macro_fades)
+
+        receiver.handle_datagram(
+            encode_axis_event(action="L_STICK_X_AXIS", value=20000, seq=2),
+            addr,
+            now=0.1,
+        )
+        self.assertNotIn((0, 100), receiver._active_macro_fades)
+
+    def test_axis_cc_holds_last_value_on_sender_timeout(self) -> None:
+        receiver = self._make_receiver()
+
+        receiver.handle_datagram(
+            encode_axis_event(action="L_STICK_X_AXIS", value=20000, seq=1),
+            self.addr,
+            now=0.0,
+        )
+        cc_calls_before = [c for c in self.midi.calls if c[0] == "cc" and c[2] == 100]
+        self.assertEqual(len(cc_calls_before), 1)
+
+        timed_out = receiver.check_timeouts(now=2.0)
+        self.assertTrue(timed_out)
+
+        cc_calls_after = [c for c in self.midi.calls if c[0] == "cc" and c[2] == 100]
+        self.assertEqual(cc_calls_after, cc_calls_before)
+
+    def test_returning_to_deadzone_after_active_snaps_to_center(self) -> None:
+        receiver = self._make_receiver(deadzone=1000)
+        receiver.handle_datagram(
+            encode_axis_event(action="L_STICK_X_AXIS", value=20000, seq=1),
+            self.addr,
+            now=0.0,
+        )
+        self.midi.calls.clear()
+        handled = receiver.handle_datagram(
+            encode_axis_event(action="L_STICK_X_AXIS", value=500, seq=2),
+            self.addr,
+            now=0.1,
+        )
+        self.assertTrue(handled)
+        self.assertEqual(len(self.midi.calls), 1)
+        _, _ch, _cc, cc_value = self.midi.calls[0]
+        self.assertAlmostEqual(cc_value, 64, delta=1)
+
+    def test_deadzone_entry_without_prior_activity_does_not_snap(self) -> None:
+        receiver = self._make_receiver(deadzone=1000)
+        handled = receiver.handle_datagram(
+            encode_axis_event(action="L_STICK_X_AXIS", value=500, seq=1),
+            self.addr,
+            now=0.0,
+        )
+        self.assertFalse(handled)
+        self.assertEqual(self.midi.calls, [])
+
+    def test_snap_to_center_uses_mapping_output_range_midpoint(self) -> None:
+        receiver = self._make_receiver(output_range=(20, 100), deadzone=1000)
+        receiver.handle_datagram(
+            encode_axis_event(action="L_STICK_X_AXIS", value=20000, seq=1),
+            self.addr,
+            now=0.0,
+        )
+        self.midi.calls.clear()
+        receiver.handle_datagram(
+            encode_axis_event(action="L_STICK_X_AXIS", value=500, seq=2),
+            self.addr,
+            now=0.1,
+        )
+        _, _ch, _cc, cc_value = self.midi.calls[0]
+        self.assertAlmostEqual(cc_value, 60, delta=1)
+
+    def test_axis_event_with_no_mapping_returns_false(self) -> None:
+        receiver = self._make_receiver()
+        handled = receiver.handle_datagram(
+            encode_axis_event(action="R_STICK_Y_AXIS", value=20000, seq=1),
+            self.addr,
+            now=0.0,
+        )
+        self.assertFalse(handled)
+        self.assertEqual(self.midi.calls, [])

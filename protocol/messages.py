@@ -8,7 +8,7 @@ from typing import TypeAlias
 
 
 VALID_STATES = {"down", "up"}
-VALID_KINDS = {"action", "heartbeat"}
+VALID_KINDS = {"action", "heartbeat", "axis"}
 
 
 class ProtocolError(ValueError):
@@ -33,7 +33,15 @@ class HeartbeatEvent:
     profile_hash: str | None = None
 
 
-ProtocolEvent: TypeAlias = ActionEvent | HeartbeatEvent
+@dataclass(frozen=True)
+class AxisEvent:
+    kind: str
+    action: str
+    value: int
+    seq: int
+
+
+ProtocolEvent: TypeAlias = ActionEvent | HeartbeatEvent | AxisEvent
 
 
 def encode_action_event(
@@ -56,6 +64,23 @@ def encode_action_event(
         payload["profile_name"] = profile_name
     if profile_hash is not None:
         payload["profile_hash"] = profile_hash
+    return json.dumps(payload, separators=(",", ":")).encode("utf-8")
+
+
+def encode_axis_event(
+    *,
+    action: str,
+    value: int,
+    seq: int,
+) -> bytes:
+    """Encode an AxisEvent payload for network transport."""
+
+    payload: dict[str, str | int] = {
+        "kind": "axis",
+        "action": action,
+        "value": value,
+        "seq": seq,
+    }
     return json.dumps(payload, separators=(",", ":")).encode("utf-8")
 
 
@@ -97,7 +122,7 @@ def parse_action_event(payload: bytes) -> ProtocolEvent:
     profile_hash = raw.get("profile_hash")
 
     if not isinstance(kind, str) or kind not in VALID_KINDS:
-        raise ProtocolError("kind must be 'action' or 'heartbeat'")
+        raise ProtocolError("kind must be 'action', 'heartbeat', or 'axis'")
     if not isinstance(seq, int) or seq < 0:
         raise ProtocolError("seq must be a non-negative integer")
     if profile_name is not None and not isinstance(profile_name, str):
@@ -112,6 +137,14 @@ def parse_action_event(payload: bytes) -> ProtocolEvent:
             profile_name=profile_name,
             profile_hash=profile_hash,
         )
+
+    if kind == "axis":
+        if not isinstance(action, str) or not action:
+            raise ProtocolError("action must be a non-empty string")
+        value = raw.get("value")
+        if not isinstance(value, int):
+            raise ProtocolError("value must be an integer for axis events")
+        return AxisEvent(kind=kind, action=action, value=value, seq=seq)
 
     if not isinstance(action, str) or not action:
         raise ProtocolError("action must be a non-empty string")
