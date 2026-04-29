@@ -112,6 +112,54 @@ class ReceiverConfig:
     analog_settings: AnalogSettings = field(default_factory=AnalogSettings)
 
 
+def load_effective_midi_map(base_path: str | Path, local_path: str | Path) -> ReceiverConfig:
+    """Load base map merged with local override if it exists."""
+    base = Path(base_path)
+    local = Path(local_path)
+    if not local.exists():
+        return load_midi_map(base)
+    try:
+        base_raw = json.loads(base.read_text(encoding="utf-8"))
+    except FileNotFoundError as exc:
+        raise ConfigError(f"mapping file not found: {base}") from exc
+    except json.JSONDecodeError as exc:
+        raise ConfigError(f"mapping file is not valid JSON: {base}") from exc
+    try:
+        local_raw = json.loads(local.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise ConfigError(f"local mapping file is not valid JSON: {local}") from exc
+
+    merged: dict[str, object] = {}
+    if isinstance(base_raw.get("macro_settings"), dict):
+        merged["macro_settings"] = base_raw["macro_settings"]
+    if isinstance(local_raw.get("macro_settings"), dict):
+        merged["macro_settings"] = {
+            **(merged.get("macro_settings") or {}),  # type: ignore[dict-item]
+            **local_raw["macro_settings"],
+        }
+    if isinstance(base_raw.get("analog_settings"), dict):
+        merged["analog_settings"] = base_raw["analog_settings"]
+    if isinstance(local_raw.get("analog_settings"), dict):
+        merged["analog_settings"] = {
+            **(merged.get("analog_settings") or {}),  # type: ignore[dict-item]
+            **local_raw["analog_settings"],
+        }
+    base_mappings = base_raw.get("mappings") or {}
+    local_mappings = local_raw.get("mappings") or {}
+    merged["mappings"] = {**base_mappings, **local_mappings}
+
+    import tempfile, os  # noqa: E401
+    with tempfile.NamedTemporaryFile(
+        mode="w", suffix=".json", delete=False, encoding="utf-8"
+    ) as tmp:
+        json.dump(merged, tmp)
+        tmp_path = tmp.name
+    try:
+        return load_midi_map(tmp_path)
+    finally:
+        os.unlink(tmp_path)
+
+
 def load_midi_map(path: str | Path) -> ReceiverConfig:
     config_path = Path(path)
     try:
