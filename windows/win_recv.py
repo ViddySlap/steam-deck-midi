@@ -5,9 +5,13 @@ from __future__ import annotations
 import argparse
 import logging
 import sys
+import threading
+import time
+import webbrowser
+from pathlib import Path
 
 from windows import build_fingerprint
-from windows.config import ConfigError, load_midi_map
+from windows.config import ConfigError, load_effective_midi_map, load_midi_map
 from windows.midi import (
     MidiError,
     get_output_port_names,
@@ -58,6 +62,17 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="validate the configured MIDI port and exit",
     )
+    parser.add_argument(
+        "--no-ui",
+        action="store_true",
+        help="disable the mapping web UI and system tray",
+    )
+    parser.add_argument(
+        "--ui-port",
+        type=int,
+        default=7723,
+        help="port for the mapping web UI (default: 7723)",
+    )
     return parser
 
 
@@ -67,6 +82,14 @@ def parse_listen(value: str) -> tuple[str, int]:
         return host, int(port_text)
     except ValueError as exc:
         raise argparse.ArgumentTypeError("listen must be in host:port form") from exc
+
+
+def _open_browser_delayed(url: str, delay: float = 1.2) -> None:
+    def _open() -> None:
+        time.sleep(delay)
+        webbrowser.open(url)
+
+    threading.Thread(target=_open, daemon=True, name="browser-open").start()
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -114,8 +137,11 @@ def main(argv: list[str] | None = None) -> int:
         if not args.map_path:
             raise ConfigError("--map is required unless --list-ports or --check-midi-port is used")
 
+        base_map_path = Path(args.map_path)
+        local_map_path = base_map_path.parent / (base_map_path.stem + ".local.json")
+
         listen_host, listen_port = parse_listen(args.listen)
-        receiver_config = load_midi_map(args.map_path)
+        receiver_config = load_effective_midi_map(base_map_path, local_map_path)
         midi_out = open_midi_output(args.midi_port, args.dry_run)
         midi_in = open_midi_input(args.feedback_port, args.dry_run)
     except (argparse.ArgumentTypeError, ConfigError, MidiError) as exc:
@@ -134,16 +160,64 @@ def main(argv: list[str] | None = None) -> int:
             midi_in.port_index if midi_in.port_index is not None else "n/a",
         )
 
+    reload_event = threading.Event()
+    actions_yaml = base_map_path.parent / "actions.yaml"
+
+    def reload_config_fn():
+        cfg = load_effective_midi_map(base_map_path, local_map_path)
+        return cfg.mappings, cfg.macro_settings
+
     receiver = ActionReceiver(
         midi_out,
         receiver_config.mappings,
         timeout_seconds=args.timeout,
         macro_settings=receiver_config.macro_settings,
     )
+
+    tray = None
+    if not args.no_ui:
+        from windows.ui_server import MappingUIServer
+        ui_server = MappingUIServer(
+            base_map_path=base_map_path,
+            local_map_path=local_map_path,
+            actions_yaml_path=actions_yaml,
+            reload_event=reload_event,
+            port=args.ui_port,
+        )
+        ui_server.run_in_thread()
+        logging.info("mapping UI available at %s", ui_server.url)
+        _open_browser_delayed(ui_server.url)
+
+        try:
+            from windows.tray import ReceiverTray
+            import os
+
+            stop_event = threading.Event()
+
+            def quit_receiver() -> None:
+                stop_event.set()
+
+            tray = ReceiverTray(ui_url=ui_server.url, quit_callback=quit_receiver)
+            tray.run_in_thread()
+        except Exception as exc:
+            logging.warning("system tray unavailable: %s", exc)
+            stop_event = None
+    else:
+        stop_event = None
+
     try:
-        serve_forever(listen_host, listen_port, receiver, midi_in=midi_in)
+        serve_forever(
+            listen_host,
+            listen_port,
+            receiver,
+            midi_in=midi_in,
+            reload_event=reload_event,
+            reload_config_fn=reload_config_fn,
+        )
     finally:
         midi_out.close()
+        if tray is not None:
+            tray.stop()
     return 0
 
 

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import socket
+import threading
 import time
 from collections import deque
 from dataclasses import dataclass
@@ -258,6 +259,26 @@ class ActionReceiver:
             self._midi_out.panic()
         except MidiError as exc:
             LOGGER.error("MIDI output error during panic reset: %s", exc)
+
+    def reload_mappings(
+        self,
+        new_mappings: dict[str, MidiMapping],
+        new_macro_settings: MacroSettings | None = None,
+    ) -> None:
+        """Hot-reload mappings and macro settings. Call from the serve_forever thread."""
+        self._mappings = new_mappings
+        if new_macro_settings is not None:
+            self._macro_settings = new_macro_settings
+        self._tracked_macro_keys = {
+            (mapping.channel, mapping.cc)
+            for mapping in new_mappings.values()
+            if isinstance(mapping, MacroCCMapping)
+        }
+        # Rebuild layer publishers from new mappings
+        self._abxy_layer_publisher = self._build_layer_publisher("START")
+        self._bumper_layer_publisher = self._build_layer_publisher("SELECT")
+        self._gyro_layer_publisher = self._build_layer_publisher("L4")
+        LOGGER.info("hot-reloaded mappings: %s actions", len(new_mappings))
 
     def advance_fades(self, now: float | None = None) -> None:
         timestamp = self._clock() if now is None else now
@@ -767,6 +788,8 @@ def serve_forever(
     *,
     midi_in: MidiIn | None = None,
     poll_interval: float = 0.25,
+    reload_event: threading.Event | None = None,
+    reload_config_fn: Callable[[], tuple[dict[str, MidiMapping], MacroSettings]] | None = None,
 ) -> None:
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind((listen_host, listen_port))
@@ -781,6 +804,14 @@ def serve_forever(
     try:
         while True:
             _drain_midi_feedback(receiver, midi_in)
+            if reload_event is not None and reload_event.is_set():
+                reload_event.clear()
+                if reload_config_fn is not None:
+                    try:
+                        new_mappings, new_macro_settings = reload_config_fn()
+                        receiver.reload_mappings(new_mappings, new_macro_settings)
+                    except Exception as exc:
+                        LOGGER.error("hot-reload failed: %s", exc)
             try:
                 fade_poll = receiver.fade_poll_interval_seconds
                 timeout = poll_interval if fade_poll is None else min(poll_interval, fade_poll)

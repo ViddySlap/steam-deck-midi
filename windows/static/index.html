@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Steam Deck MIDI — Mapping Editor</title>
+<style>
+  :root {
+    --bg:          #0d1017;
+    --surface:     #141820;
+    --surface2:    #1c2130;
+    --surface3:    #222840;
+    --border:      #2a3050;
+    --border-hi:   #3d4d80;
+    --accent:      #4a9eff;
+    --accent-glow: rgba(74,158,255,.12);
+    --accent-dim:  #2a5a9a;
+    --text:        #dde2f0;
+    --text-dim:    #6a7499;
+    --text-mid:    #9aa4c8;
+    --success:     #3dba78;
+    --warning:     #f0a030;
+    --danger:      #e05050;
+    --btn-bg:      #1e253a;
+    --btn-hover:   #252d48;
+
+    --tag-note:    #1e4a7a;
+    --tag-cc:      #1e5a2e;
+    --tag-macro:   #5a2a7a;
+    --tag-rel:     #7a5a1a;
+    --tag-staged:  #1a5a6a;
+    --tag-axis:    #6a4a1a;
+    --tag-none:    #252d48;
+
+    --radius-sm:   5px;
+    --radius:      8px;
+    --radius-lg:   12px;
+    --transition:  0.14s ease;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  body { display: flex; flex-direction: column; overflow: hidden; }
+
+  /* ── Scrollbar ─────────────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--border-hi); }
+
+  /* ── Header ──────────────────────────────────────────────────  */
+  header {
+    flex-shrink: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 16px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    z-index: 50;
+  }
+
+  .logo {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    background: linear-gradient(145deg, #1e2f56, #0d1730);
+    border: 1px solid var(--border-hi);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+
+  header h1 {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    flex: 1;
+  }
+  header h1 .sub {
+    color: var(--text-dim);
+    font-weight: 400;
+    font-size: 12px;
+    margin-left: 6px;
+  }
+
+  .hdr-actions { display: flex; gap: 6px; align-items: center; }
+
+  /* ── Buttons ─────────────────────────────────────────────────  */
+  .btn {
+    padding: 5px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--btn-bg);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 12px;
+    font-family: inherit;
+    transition: background var(--transition), border-color var(--transition), color var(--transition);
+    white-space: nowrap;
+    user-select: none;
+  }
+  .btn:hover { background: var(--btn-hover); border-color: var(--border-hi); }
+  .btn:active { opacity: .85; }
+  .btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    font-weight: 600;
+  }
+  .btn-primary:hover {
+    background: #5aacff;
+    border-color: #5aacff;
+  }
+  .btn-primary:disabled {
+    background: var(--accent-dim);
+    border-color: var(--accent-dim);
+    color: rgba(255,255,255,.4);
+    cursor: default;
+  }
+  .btn-ghost {
+    background: transparent;
+    border-color: transparent;
+    color: var(--text-mid);
+  }
+  .btn-ghost:hover {
+    background: var(--surface2);
+    border-color: var(--border);
+    color: var(--text);
+  }
+  .btn-danger-outline {
+    border-color: var(--danger);
+    color: var(--danger);
+    background: transparent;
+  }
+  .btn-danger-outline:hover { background: rgba(224,80,80,.1); }
+
+  /* ── Unsaved badge ───────────────────────────────────────────  */
+  .unsaved-badge {
+    background: var(--warning);
+    color: #1a0e00;
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    display: none;
+  }
+  .unsaved-badge.show { display: inline; }
+
+  /* ── Layout ──────────────────────────────────────────────────  */
+  .main {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  /* ── Sidebar ─────────────────────────────────────────────────  */
+  .sidebar {
+    width: 260px;
+    min-width: 200px;
+    flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .sidebar-top {
+    padding: 10px 10px 8px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .search-box {
+    position: relative;
+  }
+  .search-box input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    padding: 5px 8px 5px 28px;
+    font-size: 12px;
+    font-family: inherit;
+    transition: border-color var(--transition);
+  }
+  .search-box input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .search-box::before {
+    content: "⌕";
+    position: absolute;
+    left: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+    font-size: 14px;
+    pointer-events: none;
+  }
+
+  .sidebar-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 6px 6px 12px;
+  }
+
+  /* ── Action chips ────────────────────────────────────────────  */
+  .group-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-dim);
+    padding: 10px 4px 4px;
+    user-select: none;
+  }
+  .group-label:first-child { padding-top: 4px; }
+
+  .chip {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 8px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background var(--transition);
+    user-select: none;
+    min-width: 0;
+  }
+  .chip:hover { background: var(--surface2); }
+  .chip.active {
+    background: var(--accent-glow);
+    outline: 1px solid var(--accent);
+    outline-offset: -1px;
+  }
+
+  .chip-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,.15);
+  }
+  .dot-note    { background: #2a6aaa; }
+  .dot-cc      { background: #2a7a3a; }
+  .dot-macro   { background: #7a3aaa; }
+  .dot-rel     { background: #aa7a1a; }
+  .dot-staged  { background: #1a7a8a; }
+  .dot-axis    { background: #8a6a1a; }
+  .dot-none    { background: var(--surface3); border-color: var(--border); }
+
+  .chip-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .chip-name {
+    font-size: 12px;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
+  }
+  .chip.active .chip-name { color: var(--accent); }
+  .chip-desc {
+    font-size: 10px;
+    color: var(--text-dim);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .chip-badge {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: rgba(255,255,255,.85);
+    flex-shrink: 0;
+    letter-spacing: 0.03em;
+  }
+  .badge-note   { background: var(--tag-note); }
+  .badge-cc     { background: var(--tag-cc); }
+  .badge-macro  { background: var(--tag-macro); }
+  .badge-rel    { background: var(--tag-rel); }
+  .badge-staged { background: var(--tag-staged); }
+  .badge-axis   { background: var(--tag-axis); }
+  .badge-none   { background: var(--tag-none); color: var(--text-dim); }
+
+  /* ── Right panel ─────────────────────────────────────────────  */
+  .panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  /* ── Tabs ────────────────────────────────────────────────────  */
+  .tabs {
+    flex-shrink: 0;
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    padding: 0 16px;
+  }
+  .tab {
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--text-dim);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color var(--transition), border-color var(--transition);
+    user-select: none;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .tab-pane { display: none; flex: 1; overflow-y: auto; padding: 20px; }
+  .tab-pane.active { display: block; }
+
+  /* ── Editor area ─────────────────────────────────────────────  */
+  .editor-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    flex-shrink: 0;
+  }
+  .editor-header h2 {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .action-badge {
+    font-family: 'Cascadia Code', 'Consolas', monospace;
+    font-size: 12px;
+    background: var(--accent-glow);
+    color: var(--accent);
+    border: 1px solid var(--accent-dim);
+    border-radius: 4px;
+    padding: 2px 9px;
+  }
+  .editor-header .spacer { flex: 1; }
+
+  .empty-state {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: var(--text-dim);
+    text-align: center;
+    padding: 40px;
+  }
+  .empty-state .icon { font-size: 48px; opacity: .4; }
+  .empty-state p { font-size: 13px; max-width: 300px; line-height: 1.6; }
+
+  /* ── Form elements ───────────────────────────────────────────  */
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  input[type="number"],
+  input[type="text"],
+  select,
+  textarea {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    padding: 6px 10px;
+    font-size: 13px;
+    font-family: inherit;
+    width: 100%;
+    transition: border-color var(--transition), background var(--transition);
+    appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: var(--surface3);
+  }
+  select option { background: var(--surface2); }
+
+  .row { display: flex; gap: 12px; }
+  .row .field { flex: 1; }
+
+  .section {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-mid);
+    margin-bottom: 2px;
+  }
+
+  /* ── JSON editor ─────────────────────────────────────────────  */
+  .json-wrap { position: relative; }
+  .json-textarea {
+    font-family: 'Cascadia Code', 'Consolas', monospace !important;
+    font-size: 12px !important;
+    line-height: 1.7 !important;
+    min-height: 140px;
+    resize: vertical;
+    padding: 10px 12px !important;
+  }
+  .json-textarea.has-error { border-color: var(--danger) !important; }
+  .json-err {
+    font-size: 11px;
+    color: var(--danger);
+    margin-top: 4px;
+    display: none;
+    padding-left: 2px;
+  }
+  .json-err.show { display: block; }
+
+  .action-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .action-row .push { flex: 1; }
+
+  /* ── Macro library ───────────────────────────────────────────  */
+  .macro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .macro-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 9px 11px;
+    cursor: pointer;
+    transition: border-color var(--transition), background var(--transition);
+  }
+  .macro-card:hover {
+    border-color: var(--accent);
+    background: var(--accent-glow);
+  }
+  .macro-card-name { font-size: 12px; font-weight: 600; }
+  .macro-card-desc { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+
+  /* ── Settings grid ───────────────────────────────────────────  */
+  .settings-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  /* ── Status bar ──────────────────────────────────────────────  */
+  .statusbar {
+    flex-shrink: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    height: 26px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+  .status-text { font-size: 11px; }
+  .status-ok   { color: var(--success); }
+  .status-err  { color: var(--danger); }
+  .status-warn { color: var(--warning); }
+
+  /* ── Modals ──────────────────────────────────────────────────  */
+  .overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.65);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    backdrop-filter: blur(2px);
+  }
+  .overlay.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border-hi);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    max-width: 460px;
+    width: calc(100% - 40px);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.5);
+  }
+  .modal h3 { font-size: 16px; font-weight: 600; }
+  .modal-body { font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+  .modal-code {
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-family: monospace;
+    font-size: 12px;
+    color: var(--warning);
+    max-height: 150px;
+    overflow-y: auto;
+    white-space: pre;
+  }
+  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px; }
+
+  /* ── Toasts ──────────────────────────────────────────────────  */
+  .toasts {
+    position: fixed;
+    bottom: 36px;
+    right: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 300;
+    pointer-events: none;
+  }
+  .toast {
+    background: var(--surface);
+    border: 1px solid var(--border-hi);
+    border-radius: var(--radius);
+    padding: 9px 14px;
+    font-size: 12px;
+    max-width: 300px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.4);
+    animation: toastIn .18s ease forwards;
+    pointer-events: auto;
+  }
+  .toast-ok   { border-left: 3px solid var(--success); }
+  .toast-err  { border-left: 3px solid var(--danger); }
+  .toast-warn { border-left: 3px solid var(--warning); }
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateX(12px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes toastOut {
+    from { opacity: 1; transform: translateX(0); }
+    to   { opacity: 0; transform: translateX(12px); }
+  }
+  .toast.fading { animation: toastOut .18s ease forwards; }
+</style>
+</head>
+<body>
+
+<!-- ── Header ─────────────────────────────────────────────────── -->
+<header>
+  <div class="logo">🎮</div>
+  <h1>Steam Deck MIDI <span class="sub">Mapping Editor</span></h1>
+  <div class="hdr-actions">
+    <span class="unsaved-badge" id="unsavedBadge">UNSAVED</span>
+    <button class="btn btn-ghost" id="btnReset">Reset to default</button>
+    <button class="btn btn-primary" id="btnSave" disabled>Save &amp; Apply</button>
+  </div>
+</header>
+
+<!-- ── Main ───────────────────────────────────────────────────── -->
+<div class="main">
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-top">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Filter actions…" autocomplete="off">
+      </div>
+    </div>
+    <div class="sidebar-scroll" id="sidebarScroll"></div>
+  </nav>
+
+  <!-- Right panel -->
+  <div class="panel">
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab active" data-tab="editor">Mappings</div>
+      <div class="tab" data-tab="settings">Global Settings</div>
+    </div>
+
+    <!-- Editor tab -->
+    <div class="tab-pane active" id="tab-editor">
+      <div id="editorContent">
+        <div class="empty-state" id="emptyState">
+          <div class="icon">🎮</div>
+          <p>Select an action from the sidebar to edit its MIDI mapping.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings tab -->
+    <div class="tab-pane" id="tab-settings">
+      <div class="section">
+        <div class="section-title">Macro Settings</div>
+        <div class="settings-grid" id="macroGrid"></div>
+      </div>
+      <div class="section">
+        <div class="section-title">Analog Settings</div>
+        <div class="settings-grid" id="analogGrid"></div>
+      </div>
+      <div class="action-row">
+        <button class="btn btn-primary" id="btnSaveSettings">Save &amp; Apply settings</button>
+      </div>
+    </div>
+
+  </div><!-- /panel -->
+</div><!-- /main -->
+
+<!-- ── Status bar ─────────────────────────────────────────────── -->
+<div class="statusbar">
+  <span id="statusText" class="status-text status-ok">Ready</span>
+  <span style="flex:1"></span>
+  <span id="mappingCount">—</span>
+  <span>·</span>
+  <span>Signal output → terminal</span>
+</div>
+
+<!-- ── Conflict modal ──────────────────────────────────────────── -->
+<div class="overlay" id="conflictOverlay">
+  <div class="modal">
+    <h3>⚠️ Mapping conflict detected</h3>
+    <div class="modal-body">
+      The following actions share the same MIDI channel + CC, which is not on the intentional-conflict allow-list.
+      This may cause unexpected behaviour in Resolume.
+    </div>
+    <div class="modal-code" id="conflictDetails"></div>
+    <div class="modal-body">Save anyway?</div>
+    <div class="modal-actions">
+      <button class="btn" id="btnConflictCancel">Cancel</button>
+      <button class="btn btn-primary" id="btnConflictForce">Save anyway</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Reset confirm modal ─────────────────────────────────────── -->
+<div class="overlay" id="resetOverlay">
+  <div class="modal">
+    <h3>Reset to default?</h3>
+    <div class="modal-body">
+      This deletes your local override file and reloads the shipped default map.
+      Any custom changes will be lost permanently.
+    </div>
+    <div class="modal-actions">
+      <button class="btn" id="btnResetCancel">Cancel</button>
+      <button class="btn btn-danger-outline" id="btnResetConfirm">Reset</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Toast container ─────────────────────────────────────────── -->
+<div class="toasts" id="toasts"></div>
+
+<!-- ── Scripts ─────────────────────────────────────────────────── -->
+<script>
+"use strict";
+
+// ─────────────────────────────────────────────────────────────────
+// State
+// ─────────────────────────────────────────────────────────────────
+let allActions = [];
+let state = {};          // { [action]: spec | null }
+let macroSettings = {};
+let analogSettings = {};
+let selected = null;
+let dirty = false;
+let pendingSaveCallback = null;
+
+// ─────────────────────────────────────────────────────────────────
+// Action grouping
+// ─────────────────────────────────────────────────────────────────
+const GROUPS = [
+  { label: 'Face buttons',         re: /^BTN_[ABXY](_LAYER_2)?$/ },
+  { label: 'D-pad',                re: /^DPAD_/ },
+  { label: 'Bumpers & triggers',   re: /^(L1|R1|L2|R2)/ },
+  { label: 'Stick clicks',         re: /^(LEFT_STICK|RIGHT_STICK)_CLICK/ },
+  { label: 'Back buttons',         re: /^(L4|L5|R4|R5)$/ },
+  { label: 'Menu buttons',         re: /^(START|SELECT)$/ },
+  { label: 'Left stick (digital)', re: /^L_STICK_(UP|DOWN|LEFT|RIGHT)$/ },
+  { label: 'Right stick (digital)',re: /^R_STICK_(UP|DOWN|LEFT|RIGHT)$/ },
+  { label: 'Left stick (analog)',  re: /^L_STICK_(X|Y)_AXIS$/ },
+  { label: 'Right stick (analog)', re: /^R_STICK_(X|Y)_AXIS$/ },
+  { label: 'Triggers (analog)',    re: /^(L|R)_TRIGGER_/ },
+  { label: 'Left trackpad',        re: /^L_PAD_/ },
+  { label: 'Right trackpad',       re: /^R_PAD_/ },
+  { label: 'Trackpad (analog)',    re: /^(L|R)_PAD_(X|Y)_POS$/ },
+  { label: 'Gyro (digital)',       re: /^GYRO_(FORWARD|BACKWARD)$/ },
+  { label: 'Gyro (analog)',        re: /^GYRO_(PITCH|YAW|ROLL)$/ },
+];
+function groupOf(a) {
+  for (const g of GROUPS) if (g.re.test(a)) return g.label;
+  return 'Other';
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Mapping description helpers
+// ─────────────────────────────────────────────────────────────────
+function mappingType(spec) {
+  if (!spec) return null;
+  return spec.type;
+}
+function mappingDotClass(spec) {
+  const t = mappingType(spec);
+  const map = { note:'dot-note', cc:'dot-cc', macro_cc:'dot-macro',
+    relative_cc:'dot-rel', staged_note_macro:'dot-staged', axis_to_cc:'dot-axis' };
+  return map[t] || 'dot-none';
+}
+function mappingBadge(spec) {
+  const t = mappingType(spec);
+  const labels = { note:'NOTE', cc:'CC', macro_cc:'MACRO', relative_cc:'REL',
+    staged_note_macro:'STAGED', axis_to_cc:'AXIS' };
+  return labels[t] || null;
+}
+function mappingBadgeClass(spec) {
+  const t = mappingType(spec);
+  const map = { note:'badge-note', cc:'badge-cc', macro_cc:'badge-macro',
+    relative_cc:'badge-rel', staged_note_macro:'badge-staged', axis_to_cc:'badge-axis' };
+  return map[t] || 'badge-none';
+}
+function mappingDesc(spec) {
+  if (!spec) return 'unmapped';
+  const t = spec.type;
+  const ch = `ch${(spec.channel ?? 0) + 1}`;
+  if (t === 'note')   return `${ch} · note ${spec.note ?? '?'}  vel ${spec.velocity ?? 127}`;
+  if (t === 'cc')     return `${ch} · CC ${spec.cc ?? '?'}`;
+  if (t === 'macro_cc') return `${ch} · CC ${spec.cc ?? '?'} · ${spec.gesture}`;
+  if (t === 'relative_cc') return `${ch} · CC ${spec.cc ?? '?'} · step ${spec.step_value}`;
+  if (t === 'staged_note_macro') return `note ${spec.note ?? '?'}  staged`;
+  if (t === 'axis_to_cc') return `${ch} · CC ${spec.cc ?? '?'} · axis`;
+  return t;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Toast
+// ─────────────────────────────────────────────────────────────────
+function toast(msg, kind = 'ok', ms = 3000) {
+  const el = document.createElement('div');
+  el.className = `toast toast-${kind}`;
+  el.textContent = msg;
+  document.getElementById('toasts').appendChild(el);
+  setTimeout(() => {
+    el.classList.add('fading');
+    setTimeout(() => el.remove(), 200);
+  }, ms);
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Status bar
+// ─────────────────────────────────────────────────────────────────
+function status(msg, kind = '') {
+  const el = document.getElementById('statusText');
+  el.textContent = msg;
+  el.className = 'status-text' + (kind ? ` status-${kind}` : '');
+}
+function updateCount() {
+  const n = Object.values(state).filter(Boolean).length;
+  const t = Object.keys(state).length;
+  document.getElementById('mappingCount').textContent = `${n} / ${t} mapped`;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Dirty state
+// ─────────────────────────────────────────────────────────────────
+function setDirty(d) {
+  dirty = d;
+  document.getElementById('unsavedBadge').classList.toggle('show', d);
+  document.getElementById('btnSave').disabled = !d;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// API
+// ─────────────────────────────────────────────────────────────────
+async function apiFetch(path, opts = {}) {
+  const r = await fetch(path, opts);
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) throw Object.assign(new Error(data.error || `HTTP ${r.status}`), { data });
+  return data;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Load
+// ─────────────────────────────────────────────────────────────────
+async function loadAll() {
+  status('Loading…');
+  try {
+    const [ar, mr] = await Promise.all([
+      apiFetch('/api/actions'),
+      apiFetch('/api/mappings'),
+    ]);
+    allActions = ar.actions || [];
+    const raw = mr.mappings || {};
+    macroSettings = mr.macro_settings || {};
+    analogSettings = mr.analog_settings || {};
+
+    state = {};
+    for (const a of allActions) state[a] = raw[a] || null;
+    for (const [a, s] of Object.entries(raw)) if (!(a in state)) state[a] = s;
+
+    renderSidebar();
+    renderSettingsGrids();
+    updateCount();
+    status('Ready', 'ok');
+    setDirty(false);
+  } catch (e) {
+    status('Load failed: ' + e.message, 'err');
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Sidebar
+// ─────────────────────────────────────────────────────────────────
+function renderSidebar(filter = '') {
+  const scroll = document.getElementById('sidebarScroll');
+  scroll.innerHTML = '';
+
+  const fl = filter.toLowerCase();
+  const filtered = Object.keys(state).filter(a => !fl || a.toLowerCase().includes(fl));
+
+  // Group
+  const groups = {};
+  for (const a of filtered) {
+    const g = groupOf(a);
+    (groups[g] = groups[g] || []).push(a);
+  }
+
+  const order = [...GROUPS.map(g => g.label), 'Other'];
+  for (const label of order) {
+    const actions = groups[label];
+    if (!actions?.length) continue;
+
+    const gh = document.createElement('div');
+    gh.className = 'group-label';
+    gh.textContent = label;
+    scroll.appendChild(gh);
+
+    for (const action of actions) {
+      const spec = state[action];
+      const chip = document.createElement('div');
+      chip.className = 'chip' + (selected === action ? ' active' : '');
+      chip.dataset.action = action;
+
+      const dotClass = mappingDotClass(spec);
+      const badge = mappingBadge(spec);
+      const badgeClass = badge ? mappingBadgeClass(spec) : 'badge-none';
+      const desc = mappingDesc(spec);
+      const badgeHtml = badge
+        ? `<span class="chip-badge ${badgeClass}">${badge}</span>`
+        : `<span class="chip-badge badge-none">—</span>`;
+
+      chip.innerHTML = `
+        <div class="chip-dot ${dotClass}"></div>
+        <div class="chip-text">
+          <div class="chip-name">${action}</div>
+          <div class="chip-desc">${desc}</div>
+        </div>
+        ${badgeHtml}
+      `;
+      chip.addEventListener('click', () => selectAction(action));
+      scroll.appendChild(chip);
+    }
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Select action
+// ─────────────────────────────────────────────────────────────────
+function selectAction(action) {
+  selected = action;
+  document.querySelectorAll('.chip').forEach(c =>
+    c.classList.toggle('active', c.dataset.action === action)
+  );
+  renderEditor(action);
+}
+
+function refreshChip(action) {
+  const chip = document.querySelector(`.chip[data-action="${action}"]`);
+  if (!chip) return;
+  const spec = state[action];
+  chip.classList.toggle('active', selected === action);
+  chip.querySelector('.chip-dot').className = `chip-dot ${mappingDotClass(spec)}`;
+  chip.querySelector('.chip-name').textContent = action;
+  chip.querySelector('.chip-desc').textContent = mappingDesc(spec);
+  const badge = mappingBadge(spec);
+  const badgeEl = chip.querySelector('.chip-badge');
+  if (badgeEl) {
+    badgeEl.textContent = badge || '—';
+    badgeEl.className = `chip-badge ${badge ? mappingBadgeClass(spec) : 'badge-none'}`;
+  }
+  // Update active chip name colour
+  chip.querySelector('.chip-name').style.color = (selected === action) ? 'var(--accent)' : '';
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Commit mapping change
+// ─────────────────────────────────────────────────────────────────
+function commit(action, spec) {
+  state[action] = spec;
+  setDirty(true);
+  updateCount();
+  refreshChip(action);
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Editor
+// ─────────────────────────────────────────────────────────────────
+const TYPE_LABELS = {
+  '':               '— Unmapped —',
+  note:             'Note',
+  cc:               'Control Change (CC)',
+  macro_cc:         'Macro CC (click / long-press fade)',
+  relative_cc:      'Relative CC (encoder tick)',
+  staged_note_macro:'Staged Note Macro',
+  axis_to_cc:       'Axis → CC (analog input)',
+};
+const DEFAULTS = {
+  note:              { type:'note', channel:0, note:36, velocity:127 },
+  cc:                { type:'cc', channel:0, cc:1, on_value:127, off_value:0 },
+  macro_cc:          { type:'macro_cc', channel:0, cc:22, gesture:'click' },
+  relative_cc:       { type:'relative_cc', channel:0, cc:47, step_value:1, repeat_interval_ms:40 },
+  staged_note_macro: { type:'staged_note_macro', note:36, velocity:127, modifier_channel:0, trigger_channel:1, refresh_actions:[] },
+  axis_to_cc:        { type:'axis_to_cc', channel:0, cc:1, input_range:[-32768,32767], output_range:[0,127], deadzone:1000, curve:'linear' },
+};
+
+function renderEditor(action) {
+  const content = document.getElementById('editorContent');
+  const spec = state[action];
+
+  content.innerHTML = `
+    <div class="editor-header">
+      <h2>Edit mapping</h2>
+      <span class="action-badge">${action}</span>
+      <div class="spacer"></div>
+      <button class="btn btn-danger-outline btn-sm" id="btnClear">Clear mapping</button>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Mapping type</div>
+      <div class="field">
+        <select id="typeSelect">
+          ${Object.entries(TYPE_LABELS).map(([v,l]) =>
+            `<option value="${v}"${spec?.type === v || (!spec && v === '') ? ' selected' : ''}>${l}</option>`
+          ).join('')}
+        </select>
+      </div>
+      <div id="fields"></div>
+      <div class="action-row" id="applyRow" style="display:none">
+        <button class="btn btn-primary" id="btnApplyFields">Apply fields</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Raw JSON <span style="color:var(--text-dim);text-transform:none;font-weight:400">— paste agent-generated mapping here</span></div>
+      <div class="field">
+        <textarea class="json-textarea" id="jsonRaw" spellcheck="false">${spec ? JSON.stringify(spec, null, 2) : ''}</textarea>
+        <div class="json-err" id="jsonErr"></div>
+      </div>
+      <div class="action-row">
+        <button class="btn" id="btnApplyJson">Apply JSON</button>
+        <button class="btn btn-ghost" id="btnCopyJson">Copy</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Macro library <span style="color:var(--text-dim);text-transform:none;font-weight:400">— click to paste template</span></div>
+      <div class="macro-grid" id="macroGrid2"></div>
+    </div>
+  `;
+
+  buildMacroGrid();
+  renderFields(document.getElementById('typeSelect').value, spec);
+
+  // Type change
+  document.getElementById('typeSelect').addEventListener('change', e => {
+    const t = e.target.value;
+    const newSpec = t ? { ...DEFAULTS[t] } : null;
+    renderFields(t, newSpec);
+    syncJsonRaw(newSpec);
+  });
+
+  // Clear
+  document.getElementById('btnClear').addEventListener('click', () => {
+    commit(action, null);
+    renderEditor(action);
+    toast(`${action} cleared`);
+  });
+
+  // Apply fields
+  document.getElementById('btnApplyFields').addEventListener('click', () => {
+    const t = document.getElementById('typeSelect').value;
+    const newSpec = readFields(t);
+    if (!newSpec) return;
+    commit(action, newSpec);
+    syncJsonRaw(newSpec);
+    toast(`${action} updated`);
+  });
+
+  // Apply JSON
+  document.getElementById('btnApplyJson').addEventListener('click', () => applyJson());
+
+  // Copy JSON
+  document.getElementById('btnCopyJson').addEventListener('click', () => {
+    const val = document.getElementById('jsonRaw').value.trim();
+    navigator.clipboard.writeText(val).then(() => toast('Copied'));
+  });
+
+  // Live JSON: clear error on input
+  document.getElementById('jsonRaw').addEventListener('input', () => {
+    document.getElementById('jsonErr').classList.remove('show');
+    document.getElementById('jsonRaw').classList.remove('has-error');
+  });
+}
+
+function renderFields(type, spec) {
+  const container = document.getElementById('fields');
+  const applyRow = document.getElementById('applyRow');
+  container.innerHTML = '';
+  if (!type) { applyRow.style.display = 'none'; return; }
+  applyRow.style.display = 'flex';
+
+  const s = spec || DEFAULTS[type] || {};
+  const row = (...fields) => {
+    const r = document.createElement('div'); r.className = 'row';
+    fields.forEach(f => r.appendChild(f)); container.appendChild(r); return r;
+  };
+  const fld = (id, label, input) => {
+    const d = document.createElement('div'); d.className = 'field';
+    const l = document.createElement('label'); l.textContent = label; l.setAttribute('for', id);
+    d.appendChild(l); input.id = id; d.appendChild(input); return d;
+  };
+  const num = (id, val, min, max, step=1) => {
+    const i = document.createElement('input');
+    i.type = 'number'; i.value = val; i.min = min; i.max = max; i.step = step; return i;
+  };
+  const sel = (id, opts, val) => {
+    const s = document.createElement('select'); s.id = id;
+    opts.forEach(([v,l]) => { const o = document.createElement('option'); o.value=v; o.textContent=l; if(v===val) o.selected=true; s.appendChild(o); });
+    return s;
+  };
+
+  if (type === 'note') {
+    row(
+      fld('f_ch',  'Channel (0–15)',   num('f_ch',  s.channel??0, 0, 15)),
+      fld('f_note','Note (0–127)',      num('f_note',s.note??36, 0, 127)),
+      fld('f_vel', 'Velocity (1–127)', num('f_vel', s.velocity??127, 1, 127)),
+    );
+  } else if (type === 'cc') {
+    row(
+      fld('f_ch',  'Channel (0–15)',  num('f_ch',  s.channel??0, 0, 15)),
+      fld('f_cc',  'CC (0–127)',      num('f_cc',  s.cc??1, 0, 127)),
+    );
+    row(
+      fld('f_on',  'On value',  num('f_on',  s.on_value??127, 0, 127)),
+      fld('f_off', 'Off value', num('f_off', s.off_value??0, 0, 127)),
+    );
+  } else if (type === 'macro_cc') {
+    row(
+      fld('f_ch',      'Channel (0–15)',   num('f_ch',  s.channel??0, 0, 15)),
+      fld('f_cc',      'CC (0–127)',       num('f_cc',  s.cc??22, 0, 127)),
+      fld('f_gesture', 'Gesture',          sel('f_gesture', [['click','click'],['long_press','long_press']], s.gesture??'click')),
+    );
+  } else if (type === 'relative_cc') {
+    row(
+      fld('f_ch',  'Channel (0–15)',       num('f_ch',  s.channel??0, 0, 15)),
+      fld('f_cc',  'CC (0–127)',           num('f_cc',  s.cc??47, 0, 127)),
+    );
+    row(
+      fld('f_step','Step value (1=inc, 127=dec)', num('f_step', s.step_value??1, 0, 127)),
+      fld('f_ri',  'Repeat interval (ms)', num('f_ri', s.repeat_interval_ms??40, 1, 1000)),
+    );
+  } else if (type === 'staged_note_macro') {
+    row(
+      fld('f_note','Note (0–127)', num('f_note', s.note??36, 0, 127)),
+      fld('f_vel', 'Velocity',     num('f_vel',  s.velocity??127, 1, 127)),
+    );
+    row(
+      fld('f_mch', 'Modifier channel', num('f_mch', s.modifier_channel??0, 0, 15)),
+      fld('f_tch', 'Trigger channel',  num('f_tch', s.trigger_channel??1, 0, 15)),
+    );
+    const raField = document.createElement('div'); raField.className = 'field';
+    const raLabel = document.createElement('label'); raLabel.textContent = 'Refresh actions (comma-separated)';
+    const raInput = document.createElement('input'); raInput.type = 'text'; raInput.id = 'f_ra';
+    raInput.value = (s.refresh_actions || []).join(', ');
+    raInput.placeholder = 'e.g. L_PAD_LEFT, L_PAD_RIGHT';
+    raField.appendChild(raLabel); raField.appendChild(raInput);
+    container.appendChild(raField);
+  } else if (type === 'axis_to_cc') {
+    row(
+      fld('f_ch', 'Channel (0–15)', num('f_ch', s.channel??0, 0, 15)),
+      fld('f_cc', 'CC (0–127)',     num('f_cc', s.cc??1, 0, 127)),
+    );
+    const ir = s.input_range || [-32768, 32767];
+    const or_ = s.output_range || [0, 127];
+    row(
+      fld('f_irmin','Input range min', num('f_irmin', ir[0], -32768, 32767)),
+      fld('f_irmax','Input range max', num('f_irmax', ir[1], -32768, 32767)),
+    );
+    row(
+      fld('f_ormin','Output range min', num('f_ormin', or_[0], 0, 127)),
+      fld('f_ormax','Output range max', num('f_ormax', or_[1], 0, 127)),
+    );
+    row(
+      fld('f_dz',    'Deadzone',        num('f_dz', s.deadzone??1000, 0, 32768)),
+      fld('f_curve', 'Curve',           sel('f_curve', [['linear','linear'],['quadratic','quadratic'],['s_curve','s_curve']], s.curve??'linear')),
+    );
+  }
+}
+
+function v(id) { return document.getElementById(id)?.value ?? ''; }
+function n(id) { return parseInt(v(id), 10); }
+
+function readFields(type) {
+  if (type === 'note')
+    return { type:'note', channel:n('f_ch'), note:n('f_note'), velocity:n('f_vel') };
+  if (type === 'cc')
+    return { type:'cc', channel:n('f_ch'), cc:n('f_cc'), on_value:n('f_on'), off_value:n('f_off') };
+  if (type === 'macro_cc')
+    return { type:'macro_cc', channel:n('f_ch'), cc:n('f_cc'), gesture:v('f_gesture') };
+  if (type === 'relative_cc')
+    return { type:'relative_cc', channel:n('f_ch'), cc:n('f_cc'), step_value:n('f_step'), repeat_interval_ms:n('f_ri') };
+  if (type === 'staged_note_macro') {
+    const ra = v('f_ra').split(',').map(s=>s.trim()).filter(Boolean);
+    return { type:'staged_note_macro', note:n('f_note'), velocity:n('f_vel'), modifier_channel:n('f_mch'), trigger_channel:n('f_tch'), refresh_actions:ra };
+  }
+  if (type === 'axis_to_cc')
+    return { type:'axis_to_cc', channel:n('f_ch'), cc:n('f_cc'),
+      input_range:[n('f_irmin'), n('f_irmax')], output_range:[n('f_ormin'), n('f_ormax')],
+      deadzone:n('f_dz'), curve:v('f_curve') };
+  return null;
+}
+
+function syncJsonRaw(spec) {
+  const el = document.getElementById('jsonRaw');
+  if (el) el.value = spec ? JSON.stringify(spec, null, 2) : '';
+}
+
+function applyJson() {
+  const raw = (document.getElementById('jsonRaw')?.value || '').trim();
+  const errEl = document.getElementById('jsonErr');
+  const ta = document.getElementById('jsonRaw');
+  if (!raw) {
+    commit(selected, null);
+    errEl?.classList.remove('show');
+    ta?.classList.remove('has-error');
+    renderEditor(selected);
+    toast(`${selected} cleared`);
+    return;
+  }
+  let parsed;
+  try { parsed = JSON.parse(raw); } catch (e) {
+    if (errEl) { errEl.textContent = 'JSON error: ' + e.message; errEl.classList.add('show'); }
+    ta?.classList.add('has-error');
+    return;
+  }
+  errEl?.classList.remove('show');
+  ta?.classList.remove('has-error');
+  commit(selected, parsed);
+  // Sync type selector
+  const ts = document.getElementById('typeSelect');
+  if (ts && parsed.type) {
+    ts.value = parsed.type;
+    renderFields(parsed.type, parsed);
+  }
+  toast(`${selected} updated from JSON`);
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Macro library
+// ─────────────────────────────────────────────────────────────────
+const MACROS = [
+  { name:'Click toggle opacity',  desc:'Instant CC toggle on button press',          spec:{ type:'macro_cc', channel:0, cc:22, gesture:'click' } },
+  { name:'Animated fade opacity', desc:'Smooth CC fade on long press',               spec:{ type:'macro_cc', channel:0, cc:22, gesture:'long_press' } },
+  { name:'Encoder increment',     desc:'R-pad right — increment relative CC',        spec:{ type:'relative_cc', channel:0, cc:47, step_value:1,   repeat_interval_ms:40 } },
+  { name:'Encoder decrement',     desc:'R-pad left — decrement relative CC',         spec:{ type:'relative_cc', channel:0, cc:47, step_value:127, repeat_interval_ms:40 } },
+  { name:'Trigger note',          desc:'Note-on/off on button press',                spec:{ type:'note', channel:0, note:36, velocity:127 } },
+  { name:'CC on/off',             desc:'CC with configurable on/off values',         spec:{ type:'cc', channel:0, cc:1, on_value:127, off_value:0 } },
+];
+
+function buildMacroGrid() {
+  const grid = document.getElementById('macroGrid2');
+  if (!grid) return;
+  grid.innerHTML = '';
+  for (const m of MACROS) {
+    const card = document.createElement('div');
+    card.className = 'macro-card';
+    card.innerHTML = `<div class="macro-card-name">${m.name}</div><div class="macro-card-desc">${m.desc}</div>`;
+    card.addEventListener('click', () => {
+      const spec = { ...m.spec };
+      syncJsonRaw(spec);
+      const ts = document.getElementById('typeSelect');
+      if (ts) { ts.value = spec.type; renderFields(spec.type, spec); }
+      commit(selected, spec);
+      toast(`Applied: ${m.name}`);
+    });
+    grid.appendChild(card);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Settings forms
+// ─────────────────────────────────────────────────────────────────
+const MACRO_FIELDS = [
+  { key:'fade_duration_seconds', label:'Fade duration (s)',  type:'float', min:0.1, max:30  },
+  { key:'update_hz',             label:'Update rate (Hz)',   type:'float', min:1,   max:120 },
+  { key:'min_value',             label:'Min CC value',       type:'int',   min:0,   max:126 },
+  { key:'max_value',             label:'Max CC value',       type:'int',   min:1,   max:127 },
+  { key:'macro_delay_ms',        label:'Macro delay (ms)',   type:'int',   min:1,   max:1000 },
+  { key:'modifier_hold_ms',      label:'Modifier hold (ms)', type:'int',   min:100, max:10000 },
+  { key:'layer_refresh_ms',      label:'Layer refresh (ms)', type:'int',   min:50,  max:5000 },
+];
+const ANALOG_FIELDS = [
+  { key:'update_hz', label:'Update rate (Hz)', type:'float', min:1, max:120 },
+  { key:'deadzone',  label:'Global deadzone',  type:'int',   min:0, max:32768 },
+  { key:'curve',     label:'Curve',            type:'select', opts:['linear','quadratic','s_curve'] },
+];
+
+function renderSettingsGrids() {
+  renderSettingsGrid('macroGrid', MACRO_FIELDS, macroSettings, 'ms');
+  renderSettingsGrid('analogGrid', ANALOG_FIELDS, analogSettings, 'as');
+}
+function renderSettingsGrid(gridId, fields, values, pfx) {
+  const g = document.getElementById(gridId);
+  if (!g) return;
+  g.innerHTML = '';
+  for (const f of fields) {
+    const field = document.createElement('div'); field.className = 'field';
+    const lbl = document.createElement('label'); lbl.textContent = f.label;
+    field.appendChild(lbl);
+    if (f.type === 'select') {
+      const sel = document.createElement('select'); sel.id = `${pfx}_${f.key}`;
+      for (const o of f.opts) {
+        const op = document.createElement('option'); op.value=o; op.textContent=o;
+        if (values[f.key] === o) op.selected = true; sel.appendChild(op);
+      }
+      field.appendChild(sel);
+    } else {
+      const inp = document.createElement('input'); inp.type='number'; inp.id=`${pfx}_${f.key}`;
+      inp.value = values[f.key] ?? ''; inp.min=f.min; inp.max=f.max;
+      inp.step = f.type==='float' ? 0.1 : 1;
+      field.appendChild(inp);
+    }
+    g.appendChild(field);
+  }
+}
+function readSettings(fields, pfx) {
+  const r = {};
+  for (const f of fields) {
+    const el = document.getElementById(`${pfx}_${f.key}`);
+    if (!el) continue;
+    r[f.key] = f.type==='float' ? parseFloat(el.value) : f.type==='int' ? parseInt(el.value,10) : el.value;
+  }
+  return r;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Save flow
+// ─────────────────────────────────────────────────────────────────
+document.getElementById('btnSave').addEventListener('click', () => triggerSave());
+
+async function triggerSave() {
+  const mappings = {};
+  for (const [a, s] of Object.entries(state)) if (s) mappings[a] = s;
+
+  let conflicts = [];
+  try {
+    const r = await apiFetch('/api/conflicts', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ mappings }),
+    });
+    conflicts = r.conflicts || [];
+  } catch {}
+
+  if (conflicts.length) {
+    showConflictModal(conflicts, doSave);
+    return;
+  }
+  await doSave();
+}
+
+async function doSave() {
+  const mappings = {};
+  for (const [a, s] of Object.entries(state)) if (s) mappings[a] = s;
+  const body = { mappings };
+  if (Object.keys(macroSettings).length) body.macro_settings = macroSettings;
+  if (Object.keys(analogSettings).length) body.analog_settings = analogSettings;
+  status('Saving…');
+  try {
+    await apiFetch('/api/save', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(body),
+    });
+    setDirty(false);
+    status('Saved & applied', 'ok');
+    toast('Mappings saved and applied ✓', 'ok');
+  } catch (e) {
+    status('Save failed: ' + e.message, 'err');
+    toast('Save failed: ' + e.message, 'err', 6000);
+  }
+}
+
+document.getElementById('btnSaveSettings').addEventListener('click', async () => {
+  macroSettings = readSettings(MACRO_FIELDS, 'ms');
+  analogSettings = readSettings(ANALOG_FIELDS, 'as');
+  setDirty(true);
+  await doSave();
+});
+
+// ─────────────────────────────────────────────────────────────────
+// Conflict modal
+// ─────────────────────────────────────────────────────────────────
+function showConflictModal(conflicts, onForce) {
+  document.getElementById('conflictDetails').textContent =
+    conflicts.map(c => `Ch${c.channel+1} CC${c.cc}: ${c.actions.join(', ')}`).join('\n');
+  const ov = document.getElementById('conflictOverlay');
+  ov.classList.add('open');
+  const cleanup = () => ov.classList.remove('open');
+  document.getElementById('btnConflictCancel').onclick = cleanup;
+  document.getElementById('btnConflictForce').onclick = () => { cleanup(); onForce(); };
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Reset modal
+// ─────────────────────────────────────────────────────────────────
+document.getElementById('btnReset').addEventListener('click', () =>
+  document.getElementById('resetOverlay').classList.add('open')
+);
+document.getElementById('btnResetCancel').addEventListener('click', () =>
+  document.getElementById('resetOverlay').classList.remove('open')
+);
+document.getElementById('btnResetConfirm').addEventListener('click', async () => {
+  document.getElementById('resetOverlay').classList.remove('open');
+  status('Resetting…');
+  try {
+    await apiFetch('/api/reset', { method:'POST', headers:{'Content-Type':'application/json'}, body:'{}' });
+    toast('Reset to default map');
+    await loadAll();
+    if (selected) renderEditor(selected);
+  } catch (e) {
+    status('Reset failed: ' + e.message, 'err');
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────
+// Tabs
+// ─────────────────────────────────────────────────────────────────
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    const name = t.dataset.tab;
+    document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x.dataset.tab === name));
+    document.querySelectorAll('.tab-pane').forEach(x => x.classList.toggle('active', x.id === `tab-${name}`));
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────
+// Search
+// ─────────────────────────────────────────────────────────────────
+document.getElementById('searchInput').addEventListener('input', e => {
+  renderSidebar(e.target.value);
+  if (selected) {
+    const chip = document.querySelector(`.chip[data-action="${selected}"]`);
+    if (chip) chip.classList.add('active');
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────
+// Keyboard shortcut
+// ─────────────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+    e.preventDefault();
+    if (!document.getElementById('btnSave').disabled) triggerSave();
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────
+// Boot
+// ─────────────────────────────────────────────────────────────────
+loadAll();
+</script>
+</body>
+</html>
