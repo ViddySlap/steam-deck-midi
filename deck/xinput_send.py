@@ -587,7 +587,7 @@ def run_sender(
     target: str,
     profile_name: str | None,
     profile_hash: str | None,
-    gyro_trigger: str,
+    gyro_trigger: str = "L4",
 ) -> int:
     try:
         loaded_profile_name, bindings = load_bindings(bindings_path)

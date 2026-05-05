@@ -1,2 +1,5 @@
 mido
 python-rtmidi
+Flask
+pystray
+Pillow
