@@ -541,13 +541,18 @@ class ActionReceiver:
         if key not in self._macro_values:
             self._send_macro_value(mapping.channel, mapping.cc, current_value)
 
+        duration = (
+            mapping.fade_duration_seconds
+            if mapping.fade_duration_seconds is not None
+            else self._macro_settings.fade_duration_seconds
+        )
         self._active_macro_fades[key] = ActiveMacroFade(
             channel=mapping.channel,
             cc=mapping.cc,
             start_value=current_value,
             target_value=target_value,
             start_time=timestamp,
-            duration_seconds=self._macro_settings.fade_duration_seconds,
+            duration_seconds=duration,
         )
         self.advance_fades(now=timestamp)
         return True
@@ -593,6 +598,16 @@ class ActionReceiver:
         if existing is not None:
             self._midi_out.note_off(existing.modifier_channel, existing.note, 0)
 
+        delay_ms = (
+            mapping.macro_delay_ms
+            if mapping.macro_delay_ms is not None
+            else self._macro_settings.macro_delay_ms
+        )
+        hold_ms = (
+            mapping.modifier_hold_ms
+            if mapping.modifier_hold_ms is not None
+            else self._macro_settings.modifier_hold_ms
+        )
         self._midi_out.note_on(mapping.modifier_channel, mapping.note, mapping.velocity)
         self._active_staged_note_macros[event.action] = ActiveStagedNoteMacro(
             action=event.action,
@@ -600,8 +615,8 @@ class ActionReceiver:
             trigger_channel=mapping.trigger_channel,
             note=mapping.note,
             velocity=mapping.velocity,
-            trigger_time=timestamp + (self._macro_settings.macro_delay_ms / 1000.0),
-            off_time=timestamp + (self._macro_settings.modifier_hold_ms / 1000.0),
+            trigger_time=timestamp + (delay_ms / 1000.0),
+            off_time=timestamp + (hold_ms / 1000.0),
             refresh_actions=frozenset(mapping.refresh_actions),
         )
         return True

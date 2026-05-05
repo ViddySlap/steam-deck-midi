@@ -30,3 +30,10 @@ RESUME-NOTES.txt
 
 # Local SSH wrapper config (contains host/user details)
 scripts/windows/.ssh_task.local
+
+# User-managed preset files (default.json is the factory default and is tracked)
+config/presets/*
+!config/presets/default.json
+
+# Playwright test artifacts
+tests/playwright_screenshot.png

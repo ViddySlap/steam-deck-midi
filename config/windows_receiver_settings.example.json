@@ -4,5 +4,7 @@
   "feedback_port": "DECK_OUT",
   "map_path": "config/windows_midi_map.json",
   "timeout": 2.0,
-  "verbose": true
+  "verbose": true,
+  "no_ui": false,
+  "ui_port": 7723
 }

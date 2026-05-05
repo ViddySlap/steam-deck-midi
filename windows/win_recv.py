@@ -11,7 +11,12 @@ import webbrowser
 from pathlib import Path
 
 from windows import build_fingerprint
-from windows.config import ConfigError, load_effective_midi_map, load_midi_map
+from windows.config import (
+    ConfigError,
+    ensure_presets_initialized,
+    get_active_preset_path,
+    load_midi_map,
+)
 from windows.midi import (
     MidiError,
     get_output_port_names,
@@ -138,10 +143,13 @@ def main(argv: list[str] | None = None) -> int:
             raise ConfigError("--map is required unless --list-ports or --check-midi-port is used")
 
         base_map_path = Path(args.map_path)
-        local_map_path = base_map_path.parent / (base_map_path.stem + ".local.json")
+        presets_dir = base_map_path.parent / "presets"
+        macro_library_path = base_map_path.parent / "macro_library.json"
+        ensure_presets_initialized(base_map_path)
+        active_preset_path = get_active_preset_path(presets_dir, base_map_path)
 
         listen_host, listen_port = parse_listen(args.listen)
-        receiver_config = load_effective_midi_map(base_map_path, local_map_path)
+        receiver_config = load_midi_map(active_preset_path)
         midi_out = open_midi_output(args.midi_port, args.dry_run)
         midi_in = open_midi_input(args.feedback_port, args.dry_run)
     except (argparse.ArgumentTypeError, ConfigError, MidiError) as exc:
@@ -164,7 +172,8 @@ def main(argv: list[str] | None = None) -> int:
     actions_yaml = base_map_path.parent / "actions.yaml"
 
     def reload_config_fn():
-        cfg = load_effective_midi_map(base_map_path, local_map_path)
+        active = get_active_preset_path(presets_dir, base_map_path)
+        cfg = load_midi_map(active)
         return cfg.mappings, cfg.macro_settings
 
     receiver = ActionReceiver(
@@ -179,7 +188,8 @@ def main(argv: list[str] | None = None) -> int:
         from windows.ui_server import MappingUIServer
         ui_server = MappingUIServer(
             base_map_path=base_map_path,
-            local_map_path=local_map_path,
+            presets_dir=presets_dir,
+            macro_library_path=macro_library_path,
             actions_yaml_path=actions_yaml,
             reload_event=reload_event,
             port=args.ui_port,

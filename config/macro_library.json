@@ -1,0 +1,40 @@
+[
+  {
+    "id": "click-toggle",
+    "name": "Click Toggle",
+    "type": "macro_cc",
+    "gesture": "click",
+    "fade_duration_seconds": null
+  },
+  {
+    "id": "animated-fade",
+    "name": "Animated Fade",
+    "type": "macro_cc",
+    "gesture": "long_press",
+    "fade_duration_seconds": null
+  },
+  {
+    "id": "encoder-plus",
+    "name": "Encoder +",
+    "type": "relative_cc",
+    "step_value": 1,
+    "repeat_interval_ms": 40
+  },
+  {
+    "id": "encoder-minus",
+    "name": "Encoder −",
+    "type": "relative_cc",
+    "step_value": 127,
+    "repeat_interval_ms": 40
+  },
+  {
+    "id": "staged-modifier",
+    "name": "Staged Modifier",
+    "type": "staged_note_macro",
+    "modifier_channel": 0,
+    "trigger_channel": 1,
+    "refresh_actions": [],
+    "macro_delay_ms": null,
+    "modifier_hold_ms": null
+  }
+]
