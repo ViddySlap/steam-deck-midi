@@ -761,7 +761,6 @@ class ActionReceiver:
     def _handle_axis_event(self, event: AxisEvent) -> bool:
         mapping = self._mappings.get(event.action)
         if not isinstance(mapping, AxisToCCMapping):
-            LOGGER.debug("no axis_to_cc mapping for action %s", event.action)
             return False
 
         if abs(event.value) <= mapping.deadzone:
