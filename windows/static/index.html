@@ -51,13 +51,12 @@
 
   body { display: flex; flex-direction: column; overflow: hidden; }
 
-  /* ── Scrollbar ─────────────────────────────────────────────── */
   ::-webkit-scrollbar { width: 5px; height: 5px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--border-hi); }
 
-  /* ── Header ──────────────────────────────────────────────────  */
+  /* ── Header ── */
   header {
     flex-shrink: 0;
     background: var(--surface);
@@ -96,7 +95,7 @@
 
   .hdr-actions { display: flex; gap: 6px; align-items: center; }
 
-  /* ── Buttons ─────────────────────────────────────────────────  */
+  /* ── Buttons ── */
   .btn {
     padding: 5px 12px;
     border: 1px solid var(--border);
@@ -118,10 +117,7 @@
     color: #fff;
     font-weight: 600;
   }
-  .btn-primary:hover {
-    background: #5aacff;
-    border-color: #5aacff;
-  }
+  .btn-primary:hover { background: #5aacff; border-color: #5aacff; }
   .btn-primary:disabled {
     background: var(--accent-dim);
     border-color: var(--accent-dim);
@@ -133,19 +129,28 @@
     border-color: transparent;
     color: var(--text-mid);
   }
-  .btn-ghost:hover {
-    background: var(--surface2);
-    border-color: var(--border);
-    color: var(--text);
-  }
-  .btn-danger-outline {
-    border-color: var(--danger);
-    color: var(--danger);
-    background: transparent;
-  }
+  .btn-ghost:hover { background: var(--surface2); border-color: var(--border); color: var(--text); }
+  .btn-danger-outline { border-color: var(--danger); color: var(--danger); background: transparent; }
   .btn-danger-outline:hover { background: rgba(224,80,80,.1); }
+  .btn-sm { padding: 3px 8px; font-size: 11px; }
 
-  /* ── Unsaved badge ───────────────────────────────────────────  */
+  /* ── Icon buttons ── */
+  .icon-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    padding: 3px 5px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    line-height: 1;
+    transition: color var(--transition), background var(--transition);
+    user-select: none;
+  }
+  .icon-btn:hover { color: var(--text); background: var(--surface3); }
+  .icon-btn-danger:hover { color: var(--danger); background: rgba(224,80,80,.08); }
+
+  /* ── Unsaved badge ── */
   .unsaved-badge {
     background: var(--warning);
     color: #1a0e00;
@@ -158,35 +163,90 @@
   }
   .unsaved-badge.show { display: inline; }
 
-  /* ── Layout ──────────────────────────────────────────────────  */
-  .main {
-    flex: 1;
-    display: flex;
-    overflow: hidden;
-    min-height: 0;
+  /* ── Preset dropdown ── */
+  .preset-wrap {
+    position: relative;
   }
-
-  /* ── Sidebar ─────────────────────────────────────────────────  */
-  .sidebar {
-    width: 260px;
-    min-width: 200px;
+  .preset-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 130px;
+    justify-content: space-between;
+  }
+  .preset-btn-label {
+    flex: 1;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+  }
+  .preset-chevron {
     flex-shrink: 0;
+    transition: transform var(--transition);
+  }
+  .preset-wrap.open .preset-chevron { transform: rotate(180deg); }
+  .preset-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    min-width: 220px;
+    background: var(--surface);
+    border: 1px solid var(--border-hi);
+    border-radius: var(--radius);
+    box-shadow: 0 8px 32px rgba(0,0,0,.5);
+    z-index: 100;
+    display: none;
+    overflow: hidden;
+  }
+  .preset-wrap.open .preset-dropdown { display: block; }
+  .preset-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background var(--transition);
+    user-select: none;
+    font-size: 12px;
+  }
+  .preset-item:hover { background: var(--surface2); }
+  .preset-item-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .preset-item.active .preset-item-name { color: var(--accent); font-weight: 600; }
+  .preset-active-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    opacity: 0;
+  }
+  .preset-item.active .preset-active-dot { opacity: 1; }
+  .preset-item-actions { display: flex; gap: 2px; flex-shrink: 0; }
+  .preset-divider { height: 1px; background: var(--border); margin: 2px 0; }
+  .preset-save-as { color: var(--accent); font-weight: 500; }
+  .preset-save-as:hover { background: var(--accent-glow) !important; }
+
+  /* ── Layout ── */
+  .main { flex: 1; display: flex; overflow: hidden; min-height: 0; }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: 260px; min-width: 200px; flex-shrink: 0;
     background: var(--surface);
     border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    display: flex; flex-direction: column; overflow: hidden;
   }
-
   .sidebar-top {
     padding: 10px 10px 8px;
     border-bottom: 1px solid var(--border);
     flex-shrink: 0;
   }
-
-  .search-box {
-    position: relative;
-  }
+  .search-box { position: relative; }
   .search-box input {
     width: 100%;
     background: var(--surface2);
@@ -198,103 +258,47 @@
     font-family: inherit;
     transition: border-color var(--transition);
   }
-  .search-box input:focus {
-    outline: none;
-    border-color: var(--accent);
-  }
+  .search-box input:focus { outline: none; border-color: var(--accent); }
   .search-box::before {
     content: "⌕";
-    position: absolute;
-    left: 9px;
-    top: 50%;
+    position: absolute; left: 9px; top: 50%;
     transform: translateY(-50%);
-    color: var(--text-dim);
-    font-size: 14px;
-    pointer-events: none;
+    color: var(--text-dim); font-size: 14px; pointer-events: none;
   }
+  .sidebar-scroll { flex: 1; overflow-y: auto; padding: 6px 6px 12px; }
 
-  .sidebar-scroll {
-    flex: 1;
-    overflow-y: auto;
-    padding: 6px 6px 12px;
-  }
-
-  /* ── Action chips ────────────────────────────────────────────  */
+  /* ── Action chips ── */
   .group-label {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    color: var(--text-dim);
-    padding: 10px 4px 4px;
-    user-select: none;
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--text-dim); padding: 10px 4px 4px; user-select: none;
   }
   .group-label:first-child { padding-top: 4px; }
-
   .chip {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    padding: 6px 8px;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    transition: background var(--transition);
-    user-select: none;
-    min-width: 0;
+    display: flex; align-items: center; gap: 7px;
+    padding: 6px 8px; border-radius: var(--radius-sm);
+    cursor: pointer; transition: background var(--transition);
+    user-select: none; min-width: 0;
   }
   .chip:hover { background: var(--surface2); }
-  .chip.active {
-    background: var(--accent-glow);
-    outline: 1px solid var(--accent);
-    outline-offset: -1px;
-  }
-
+  .chip.active { background: var(--accent-glow); outline: 1px solid var(--accent); outline-offset: -1px; }
   .chip-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
     border: 1px solid rgba(255,255,255,.15);
   }
-  .dot-note    { background: #2a6aaa; }
-  .dot-cc      { background: #2a7a3a; }
-  .dot-macro   { background: #7a3aaa; }
-  .dot-rel     { background: #aa7a1a; }
-  .dot-staged  { background: #1a7a8a; }
-  .dot-axis    { background: #8a6a1a; }
-  .dot-none    { background: var(--surface3); border-color: var(--border); }
-
-  .chip-text {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-  }
-  .chip-name {
-    font-size: 12px;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-weight: 500;
-  }
+  .dot-note   { background: #2a6aaa; }
+  .dot-cc     { background: #2a7a3a; }
+  .dot-macro  { background: #7a3aaa; }
+  .dot-rel    { background: #aa7a1a; }
+  .dot-staged { background: #1a7a8a; }
+  .dot-axis   { background: #8a6a1a; }
+  .dot-none   { background: var(--surface3); border-color: var(--border); }
+  .chip-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+  .chip-name { font-size: 12px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
   .chip.active .chip-name { color: var(--accent); }
-  .chip-desc {
-    font-size: 10px;
-    color: var(--text-dim);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
+  .chip-desc { font-size: 10px; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .chip-badge {
-    font-size: 9px;
-    font-weight: 700;
-    padding: 1px 5px;
-    border-radius: 3px;
-    color: rgba(255,255,255,.85);
-    flex-shrink: 0;
-    letter-spacing: 0.03em;
+    font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 3px;
+    color: rgba(255,255,255,.85); flex-shrink: 0; letter-spacing: 0.03em;
   }
   .badge-note   { background: var(--tag-note); }
   .badge-cc     { background: var(--tag-cc); }
@@ -304,293 +308,213 @@
   .badge-axis   { background: var(--tag-axis); }
   .badge-none   { background: var(--tag-none); color: var(--text-dim); }
 
-  /* ── Right panel ─────────────────────────────────────────────  */
-  .panel {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    min-width: 0;
-  }
+  /* ── Right panel ── */
+  .panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
 
-  /* ── Tabs ────────────────────────────────────────────────────  */
+  /* ── Tabs ── */
   .tabs {
-    flex-shrink: 0;
-    display: flex;
-    gap: 0;
+    flex-shrink: 0; display: flex; gap: 0;
     border-bottom: 1px solid var(--border);
-    background: var(--surface);
-    padding: 0 16px;
+    background: var(--surface); padding: 0 16px;
   }
   .tab {
-    padding: 10px 14px;
-    font-size: 13px;
-    color: var(--text-dim);
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
-    transition: color var(--transition), border-color var(--transition);
-    user-select: none;
+    padding: 10px 14px; font-size: 13px; color: var(--text-dim);
+    cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+    transition: color var(--transition), border-color var(--transition); user-select: none;
   }
   .tab:hover { color: var(--text); }
   .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-
   .tab-pane { display: none; flex: 1; overflow-y: auto; padding: 20px; }
   .tab-pane.active { display: block; }
 
-  /* ── Editor area ─────────────────────────────────────────────  */
+  /* ── Editor area ── */
   .editor-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 18px;
-    flex-shrink: 0;
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 18px; flex-shrink: 0;
   }
-  .editor-header h2 {
-    font-size: 15px;
-    font-weight: 600;
-  }
+  .editor-header h2 { font-size: 15px; font-weight: 600; }
   .action-badge {
     font-family: 'Cascadia Code', 'Consolas', monospace;
-    font-size: 12px;
-    background: var(--accent-glow);
-    color: var(--accent);
-    border: 1px solid var(--accent-dim);
-    border-radius: 4px;
-    padding: 2px 9px;
+    font-size: 12px; background: var(--accent-glow); color: var(--accent);
+    border: 1px solid var(--accent-dim); border-radius: 4px; padding: 2px 9px;
   }
   .editor-header .spacer { flex: 1; }
-
   .empty-state {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    color: var(--text-dim);
-    text-align: center;
-    padding: 40px;
+    height: 100%; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 12px; color: var(--text-dim); text-align: center; padding: 40px;
   }
   .empty-state .icon { font-size: 48px; opacity: .4; }
   .empty-state p { font-size: 13px; max-width: 300px; line-height: 1.6; }
 
-  /* ── Form elements ───────────────────────────────────────────  */
+  /* ── Form elements ── */
   .field { display: flex; flex-direction: column; gap: 5px; }
   .field label {
-    font-size: 11px;
-    color: var(--text-dim);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+    font-size: 11px; color: var(--text-dim); font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.04em;
   }
-
-  input[type="number"],
-  input[type="text"],
-  select,
-  textarea {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    color: var(--text);
-    padding: 6px 10px;
-    font-size: 13px;
-    font-family: inherit;
-    width: 100%;
+  input[type="number"], input[type="text"], select, textarea {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); color: var(--text);
+    padding: 6px 10px; font-size: 13px; font-family: inherit; width: 100%;
     transition: border-color var(--transition), background var(--transition);
     appearance: none;
   }
   input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: var(--accent);
-    background: var(--surface3);
+    outline: none; border-color: var(--accent); background: var(--surface3);
   }
   select option { background: var(--surface2); }
-
   .row { display: flex; gap: 12px; }
   .row .field { flex: 1; }
-
   .section {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    margin-bottom: 16px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px;
+    display: flex; flex-direction: column; gap: 14px; margin-bottom: 16px;
   }
   .section-title {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--text-mid);
-    margin-bottom: 2px;
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--text-mid); margin-bottom: 2px;
+  }
+  .field-hint {
+    font-size: 10px; color: var(--text-dim); margin-top: 2px;
+    font-style: italic; text-transform: none; letter-spacing: 0;
   }
 
-  /* ── JSON editor ─────────────────────────────────────────────  */
+  /* ── JSON editor ── */
   .json-wrap { position: relative; }
   .json-textarea {
     font-family: 'Cascadia Code', 'Consolas', monospace !important;
-    font-size: 12px !important;
-    line-height: 1.7 !important;
-    min-height: 140px;
-    resize: vertical;
-    padding: 10px 12px !important;
+    font-size: 12px !important; line-height: 1.7 !important;
+    min-height: 140px; resize: vertical; padding: 10px 12px !important;
   }
   .json-textarea.has-error { border-color: var(--danger) !important; }
-  .json-err {
-    font-size: 11px;
-    color: var(--danger);
-    margin-top: 4px;
-    display: none;
-    padding-left: 2px;
-  }
+  .json-err { font-size: 11px; color: var(--danger); margin-top: 4px; display: none; padding-left: 2px; }
   .json-err.show { display: block; }
-
-  .action-row {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
+  .action-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
   .action-row .push { flex: 1; }
 
-  /* ── Macro library ───────────────────────────────────────────  */
-  .macro-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
+  /* ── Macro Library tab ── */
+  .lib-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
   }
-  .macro-card {
-    background: var(--surface);
+  .lib-header h2 { font-size: 15px; font-weight: 600; flex: 1; }
+  .lib-subtitle {
+    font-size: 12px; color: var(--text-dim); margin-bottom: 16px;
+  }
+  .macro-lib-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 8px;
+  }
+  .macro-lib-card {
+    background: var(--surface2);
     border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 9px 11px;
-    cursor: pointer;
-    transition: border-color var(--transition), background var(--transition);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    transition: border-color var(--transition);
   }
-  .macro-card:hover {
-    border-color: var(--accent);
-    background: var(--accent-glow);
+  .macro-lib-card:not(.incompatible):hover { border-color: var(--border-hi); }
+  .macro-lib-card.incompatible { opacity: 0.45; }
+  .macro-lib-card-header {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
   }
-  .macro-card-name { font-size: 12px; font-weight: 600; }
-  .macro-card-desc { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
-
-  /* ── Settings grid ───────────────────────────────────────────  */
-  .settings-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+  .macro-lib-name { font-size: 13px; font-weight: 600; flex: 1; }
+  .macro-lib-actions { display: flex; align-items: center; gap: 4px; }
+  .macro-lib-desc { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
+  .macro-lib-empty {
+    text-align: center; color: var(--text-dim); padding: 40px 20px;
+    font-size: 13px; line-height: 1.7;
   }
 
-  /* ── Status bar ──────────────────────────────────────────────  */
+  /* ── Settings grid ── */
+  .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* ── Status bar ── */
   .statusbar {
-    flex-shrink: 0;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    height: 26px;
-    padding: 0 14px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    font-size: 11px;
-    color: var(--text-dim);
+    flex-shrink: 0; background: var(--surface); border-top: 1px solid var(--border);
+    height: 26px; padding: 0 14px;
+    display: flex; align-items: center; gap: 14px;
+    font-size: 11px; color: var(--text-dim);
   }
   .status-text { font-size: 11px; }
   .status-ok   { color: var(--success); }
   .status-err  { color: var(--danger); }
   .status-warn { color: var(--warning); }
 
-  /* ── Modals ──────────────────────────────────────────────────  */
+  /* ── Modals ── */
   .overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,.65);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 200;
-    backdrop-filter: blur(2px);
+    position: fixed; inset: 0; background: rgba(0,0,0,.65);
+    display: none; align-items: center; justify-content: center;
+    z-index: 200; backdrop-filter: blur(2px);
   }
   .overlay.open { display: flex; }
   .modal {
-    background: var(--surface);
-    border: 1px solid var(--border-hi);
-    border-radius: var(--radius-lg);
-    padding: 24px;
-    max-width: 460px;
-    width: calc(100% - 40px);
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+    background: var(--surface); border: 1px solid var(--border-hi);
+    border-radius: var(--radius-lg); padding: 24px;
+    max-width: 480px; width: calc(100% - 40px);
+    display: flex; flex-direction: column; gap: 14px;
     box-shadow: 0 20px 60px rgba(0,0,0,.5);
   }
+  .modal-wide { max-width: 560px; }
   .modal h3 { font-size: 16px; font-weight: 600; }
   .modal-body { font-size: 13px; color: var(--text-mid); line-height: 1.6; }
   .modal-code {
-    background: var(--surface2);
-    border-radius: var(--radius-sm);
-    padding: 10px 12px;
-    font-family: monospace;
-    font-size: 12px;
-    color: var(--warning);
-    max-height: 150px;
-    overflow-y: auto;
-    white-space: pre;
+    background: var(--surface2); border-radius: var(--radius-sm);
+    padding: 10px 12px; font-family: monospace; font-size: 12px;
+    color: var(--warning); max-height: 150px; overflow-y: auto; white-space: pre;
   }
   .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px; }
+  .modal-fields { display: flex; flex-direction: column; gap: 12px; }
+  .modal-type-fields { display: flex; flex-direction: column; gap: 12px; margin-top: 4px; }
 
-  /* ── Toasts ──────────────────────────────────────────────────  */
+  /* ── Toasts ── */
   .toasts {
-    position: fixed;
-    bottom: 36px;
-    right: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    z-index: 300;
-    pointer-events: none;
+    position: fixed; bottom: 36px; right: 16px;
+    display: flex; flex-direction: column; gap: 6px;
+    z-index: 300; pointer-events: none;
   }
   .toast {
-    background: var(--surface);
-    border: 1px solid var(--border-hi);
-    border-radius: var(--radius);
-    padding: 9px 14px;
-    font-size: 12px;
-    max-width: 300px;
+    background: var(--surface); border: 1px solid var(--border-hi);
+    border-radius: var(--radius); padding: 9px 14px;
+    font-size: 12px; max-width: 300px;
     box-shadow: 0 4px 16px rgba(0,0,0,.4);
-    animation: toastIn .18s ease forwards;
-    pointer-events: auto;
+    animation: toastIn .18s ease forwards; pointer-events: auto;
   }
   .toast-ok   { border-left: 3px solid var(--success); }
   .toast-err  { border-left: 3px solid var(--danger); }
   .toast-warn { border-left: 3px solid var(--warning); }
-  @keyframes toastIn {
-    from { opacity: 0; transform: translateX(12px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-  @keyframes toastOut {
-    from { opacity: 1; transform: translateX(0); }
-    to   { opacity: 0; transform: translateX(12px); }
-  }
+  @keyframes toastIn  { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes toastOut { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(12px); } }
   .toast.fading { animation: toastOut .18s ease forwards; }
 </style>
 </head>
 <body>
 
-<!-- ── Header ─────────────────────────────────────────────────── -->
+<!-- ── Header ── -->
 <header>
   <div class="logo">🎮</div>
   <h1>Steam Deck MIDI <span class="sub">Mapping Editor</span></h1>
   <div class="hdr-actions">
     <span class="unsaved-badge" id="unsavedBadge">UNSAVED</span>
-    <button class="btn btn-ghost" id="btnReset">Reset to default</button>
+    <button class="btn btn-ghost" id="btnReset">Factory Reset</button>
+    <div class="preset-wrap" id="presetWrap">
+      <button class="btn preset-btn" id="presetBtn" title="Switch preset">
+        <span class="preset-btn-label" id="presetBtnLabel">Default</span>
+        <svg class="preset-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none">
+          <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="preset-dropdown" id="presetDropdown">
+        <div id="presetList"></div>
+        <div class="preset-divider"></div>
+        <div class="preset-item preset-save-as" id="presetSaveAs">+ Save as new preset…</div>
+      </div>
+    </div>
     <button class="btn btn-primary" id="btnSave" disabled>Save &amp; Apply</button>
   </div>
 </header>
 
-<!-- ── Main ───────────────────────────────────────────────────── -->
+<!-- ── Main ── -->
 <div class="main">
 
   <!-- Sidebar -->
@@ -609,6 +533,7 @@
     <!-- Tabs -->
     <div class="tabs">
       <div class="tab active" data-tab="editor">Mappings</div>
+      <div class="tab" data-tab="macrolib">Macro Library</div>
       <div class="tab" data-tab="settings">Global Settings</div>
     </div>
 
@@ -619,6 +544,18 @@
           <div class="icon">🎮</div>
           <p>Select an action from the sidebar to edit its MIDI mapping.</p>
         </div>
+      </div>
+    </div>
+
+    <!-- Macro Library tab -->
+    <div class="tab-pane" id="tab-macrolib">
+      <div class="lib-header">
+        <h2>Macro Library</h2>
+        <button class="btn btn-primary btn-sm" id="btnNewMacro">+ New macro</button>
+      </div>
+      <p class="lib-subtitle" id="libSubtitle">Select a button in the sidebar to enable Apply buttons for compatible macros.</p>
+      <div class="macro-lib-grid" id="macroLibGrid">
+        <div class="macro-lib-empty">No macros yet. Click "+ New macro" to create one.</div>
       </div>
     </div>
 
@@ -640,7 +577,7 @@
   </div><!-- /panel -->
 </div><!-- /main -->
 
-<!-- ── Status bar ─────────────────────────────────────────────── -->
+<!-- ── Status bar ── -->
 <div class="statusbar">
   <span id="statusText" class="status-text status-ok">Ready</span>
   <span style="flex:1"></span>
@@ -649,14 +586,11 @@
   <span>Signal output → terminal</span>
 </div>
 
-<!-- ── Conflict modal ──────────────────────────────────────────── -->
+<!-- ── Conflict modal ── -->
 <div class="overlay" id="conflictOverlay">
   <div class="modal">
     <h3>⚠️ Mapping conflict detected</h3>
-    <div class="modal-body">
-      The following actions share the same MIDI channel + CC, which is not on the intentional-conflict allow-list.
-      This may cause unexpected behaviour in Resolume.
-    </div>
+    <div class="modal-body">The following actions share the same MIDI channel + CC, which is not on the intentional-conflict allow-list. This may cause unexpected behaviour in Resolume.</div>
     <div class="modal-code" id="conflictDetails"></div>
     <div class="modal-body">Save anyway?</div>
     <div class="modal-actions">
@@ -666,25 +600,108 @@
   </div>
 </div>
 
-<!-- ── Reset confirm modal ─────────────────────────────────────── -->
+<!-- ── Factory reset confirm modal ── -->
 <div class="overlay" id="resetOverlay">
   <div class="modal">
-    <h3>Reset to default?</h3>
+    <h3>Factory reset this preset?</h3>
     <div class="modal-body">
-      This deletes your local override file and reloads the shipped default map.
-      Any custom changes will be lost permanently.
+      This overwrites the current preset with the factory default mappings. Your other presets are not affected.
+      Any unsaved changes to this preset will be lost.
     </div>
     <div class="modal-actions">
       <button class="btn" id="btnResetCancel">Cancel</button>
-      <button class="btn btn-danger-outline" id="btnResetConfirm">Reset</button>
+      <button class="btn btn-danger-outline" id="btnResetConfirm">Factory Reset</button>
     </div>
   </div>
 </div>
 
-<!-- ── Toast container ─────────────────────────────────────────── -->
+<!-- ── Save As preset modal ── -->
+<div class="overlay" id="saveAsOverlay">
+  <div class="modal">
+    <h3>Save as new preset</h3>
+    <div class="modal-fields">
+      <div class="field">
+        <label>Preset name</label>
+        <input type="text" id="saveAsInput" placeholder="e.g. EDM, Indie, Live Show…" maxlength="40">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" id="btnSaveAsCancel">Cancel</button>
+      <button class="btn btn-primary" id="btnSaveAsConfirm">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Rename preset modal ── -->
+<div class="overlay" id="renameOverlay">
+  <div class="modal">
+    <h3>Rename preset</h3>
+    <div class="modal-fields">
+      <div class="field">
+        <label>New name</label>
+        <input type="text" id="renameInput" maxlength="40">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" id="btnRenameCancel">Cancel</button>
+      <button class="btn btn-primary" id="btnRenameConfirm">Rename</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Delete preset modal ── -->
+<div class="overlay" id="deletePresetOverlay">
+  <div class="modal">
+    <h3>Delete preset?</h3>
+    <div class="modal-body" id="deletePresetBody">This cannot be undone.</div>
+    <div class="modal-actions">
+      <button class="btn" id="btnDeletePresetCancel">Cancel</button>
+      <button class="btn btn-danger-outline" id="btnDeletePresetConfirm">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Macro creator / editor modal ── -->
+<div class="overlay" id="macroEditorOverlay">
+  <div class="modal modal-wide">
+    <h3 id="macroEditorTitle">New macro</h3>
+    <div class="modal-fields">
+      <div class="field">
+        <label>Name</label>
+        <input type="text" id="macroEditorName" placeholder="e.g. Fast Fade, L-Pad Modifier…" maxlength="50">
+      </div>
+      <div class="field">
+        <label>Type</label>
+        <select id="macroEditorType">
+          <option value="macro_cc">Macro CC (click / long-press fade)</option>
+          <option value="relative_cc">Relative CC (encoder)</option>
+          <option value="staged_note_macro">Staged Note Macro</option>
+        </select>
+      </div>
+      <div class="modal-type-fields" id="macroEditorFields"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" id="btnMacroEditorCancel">Cancel</button>
+      <button class="btn btn-primary" id="btnMacroEditorSave">Save macro</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Delete macro confirm modal ── -->
+<div class="overlay" id="deleteMacroOverlay">
+  <div class="modal">
+    <h3>Delete macro?</h3>
+    <div class="modal-body" id="deleteMacroBody">This cannot be undone.</div>
+    <div class="modal-actions">
+      <button class="btn" id="btnDeleteMacroCancel">Cancel</button>
+      <button class="btn btn-danger-outline" id="btnDeleteMacroConfirm">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Toast container ── -->
 <div class="toasts" id="toasts"></div>
 
-<!-- ── Scripts ─────────────────────────────────────────────────── -->
 <script>
 "use strict";
 
@@ -692,33 +709,37 @@
 // State
 // ─────────────────────────────────────────────────────────────────
 let allActions = [];
-let state = {};          // { [action]: spec | null }
+let state = {};
 let macroSettings = {};
 let analogSettings = {};
 let selected = null;
 let dirty = false;
-let pendingSaveCallback = null;
+let presets = [];
+let macroLibrary = [];
+let _pendingRenameFile = null;
+let _pendingDeleteFile = null;
+let _pendingDeleteMacroId = null;
+let _macroEditorId = null; // null = creating, string = editing
 
 // ─────────────────────────────────────────────────────────────────
 // Action grouping
 // ─────────────────────────────────────────────────────────────────
 const GROUPS = [
-  { label: 'Face buttons',         re: /^BTN_[ABXY](_LAYER_2)?$/ },
-  { label: 'D-pad',                re: /^DPAD_/ },
-  { label: 'Bumpers & triggers',   re: /^(L1|R1|L2|R2)/ },
-  { label: 'Stick clicks',         re: /^(LEFT_STICK|RIGHT_STICK)_CLICK/ },
-  { label: 'Back buttons',         re: /^(L4|L5|R4|R5)$/ },
-  { label: 'Menu buttons',         re: /^(START|SELECT)$/ },
-  { label: 'Left stick (digital)', re: /^L_STICK_(UP|DOWN|LEFT|RIGHT)$/ },
-  { label: 'Right stick (digital)',re: /^R_STICK_(UP|DOWN|LEFT|RIGHT)$/ },
-  { label: 'Left stick (analog)',  re: /^L_STICK_(X|Y)_AXIS$/ },
-  { label: 'Right stick (analog)', re: /^R_STICK_(X|Y)_AXIS$/ },
-  { label: 'Triggers (analog)',    re: /^(L|R)_TRIGGER_/ },
-  { label: 'Left trackpad',        re: /^L_PAD_/ },
-  { label: 'Right trackpad',       re: /^R_PAD_/ },
-  { label: 'Trackpad (analog)',    re: /^(L|R)_PAD_(X|Y)_POS$/ },
-  { label: 'Gyro (digital)',       re: /^GYRO_(FORWARD|BACKWARD)$/ },
-  { label: 'Gyro (analog)',        re: /^GYRO_(PITCH|YAW|ROLL)$/ },
+  { label: 'Face buttons',          re: /^BTN_[ABXY](_LAYER_2)?$/ },
+  { label: 'D-pad',                 re: /^DPAD_/ },
+  { label: 'Bumpers & triggers',    re: /^(L1|R1|L2|R2)/ },
+  { label: 'Stick clicks',          re: /^(LEFT_STICK|RIGHT_STICK)_CLICK/ },
+  { label: 'Back buttons',          re: /^(L4|L5|R4|R5)$/ },
+  { label: 'Menu buttons',          re: /^(START|SELECT)$/ },
+  { label: 'Left stick (digital)',  re: /^L_STICK_(UP|DOWN|LEFT|RIGHT)$/ },
+  { label: 'Right stick (digital)', re: /^R_STICK_(UP|DOWN|LEFT|RIGHT)$/ },
+  { label: 'Left stick (analog)',   re: /^L_STICK_(X|Y)_AXIS$/ },
+  { label: 'Right stick (analog)',  re: /^R_STICK_(X|Y)_AXIS$/ },
+  { label: 'Triggers (analog)',     re: /^(L|R)_TRIGGER_/ },
+  { label: 'Left trackpad',         re: /^L_PAD_/ },
+  { label: 'Right trackpad',        re: /^R_PAD_/ },
+  { label: 'Gyro (digital)',        re: /^GYRO_(FORWARD|BACKWARD)$/ },
+  { label: 'Gyro (analog)',         re: /^GYRO_(PITCH|YAW|ROLL)$/ },
 ];
 function groupOf(a) {
   for (const g of GROUPS) if (g.re.test(a)) return g.label;
@@ -726,45 +747,38 @@ function groupOf(a) {
 }
 
 // ─────────────────────────────────────────────────────────────────
-// Mapping description helpers
+// Mapping helpers
 // ─────────────────────────────────────────────────────────────────
-function mappingType(spec) {
-  if (!spec) return null;
-  return spec.type;
-}
 function mappingDotClass(spec) {
-  const t = mappingType(spec);
   const map = { note:'dot-note', cc:'dot-cc', macro_cc:'dot-macro',
     relative_cc:'dot-rel', staged_note_macro:'dot-staged', axis_to_cc:'dot-axis' };
-  return map[t] || 'dot-none';
+  return map[spec?.type] || 'dot-none';
 }
 function mappingBadge(spec) {
-  const t = mappingType(spec);
   const labels = { note:'NOTE', cc:'CC', macro_cc:'MACRO', relative_cc:'REL',
     staged_note_macro:'STAGED', axis_to_cc:'AXIS' };
-  return labels[t] || null;
+  return labels[spec?.type] || null;
 }
 function mappingBadgeClass(spec) {
-  const t = mappingType(spec);
   const map = { note:'badge-note', cc:'badge-cc', macro_cc:'badge-macro',
     relative_cc:'badge-rel', staged_note_macro:'badge-staged', axis_to_cc:'badge-axis' };
-  return map[t] || 'badge-none';
+  return map[spec?.type] || 'badge-none';
 }
 function mappingDesc(spec) {
   if (!spec) return 'unmapped';
   const t = spec.type;
   const ch = `ch${(spec.channel ?? 0) + 1}`;
-  if (t === 'note')   return `${ch} · note ${spec.note ?? '?'}  vel ${spec.velocity ?? 127}`;
-  if (t === 'cc')     return `${ch} · CC ${spec.cc ?? '?'}`;
-  if (t === 'macro_cc') return `${ch} · CC ${spec.cc ?? '?'} · ${spec.gesture}`;
-  if (t === 'relative_cc') return `${ch} · CC ${spec.cc ?? '?'} · step ${spec.step_value}`;
+  if (t === 'note')              return `${ch} · note ${spec.note ?? '?'}  vel ${spec.velocity ?? 127}`;
+  if (t === 'cc')                return `${ch} · CC ${spec.cc ?? '?'}`;
+  if (t === 'macro_cc')          return `${ch} · CC ${spec.cc ?? '?'} · ${spec.gesture}`;
+  if (t === 'relative_cc')       return `${ch} · CC ${spec.cc ?? '?'} · step ${spec.step_value}`;
   if (t === 'staged_note_macro') return `note ${spec.note ?? '?'}  staged`;
-  if (t === 'axis_to_cc') return `${ch} · CC ${spec.cc ?? '?'} · axis`;
+  if (t === 'axis_to_cc')        return `${ch} · CC ${spec.cc ?? '?'} · axis`;
   return t;
 }
 
 // ─────────────────────────────────────────────────────────────────
-// Toast
+// Toast / status
 // ─────────────────────────────────────────────────────────────────
 function toast(msg, kind = 'ok', ms = 3000) {
   const el = document.createElement('div');
@@ -776,10 +790,6 @@ function toast(msg, kind = 'ok', ms = 3000) {
     setTimeout(() => el.remove(), 200);
   }, ms);
 }
-
-// ─────────────────────────────────────────────────────────────────
-// Status bar
-// ─────────────────────────────────────────────────────────────────
 function status(msg, kind = '') {
   const el = document.getElementById('statusText');
   el.textContent = msg;
@@ -790,10 +800,6 @@ function updateCount() {
   const t = Object.keys(state).length;
   document.getElementById('mappingCount').textContent = `${n} / ${t} mapped`;
 }
-
-// ─────────────────────────────────────────────────────────────────
-// Dirty state
-// ─────────────────────────────────────────────────────────────────
 function setDirty(d) {
   dirty = d;
   document.getElementById('unsavedBadge').classList.toggle('show', d);
@@ -816,14 +822,18 @@ async function apiFetch(path, opts = {}) {
 async function loadAll() {
   status('Loading…');
   try {
-    const [ar, mr] = await Promise.all([
+    const [ar, mr, pr, mcr] = await Promise.all([
       apiFetch('/api/actions'),
       apiFetch('/api/mappings'),
+      apiFetch('/api/presets'),
+      apiFetch('/api/macros'),
     ]);
     allActions = ar.actions || [];
     const raw = mr.mappings || {};
     macroSettings = mr.macro_settings || {};
     analogSettings = mr.analog_settings || {};
+    presets = pr.presets || [];
+    macroLibrary = mcr.macros || [];
 
     state = {};
     for (const a of allActions) state[a] = raw[a] || null;
@@ -832,6 +842,8 @@ async function loadAll() {
     renderSidebar();
     renderSettingsGrids();
     updateCount();
+    renderPresetDropdown();
+    renderMacroLibrary();
     status('Ready', 'ok');
     setDirty(false);
   } catch (e) {
@@ -845,48 +857,35 @@ async function loadAll() {
 function renderSidebar(filter = '') {
   const scroll = document.getElementById('sidebarScroll');
   scroll.innerHTML = '';
-
   const fl = filter.toLowerCase();
   const filtered = Object.keys(state).filter(a => !fl || a.toLowerCase().includes(fl));
-
-  // Group
   const groups = {};
   for (const a of filtered) {
     const g = groupOf(a);
     (groups[g] = groups[g] || []).push(a);
   }
-
   const order = [...GROUPS.map(g => g.label), 'Other'];
   for (const label of order) {
     const actions = groups[label];
     if (!actions?.length) continue;
-
     const gh = document.createElement('div');
     gh.className = 'group-label';
     gh.textContent = label;
     scroll.appendChild(gh);
-
     for (const action of actions) {
       const spec = state[action];
       const chip = document.createElement('div');
       chip.className = 'chip' + (selected === action ? ' active' : '');
       chip.dataset.action = action;
-
-      const dotClass = mappingDotClass(spec);
       const badge = mappingBadge(spec);
-      const badgeClass = badge ? mappingBadgeClass(spec) : 'badge-none';
-      const desc = mappingDesc(spec);
-      const badgeHtml = badge
-        ? `<span class="chip-badge ${badgeClass}">${badge}</span>`
-        : `<span class="chip-badge badge-none">—</span>`;
-
       chip.innerHTML = `
-        <div class="chip-dot ${dotClass}"></div>
+        <div class="chip-dot ${mappingDotClass(spec)}"></div>
         <div class="chip-text">
           <div class="chip-name">${action}</div>
-          <div class="chip-desc">${desc}</div>
+          <div class="chip-desc">${mappingDesc(spec)}</div>
         </div>
-        ${badgeHtml}
+        ${badge ? `<span class="chip-badge ${mappingBadgeClass(spec)}">${badge}</span>`
+                : `<span class="chip-badge badge-none">—</span>`}
       `;
       chip.addEventListener('click', () => selectAction(action));
       scroll.appendChild(chip);
@@ -894,24 +893,20 @@ function renderSidebar(filter = '') {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────
-// Select action
-// ─────────────────────────────────────────────────────────────────
 function selectAction(action) {
   selected = action;
   document.querySelectorAll('.chip').forEach(c =>
     c.classList.toggle('active', c.dataset.action === action)
   );
   renderEditor(action);
+  renderMacroLibrary(); // refresh compatibility indicators
 }
 
 function refreshChip(action) {
   const chip = document.querySelector(`.chip[data-action="${action}"]`);
   if (!chip) return;
   const spec = state[action];
-  chip.classList.toggle('active', selected === action);
   chip.querySelector('.chip-dot').className = `chip-dot ${mappingDotClass(spec)}`;
-  chip.querySelector('.chip-name').textContent = action;
   chip.querySelector('.chip-desc').textContent = mappingDesc(spec);
   const badge = mappingBadge(spec);
   const badgeEl = chip.querySelector('.chip-badge');
@@ -919,13 +914,9 @@ function refreshChip(action) {
     badgeEl.textContent = badge || '—';
     badgeEl.className = `chip-badge ${badge ? mappingBadgeClass(spec) : 'badge-none'}`;
   }
-  // Update active chip name colour
   chip.querySelector('.chip-name').style.color = (selected === action) ? 'var(--accent)' : '';
 }
 
-// ─────────────────────────────────────────────────────────────────
-// Commit mapping change
-// ─────────────────────────────────────────────────────────────────
 function commit(action, spec) {
   state[action] = spec;
   setDirty(true);
@@ -937,13 +928,13 @@ function commit(action, spec) {
 // Editor
 // ─────────────────────────────────────────────────────────────────
 const TYPE_LABELS = {
-  '':               '— Unmapped —',
-  note:             'Note',
-  cc:               'Control Change (CC)',
-  macro_cc:         'Macro CC (click / long-press fade)',
-  relative_cc:      'Relative CC (encoder tick)',
-  staged_note_macro:'Staged Note Macro',
-  axis_to_cc:       'Axis → CC (analog input)',
+  '':                '— Unmapped —',
+  note:              'Note',
+  cc:                'Control Change (CC)',
+  macro_cc:          'Macro CC (click / long-press fade)',
+  relative_cc:       'Relative CC (encoder tick)',
+  staged_note_macro: 'Staged Note Macro',
+  axis_to_cc:        'Axis → CC (analog input)',
 };
 const DEFAULTS = {
   note:              { type:'note', channel:0, note:36, velocity:127 },
@@ -965,7 +956,6 @@ function renderEditor(action) {
       <div class="spacer"></div>
       <button class="btn btn-danger-outline btn-sm" id="btnClear">Clear mapping</button>
     </div>
-
     <div class="section">
       <div class="section-title">Mapping type</div>
       <div class="field">
@@ -980,9 +970,8 @@ function renderEditor(action) {
         <button class="btn btn-primary" id="btnApplyFields">Apply fields</button>
       </div>
     </div>
-
     <div class="section">
-      <div class="section-title">Raw JSON <span style="color:var(--text-dim);text-transform:none;font-weight:400">— paste agent-generated mapping here</span></div>
+      <div class="section-title">Raw JSON <span style="color:var(--text-dim);text-transform:none;font-weight:400">— paste any mapping here</span></div>
       <div class="field">
         <textarea class="json-textarea" id="jsonRaw" spellcheck="false">${spec ? JSON.stringify(spec, null, 2) : ''}</textarea>
         <div class="json-err" id="jsonErr"></div>
@@ -992,51 +981,35 @@ function renderEditor(action) {
         <button class="btn btn-ghost" id="btnCopyJson">Copy</button>
       </div>
     </div>
-
-    <div class="section">
-      <div class="section-title">Macro library <span style="color:var(--text-dim);text-transform:none;font-weight:400">— click to paste template</span></div>
-      <div class="macro-grid" id="macroGrid2"></div>
-    </div>
   `;
 
-  buildMacroGrid();
   renderFields(document.getElementById('typeSelect').value, spec);
 
-  // Type change
   document.getElementById('typeSelect').addEventListener('change', e => {
     const t = e.target.value;
     const newSpec = t ? { ...DEFAULTS[t] } : null;
     renderFields(t, newSpec);
     syncJsonRaw(newSpec);
   });
-
-  // Clear
   document.getElementById('btnClear').addEventListener('click', () => {
     commit(action, null);
     renderEditor(action);
     toast(`${action} cleared`);
   });
-
-  // Apply fields
   document.getElementById('btnApplyFields').addEventListener('click', () => {
     const t = document.getElementById('typeSelect').value;
     const newSpec = readFields(t);
     if (!newSpec) return;
     commit(action, newSpec);
     syncJsonRaw(newSpec);
+    renderMacroLibrary();
     toast(`${action} updated`);
   });
-
-  // Apply JSON
   document.getElementById('btnApplyJson').addEventListener('click', () => applyJson());
-
-  // Copy JSON
   document.getElementById('btnCopyJson').addEventListener('click', () => {
     const val = document.getElementById('jsonRaw').value.trim();
     navigator.clipboard.writeText(val).then(() => toast('Copied'));
   });
-
-  // Live JSON: clear error on input
   document.getElementById('jsonRaw').addEventListener('input', () => {
     document.getElementById('jsonErr').classList.remove('show');
     document.getElementById('jsonRaw').classList.remove('has-error');
@@ -1053,28 +1026,34 @@ function renderFields(type, spec) {
   const s = spec || DEFAULTS[type] || {};
   const row = (...fields) => {
     const r = document.createElement('div'); r.className = 'row';
-    fields.forEach(f => r.appendChild(f)); container.appendChild(r); return r;
+    fields.forEach(f => r.appendChild(f)); container.appendChild(r);
   };
-  const fld = (id, label, input) => {
+  const fld = (id, label, input, hint) => {
     const d = document.createElement('div'); d.className = 'field';
     const l = document.createElement('label'); l.textContent = label; l.setAttribute('for', id);
-    d.appendChild(l); input.id = id; d.appendChild(input); return d;
+    d.appendChild(l); input.id = id; d.appendChild(input);
+    if (hint) { const h = document.createElement('div'); h.className = 'field-hint'; h.textContent = hint; d.appendChild(h); }
+    return d;
   };
   const num = (id, val, min, max, step=1) => {
-    const i = document.createElement('input');
-    i.type = 'number'; i.value = val; i.min = min; i.max = max; i.step = step; return i;
+    const i = document.createElement('input'); i.type='number'; i.value=val; i.min=min; i.max=max; i.step=step; return i;
+  };
+  const numOpt = (id, val, min, max, step=1, placeholder='') => {
+    const i = document.createElement('input'); i.type='number';
+    if (val != null) i.value=val; i.min=min; i.max=max; i.step=step;
+    i.placeholder=placeholder || 'global'; return i;
   };
   const sel = (id, opts, val) => {
-    const s = document.createElement('select'); s.id = id;
-    opts.forEach(([v,l]) => { const o = document.createElement('option'); o.value=v; o.textContent=l; if(v===val) o.selected=true; s.appendChild(o); });
+    const s = document.createElement('select'); s.id=id;
+    opts.forEach(([v,l]) => { const o=document.createElement('option'); o.value=v; o.textContent=l; if(v===val) o.selected=true; s.appendChild(o); });
     return s;
   };
 
   if (type === 'note') {
     row(
-      fld('f_ch',  'Channel (0–15)',   num('f_ch',  s.channel??0, 0, 15)),
-      fld('f_note','Note (0–127)',      num('f_note',s.note??36, 0, 127)),
-      fld('f_vel', 'Velocity (1–127)', num('f_vel', s.velocity??127, 1, 127)),
+      fld('f_ch',   'Channel (0–15)',   num('f_ch',  s.channel??0, 0, 15)),
+      fld('f_note', 'Note (0–127)',     num('f_note',s.note??36, 0, 127)),
+      fld('f_vel',  'Velocity (1–127)', num('f_vel', s.velocity??127, 1, 127)),
     );
   } else if (type === 'cc') {
     row(
@@ -1087,23 +1066,28 @@ function renderFields(type, spec) {
     );
   } else if (type === 'macro_cc') {
     row(
-      fld('f_ch',      'Channel (0–15)',   num('f_ch',  s.channel??0, 0, 15)),
-      fld('f_cc',      'CC (0–127)',       num('f_cc',  s.cc??22, 0, 127)),
-      fld('f_gesture', 'Gesture',          sel('f_gesture', [['click','click'],['long_press','long_press']], s.gesture??'click')),
+      fld('f_ch',      'Channel (0–15)',  num('f_ch', s.channel??0, 0, 15)),
+      fld('f_cc',      'CC (0–127)',      num('f_cc', s.cc??22, 0, 127)),
+      fld('f_gesture', 'Gesture',         sel('f_gesture', [['click','click'],['long_press','long_press']], s.gesture??'click')),
+    );
+    row(
+      fld('f_fade', 'Fade duration override (s)',
+        numOpt('f_fade', s.fade_duration_seconds??null, 0.1, 30, 0.1),
+        'Blank = use global setting from Global Settings tab'),
     );
   } else if (type === 'relative_cc') {
     row(
-      fld('f_ch',  'Channel (0–15)',       num('f_ch',  s.channel??0, 0, 15)),
-      fld('f_cc',  'CC (0–127)',           num('f_cc',  s.cc??47, 0, 127)),
+      fld('f_ch',   'Channel (0–15)',           num('f_ch',  s.channel??0, 0, 15)),
+      fld('f_cc',   'CC (0–127)',               num('f_cc',  s.cc??47, 0, 127)),
     );
     row(
-      fld('f_step','Step value (1=inc, 127=dec)', num('f_step', s.step_value??1, 0, 127)),
-      fld('f_ri',  'Repeat interval (ms)', num('f_ri', s.repeat_interval_ms??40, 1, 1000)),
+      fld('f_step', 'Step value (1=inc, 127=dec)', num('f_step', s.step_value??1, 0, 127)),
+      fld('f_ri',   'Repeat interval (ms)',         num('f_ri',   s.repeat_interval_ms??40, 1, 1000)),
     );
   } else if (type === 'staged_note_macro') {
     row(
-      fld('f_note','Note (0–127)', num('f_note', s.note??36, 0, 127)),
-      fld('f_vel', 'Velocity',     num('f_vel',  s.velocity??127, 1, 127)),
+      fld('f_note', 'Note (0–127)', num('f_note', s.note??36, 0, 127)),
+      fld('f_vel',  'Velocity',     num('f_vel',  s.velocity??127, 1, 127)),
     );
     row(
       fld('f_mch', 'Modifier channel', num('f_mch', s.modifier_channel??0, 0, 15)),
@@ -1111,11 +1095,19 @@ function renderFields(type, spec) {
     );
     const raField = document.createElement('div'); raField.className = 'field';
     const raLabel = document.createElement('label'); raLabel.textContent = 'Refresh actions (comma-separated)';
-    const raInput = document.createElement('input'); raInput.type = 'text'; raInput.id = 'f_ra';
-    raInput.value = (s.refresh_actions || []).join(', ');
-    raInput.placeholder = 'e.g. L_PAD_LEFT, L_PAD_RIGHT';
+    const raInput = document.createElement('input'); raInput.type='text'; raInput.id='f_ra';
+    raInput.value=(s.refresh_actions||[]).join(', ');
+    raInput.placeholder='e.g. L_PAD_LEFT, L_PAD_RIGHT';
     raField.appendChild(raLabel); raField.appendChild(raInput);
     container.appendChild(raField);
+    row(
+      fld('f_delay', 'Macro delay override (ms)',
+        numOpt('f_delay', s.macro_delay_ms??null, 1, 1000),
+        'Blank = use global setting'),
+      fld('f_hold',  'Modifier hold override (ms)',
+        numOpt('f_hold', s.modifier_hold_ms??null, 100, 10000),
+        'Blank = use global setting'),
+    );
   } else if (type === 'axis_to_cc') {
     row(
       fld('f_ch', 'Channel (0–15)', num('f_ch', s.channel??0, 0, 15)),
@@ -1132,8 +1124,8 @@ function renderFields(type, spec) {
       fld('f_ormax','Output range max', num('f_ormax', or_[1], 0, 127)),
     );
     row(
-      fld('f_dz',    'Deadzone',        num('f_dz', s.deadzone??1000, 0, 32768)),
-      fld('f_curve', 'Curve',           sel('f_curve', [['linear','linear'],['quadratic','quadratic'],['s_curve','s_curve']], s.curve??'linear')),
+      fld('f_dz',    'Deadzone',   num('f_dz', s.deadzone??1000, 0, 32768)),
+      fld('f_curve', 'Curve',      sel('f_curve', [['linear','linear'],['quadratic','quadratic'],['s_curve','s_curve']], s.curve??'linear')),
     );
   }
 }
@@ -1146,17 +1138,27 @@ function readFields(type) {
     return { type:'note', channel:n('f_ch'), note:n('f_note'), velocity:n('f_vel') };
   if (type === 'cc')
     return { type:'cc', channel:n('f_ch'), cc:n('f_cc'), on_value:n('f_on'), off_value:n('f_off') };
-  if (type === 'macro_cc')
-    return { type:'macro_cc', channel:n('f_ch'), cc:n('f_cc'), gesture:v('f_gesture') };
+  if (type === 'macro_cc') {
+    const spec = { type:'macro_cc', channel:n('f_ch'), cc:n('f_cc'), gesture:v('f_gesture') };
+    const fadeStr = v('f_fade').trim();
+    if (fadeStr) spec.fade_duration_seconds = parseFloat(fadeStr);
+    return spec;
+  }
   if (type === 'relative_cc')
     return { type:'relative_cc', channel:n('f_ch'), cc:n('f_cc'), step_value:n('f_step'), repeat_interval_ms:n('f_ri') };
   if (type === 'staged_note_macro') {
     const ra = v('f_ra').split(',').map(s=>s.trim()).filter(Boolean);
-    return { type:'staged_note_macro', note:n('f_note'), velocity:n('f_vel'), modifier_channel:n('f_mch'), trigger_channel:n('f_tch'), refresh_actions:ra };
+    const spec = { type:'staged_note_macro', note:n('f_note'), velocity:n('f_vel'),
+      modifier_channel:n('f_mch'), trigger_channel:n('f_tch'), refresh_actions:ra };
+    const delayStr = v('f_delay').trim();
+    const holdStr  = v('f_hold').trim();
+    if (delayStr) spec.macro_delay_ms  = parseInt(delayStr, 10);
+    if (holdStr)  spec.modifier_hold_ms = parseInt(holdStr, 10);
+    return spec;
   }
   if (type === 'axis_to_cc')
     return { type:'axis_to_cc', channel:n('f_ch'), cc:n('f_cc'),
-      input_range:[n('f_irmin'), n('f_irmax')], output_range:[n('f_ormin'), n('f_ormax')],
+      input_range:[n('f_irmin'),n('f_irmax')], output_range:[n('f_ormin'),n('f_ormax')],
       deadzone:n('f_dz'), curve:v('f_curve') };
   return null;
 }
@@ -1171,74 +1173,470 @@ function applyJson() {
   const errEl = document.getElementById('jsonErr');
   const ta = document.getElementById('jsonRaw');
   if (!raw) {
-    commit(selected, null);
-    errEl?.classList.remove('show');
-    ta?.classList.remove('has-error');
-    renderEditor(selected);
-    toast(`${selected} cleared`);
-    return;
+    commit(selected, null); errEl?.classList.remove('show'); ta?.classList.remove('has-error');
+    renderEditor(selected); toast(`${selected} cleared`); return;
   }
   let parsed;
   try { parsed = JSON.parse(raw); } catch (e) {
     if (errEl) { errEl.textContent = 'JSON error: ' + e.message; errEl.classList.add('show'); }
-    ta?.classList.add('has-error');
-    return;
+    ta?.classList.add('has-error'); return;
   }
-  errEl?.classList.remove('show');
-  ta?.classList.remove('has-error');
+  errEl?.classList.remove('show'); ta?.classList.remove('has-error');
   commit(selected, parsed);
-  // Sync type selector
   const ts = document.getElementById('typeSelect');
-  if (ts && parsed.type) {
-    ts.value = parsed.type;
-    renderFields(parsed.type, parsed);
-  }
+  if (ts && parsed.type) { ts.value = parsed.type; renderFields(parsed.type, parsed); }
+  renderMacroLibrary();
   toast(`${selected} updated from JSON`);
 }
 
 // ─────────────────────────────────────────────────────────────────
-// Macro library
+// Preset dropdown
 // ─────────────────────────────────────────────────────────────────
-const MACROS = [
-  { name:'Click toggle opacity',  desc:'Instant CC toggle on button press',          spec:{ type:'macro_cc', channel:0, cc:22, gesture:'click' } },
-  { name:'Animated fade opacity', desc:'Smooth CC fade on long press',               spec:{ type:'macro_cc', channel:0, cc:22, gesture:'long_press' } },
-  { name:'Encoder increment',     desc:'R-pad right — increment relative CC',        spec:{ type:'relative_cc', channel:0, cc:47, step_value:1,   repeat_interval_ms:40 } },
-  { name:'Encoder decrement',     desc:'R-pad left — decrement relative CC',         spec:{ type:'relative_cc', channel:0, cc:47, step_value:127, repeat_interval_ms:40 } },
-  { name:'Trigger note',          desc:'Note-on/off on button press',                spec:{ type:'note', channel:0, note:36, velocity:127 } },
-  { name:'CC on/off',             desc:'CC with configurable on/off values',         spec:{ type:'cc', channel:0, cc:1, on_value:127, off_value:0 } },
-];
+function renderPresetDropdown() {
+  const active = presets.find(p => p.active);
+  document.getElementById('presetBtnLabel').textContent = active ? active.display_name : 'Default';
 
-function buildMacroGrid() {
-  const grid = document.getElementById('macroGrid2');
-  if (!grid) return;
-  grid.innerHTML = '';
-  for (const m of MACROS) {
-    const card = document.createElement('div');
-    card.className = 'macro-card';
-    card.innerHTML = `<div class="macro-card-name">${m.name}</div><div class="macro-card-desc">${m.desc}</div>`;
-    card.addEventListener('click', () => {
-      const spec = { ...m.spec };
-      syncJsonRaw(spec);
-      const ts = document.getElementById('typeSelect');
-      if (ts) { ts.value = spec.type; renderFields(spec.type, spec); }
-      commit(selected, spec);
-      toast(`Applied: ${m.name}`);
+  const list = document.getElementById('presetList');
+  list.innerHTML = '';
+  for (const p of presets) {
+    const item = document.createElement('div');
+    item.className = 'preset-item' + (p.active ? ' active' : '');
+    const isDefault = p.name === 'default.json';
+    item.innerHTML = `
+      <div class="preset-active-dot"></div>
+      <span class="preset-item-name" title="${p.display_name}">${p.display_name}</span>
+      <div class="preset-item-actions">
+        ${!isDefault ? `<button class="icon-btn" data-rename="${p.name}" title="Rename">✏</button>` : ''}
+        ${!isDefault ? `<button class="icon-btn icon-btn-danger" data-delete="${p.name}" title="Delete">🗑</button>` : ''}
+      </div>
+    `;
+    // Load on name click
+    item.querySelector('.preset-item-name').addEventListener('click', async () => {
+      closePresetDropdown();
+      if (p.active) return;
+      await loadPreset(p.name);
     });
+    // Rename
+    const renameBtn = item.querySelector('[data-rename]');
+    if (renameBtn) renameBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      closePresetDropdown();
+      openRenameModal(p.name, p.display_name);
+    });
+    // Delete
+    const deleteBtn = item.querySelector('[data-delete]');
+    if (deleteBtn) deleteBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      closePresetDropdown();
+      openDeletePresetModal(p.name, p.display_name);
+    });
+    list.appendChild(item);
+  }
+}
+
+function closePresetDropdown() {
+  document.getElementById('presetWrap').classList.remove('open');
+}
+
+document.getElementById('presetBtn').addEventListener('click', e => {
+  e.stopPropagation();
+  document.getElementById('presetWrap').classList.toggle('open');
+});
+document.addEventListener('click', () => closePresetDropdown());
+document.getElementById('presetDropdown').addEventListener('click', e => e.stopPropagation());
+
+document.getElementById('presetSaveAs').addEventListener('click', () => {
+  closePresetDropdown();
+  openSaveAsModal();
+});
+
+async function loadPreset(name) {
+  status('Switching preset…');
+  try {
+    await apiFetch('/api/presets/load', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ name }),
+    });
+    await loadAll();
+    if (selected) renderEditor(selected);
+    toast(`Switched to preset: ${name.replace('.json','')}`, 'ok');
+  } catch (e) {
+    status('Load preset failed: ' + e.message, 'err');
+    toast('Load preset failed: ' + e.message, 'err', 5000);
+  }
+}
+
+// Save As
+function openSaveAsModal() {
+  document.getElementById('saveAsInput').value = '';
+  document.getElementById('saveAsOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('saveAsInput').focus(), 50);
+}
+document.getElementById('btnSaveAsCancel').addEventListener('click', () =>
+  document.getElementById('saveAsOverlay').classList.remove('open')
+);
+document.getElementById('btnSaveAsConfirm').addEventListener('click', async () => {
+  const name = document.getElementById('saveAsInput').value.trim();
+  if (!name) return;
+  document.getElementById('saveAsOverlay').classList.remove('open');
+  try {
+    const r = await apiFetch('/api/presets/save-as', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ name }),
+    });
+    toast(`Saved as "${name}"`, 'ok');
+    await loadAll();
+    if (selected) renderEditor(selected);
+  } catch (e) {
+    toast('Save As failed: ' + e.message, 'err', 5000);
+  }
+});
+document.getElementById('saveAsInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('btnSaveAsConfirm').click();
+});
+
+// Rename
+function openRenameModal(filename, currentName) {
+  _pendingRenameFile = filename;
+  document.getElementById('renameInput').value = currentName;
+  document.getElementById('renameOverlay').classList.add('open');
+  setTimeout(() => { const i=document.getElementById('renameInput'); i.focus(); i.select(); }, 50);
+}
+document.getElementById('btnRenameCancel').addEventListener('click', () =>
+  document.getElementById('renameOverlay').classList.remove('open')
+);
+document.getElementById('btnRenameConfirm').addEventListener('click', async () => {
+  const newName = document.getElementById('renameInput').value.trim();
+  if (!newName || !_pendingRenameFile) return;
+  document.getElementById('renameOverlay').classList.remove('open');
+  try {
+    await apiFetch('/api/presets/rename', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ old_name: _pendingRenameFile, new_name: newName }),
+    });
+    toast(`Renamed to "${newName}"`, 'ok');
+    const [pr] = await Promise.all([apiFetch('/api/presets')]);
+    presets = pr.presets || [];
+    renderPresetDropdown();
+  } catch (e) {
+    toast('Rename failed: ' + e.message, 'err', 5000);
+  }
+  _pendingRenameFile = null;
+});
+document.getElementById('renameInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('btnRenameConfirm').click();
+});
+
+// Delete preset
+function openDeletePresetModal(filename, displayName) {
+  _pendingDeleteFile = filename;
+  document.getElementById('deletePresetBody').textContent = `Delete "${displayName}"? This cannot be undone.`;
+  document.getElementById('deletePresetOverlay').classList.add('open');
+}
+document.getElementById('btnDeletePresetCancel').addEventListener('click', () =>
+  document.getElementById('deletePresetOverlay').classList.remove('open')
+);
+document.getElementById('btnDeletePresetConfirm').addEventListener('click', async () => {
+  if (!_pendingDeleteFile) return;
+  document.getElementById('deletePresetOverlay').classList.remove('open');
+  try {
+    await apiFetch('/api/presets/delete', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ name: _pendingDeleteFile }),
+    });
+    toast('Preset deleted', 'ok');
+    await loadAll();
+    if (selected) renderEditor(selected);
+  } catch (e) {
+    toast('Delete failed: ' + e.message, 'err', 5000);
+  }
+  _pendingDeleteFile = null;
+});
+
+// ─────────────────────────────────────────────────────────────────
+// Macro Library
+// ─────────────────────────────────────────────────────────────────
+function macroBadgeClass(type) {
+  const map = { macro_cc:'badge-macro', relative_cc:'badge-rel', staged_note_macro:'badge-staged' };
+  return map[type] || 'badge-none';
+}
+function macroBadgeLabel(type) {
+  const map = { macro_cc:'MACRO', relative_cc:'REL', staged_note_macro:'STAGED' };
+  return map[type] || type;
+}
+function macroDesc(macro) {
+  if (macro.type === 'macro_cc') {
+    const fade = macro.fade_duration_seconds != null ? `${macro.fade_duration_seconds}s fade` : 'global fade';
+    return `${macro.gesture} · ${fade}`;
+  }
+  if (macro.type === 'relative_cc') {
+    const dir = macro.step_value === 1 ? 'increment' : macro.step_value === 127 ? 'decrement' : `step ${macro.step_value}`;
+    return `${dir} · every ${macro.repeat_interval_ms}ms`;
+  }
+  if (macro.type === 'staged_note_macro') {
+    const delay = macro.macro_delay_ms != null ? `${macro.macro_delay_ms}ms delay` : 'global delay';
+    const hold  = macro.modifier_hold_ms != null ? `${macro.modifier_hold_ms}ms hold` : 'global hold';
+    return `ch${macro.modifier_channel+1}→ch${macro.trigger_channel+1} · ${delay} · ${hold}`;
+  }
+  return macro.type;
+}
+
+function macroCompatible(macro) {
+  if (!selected) return false;
+  const spec = state[selected];
+  return !spec || spec.type === macro.type;
+}
+
+function renderMacroLibrary() {
+  const grid = document.getElementById('macroLibGrid');
+  if (!grid) return;
+
+  const subtitle = document.getElementById('libSubtitle');
+  if (selected) {
+    const spec = state[selected];
+    subtitle.textContent = spec
+      ? `Editing: ${selected} (${spec.type}) — compatible macros have Apply enabled`
+      : `Editing: ${selected} (unmapped) — any macro type can be applied`;
+  } else {
+    subtitle.textContent = 'Select a button in the sidebar to enable Apply buttons for compatible macros.';
+  }
+
+  if (!macroLibrary.length) {
+    grid.innerHTML = '<div class="macro-lib-empty">No macros yet. Click "+ New macro" to add one to your library.</div>';
+    return;
+  }
+
+  grid.innerHTML = '';
+  for (const macro of macroLibrary) {
+    const compat = macroCompatible(macro);
+    const card = document.createElement('div');
+    card.className = 'macro-lib-card' + (compat ? '' : ' incompatible');
+
+    card.innerHTML = `
+      <div class="macro-lib-card-header">
+        <span class="macro-lib-name">${macro.name}</span>
+        <span class="chip-badge ${macroBadgeClass(macro.type)}">${macroBadgeLabel(macro.type)}</span>
+        <div class="macro-lib-actions">
+          <button class="icon-btn" data-edit="${macro.id}" title="Edit macro">✏</button>
+          <button class="icon-btn icon-btn-danger" data-del="${macro.id}" title="Delete macro">🗑</button>
+          ${compat
+            ? `<button class="btn btn-sm btn-primary" data-apply="${macro.id}">Apply</button>`
+            : `<button class="btn btn-sm" disabled style="opacity:.35;cursor:default">Apply</button>`}
+        </div>
+      </div>
+      <div class="macro-lib-desc">${macroDesc(macro)}</div>
+    `;
+
+    card.querySelector(`[data-edit]`)?.addEventListener('click', () => openMacroEditor(macro));
+    card.querySelector(`[data-del]`)?.addEventListener('click', () => openDeleteMacroModal(macro.id, macro.name));
+    card.querySelector(`[data-apply]`)?.addEventListener('click', () => applyMacroToSelected(macro));
+
     grid.appendChild(card);
   }
 }
+
+function applyMacroToSelected(macro) {
+  if (!selected) { toast('Select a button first', 'warn'); return; }
+  const currentSpec = state[selected];
+  let base;
+  if (!currentSpec || currentSpec.type !== macro.type) {
+    base = { ...DEFAULTS[macro.type] };
+  } else {
+    base = { ...currentSpec };
+  }
+  if (macro.type === 'macro_cc') {
+    base.gesture = macro.gesture;
+    if (macro.fade_duration_seconds != null) base.fade_duration_seconds = macro.fade_duration_seconds;
+    else delete base.fade_duration_seconds;
+  } else if (macro.type === 'relative_cc') {
+    base.step_value = macro.step_value;
+    base.repeat_interval_ms = macro.repeat_interval_ms;
+  } else if (macro.type === 'staged_note_macro') {
+    base.modifier_channel = macro.modifier_channel;
+    base.trigger_channel  = macro.trigger_channel;
+    base.refresh_actions  = [...(macro.refresh_actions || [])];
+    if (macro.macro_delay_ms != null)   base.macro_delay_ms   = macro.macro_delay_ms;
+    else delete base.macro_delay_ms;
+    if (macro.modifier_hold_ms != null) base.modifier_hold_ms = macro.modifier_hold_ms;
+    else delete base.modifier_hold_ms;
+  }
+  commit(selected, base);
+  switchTab('editor');
+  renderEditor(selected);
+  toast(`Applied "${macro.name}" to ${selected}`);
+}
+
+// ── Macro creator / editor ─────────────────────────────────────
+document.getElementById('btnNewMacro').addEventListener('click', () => openMacroEditor(null));
+
+function openMacroEditor(existing) {
+  _macroEditorId = existing ? existing.id : null;
+  document.getElementById('macroEditorTitle').textContent = existing ? 'Edit macro' : 'New macro';
+  document.getElementById('macroEditorName').value = existing?.name || '';
+  const typeEl = document.getElementById('macroEditorType');
+  typeEl.value = existing?.type || 'macro_cc';
+  renderMacroEditorFields(typeEl.value, existing);
+  document.getElementById('macroEditorOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('macroEditorName').focus(), 50);
+}
+
+document.getElementById('macroEditorType').addEventListener('change', e => {
+  renderMacroEditorFields(e.target.value, null);
+});
+
+function renderMacroEditorFields(type, data) {
+  const container = document.getElementById('macroEditorFields');
+  container.innerHTML = '';
+  const d = data || {};
+
+  const row = (...fields) => {
+    const r = document.createElement('div'); r.className = 'row';
+    fields.forEach(f => r.appendChild(f)); container.appendChild(r);
+  };
+  const fld = (id, label, input, hint) => {
+    const el = document.createElement('div'); el.className = 'field';
+    const l = document.createElement('label'); l.textContent = label; l.setAttribute('for', id);
+    el.appendChild(l); input.id = id; el.appendChild(input);
+    if (hint) { const h = document.createElement('div'); h.className = 'field-hint'; h.textContent = hint; el.appendChild(h); }
+    return el;
+  };
+  const num = (id, val, min, max, step=1) => {
+    const i = document.createElement('input'); i.type='number'; i.value=val; i.min=min; i.max=max; i.step=step; return i;
+  };
+  const numOpt = (id, val, min, max, step=1) => {
+    const i = document.createElement('input'); i.type='number';
+    if (val != null) i.value=val; i.min=min; i.max=max; i.step=step; i.placeholder='global'; return i;
+  };
+  const sel = (id, opts, val) => {
+    const s = document.createElement('select'); s.id=id;
+    opts.forEach(([v,l]) => { const o=document.createElement('option'); o.value=v; o.textContent=l; if(v===val) o.selected=true; s.appendChild(o); });
+    return s;
+  };
+
+  if (type === 'macro_cc') {
+    row(
+      fld('me_gesture', 'Gesture', sel('me_gesture', [['click','click'],['long_press','long_press']], d.gesture||'click')),
+      fld('me_fade', 'Fade duration override (s)', numOpt('me_fade', d.fade_duration_seconds??null, 0.1, 30, 0.1),
+        'Blank = inherit global fade setting'),
+    );
+  } else if (type === 'relative_cc') {
+    row(
+      fld('me_step', 'Step value (1=inc, 127=dec)', num('me_step', d.step_value??1, 0, 127)),
+      fld('me_ri',   'Repeat interval (ms)',          num('me_ri',   d.repeat_interval_ms??40, 1, 1000)),
+    );
+  } else if (type === 'staged_note_macro') {
+    row(
+      fld('me_mch',   'Modifier channel', num('me_mch',  d.modifier_channel??0, 0, 15)),
+      fld('me_tch',   'Trigger channel',  num('me_tch',  d.trigger_channel??1, 0, 15)),
+    );
+    const raField = document.createElement('div'); raField.className = 'field';
+    const raLabel = document.createElement('label'); raLabel.textContent = 'Refresh actions (comma-separated)';
+    const raInput = document.createElement('input'); raInput.type='text'; raInput.id='me_ra';
+    raInput.value=(d.refresh_actions||[]).join(', ');
+    raInput.placeholder='e.g. L_PAD_LEFT, L_PAD_RIGHT';
+    raField.appendChild(raLabel); raField.appendChild(raInput);
+    container.appendChild(raField);
+    row(
+      fld('me_delay', 'Macro delay override (ms)',    numOpt('me_delay', d.macro_delay_ms??null,   1, 1000),   'Blank = global'),
+      fld('me_hold',  'Modifier hold override (ms)',  numOpt('me_hold',  d.modifier_hold_ms??null, 100, 10000), 'Blank = global'),
+    );
+  }
+}
+
+function readMacroEditorFields(type) {
+  const mv = id => document.getElementById(id)?.value ?? '';
+  const mn = id => parseInt(mv(id), 10);
+  if (type === 'macro_cc') {
+    const entry = { gesture: mv('me_gesture') };
+    const fadeStr = mv('me_fade').trim();
+    if (fadeStr) entry.fade_duration_seconds = parseFloat(fadeStr);
+    return entry;
+  }
+  if (type === 'relative_cc') {
+    return { step_value: mn('me_step'), repeat_interval_ms: mn('me_ri') };
+  }
+  if (type === 'staged_note_macro') {
+    const entry = {
+      modifier_channel: mn('me_mch'),
+      trigger_channel:  mn('me_tch'),
+      refresh_actions:  mv('me_ra').split(',').map(s=>s.trim()).filter(Boolean),
+    };
+    const delayStr = mv('me_delay').trim();
+    const holdStr  = mv('me_hold').trim();
+    if (delayStr) entry.macro_delay_ms   = parseInt(delayStr, 10);
+    if (holdStr)  entry.modifier_hold_ms = parseInt(holdStr, 10);
+    return entry;
+  }
+  return {};
+}
+
+document.getElementById('btnMacroEditorCancel').addEventListener('click', () =>
+  document.getElementById('macroEditorOverlay').classList.remove('open')
+);
+
+document.getElementById('btnMacroEditorSave').addEventListener('click', async () => {
+  const name = document.getElementById('macroEditorName').value.trim();
+  if (!name) { toast('Macro name is required', 'warn'); return; }
+  const type = document.getElementById('macroEditorType').value;
+  const fields = readMacroEditorFields(type);
+  const body = { name, type, ...fields };
+
+  document.getElementById('macroEditorOverlay').classList.remove('open');
+  try {
+    if (_macroEditorId) {
+      await apiFetch(`/api/macros/${_macroEditorId}`, {
+        method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body),
+      });
+      toast(`Macro "${name}" updated`, 'ok');
+    } else {
+      await apiFetch('/api/macros', {
+        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body),
+      });
+      toast(`Macro "${name}" saved to library`, 'ok');
+    }
+    const mcr = await apiFetch('/api/macros');
+    macroLibrary = mcr.macros || [];
+    renderMacroLibrary();
+  } catch (e) {
+    toast('Save macro failed: ' + e.message, 'err', 5000);
+  }
+});
+
+// Delete macro
+function openDeleteMacroModal(id, name) {
+  _pendingDeleteMacroId = id;
+  document.getElementById('deleteMacroBody').textContent = `Delete "${name}" from the library? This cannot be undone.`;
+  document.getElementById('deleteMacroOverlay').classList.add('open');
+}
+document.getElementById('btnDeleteMacroCancel').addEventListener('click', () =>
+  document.getElementById('deleteMacroOverlay').classList.remove('open')
+);
+document.getElementById('btnDeleteMacroConfirm').addEventListener('click', async () => {
+  if (!_pendingDeleteMacroId) return;
+  document.getElementById('deleteMacroOverlay').classList.remove('open');
+  try {
+    await apiFetch(`/api/macros/${_pendingDeleteMacroId}`, { method:'DELETE' });
+    toast('Macro deleted', 'ok');
+    const mcr = await apiFetch('/api/macros');
+    macroLibrary = mcr.macros || [];
+    renderMacroLibrary();
+  } catch (e) {
+    toast('Delete macro failed: ' + e.message, 'err', 5000);
+  }
+  _pendingDeleteMacroId = null;
+});
 
 // ─────────────────────────────────────────────────────────────────
 // Settings forms
 // ─────────────────────────────────────────────────────────────────
 const MACRO_FIELDS = [
-  { key:'fade_duration_seconds', label:'Fade duration (s)',  type:'float', min:0.1, max:30  },
-  { key:'update_hz',             label:'Update rate (Hz)',   type:'float', min:1,   max:120 },
-  { key:'min_value',             label:'Min CC value',       type:'int',   min:0,   max:126 },
-  { key:'max_value',             label:'Max CC value',       type:'int',   min:1,   max:127 },
-  { key:'macro_delay_ms',        label:'Macro delay (ms)',   type:'int',   min:1,   max:1000 },
-  { key:'modifier_hold_ms',      label:'Modifier hold (ms)', type:'int',   min:100, max:10000 },
-  { key:'layer_refresh_ms',      label:'Layer refresh (ms)', type:'int',   min:50,  max:5000 },
+  { key:'fade_duration_seconds', label:'Fade duration (s)',   type:'float', min:0.1, max:30  },
+  { key:'update_hz',             label:'Update rate (Hz)',    type:'float', min:1,   max:120 },
+  { key:'min_value',             label:'Min CC value',        type:'int',   min:0,   max:126 },
+  { key:'max_value',             label:'Max CC value',        type:'int',   min:1,   max:127 },
+  { key:'macro_delay_ms',        label:'Macro delay (ms)',    type:'int',   min:1,   max:1000 },
+  { key:'modifier_hold_ms',      label:'Modifier hold (ms)',  type:'int',   min:100, max:10000 },
+  { key:'layer_refresh_ms',      label:'Layer refresh (ms)',  type:'int',   min:50,  max:5000 },
 ];
 const ANALOG_FIELDS = [
   { key:'update_hz', label:'Update rate (Hz)', type:'float', min:1, max:120 },
@@ -1256,19 +1654,17 @@ function renderSettingsGrid(gridId, fields, values, pfx) {
   g.innerHTML = '';
   for (const f of fields) {
     const field = document.createElement('div'); field.className = 'field';
-    const lbl = document.createElement('label'); lbl.textContent = f.label;
-    field.appendChild(lbl);
+    const lbl = document.createElement('label'); lbl.textContent = f.label; field.appendChild(lbl);
     if (f.type === 'select') {
-      const sel = document.createElement('select'); sel.id = `${pfx}_${f.key}`;
+      const sel = document.createElement('select'); sel.id=`${pfx}_${f.key}`;
       for (const o of f.opts) {
         const op = document.createElement('option'); op.value=o; op.textContent=o;
-        if (values[f.key] === o) op.selected = true; sel.appendChild(op);
+        if (values[f.key] === o) op.selected=true; sel.appendChild(op);
       }
       field.appendChild(sel);
     } else {
       const inp = document.createElement('input'); inp.type='number'; inp.id=`${pfx}_${f.key}`;
-      inp.value = values[f.key] ?? ''; inp.min=f.min; inp.max=f.max;
-      inp.step = f.type==='float' ? 0.1 : 1;
+      inp.value=values[f.key]??''; inp.min=f.min; inp.max=f.max; inp.step=f.type==='float'?0.1:1;
       field.appendChild(inp);
     }
     g.appendChild(field);
@@ -1292,7 +1688,6 @@ document.getElementById('btnSave').addEventListener('click', () => triggerSave()
 async function triggerSave() {
   const mappings = {};
   for (const [a, s] of Object.entries(state)) if (s) mappings[a] = s;
-
   let conflicts = [];
   try {
     const r = await apiFetch('/api/conflicts', {
@@ -1301,11 +1696,7 @@ async function triggerSave() {
     });
     conflicts = r.conflicts || [];
   } catch {}
-
-  if (conflicts.length) {
-    showConflictModal(conflicts, doSave);
-    return;
-  }
+  if (conflicts.length) { showConflictModal(conflicts, doSave); return; }
   await doSave();
 }
 
@@ -1317,13 +1708,12 @@ async function doSave() {
   if (Object.keys(analogSettings).length) body.analog_settings = analogSettings;
   status('Saving…');
   try {
-    await apiFetch('/api/save', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify(body),
+    const r = await apiFetch('/api/save', {
+      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body),
     });
     setDirty(false);
     status('Saved & applied', 'ok');
-    toast('Mappings saved and applied ✓', 'ok');
+    toast(`Saved to ${r.saved_to || 'preset'} ✓`, 'ok');
   } catch (e) {
     status('Save failed: ' + e.message, 'err');
     toast('Save failed: ' + e.message, 'err', 6000);
@@ -1351,7 +1741,7 @@ function showConflictModal(conflicts, onForce) {
 }
 
 // ─────────────────────────────────────────────────────────────────
-// Reset modal
+// Factory reset modal
 // ─────────────────────────────────────────────────────────────────
 document.getElementById('btnReset').addEventListener('click', () =>
   document.getElementById('resetOverlay').classList.add('open')
@@ -1364,7 +1754,7 @@ document.getElementById('btnResetConfirm').addEventListener('click', async () =>
   status('Resetting…');
   try {
     await apiFetch('/api/reset', { method:'POST', headers:{'Content-Type':'application/json'}, body:'{}' });
-    toast('Reset to default map');
+    toast('Factory reset applied to current preset');
     await loadAll();
     if (selected) renderEditor(selected);
   } catch (e) {
@@ -1375,12 +1765,14 @@ document.getElementById('btnResetConfirm').addEventListener('click', async () =>
 // ─────────────────────────────────────────────────────────────────
 // Tabs
 // ─────────────────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x.dataset.tab === name));
+  document.querySelectorAll('.tab-pane').forEach(x => x.classList.toggle('active', x.id === `tab-${name}`));
+  if (name === 'macrolib') renderMacroLibrary();
+}
+
 document.querySelectorAll('.tab').forEach(t => {
-  t.addEventListener('click', () => {
-    const name = t.dataset.tab;
-    document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x.dataset.tab === name));
-    document.querySelectorAll('.tab-pane').forEach(x => x.classList.toggle('active', x.id === `tab-${name}`));
-  });
+  t.addEventListener('click', () => switchTab(t.dataset.tab));
 });
 
 // ─────────────────────────────────────────────────────────────────

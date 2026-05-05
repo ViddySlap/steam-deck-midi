@@ -1,0 +1,398 @@
+{
+  "macro_settings": {
+    "fade_duration_seconds": 2.0,
+    "update_hz": 30,
+    "min_value": 0,
+    "max_value": 127,
+    "macro_delay_ms": 80,
+    "modifier_hold_ms": 2000,
+    "layer_refresh_ms": 500
+  },
+  "mappings": {
+    "BTN_A": {
+      "type": "note",
+      "channel": 0,
+      "note": 36,
+      "velocity": 127
+    },
+    "BTN_B": {
+      "type": "note",
+      "channel": 0,
+      "note": 38,
+      "velocity": 127
+    },
+    "BTN_X": {
+      "type": "note",
+      "channel": 0,
+      "note": 40,
+      "velocity": 127
+    },
+    "BTN_Y": {
+      "type": "note",
+      "channel": 0,
+      "note": 42,
+      "velocity": 127
+    },
+    "BTN_A_LAYER_2": {
+      "type": "note",
+      "channel": 0,
+      "note": 37,
+      "velocity": 127
+    },
+    "BTN_B_LAYER_2": {
+      "type": "note",
+      "channel": 0,
+      "note": 39,
+      "velocity": 127
+    },
+    "BTN_X_LAYER_2": {
+      "type": "note",
+      "channel": 0,
+      "note": 41,
+      "velocity": 127
+    },
+    "BTN_Y_LAYER_2": {
+      "type": "note",
+      "channel": 0,
+      "note": 43,
+      "velocity": 127
+    },
+    "DPAD_UP": {
+      "type": "macro_cc",
+      "channel": 0,
+      "cc": 22,
+      "gesture": "click"
+    },
+    "DPAD_DOWN": {
+      "type": "note",
+      "channel": 0,
+      "note": 98,
+      "velocity": 127
+    },
+    "DPAD_LEFT": {
+      "type": "macro_cc",
+      "channel": 0,
+      "cc": 23,
+      "gesture": "click"
+    },
+    "DPAD_RIGHT": {
+      "type": "macro_cc",
+      "channel": 0,
+      "cc": 21,
+      "gesture": "click"
+    },
+    "DPAD_UP_LONG_PRESS": {
+      "type": "macro_cc",
+      "channel": 0,
+      "cc": 22,
+      "gesture": "long_press"
+    },
+    "DPAD_DOWN_LONG_PRESS": {
+      "type": "macro_cc",
+      "channel": 0,
+      "cc": 20,
+      "gesture": "long_press"
+    },
+    "DPAD_LEFT_LONG_PRESS": {
+      "type": "macro_cc",
+      "channel": 0,
+      "cc": 23,
+      "gesture": "long_press"
+    },
+    "DPAD_RIGHT_LONG_PRESS": {
+      "type": "macro_cc",
+      "channel": 0,
+      "cc": 21,
+      "gesture": "long_press"
+    },
+    "L_STICK_UP": {
+      "type": "note",
+      "channel": 0,
+      "note": 52,
+      "velocity": 127
+    },
+    "L_STICK_DOWN": {
+      "type": "note",
+      "channel": 0,
+      "note": 53,
+      "velocity": 127
+    },
+    "L_STICK_LEFT": {
+      "type": "note",
+      "channel": 0,
+      "note": 54,
+      "velocity": 127
+    },
+    "L_STICK_RIGHT": {
+      "type": "note",
+      "channel": 0,
+      "note": 55,
+      "velocity": 127
+    },
+    "R_STICK_UP": {
+      "type": "note",
+      "channel": 0,
+      "note": 56,
+      "velocity": 127
+    },
+    "R_STICK_DOWN": {
+      "type": "note",
+      "channel": 0,
+      "note": 57,
+      "velocity": 127
+    },
+    "R_STICK_LEFT": {
+      "type": "note",
+      "channel": 0,
+      "note": 58,
+      "velocity": 127
+    },
+    "R_STICK_RIGHT": {
+      "type": "note",
+      "channel": 0,
+      "note": 59,
+      "velocity": 127
+    },
+    "L1": {
+      "type": "note",
+      "channel": 0,
+      "note": 60,
+      "velocity": 127
+    },
+    "R1": {
+      "type": "note",
+      "channel": 0,
+      "note": 62,
+      "velocity": 127
+    },
+    "L2_SOFT": {
+      "type": "note",
+      "channel": 0,
+      "note": 64,
+      "velocity": 127
+    },
+    "L2_FULL": {
+      "type": "note",
+      "channel": 0,
+      "note": 66,
+      "velocity": 127
+    },
+    "R2_SOFT": {
+      "type": "note",
+      "channel": 0,
+      "note": 68,
+      "velocity": 127
+    },
+    "R2_FULL": {
+      "type": "note",
+      "channel": 0,
+      "note": 70,
+      "velocity": 127
+    },
+    "L1_LAYER_2": {
+      "type": "note",
+      "channel": 0,
+      "note": 61,
+      "velocity": 127
+    },
+    "R1_LAYER_2": {
+      "type": "note",
+      "channel": 0,
+      "note": 63,
+      "velocity": 127
+    },
+    "L2_SOFT_LAYER_2": {
+      "type": "note",
+      "channel": 0,
+      "note": 65,
+      "velocity": 127
+    },
+    "L2_FULL_LAYER_2": {
+      "type": "note",
+      "channel": 0,
+      "note": 67,
+      "velocity": 127
+    },
+    "R2_SOFT_LAYER_2": {
+      "type": "note",
+      "channel": 0,
+      "note": 69,
+      "velocity": 127
+    },
+    "R2_FULL_LAYER_2": {
+      "type": "note",
+      "channel": 0,
+      "note": 71,
+      "velocity": 127
+    },
+    "LEFT_STICK_CLICK_L3": {
+      "type": "note",
+      "channel": 0,
+      "note": 72,
+      "velocity": 127
+    },
+    "RIGHT_STICK_CLICK_R3": {
+      "type": "note",
+      "channel": 0,
+      "note": 73,
+      "velocity": 127
+    },
+    "L4": {
+      "type": "cc",
+      "channel": 2,
+      "cc": 74,
+      "on_value": 127,
+      "off_value": 0
+    },
+    "L5": {
+      "type": "note",
+      "channel": 0,
+      "note": 75,
+      "velocity": 127
+    },
+    "R4": {
+      "type": "note",
+      "channel": 0,
+      "note": 76,
+      "velocity": 127
+    },
+    "R5": {
+      "type": "note",
+      "channel": 0,
+      "note": 77,
+      "velocity": 127
+    },
+    "START": {
+      "type": "cc",
+      "channel": 2,
+      "cc": 78,
+      "on_value": 127,
+      "off_value": 0
+    },
+    "SELECT": {
+      "type": "cc",
+      "channel": 2,
+      "cc": 79,
+      "on_value": 127,
+      "off_value": 0
+    },
+    "L_PAD_UP": {
+      "type": "relative_cc",
+      "channel": 0,
+      "cc": 48,
+      "step_value": 1,
+      "repeat_interval_ms": 40
+    },
+    "L_PAD_DOWN": {
+      "type": "relative_cc",
+      "channel": 0,
+      "cc": 48,
+      "step_value": 127,
+      "repeat_interval_ms": 40
+    },
+    "L_PAD_LEFT": {
+      "type": "note",
+      "channel": 0,
+      "note": 82,
+      "velocity": 127
+    },
+    "L_PAD_RIGHT": {
+      "type": "note",
+      "channel": 0,
+      "note": 83,
+      "velocity": 127
+    },
+    "L_PAD_UP_LONG_PRESS": {
+      "type": "note",
+      "channel": 0,
+      "note": 84,
+      "velocity": 127
+    },
+    "L_PAD_DOWN_LONG_PRESS": {
+      "type": "note",
+      "channel": 0,
+      "note": 85,
+      "velocity": 127
+    },
+    "L_PAD_LEFT_LONG_PRESS": {
+      "type": "staged_note_macro",
+      "note": 86,
+      "velocity": 127,
+      "modifier_channel": 0,
+      "trigger_channel": 1,
+      "refresh_actions": ["L_PAD_LEFT", "L_PAD_RIGHT"]
+    },
+    "L_PAD_RIGHT_LONG_PRESS": {
+      "type": "staged_note_macro",
+      "note": 87,
+      "velocity": 127,
+      "modifier_channel": 0,
+      "trigger_channel": 1,
+      "refresh_actions": ["L_PAD_LEFT", "L_PAD_RIGHT"]
+    },
+    "R_PAD_UP": {
+      "type": "relative_cc",
+      "channel": 0,
+      "cc": 49,
+      "step_value": 1,
+      "repeat_interval_ms": 40
+    },
+    "R_PAD_DOWN": {
+      "type": "relative_cc",
+      "channel": 0,
+      "cc": 49,
+      "step_value": 127,
+      "repeat_interval_ms": 40
+    },
+    "R_PAD_LEFT": {
+      "type": "relative_cc",
+      "channel": 0,
+      "cc": 47,
+      "step_value": 127,
+      "repeat_interval_ms": 40
+    },
+    "R_PAD_RIGHT": {
+      "type": "relative_cc",
+      "channel": 0,
+      "cc": 47,
+      "step_value": 1,
+      "repeat_interval_ms": 40
+    },
+    "R_PAD_UP_LONG_PRESS": {
+      "type": "note",
+      "channel": 0,
+      "note": 92,
+      "velocity": 127
+    },
+    "R_PAD_DOWN_LONG_PRESS": {
+      "type": "note",
+      "channel": 0,
+      "note": 93,
+      "velocity": 127
+    },
+    "R_PAD_LEFT_LONG_PRESS": {
+      "type": "note",
+      "channel": 0,
+      "note": 94,
+      "velocity": 127
+    },
+    "R_PAD_RIGHT_LONG_PRESS": {
+      "type": "note",
+      "channel": 0,
+      "note": 95,
+      "velocity": 127
+    },
+    "GYRO_FORWARD": {
+      "type": "note",
+      "channel": 0,
+      "note": 96,
+      "velocity": 127
+    },
+    "GYRO_BACKWARD": {
+      "type": "note",
+      "channel": 0,
+      "note": 97,
+      "velocity": 127
+    }
+  }
+}

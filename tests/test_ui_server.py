@@ -7,7 +7,6 @@ import threading
 import unittest
 from pathlib import Path
 import tempfile
-import os
 
 from windows.ui_server import MappingUIServer, _detect_conflicts, INTENTIONAL_SAME_CHANNEL_CC
 
@@ -24,15 +23,18 @@ BASE_MAP = {
 }
 
 
-def _make_server(base_map=None, local_map=None):
+def _make_server(base_map=None):
     tmpdir = tempfile.mkdtemp()
     base_path = Path(tmpdir) / "windows_midi_map.json"
-    local_path = Path(tmpdir) / "windows_midi_map.local.json"
+    presets_dir = Path(tmpdir) / "presets"
+    macro_library_path = Path(tmpdir) / "macro_library.json"
     actions_path = Path(tmpdir) / "actions.yaml"
 
-    base_path.write_text(json.dumps(base_map or BASE_MAP), encoding="utf-8")
-    if local_map is not None:
-        local_path.write_text(json.dumps(local_map), encoding="utf-8")
+    content = json.dumps(base_map or BASE_MAP)
+    base_path.write_text(content, encoding="utf-8")
+    presets_dir.mkdir()
+    (presets_dir / "default.json").write_text(content, encoding="utf-8")
+    (presets_dir / ".active").write_text("default.json", encoding="utf-8")
     actions_path.write_text(
         "actions:\n  - BTN_A\n  - DPAD_UP\n  - DPAD_UP_LONG_PRESS\n",
         encoding="utf-8",
@@ -41,11 +43,13 @@ def _make_server(base_map=None, local_map=None):
     reload_event = threading.Event()
     server = MappingUIServer(
         base_map_path=base_path,
-        local_map_path=local_path,
+        presets_dir=presets_dir,
+        macro_library_path=macro_library_path,
         actions_yaml_path=actions_path,
         reload_event=reload_event,
     )
-    return server, reload_event, tmpdir, local_path
+    active_preset_path = presets_dir / "default.json"
+    return server, reload_event, tmpdir, active_preset_path, presets_dir, macro_library_path
 
 
 class DetectConflictsTests(unittest.TestCase):
@@ -89,14 +93,14 @@ class DetectConflictsTests(unittest.TestCase):
             "LAMP_L1": {"type": "cc", "channel": 0, "cc": 78},
             "LAMP_L2": {"type": "cc", "channel": 1, "cc": 78},
         }
-        # Different channels — not caught by same_channel_cc detector
-        conflicts = _detect_conflicts(mappings)
-        self.assertEqual(conflicts, [])
+        self.assertEqual(_detect_conflicts(mappings), [])
 
 
 class MappingUIServerAPITests(unittest.TestCase):
     def setUp(self):
-        self.server, self.reload_event, self.tmpdir, self.local_path = _make_server()
+        (self.server, self.reload_event, self.tmpdir,
+         self.active_preset_path, self.presets_dir,
+         self.macro_library_path) = _make_server()
         self.client = self.server._app.test_client()
 
     def test_get_mappings_returns_base(self):
@@ -118,18 +122,14 @@ class MappingUIServerAPITests(unittest.TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertIn(b"Steam Deck MIDI", resp.data)
 
-    def test_save_valid_mapping_writes_local_file(self):
+    def test_save_writes_active_preset(self):
         new_mappings = {
             "BTN_A": {"type": "cc", "channel": 0, "cc": 10, "on_value": 127, "off_value": 0},
         }
-        resp = self.client.post(
-            "/api/save",
-            json={"mappings": new_mappings},
-        )
+        resp = self.client.post("/api/save", json={"mappings": new_mappings})
         self.assertEqual(resp.status_code, 200)
         self.assertTrue(resp.get_json()["ok"])
-        self.assertTrue(self.local_path.exists())
-        saved = json.loads(self.local_path.read_text())
+        saved = json.loads(self.active_preset_path.read_text())
         self.assertEqual(saved["mappings"]["BTN_A"]["cc"], 10)
 
     def test_save_triggers_reload_event(self):
@@ -175,33 +175,22 @@ class MappingUIServerAPITests(unittest.TestCase):
         self.assertEqual(len(conflicts), 1)
         self.assertEqual(conflicts[0]["cc"], 99)
 
-    def test_reset_deletes_local_file(self):
-        # Create a local file first
-        self.local_path.write_text('{"mappings":{}}', encoding="utf-8")
-        self.assertTrue(self.local_path.exists())
+    def test_reset_restores_factory_defaults(self):
+        # Write custom content to active preset
+        custom = {"mappings": {"BTN_A": {"type": "cc", "channel": 0, "cc": 99, "on_value": 127, "off_value": 0}}}
+        self.active_preset_path.write_text(json.dumps(custom), encoding="utf-8")
+
+        self.reload_event.clear()
         resp = self.client.post("/api/reset", json={})
         self.assertEqual(resp.status_code, 200)
-        self.assertFalse(self.local_path.exists())
         self.assertTrue(self.reload_event.is_set())
 
-    def test_local_override_merges_with_base(self):
-        server, _, tmpdir, local_path = _make_server(
-            local_map={
-                "mappings": {
-                    "BTN_A": {"type": "cc", "channel": 1, "cc": 99, "on_value": 127, "off_value": 0},
-                    "BTN_NEW": {"type": "note", "channel": 0, "note": 60, "velocity": 127},
-                }
-            }
+        # Active preset should now match the factory base map
+        restored = json.loads(self.active_preset_path.read_text())
+        self.assertEqual(
+            restored["mappings"]["BTN_A"]["type"], "note",
+            "factory reset should restore BTN_A to note type"
         )
-        client = server._app.test_client()
-        resp = client.get("/api/mappings")
-        data = resp.get_json()
-        # BTN_A overridden
-        self.assertEqual(data["mappings"]["BTN_A"]["cc"], 99)
-        # BTN_NEW added
-        self.assertIn("BTN_NEW", data["mappings"])
-        # DPAD_UP still from base
-        self.assertIn("DPAD_UP", data["mappings"])
 
     def test_save_with_macro_settings(self):
         payload = {
@@ -210,7 +199,7 @@ class MappingUIServerAPITests(unittest.TestCase):
         }
         resp = self.client.post("/api/save", json=payload)
         self.assertEqual(resp.status_code, 200)
-        saved = json.loads(self.local_path.read_text())
+        saved = json.loads(self.active_preset_path.read_text())
         self.assertAlmostEqual(saved["macro_settings"]["fade_duration_seconds"], 3.0)
 
     def test_get_mappings_includes_macro_settings(self):
@@ -218,45 +207,218 @@ class MappingUIServerAPITests(unittest.TestCase):
         data = resp.get_json()
         self.assertIn("macro_settings", data)
 
+    def test_load_preset_switches_active(self):
+        other_map = {"mappings": {"BTN_A": {"type": "cc", "channel": 0, "cc": 77, "on_value": 127, "off_value": 0}}}
+        other_preset = self.presets_dir / "other.json"
+        other_preset.write_text(json.dumps(other_map), encoding="utf-8")
 
-class MappingUIServerMergeTests(unittest.TestCase):
-    """Test load_raw_json merging logic directly."""
+        resp = self.client.post("/api/presets/load", json={"name": "other.json"})
+        self.assertEqual(resp.status_code, 200)
 
-    def _make(self, base, local_map=None):
-        server, _, _, _ = _make_server(base_map=base, local_map=local_map)
-        return server
+        resp = self.client.get("/api/mappings")
+        data = resp.get_json()
+        self.assertEqual(data["mappings"]["BTN_A"]["cc"], 77)
 
-    def test_no_local_returns_base(self):
-        s = self._make(BASE_MAP)
-        raw = s._load_raw_json()
+
+class MappingUIServerPresetTests(unittest.TestCase):
+    def setUp(self):
+        (self.server, self.reload_event, self.tmpdir,
+         self.active_preset_path, self.presets_dir,
+         self.macro_library_path) = _make_server()
+        self.client = self.server._app.test_client()
+
+    def test_get_presets_returns_list(self):
+        resp = self.client.get("/api/presets")
+        self.assertEqual(resp.status_code, 200)
+        data = resp.get_json()
+        self.assertIn("presets", data)
+        presets = data["presets"]
+        self.assertTrue(any(p["name"] == "default.json" for p in presets))
+        default = next(p for p in presets if p["name"] == "default.json")
+        self.assertEqual(default["display_name"], "default")
+        self.assertTrue(default["active"])
+
+    def test_load_missing_preset_returns_404(self):
+        resp = self.client.post("/api/presets/load", json={"name": "nonexistent.json"})
+        self.assertEqual(resp.status_code, 404)
+
+    def test_save_as_creates_new_preset(self):
+        resp = self.client.post("/api/presets/save-as", json={"name": "My Custom Preset"})
+        self.assertEqual(resp.status_code, 200)
+        data = resp.get_json()
+        self.assertTrue(data["ok"])
+        self.assertEqual(data["active"], "My Custom Preset.json")
+        self.assertTrue((self.presets_dir / "My Custom Preset.json").exists())
+
+    def test_save_as_invalid_name_returns_400(self):
+        resp = self.client.post("/api/presets/save-as", json={"name": "bad/name!"})
+        self.assertEqual(resp.status_code, 400)
+
+    def test_save_as_appears_in_preset_list(self):
+        self.client.post("/api/presets/save-as", json={"name": "Second"})
+        resp = self.client.get("/api/presets")
+        names = [p["name"] for p in resp.get_json()["presets"]]
+        self.assertIn("Second.json", names)
+
+    def test_rename_default_returns_400(self):
+        resp = self.client.post("/api/presets/rename", json={"old_name": "default.json", "new_name": "Renamed"})
+        self.assertEqual(resp.status_code, 400)
+
+    def test_rename_preset(self):
+        (self.presets_dir / "toRename.json").write_text("{}", encoding="utf-8")
+        resp = self.client.post("/api/presets/rename", json={"old_name": "toRename.json", "new_name": "Renamed"})
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue((self.presets_dir / "Renamed.json").exists())
+        self.assertFalse((self.presets_dir / "toRename.json").exists())
+
+    def test_delete_default_returns_400(self):
+        resp = self.client.post("/api/presets/delete", json={"name": "default.json"})
+        self.assertEqual(resp.status_code, 400)
+
+    def test_delete_preset(self):
+        (self.presets_dir / "temp.json").write_text("{}", encoding="utf-8")
+        resp = self.client.post("/api/presets/delete", json={"name": "temp.json"})
+        self.assertEqual(resp.status_code, 200)
+        self.assertFalse((self.presets_dir / "temp.json").exists())
+
+    def test_delete_active_preset_switches_to_default(self):
+        # Create and activate a non-default preset
+        (self.presets_dir / "active_one.json").write_text(
+            json.dumps(BASE_MAP), encoding="utf-8"
+        )
+        self.client.post("/api/presets/load", json={"name": "active_one.json"})
+        self.reload_event.clear()
+
+        resp = self.client.post("/api/presets/delete", json={"name": "active_one.json"})
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(self.reload_event.is_set())
+
+        # Active should fall back to default
+        active_name = (self.presets_dir / ".active").read_text(encoding="utf-8").strip()
+        self.assertEqual(active_name, "default.json")
+
+
+class MappingUIServerMacroTests(unittest.TestCase):
+    def setUp(self):
+        (self.server, self.reload_event, self.tmpdir,
+         self.active_preset_path, self.presets_dir,
+         self.macro_library_path) = _make_server()
+        self.client = self.server._app.test_client()
+
+    def test_get_macros_empty(self):
+        resp = self.client.get("/api/macros")
+        self.assertEqual(resp.status_code, 200)
+        data = resp.get_json()
+        self.assertIn("macros", data)
+        self.assertEqual(data["macros"], [])
+
+    def test_create_macro_cc(self):
+        payload = {"name": "My Toggle", "type": "macro_cc", "gesture": "click", "fade_duration_seconds": None}
+        resp = self.client.post("/api/macros", json=payload)
+        self.assertEqual(resp.status_code, 201)
+        data = resp.get_json()
+        self.assertTrue(data["ok"])
+        self.assertIn("id", data["macro"])
+        self.assertEqual(data["macro"]["name"], "My Toggle")
+
+    def test_create_macro_persists_to_file(self):
+        payload = {"name": "Encoder Plus", "type": "relative_cc", "step_value": 1, "repeat_interval_ms": 40}
+        self.client.post("/api/macros", json=payload)
+        entries = json.loads(self.macro_library_path.read_text())
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0]["name"], "Encoder Plus")
+
+    def test_create_macro_invalid_gesture_returns_400(self):
+        payload = {"name": "Bad", "type": "macro_cc", "gesture": "invalid"}
+        resp = self.client.post("/api/macros", json=payload)
+        self.assertEqual(resp.status_code, 400)
+        self.assertIn("error", resp.get_json())
+
+    def test_create_macro_missing_name_returns_400(self):
+        payload = {"type": "macro_cc", "gesture": "click"}
+        resp = self.client.post("/api/macros", json=payload)
+        self.assertEqual(resp.status_code, 400)
+
+    def test_update_macro(self):
+        create_resp = self.client.post(
+            "/api/macros",
+            json={"name": "Original", "type": "relative_cc", "step_value": 1, "repeat_interval_ms": 40},
+        )
+        macro_id = create_resp.get_json()["macro"]["id"]
+
+        update_resp = self.client.put(
+            f"/api/macros/{macro_id}",
+            json={"name": "Updated", "type": "relative_cc", "step_value": 5, "repeat_interval_ms": 60},
+        )
+        self.assertEqual(update_resp.status_code, 200)
+        self.assertEqual(update_resp.get_json()["macro"]["name"], "Updated")
+        self.assertEqual(update_resp.get_json()["macro"]["step_value"], 5)
+
+    def test_update_macro_not_found_returns_404(self):
+        resp = self.client.put(
+            "/api/macros/nonexistent",
+            json={"name": "X", "type": "macro_cc", "gesture": "click"},
+        )
+        self.assertEqual(resp.status_code, 404)
+
+    def test_delete_macro(self):
+        create_resp = self.client.post(
+            "/api/macros",
+            json={"name": "ToDelete", "type": "macro_cc", "gesture": "long_press"},
+        )
+        macro_id = create_resp.get_json()["macro"]["id"]
+
+        del_resp = self.client.delete(f"/api/macros/{macro_id}")
+        self.assertEqual(del_resp.status_code, 200)
+
+        entries = json.loads(self.macro_library_path.read_text())
+        self.assertFalse(any(e["id"] == macro_id for e in entries))
+
+    def test_delete_macro_not_found_returns_404(self):
+        resp = self.client.delete("/api/macros/nonexistent")
+        self.assertEqual(resp.status_code, 404)
+
+    def test_create_staged_note_macro(self):
+        payload = {
+            "name": "Staged",
+            "type": "staged_note_macro",
+            "modifier_channel": 0,
+            "trigger_channel": 1,
+            "refresh_actions": [],
+            "macro_delay_ms": None,
+            "modifier_hold_ms": None,
+        }
+        resp = self.client.post("/api/macros", json=payload)
+        self.assertEqual(resp.status_code, 201)
+
+    def test_create_staged_note_macro_same_channel_returns_400(self):
+        payload = {
+            "name": "Bad Staged",
+            "type": "staged_note_macro",
+            "modifier_channel": 0,
+            "trigger_channel": 0,
+            "refresh_actions": [],
+        }
+        resp = self.client.post("/api/macros", json=payload)
+        self.assertEqual(resp.status_code, 400)
+
+
+class MappingUIServerLoadRawTests(unittest.TestCase):
+    """Verify _load_raw_json reads the active preset directly."""
+
+    def test_reads_active_preset(self):
+        server, _, _, active_path, presets_dir, _ = _make_server()
+        raw = server._load_raw_json()
         self.assertEqual(raw["mappings"]["BTN_A"]["type"], "note")
 
-    def test_local_overrides_base_mapping(self):
-        s = self._make(
-            BASE_MAP,
-            local_map={"mappings": {"BTN_A": {"type": "cc", "channel": 0, "cc": 5, "on_value": 100, "off_value": 0}}},
-        )
-        raw = s._load_raw_json()
-        self.assertEqual(raw["mappings"]["BTN_A"]["cc"], 5)
-
-    def test_local_adds_new_mapping(self):
-        s = self._make(
-            BASE_MAP,
-            local_map={"mappings": {"NEW_ACTION": {"type": "note", "channel": 0, "note": 90, "velocity": 127}}},
-        )
-        raw = s._load_raw_json()
-        self.assertIn("NEW_ACTION", raw["mappings"])
-        self.assertIn("BTN_A", raw["mappings"])
-
-    def test_macro_settings_merged(self):
-        s = self._make(
-            BASE_MAP,
-            local_map={"macro_settings": {"fade_duration_seconds": 5.0}},
-        )
-        raw = s._load_raw_json()
-        self.assertAlmostEqual(raw["macro_settings"]["fade_duration_seconds"], 5.0)
-        # update_hz from base still present
-        self.assertEqual(raw["macro_settings"]["update_hz"], 30)
+    def test_load_raw_json_after_preset_switch(self):
+        server, _, _, _, presets_dir, _ = _make_server()
+        other_map = {"mappings": {"BTN_B": {"type": "cc", "channel": 0, "cc": 42, "on_value": 127, "off_value": 0}}}
+        (presets_dir / "other.json").write_text(json.dumps(other_map), encoding="utf-8")
+        (presets_dir / ".active").write_text("other.json", encoding="utf-8")
+        raw = server._load_raw_json()
+        self.assertIn("BTN_B", raw["mappings"])
+        self.assertNotIn("BTN_A", raw["mappings"])
 
 
 if __name__ == "__main__":

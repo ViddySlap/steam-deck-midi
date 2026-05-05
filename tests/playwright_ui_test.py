@@ -15,13 +15,15 @@ from windows.ui_server import MappingUIServer
 
 BASE_PORT = 7726
 BASE_MAP_PATH = Path("config/windows_midi_map.json")
-LOCAL_MAP_PATH = Path("config/windows_midi_map.local.json")
+PRESETS_DIR = Path("config/presets")
+MACRO_LIBRARY_PATH = Path("config/macro_library.json")
 ACTIONS_YAML_PATH = Path("config/actions.yaml")
 
 reload_event = threading.Event()
 server = MappingUIServer(
     base_map_path=BASE_MAP_PATH,
-    local_map_path=LOCAL_MAP_PATH,
+    presets_dir=PRESETS_DIR,
+    macro_library_path=MACRO_LIBRARY_PATH,
     actions_yaml_path=ACTIONS_YAML_PATH,
     reload_event=reload_event,
     port=BASE_PORT,
@@ -208,17 +210,16 @@ with sync_playwright() as p:
     page.wait_for_selector("#tab-editor.active", timeout=3000)
     check("Mappings tab restores", True)
 
-    # ── 28. Macro library cards ───────────────────────────────────
-    dpad_up.click()
-    page.wait_for_selector(".macro-card", timeout=3000)
-    macro_count = page.locator(".macro-card").count()
-    check("Macro library cards >= 4", macro_count >= 4, str(macro_count))
+    # ── 28. Macro library tab shows cards ────────────────────────
+    page.click('.tab[data-tab="macrolib"]')
+    page.wait_for_selector("#tab-macrolib.active", timeout=3000)
+    macro_count = page.locator(".macro-lib-card").count()
+    check("Macro library cards >= 5", macro_count >= 5, str(macro_count))
 
-    # ── 29. Macro card click applies template ─────────────────────
-    page.locator(".macro-card").first.click()
-    page.wait_for_timeout(300)
-    raw_after = page.locator("#jsonRaw").input_value()
-    check("Macro card click populates JSON", len(raw_after) > 5)
+    # ── 29. API /api/macros ───────────────────────────────────────
+    resp_m = page.request.get(f"{BASE_URL}/api/macros")
+    check("GET /api/macros returns 200", resp_m.status == 200)
+    check("Response has 'macros' key", "macros" in resp_m.json())
 
     # ── 30. Reset modal cancel ────────────────────────────────────
     page.click("#btnReset")
@@ -352,10 +353,6 @@ with sync_playwright() as p:
 
     ctx.close()
     browser.close()
-
-# Clean up local file left by save test
-if LOCAL_MAP_PATH.exists():
-    LOCAL_MAP_PATH.unlink()
 
 print("\n" + "=" * 54)
 pass_count = len(results) - failures

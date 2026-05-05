@@ -60,6 +60,7 @@ class MacroCCMapping:
     channel: int
     cc: int
     gesture: str
+    fade_duration_seconds: float | None = None
 
 
 @dataclass(frozen=True)
@@ -81,6 +82,8 @@ class StagedNoteMacroMapping:
     trigger_channel: int = 1
     velocity: int = 127
     refresh_actions: tuple[str, ...] = ()
+    macro_delay_ms: int | None = None
+    modifier_hold_ms: int | None = None
 
 
 @dataclass(frozen=True)
@@ -274,12 +277,18 @@ def _parse_mapping(action: str, spec: dict[str, object]) -> MidiMapping:
             raise ConfigError(
                 f"mapping for {action} must set gesture to 'click' or 'long_press'"
             )
+        fade_override = spec.get("fade_duration_seconds")
+        if fade_override is not None:
+            if not isinstance(fade_override, (int, float)) or float(fade_override) <= 0:
+                raise ConfigError(f"fade_duration_seconds for {action} must be a positive number")
+            fade_override = float(fade_override)
         return MacroCCMapping(
             action=action,
             kind="macro_cc",
             channel=channel,
             cc=cc,
             gesture=gesture,
+            fade_duration_seconds=fade_override,
         )
     if kind == "relative_cc":
         channel = _read_byte(spec, "channel", maximum=15, default=0)
@@ -304,6 +313,14 @@ def _parse_mapping(action: str, spec: dict[str, object]) -> MidiMapping:
             raise ConfigError(
                 f"mapping for {action} must use different modifier_channel and trigger_channel"
             )
+        macro_delay_override = spec.get("macro_delay_ms")
+        if macro_delay_override is not None:
+            if not isinstance(macro_delay_override, int) or macro_delay_override <= 0:
+                raise ConfigError(f"macro_delay_ms for {action} must be a positive integer")
+        modifier_hold_override = spec.get("modifier_hold_ms")
+        if modifier_hold_override is not None:
+            if not isinstance(modifier_hold_override, int) or modifier_hold_override <= 0:
+                raise ConfigError(f"modifier_hold_ms for {action} must be a positive integer")
         return StagedNoteMacroMapping(
             action=action,
             kind="staged_note_macro",
@@ -312,6 +329,8 @@ def _parse_mapping(action: str, spec: dict[str, object]) -> MidiMapping:
             trigger_channel=trigger_channel,
             velocity=velocity,
             refresh_actions=tuple(refresh_actions),
+            macro_delay_ms=macro_delay_override,
+            modifier_hold_ms=modifier_hold_override,
         )
     if kind == "axis_to_cc":
         channel = _read_byte(spec, "channel", maximum=15, default=0)
@@ -429,3 +448,42 @@ def _read_int_pair(
     if lo >= hi:
         raise ConfigError(f"{key} lower bound must be less than upper bound")
     return lo, hi
+
+
+# ---------------------------------------------------------------------------
+# Preset helpers
+# ---------------------------------------------------------------------------
+
+def ensure_presets_initialized(base_map_path: Path) -> None:
+    """Create the presets directory and default preset if they don't exist."""
+    presets_dir = base_map_path.parent / "presets"
+    presets_dir.mkdir(exist_ok=True)
+
+    default_preset = presets_dir / "default.json"
+    if not default_preset.exists():
+        default_preset.write_text(
+            base_map_path.read_text(encoding="utf-8"), encoding="utf-8"
+        )
+
+    active_file = presets_dir / ".active"
+    if not active_file.exists():
+        active_file.write_text("default.json", encoding="utf-8")
+
+
+def get_active_preset_path(presets_dir: Path, fallback: Path) -> Path:
+    """Return the path of the currently active preset, falling back to fallback."""
+    active_file = presets_dir / ".active"
+    if active_file.exists():
+        name = active_file.read_text(encoding="utf-8").strip()
+        candidate = presets_dir / name
+        if candidate.exists():
+            return candidate
+    default = presets_dir / "default.json"
+    if default.exists():
+        return default
+    return fallback
+
+
+def set_active_preset(presets_dir: Path, filename: str) -> None:
+    """Write the active preset filename to .active."""
+    (presets_dir / ".active").write_text(filename, encoding="utf-8")
