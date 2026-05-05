@@ -49,6 +49,7 @@ Source: "..\..\config\windows_receiver_settings.example.json"; DestDir: "{app}\c
 Source: "..\..\scripts\windows\start_installed_receiver_v2.ps1"; DestDir: "{app}\scripts"; Flags: ignoreversion
 Source: "..\..\config\presets\default.json"; DestDir: "{app}\config\presets"; Flags: onlyifdoesntexist
 Source: "..\..\config\macro_library.json"; DestDir: "{app}\config"; Flags: onlyifdoesntexist
+Source: "..\..\config\actions.yaml"; DestDir: "{app}\config"; Flags: ignoreversion
 
 [Icons]
 Name: "{autodesktop}\STEAMDECK MIDI Receiver 2"; Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -NoLogo -NoExit -File ""{app}\scripts\start_installed_receiver_v2.ps1"" -InstallRoot ""{app}"""; WorkingDir: "{app}"; IconFilename: "{app}\receiver.ico"
