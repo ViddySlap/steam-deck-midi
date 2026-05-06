@@ -14,9 +14,15 @@
         "cc_logo_stomp": 103,
         "cc_tipping": 104,
         "cc_duration": 105,
-        "cc_transition": 106,
+        "cc_attack": 106,
+        "cc_release": 107,
+        "cc_video_delay": 108,
+        "cc_logo_delay": 109,
         "duration_max_seconds": 5.0,
-        "transition_max_seconds": 10.0
+        "attack_max_seconds": 5.0,
+        "release_max_seconds": 5.0,
+        "video_delay_max_seconds": 5.0,
+        "logo_delay_max_seconds": 5.0
       },
       "outputs": {
         "protocol": "osc",
@@ -33,7 +39,10 @@
       "defaults": {
         "tipping_point": 0.65,
         "duration_seconds": 1.0,
-        "transition_seconds": 1.5
+        "attack_seconds": 0.0,
+        "release_seconds": 1.0,
+        "video_delay_seconds": 0.0,
+        "logo_delay_seconds": 1.0
       }
     },
     {
