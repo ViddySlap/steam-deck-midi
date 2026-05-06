@@ -804,6 +804,7 @@ def serve_forever(
     poll_interval: float = 0.25,
     reload_event: threading.Event | None = None,
     reload_config_fn: Callable[[], tuple[dict[str, MidiMapping], MacroSettings]] | None = None,
+    engine_registry=None,
 ) -> None:
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind((listen_host, listen_port))
@@ -815,9 +816,16 @@ def serve_forever(
             midi_in.port_name,
             midi_in.port_index if midi_in.port_index is not None else "n/a",
         )
+    if engine_registry is not None and engine_registry.engines:
+        LOGGER.info(
+            "engines loaded: %s",
+            ", ".join(f"{e.name}({e.type_name})" for e in engine_registry.engines),
+        )
     try:
         while True:
-            _drain_midi_feedback(receiver, midi_in)
+            _drain_midi_feedback(receiver, midi_in, engine_registry)
+            if engine_registry is not None:
+                engine_registry.tick(time.monotonic())
             if reload_event is not None and reload_event.is_set():
                 reload_event.clear()
                 if reload_config_fn is not None:
@@ -829,37 +837,52 @@ def serve_forever(
             try:
                 fade_poll = receiver.fade_poll_interval_seconds
                 timeout = poll_interval if fade_poll is None else min(poll_interval, fade_poll)
+                if engine_registry is not None:
+                    engine_tick = engine_registry.shortest_tick_interval()
+                    if engine_tick is not None:
+                        timeout = min(timeout, engine_tick)
                 sock.settimeout(timeout)
                 payload, addr = sock.recvfrom(4096)
             except socket.timeout:
-                _drain_midi_feedback(receiver, midi_in)
+                _drain_midi_feedback(receiver, midi_in, engine_registry)
+                if engine_registry is not None:
+                    engine_registry.tick(time.monotonic())
                 receiver.advance_fades()
                 receiver.check_timeouts()
                 continue
             receiver.handle_datagram(payload, addr)
-            _drain_midi_feedback(receiver, midi_in)
+            _drain_midi_feedback(receiver, midi_in, engine_registry)
+            if engine_registry is not None:
+                engine_registry.tick(time.monotonic())
             receiver.advance_fades()
             receiver.check_timeouts()
     except KeyboardInterrupt:
         LOGGER.info("shutdown requested")
     finally:
+        if engine_registry is not None:
+            engine_registry.shutdown()
         receiver.release_all()
         sock.close()
         if midi_in is not None:
             midi_in.close()
 
 
-def _drain_midi_feedback(receiver: ActionReceiver, midi_in: MidiIn | None) -> None:
+def _drain_midi_feedback(
+    receiver: ActionReceiver,
+    midi_in: MidiIn | None,
+    engine_registry=None,
+) -> None:
     if midi_in is None:
         return
     for message in midi_in.poll_control_changes():
-        _handle_feedback_message(receiver, midi_in, message)
+        _handle_feedback_message(receiver, midi_in, message, engine_registry)
 
 
 def _handle_feedback_message(
     receiver: ActionReceiver,
     midi_in: MidiIn,
     message: MidiControlChange,
+    engine_registry=None,
 ) -> None:
     now = time.monotonic()
     route = receiver.classify_midi_feedback(
@@ -880,6 +903,13 @@ def _handle_feedback_message(
         updated,
         route,
     )
+    if engine_registry is not None:
+        engine_registry.on_midi_in(
+            message.channel,
+            message.control,
+            message.value,
+            now,
+        )
     try:
         receiver.handle_midi_feedback(
             message.channel,
