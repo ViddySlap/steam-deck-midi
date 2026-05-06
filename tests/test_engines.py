@@ -51,7 +51,7 @@ def _audio_engine(clock: FakeClock | None = None, **overrides) -> AudioOpacityEn
             "cc_duration": 105,
             "cc_transition": 106,
         },
-        "outputs": {"channel": 14, "cc_video_master": 110, "cc_logo_master": 111},
+        "outputs": {"protocol": "midi", "channel": 14, "cc_video_master": 110, "cc_logo_master": 111},
         "defaults": {"tipping_point": 0.5, "duration_seconds": 0.5, "transition_seconds": 0.0},
     }
     config.update(overrides)

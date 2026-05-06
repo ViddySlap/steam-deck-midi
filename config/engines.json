@@ -19,6 +19,13 @@
         "transition_max_seconds": 10.0
       },
       "outputs": {
+        "protocol": "osc",
+        "osc": {
+          "host": "127.0.0.1",
+          "port": 7000,
+          "video_path": "/composition/groups/1/master",
+          "logo_path": "/composition/groups/2/master"
+        },
         "channel": 0,
         "cc_video_master": 110,
         "cc_logo_master": 111
