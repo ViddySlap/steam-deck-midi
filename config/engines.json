@@ -19,7 +19,7 @@
         "transition_max_seconds": 10.0
       },
       "outputs": {
-        "channel": 14,
+        "channel": 0,
         "cc_video_master": 110,
         "cc_logo_master": 111
       },
