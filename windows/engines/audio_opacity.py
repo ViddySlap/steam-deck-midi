@@ -17,6 +17,7 @@ from collections import deque
 from typing import Callable
 
 from windows.engines.base import Engine
+from windows.engines.osc_client import OscClient
 from windows.midi import MidiOut
 
 LOGGER = logging.getLogger(__name__)
@@ -55,8 +56,19 @@ class AudioOpacityEngine(Engine):
         self._duration_max_seconds = float(inputs.get("duration_max_seconds", 5.0))
         self._transition_max_seconds = float(inputs.get("transition_max_seconds", 10.0))
 
-        # Outputs
-        self._output_channel = int(outputs.get("channel", 14))
+        # Outputs — protocol: "osc" (default) | "midi"
+        self._output_protocol = str(outputs.get("protocol", "osc")).lower()
+        # OSC routing
+        osc = outputs.get("osc", {})
+        self._osc_host = str(osc.get("host", "127.0.0.1"))
+        self._osc_port = int(osc.get("port", 7000))
+        self._osc_video_path = str(osc.get("video_path", "/composition/groups/1/master"))
+        self._osc_logo_path = str(osc.get("logo_path", "/composition/groups/2/master"))
+        self._osc: OscClient | None = (
+            OscClient(self._osc_host, self._osc_port) if self._output_protocol == "osc" else None
+        )
+        # MIDI routing (kept as fallback if user picks "midi")
+        self._output_channel = int(outputs.get("channel", 0))
         self._cc_video_master = int(outputs.get("cc_video_master", 110))
         self._cc_logo_master = int(outputs.get("cc_logo_master", 111))
 
@@ -158,11 +170,22 @@ class AudioOpacityEngine(Engine):
 
     def _send_if_changed(self, video_int: int, logo_int: int) -> None:
         if self._last_video_sent != video_int:
-            self._midi_out.control_change(self._output_channel, self._cc_video_master, video_int)
+            self._send_master(self._cc_video_master, self._osc_video_path, video_int, self._current_video)
             self._last_video_sent = video_int
         if self._last_logo_sent != logo_int:
-            self._midi_out.control_change(self._output_channel, self._cc_logo_master, logo_int)
+            self._send_master(self._cc_logo_master, self._osc_logo_path, logo_int, self._current_logo)
             self._last_logo_sent = logo_int
+
+    def _send_master(self, cc: int, osc_path: str, int_value: int, float_value: float) -> None:
+        if self._output_protocol == "osc" and self._osc is not None:
+            self._osc.send(osc_path, max(0.0, min(1.0, float(float_value))))
+        else:
+            self._midi_out.control_change(self._output_channel, cc, int_value)
+
+    def shutdown(self) -> None:
+        if self._osc is not None:
+            self._osc.close()
+            self._osc = None
 
     def status(self) -> dict:
         return {
