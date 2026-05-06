@@ -49,10 +49,20 @@ def _audio_engine(clock: FakeClock | None = None, **overrides) -> AudioOpacityEn
             "cc_logo_stomp": 103,
             "cc_tipping": 104,
             "cc_duration": 105,
-            "cc_transition": 106,
+            "cc_attack": 106,
+            "cc_release": 107,
+            "cc_video_delay": 108,
+            "cc_logo_delay": 109,
         },
         "outputs": {"protocol": "midi", "channel": 14, "cc_video_master": 110, "cc_logo_master": 111},
-        "defaults": {"tipping_point": 0.5, "duration_seconds": 0.5, "transition_seconds": 0.0},
+        "defaults": {
+            "tipping_point": 0.5,
+            "duration_seconds": 0.5,
+            "attack_seconds": 0.0,
+            "release_seconds": 0.0,
+            "video_delay_seconds": 0.0,
+            "logo_delay_seconds": 0.0,
+        },
     }
     config.update(overrides)
     midi_out = RecordingMidiOut()
@@ -173,12 +183,18 @@ class AudioOpacityEngineTests(unittest.TestCase):
         clock = FakeClock()
         engine = _audio_engine(clock=clock, **{"defaults": {"tipping_point": 0.5}})
         engine.on_midi_in(14, 104, 38, clock.now)  # tipping = 38/127 ≈ 0.299
-        engine.on_midi_in(14, 105, 64, clock.now)  # duration = 64/127 * 5 = ~2.5s
-        engine.on_midi_in(14, 106, 64, clock.now)  # transition = 64/127 * 10 = ~5s
+        engine.on_midi_in(14, 105, 64, clock.now)  # duration = 64/127 * 5 = ~2.52s
+        engine.on_midi_in(14, 106, 64, clock.now)  # attack = 64/127 * 5 = ~2.52s
+        engine.on_midi_in(14, 107, 25, clock.now)  # release = 25/127 * 5 = ~0.98s
+        engine.on_midi_in(14, 108, 0, clock.now)   # video_delay = 0
+        engine.on_midi_in(14, 109, 50, clock.now)  # logo_delay = 50/127 * 5 = ~1.97s
         status = engine.status()
         self.assertAlmostEqual(status["tipping_point"], 0.299, places=2)
         self.assertAlmostEqual(status["duration_seconds"], 2.52, places=1)
-        self.assertAlmostEqual(status["transition_seconds"], 5.04, places=1)
+        self.assertAlmostEqual(status["attack_seconds"], 2.52, places=1)
+        self.assertAlmostEqual(status["release_seconds"], 0.98, places=1)
+        self.assertAlmostEqual(status["video_delay_seconds"], 0.0, places=2)
+        self.assertAlmostEqual(status["logo_delay_seconds"], 1.97, places=1)
 
 
 class FakeRest:
