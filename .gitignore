@@ -24,6 +24,10 @@ Thumbs.db
 dist/
 build/
 release-output/
+installer-output/
+
+# Build virtual environment used by PyInstaller
+.venv-build/
 
 # Local working notes / agent instructions
 RESUME-NOTES.txt

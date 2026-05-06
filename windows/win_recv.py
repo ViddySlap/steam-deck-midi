@@ -17,6 +17,7 @@ from windows.config import (
     get_active_preset_path,
     load_midi_map,
 )
+from windows.engines import load_engines
 from windows.midi import (
     MidiError,
     get_output_port_names,
@@ -77,6 +78,16 @@ def build_parser() -> argparse.ArgumentParser:
         type=int,
         default=7723,
         help="port for the mapping web UI (default: 7723)",
+    )
+    parser.add_argument(
+        "--engines",
+        dest="engines_path",
+        help="path to engines.json (defaults to <map dir>/../engines.json)",
+    )
+    parser.add_argument(
+        "--no-engines",
+        action="store_true",
+        help="disable the v0.3.0 engine framework",
     )
     return parser
 
@@ -183,6 +194,20 @@ def main(argv: list[str] | None = None) -> int:
         macro_settings=receiver_config.macro_settings,
     )
 
+    engine_registry = None
+    if not args.no_engines:
+        if args.engines_path:
+            engines_path = Path(args.engines_path)
+        else:
+            engines_path = base_map_path.parent / "engines.json"
+        engine_registry = load_engines(engines_path, midi_out)
+        if engine_registry.engines:
+            logging.info(
+                "engine config: path=%s count=%d",
+                engines_path,
+                len(engine_registry.engines),
+            )
+
     tray = None
     if not args.no_ui:
         from windows.ui_server import MappingUIServer
@@ -223,6 +248,7 @@ def main(argv: list[str] | None = None) -> int:
             midi_in=midi_in,
             reload_event=reload_event,
             reload_config_fn=reload_config_fn,
+            engine_registry=engine_registry,
         )
     finally:
         midi_out.close()

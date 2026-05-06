@@ -1,0 +1,50 @@
+{
+  "engines": [
+    {
+      "name": "Audio Engine",
+      "type": "audio_opacity",
+      "enabled": true,
+      "sample_size": 8,
+      "update_hz": 30,
+      "inputs": {
+        "channel": 14,
+        "cc_audio": 100,
+        "cc_enable": 101,
+        "cc_video_stomp": 102,
+        "cc_logo_stomp": 103,
+        "cc_tipping": 104,
+        "cc_duration": 105,
+        "cc_transition": 106,
+        "duration_max_seconds": 5.0,
+        "transition_max_seconds": 10.0
+      },
+      "outputs": {
+        "channel": 14,
+        "cc_video_master": 110,
+        "cc_logo_master": 111
+      },
+      "defaults": {
+        "tipping_point": 0.65,
+        "duration_seconds": 1.0,
+        "transition_seconds": 1.5
+      }
+    },
+    {
+      "name": "Layer 9/10 Auto-Bypass",
+      "type": "auto_bypass",
+      "enabled": true,
+      "rest": {
+        "base_url": "http://127.0.0.1:8080",
+        "timeout_seconds": 1.5
+      },
+      "poll_hz": 5,
+      "threshold": 0.01,
+      "debounce_ms": 500,
+      "read_param": "master",
+      "targets": [
+        {"kind": "layer", "index": 9, "label": "Layer 9 FEEDBACK"},
+        {"kind": "layer", "index": 10, "label": "Layer 10 COMP LEVEL FX"}
+      ]
+    }
+  ]
+}
