@@ -6,6 +6,7 @@ import json
 import os
 import tempfile
 import threading
+import time
 import unittest
 from collections import deque
 from pathlib import Path
@@ -33,8 +34,17 @@ class RecordingMidiOut(DryRunMidiOut):
     def control_change(self, channel: int, control: int, value: int) -> None:
         self.events.append(("cc", channel, control, value))
 
+    def note_on(self, channel: int, note: int, velocity: int) -> None:
+        self.events.append(("note_on", channel, note, velocity))
+
+    def note_off(self, channel: int, note: int, velocity: int = 0) -> None:
+        self.events.append(("note_off", channel, note, velocity))
+
     def cc_events(self) -> list[tuple[int, int, int]]:
         return [(c, ctl, v) for kind, c, ctl, v in self.events if kind == "cc"]
+
+    def note_on_events(self) -> list[tuple[int, int, int]]:
+        return [(c, n, v) for kind, c, n, v in self.events if kind == "note_on"]
 
 
 class FakeClock:
@@ -1106,6 +1116,377 @@ class OscPresetParserTests(unittest.TestCase):
             self.assertEqual(parse_osc_preset(xml_path), [])
         finally:
             os.unlink(xml_path)
+
+
+# ---------------------------------------------------------------------------
+# Autopilot engine tests
+# ---------------------------------------------------------------------------
+
+
+class FakeOscClient:
+    """Records OSC sends instead of hitting a socket."""
+
+    def __init__(self) -> None:
+        self.sends: list[tuple[str, Any]] = []
+        self.closed = False
+
+    def send(self, address: str, value: Any) -> None:
+        self.sends.append((address, value))
+
+    def close(self) -> None:
+        self.closed = True
+
+
+class FakeResolumeRest:
+    """Hand-rolled stub of `ResolumeRestClient`."""
+
+    def __init__(self, comp: dict | None = None) -> None:
+        self._comp = comp or {"layers": []}
+        self.calls: list[str] = []
+
+    def set_comp(self, comp: dict) -> None:
+        self._comp = comp
+
+    def get_composition(self) -> dict:
+        self.calls.append("composition")
+        return self._comp
+
+
+def _autopilot_config() -> dict:
+    return {
+        "name": "Autopilot",
+        "type": "autopilot",
+        "enabled": True,
+        "update_hz": 30,
+        "column_quantize": True,
+        "enable_override_poll": False,  # disable the worker thread in tests
+        "tempo_source": {"kind": "midi_clock", "port": "PULSE_OUT", "ppqn": 24},
+        "inputs": {
+            "channel": 14,
+            "video": {
+                "cc_enable": 60, "cc_beats": 61, "cc_transition": 62, "cc_random": 63,
+                "layer_ccs": {"1": 64, "2": 65, "3": 66, "4": 67},
+            },
+            "fx": {
+                "cc_enable": 70, "cc_beats": 71, "cc_transition": 72, "cc_random": 73,
+                "layer_ccs": {"5": 74},
+            },
+            "logo": {
+                "cc_enable": 80, "cc_beats": 81, "cc_transition": 82, "cc_random": 83,
+                "layer_ccs": {"6": 84, "7": 85},
+            },
+            "transition_max_seconds": 5.0,
+            "beats_lookup": [1, 4, 8, 16, 32, 64, 128],
+        },
+        "outputs": {
+            "osc": {"host": "127.0.0.1", "port": 7000},
+            "rest": {"base_url": "http://127.0.0.1:8080", "timeout_seconds": 1.5},
+        },
+        "defaults": {
+            "video": {"beats_per_clip": 4, "transition_seconds": 0.0},
+            "fx": {"beats_per_clip": 4, "transition_seconds": 0.0},
+            "logo": {"beats_per_clip": 4, "transition_seconds": 0.0},
+        },
+    }
+
+
+def _make_autopilot(
+    *,
+    midi_out: "RecordingMidiOut | None" = None,
+    osc: "FakeOscClient | None" = None,
+    rest: "FakeResolumeRest | None" = None,
+    overrides: dict | None = None,
+) -> tuple["AutopilotEngine", RecordingMidiOut, FakeOscClient, FakeResolumeRest]:
+    from windows.engines.autopilot import AutopilotEngine
+    import random as _random
+
+    cfg = _autopilot_config()
+    if overrides:
+        cfg.update(overrides)
+    midi = midi_out or RecordingMidiOut()
+    osc_client = osc or FakeOscClient()
+    rest_client = rest or FakeResolumeRest()
+    engine = AutopilotEngine(
+        cfg["name"],
+        cfg,
+        midi,
+        clock=time.monotonic,  # not used heavily in these tests; cross-fade uses tick spread
+        rest_client=rest_client,
+        osc_client=osc_client,
+        rng=_random.Random(0),
+    )
+    return engine, midi, osc_client, rest_client
+
+
+def _send_clock_beat(engine, beats: int = 1, *, now_start: float = 1.0, tick_dt: float = 0.020833) -> None:
+    """Send `beats` worth of MIDI clock messages (24 ticks per beat)."""
+    now = now_start
+    for _ in range(beats * 24):
+        engine.on_midi_clock("clock", now)
+        now += tick_dt
+
+
+def _enable_video_layers(engine, *layers: int) -> None:
+    cfg = engine._channels["video"]
+    for layer in layers:
+        cc = cfg.layer_ccs[layer]
+        engine.on_midi_in(14, cc, 127, 0.0)
+    # Enable channel.
+    engine.on_midi_in(14, cfg.cc_enable, 127, 0.0)
+
+
+class AutopilotEngineCcTests(unittest.TestCase):
+    """CC handling: enable / beats / transition / random / layer toggles."""
+
+    def test_enable_cc_toggles_state(self) -> None:
+        engine, _, _, _ = _make_autopilot()
+        engine.on_midi_in(14, 60, 127, 0.0)
+        self.assertTrue(engine._states["video"].enabled)
+        engine.on_midi_in(14, 60, 0, 0.0)
+        self.assertFalse(engine._states["video"].enabled)
+
+    def test_beats_cc_picks_lookup_value(self) -> None:
+        engine, _, _, _ = _make_autopilot()
+        engine.on_midi_in(14, 61, 0, 0.0)  # → beats_lookup[0] = 1
+        self.assertEqual(engine._states["video"].beats_per_clip, 1)
+        engine.on_midi_in(14, 61, 4, 0.0)  # → beats_lookup[4] = 32
+        self.assertEqual(engine._states["video"].beats_per_clip, 32)
+        engine.on_midi_in(14, 61, 6, 0.0)  # → beats_lookup[6] = 128
+        self.assertEqual(engine._states["video"].beats_per_clip, 128)
+
+    def test_transition_cc_scales_to_max_seconds(self) -> None:
+        engine, _, osc, _ = _make_autopilot()
+        engine.on_midi_in(14, 62, 127, 0.0)
+        self.assertAlmostEqual(engine._states["video"].transition_seconds, 5.0)
+        engine.on_midi_in(14, 62, 64, 0.0)
+        self.assertAlmostEqual(
+            engine._states["video"].transition_seconds, (64 / 127.0) * 5.0
+        )
+
+    def test_random_cc_clears_bag_state(self) -> None:
+        engine, _, _, _ = _make_autopilot()
+        engine._states["video"].bag[1] = [1, 2, 3]
+        engine.on_midi_in(14, 63, 127, 0.0)
+        self.assertTrue(engine._states["video"].random_mode)
+        self.assertNotIn(1, engine._states["video"].bag)
+
+    def test_layer_ccs_toggle_membership(self) -> None:
+        engine, _, _, _ = _make_autopilot()
+        engine.on_midi_in(14, 64, 127, 0.0)  # video L1 on
+        engine.on_midi_in(14, 66, 127, 0.0)  # video L3 on
+        self.assertEqual(engine._states["video"].selected_layers(), [1, 3])
+        engine.on_midi_in(14, 64, 0, 0.0)
+        self.assertEqual(engine._states["video"].selected_layers(), [3])
+
+    def test_other_channel_cc_ignored(self) -> None:
+        engine, _, _, _ = _make_autopilot()
+        engine.on_midi_in(0, 60, 127, 0.0)  # wrong channel
+        self.assertFalse(engine._states["video"].enabled)
+
+
+class AutopilotEngineCycleTests(unittest.TestCase):
+    """Beat-driven cycle algorithm."""
+
+    def test_single_layer_holds_master_at_one(self) -> None:
+        engine, _, osc, _ = _make_autopilot()
+        _enable_video_layers(engine, 1)
+        # Snap-to-first-selected on enable should already drive layer 1 → 1.0
+        sends = [s for s in osc.sends if s[0] == "/composition/layers/1/master"]
+        self.assertTrue(sends)
+        self.assertEqual(sends[-1][1], 1.0)
+
+    def test_two_layers_alternate_on_cycle(self) -> None:
+        engine, _, osc, _ = _make_autopilot()
+        _enable_video_layers(engine, 1, 2)
+        # beats_per_clip = 4 (default). One full beat-set per layer.
+        # After 4 beats: cycle_index advances from 0 to 1 → layer 2 becomes target.
+        _send_clock_beat(engine, beats=4)
+        # transition=0 means instant snap on cycle advance, so visible_layer should be 2.
+        self.assertEqual(engine._states["video"].visible_layer, 2)
+        # Layer 2 master should have been driven to 1.0 at some point.
+        master_2 = [v for path, v in osc.sends if path == "/composition/layers/2/master"]
+        self.assertIn(1.0, master_2)
+
+    def test_full_cycle_fires_connect_next_clip_per_layer(self) -> None:
+        engine, _, osc, _ = _make_autopilot()
+        _enable_video_layers(engine, 1, 2)
+        # Two layers × 4 beats per clip = 8 beats for one full cycle.
+        _send_clock_beat(engine, beats=8)
+        next_clip_sends = [
+            path for path, _ in osc.sends if path.endswith("/connect_next_clip")
+        ]
+        # At cycle complete, both selected layers' connect_next_clip should fire.
+        self.assertIn("/composition/layers/1/connect_next_clip", next_clip_sends)
+        self.assertIn("/composition/layers/2/connect_next_clip", next_clip_sends)
+
+    def test_disabled_channel_does_not_touch_masters(self) -> None:
+        engine, _, osc, _ = _make_autopilot()
+        # Layers selected but channel not enabled.
+        cfg = engine._channels["video"]
+        engine.on_midi_in(14, cfg.layer_ccs[1], 127, 0.0)
+        engine.on_midi_in(14, cfg.layer_ccs[2], 127, 0.0)
+        osc.sends.clear()
+        _send_clock_beat(engine, beats=10)
+        # No layer master writes should happen for an unenabled channel.
+        master_writes = [s for s in osc.sends if "master" in s[0]]
+        self.assertEqual(master_writes, [])
+
+
+class AutopilotEngineCrossfadeTests(unittest.TestCase):
+    def test_zero_transition_collapses_to_instant_snap(self) -> None:
+        engine, _, osc, _ = _make_autopilot()
+        _enable_video_layers(engine, 1, 2)
+        # transition stays at 0 from defaults.
+        _send_clock_beat(engine, beats=4)
+        # After the beat that advances cycle, target should already be cleared
+        # (transition <= 0 collapses to instant snap inside _on_beat_boundary).
+        self.assertIsNone(engine._states["video"].target_layer)
+        self.assertEqual(engine._states["video"].visible_layer, 2)
+
+    def test_nonzero_transition_holds_target_until_tick_completes(self) -> None:
+        engine, _, osc, _ = _make_autopilot()
+        _enable_video_layers(engine, 1, 2)
+        # Set a big transition so the cross-fade is still in flight after one beat.
+        engine.on_midi_in(14, 62, 127, 0.0)  # 5 second transition
+        _send_clock_beat(engine, beats=4)
+        # target_layer should now be set (cross-fade in flight).
+        self.assertEqual(engine._states["video"].target_layer, 2)
+        # tick() at the same instant should NOT yet complete the fade.
+        engine.tick(time.monotonic())
+        # Visible layer is still 1, target is still 2.
+        self.assertEqual(engine._states["video"].visible_layer, 1)
+        self.assertEqual(engine._states["video"].target_layer, 2)
+
+
+class AutopilotEngineColumnQuantizeTests(unittest.TestCase):
+    """Column trigger interception + replay on next beat."""
+
+    def test_filter_passes_through_unrelated_notes(self) -> None:
+        engine, _, _, _ = _make_autopilot()
+        _enable_video_layers(engine, 1)
+        # Some other note on the trigger channel.
+        self.assertTrue(engine._note_emit_filter(1, 50, 127, 0.0))
+        # The column notes but on a different channel.
+        self.assertTrue(engine._note_emit_filter(0, 86, 127, 0.0))
+
+    def test_filter_passes_when_no_channel_enabled(self) -> None:
+        engine, _, _, _ = _make_autopilot()
+        # No layers selected, no channels enabled.
+        self.assertTrue(engine._note_emit_filter(1, 86, 127, 0.0))
+        self.assertTrue(engine._note_emit_filter(1, 87, 127, 0.0))
+
+    def test_filter_defers_when_channel_enabled(self) -> None:
+        engine, _, _, _ = _make_autopilot()
+        _enable_video_layers(engine, 1)
+        self.assertFalse(engine._note_emit_filter(1, 86, 127, 0.0))
+        self.assertEqual(engine._pending_column_note, 86)
+
+    def test_pending_column_replays_on_next_beat(self) -> None:
+        engine, midi, osc, _ = _make_autopilot()
+        _enable_video_layers(engine, 1, 2)
+        # User long-presses L_PAD_LEFT mid-cycle.
+        engine._note_emit_filter(1, 86, 127, 0.0)
+        # Advance one beat — should fire the deferred note.
+        _send_clock_beat(engine, beats=1)
+        column_notes = [
+            (ch, note) for ch, note, _ in midi.note_on_events() if note in (86, 87)
+        ]
+        self.assertIn((1, 86), column_notes)
+        # Pending cleared.
+        self.assertIsNone(engine._pending_column_note)
+        # Cycle reset to first selected layer.
+        self.assertEqual(engine._states["video"].visible_layer, 1)
+        self.assertEqual(engine._states["video"].cycle_index, 0)
+        self.assertEqual(engine._states["video"].beat_in_clip, 0)
+
+    def test_second_pending_press_drops(self) -> None:
+        engine, _, _, _ = _make_autopilot()
+        _enable_video_layers(engine, 1)
+        engine._note_emit_filter(1, 86, 127, 0.0)
+        # Second press while one is pending — drop it.
+        self.assertFalse(engine._note_emit_filter(1, 87, 127, 0.0))
+        self.assertEqual(engine._pending_column_note, 86)
+
+
+class AutopilotEngineClockTests(unittest.TestCase):
+    def test_start_resets_state(self) -> None:
+        engine, _, _, _ = _make_autopilot()
+        _enable_video_layers(engine, 1, 2)
+        _send_clock_beat(engine, beats=2)
+        engine.on_midi_clock("start", 0.0)
+        self.assertEqual(engine._tick_count, 0)
+        self.assertEqual(engine._states["video"].beat_in_clip, 0)
+        self.assertEqual(engine._states["video"].cycle_index, 0)
+
+    def test_stop_pauses_continue_resumes(self) -> None:
+        engine, _, _, _ = _make_autopilot()
+        _enable_video_layers(engine, 1, 2)
+        engine.on_midi_clock("stop", 0.0)
+        ticks_before = engine._tick_count
+        # Clock messages while stopped should be ignored.
+        engine.on_midi_clock("clock", 0.1)
+        self.assertEqual(engine._tick_count, ticks_before)
+        # Continue → next clock advances.
+        engine.on_midi_clock("continue", 0.2)
+        engine.on_midi_clock("clock", 0.3)
+        self.assertEqual(engine._tick_count, ticks_before + 1)
+
+    def test_bpm_estimate_within_tolerance(self) -> None:
+        engine, _, _, _ = _make_autopilot()
+        # 120 BPM = 0.5 sec/beat = 0.020833 sec/tick.
+        now = 0.0
+        for _ in range(48):  # two beats worth of ticks
+            engine.on_midi_clock("clock", now)
+            now += 0.020833
+        bpm = engine._estimate_bpm()
+        self.assertIsNotNone(bpm)
+        assert bpm is not None  # mypy
+        self.assertAlmostEqual(bpm, 120.0, delta=1.0)
+
+
+class AutopilotEngineRandomTests(unittest.TestCase):
+    def test_bag_random_draws_without_replacement(self) -> None:
+        comp = {
+            "layers": [
+                {  # layer 1 with 3 loaded clips
+                    "clips": [
+                        {"source": {"value": "a.mov"}},
+                        {"source": {"value": "b.mov"}},
+                        {"source": {"value": "c.mov"}},
+                    ]
+                }
+            ]
+        }
+        engine, _, osc, rest = _make_autopilot(rest=FakeResolumeRest(comp))
+        _enable_video_layers(engine, 1)
+        engine.on_midi_in(14, 63, 127, 0.0)  # random on
+        # First cycle (1 layer × beats_per_clip=4): cycle wraps each beats_per_clip beats.
+        # Force three full cycles → three random clip selections.
+        seen: list[int] = []
+        for _ in range(3):
+            _send_clock_beat(engine, beats=4)
+            # Find the most recent /clips/N/connect send.
+            for path, _ in reversed(osc.sends):
+                if "/clips/" in path and path.endswith("/connect"):
+                    parts = path.split("/")
+                    seen.append(int(parts[-2]))
+                    break
+        # First three draws should be a permutation of {1, 2, 3} (or excluding the
+        # current clip, but on first bag last_clip is None so all three are eligible).
+        self.assertEqual(sorted(seen), [1, 2, 3])
+
+    def test_bag_random_falls_back_to_next_clip_when_no_clips(self) -> None:
+        engine, _, osc, _ = _make_autopilot(rest=FakeResolumeRest({"layers": []}))
+        _enable_video_layers(engine, 1)
+        engine.on_midi_in(14, 63, 127, 0.0)
+        _send_clock_beat(engine, beats=4)
+        # No bag draw possible — should fall back to /connect_next_clip.
+        self.assertTrue(
+            any(
+                path == "/composition/layers/1/connect_next_clip"
+                for path, _ in osc.sends
+            )
+        )
 
 
 if __name__ == "__main__":
