@@ -39,6 +39,8 @@ RestartApplications=no
 [Dirs]
 Name: "{app}\config"; Permissions: users-modify
 Name: "{app}\config\presets"; Permissions: users-modify
+Name: "{app}\config\engines"; Permissions: users-modify
+Name: "{app}\config\engines.factory"; Permissions: users-modify
 
 [Files]
 Source: "..\..\dist\STEAMDECK-MIDI-RECEIVER-2.exe"; DestDir: "{app}"; Flags: ignoreversion
@@ -49,8 +51,8 @@ Source: "..\..\config\windows_receiver_settings.example.json"; DestDir: "{app}\c
 Source: "..\..\scripts\windows\start_installed_receiver_v2.ps1"; DestDir: "{app}\scripts"; Flags: ignoreversion
 Source: "..\..\config\presets\default.json"; DestDir: "{app}\config\presets"; Flags: onlyifdoesntexist
 Source: "..\..\config\macro_library.json"; DestDir: "{app}\config"; Flags: onlyifdoesntexist
-Source: "..\..\config\engines.json"; DestDir: "{app}\config"; Flags: onlyifdoesntexist
-Source: "..\..\config\engines.factory.json"; DestDir: "{app}\config"; Flags: ignoreversion
+Source: "..\..\config\engines\README.md"; DestDir: "{app}\config\engines"; Flags: onlyifdoesntexist
+Source: "..\..\config\engines.factory\*.json"; DestDir: "{app}\config\engines.factory"; Flags: ignoreversion
 Source: "..\..\config\actions.yaml"; DestDir: "{app}\config"; Flags: ignoreversion
 
 [Icons]
