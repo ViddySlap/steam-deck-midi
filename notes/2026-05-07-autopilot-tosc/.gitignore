@@ -1,0 +1,5 @@
+# Local build artifacts — these contain the live show .tosc state
+# and are too noisy / privacy-sensitive to commit.
+STEAMDECK V2.tosc.bak
+STEAMDECK V2.tosc.new
+decompressed.xml
