@@ -154,26 +154,114 @@ class AudioOpacityEngineTests(unittest.TestCase):
         self.assertEqual(last_video, 0)
         self.assertEqual(last_logo, 0)
 
-    def test_video_stomp_masks_logo(self) -> None:
-        """VIDEO STOMP held → output mask zeroes the logo channel without
-        touching the natural goal computation. Mirrors the v0.2.0 wire patch
-        piano-mode mapping of VIDEO STOMP → LOGO group bypass."""
+    def test_video_stomp_drives_engine_to_video(self) -> None:
+        """VIDEO STOMP held does two things: (1) output mask kills the logo
+        channel for the duration of the press; (2) audio override = 1 drives
+        the natural state machine to VIDEO so the engine settles on VIDEO
+        even though real audio is silent. Mirrors the v0.2.0 wire patch
+        where VIDEO STOMP literally pinned the audio signal to 1."""
         clock = FakeClock()
         engine = _audio_engine(clock=clock)
         engine.tick(clock.now)
         engine.on_midi_in(14, 101, 127, clock.now)  # enable
-        # No audio → natural settles to LOGO (0, 1) at release=0.
+        # No audio → natural settles on LOGO (0, 1) with release=0.
         clock.advance(0.1)
         engine.tick(clock.now)
         last_logo = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 111][-1]  # type: ignore[attr-defined]
         self.assertEqual(last_logo, 127)
-        # VIDEO STOMP held → mask kills logo.
+        # VIDEO STOMP press: avg override = 1 instantly above tipping →
+        # natural-VIDEO transition runs (with attack=0 so it's instant).
+        # Mask zeroes logo while held.
         engine.on_midi_in(14, 102, 127, clock.now)
+        last_video = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 110][-1]  # type: ignore[attr-defined]
         last_logo = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 111][-1]  # type: ignore[attr-defined]
+        self.assertEqual(last_video, 127)
         self.assertEqual(last_logo, 0)
-        # Release → natural state revealed instantly (no recovery sequence).
+        # Release: real audio still empty, override gone. Engine holds the
+        # last natural goal (VIDEO) — logo stays at 0 because nothing drove
+        # it back to 1. Wire-patch behavior.
         engine.on_midi_in(14, 102, 0, clock.now)
+        last_video = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 110][-1]  # type: ignore[attr-defined]
         last_logo = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 111][-1]  # type: ignore[attr-defined]
+        self.assertEqual(last_video, 127)
+        self.assertEqual(last_logo, 0)
+
+    def test_logo_stomp_drives_engine_to_logo_via_debounce(self) -> None:
+        """LOGO STOMP held with loud audio: avg override = 0 starts the
+        natural debounce, then transitions to LOGO via release + LOGO_DELAY +
+        release pacing — exactly what the wire patch did when it pinned
+        audio to 0."""
+        clock = FakeClock()
+        engine = _audio_engine(clock=clock, defaults={
+            "tipping_point": 0.5,
+            "duration_seconds": 0.5,
+            "attack_seconds": 0.0,
+            "release_seconds": 0.0,
+            "video_delay_seconds": 0.0,
+            "logo_delay_seconds": 0.0,
+        })
+        engine.tick(clock.now)
+        engine.on_midi_in(14, 101, 127, clock.now)  # enable
+        # Drive audio loud → settle on VIDEO.
+        for _ in range(4):
+            engine.on_midi_in(14, 100, 100, clock.now)
+        clock.advance(0.1)
+        engine.tick(clock.now)
+        last_video = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 110][-1]  # type: ignore[attr-defined]
+        self.assertEqual(last_video, 127)
+        # LOGO STOMP press → mask kills video; audio override = 0 starts the
+        # debounce. Below the duration window, engine still holds VIDEO.
+        engine.on_midi_in(14, 103, 127, clock.now)
+        last_video = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 110][-1]  # type: ignore[attr-defined]
+        self.assertEqual(last_video, 0)
+        # Past the debounce, engine commits to LOGO. With delays/release at 0
+        # the natural-LOGO sequence completes immediately, leaving
+        # current_video=0, current_logo=1.
+        clock.advance(0.6)
+        engine.tick(clock.now)
+        last_logo = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 111][-1]  # type: ignore[attr-defined]
+        self.assertEqual(last_logo, 127)
+        # Release the stomp: real audio still loud, but the engine already
+        # settled on LOGO during the press. Real audio takes back over →
+        # back to VIDEO via natural sequence (instant with attack=0).
+        engine.on_midi_in(14, 103, 0, clock.now)
+        clock.advance(0.1)
+        engine.tick(clock.now)
+        last_video = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 110][-1]  # type: ignore[attr-defined]
+        self.assertEqual(last_video, 127)
+
+    def test_logo_always_overrides_natural_video_logo_endpoint(self) -> None:
+        """LOGO ALWAYS on with audio loud: natural goal is VIDEO, but the
+        sequence's logo target shifts from 0 to 1 so logo stays at full."""
+        clock = FakeClock()
+        engine = _audio_engine(clock=clock)
+        engine.tick(clock.now)
+        engine.on_midi_in(14, 101, 127, clock.now)  # enable
+        engine.on_midi_in(14, 113, 127, clock.now)  # logo_always on
+        # Drive audio loud.
+        for _ in range(4):
+            engine.on_midi_in(14, 100, 100, clock.now)
+        clock.advance(0.1)
+        engine.tick(clock.now)
+        last_video = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 110][-1]  # type: ignore[attr-defined]
+        last_logo = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 111][-1]  # type: ignore[attr-defined]
+        self.assertEqual(last_video, 127)
+        self.assertEqual(last_logo, 127)
+
+    def test_video_always_overrides_natural_logo_video_endpoint(self) -> None:
+        """VIDEO ALWAYS on with audio quiet: natural goal is LOGO, but the
+        sequence's video target shifts from 0 to 1 so video stays at full."""
+        clock = FakeClock()
+        engine = _audio_engine(clock=clock)
+        engine.tick(clock.now)
+        engine.on_midi_in(14, 101, 127, clock.now)  # enable
+        engine.on_midi_in(14, 112, 127, clock.now)  # video_always on
+        # No audio → natural goal LOGO. With v_always, video target becomes 1.
+        clock.advance(0.1)
+        engine.tick(clock.now)
+        last_video = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 110][-1]  # type: ignore[attr-defined]
+        last_logo = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 111][-1]  # type: ignore[attr-defined]
+        self.assertEqual(last_video, 127)
         self.assertEqual(last_logo, 127)
 
     def test_logo_stomp_during_debounce_releases_to_video(self) -> None:

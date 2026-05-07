@@ -18,6 +18,8 @@
         "cc_release": 107,
         "cc_video_delay": 108,
         "cc_logo_delay": 109,
+        "cc_video_always": 112,
+        "cc_logo_always": 113,
         "duration_max_seconds": 5.0,
         "attack_max_seconds": 5.0,
         "release_max_seconds": 5.0,
