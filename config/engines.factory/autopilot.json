@@ -1,0 +1,49 @@
+{
+  "name": "Autopilot",
+  "type": "autopilot",
+  "enabled": true,
+  "update_hz": 30,
+  "column_quantize": true,
+  "enable_override_poll": true,
+  "override_poll_hz": 5.0,
+  "tempo_source": {
+    "kind": "midi_clock",
+    "port": "PULSE_OUT",
+    "ppqn": 24
+  },
+  "inputs": {
+    "channel": 14,
+    "video": {
+      "cc_enable": 60,
+      "cc_beats": 61,
+      "cc_transition": 62,
+      "cc_random": 63,
+      "layer_ccs": {"1": 64, "2": 65, "3": 66, "4": 67}
+    },
+    "fx": {
+      "cc_enable": 70,
+      "cc_beats": 71,
+      "cc_transition": 72,
+      "cc_random": 73,
+      "layer_ccs": {"5": 74}
+    },
+    "logo": {
+      "cc_enable": 80,
+      "cc_beats": 81,
+      "cc_transition": 82,
+      "cc_random": 83,
+      "layer_ccs": {"6": 84, "7": 85}
+    },
+    "transition_max_seconds": 5.0,
+    "beats_lookup": [1, 4, 8, 16, 32, 64, 128]
+  },
+  "outputs": {
+    "osc": {"host": "127.0.0.1", "port": 7000},
+    "rest": {"base_url": "http://127.0.0.1:8080", "timeout_seconds": 1.5}
+  },
+  "defaults": {
+    "video": {"beats_per_clip": 16, "transition_seconds": 0.0},
+    "fx": {"beats_per_clip": 16, "transition_seconds": 0.0},
+    "logo": {"beats_per_clip": 16, "transition_seconds": 0.0}
+  }
+}

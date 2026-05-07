@@ -48,6 +48,13 @@ class Engine:
         """Return desired tick interval, or None if the engine is event-driven only."""
         return None
 
+    def bind_registry(self, registry) -> None:
+        """Called once after the engine is added to its registry.
+
+        Engines that need registry-mediated hooks (e.g. note-emit filters)
+        register them here. Default no-op.
+        """
+
     def shutdown(self) -> None:
         """Called when the receiver is shutting down."""
 

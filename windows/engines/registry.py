@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Callable, Iterable
 
 from windows.engines.audio_opacity import AudioOpacityEngine
+from windows.engines.autopilot import AutopilotEngine
 from windows.engines.base import Engine
 from windows.engines.osc_sync import OscSyncEngine
 from windows.midi import MidiOut
@@ -20,6 +21,7 @@ LOGGER = logging.getLogger(__name__)
 _ENGINE_TYPES: dict[str, type[Engine]] = {
     AudioOpacityEngine.type_name: AudioOpacityEngine,
     OscSyncEngine.type_name: OscSyncEngine,
+    AutopilotEngine.type_name: AutopilotEngine,
 }
 
 _USER_DIR_NAME = "engines"
@@ -167,7 +169,7 @@ def load_engines(config_path: str | Path, midi_out: MidiOut) -> EngineRegistry:
         )
         user_specs.append(fspec)
 
-    engines: list[Engine] = []
+    registry = EngineRegistry()
     for spec in user_specs:
         if not spec.get("enabled", True):
             LOGGER.info("engine %s is disabled in config; skipping", spec.get("name"))
@@ -180,12 +182,16 @@ def load_engines(config_path: str | Path, midi_out: MidiOut) -> EngineRegistry:
         name = spec.get("name", engine_type)
         try:
             engine = cls(name=name, config=spec, midi_out=midi_out)
-            engines.append(engine)
+            registry.add(engine)
+            try:
+                engine.bind_registry(registry)
+            except Exception:
+                LOGGER.exception("engine %s bind_registry failed", name)
             LOGGER.info("loaded engine %s (type=%s)", name, engine_type)
         except Exception:
             LOGGER.exception("failed to instantiate engine %s", name)
 
-    return EngineRegistry(engines)
+    return registry
 
 
 def _resolve_user_dir(path: Path) -> Path | None:
