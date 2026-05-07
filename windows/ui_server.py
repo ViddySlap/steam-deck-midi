@@ -119,6 +119,7 @@ class MappingUIServer:
         actions_yaml_path: Path,
         reload_event: threading.Event,
         port: int = 7723,
+        engine_registry: Any = None,
     ) -> None:
         self.base_map_path = base_map_path
         self.presets_dir = presets_dir
@@ -126,6 +127,7 @@ class MappingUIServer:
         self.actions_yaml_path = actions_yaml_path
         self.reload_event = reload_event
         self.port = port
+        self.engine_registry = engine_registry
         self._app = self._build_app()
 
     # ------------------------------------------------------------------
@@ -372,7 +374,33 @@ class MappingUIServer:
             self._save_macro_library(new_entries)
             return jsonify({"ok": True})
 
+        # ── Engines ────────────────────────────────────────────────
+        @app.route("/api/engines", methods=["GET"])
+        def list_engines() -> Response:
+            if self.engine_registry is None:
+                return jsonify({"engines": []})
+            return jsonify({"engines": self.engine_registry.status()})
+
+        @app.route("/api/engines/osc-sync/resync", methods=["POST"])
+        def resync_osc_sync() -> Response:
+            engine = self._find_engine("osc_sync")
+            if engine is None:
+                return jsonify({"error": "osc_sync engine not loaded"}), 404
+            try:
+                count = engine.resync_targets()
+            except Exception as exc:  # noqa: BLE001 - surface to UI
+                return jsonify({"error": str(exc)}), 500
+            return jsonify({"ok": True, "target_count": count})
+
         return app
+
+    def _find_engine(self, type_name: str):
+        if self.engine_registry is None:
+            return None
+        for engine in self.engine_registry.engines:
+            if engine.type_name == type_name:
+                return engine
+        return None
 
     # ------------------------------------------------------------------
     # Public
