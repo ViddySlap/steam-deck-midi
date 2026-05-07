@@ -81,9 +81,19 @@ class OscSyncEngine(Engine):
         )
         self._epsilon_float = float(config.get("epsilon_float", 0.001))
         self._inter_message_delay_seconds = (
-            float(config.get("inter_message_delay_ms", 2.0)) / 1000.0
+            float(config.get("inter_message_delay_ms", 50.0)) / 1000.0
         )
         self._mask_with_master = bool(config.get("mask_with_master", True))
+        # Engine writes this OSC path with 1 at sync start and 0 at sync end.
+        # When Ben adds an OSC OUT for the same path in Resolume's preset,
+        # TouchOSC echoes the bool back to the trigger button, so the button
+        # stays highlighted for the full duration of the wiggle pass.
+        self._sync_indicator_path = str(
+            config.get(
+                "sync_indicator_path",
+                "/composition/video/effects/oscsync/effect/sync/sync",
+            )
+        )
 
         rest_cfg = config.get("rest", {})
         self._rest = rest_client or ResolumeRestClient(
@@ -102,6 +112,11 @@ class OscSyncEngine(Engine):
         self._lock = threading.Lock()
         self._worker: threading.Thread | None = None
         self._stopped = False
+        # While true, the engine ignores all incoming CC events on the sync
+        # channel — protects against re-triggering when our own write of the
+        # SYNC indicator (=1) feeds back through the wire patch as a fresh
+        # CC rising edge.
+        self._syncing = False
 
         self._last_pass_started_at: float | None = None
         self._last_pass_completed_at: float | None = None
@@ -112,6 +127,13 @@ class OscSyncEngine(Engine):
 
     def on_midi_in(self, channel: int, cc: int, value: int, now: float) -> None:
         if channel != self._input_channel or cc != self._cc_sync:
+            return
+        # Swallow CCs that our own writes to the SYNC indicator path
+        # produce while a pass is running. Without this guard, writing
+        # `sync_indicator=1` at the start of the pass would feed back
+        # through the wire patch as a fresh rising edge.
+        if self._syncing:
+            self._last_cc_value = value
             return
         prev, self._last_cc_value = self._last_cc_value, value
         if value > 0 and prev == 0:
@@ -146,6 +168,7 @@ class OscSyncEngine(Engine):
         return {
             "name": self.name,
             "type": self.type_name,
+            "syncing": self._syncing,
             "target_count": len(self._targets) if self._targets is not None else None,
             "last_pass_started_at": self._last_pass_started_at,
             "last_pass_completed_at": self._last_pass_completed_at,
@@ -170,62 +193,78 @@ class OscSyncEngine(Engine):
         self._worker.start()
 
     def _run_sync_pass(self) -> None:
+        self._syncing = True
         self._last_pass_started_at = self._clock()
         self._last_pass_error = None
         self._last_pass_wiggle_count = 0
         self._last_pass_skipped_count = 0
 
-        if self._targets is None:
-            try:
-                self.resync_targets()
-            except Exception as exc:  # noqa: BLE001 - never let the worker die silently
-                self._last_pass_error = f"target parse failed: {exc}"
-                LOGGER.exception("osc_sync: target parse failed")
-                self._last_pass_completed_at = self._clock()
+        # Hold the SYNC indicator true for the duration. TouchOSC's
+        # OSC-OUT echo of this path will keep button613 highlighted until
+        # we release at the end. Done before any other work so the visual
+        # indicator goes up immediately.
+        self._osc.send(self._sync_indicator_path, True)
+        self._sleep(self._inter_message_delay_seconds)
+
+        try:
+            if self._targets is None:
+                try:
+                    self.resync_targets()
+                except Exception as exc:  # noqa: BLE001 - never let the worker die silently
+                    self._last_pass_error = f"target parse failed: {exc}"
+                    LOGGER.exception("osc_sync: target parse failed")
+                    return
+
+            targets = [
+                t
+                for t in (self._targets or ())
+                if t.osc_path != self._sync_indicator_path
+            ]
+            self._last_pass_target_count = len(targets)
+            if not targets:
+                LOGGER.warning("osc_sync: no targets; sync pass is a no-op")
                 return
 
-        targets = list(self._targets or ())
-        self._last_pass_target_count = len(targets)
-        if not targets:
-            LOGGER.warning("osc_sync: no targets; sync pass is a no-op")
-            self._last_pass_completed_at = self._clock()
-            return
+            try:
+                path_index = self._build_path_index()
+            except ResolumeRestError as exc:
+                self._last_pass_error = f"composition fetch failed: {exc}"
+                LOGGER.error("osc_sync: %s", self._last_pass_error)
+                return
 
-        try:
-            path_index = self._build_path_index()
-        except ResolumeRestError as exc:
-            self._last_pass_error = f"composition fetch failed: {exc}"
-            LOGGER.error("osc_sync: %s", self._last_pass_error)
-            self._last_pass_completed_at = self._clock()
-            return
-
-        master_meta = path_index.get(COMP_MASTER_PATH)
-        prev_master = master_meta.get("value") if master_meta else None
-        masked = False
-        if self._mask_with_master and prev_master is not None:
-            self._osc.send(COMP_MASTER_PATH, 0.0)
-            self._sleep(self._inter_message_delay_seconds)
-            masked = True
-
-        try:
-            for target in targets:
-                meta = path_index.get(target.osc_path)
-                if meta is None or "value" not in meta:
-                    LOGGER.debug("osc_sync: no comp parameter for %s; skipping", target.osc_path)
-                    self._last_pass_skipped_count += 1
-                    continue
-                if self._wiggle(target, meta):
-                    self._last_pass_wiggle_count += 1
-                else:
-                    self._last_pass_skipped_count += 1
+            master_meta = path_index.get(COMP_MASTER_PATH)
+            prev_master = master_meta.get("value") if master_meta else None
+            masked = False
+            if self._mask_with_master and prev_master is not None:
+                self._osc.send(COMP_MASTER_PATH, 0.0)
                 self._sleep(self._inter_message_delay_seconds)
+                masked = True
+
+            try:
+                for target in targets:
+                    meta = path_index.get(target.osc_path)
+                    if meta is None or "value" not in meta:
+                        LOGGER.debug("osc_sync: no comp parameter for %s; skipping", target.osc_path)
+                        self._last_pass_skipped_count += 1
+                        continue
+                    if self._wiggle(target, meta):
+                        self._last_pass_wiggle_count += 1
+                    else:
+                        self._last_pass_skipped_count += 1
+                    self._sleep(self._inter_message_delay_seconds)
+            finally:
+                if masked:
+                    try:
+                        self._osc.send(COMP_MASTER_PATH, float(prev_master))
+                        self._sleep(self._inter_message_delay_seconds)
+                    except (TypeError, ValueError):
+                        LOGGER.warning("osc_sync: could not restore master to %r", prev_master)
         finally:
-            if masked:
-                try:
-                    self._osc.send(COMP_MASTER_PATH, float(prev_master))
-                except (TypeError, ValueError):
-                    LOGGER.warning("osc_sync: could not restore master to %r", prev_master)
+            # Release the SYNC indicator regardless of how the pass ended.
+            # Operator's button visually un-highlights to signal "done."
+            self._osc.send(self._sync_indicator_path, False)
             self._last_pass_completed_at = self._clock()
+            self._syncing = False
             LOGGER.info(
                 "osc_sync: sync pass complete in %.2fs; %d wiggled, %d skipped",
                 (self._last_pass_completed_at or 0) - (self._last_pass_started_at or 0),
