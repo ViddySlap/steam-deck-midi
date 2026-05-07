@@ -8,7 +8,6 @@ from pathlib import Path
 from typing import Iterable
 
 from windows.engines.audio_opacity import AudioOpacityEngine
-from windows.engines.auto_bypass import AutoBypassEngine
 from windows.engines.base import Engine
 from windows.midi import MidiOut
 
@@ -16,7 +15,6 @@ LOGGER = logging.getLogger(__name__)
 
 _ENGINE_TYPES: dict[str, type[Engine]] = {
     AudioOpacityEngine.type_name: AudioOpacityEngine,
-    AutoBypassEngine.type_name: AutoBypassEngine,
 }
 
 

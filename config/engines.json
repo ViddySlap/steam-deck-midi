@@ -44,23 +44,6 @@
         "video_delay_seconds": 0.0,
         "logo_delay_seconds": 1.0
       }
-    },
-    {
-      "name": "Layer 9/10 Auto-Bypass",
-      "type": "auto_bypass",
-      "enabled": true,
-      "rest": {
-        "base_url": "http://127.0.0.1:8080",
-        "timeout_seconds": 1.5
-      },
-      "poll_hz": 5,
-      "threshold": 0.01,
-      "debounce_ms": 500,
-      "read_param": "master",
-      "targets": [
-        {"kind": "layer", "index": 9, "label": "Layer 9 FEEDBACK"},
-        {"kind": "layer", "index": 10, "label": "Layer 10 COMP LEVEL FX"}
-      ]
     }
   ]
 }
