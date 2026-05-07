@@ -595,10 +595,10 @@ class OscSyncEngineTests(unittest.TestCase):
     def test_rising_edge_fires_pass_non_rising_does_not(self) -> None:
         composition = {
             "master": {"id": 1, "value": 1.0, "valuerange": {"min": 0, "max": 1}},
+            "layers": [{"master": {"id": 2, "value": 0.5, "valuerange": {"min": 0, "max": 1}}}],
         }
-        # One dummy target so the pass actually exercises REST (not the
-        # "no targets" early-return).
-        targets = [SyncTarget(osc_path="/composition/master", kind=KIND_FLOAT, param_node_name="ParamRange")]
+        # Layer-master target (not excluded) so the pass exercises REST.
+        targets = [SyncTarget(osc_path="/composition/layers/1/master", kind=KIND_FLOAT, param_node_name="ParamRange")]
         engine, rest, osc, _midi = _build_osc_sync(
             targets=targets,
             composition=composition,
@@ -698,16 +698,17 @@ class OscSyncEngineTests(unittest.TestCase):
     def test_master_to_zero_then_restore_wraps_pass(self) -> None:
         composition = {
             "master": {"id": 1, "value": 0.7, "valuerange": {"min": 0, "max": 1}},
+            "layers": [{"master": {"id": 2, "value": 0.5, "valuerange": {"min": 0, "max": 1}}}],
         }
-        targets = [SyncTarget(osc_path="/composition/master", kind=KIND_FLOAT, param_node_name="ParamRange")]
+        # Use a layer master as the target (comp master is now excluded from wiggling).
+        targets = [SyncTarget(osc_path="/composition/layers/1/master", kind=KIND_FLOAT, param_node_name="ParamRange")]
         engine, _rest, osc, _midi = _build_osc_sync(targets=targets, composition=composition)
         engine.on_midi_in(channel=14, cc=90, value=127, now=0.0)
         _wait_for_pass(engine)
 
         master_sends = [s for s in osc.sends if s[0] == "/composition/master"]
-        # First: mask to 0. Last: restore to 0.7. Middle: nudge + original (target wiggle).
-        self.assertEqual(master_sends[0][1], 0.0)
-        self.assertAlmostEqual(master_sends[-1][1], 0.7, places=4)
+        # Comp master is masked at start (0.0) and restored at end (0.7) only.
+        self.assertEqual(master_sends, [("/composition/master", 0.0), ("/composition/master", 0.7)])
 
     def test_unreachable_rest_records_error_no_crash(self) -> None:
         targets = [SyncTarget(osc_path="/composition/layers/1/master", kind=KIND_FLOAT, param_node_name="ParamRange")]
@@ -759,7 +760,7 @@ class OscSyncEngineTests(unittest.TestCase):
         finally:
             os.unlink(xml_path)
 
-    def test_indicator_held_then_released_around_pass(self) -> None:
+    def test_indicator_force_transition_then_released(self) -> None:
         composition = {
             "master": {"id": 1, "value": 0.7},
             "layers": [{"master": {"id": 99, "value": 0.5, "valuerange": {"min": 0, "max": 1}}}],
@@ -770,9 +771,10 @@ class OscSyncEngineTests(unittest.TestCase):
         _wait_for_pass(engine)
         indicator_path = engine._sync_indicator_path
         indicator_sends = [v for path, v in osc.sends if path == indicator_path]
-        # First indicator write is True (hold), last is False (release)
-        self.assertEqual(indicator_sends[0], True)
-        self.assertEqual(indicator_sends[-1], False)
+        # Force a fresh 0 -> 1 transition at start so Resolume broadcasts to
+        # TouchOSC even if the wire bool was already at 1 from button press.
+        # Then 0 again at end to release.
+        self.assertEqual(indicator_sends, [0.0, 1.0, 0.0])
 
     def test_self_induced_cc_does_not_retrigger(self) -> None:
         # Simulate the wire patch echoing the engine's own indicator write
@@ -833,11 +835,79 @@ class OscSyncEngineTests(unittest.TestCase):
         engine, _rest, osc, _midi = _build_osc_sync(targets=targets, composition=composition)
         engine.on_midi_in(channel=14, cc=90, value=127, now=0.0)
         _wait_for_pass(engine)
-        # Indicator path should appear ONLY for hold (True) and release (False),
-        # NOT for a wiggle flip-flop pair (which would be False then True for a
-        # bool currently True).
+        # Indicator path should appear ONLY for the start force-transition
+        # (0.0 then 1.0) and the release (0.0). Not for a wiggle flip-flop.
         indicator_sends = [v for path, v in osc.sends if path == indicator_path]
-        self.assertEqual(indicator_sends, [True, False])
+        self.assertEqual(indicator_sends, [0.0, 1.0, 0.0])
+
+    def test_comp_master_excluded_from_wiggle_iteration(self) -> None:
+        # If /composition/master is in the OSC preset, it must NOT be wiggled
+        # because the wiggle would pull master back to its cached value
+        # mid-pass, undoing the mask.
+        composition = {
+            "master": {"id": 1, "value": 1.0, "valuerange": {"min": 0, "max": 1}},
+            "layers": [{"master": {"id": 2, "value": 0.5, "valuerange": {"min": 0, "max": 1}}}],
+        }
+        # Both master AND a layer master are wigglable in the preset.
+        # Master must be skipped from the wiggle loop; only layer master gets wiggled.
+        targets = [
+            SyncTarget(osc_path="/composition/master", kind=KIND_FLOAT, param_node_name="ParamRange"),
+            SyncTarget(osc_path="/composition/layers/1/master", kind=KIND_FLOAT, param_node_name="ParamRange"),
+        ]
+        engine, _rest, osc, _midi = _build_osc_sync(targets=targets, composition=composition)
+        engine.on_midi_in(channel=14, cc=90, value=127, now=0.0)
+        _wait_for_pass(engine)
+        # master_sends should be exactly [mask=0.0, restore=1.0] — no wiggle pair
+        master_sends = [v for path, v in osc.sends if path == "/composition/master"]
+        self.assertEqual(master_sends, [0.0, 1.0])
+        # Layer master IS wiggled (not excluded)
+        self.assertEqual(engine._last_pass_wiggle_count, 1)
+
+    def test_fuzzy_resolver_matches_effect_group_param_pattern(self) -> None:
+        # Resolume's OSC path for Wire patch dashboard params includes the
+        # dashboard group as an extra segment. JSON tree's params dict is flat.
+        # The path-walker emits effect/<param-slug>; the resolver must find it
+        # when the target uses effect/<group>/<param-slug>.
+        composition = {
+            "master": {"id": 1, "value": 1.0},
+            "video": {
+                "effects": [
+                    {
+                        "name": {"value": "AudioEngine"},
+                        "params": {
+                            "ENGINE ENABLE": {"id": 100, "value": True},
+                        },
+                    }
+                ]
+            },
+        }
+        # XML target uses the full path with "engine" group segment
+        target_path = "/composition/video/effects/audioengine/effect/engine/engineenable"
+        targets = [SyncTarget(osc_path=target_path, kind=KIND_BOOL, param_node_name="RangedParam[bool]")]
+        engine, _rest, osc, _midi = _build_osc_sync(targets=targets, composition=composition)
+        engine.on_midi_in(channel=14, cc=90, value=127, now=0.0)
+        _wait_for_pass(engine)
+        # The bool should have been wiggled (flipped to False then back to True)
+        target_sends = [v for path, v in osc.sends if path == target_path]
+        self.assertEqual(target_sends, [False, True])
+        self.assertEqual(engine._last_pass_wiggle_count, 1)
+
+    def test_skipped_paths_surfaced_in_status(self) -> None:
+        composition = {
+            "master": {"id": 1, "value": 1.0},
+            "layers": [{"master": {"id": 2, "value": 0.5, "valuerange": {"min": 0, "max": 1}}}],
+        }
+        # Layer master resolves; missing path doesn't.
+        targets = [
+            SyncTarget(osc_path="/composition/layers/1/master", kind=KIND_FLOAT, param_node_name="ParamRange"),
+            SyncTarget(osc_path="/composition/totally/missing/path", kind=KIND_FLOAT, param_node_name="ParamRange"),
+        ]
+        engine, _rest, _osc, _midi = _build_osc_sync(targets=targets, composition=composition)
+        engine.on_midi_in(channel=14, cc=90, value=127, now=0.0)
+        _wait_for_pass(engine)
+        status = engine.status()
+        self.assertEqual(status["last_pass_skipped_count"], 1)
+        self.assertEqual(status["last_pass_skipped_paths"], ["/composition/totally/missing/path"])
 
     def test_concurrent_press_does_not_stack_workers(self) -> None:
         # Slow REST GET → first pass is still running when second press fires
@@ -848,9 +918,12 @@ class OscSyncEngineTests(unittest.TestCase):
                 slow_event.wait(timeout=0.5)
                 return self._composition
 
-        targets = [SyncTarget(osc_path="/composition/master", kind=KIND_FLOAT, param_node_name="ParamRange")]
+        targets = [SyncTarget(osc_path="/composition/layers/1/master", kind=KIND_FLOAT, param_node_name="ParamRange")]
         midi = RecordingMidiOut()
-        rest = SlowRest(composition={"master": {"id": 1, "value": 1.0}})
+        rest = SlowRest(composition={
+            "master": {"id": 1, "value": 1.0},
+            "layers": [{"master": {"id": 2, "value": 0.5, "valuerange": {"min": 0, "max": 1}}}],
+        })
         osc = FakeOscClient()
         engine = OscSyncEngine(
             name="OSC Sync",

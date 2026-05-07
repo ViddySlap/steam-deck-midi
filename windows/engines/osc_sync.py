@@ -123,6 +123,7 @@ class OscSyncEngine(Engine):
         self._last_pass_target_count = 0
         self._last_pass_wiggle_count = 0
         self._last_pass_skipped_count = 0
+        self._last_pass_skipped_paths: list[str] = []
         self._last_pass_error: str | None = None
 
     def on_midi_in(self, channel: int, cc: int, value: int, now: float) -> None:
@@ -174,6 +175,7 @@ class OscSyncEngine(Engine):
             "last_pass_completed_at": self._last_pass_completed_at,
             "last_pass_wiggle_count": self._last_pass_wiggle_count,
             "last_pass_skipped_count": self._last_pass_skipped_count,
+            "last_pass_skipped_paths": list(self._last_pass_skipped_paths),
             "last_pass_error": self._last_pass_error,
         }
 
@@ -198,12 +200,22 @@ class OscSyncEngine(Engine):
         self._last_pass_error = None
         self._last_pass_wiggle_count = 0
         self._last_pass_skipped_count = 0
+        self._last_pass_skipped_paths = []
 
-        # Hold the SYNC indicator true for the duration. TouchOSC's
-        # OSC-OUT echo of this path will keep button613 highlighted until
-        # we release at the end. Done before any other work so the visual
-        # indicator goes up immediately.
-        self._osc.send(self._sync_indicator_path, True)
+        # Force a 0 -> 1 transition on the SYNC indicator. The button-press
+        # already drove the wire bool to 1, then ~200ms later the button
+        # release drove it back to 0. We need the wire bool at 1 throughout
+        # the pass, but writing True now would be a no-op (already 1) and
+        # might not broadcast — and even if it did, the upcoming button
+        # release would override us. So: write False explicitly first, sleep
+        # long enough for any pending button release to land, then write
+        # True. The False+True pair guarantees a 0 -> 1 transition that
+        # Resolume broadcasts via OSC OUT, lighting the TouchOSC button.
+        # We use float 0.0/1.0 (not bool) to match what button613 itself
+        # sends and keep the wire patch's input typing consistent.
+        self._osc.send(self._sync_indicator_path, 0.0)
+        self._sleep(0.3)
+        self._osc.send(self._sync_indicator_path, 1.0)
         self._sleep(self._inter_message_delay_seconds)
 
         try:
@@ -215,11 +227,12 @@ class OscSyncEngine(Engine):
                     LOGGER.exception("osc_sync: target parse failed")
                     return
 
-            targets = [
-                t
-                for t in (self._targets or ())
-                if t.osc_path != self._sync_indicator_path
-            ]
+            # Exclude paths the engine actively drives during the pass:
+            # - sync indicator (engine holds true throughout, would otherwise
+            #   wiggle off mid-pass)
+            # - comp master (mask sets to 0; wiggling pulls back to cached value)
+            excluded = {self._sync_indicator_path, COMP_MASTER_PATH}
+            targets = [t for t in (self._targets or ()) if t.osc_path not in excluded]
             self._last_pass_target_count = len(targets)
             if not targets:
                 LOGGER.warning("osc_sync: no targets; sync pass is a no-op")
@@ -242,15 +255,17 @@ class OscSyncEngine(Engine):
 
             try:
                 for target in targets:
-                    meta = path_index.get(target.osc_path)
+                    meta = self._resolve_target(target.osc_path, path_index)
                     if meta is None or "value" not in meta:
                         LOGGER.debug("osc_sync: no comp parameter for %s; skipping", target.osc_path)
                         self._last_pass_skipped_count += 1
+                        self._last_pass_skipped_paths.append(target.osc_path)
                         continue
                     if self._wiggle(target, meta):
                         self._last_pass_wiggle_count += 1
                     else:
                         self._last_pass_skipped_count += 1
+                        self._last_pass_skipped_paths.append(target.osc_path)
                     self._sleep(self._inter_message_delay_seconds)
             finally:
                 if masked:
@@ -262,7 +277,7 @@ class OscSyncEngine(Engine):
         finally:
             # Release the SYNC indicator regardless of how the pass ended.
             # Operator's button visually un-highlights to signal "done."
-            self._osc.send(self._sync_indicator_path, False)
+            self._osc.send(self._sync_indicator_path, 0.0)
             self._last_pass_completed_at = self._clock()
             self._syncing = False
             LOGGER.info(
@@ -271,6 +286,27 @@ class OscSyncEngine(Engine):
                 self._last_pass_wiggle_count,
                 self._last_pass_skipped_count,
             )
+
+    def _resolve_target(self, target_path: str, path_index: dict[str, dict[str, Any]]) -> dict[str, Any] | None:
+        """Resolve an XML preset path to a JSON-tree parameter meta.
+
+        Resolume's OSC paths for Wire patch dashboard params include the
+        dashboard group as an extra segment (e.g. ".../audioengine/effect/engine/engineenable"
+        where "engine" is the dashboard group). The JSON tree's `params`
+        dict is flat — no group nesting. The path-walker emits
+        `audioengine/effect/engineenable` (no group), which doesn't match.
+        Fix: if the literal path misses, try collapsing the group segment.
+        """
+        meta = path_index.get(target_path)
+        if meta is not None:
+            return meta
+        # Pattern: .../effect/<group>/<param-slug> -> .../effect/<param-slug>
+        parts = target_path.split("/")
+        if len(parts) >= 3 and parts[-3] == "effect":
+            collapsed = "/".join(parts[:-2] + [parts[-1]])
+            if collapsed in path_index:
+                return path_index[collapsed]
+        return None
 
     def _build_path_index(self) -> dict[str, dict[str, Any]]:
         """Walk GET /api/v1/composition once and build {osc_path -> {value, min, max}}.
