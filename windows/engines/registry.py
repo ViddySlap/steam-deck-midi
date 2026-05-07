@@ -5,12 +5,15 @@ from __future__ import annotations
 import json
 import logging
 from pathlib import Path
-from typing import Iterable
+from typing import Callable, Iterable
 
 from windows.engines.audio_opacity import AudioOpacityEngine
 from windows.engines.base import Engine
 from windows.engines.osc_sync import OscSyncEngine
 from windows.midi import MidiOut
+
+NoteEmitFilter = Callable[[int, int, int, float], bool]
+"""Filter signature: (channel, note, velocity, now) -> True to allow emit, False to defer."""
 
 LOGGER = logging.getLogger(__name__)
 
@@ -26,10 +29,24 @@ _LEGACY_FACTORY_FILE = "engines.factory.json"
 
 
 class EngineRegistry:
-    """Holds active engines, dispatches MIDI feedback + ticks."""
+    """Holds active engines, dispatches MIDI feedback + ticks.
+
+    Also brokers two engine→receiver hooks:
+
+    - **MIDI clock dispatch.** `on_midi_clock(message_type, now)` fans out to
+      every engine; tempo-driven engines (e.g. autopilot) derive BPM from the
+      tick stream.
+    - **Note-emit filters.** Engines can register a callback via
+      `add_note_emit_filter`; the receiver consults `should_emit_note` before
+      every outbound `midi_out.note_on(...)` call. If any filter returns
+      False the receiver skips the emit, allowing the engine to defer or
+      drop the note (e.g. autopilot quantizing column triggers to the next
+      beat boundary).
+    """
 
     def __init__(self, engines: Iterable[Engine] = ()) -> None:
         self._engines: list[Engine] = list(engines)
+        self._note_emit_filters: list[NoteEmitFilter] = []
 
     @property
     def engines(self) -> list[Engine]:
@@ -38,12 +55,41 @@ class EngineRegistry:
     def add(self, engine: Engine) -> None:
         self._engines.append(engine)
 
+    def add_note_emit_filter(self, callback: NoteEmitFilter) -> None:
+        """Register a pre-emit filter for outbound note_on messages."""
+        self._note_emit_filters.append(callback)
+
+    def should_emit_note(
+        self, channel: int, note: int, velocity: int, now: float
+    ) -> bool:
+        """Return True if the receiver should proceed with `midi_out.note_on(...)`.
+
+        Returns False as soon as any filter returns False — that filter has
+        taken responsibility for the note (it will re-emit later or drop it).
+        Filter exceptions are caught and treated as "allow" so a buggy engine
+        doesn't black-hole show-critical input.
+        """
+        for callback in self._note_emit_filters:
+            try:
+                if callback(channel, note, velocity, now) is False:
+                    return False
+            except Exception:
+                LOGGER.exception("note-emit filter raised; treating as allow")
+        return True
+
     def on_midi_in(self, channel: int, cc: int, value: int, now: float) -> None:
         for engine in self._engines:
             try:
                 engine.on_midi_in(channel, cc, value, now)
             except Exception:
                 LOGGER.exception("engine %s on_midi_in failed", engine.name)
+
+    def on_midi_clock(self, message_type: str, now: float) -> None:
+        for engine in self._engines:
+            try:
+                engine.on_midi_clock(message_type, now)
+            except Exception:
+                LOGGER.exception("engine %s on_midi_clock failed", engine.name)
 
     def tick(self, now: float) -> None:
         for engine in self._engines:

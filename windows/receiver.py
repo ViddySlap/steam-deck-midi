@@ -127,6 +127,7 @@ class ActionReceiver:
         rate_limit_max_events: int = 200,
         rate_limit_cooldown_seconds: float = 1.0,
         clock: Callable[[], float] = time.monotonic,
+        engine_registry: Any = None,
     ) -> None:
         self._midi_out = midi_out
         self._mappings = mappings
@@ -138,6 +139,7 @@ class ActionReceiver:
         self._rate_limit_max_events = rate_limit_max_events
         self._rate_limit_cooldown_seconds = rate_limit_cooldown_seconds
         self._clock = clock
+        self._engine_registry = engine_registry
         self._sender_states: dict[tuple[str, int], SenderState] = {}
         self._active_actions: dict[str, MidiMapping] = {}
         self._active_axis_actions: set[str] = set()
@@ -157,6 +159,28 @@ class ActionReceiver:
             if isinstance(mapping, MacroCCMapping)
         }
         self._publish_initial_layer_states()
+
+    def _emit_note_on(self, channel: int, note: int, velocity: int) -> bool:
+        """Emit a MIDI note_on through the registry's pre-emit filter.
+
+        Returns True if the note was sent, False if an engine filter deferred
+        it. Filters can return False to take responsibility for re-emitting
+        (e.g. autopilot quantizing a column trigger to the next beat).
+        """
+        if self._engine_registry is not None:
+            allowed = self._engine_registry.should_emit_note(
+                channel, note, velocity, self._clock()
+            )
+            if not allowed:
+                LOGGER.debug(
+                    "note_on ch=%s note=%s vel=%s deferred by engine filter",
+                    channel,
+                    note,
+                    velocity,
+                )
+                return False
+        self._midi_out.note_on(channel, note, velocity)
+        return True
 
     @property
     def fade_poll_interval_seconds(self) -> float | None:
@@ -389,7 +413,7 @@ class ActionReceiver:
 
         for action, active in list(self._active_staged_note_macros.items()):
             if not active.trigger_sent and timestamp >= active.trigger_time:
-                self._midi_out.note_on(active.trigger_channel, active.note, active.velocity)
+                self._emit_note_on(active.trigger_channel, active.note, active.velocity)
                 active.trigger_sent = True
             if timestamp < active.off_time:
                 continue
@@ -490,7 +514,7 @@ class ActionReceiver:
 
     def _apply_down(self, mapping: MidiMapping) -> None:
         if isinstance(mapping, NoteMapping):
-            self._midi_out.note_on(mapping.channel, mapping.note, mapping.velocity)
+            self._emit_note_on(mapping.channel, mapping.note, mapping.velocity)
             return
         if isinstance(mapping, ControlChangeMapping):
             self._midi_out.control_change(mapping.channel, mapping.cc, mapping.on_value)
@@ -608,7 +632,7 @@ class ActionReceiver:
             if mapping.modifier_hold_ms is not None
             else self._macro_settings.modifier_hold_ms
         )
-        self._midi_out.note_on(mapping.modifier_channel, mapping.note, mapping.velocity)
+        self._emit_note_on(mapping.modifier_channel, mapping.note, mapping.velocity)
         self._active_staged_note_macros[event.action] = ActiveStagedNoteMacro(
             action=event.action,
             modifier_channel=mapping.modifier_channel,
@@ -801,6 +825,7 @@ def serve_forever(
     receiver: ActionReceiver,
     *,
     midi_in: MidiIn | None = None,
+    pulse_in: MidiIn | None = None,
     poll_interval: float = 0.25,
     reload_event: threading.Event | None = None,
     reload_config_fn: Callable[[], tuple[dict[str, MidiMapping], MacroSettings]] | None = None,
@@ -816,6 +841,12 @@ def serve_forever(
             midi_in.port_name,
             midi_in.port_index if midi_in.port_index is not None else "n/a",
         )
+    if pulse_in is not None:
+        LOGGER.info(
+            "listening for MIDI clock: name=%s index=%s",
+            pulse_in.port_name,
+            pulse_in.port_index if pulse_in.port_index is not None else "n/a",
+        )
     if engine_registry is not None and engine_registry.engines:
         LOGGER.info(
             "engines loaded: %s",
@@ -824,6 +855,7 @@ def serve_forever(
     try:
         while True:
             _drain_midi_feedback(receiver, midi_in, engine_registry)
+            _drain_midi_clock(pulse_in, engine_registry)
             if engine_registry is not None:
                 engine_registry.tick(time.monotonic())
             if reload_event is not None and reload_event.is_set():
@@ -845,6 +877,7 @@ def serve_forever(
                 payload, addr = sock.recvfrom(4096)
             except socket.timeout:
                 _drain_midi_feedback(receiver, midi_in, engine_registry)
+                _drain_midi_clock(pulse_in, engine_registry)
                 if engine_registry is not None:
                     engine_registry.tick(time.monotonic())
                 receiver.advance_fades()
@@ -852,6 +885,7 @@ def serve_forever(
                 continue
             receiver.handle_datagram(payload, addr)
             _drain_midi_feedback(receiver, midi_in, engine_registry)
+            _drain_midi_clock(pulse_in, engine_registry)
             if engine_registry is not None:
                 engine_registry.tick(time.monotonic())
             receiver.advance_fades()
@@ -865,6 +899,8 @@ def serve_forever(
         sock.close()
         if midi_in is not None:
             midi_in.close()
+        if pulse_in is not None:
+            pulse_in.close()
 
 
 def _drain_midi_feedback(
@@ -876,6 +912,17 @@ def _drain_midi_feedback(
         return
     for message in midi_in.poll_control_changes():
         _handle_feedback_message(receiver, midi_in, message, engine_registry)
+
+
+def _drain_midi_clock(
+    pulse_in: MidiIn | None,
+    engine_registry=None,
+) -> None:
+    """Drain MIDI System Real-Time messages from `pulse_in` and dispatch."""
+    if pulse_in is None or engine_registry is None:
+        return
+    for message in pulse_in.poll_clock_messages():
+        engine_registry.on_midi_clock(message.type, message.received_at)
 
 
 def _handle_feedback_message(

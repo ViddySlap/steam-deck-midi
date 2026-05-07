@@ -93,6 +93,20 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="disable the v0.3.0 engine framework",
     )
+    parser.add_argument(
+        "--pulse-port",
+        dest="pulse_port",
+        default="PULSE_OUT",
+        help=(
+            "MIDI input port carrying System Real-Time clock from Pulse "
+            "(default: PULSE_OUT). Use --no-pulse to skip."
+        ),
+    )
+    parser.add_argument(
+        "--no-pulse",
+        action="store_true",
+        help="don't open a clock-source MIDI input (for shows without Pulse)",
+    )
     return parser
 
 
@@ -191,13 +205,6 @@ def main(argv: list[str] | None = None) -> int:
         cfg = load_midi_map(active)
         return cfg.mappings, cfg.macro_settings
 
-    receiver = ActionReceiver(
-        midi_out,
-        receiver_config.mappings,
-        timeout_seconds=args.timeout,
-        macro_settings=receiver_config.macro_settings,
-    )
-
     engine_registry = None
     if not args.no_engines:
         if args.engines_path:
@@ -211,6 +218,25 @@ def main(argv: list[str] | None = None) -> int:
                 engines_path,
                 len(engine_registry.engines),
             )
+
+    pulse_in = None
+    if not args.no_pulse and args.pulse_port:
+        try:
+            pulse_in = open_midi_input(args.pulse_port, args.dry_run)
+        except MidiError as exc:
+            logging.warning(
+                "pulse port '%s' not available: %s (continuing without clock)",
+                args.pulse_port,
+                exc,
+            )
+
+    receiver = ActionReceiver(
+        midi_out,
+        receiver_config.mappings,
+        timeout_seconds=args.timeout,
+        macro_settings=receiver_config.macro_settings,
+        engine_registry=engine_registry,
+    )
 
     tray = None
     if not args.no_ui:
@@ -251,6 +277,7 @@ def main(argv: list[str] | None = None) -> int:
             listen_port,
             receiver,
             midi_in=midi_in,
+            pulse_in=pulse_in,
             reload_event=reload_event,
             reload_config_fn=reload_config_fn,
             engine_registry=engine_registry,

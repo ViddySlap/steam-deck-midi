@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import time
 from dataclasses import dataclass
 from typing import NamedTuple
 from typing import Sequence
@@ -20,6 +21,13 @@ class MidiControlChange(NamedTuple):
     channel: int
     control: int
     value: int
+
+
+class MidiClockMessage(NamedTuple):
+    """A MIDI System Real-Time clock message (clock / start / stop / continue)."""
+
+    type: str  # one of: "clock", "start", "stop", "continue"
+    received_at: float
 
 
 class MidiOut:
@@ -62,6 +70,19 @@ class MidiIn:
 
     def poll_control_changes(self) -> list[MidiControlChange]:
         raise NotImplementedError
+
+    def poll_clock_messages(self) -> list[MidiClockMessage]:
+        """Drain MIDI System Real-Time clock messages (clock/start/stop/continue).
+
+        Default implementation returns an empty list. Backends that want clock
+        delivery override this. Note: each call drains pending messages, so
+        callers should choose between `poll_control_changes` or
+        `poll_clock_messages` depending on what the port carries — calling
+        both on the same port in the same iteration is fine, but each message
+        is yielded by exactly one of the two methods (the one matching the
+        message type).
+        """
+        return []
 
     def close(self) -> None:
         """Release backend resources if needed."""
@@ -181,7 +202,15 @@ class MidoMidiOut(MidiOut):
 
 
 class MidoMidiIn(MidiIn):
-    """Optional `mido`-based MIDI input implementation."""
+    """Optional `mido`-based MIDI input implementation.
+
+    Drains both control_change and System Real-Time clock messages. Each
+    poll method returns only its own message kind; messages of other types
+    are dropped. Mixing kinds on one port is supported because mido yields
+    them all from `iter_pending()` regardless of type.
+    """
+
+    _CLOCK_TYPES = frozenset({"clock", "start", "stop", "continue"})
 
     def __init__(self, port_name: str):
         try:
@@ -195,8 +224,19 @@ class MidoMidiIn(MidiIn):
         resolved_port_name = resolve_input_port_name(port_name, available)
 
         self._port = mido.open_input(resolved_port_name)
+        # rtmidi backend ignores SysEx + active_sense + clock by default; reach
+        # past the mido wrapper to enable clock delivery. Other backends will
+        # raise AttributeError here, which we swallow — they either deliver
+        # clock by default or this port simply won't carry it.
+        try:
+            self._port._rt.ignore_types(False, False, False)
+        except (AttributeError, TypeError):
+            pass
         self._port_index = available.index(resolved_port_name)
         self._port_name = resolved_port_name
+        self._pending_clock: list[MidiClockMessage] = []
+        self._pending_cc: list[MidiControlChange] = []
+        self._clock = time.monotonic
 
     @property
     def port_name(self) -> str:
@@ -206,19 +246,30 @@ class MidoMidiIn(MidiIn):
     def port_index(self) -> int | None:
         return self._port_index
 
-    def poll_control_changes(self) -> list[MidiControlChange]:
-        messages: list[MidiControlChange] = []
+    def _drain_into_queues(self) -> None:
         for message in self._port.iter_pending():
-            if message.type != "control_change":
-                continue
-            messages.append(
-                MidiControlChange(
-                    channel=int(message.channel),
-                    control=int(message.control),
-                    value=int(message.value),
+            if message.type == "control_change":
+                self._pending_cc.append(
+                    MidiControlChange(
+                        channel=int(message.channel),
+                        control=int(message.control),
+                        value=int(message.value),
+                    )
                 )
-            )
-        return messages
+            elif message.type in self._CLOCK_TYPES:
+                self._pending_clock.append(
+                    MidiClockMessage(type=message.type, received_at=self._clock())
+                )
+
+    def poll_control_changes(self) -> list[MidiControlChange]:
+        self._drain_into_queues()
+        out, self._pending_cc = self._pending_cc, []
+        return out
+
+    def poll_clock_messages(self) -> list[MidiClockMessage]:
+        self._drain_into_queues()
+        out, self._pending_clock = self._pending_clock, []
+        return out
 
     def close(self) -> None:
         self._port.close()
