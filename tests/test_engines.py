@@ -7,7 +7,6 @@ from collections import deque
 from typing import Iterable
 
 from windows.engines.audio_opacity import AudioOpacityEngine
-from windows.engines.auto_bypass import AutoBypassEngine
 from windows.engines.registry import EngineRegistry
 from windows.midi import DryRunMidiOut
 
@@ -155,18 +154,67 @@ class AudioOpacityEngineTests(unittest.TestCase):
         self.assertEqual(last_video, 0)
         self.assertEqual(last_logo, 0)
 
-    def test_video_stomp_only(self) -> None:
+    def test_video_stomp_masks_logo(self) -> None:
+        """VIDEO STOMP held → output mask zeroes the logo channel without
+        touching the natural goal computation. Mirrors the v0.2.0 wire patch
+        piano-mode mapping of VIDEO STOMP → LOGO group bypass."""
         clock = FakeClock()
         engine = _audio_engine(clock=clock)
         engine.tick(clock.now)
-        engine.on_midi_in(14, 101, 127, clock.now)
-        engine.on_midi_in(14, 102, 127, clock.now)  # video stomp only
+        engine.on_midi_in(14, 101, 127, clock.now)  # enable
+        # No audio → natural settles to LOGO (0, 1) at release=0.
+        clock.advance(0.1)
+        engine.tick(clock.now)
+        last_logo = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 111][-1]  # type: ignore[attr-defined]
+        self.assertEqual(last_logo, 127)
+        # VIDEO STOMP held → mask kills logo.
+        engine.on_midi_in(14, 102, 127, clock.now)
+        last_logo = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 111][-1]  # type: ignore[attr-defined]
+        self.assertEqual(last_logo, 0)
+        # Release → natural state revealed instantly (no recovery sequence).
+        engine.on_midi_in(14, 102, 0, clock.now)
+        last_logo = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 111][-1]  # type: ignore[attr-defined]
+        self.assertEqual(last_logo, 127)
+
+    def test_logo_stomp_during_debounce_releases_to_video(self) -> None:
+        """Audio drops below tipping (debounce running). Operator stomps logo,
+        releases while debounce still ticking. Video must come back instead of
+        getting stuck on logo. Regression test for the bug Ben reported on
+        2026-05-06."""
+        clock = FakeClock()
+        engine = _audio_engine(clock=clock, defaults={
+            "tipping_point": 0.5,
+            "duration_seconds": 1.0,
+            "attack_seconds": 0.0,
+            "release_seconds": 0.0,
+            "video_delay_seconds": 0.0,
+            "logo_delay_seconds": 0.0,
+        })
+        engine.tick(clock.now)
+        engine.on_midi_in(14, 101, 127, clock.now)  # enable
+        # Drive audio loud → settle on VIDEO.
+        for _ in range(4):
+            engine.on_midi_in(14, 100, 100, clock.now)
         clock.advance(0.1)
         engine.tick(clock.now)
         last_video = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 110][-1]  # type: ignore[attr-defined]
-        last_logo = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 111][-1]  # type: ignore[attr-defined]
         self.assertEqual(last_video, 127)
-        self.assertEqual(last_logo, 0)
+        # Audio drops → debounce starts, hold VIDEO.
+        for _ in range(4):
+            engine.on_midi_in(14, 100, 30, clock.now)
+        clock.advance(0.3)
+        engine.tick(clock.now)
+        last_video = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 110][-1]  # type: ignore[attr-defined]
+        self.assertEqual(last_video, 127)
+        # LOGO STOMP press → mask kills video.
+        engine.on_midi_in(14, 103, 127, clock.now)
+        last_video = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 110][-1]  # type: ignore[attr-defined]
+        self.assertEqual(last_video, 0)
+        # Release while still in debounce window. Video should recover because
+        # the natural state machine has been holding VIDEO the whole time.
+        engine.on_midi_in(14, 103, 0, clock.now)
+        last_video = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 110][-1]  # type: ignore[attr-defined]
+        self.assertEqual(last_video, 127)
 
     def test_filters_other_channels(self) -> None:
         clock = FakeClock()
@@ -195,70 +243,6 @@ class AudioOpacityEngineTests(unittest.TestCase):
         self.assertAlmostEqual(status["release_seconds"], 0.98, places=1)
         self.assertAlmostEqual(status["video_delay_seconds"], 0.0, places=2)
         self.assertAlmostEqual(status["logo_delay_seconds"], 1.97, places=1)
-
-
-class FakeRest:
-    def __init__(self) -> None:
-        self.layer_values: dict[int, float] = {}
-        self.bypass_calls: list[tuple[str, int, bool]] = []
-
-    def get_layer(self, idx: int) -> dict:
-        return {"master": {"value": self.layer_values.get(idx, 1.0)}}
-
-    def get_group(self, idx: int) -> dict:
-        return {"master": {"value": self.layer_values.get(idx, 1.0)}}
-
-    def set_layer_bypassed(self, idx: int, bypassed: bool) -> None:
-        self.bypass_calls.append(("layer", idx, bypassed))
-
-    def set_group_bypassed(self, idx: int, bypassed: bool) -> None:
-        self.bypass_calls.append(("group", idx, bypassed))
-
-
-class AutoBypassEngineTests(unittest.TestCase):
-    def test_bypasses_after_debounce_below_threshold(self) -> None:
-        clock = FakeClock()
-        rest = FakeRest()
-        rest.layer_values[9] = 0.0
-        config = {
-            "poll_hz": 10,
-            "threshold": 0.01,
-            "debounce_ms": 100,
-            "read_param": "master",
-            "targets": [{"kind": "layer", "index": 9}],
-        }
-        engine = AutoBypassEngine("test", config, RecordingMidiOut(), clock=clock, rest_client=rest)
-        engine.tick(clock.now)  # below_since = now
-        clock.advance(0.05)
-        engine.tick(clock.now)  # still within debounce
-        self.assertEqual(rest.bypass_calls, [])
-        clock.advance(0.1)  # past debounce
-        engine.tick(clock.now)
-        self.assertEqual(rest.bypass_calls, [("layer", 9, True)])
-
-    def test_unbypasses_when_value_returns(self) -> None:
-        clock = FakeClock()
-        rest = FakeRest()
-        rest.layer_values[9] = 0.0
-        config = {
-            "poll_hz": 10,
-            "threshold": 0.01,
-            "debounce_ms": 100,
-            "targets": [{"kind": "layer", "index": 9}],
-        }
-        engine = AutoBypassEngine("test", config, RecordingMidiOut(), clock=clock, rest_client=rest)
-        # Bypass first
-        engine.tick(clock.now)
-        clock.advance(0.2)
-        engine.tick(clock.now)
-        self.assertEqual(rest.bypass_calls[-1], ("layer", 9, True))
-        # Now raise
-        rest.layer_values[9] = 0.5
-        clock.advance(0.2)
-        engine.tick(clock.now)
-        clock.advance(0.2)
-        engine.tick(clock.now)
-        self.assertEqual(rest.bypass_calls[-1], ("layer", 9, False))
 
 
 class EngineRegistryTests(unittest.TestCase):
