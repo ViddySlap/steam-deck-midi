@@ -230,6 +230,50 @@ class AudioOpacityEngineTests(unittest.TestCase):
         last_video = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 110][-1]  # type: ignore[attr-defined]
         self.assertEqual(last_video, 127)
 
+    def test_logo_stomp_skips_video_falls_phase(self) -> None:
+        """Natural-LOGO sequence built while LOGO STOMP is held drops the
+        first ramp ('video falls via release') because the mask is already
+        zeroing video. Sequence becomes LOGO_DELAY + RELEASE instead of
+        RELEASE + LOGO_DELAY + RELEASE."""
+        clock = FakeClock()
+        engine = _audio_engine(clock=clock, defaults={
+            "tipping_point": 0.5,
+            "duration_seconds": 0.2,
+            "attack_seconds": 0.0,
+            "release_seconds": 0.5,   # non-zero so the skip is observable
+            "video_delay_seconds": 0.0,
+            "logo_delay_seconds": 0.5,
+        })
+        engine.tick(clock.now)
+        engine.on_midi_in(14, 101, 127, clock.now)  # enable
+        # Drive audio loud → settle on VIDEO. current_video=1, current_logo=0.
+        for _ in range(4):
+            engine.on_midi_in(14, 100, 100, clock.now)
+        clock.advance(0.1)
+        engine.tick(clock.now)
+        # Press LOGO STOMP. Audio override=0; below_since starts.
+        engine.on_midi_in(14, 103, 127, clock.now)
+        # Past duration debounce, sequence is built. With LOGO STOMP held,
+        # phase 1 (video falls) is skipped — just DELAY (LOGO_DELAY=0.5) and
+        # RAMP logo to 1 (RELEASE=0.5). Total 1.0s.
+        clock.advance(0.3)  # past 0.2s debounce
+        engine.tick(clock.now)
+        # We're now in the DELAY phase. After 0.5s of delay, RAMP starts.
+        clock.advance(0.5)
+        engine.tick(clock.now)
+        # Halfway through the ramp (0.25 / 0.5).
+        clock.advance(0.25)
+        engine.tick(clock.now)
+        # Logo should be ~halfway up. Check it's strictly between 0 and 127.
+        last_logo = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 111][-1]  # type: ignore[attr-defined]
+        self.assertGreater(last_logo, 32)
+        self.assertLess(last_logo, 96)
+        # Past the ramp, logo should be at full.
+        clock.advance(0.3)
+        engine.tick(clock.now)
+        last_logo = [v for ch, ctl, v in engine.midi_out.cc_events() if ctl == 111][-1]  # type: ignore[attr-defined]
+        self.assertEqual(last_logo, 127)
+
     def test_logo_always_overrides_natural_video_logo_endpoint(self) -> None:
         """LOGO ALWAYS on with audio loud: natural goal is VIDEO, but the
         sequence's logo target shifts from 0 to 1 so logo stays at full."""
