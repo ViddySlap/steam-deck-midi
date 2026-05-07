@@ -382,20 +382,27 @@ class AudioOpacityEngine(Engine):
         if goal == GOAL_VIDEO:
             # Natural: logo falls via attack → wait video delay → video rises via attack.
             l_target = 1.0 if logo_always else 0.0
-            return [
-                (PHASE_RAMP, self._current_video, l_target, attack),
-                (PHASE_DELAY, self._current_video, l_target, v_delay),
-                (PHASE_RAMP, 1.0, l_target, attack),
-            ]
+            phases: list[tuple[str, float, float, float]] = []
+            # When VIDEO STOMP is held, the output mask already zeroes logo,
+            # so the "logo falls" ramp is invisible work. Skip it — the rise
+            # phases (delay + video ramp) do all the visible work.
+            if not self._video_stomp:
+                phases.append((PHASE_RAMP, self._current_video, l_target, attack))
+            phases.append((PHASE_DELAY, self._current_video, l_target, v_delay))
+            phases.append((PHASE_RAMP, 1.0, l_target, attack))
+            return phases
 
         if goal == GOAL_LOGO:
             # Natural: video falls via release → wait logo delay → logo rises via release.
             v_target = 1.0 if video_always else 0.0
-            return [
-                (PHASE_RAMP, v_target, self._current_logo, release),
-                (PHASE_DELAY, v_target, self._current_logo, l_delay),
-                (PHASE_RAMP, v_target, 1.0, release),
-            ]
+            phases = []
+            # Symmetric: with LOGO STOMP held, the mask already zeroes video.
+            # Drop the "video falls" ramp; just delay + ramp logo up.
+            if not self._logo_stomp:
+                phases.append((PHASE_RAMP, v_target, self._current_logo, release))
+            phases.append((PHASE_DELAY, v_target, self._current_logo, l_delay))
+            phases.append((PHASE_RAMP, v_target, 1.0, release))
+            return phases
 
         return []
 
