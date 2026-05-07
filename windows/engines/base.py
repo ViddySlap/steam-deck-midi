@@ -34,6 +34,13 @@ class Engine:
     def on_midi_in(self, channel: int, cc: int, value: int, now: float) -> None:
         """Called for every MIDI CC arriving on the feedback port."""
 
+    def on_midi_clock(self, message_type: str, now: float) -> None:
+        """Called for every MIDI System Real-Time clock message.
+
+        `message_type` is one of: "clock", "start", "stop", "continue".
+        Default no-op. Engines that need tempo derivation override this.
+        """
+
     def tick(self, now: float) -> None:
         """Called periodically from the receiver event loop."""
 
