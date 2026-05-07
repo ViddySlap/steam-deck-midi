@@ -53,8 +53,9 @@
       "enabled": true,
       "osc_preset_path": "C:/Users/Ben/OneDrive/Documents/Resolume Arena/Shortcuts/OSC/STEAMDECK V2.xml",
       "epsilon_float": 0.001,
-      "inter_message_delay_ms": 2,
+      "inter_message_delay_ms": 50,
       "mask_with_master": true,
+      "sync_indicator_path": "/composition/video/effects/oscsync/effect/sync/sync",
       "inputs": {
         "channel": 14,
         "cc_sync": 90

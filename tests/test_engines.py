@@ -759,6 +759,86 @@ class OscSyncEngineTests(unittest.TestCase):
         finally:
             os.unlink(xml_path)
 
+    def test_indicator_held_then_released_around_pass(self) -> None:
+        composition = {
+            "master": {"id": 1, "value": 0.7},
+            "layers": [{"master": {"id": 99, "value": 0.5, "valuerange": {"min": 0, "max": 1}}}],
+        }
+        targets = [SyncTarget(osc_path="/composition/layers/1/master", kind=KIND_FLOAT, param_node_name="ParamRange")]
+        engine, _rest, osc, _midi = _build_osc_sync(targets=targets, composition=composition)
+        engine.on_midi_in(channel=14, cc=90, value=127, now=0.0)
+        _wait_for_pass(engine)
+        indicator_path = engine._sync_indicator_path
+        indicator_sends = [v for path, v in osc.sends if path == indicator_path]
+        # First indicator write is True (hold), last is False (release)
+        self.assertEqual(indicator_sends[0], True)
+        self.assertEqual(indicator_sends[-1], False)
+
+    def test_self_induced_cc_does_not_retrigger(self) -> None:
+        # Simulate the wire patch echoing the engine's own indicator write
+        # back as a CC 90 = 127. Should be swallowed by the syncing flag.
+        composition = {
+            "master": {"id": 1, "value": 1.0},
+            "layers": [{"master": {"id": 99, "value": 0.5, "valuerange": {"min": 0, "max": 1}}}],
+        }
+        targets = [SyncTarget(osc_path="/composition/layers/1/master", kind=KIND_FLOAT, param_node_name="ParamRange")]
+        # Patch sleep so we can deterministically interleave: while syncing,
+        # any extra CC 90 = 127 events should NOT spawn a new pass.
+        recorded_get_calls = []
+
+        class WatchedRest(FakeRestClient):
+            def __init__(self, composition, on_get):
+                super().__init__(composition=composition)
+                self._on_get = on_get
+
+            def get_composition(self):
+                self._on_get()
+                return super().get_composition()
+
+        midi = RecordingMidiOut()
+        rest = WatchedRest(composition=composition, on_get=lambda: recorded_get_calls.append(1))
+        osc = FakeOscClient()
+        engine = OscSyncEngine(
+            name="OSC Sync",
+            config=_osc_sync_config(),
+            midi_out=midi,
+            rest_client=rest,
+            osc_client=osc,
+            sleep=lambda _t: None,
+        )
+        engine._targets = targets
+
+        # First press
+        engine.on_midi_in(channel=14, cc=90, value=127, now=0.0)
+        # While the worker runs, simulate self-induced rising edges (engine writes
+        # indicator=1 -> wire echoes -> CC 90 = 127). These should all be swallowed.
+        for _ in range(5):
+            engine.on_midi_in(channel=14, cc=90, value=127, now=0.0)
+        _wait_for_pass(engine)
+        # Only one composition GET = exactly one pass ran
+        self.assertEqual(len(recorded_get_calls), 1)
+
+    def test_indicator_path_excluded_from_wiggles(self) -> None:
+        # If the OSC preset includes the indicator path, the wiggle pass
+        # should skip it (so the indicator doesn't briefly flicker off mid-sync).
+        composition = {
+            "master": {"id": 1, "value": 1.0},
+            "video": {"effects": [{"name": {"value": "OSCSync"}, "id": 1, "value": True}]},
+        }
+        indicator_path = "/composition/video/effects/oscsync/effect/sync/sync"
+        targets = [
+            SyncTarget(osc_path=indicator_path, kind=KIND_BOOL, param_node_name="RangedParam[bool]"),
+            SyncTarget(osc_path="/composition/master", kind=KIND_FLOAT, param_node_name="ParamRange"),
+        ]
+        engine, _rest, osc, _midi = _build_osc_sync(targets=targets, composition=composition)
+        engine.on_midi_in(channel=14, cc=90, value=127, now=0.0)
+        _wait_for_pass(engine)
+        # Indicator path should appear ONLY for hold (True) and release (False),
+        # NOT for a wiggle flip-flop pair (which would be False then True for a
+        # bool currently True).
+        indicator_sends = [v for path, v in osc.sends if path == indicator_path]
+        self.assertEqual(indicator_sends, [True, False])
+
     def test_concurrent_press_does_not_stack_workers(self) -> None:
         # Slow REST GET → first pass is still running when second press fires
         slow_event = threading.Event()
