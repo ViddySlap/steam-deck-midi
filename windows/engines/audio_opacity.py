@@ -1,30 +1,40 @@
 """Audio opacity engine.
 
-Listens to the comp-level `Audio Engine` Wire patch on DECK_OUT (CC 100-109 on
-ch15 by default) and drives the VIDEO + LOGO group masters via OSC by default
-(or MIDI CCs on DECK_IN if `outputs.protocol` is set to "midi").
+Listens to the comp-level `Audio Engine` Wire patch on DECK_OUT (CC 100-113
+on ch15 by default) and drives the VIDEO + LOGO group masters via OSC by
+default (or MIDI CCs on DECK_IN if `outputs.protocol` is set to "midi").
 
-Two layers:
+Three layers stack to produce the output:
 
 1. **Natural state machine** — runs continuously based on audio + ENGINE
    ENABLE. Handles bass-rising (LOGO falls via ATTACK → wait VIDEO DELAY →
    VIDEO rises via ATTACK) and bass-falling (VIDEO falls via RELEASE → wait
    LOGO DELAY → LOGO rises via RELEASE), gated by the DURATION debounce on
-   the falling side.
+   the falling side. The debounce window holds VIDEO regardless of how we
+   got there, so a stomp during the window recovers cleanly on release.
 
-2. **Stomp output mask** — applied at send time. VIDEO STOMP held → kill the
-   logo channel. LOGO STOMP held → kill the video channel. Both held →
-   kill both. Mirrors the v0.2.0 wire patch where each STOMP was MIDI-mapped
-   in piano mode to the opposite group's bypass parameter. Stomps don't
-   touch the natural state machine, so:
+2. **Stomp audio override** — mirrors the v0.2.0 wire patch which literally
+   pinned the audio signal while a stomp was held. LOGO STOMP held → the
+   natural state machine sees an effective audio average of 0 (drifts to
+   LOGO via the normal debounce + LOGO_DELAY + RELEASE pacing). VIDEO STOMP
+   held → effective audio = 1 (engine snaps to VIDEO instantly via the
+   bass-rising sequence). Both held → real audio (mask kills both visually
+   anyway).
 
-   - The debounce timer keeps tracking real audio while a stomp is held.
-   - Stomp release reveals the natural state instantly — no recovery
-     sequence to run.
+3. **Stomp output mask** — applied at send time. VIDEO STOMP held → kill the
+   logo channel. LOGO STOMP held → kill the video channel. Both held → kill
+   both. Mirrors the wire patch's piano-mode mapping of each STOMP to the
+   opposite group's bypass parameter.
 
-The debounce window also holds VIDEO regardless of how we got there (this
-is what makes a stomp during the bass-falling debounce window recoverable —
-release reveals VIDEO again instead of getting stuck on LOGO).
+The override (#2) and the mask (#3) both fire while a stomp is held. The
+override drives the natural state toward the stomp's target so by the time
+the operator releases, the engine is already settled correctly.
+
+**ALWAYS toggles** — `LOGO ALWAYS` overrides 0.0 logo endpoints in a
+natural-VIDEO sequence to 1.0 (logo rides at full opacity even when audio
+is loud); `VIDEO ALWAYS` does the symmetric thing for natural-LOGO. Stomps
+override ALWAYS for the drop direction (LOGO STOMP kills video even with
+VIDEO ALWAYS lock); ALWAYS still locks the same-side channel high.
 """
 
 from __future__ import annotations
@@ -87,6 +97,8 @@ class AudioOpacityEngine(Engine):
         self._cc_release = int(inputs.get("cc_release", 107))
         self._cc_video_delay = int(inputs.get("cc_video_delay", 108))
         self._cc_logo_delay = int(inputs.get("cc_logo_delay", 109))
+        self._cc_video_always = int(inputs.get("cc_video_always", 112))
+        self._cc_logo_always = int(inputs.get("cc_logo_always", 113))
         self._duration_max_seconds = float(inputs.get("duration_max_seconds", 5.0))
         self._attack_max_seconds = float(inputs.get("attack_max_seconds", 5.0))
         self._release_max_seconds = float(inputs.get("release_max_seconds", 5.0))
@@ -121,6 +133,8 @@ class AudioOpacityEngine(Engine):
         self._enabled = False
         self._video_stomp = False
         self._logo_stomp = False
+        self._video_always = False
+        self._logo_always = False
         self._audio_buffer: deque[float] = deque(maxlen=self._sample_size)
         self._below_since: float | None = None
 
@@ -128,8 +142,10 @@ class AudioOpacityEngine(Engine):
         self._current_video = 1.0
         self._current_logo = 1.0
 
-        # Phase machine
-        self._current_goal: tuple[str, str] = (GOAL_OFF, "engine")
+        # Phase machine. ALWAYS flags ride along in the goal tuple so toggling
+        # either flag mid-state triggers a sequence rebuild that picks up the
+        # new override.
+        self._current_goal: tuple[str, str, bool, bool] = (GOAL_OFF, "engine", False, False)
         self._pending_phases: list[tuple[str, float, float, float]] = []
         self._phase = PHASE_IDLE
         self._phase_video_start = 1.0
@@ -185,16 +201,26 @@ class AudioOpacityEngine(Engine):
             self._video_delay_seconds = (value / 127.0) * self._video_delay_max_seconds
         elif cc == self._cc_logo_delay:
             self._logo_delay_seconds = (value / 127.0) * self._logo_delay_max_seconds
+        elif cc == self._cc_video_always:
+            self._video_always = _midpoint_bool(value)
+            goal_relevant = True
+        elif cc == self._cc_logo_always:
+            self._logo_always = _midpoint_bool(value)
+            goal_relevant = True
 
-        if goal_relevant:
+        if goal_relevant or mask_relevant:
+            # Stomps go through the same path as goal-relevant CCs because
+            # they now override the natural-state-machine's effective audio
+            # (wire-patch v0.2.0 behavior). The override changes wanted, so a
+            # rebuild may be needed.
             wanted = self._compute_wanted(now)
             if wanted != self._current_goal:
-                self._pending_phases = self._build_sequence(wanted[0], wanted[1])
+                self._pending_phases = self._build_sequence(
+                    wanted[0], wanted[1], wanted[2], wanted[3]
+                )
                 self._current_goal = wanted
                 self._start_next_phase(now)
                 self._execute_phase(now)
-            self._emit_output()
-        elif mask_relevant:
             self._emit_output()
 
     def tick_interval_seconds(self) -> float:
@@ -217,7 +243,9 @@ class AudioOpacityEngine(Engine):
 
         wanted = self._compute_wanted(now)
         if wanted != self._current_goal:
-            self._pending_phases = self._build_sequence(wanted[0], wanted[1])
+            self._pending_phases = self._build_sequence(
+                wanted[0], wanted[1], wanted[2], wanted[3]
+            )
             self._current_goal = wanted
             self._start_next_phase(now)
 
@@ -256,48 +284,91 @@ class AudioOpacityEngine(Engine):
             return (0.0, logo)
         return (video, logo)
 
-    def _compute_wanted(self, now: float) -> tuple[str, str]:
-        # Stomps no longer participate in goal computation — they apply at
-        # output time via _apply_stomp_mask. The natural state machine runs
-        # continuously regardless of stomp state so:
-        #   - Debounce timers track real audio, not operator overrides.
-        #   - Stomp release reveals the natural state instantly with no
-        #     "recovery" sequence to run.
+    def _compute_wanted(self, now: float) -> tuple[str, str, bool, bool]:
+        v_always = self._video_always
+        l_always = self._logo_always
+
         if not self._enabled:
-            return (GOAL_OFF, "engine")
-        if not self._audio_buffer:
-            # No audio yet; hold whatever we were doing, or settle to logo state.
+            return (GOAL_OFF, "engine", v_always, l_always)
+
+        # Stomp audio override — mirrors the v0.2.0 wire patch where holding
+        # LOGO STOMP forced the audio signal to 0 (so the natural state
+        # machine drifts toward LOGO via the normal debounce + LOGO_DELAY +
+        # RELEASE pacing) and VIDEO STOMP forced audio to 1 (engine snaps to
+        # VIDEO instantly). The output mask in _apply_stomp_mask handles the
+        # visible bypass; this override drives the natural state machine so
+        # by the time the stomp releases, the engine is already settled in
+        # the channel the operator was forcing toward.
+        if self._video_stomp and self._logo_stomp:
+            # Both held — mask kills both visually anyway. Use real audio so
+            # natural state stays consistent with what the operator will see
+            # when one stomp releases.
+            avg = (
+                sum(self._audio_buffer) / len(self._audio_buffer)
+                if self._audio_buffer
+                else None
+            )
+        elif self._logo_stomp:
+            avg = 0.0
+        elif self._video_stomp:
+            avg = 1.0
+        elif self._audio_buffer:
+            avg = sum(self._audio_buffer) / len(self._audio_buffer)
+        else:
+            avg = None
+
+        if avg is None:
+            # No audio yet AND no stomp override; hold previous goal or
+            # settle to LOGO.
             if self._current_goal[0] in (GOAL_VIDEO, GOAL_LOGO):
-                return self._current_goal
-            return (GOAL_LOGO, "natural")
-        avg = sum(self._audio_buffer) / len(self._audio_buffer)
+                return (
+                    self._current_goal[0],
+                    self._current_goal[1],
+                    v_always,
+                    l_always,
+                )
+            return (GOAL_LOGO, "natural", v_always, l_always)
+
         if avg > self._tipping_point:
             self._below_since = None
-            return (GOAL_VIDEO, "natural")
-        # Audio below tipping. The duration debounce gates the bass-falling
-        # decision (VIDEO→LOGO) only; if we weren't on natural-VIDEO, there's
-        # nothing to wait for.
+            return (GOAL_VIDEO, "natural", v_always, l_always)
+        # Audio (real or stomp-overridden) is below tipping. The duration
+        # debounce gates the bass-falling decision (VIDEO→LOGO) only; if we
+        # weren't on natural-VIDEO, there's nothing to wait for.
         if self._below_since is None:
             if self._current_goal[0] == GOAL_VIDEO and self._current_goal[1] == "natural":
                 self._below_since = now
             else:
-                return (GOAL_LOGO, "natural")
+                return (GOAL_LOGO, "natural", v_always, l_always)
         if (now - self._below_since) >= self._duration_seconds:
-            return (GOAL_LOGO, "natural")
-        # Inside the debounce window — hold VIDEO. The previous-goal-based
-        # hold here was the bug: a stomp during the debounce changed the goal
-        # to LOGO, then after release the engine "held LOGO" because that was
-        # the previous goal. Returning VIDEO here is what makes stomp-during-
-        # debounce recoverable.
-        return (GOAL_VIDEO, "natural")
+            return (GOAL_LOGO, "natural", v_always, l_always)
+        # Inside the debounce window — hold VIDEO regardless of how the
+        # engine got here. Without this, a stomp during the debounce would
+        # leave the engine stuck on whatever the previous goal happened to
+        # be when the stomp released.
+        return (GOAL_VIDEO, "natural", v_always, l_always)
 
-    def _build_sequence(self, goal: str, source: str) -> list[tuple[str, float, float, float]]:
-        """Return remaining phases (after the snap, if any) to reach the goal.
+    def _build_sequence(
+        self,
+        goal: str,
+        source: str,
+        video_always: bool,
+        logo_always: bool,
+    ) -> list[tuple[str, float, float, float]]:
+        """Return phases to reach the goal, with ALWAYS overrides applied.
 
         Each phase: (kind, video_end, logo_end, duration_seconds).
         For PHASE_RAMP, the start values come from the engine's current values
         captured when the phase begins. For PHASE_SNAP, end values are applied
         immediately. For PHASE_DELAY, current values are held.
+
+        ALWAYS override rules:
+          - LOGO ALWAYS on → 0.0 logo endpoints in a natural-VIDEO sequence
+            become 1.0 (logo rides at full opacity even when audio is loud).
+          - VIDEO ALWAYS on → 0.0 video endpoints in a natural-LOGO sequence
+            become 1.0 (video rides at full opacity even when audio is quiet).
+          - GOAL_OFF (engine disabled) is never overridden — both still rise
+            to 1.
         """
         attack = max(0.0, self._attack_seconds)
         release = max(0.0, self._release_seconds)
@@ -310,18 +381,20 @@ class AudioOpacityEngine(Engine):
 
         if goal == GOAL_VIDEO:
             # Natural: logo falls via attack → wait video delay → video rises via attack.
+            l_target = 1.0 if logo_always else 0.0
             return [
-                (PHASE_RAMP, self._current_video, 0.0, attack),
-                (PHASE_DELAY, self._current_video, 0.0, v_delay),
-                (PHASE_RAMP, 1.0, 0.0, attack),
+                (PHASE_RAMP, self._current_video, l_target, attack),
+                (PHASE_DELAY, self._current_video, l_target, v_delay),
+                (PHASE_RAMP, 1.0, l_target, attack),
             ]
 
         if goal == GOAL_LOGO:
             # Natural: video falls via release → wait logo delay → logo rises via release.
+            v_target = 1.0 if video_always else 0.0
             return [
-                (PHASE_RAMP, 0.0, self._current_logo, release),
-                (PHASE_DELAY, 0.0, self._current_logo, l_delay),
-                (PHASE_RAMP, 0.0, 1.0, release),
+                (PHASE_RAMP, v_target, self._current_logo, release),
+                (PHASE_DELAY, v_target, self._current_logo, l_delay),
+                (PHASE_RAMP, v_target, 1.0, release),
             ]
 
         return []
@@ -418,6 +491,8 @@ class AudioOpacityEngine(Engine):
             "enabled": self._enabled,
             "video_stomp": self._video_stomp,
             "logo_stomp": self._logo_stomp,
+            "video_always": self._video_always,
+            "logo_always": self._logo_always,
             "tipping_point": round(self._tipping_point, 3),
             "duration_seconds": round(self._duration_seconds, 3),
             "attack_seconds": round(self._attack_seconds, 3),
