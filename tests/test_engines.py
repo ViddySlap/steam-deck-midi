@@ -410,7 +410,12 @@ class EngineRegistryTests(unittest.TestCase):
 
 
 class LoadEnginesFactoryMergeTests(unittest.TestCase):
-    """Verify load_engines auto-merges factory defaults for missing engine types."""
+    """Verify load_engines auto-merges factory defaults for missing engine types.
+
+    v0.4.0+: configs live as `<type>.json` files inside `engines/` (user) and
+    `engines.factory/` (factory). Legacy single-file `engines.json` is
+    auto-migrated on first encounter.
+    """
 
     def _audio_stanza(self, **overrides) -> dict:
         cfg = {
@@ -434,19 +439,23 @@ class LoadEnginesFactoryMergeTests(unittest.TestCase):
         cfg.update(overrides)
         return cfg
 
-    def test_factory_engine_merged_when_missing_from_user_config(self) -> None:
+    def _write_dir(self, dir_path: Path, stanzas: list[dict]) -> None:
+        dir_path.mkdir(parents=True, exist_ok=True)
+        for stanza in stanzas:
+            (dir_path / f"{stanza['type']}.json").write_text(
+                json.dumps(stanza, indent=2), encoding="utf-8"
+            )
+
+    def test_factory_engine_merged_when_missing_from_user_dir(self) -> None:
         from windows.engines.registry import load_engines
         with tempfile.TemporaryDirectory() as tmp:
             cfg_dir = Path(tmp)
-            user = cfg_dir / "engines.json"
-            factory = cfg_dir / "engines.factory.json"
-            user.write_text(json.dumps({"engines": [self._audio_stanza()]}), encoding="utf-8")
-            factory.write_text(
-                json.dumps({"engines": [self._audio_stanza(), self._osc_sync_stanza()]}),
-                encoding="utf-8",
-            )
+            user_dir = cfg_dir / "engines"
+            factory_dir = cfg_dir / "engines.factory"
+            self._write_dir(user_dir, [self._audio_stanza()])
+            self._write_dir(factory_dir, [self._audio_stanza(), self._osc_sync_stanza()])
             midi = RecordingMidiOut()
-            registry = load_engines(user, midi)
+            registry = load_engines(user_dir, midi)
             types = {e.type_name for e in registry.engines}
             self.assertEqual(types, {"audio_opacity", "osc_sync"})
 
@@ -454,55 +463,165 @@ class LoadEnginesFactoryMergeTests(unittest.TestCase):
         from windows.engines.registry import load_engines
         with tempfile.TemporaryDirectory() as tmp:
             cfg_dir = Path(tmp)
-            user = cfg_dir / "engines.json"
-            factory = cfg_dir / "engines.factory.json"
-            # User has customized audio engine name
-            user.write_text(
-                json.dumps({"engines": [self._audio_stanza(name="Custom Audio")]}),
-                encoding="utf-8",
-            )
-            factory.write_text(
-                json.dumps({"engines": [self._audio_stanza(name="Audio Engine")]}),
-                encoding="utf-8",
-            )
+            user_dir = cfg_dir / "engines"
+            factory_dir = cfg_dir / "engines.factory"
+            self._write_dir(user_dir, [self._audio_stanza(name="Custom Audio")])
+            self._write_dir(factory_dir, [self._audio_stanza(name="Audio Engine")])
             midi = RecordingMidiOut()
-            registry = load_engines(user, midi)
+            registry = load_engines(user_dir, midi)
             self.assertEqual(len(registry.engines), 1)
             # User's name wins, factory does NOT overwrite
             self.assertEqual(registry.engines[0].name, "Custom Audio")
 
-    def test_user_disabled_factory_engine_stays_disabled(self) -> None:
-        # If user has explicitly disabled an engine, the factory merge should
-        # NOT re-add it (the user's stanza is present, we just respect enabled=false).
+    def test_user_disabled_engine_stays_disabled(self) -> None:
+        # User explicitly disables an engine in their dir; factory-merge must
+        # respect their `enabled: false` and not re-add via the factory entry.
         from windows.engines.registry import load_engines
         with tempfile.TemporaryDirectory() as tmp:
             cfg_dir = Path(tmp)
-            user = cfg_dir / "engines.json"
-            factory = cfg_dir / "engines.factory.json"
-            user.write_text(
+            user_dir = cfg_dir / "engines"
+            factory_dir = cfg_dir / "engines.factory"
+            self._write_dir(
+                user_dir,
+                [self._audio_stanza(), self._osc_sync_stanza(enabled=False)],
+            )
+            self._write_dir(factory_dir, [self._audio_stanza(), self._osc_sync_stanza()])
+            midi = RecordingMidiOut()
+            registry = load_engines(user_dir, midi)
+            types = {e.type_name for e in registry.engines}
+            self.assertEqual(types, {"audio_opacity"})
+
+    def test_no_factory_dir_works(self) -> None:
+        from windows.engines.registry import load_engines
+        with tempfile.TemporaryDirectory() as tmp:
+            cfg_dir = Path(tmp)
+            user_dir = cfg_dir / "engines"
+            self._write_dir(user_dir, [self._audio_stanza()])
+            midi = RecordingMidiOut()
+            registry = load_engines(user_dir, midi)
+            self.assertEqual(len(registry.engines), 1)
+
+    def test_empty_user_dir_loads_full_factory(self) -> None:
+        # Fresh install: user dir is empty (or only contains README.md), all
+        # engines come from factory-merge.
+        from windows.engines.registry import load_engines
+        with tempfile.TemporaryDirectory() as tmp:
+            cfg_dir = Path(tmp)
+            user_dir = cfg_dir / "engines"
+            user_dir.mkdir()
+            (user_dir / "README.md").write_text("docs", encoding="utf-8")
+            factory_dir = cfg_dir / "engines.factory"
+            self._write_dir(factory_dir, [self._audio_stanza(), self._osc_sync_stanza()])
+            midi = RecordingMidiOut()
+            registry = load_engines(user_dir, midi)
+            types = {e.type_name for e in registry.engines}
+            self.assertEqual(types, {"audio_opacity", "osc_sync"})
+
+    def test_one_per_type_collision_keeps_alphabetical_first(self) -> None:
+        # Two files declaring the same `type` — alphabetical-first filename
+        # wins, the other is skipped with a warning.
+        from windows.engines.registry import load_engines
+        with tempfile.TemporaryDirectory() as tmp:
+            cfg_dir = Path(tmp)
+            user_dir = cfg_dir / "engines"
+            user_dir.mkdir()
+            (user_dir / "audio_opacity.json").write_text(
+                json.dumps(self._audio_stanza(name="Alpha")), encoding="utf-8"
+            )
+            (user_dir / "z_audio_variant.json").write_text(
+                json.dumps(self._audio_stanza(name="Zeta")), encoding="utf-8"
+            )
+            midi = RecordingMidiOut()
+            registry = load_engines(user_dir, midi)
+            self.assertEqual(len(registry.engines), 1)
+            self.assertEqual(registry.engines[0].name, "Alpha")
+
+    def test_legacy_engines_json_auto_migrates_to_dir(self) -> None:
+        # v0.3.x → v0.4.0 upgrade: legacy single-file engines.json is the only
+        # engine config on disk. CLI defaults to engines/ dir which doesn't
+        # exist. Loader migrates legacy file into the dir, archives the original.
+        from windows.engines.registry import load_engines
+        with tempfile.TemporaryDirectory() as tmp:
+            cfg_dir = Path(tmp)
+            legacy = cfg_dir / "engines.json"
+            legacy.write_text(
                 json.dumps(
-                    {"engines": [self._audio_stanza(), self._osc_sync_stanza(enabled=False)]}
+                    {"engines": [self._audio_stanza(name="My Audio"), self._osc_sync_stanza()]}
                 ),
                 encoding="utf-8",
             )
-            factory.write_text(
-                json.dumps({"engines": [self._audio_stanza(), self._osc_sync_stanza()]}),
-                encoding="utf-8",
-            )
             midi = RecordingMidiOut()
-            registry = load_engines(user, midi)
+            registry = load_engines(cfg_dir / "engines", midi)
             types = {e.type_name for e in registry.engines}
-            self.assertEqual(types, {"audio_opacity"})  # osc_sync respected as disabled
+            self.assertEqual(types, {"audio_opacity", "osc_sync"})
+            # User's customization survived the migration.
+            audio = next(e for e in registry.engines if e.type_name == "audio_opacity")
+            self.assertEqual(audio.name, "My Audio")
+            # Legacy file archived, dir populated.
+            self.assertFalse(legacy.exists())
+            self.assertTrue((cfg_dir / "engines.json.migrated").exists())
+            self.assertTrue((cfg_dir / "engines" / "audio_opacity.json").exists())
+            self.assertTrue((cfg_dir / "engines" / "osc_sync.json").exists())
 
-    def test_no_factory_file_works(self) -> None:
+    def test_legacy_factory_json_auto_migrates(self) -> None:
         from windows.engines.registry import load_engines
         with tempfile.TemporaryDirectory() as tmp:
             cfg_dir = Path(tmp)
-            user = cfg_dir / "engines.json"
-            user.write_text(json.dumps({"engines": [self._audio_stanza()]}), encoding="utf-8")
+            (cfg_dir / "engines.factory.json").write_text(
+                json.dumps(
+                    {"engines": [self._audio_stanza(), self._osc_sync_stanza()]}
+                ),
+                encoding="utf-8",
+            )
             midi = RecordingMidiOut()
-            registry = load_engines(user, midi)
+            registry = load_engines(cfg_dir / "engines", midi)
+            types = {e.type_name for e in registry.engines}
+            self.assertEqual(types, {"audio_opacity", "osc_sync"})
+            self.assertTrue((cfg_dir / "engines.factory.json.migrated").exists())
+            self.assertTrue((cfg_dir / "engines.factory" / "audio_opacity.json").exists())
+
+    def test_legacy_user_skipped_for_types_already_in_dir(self) -> None:
+        # User upgraded post-v0.4.0 install but legacy engines.json was still
+        # sitting alongside (e.g. they manually copied it back). User dir has
+        # already-customized files. Migration must NOT clobber those.
+        from windows.engines.registry import load_engines
+        with tempfile.TemporaryDirectory() as tmp:
+            cfg_dir = Path(tmp)
+            user_dir = cfg_dir / "engines"
+            self._write_dir(user_dir, [self._audio_stanza(name="Recent Custom")])
+            (cfg_dir / "engines.json").write_text(
+                json.dumps({"engines": [self._audio_stanza(name="Old Legacy")]}),
+                encoding="utf-8",
+            )
+            midi = RecordingMidiOut()
+            registry = load_engines(user_dir, midi)
             self.assertEqual(len(registry.engines), 1)
+            self.assertEqual(registry.engines[0].name, "Recent Custom")
+            # Legacy still archived (idempotency).
+            self.assertTrue((cfg_dir / "engines.json.migrated").exists())
+
+    def test_missing_path_yields_empty_registry(self) -> None:
+        from windows.engines.registry import load_engines
+        with tempfile.TemporaryDirectory() as tmp:
+            cfg_dir = Path(tmp)
+            midi = RecordingMidiOut()
+            registry = load_engines(cfg_dir / "does-not-exist", midi)
+            self.assertEqual(registry.engines, [])
+
+    def test_legacy_file_path_argument_still_works(self) -> None:
+        # Back-compat: caller passes path to `engines.json` directly. Loader
+        # still resolves the sibling dir and uses the legacy file as input.
+        from windows.engines.registry import load_engines
+        with tempfile.TemporaryDirectory() as tmp:
+            cfg_dir = Path(tmp)
+            legacy = cfg_dir / "engines.json"
+            legacy.write_text(
+                json.dumps({"engines": [self._audio_stanza()]}), encoding="utf-8"
+            )
+            midi = RecordingMidiOut()
+            registry = load_engines(legacy, midi)
+            self.assertEqual(len(registry.engines), 1)
+            self.assertTrue((cfg_dir / "engines" / "audio_opacity.json").exists())
 
 
 # ---------------------------------------------------------------------------

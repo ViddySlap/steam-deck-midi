@@ -82,7 +82,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--engines",
         dest="engines_path",
-        help="path to engines.json (defaults to <map dir>/../engines.json)",
+        help=(
+            "path to engines config — directory of <type>.json files (preferred) "
+            "or legacy engines.json file (auto-migrated). "
+            "Default: <map dir>/../engines/"
+        ),
     )
     parser.add_argument(
         "--no-engines",
@@ -199,7 +203,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.engines_path:
             engines_path = Path(args.engines_path)
         else:
-            engines_path = base_map_path.parent / "engines.json"
+            engines_path = base_map_path.parent / "engines"
         engine_registry = load_engines(engines_path, midi_out)
         if engine_registry.engines:
             logging.info(
