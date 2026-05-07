@@ -218,6 +218,7 @@ def main(argv: list[str] | None = None) -> int:
             actions_yaml_path=actions_yaml,
             reload_event=reload_event,
             port=args.ui_port,
+            engine_registry=engine_registry,
         )
         ui_server.run_in_thread()
         logging.info("mapping UI available at %s", ui_server.url)

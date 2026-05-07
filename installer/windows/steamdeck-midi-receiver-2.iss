@@ -50,6 +50,7 @@ Source: "..\..\scripts\windows\start_installed_receiver_v2.ps1"; DestDir: "{app}
 Source: "..\..\config\presets\default.json"; DestDir: "{app}\config\presets"; Flags: onlyifdoesntexist
 Source: "..\..\config\macro_library.json"; DestDir: "{app}\config"; Flags: onlyifdoesntexist
 Source: "..\..\config\engines.json"; DestDir: "{app}\config"; Flags: onlyifdoesntexist
+Source: "..\..\config\engines.factory.json"; DestDir: "{app}\config"; Flags: ignoreversion
 Source: "..\..\config\actions.yaml"; DestDir: "{app}\config"; Flags: ignoreversion
 
 [Icons]

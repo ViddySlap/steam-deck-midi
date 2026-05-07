@@ -1,13 +1,27 @@
-"""Tests for v0.3.0 engines (audio_opacity + auto_bypass)."""
+"""Tests for v0.3.x+ engines (audio_opacity, osc_sync)."""
 
 from __future__ import annotations
 
+import json
+import os
+import tempfile
+import threading
 import unittest
 from collections import deque
-from typing import Iterable
+from pathlib import Path
+from typing import Any, Iterable
 
 from windows.engines.audio_opacity import AudioOpacityEngine
+from windows.engines.osc_preset import (
+    KIND_BOOL,
+    KIND_FLOAT,
+    KIND_INT,
+    SyncTarget,
+    parse_osc_preset,
+)
+from windows.engines.osc_sync import OscSyncEngine
 from windows.engines.registry import EngineRegistry
+from windows.engines.resolume_rest import ResolumeRestError
 from windows.midi import DryRunMidiOut
 
 
@@ -393,6 +407,433 @@ class EngineRegistryTests(unittest.TestCase):
         e2 = _audio_engine(clock=clock, update_hz=30)
         registry = EngineRegistry([e1, e2])
         self.assertAlmostEqual(registry.shortest_tick_interval(), 1 / 30, places=4)
+
+
+class LoadEnginesFactoryMergeTests(unittest.TestCase):
+    """Verify load_engines auto-merges factory defaults for missing engine types."""
+
+    def _audio_stanza(self, **overrides) -> dict:
+        cfg = {
+            "name": "Audio Engine",
+            "type": "audio_opacity",
+            "enabled": True,
+            "inputs": {"channel": 14},
+            "outputs": {"protocol": "midi", "channel": 14, "cc_video_master": 110, "cc_logo_master": 111},
+            "defaults": {"tipping_point": 0.5},
+        }
+        cfg.update(overrides)
+        return cfg
+
+    def _osc_sync_stanza(self, **overrides) -> dict:
+        cfg = {
+            "name": "OSC Sync",
+            "type": "osc_sync",
+            "enabled": True,
+            "inputs": {"channel": 14, "cc_sync": 90},
+        }
+        cfg.update(overrides)
+        return cfg
+
+    def test_factory_engine_merged_when_missing_from_user_config(self) -> None:
+        from windows.engines.registry import load_engines
+        with tempfile.TemporaryDirectory() as tmp:
+            cfg_dir = Path(tmp)
+            user = cfg_dir / "engines.json"
+            factory = cfg_dir / "engines.factory.json"
+            user.write_text(json.dumps({"engines": [self._audio_stanza()]}), encoding="utf-8")
+            factory.write_text(
+                json.dumps({"engines": [self._audio_stanza(), self._osc_sync_stanza()]}),
+                encoding="utf-8",
+            )
+            midi = RecordingMidiOut()
+            registry = load_engines(user, midi)
+            types = {e.type_name for e in registry.engines}
+            self.assertEqual(types, {"audio_opacity", "osc_sync"})
+
+    def test_user_customization_preserved_for_existing_type(self) -> None:
+        from windows.engines.registry import load_engines
+        with tempfile.TemporaryDirectory() as tmp:
+            cfg_dir = Path(tmp)
+            user = cfg_dir / "engines.json"
+            factory = cfg_dir / "engines.factory.json"
+            # User has customized audio engine name
+            user.write_text(
+                json.dumps({"engines": [self._audio_stanza(name="Custom Audio")]}),
+                encoding="utf-8",
+            )
+            factory.write_text(
+                json.dumps({"engines": [self._audio_stanza(name="Audio Engine")]}),
+                encoding="utf-8",
+            )
+            midi = RecordingMidiOut()
+            registry = load_engines(user, midi)
+            self.assertEqual(len(registry.engines), 1)
+            # User's name wins, factory does NOT overwrite
+            self.assertEqual(registry.engines[0].name, "Custom Audio")
+
+    def test_user_disabled_factory_engine_stays_disabled(self) -> None:
+        # If user has explicitly disabled an engine, the factory merge should
+        # NOT re-add it (the user's stanza is present, we just respect enabled=false).
+        from windows.engines.registry import load_engines
+        with tempfile.TemporaryDirectory() as tmp:
+            cfg_dir = Path(tmp)
+            user = cfg_dir / "engines.json"
+            factory = cfg_dir / "engines.factory.json"
+            user.write_text(
+                json.dumps(
+                    {"engines": [self._audio_stanza(), self._osc_sync_stanza(enabled=False)]}
+                ),
+                encoding="utf-8",
+            )
+            factory.write_text(
+                json.dumps({"engines": [self._audio_stanza(), self._osc_sync_stanza()]}),
+                encoding="utf-8",
+            )
+            midi = RecordingMidiOut()
+            registry = load_engines(user, midi)
+            types = {e.type_name for e in registry.engines}
+            self.assertEqual(types, {"audio_opacity"})  # osc_sync respected as disabled
+
+    def test_no_factory_file_works(self) -> None:
+        from windows.engines.registry import load_engines
+        with tempfile.TemporaryDirectory() as tmp:
+            cfg_dir = Path(tmp)
+            user = cfg_dir / "engines.json"
+            user.write_text(json.dumps({"engines": [self._audio_stanza()]}), encoding="utf-8")
+            midi = RecordingMidiOut()
+            registry = load_engines(user, midi)
+            self.assertEqual(len(registry.engines), 1)
+
+
+# ---------------------------------------------------------------------------
+# OSC sync engine tests
+
+
+class FakeRestClient:
+    def __init__(self, composition: dict | None = None, *, fail_get: bool = False) -> None:
+        self._composition = composition or {}
+        self._fail_get = fail_get
+        self.put_calls: list[tuple[int, Any]] = []
+        self.get_composition_calls = 0
+
+    def get_composition(self) -> dict:
+        self.get_composition_calls += 1
+        if self._fail_get:
+            raise ResolumeRestError("simulated GET failure")
+        return self._composition
+
+    def get_parameter(self, param_id: int) -> dict:
+        return {"id": param_id, "value": 0.0}
+
+    def put_parameter(self, param_id: int, value) -> None:
+        self.put_calls.append((param_id, value))
+
+
+class FakeOscClient:
+    def __init__(self) -> None:
+        self.sends: list[tuple[str, Any]] = []
+        self._closed = False
+
+    def send(self, address: str, value) -> None:
+        self.sends.append((address, value))
+
+    def close(self) -> None:
+        self._closed = True
+
+
+def _osc_sync_config(**overrides) -> dict:
+    cfg = {
+        "name": "OSC Sync",
+        "type": "osc_sync",
+        "enabled": True,
+        "epsilon_float": 0.001,
+        "inter_message_delay_ms": 0,  # zero-delay for fast tests
+        "mask_with_master": True,
+        "inputs": {"channel": 14, "cc_sync": 90},
+        "rest": {"base_url": "http://127.0.0.1:8080", "timeout_seconds": 1.5},
+        "osc": {"host": "127.0.0.1", "port": 7000},
+    }
+    cfg.update(overrides)
+    return cfg
+
+
+def _build_osc_sync(
+    *,
+    targets: list[SyncTarget] | None = None,
+    composition: dict | None = None,
+    fail_get: bool = False,
+    config_overrides: dict | None = None,
+):
+    midi = RecordingMidiOut()
+    rest = FakeRestClient(composition=composition, fail_get=fail_get)
+    osc = FakeOscClient()
+    cfg = _osc_sync_config(**(config_overrides or {}))
+    engine = OscSyncEngine(
+        name="OSC Sync",
+        config=cfg,
+        midi_out=midi,
+        rest_client=rest,
+        osc_client=osc,
+        sleep=lambda _t: None,
+    )
+    if targets is not None:
+        engine._targets = targets  # bypass XML parse
+    return engine, rest, osc, midi
+
+
+def _wait_for_pass(engine: OscSyncEngine, timeout: float = 2.0) -> None:
+    worker = engine._worker
+    if worker is not None:
+        worker.join(timeout=timeout)
+    deadline = threading.Event()
+    # Belt and suspenders — ensure status flag is set
+    if engine._last_pass_completed_at is None:
+        deadline.wait(0.05)
+
+
+class OscSyncEngineTests(unittest.TestCase):
+    def test_rising_edge_fires_pass_non_rising_does_not(self) -> None:
+        composition = {
+            "master": {"id": 1, "value": 1.0, "valuerange": {"min": 0, "max": 1}},
+        }
+        # One dummy target so the pass actually exercises REST (not the
+        # "no targets" early-return).
+        targets = [SyncTarget(osc_path="/composition/master", kind=KIND_FLOAT, param_node_name="ParamRange")]
+        engine, rest, osc, _midi = _build_osc_sync(
+            targets=targets,
+            composition=composition,
+        )
+
+        # Wrong CC → ignored
+        engine.on_midi_in(channel=14, cc=99, value=127, now=0.0)
+        self.assertIsNone(engine._worker)
+
+        # Wrong channel → ignored
+        engine.on_midi_in(channel=0, cc=90, value=127, now=0.0)
+        self.assertIsNone(engine._worker)
+
+        # Rising edge: 0 → 127
+        engine.on_midi_in(channel=14, cc=90, value=127, now=0.0)
+        _wait_for_pass(engine)
+        self.assertEqual(rest.get_composition_calls, 1)
+
+        # Hold-on (127 → 127) does not retrigger
+        engine.on_midi_in(channel=14, cc=90, value=127, now=0.1)
+        _wait_for_pass(engine)
+        self.assertEqual(rest.get_composition_calls, 1)
+
+        # Falling edge does not trigger; subsequent rising does
+        engine.on_midi_in(channel=14, cc=90, value=0, now=0.2)
+        _wait_for_pass(engine)
+        self.assertEqual(rest.get_composition_calls, 1)
+        engine.on_midi_in(channel=14, cc=90, value=127, now=0.3)
+        _wait_for_pass(engine)
+        self.assertEqual(rest.get_composition_calls, 2)
+
+    def test_float_wiggle_writes_nudge_then_original_via_osc(self) -> None:
+        composition = {
+            "master": {"id": 1, "value": 1.0, "valuerange": {"min": 0, "max": 1}},
+            "layers": [{"master": {"id": 99, "value": 0.5, "valuerange": {"min": 0, "max": 1}}}],
+        }
+        targets = [SyncTarget(osc_path="/composition/layers/1/master", kind=KIND_FLOAT, param_node_name="ParamRange")]
+        engine, _rest, osc, _midi = _build_osc_sync(targets=targets, composition=composition)
+
+        engine.on_midi_in(channel=14, cc=90, value=127, now=0.0)
+        _wait_for_pass(engine)
+
+        # OSC sends: master→0, target nudge, target original, master restore
+        layer_sends = [s for s in osc.sends if s[0] == "/composition/layers/1/master"]
+        self.assertEqual(len(layer_sends), 2)
+        nudge, original = layer_sends
+        self.assertAlmostEqual(nudge[1], 0.501, places=4)
+        self.assertAlmostEqual(original[1], 0.5, places=4)
+        self.assertEqual(engine._last_pass_wiggle_count, 1)
+
+    def test_float_wiggle_at_max_nudges_downward(self) -> None:
+        composition = {
+            "master": {"id": 1, "value": 1.0},
+            "layers": [{"master": {"id": 99, "value": 1.0, "valuerange": {"min": 0, "max": 1}}}],
+        }
+        targets = [SyncTarget(osc_path="/composition/layers/1/master", kind=KIND_FLOAT, param_node_name="ParamRange")]
+        engine, _rest, osc, _midi = _build_osc_sync(targets=targets, composition=composition)
+        engine.on_midi_in(channel=14, cc=90, value=127, now=0.0)
+        _wait_for_pass(engine)
+        layer_sends = [s for s in osc.sends if s[0] == "/composition/layers/1/master"]
+        self.assertEqual(len(layer_sends), 2)
+        nudge, original = layer_sends
+        self.assertAlmostEqual(nudge[1], 0.999, places=4)
+        self.assertAlmostEqual(original[1], 1.0, places=4)
+
+    def test_bool_wiggle_flip_flops(self) -> None:
+        composition = {
+            "master": {"id": 1, "value": 1.0},
+            "video": {"effects": [{"name": {"value": "MyEffect"}, "id": 100, "value": False}]},
+        }
+        # The path-walker indexes both /composition/video/effects/1 and
+        # /composition/video/effects/myeffect; the bool itself is the param.
+        # For this test we hand-craft a target whose path matches our walker output.
+        targets = [SyncTarget(osc_path="/composition/video/effects/1", kind=KIND_BOOL, param_node_name="RangedParam[bool]")]
+        engine, _rest, osc, _midi = _build_osc_sync(targets=targets, composition=composition)
+        engine.on_midi_in(channel=14, cc=90, value=127, now=0.0)
+        _wait_for_pass(engine)
+        sends = [s for s in osc.sends if s[0] == "/composition/video/effects/1"]
+        self.assertEqual(len(sends), 2)
+        self.assertEqual(sends[0][1], True)   # flip from False
+        self.assertEqual(sends[1][1], False)  # back to original
+
+    def test_int_wiggle_bump_and_back(self) -> None:
+        composition = {
+            "master": {"id": 1, "value": 1.0},
+            "layers": [{"transition": {"id": 7, "value": 3, "valuerange": {"min": 0, "max": 10}}}],
+        }
+        targets = [SyncTarget(osc_path="/composition/layers/1/transition", kind=KIND_INT, param_node_name="ParamChoice[int]")]
+        engine, _rest, osc, _midi = _build_osc_sync(targets=targets, composition=composition)
+        engine.on_midi_in(channel=14, cc=90, value=127, now=0.0)
+        _wait_for_pass(engine)
+        sends = [s for s in osc.sends if s[0] == "/composition/layers/1/transition"]
+        self.assertEqual(len(sends), 2)
+        self.assertEqual(sends[0][1], 4)  # bump
+        self.assertEqual(sends[1][1], 3)  # back
+
+    def test_master_to_zero_then_restore_wraps_pass(self) -> None:
+        composition = {
+            "master": {"id": 1, "value": 0.7, "valuerange": {"min": 0, "max": 1}},
+        }
+        targets = [SyncTarget(osc_path="/composition/master", kind=KIND_FLOAT, param_node_name="ParamRange")]
+        engine, _rest, osc, _midi = _build_osc_sync(targets=targets, composition=composition)
+        engine.on_midi_in(channel=14, cc=90, value=127, now=0.0)
+        _wait_for_pass(engine)
+
+        master_sends = [s for s in osc.sends if s[0] == "/composition/master"]
+        # First: mask to 0. Last: restore to 0.7. Middle: nudge + original (target wiggle).
+        self.assertEqual(master_sends[0][1], 0.0)
+        self.assertAlmostEqual(master_sends[-1][1], 0.7, places=4)
+
+    def test_unreachable_rest_records_error_no_crash(self) -> None:
+        targets = [SyncTarget(osc_path="/composition/layers/1/master", kind=KIND_FLOAT, param_node_name="ParamRange")]
+        engine, _rest, _osc, _midi = _build_osc_sync(targets=targets, fail_get=True)
+        engine.on_midi_in(channel=14, cc=90, value=127, now=0.0)
+        _wait_for_pass(engine)
+        self.assertIsNotNone(engine._last_pass_error)
+        self.assertIn("composition fetch failed", engine._last_pass_error or "")
+
+    def test_skip_target_when_path_missing_in_tree(self) -> None:
+        composition = {"master": {"id": 1, "value": 1.0, "valuerange": {"min": 0, "max": 1}}}
+        # Target points at a path that doesn't exist in our tree
+        targets = [SyncTarget(osc_path="/composition/missing/path", kind=KIND_FLOAT, param_node_name="ParamRange")]
+        engine, _rest, osc, _midi = _build_osc_sync(targets=targets, composition=composition)
+        engine.on_midi_in(channel=14, cc=90, value=127, now=0.0)
+        _wait_for_pass(engine)
+        self.assertEqual(engine._last_pass_wiggle_count, 0)
+        self.assertEqual(engine._last_pass_skipped_count, 1)
+        # The missing path was never sent
+        self.assertFalse(any(addr == "/composition/missing/path" for addr, _ in osc.sends))
+
+    def test_resync_targets_rebuilds_from_xml(self) -> None:
+        # Write a tiny preset XML and verify resync_targets parses it
+        xml = """<?xml version="1.0" encoding="utf-8"?>
+<OSCShortcutPreset>
+  <ShortcutManager>
+    <Shortcut paramNodeName="ParamRange">
+      <ShortcutPath name="InputPath" path="/composition/layers/1/master" allowedTranslationTypes="11"/>
+      <ShortcutPath name="OutputPath" path="/composition/layers/1/master" allowedTranslationTypes="11"/>
+    </Shortcut>
+    <Shortcut paramNodeName="ParamEvent">
+      <ShortcutPath name="InputPath" path="/composition/layers/1/connectnextclip" allowedTranslationTypes="11"/>
+      <ShortcutPath name="OutputPath" path="/composition/layers/1/connectnextclip" allowedTranslationTypes="-1"/>
+    </Shortcut>
+  </ShortcutManager>
+</OSCShortcutPreset>"""
+        with tempfile.NamedTemporaryFile("w", suffix=".xml", delete=False) as f:
+            f.write(xml)
+            xml_path = f.name
+        try:
+            engine, _rest, _osc, _midi = _build_osc_sync(
+                targets=None,
+                composition={},
+                config_overrides={"osc_preset_path": xml_path},
+            )
+            count = engine.resync_targets()
+            self.assertEqual(count, 1)  # ParamEvent skipped, ParamRange kept
+            self.assertEqual(engine._targets[0].kind, KIND_FLOAT)
+        finally:
+            os.unlink(xml_path)
+
+    def test_concurrent_press_does_not_stack_workers(self) -> None:
+        # Slow REST GET → first pass is still running when second press fires
+        slow_event = threading.Event()
+
+        class SlowRest(FakeRestClient):
+            def get_composition(self) -> dict:
+                slow_event.wait(timeout=0.5)
+                return self._composition
+
+        targets = [SyncTarget(osc_path="/composition/master", kind=KIND_FLOAT, param_node_name="ParamRange")]
+        midi = RecordingMidiOut()
+        rest = SlowRest(composition={"master": {"id": 1, "value": 1.0}})
+        osc = FakeOscClient()
+        engine = OscSyncEngine(
+            name="OSC Sync",
+            config=_osc_sync_config(),
+            midi_out=midi,
+            rest_client=rest,
+            osc_client=osc,
+            sleep=lambda _t: None,
+        )
+        engine._targets = targets
+
+        engine.on_midi_in(channel=14, cc=90, value=127, now=0.0)
+        first_worker = engine._worker
+        # Second press while first is blocked on REST
+        engine.on_midi_in(channel=14, cc=90, value=0, now=0.1)
+        engine.on_midi_in(channel=14, cc=90, value=127, now=0.2)
+        # Should be the same worker (not replaced)
+        self.assertIs(engine._worker, first_worker)
+        slow_event.set()
+        first_worker.join(timeout=1.0)
+
+
+class OscPresetParserTests(unittest.TestCase):
+    def test_skips_event_triggers_and_disabled_outputs(self) -> None:
+        xml = """<?xml version="1.0" encoding="utf-8"?>
+<OSCShortcutPreset>
+  <ShortcutManager>
+    <Shortcut paramNodeName="ParamRange">
+      <ShortcutPath name="InputPath" path="/keep/float" allowedTranslationTypes="11"/>
+      <ShortcutPath name="OutputPath" path="/keep/float" allowedTranslationTypes="11"/>
+    </Shortcut>
+    <Shortcut paramNodeName="RangedParam[bool]">
+      <ShortcutPath name="InputPath" path="/disabled/bool" allowedTranslationTypes="1"/>
+      <ShortcutPath name="OutputPath" path="/disabled/bool" allowedTranslationTypes="-1"/>
+    </Shortcut>
+    <Shortcut paramNodeName="ParamEvent">
+      <ShortcutPath name="InputPath" path="/event/trigger" allowedTranslationTypes="11"/>
+      <ShortcutPath name="OutputPath" path="/event/trigger" allowedTranslationTypes="11"/>
+    </Shortcut>
+    <Shortcut paramNodeName="Parameter[std::string]">
+      <ShortcutPath name="InputPath" path="/string/param" allowedTranslationTypes="11"/>
+      <ShortcutPath name="OutputPath" path="/string/param" allowedTranslationTypes="11"/>
+    </Shortcut>
+  </ShortcutManager>
+</OSCShortcutPreset>"""
+        with tempfile.NamedTemporaryFile("w", suffix=".xml", delete=False) as f:
+            f.write(xml)
+            xml_path = f.name
+        try:
+            targets = parse_osc_preset(xml_path)
+            paths = {t.osc_path for t in targets}
+            self.assertEqual(paths, {"/keep/float"})
+        finally:
+            os.unlink(xml_path)
+
+    def test_malformed_xml_returns_empty_list(self) -> None:
+        with tempfile.NamedTemporaryFile("w", suffix=".xml", delete=False) as f:
+            f.write("<not really xml")
+            xml_path = f.name
+        try:
+            self.assertEqual(parse_osc_preset(xml_path), [])
+        finally:
+            os.unlink(xml_path)
 
 
 if __name__ == "__main__":

@@ -535,6 +535,7 @@
       <div class="tab active" data-tab="editor">Mappings</div>
       <div class="tab" data-tab="macrolib">Macro Library</div>
       <div class="tab" data-tab="settings">Global Settings</div>
+      <div class="tab" data-tab="engines">Engines</div>
     </div>
 
     <!-- Editor tab -->
@@ -571,6 +572,28 @@
       </div>
       <div class="action-row">
         <button class="btn btn-primary" id="btnSaveSettings">Save &amp; Apply settings</button>
+      </div>
+    </div>
+
+    <!-- Engines tab -->
+    <div class="tab-pane" id="tab-engines">
+      <div class="section">
+        <div class="section-title">Engines</div>
+        <div id="enginesList">
+          <p style="opacity:0.6">Loading…</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title">OSC Sync</div>
+        <p style="opacity:0.7;font-size:13px;margin:0 0 12px">
+          Re-reads <code>STEAMDECK V2.xml</code> and rebuilds the wigglable target list.
+          Use this after adding new OSC bindings in Resolume so the sync button picks them up
+          without restarting the bridge.
+        </p>
+        <div class="action-row">
+          <button class="btn btn-primary" id="btnResyncOscWiggles">Resync OSC Wiggles</button>
+          <span id="resyncStatus" style="opacity:0.7;font-size:13px"></span>
+        </div>
       </div>
     </div>
 
@@ -1769,7 +1792,48 @@ function switchTab(name) {
   document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x.dataset.tab === name));
   document.querySelectorAll('.tab-pane').forEach(x => x.classList.toggle('active', x.id === `tab-${name}`));
   if (name === 'macrolib') renderMacroLibrary();
+  if (name === 'engines') renderEngines();
 }
+
+async function renderEngines() {
+  const list = document.getElementById('enginesList');
+  try {
+    const res = await fetch('/api/engines');
+    const data = await res.json();
+    const engines = data.engines || [];
+    if (engines.length === 0) {
+      list.innerHTML = '<p style="opacity:0.6">No engines loaded.</p>';
+      return;
+    }
+    list.innerHTML = engines.map(e => `
+      <div style="padding:10px 12px;border:1px solid rgba(255,255,255,0.08);border-radius:6px;margin-bottom:8px">
+        <div style="font-weight:600">${e.name}</div>
+        <div style="opacity:0.6;font-size:12px;margin-top:4px">type: ${e.type}</div>
+      </div>
+    `).join('');
+  } catch (e) {
+    list.innerHTML = `<p style="color:#f88">Failed to load engines: ${e.message}</p>`;
+  }
+}
+
+document.getElementById('btnResyncOscWiggles').addEventListener('click', async () => {
+  const status = document.getElementById('resyncStatus');
+  status.textContent = 'Resyncing…';
+  try {
+    const res = await fetch('/api/engines/osc-sync/resync', {method: 'POST'});
+    const data = await res.json();
+    if (data.error) {
+      status.textContent = 'Error: ' + data.error;
+      status.style.color = '#f88';
+    } else {
+      status.textContent = `OK — ${data.target_count} targets`;
+      status.style.color = '';
+    }
+  } catch (e) {
+    status.textContent = 'Failed: ' + e.message;
+    status.style.color = '#f88';
+  }
+});
 
 document.querySelectorAll('.tab').forEach(t => {
   t.addEventListener('click', () => switchTab(t.dataset.tab));
