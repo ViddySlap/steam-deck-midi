@@ -335,14 +335,27 @@ class OscSyncEngine(Engine):
                 pmin = _coerce_float(meta.get("min"), 0.0)
                 pmax = _coerce_float(meta.get("max"), 1.0)
                 cur_f = float(current)
-                nudge = cur_f + self._epsilon_float
-                if nudge > pmax:
-                    nudge = cur_f - self._epsilon_float
-                if nudge < pmin:
-                    nudge = cur_f
-                self._osc.send(target.osc_path, nudge)
+                span = pmax - pmin
+                if span <= 0:
+                    return False
+                # Resolume's OSC :7000 normalizes 0-1 over the param's actual
+                # range for Wire-patch dashboard inputs and layer transition
+                # paths (confirmed via probe 2026-05-08; same family as the
+                # autopilot v0.4.2 layer-transition normalization). Sending
+                # the raw REST value saturates anything with range != [0,1].
+                # Convert raw -> normalized before send. For [0,1] params
+                # this is a no-op.
+                cur_norm = (cur_f - pmin) / span
+                eps = self._epsilon_float  # epsilon lives in normalized 0..1 space
+                if cur_norm + eps <= 1.0:
+                    nudge_norm = cur_norm + eps
+                elif cur_norm - eps >= 0.0:
+                    nudge_norm = cur_norm - eps
+                else:
+                    return False
+                self._osc.send(target.osc_path, nudge_norm)
                 self._sleep(self._inter_message_delay_seconds)
-                self._osc.send(target.osc_path, cur_f)
+                self._osc.send(target.osc_path, cur_norm)
                 return True
             if target.kind == KIND_BOOL:
                 cur_b = bool(current)

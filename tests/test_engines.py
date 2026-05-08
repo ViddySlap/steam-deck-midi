@@ -793,6 +793,52 @@ class OscSyncEngineTests(unittest.TestCase):
         self.assertAlmostEqual(nudge[1], 0.999, places=4)
         self.assertAlmostEqual(original[1], 1.0, places=4)
 
+    def test_float_wiggle_normalizes_against_param_range(self) -> None:
+        """Regression for the OSC saturation bug (TODO 2026-05-07).
+
+        Resolume's OSC :7000 normalizes 0-1 over the actual range for
+        Wire-patch dashboard inputs (confirmed via live probe 2026-05-08:
+        sending 0.5 to a [0, 5]-range param landed at 2.5).
+        REST reports raw values, so the wiggle must convert raw -> 0..1
+        before sending via OSC. Audio Engine tuning params (DURATION,
+        RELEASE TIME, LOGO DELAY) all have range [0, 5] and were
+        saturating to MAX before this fix.
+        """
+        # Real Resolume effects emit `name` as a string and put min/max
+        # at the top level of each param (not nested in `valuerange`).
+        composition = {
+            "master": {"id": 1, "value": 1.0, "valuerange": {"min": 0, "max": 1}},
+            "video": {
+                "effects": [
+                    {
+                        "name": "AudioEngine",
+                        "params": {
+                            "DURATION": {
+                                "id": 200,
+                                "value": 2.5,
+                                "min": 0.0,
+                                "max": 5.0,
+                            },
+                        },
+                    }
+                ]
+            },
+        }
+        # Path matches the OSC preset convention: effects/<slug>/effect/<param>
+        path = "/composition/video/effects/audioengine/effect/duration"
+        targets = [SyncTarget(osc_path=path, kind=KIND_FLOAT, param_node_name="ParamRange")]
+        engine, _rest, osc, _midi = _build_osc_sync(targets=targets, composition=composition)
+        engine.on_midi_in(channel=14, cc=90, value=127, now=0.0)
+        _wait_for_pass(engine)
+        sends = [s for s in osc.sends if s[0] == path]
+        self.assertEqual(len(sends), 2)
+        nudge, original = sends
+        # Raw 2.5 over [0, 5] -> normalized 0.5; nudge is 0.5 + epsilon
+        self.assertAlmostEqual(nudge[1], 0.501, places=4)
+        self.assertAlmostEqual(original[1], 0.5, places=4)
+        # Critical: the restore must NOT be the raw 2.5 (which would saturate)
+        self.assertNotAlmostEqual(original[1], 2.5, places=4)
+
     def test_bool_wiggle_flip_flops(self) -> None:
         composition = {
             "master": {"id": 1, "value": 1.0},
