@@ -1164,15 +1164,15 @@ def _autopilot_config() -> dict:
         "inputs": {
             "channel": 14,
             "video": {
-                "cc_enable": 60, "cc_beats": 61, "cc_transition": 62, "cc_random": 63,
+                "cc_enable": 60, "cc_beats": 61, "cc_transition": 62, "cc_mode": 63,
                 "layer_ccs": {"1": 64, "2": 65, "3": 66, "4": 67},
             },
             "fx": {
-                "cc_enable": 70, "cc_beats": 71, "cc_transition": 72, "cc_random": 73,
+                "cc_enable": 70, "cc_beats": 71, "cc_transition": 72, "cc_mode": 73,
                 "layer_ccs": {"5": 74},
             },
             "logo": {
-                "cc_enable": 80, "cc_beats": 81, "cc_transition": 82, "cc_random": 83,
+                "cc_enable": 80, "cc_beats": 81, "cc_transition": 82, "cc_mode": 83,
                 "layer_ccs": {"6": 84, "7": 85},
             },
             "transition_max_seconds": 5.0,
@@ -1183,9 +1183,9 @@ def _autopilot_config() -> dict:
             "rest": {"base_url": "http://127.0.0.1:8080", "timeout_seconds": 1.5},
         },
         "defaults": {
-            "video": {"beats_per_clip": 4, "transition_seconds": 0.0},
-            "fx": {"beats_per_clip": 4, "transition_seconds": 0.0},
-            "logo": {"beats_per_clip": 4, "transition_seconds": 0.0},
+            "video": {"beats_per_clip": 4, "transition_seconds": 0.0, "clip_mode": 0},
+            "fx": {"beats_per_clip": 4, "transition_seconds": 0.0, "clip_mode": 0},
+            "logo": {"beats_per_clip": 4, "transition_seconds": 0.0, "clip_mode": 0},
         },
     }
 
@@ -1236,7 +1236,7 @@ def _enable_video_layers(engine, *layers: int) -> None:
 
 
 class AutopilotEngineCcTests(unittest.TestCase):
-    """CC handling: enable / beats / transition / random / layer toggles."""
+    """CC handling: enable / beats / transition / mode / layer toggles."""
 
     def test_enable_cc_toggles_state(self) -> None:
         engine, _, _, _ = _make_autopilot()
@@ -1263,11 +1263,23 @@ class AutopilotEngineCcTests(unittest.TestCase):
             engine._states["video"].transition_seconds, (64 / 127.0) * 5.0
         )
 
-    def test_random_cc_clears_bag_state(self) -> None:
+    def test_mode_cc_picks_clip_mode_enum(self) -> None:
+        from windows.engines.autopilot import ClipMode
         engine, _, _, _ = _make_autopilot()
+        engine.on_midi_in(14, 63, 0, 0.0)
+        self.assertEqual(engine._states["video"].clip_mode, ClipMode.NONE)
+        engine.on_midi_in(14, 63, 1, 0.0)
+        self.assertEqual(engine._states["video"].clip_mode, ClipMode.LINEAR)
+        engine.on_midi_in(14, 63, 2, 0.0)
+        self.assertEqual(engine._states["video"].clip_mode, ClipMode.RANDOM)
+
+    def test_mode_transition_clears_bag(self) -> None:
+        engine, _, _, _ = _make_autopilot()
+        # Enter RANDOM and seed a bag.
+        engine.on_midi_in(14, 63, 2, 0.0)
         engine._states["video"].bag[1] = [1, 2, 3]
-        engine.on_midi_in(14, 63, 127, 0.0)
-        self.assertTrue(engine._states["video"].random_mode)
+        # Leave RANDOM → bag must clear.
+        engine.on_midi_in(14, 63, 1, 0.0)
         self.assertNotIn(1, engine._states["video"].bag)
 
     def test_layer_ccs_toggle_membership(self) -> None:
@@ -1307,17 +1319,51 @@ class AutopilotEngineCycleTests(unittest.TestCase):
         master_2 = [v for path, v in osc.sends if path == "/composition/layers/2/master"]
         self.assertIn(1.0, master_2)
 
-    def test_full_cycle_fires_connect_next_clip_per_layer(self) -> None:
+    def test_mode_none_does_not_advance_clips(self) -> None:
         engine, _, osc, _ = _make_autopilot()
         _enable_video_layers(engine, 1, 2)
-        # Two layers × 4 beats per clip = 8 beats for one full cycle.
+        # Default clip_mode = NONE. Two layers × 4 beats = 8 beats → one full cycle.
         _send_clock_beat(engine, beats=8)
-        next_clip_sends = [
-            path for path, _ in osc.sends if path.endswith("/connect_next_clip")
-        ]
-        # At cycle complete, both selected layers' connect_next_clip should fire.
-        self.assertIn("/composition/layers/1/connect_next_clip", next_clip_sends)
-        self.assertIn("/composition/layers/2/connect_next_clip", next_clip_sends)
+        clip_sends = [path for path, _ in osc.sends if "/clips/" in path]
+        # No clip writes whatsoever in NONE mode.
+        self.assertEqual(clip_sends, [])
+
+    def test_mode_linear_uses_clips_M_connect_path(self) -> None:
+        comp = {
+            "layers": [
+                {"clips": [{"source": {"value": "a.mov"}}, {"source": {"value": "b.mov"}}]},
+                {"clips": [{"source": {"value": "x.mov"}}, {"source": {"value": "y.mov"}}]},
+            ]
+        }
+        engine, _, osc, _ = _make_autopilot(rest=FakeResolumeRest(comp))
+        _enable_video_layers(engine, 1, 2)
+        engine.on_midi_in(14, 63, 1, 0.0)  # LINEAR mode
+        _send_clock_beat(engine, beats=8)
+        clip_sends = [path for path, _ in osc.sends if "/clips/" in path and path.endswith("/connect")]
+        # Indexed-clip path only; old /connect_next_clip is gone.
+        self.assertTrue(all("/connect_next_clip" not in p for p in clip_sends))
+        self.assertTrue(any("/composition/layers/1/clips/" in p for p in clip_sends))
+
+    def test_mode_linear_advances_clips_in_order_with_wrap(self) -> None:
+        # Layer 1 has exactly 2 loaded clips; LINEAR should fire 1, 2, 1, 2 ...
+        comp = {
+            "layers": [
+                {"clips": [{"source": {"value": "a.mov"}}, {"source": {"value": "b.mov"}}]}
+            ]
+        }
+        engine, _, osc, _ = _make_autopilot(rest=FakeResolumeRest(comp))
+        _enable_video_layers(engine, 1)
+        engine.on_midi_in(14, 63, 1, 0.0)  # LINEAR
+        # Single layer; cycle wraps each beats_per_clip=4 beats. 4 wraps = 4 clip fires.
+        seen: list[int] = []
+        for _ in range(4):
+            _send_clock_beat(engine, beats=4)
+            for path, _ in reversed(osc.sends):
+                if "/clips/" in path and path.endswith("/connect"):
+                    seen.append(int(path.split("/")[-2]))
+                    break
+            osc.sends.clear()
+        self.assertEqual(seen, [1, 2, 1, 2])
 
     def test_disabled_channel_does_not_touch_masters(self) -> None:
         engine, _, osc, _ = _make_autopilot()
@@ -1359,39 +1405,51 @@ class AutopilotEngineCrossfadeTests(unittest.TestCase):
 
 
 class AutopilotEngineColumnQuantizeTests(unittest.TestCase):
-    """Column trigger interception + replay on next beat."""
+    """Column trigger interception + replay on next beat. Channel 0, notes
+    {82, 83, 86, 87} per Resolume's MIDI shortcut bindings (decoded 2026-05-07)."""
 
     def test_filter_passes_through_unrelated_notes(self) -> None:
         engine, _, _, _ = _make_autopilot()
         _enable_video_layers(engine, 1)
-        # Some other note on the trigger channel.
-        self.assertTrue(engine._note_emit_filter(1, 50, 127, 0.0))
-        # The column notes but on a different channel.
-        self.assertTrue(engine._note_emit_filter(0, 86, 127, 0.0))
+        # Unrelated note on the trigger channel passes through.
+        self.assertTrue(engine._note_emit_filter(0, 50, 127, 0.0))
+        # Column notes on a non-trigger channel pass through.
+        self.assertTrue(engine._note_emit_filter(1, 86, 127, 0.0))
 
     def test_filter_passes_when_no_channel_enabled(self) -> None:
         engine, _, _, _ = _make_autopilot()
         # No layers selected, no channels enabled.
-        self.assertTrue(engine._note_emit_filter(1, 86, 127, 0.0))
-        self.assertTrue(engine._note_emit_filter(1, 87, 127, 0.0))
+        self.assertTrue(engine._note_emit_filter(0, 86, 127, 0.0))
+        self.assertTrue(engine._note_emit_filter(0, 87, 127, 0.0))
 
     def test_filter_defers_when_channel_enabled(self) -> None:
         engine, _, _, _ = _make_autopilot()
         _enable_video_layers(engine, 1)
-        self.assertFalse(engine._note_emit_filter(1, 86, 127, 0.0))
+        self.assertFalse(engine._note_emit_filter(0, 86, 127, 0.0))
         self.assertEqual(engine._pending_column_note, 86)
+
+    def test_column_trigger_filter_intercepts_short_press_notes_82_83(self) -> None:
+        engine, _, _, _ = _make_autopilot()
+        _enable_video_layers(engine, 1)
+        # Short-press LEFT.
+        self.assertFalse(engine._note_emit_filter(0, 82, 127, 0.0))
+        self.assertEqual(engine._pending_column_note, 82)
+        # Drain pending and try short-press RIGHT.
+        engine._pending_column_note = None
+        self.assertFalse(engine._note_emit_filter(0, 83, 127, 0.0))
+        self.assertEqual(engine._pending_column_note, 83)
 
     def test_pending_column_replays_on_next_beat(self) -> None:
         engine, midi, osc, _ = _make_autopilot()
         _enable_video_layers(engine, 1, 2)
         # User long-presses L_PAD_LEFT mid-cycle.
-        engine._note_emit_filter(1, 86, 127, 0.0)
+        engine._note_emit_filter(0, 86, 127, 0.0)
         # Advance one beat — should fire the deferred note.
         _send_clock_beat(engine, beats=1)
         column_notes = [
-            (ch, note) for ch, note, _ in midi.note_on_events() if note in (86, 87)
+            (ch, note) for ch, note, _ in midi.note_on_events() if note in (82, 83, 86, 87)
         ]
-        self.assertIn((1, 86), column_notes)
+        self.assertIn((0, 86), column_notes)
         # Pending cleared.
         self.assertIsNone(engine._pending_column_note)
         # Cycle reset to first selected layer.
@@ -1399,12 +1457,25 @@ class AutopilotEngineColumnQuantizeTests(unittest.TestCase):
         self.assertEqual(engine._states["video"].cycle_index, 0)
         self.assertEqual(engine._states["video"].beat_in_clip, 0)
 
+    def test_column_trigger_replays_resets_to_lowest_indexed_layer(self) -> None:
+        engine, midi, _, _ = _make_autopilot()
+        # Enable in non-sorted order; selected_layers() returns sorted.
+        _enable_video_layers(engine, 3, 1, 2)
+        # Spin the cycle a few beats so visible_layer drifts off the bottom.
+        _send_clock_beat(engine, beats=5)
+        self.assertNotEqual(engine._states["video"].visible_layer, 1)
+        # Column trigger arrives, defer + replay on next beat.
+        engine._note_emit_filter(0, 87, 127, 0.0)
+        _send_clock_beat(engine, beats=1)
+        # Lowest-indexed selected layer = 1.
+        self.assertEqual(engine._states["video"].visible_layer, 1)
+
     def test_second_pending_press_drops(self) -> None:
         engine, _, _, _ = _make_autopilot()
         _enable_video_layers(engine, 1)
-        engine._note_emit_filter(1, 86, 127, 0.0)
+        engine._note_emit_filter(0, 86, 127, 0.0)
         # Second press while one is pending — drop it.
-        self.assertFalse(engine._note_emit_filter(1, 87, 127, 0.0))
+        self.assertFalse(engine._note_emit_filter(0, 87, 127, 0.0))
         self.assertEqual(engine._pending_column_note, 86)
 
 
@@ -1445,7 +1516,7 @@ class AutopilotEngineClockTests(unittest.TestCase):
 
 
 class AutopilotEngineRandomTests(unittest.TestCase):
-    def test_bag_random_draws_without_replacement(self) -> None:
+    def test_mode_random_uses_bag_pattern(self) -> None:
         comp = {
             "layers": [
                 {  # layer 1 with 3 loaded clips
@@ -1457,36 +1528,65 @@ class AutopilotEngineRandomTests(unittest.TestCase):
                 }
             ]
         }
-        engine, _, osc, rest = _make_autopilot(rest=FakeResolumeRest(comp))
+        engine, _, osc, _ = _make_autopilot(rest=FakeResolumeRest(comp))
         _enable_video_layers(engine, 1)
-        engine.on_midi_in(14, 63, 127, 0.0)  # random on
-        # First cycle (1 layer × beats_per_clip=4): cycle wraps each beats_per_clip beats.
-        # Force three full cycles → three random clip selections.
+        engine.on_midi_in(14, 63, 2, 0.0)  # RANDOM
+        # Single layer; cycle wraps each beats_per_clip=4 beats. 3 wraps = 3 draws.
         seen: list[int] = []
         for _ in range(3):
             _send_clock_beat(engine, beats=4)
-            # Find the most recent /clips/N/connect send.
             for path, _ in reversed(osc.sends):
                 if "/clips/" in path and path.endswith("/connect"):
-                    parts = path.split("/")
-                    seen.append(int(parts[-2]))
+                    seen.append(int(path.split("/")[-2]))
                     break
-        # First three draws should be a permutation of {1, 2, 3} (or excluding the
-        # current clip, but on first bag last_clip is None so all three are eligible).
+        # Bag pattern: three draws is a permutation of {1, 2, 3} on first bag
+        # (last_clip is None so all three are eligible).
         self.assertEqual(sorted(seen), [1, 2, 3])
 
-    def test_bag_random_falls_back_to_next_clip_when_no_clips(self) -> None:
+    def test_random_with_no_clips_silently_skips(self) -> None:
+        # /connect_next_clip fallback was removed in v0.4.1. Empty REST → no-op.
         engine, _, osc, _ = _make_autopilot(rest=FakeResolumeRest({"layers": []}))
         _enable_video_layers(engine, 1)
-        engine.on_midi_in(14, 63, 127, 0.0)
+        engine.on_midi_in(14, 63, 2, 0.0)  # RANDOM
         _send_clock_beat(engine, beats=4)
-        # No bag draw possible — should fall back to /connect_next_clip.
-        self.assertTrue(
-            any(
-                path == "/composition/layers/1/connect_next_clip"
-                for path, _ in osc.sends
-            )
-        )
+        # No /clips/M/connect path should appear.
+        clip_sends = [path for path, _ in osc.sends if "/clips/" in path and path.endswith("/connect")]
+        self.assertEqual(clip_sends, [])
+        # And no legacy /connect_next_clip path either.
+        self.assertFalse(any(path.endswith("/connect_next_clip") for path, _ in osc.sends))
+
+
+class AutopilotEngineSingleLayerTests(unittest.TestCase):
+    """Single-layer fast path (v0.4.1): skip cross-fade entirely, hold master 1.0."""
+
+    def test_single_layer_skips_master_writes(self) -> None:
+        engine, _, osc, _ = _make_autopilot()
+        _enable_video_layers(engine, 1)
+        # Snap-to-first-selected on enable writes layer 1 → 1.0; clear and observe
+        # subsequent beats (which would cross-fade in multi-layer code).
+        osc.sends.clear()
+        _send_clock_beat(engine, beats=12)  # 3 cycles at beats_per_clip=4
+        master_writes = [s for s in osc.sends if s[0].endswith("/master")]
+        # Single-layer fast path: zero master writes after the initial snap.
+        self.assertEqual(master_writes, [])
+
+    def test_single_layer_still_advances_clip_in_linear_mode(self) -> None:
+        comp = {
+            "layers": [
+                {"clips": [{"source": {"value": "a.mov"}}, {"source": {"value": "b.mov"}}]}
+            ]
+        }
+        engine, _, osc, _ = _make_autopilot(rest=FakeResolumeRest(comp))
+        _enable_video_layers(engine, 1)
+        engine.on_midi_in(14, 63, 1, 0.0)  # LINEAR
+        osc.sends.clear()
+        _send_clock_beat(engine, beats=4)  # one cycle wrap
+        # Even with a single layer, LINEAR should still fire indexed clip connect.
+        clip_sends = [path for path, _ in osc.sends if "/clips/" in path and path.endswith("/connect")]
+        self.assertTrue(clip_sends, "expected at least one /clips/M/connect send")
+        # And no master writes (single-layer fast path).
+        master_writes = [s for s in osc.sends if s[0].endswith("/master")]
+        self.assertEqual(master_writes, [])
 
 
 if __name__ == "__main__":
