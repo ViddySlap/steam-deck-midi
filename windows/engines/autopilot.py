@@ -1,27 +1,34 @@
 """Autopilot engine — beat-synced per-channel clip cycler.
 
 Three channels (VIDEO / FX / LOGO) cycle through their selected layers every
-N beats, fire `Connect Next Clip` per layer at the end of each cycle, and
-quantize Steam Deck column triggers to the next beat boundary.
+N beats, optionally advance clips per cycle wrap, and quantize Steam Deck
+column triggers to the next beat boundary.
 
 Tempo source: MIDI Beat Clock on the configured pulse port (Pulse → loopMIDI).
 24 ticks per beat. Bridge derives BPM from rolling tick spacing.
 
 Design references:
-- Spec: Projects/steam-deck-midi/specs/autopilot-engine.md
+- Spec: Projects/steam-deck-midi/specs/autopilot-engine.md (v0.4.0)
+- Spec: Projects/steam-deck-midi/specs/autopilot-v0.4.1-mode-selector.md (v0.4.1)
 - Wire patch dashboard: VIDEO / FX / LOGO sections, 19 inputs, CCs 60-89 ch15
 - Q&A decisions in notes/q-and-a.md (B2/B3/B5/B6/B7/B10/E1-E4/F1)
 
 The engine receives Wire patch CCs via on_midi_in (channel 14, CCs 60-89) and
 emits OSC writes to layer masters, layer transition durations, and per-layer
-connect_next_clip / clip M / column M triggers.
+indexed-clip-connect triggers.
 
-Steam Deck column quantize: when any channel is enabled, the engine registers
-a note-emit filter that defers outbound notes 86/87 on channel 1 (the
-L_PAD_LEFT/RIGHT long-press triggers Resolume MIDI-Learns to "Connect
-Previous/Next Column"). The deferred trigger is re-emitted by the engine on
-the next beat boundary, after which every enabled channel resets to its
-first selected layer with master 1.0.
+Per-channel MODE (NONE/LINEAR/RANDOM, v0.4.1):
+- NONE  — cycle layer masters; clips stay where they are.
+- LINEAR — also advance clips left-to-right (+1 with wrap) at each cycle.
+- RANDOM — also draw a clip from a per-layer shuffled bag at each cycle.
+
+Steam Deck column quantize (v0.4.1 fix): Resolume's MIDI shortcut binds
+`/composition/groups/1/connect{prev,next}column` on channel 0 to four notes —
+note 82 (L_PAD_LEFT short-press), note 83 (L_PAD_RIGHT short-press),
+note 86 (L_PAD_LEFT_LONG_PRESS), note 87 (L_PAD_RIGHT_LONG_PRESS). The engine
+defers all four notes on channel 0 when any channel is enabled, then re-emits
+the same note at the next beat boundary and resets every enabled channel to
+its lowest-indexed selected layer at master 1.0.
 """
 
 from __future__ import annotations
@@ -32,6 +39,7 @@ import threading
 import time
 from collections import deque
 from dataclasses import dataclass, field
+from enum import IntEnum
 from typing import Callable
 
 from windows.engines.base import Engine
@@ -42,10 +50,17 @@ from windows.midi import MidiOut
 LOGGER = logging.getLogger(__name__)
 
 TICKS_PER_BEAT = 24
-COLUMN_PREV_NOTE = 86  # Steam Deck L_PAD_LEFT_LONG_PRESS staged_note_macro trigger
-COLUMN_NEXT_NOTE = 87  # Steam Deck L_PAD_RIGHT_LONG_PRESS staged_note_macro trigger
-COLUMN_TRIGGER_CHANNEL = 1  # mido 0-indexed (== Wire/Resolume channel 2)
+COLUMN_PREV_NOTES = frozenset({82, 86})  # L_PAD_LEFT short + long-press → connectprevcolumn
+COLUMN_NEXT_NOTES = frozenset({83, 87})  # L_PAD_RIGHT short + long-press → connectnextcolumn
+COLUMN_TRIGGER_NOTES = COLUMN_PREV_NOTES | COLUMN_NEXT_NOTES
+COLUMN_TRIGGER_CHANNEL = 0  # Resolume MIDI shortcut binds on ch0 (mido 0-indexed)
 COLUMN_TRIGGER_VELOCITY = 127
+
+
+class ClipMode(IntEnum):
+    NONE = 0
+    LINEAR = 1
+    RANDOM = 2
 
 CHANNEL_KEYS = ("video", "fx", "logo")
 DEFAULT_BEATS_LOOKUP = (1, 4, 8, 16, 32, 64, 128)
@@ -57,7 +72,7 @@ class ChannelConfig:
     cc_enable: int
     cc_beats: int
     cc_transition: int
-    cc_random: int
+    cc_mode: int
     layer_ccs: dict[int, int]  # layer_index -> cc number
 
 
@@ -66,7 +81,7 @@ class ChannelState:
     enabled: bool = False
     beats_per_clip: int = 16
     transition_seconds: float = 0.0
-    random_mode: bool = False
+    clip_mode: ClipMode = ClipMode.NONE
     layer_enabled: dict[int, bool] = field(default_factory=dict)
 
     # cycle runtime
@@ -76,9 +91,12 @@ class ChannelState:
     target_layer: int | None = None
     crossfade_start_tick: int | None = None
 
-    # bag-random per layer
+    # bag-random per layer (RANDOM mode)
     bag: dict[int, list[int]] = field(default_factory=dict)
+    # last clip fired per layer (tracked for both LINEAR and RANDOM, plus mouse override)
     last_clip: dict[int, int | None] = field(default_factory=dict)
+    # REST-derived loaded-clip count per layer (LINEAR wrap)
+    clip_count_cache: dict[int, int] = field(default_factory=dict)
 
     def selected_layers(self) -> list[int]:
         return sorted(n for n, on in self.layer_enabled.items() if on)
@@ -117,25 +135,30 @@ class AutopilotEngine(Engine):
             ch_inputs = inputs.get(key, {})
             layer_ccs_raw = ch_inputs.get("layer_ccs", {})
             layer_ccs = {int(layer): int(cc) for layer, cc in layer_ccs_raw.items()}
+            # Accept either cc_mode (v0.4.1) or legacy cc_random (v0.4.0).
+            cc_mode_raw = ch_inputs.get("cc_mode", ch_inputs.get("cc_random", 0))
             channel_config = ChannelConfig(
                 cc_enable=int(ch_inputs.get("cc_enable", 0)),
                 cc_beats=int(ch_inputs.get("cc_beats", 0)),
                 cc_transition=int(ch_inputs.get("cc_transition", 0)),
-                cc_random=int(ch_inputs.get("cc_random", 0)),
+                cc_mode=int(cc_mode_raw),
                 layer_ccs=layer_ccs,
             )
             self._channels[key] = channel_config
             self._cc_to_channel_param[channel_config.cc_enable] = (key, "enable", None)
             self._cc_to_channel_param[channel_config.cc_beats] = (key, "beats", None)
             self._cc_to_channel_param[channel_config.cc_transition] = (key, "transition", None)
-            self._cc_to_channel_param[channel_config.cc_random] = (key, "random", None)
+            self._cc_to_channel_param[channel_config.cc_mode] = (key, "mode", None)
             for layer, cc in layer_ccs.items():
                 self._cc_to_channel_param[cc] = (key, "layer", layer)
 
             ch_defaults = defaults.get(key, {})
+            default_mode_raw = int(ch_defaults.get("clip_mode", 0))
+            default_mode = ClipMode(max(0, min(2, default_mode_raw)))
             state = ChannelState(
                 beats_per_clip=int(ch_defaults.get("beats_per_clip", 16)),
                 transition_seconds=float(ch_defaults.get("transition_seconds", 0.0)),
+                clip_mode=default_mode,
                 layer_enabled={layer: False for layer in layer_ccs},
             )
             self._states[key] = state
@@ -175,9 +198,9 @@ class AutopilotEngine(Engine):
 
         self._registry = None
 
-        # OSC paths (spec notes these may need empirical confirmation)
+        # OSC paths. v0.4.1 dropped /connect_next_clip — it isn't a real Resolume
+        # path and silently no-ops in LINEAR. Use indexed /clips/M/connect only.
         self._osc_layer_master_template = "/composition/layers/{n}/master"
-        self._osc_layer_connect_next_template = "/composition/layers/{n}/connect_next_clip"
         self._osc_layer_clip_connect_template = "/composition/layers/{n}/clips/{m}/connect"
         self._osc_layer_transition_duration_template = (
             "/composition/layers/{n}/transition/duration"
@@ -224,13 +247,17 @@ class AutopilotEngine(Engine):
             # Push to Resolume per-layer transition param immediately.
             for layer in state.selected_layers():
                 self._send_layer_transition(layer, new_seconds)
-        elif param == "random":
-            new_val = value >= 64
-            if new_val != state.random_mode:
-                state.random_mode = new_val
-                # Clear bags so a fresh random sequence starts on next cycle.
-                state.bag.clear()
-                LOGGER.info("autopilot %s: random=%s", ch_key, new_val)
+        elif param == "mode":
+            # Wire dropdown sends raw 0/1/2 (normalize=false on the Write CC node).
+            clamped = max(0, min(2, int(value)))
+            new_mode = ClipMode(clamped)
+            if new_mode != state.clip_mode:
+                old_mode = state.clip_mode
+                state.clip_mode = new_mode
+                # Clear bag whenever leaving RANDOM so a fresh shuffle starts on re-entry.
+                if old_mode == ClipMode.RANDOM:
+                    state.bag.clear()
+                LOGGER.info("autopilot %s: mode=%s", ch_key, new_mode.name)
         elif param == "layer":
             assert payload is not None
             new_val = value >= 64
@@ -312,7 +339,7 @@ class AutopilotEngine(Engine):
                 "enabled": state.enabled,
                 "beats_per_clip": state.beats_per_clip,
                 "transition_seconds": state.transition_seconds,
-                "random": state.random_mode,
+                "clip_mode": state.clip_mode.name,
                 "layer_enabled": {str(k): v for k, v in state.layer_enabled.items()},
                 "visible_layer": state.visible_layer,
                 "target_layer": state.target_layer,
@@ -348,6 +375,26 @@ class AutopilotEngine(Engine):
             selected = state.selected_layers()
             if not selected:
                 continue
+
+            # Single-layer fast path (v0.4.1): skip cross-fade entirely. No
+            # master writes on cycle wrap — the layer just holds steady at 1.0.
+            # Clip advance still fires when MODE != NONE.
+            if len(selected) == 1:
+                layer = selected[0]
+                if state.visible_layer != layer:
+                    self._send_layer_master(layer, 1.0)
+                    state.visible_layer = layer
+                    state.cycle_index = 0
+                    state.beat_in_clip = 0
+                state.beat_in_clip += 1
+                if state.beat_in_clip >= state.beats_per_clip:
+                    state.beat_in_clip = 0
+                    if state.clip_mode != ClipMode.NONE:
+                        self._fire_next_clip(state, layer)
+                        self._send_layer_transition(layer, state.transition_seconds)
+                continue
+
+            # Multi-layer path.
             if state.visible_layer is None or state.visible_layer not in selected:
                 state.visible_layer = selected[0]
                 state.cycle_index = 0
@@ -363,7 +410,7 @@ class AutopilotEngine(Engine):
             state.beat_in_clip = 0
             state.cycle_index = (state.cycle_index + 1) % len(selected)
             if state.cycle_index == 0:
-                # Cycle complete — fire connect_next_clip on every selected layer
+                # Cycle complete — fire clip advance on every selected layer
                 # and re-apply transition seconds (handles user re-ordering layers).
                 for layer in selected:
                     self._fire_next_clip(state, layer)
@@ -399,16 +446,36 @@ class AutopilotEngine(Engine):
             self._send_layer_transition(layer, state.transition_seconds)
 
     def _fire_next_clip(self, state: ChannelState, layer: int) -> None:
-        if state.random_mode:
+        if state.clip_mode == ClipMode.NONE:
+            return
+        if state.clip_mode == ClipMode.RANDOM:
             clip_idx = self._draw_random_clip(state, layer)
-            if clip_idx is not None:
-                path = self._osc_layer_clip_connect_template.format(n=layer, m=clip_idx)
-                self._osc.send(path, True)
-                state.last_clip[layer] = clip_idx
-                return
-            # Fall through to next-clip if bag draw failed.
-        path = self._osc_layer_connect_next_template.format(n=layer)
+        else:  # LINEAR
+            clip_idx = self._next_linear_clip(state, layer)
+        if clip_idx is None:
+            # REST enumeration empty — silently skip this cycle.
+            return
+        path = self._osc_layer_clip_connect_template.format(n=layer, m=clip_idx)
         self._osc.send(path, True)
+        state.last_clip[layer] = clip_idx
+
+    def _next_linear_clip(self, state: ChannelState, layer: int) -> int | None:
+        count = state.clip_count_cache.get(layer)
+        if count is None:
+            count = self._count_layer_clips(layer)
+            if count == 0:
+                return None
+            state.clip_count_cache[layer] = count
+        current = state.last_clip.get(layer)
+        if current is None:
+            return 1
+        nxt = current + 1
+        if nxt > count:
+            nxt = 1
+        return nxt
+
+    def _count_layer_clips(self, layer: int) -> int:
+        return len(self._enumerate_layer_clips(layer))
 
     def _draw_random_clip(self, state: ChannelState, layer: int) -> int | None:
         bag = state.bag.get(layer)
@@ -484,11 +551,12 @@ class AutopilotEngine(Engine):
     def _note_emit_filter(
         self, channel: int, note: int, velocity: int, now: float
     ) -> bool:
-        # Defer L_PAD_LEFT/RIGHT_LONG_PRESS column triggers when any channel is
-        # enabled. Other notes and short-press direct emits pass through.
+        # Defer all 4 column-trigger notes (short-press 82/83 + long-press
+        # 86/87) on channel 0 when any channel is enabled. Resolume's MIDI
+        # shortcut binds these to /composition/groups/1/connect{prev,next}column.
         if channel != COLUMN_TRIGGER_CHANNEL:
             return True
-        if note not in (COLUMN_PREV_NOTE, COLUMN_NEXT_NOTE):
+        if note not in COLUMN_TRIGGER_NOTES:
             return True
         if not self._any_channel_enabled():
             return True
