@@ -1296,6 +1296,28 @@ class AutopilotEngineCcTests(unittest.TestCase):
         self.assertFalse(engine._states["video"].enabled)
 
 
+class AutopilotEngineTransitionDurationTests(unittest.TestCase):
+    """Resolume's /composition/layers/N/transition/duration is normalized 0-1
+    over a 0-10s range. Bridge stores transition in seconds and divides before
+    sending OSC. Regression test for the v0.4.2 fix where 1s was landing as 10s
+    (saturated) in Resolume's Trans Time UI control."""
+
+    def test_send_layer_transition_normalizes_seconds_to_resolume_range(self) -> None:
+        engine, _, osc, _ = _make_autopilot()
+        engine._send_layer_transition(3, 1.0)
+        # 1 second should map to 0.1 (1/10) of Resolume's normalized range.
+        sends = [(p, v) for p, v in osc.sends if p == "/composition/layers/3/transition/duration"]
+        self.assertTrue(sends)
+        path, value = sends[-1]
+        self.assertAlmostEqual(value, 0.1, places=4)
+
+    def test_send_layer_transition_clamps_above_max(self) -> None:
+        engine, _, osc, _ = _make_autopilot()
+        engine._send_layer_transition(3, 50.0)  # absurd value
+        sends = [(p, v) for p, v in osc.sends if p == "/composition/layers/3/transition/duration"]
+        self.assertEqual(sends[-1][1], 1.0)
+
+
 class AutopilotEngineCycleTests(unittest.TestCase):
     """Beat-driven cycle algorithm."""
 
@@ -1394,14 +1416,30 @@ class AutopilotEngineCrossfadeTests(unittest.TestCase):
         _enable_video_layers(engine, 1, 2)
         # Set a big transition so the cross-fade is still in flight after one beat.
         engine.on_midi_in(14, 62, 127, 0.0)  # 5 second transition
+        # _send_clock_beat starts at now=1.0 with tick_dt=0.020833. After 4 beats
+        # (96 ticks) the 4th beat boundary fires at now ≈ 1.0 + 95*0.020833 ≈ 2.979.
         _send_clock_beat(engine, beats=4)
-        # target_layer should now be set (cross-fade in flight).
         self.assertEqual(engine._states["video"].target_layer, 2)
-        # tick() at the same instant should NOT yet complete the fade.
-        engine.tick(time.monotonic())
-        # Visible layer is still 1, target is still 2.
+        # Cross-fade now uses wall-clock elapsed (since v0.4.2). Pass a fake `now`
+        # that matches the cross-fade-start instant so elapsed ≈ 0 → progress ≈ 0.
+        engine.tick(3.0)
+        # Visible layer is still 1, target is still 2 (fade barely started).
         self.assertEqual(engine._states["video"].visible_layer, 1)
         self.assertEqual(engine._states["video"].target_layer, 2)
+
+    def test_wall_clock_progress_drives_crossfade(self) -> None:
+        # New in v0.4.2: cross-fade uses now - crossfade_start_time, not tick deltas.
+        # Verifies progress at a known wall-clock offset.
+        engine, _, osc, _ = _make_autopilot()
+        _enable_video_layers(engine, 1, 2)
+        engine.on_midi_in(14, 62, 127, 0.0)  # 5s transition
+        _send_clock_beat(engine, beats=4)
+        # Halfway through the 5s fade.
+        engine.tick(3.0 + 2.5)
+        # Fade is in flight; both masters were written at progress=0.5.
+        master_writes = [(p, v) for p, v in osc.sends if p.endswith("/master")]
+        self.assertTrue(any(p == "/composition/layers/1/master" and 0.4 < v < 0.6 for p, v in master_writes))
+        self.assertTrue(any(p == "/composition/layers/2/master" and 0.4 < v < 0.6 for p, v in master_writes))
 
 
 class AutopilotEngineColumnQuantizeTests(unittest.TestCase):

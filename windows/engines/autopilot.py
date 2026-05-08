@@ -56,6 +56,12 @@ COLUMN_TRIGGER_NOTES = COLUMN_PREV_NOTES | COLUMN_NEXT_NOTES
 COLUMN_TRIGGER_CHANNEL = 0  # Resolume MIDI shortcut binds on ch0 (mido 0-indexed)
 COLUMN_TRIGGER_VELOCITY = 127
 
+# Resolume's /composition/layers/N/transition/duration accepts normalized
+# 0-1 over a 0-10 second range. Bridge stores transition in seconds (0-5 by
+# default per the Wire patch's TRANSITION fader); divide by this constant
+# before sending OSC so the value lands at the expected number of seconds.
+RESOLUME_LAYER_TRANSITION_MAX_SECONDS = 10.0
+
 
 class ClipMode(IntEnum):
     NONE = 0
@@ -89,7 +95,7 @@ class ChannelState:
     beat_in_clip: int = 0
     visible_layer: int | None = None
     target_layer: int | None = None
-    crossfade_start_tick: int | None = None
+    crossfade_start_time: float | None = None  # wall clock (time.monotonic) at fade start
 
     # bag-random per layer (RANDOM mode)
     bag: dict[int, list[int]] = field(default_factory=dict)
@@ -295,12 +301,14 @@ class AutopilotEngine(Engine):
             self._on_beat_boundary(now)
 
     def tick(self, now: float) -> None:
-        # Per-tick cross-fade ramping. Independent of clock — uses wall time
-        # so cross-fades complete on schedule even if Pulse pauses mid-fade.
+        # Per-tick cross-fade ramping. Uses wall clock (not MIDI clock ticks)
+        # so the fade is smooth even when Pulse → Windows MIDI input has timing
+        # jitter. Decoupled from clock entirely — fades complete on schedule
+        # regardless of Pulse pauses or BPM drift.
         for ch_key, state in self._states.items():
-            if state.target_layer is None or state.crossfade_start_tick is None:
+            if state.target_layer is None or state.crossfade_start_time is None:
                 continue
-            elapsed_seconds = self._tick_to_seconds(self._tick_count - state.crossfade_start_tick)
+            elapsed_seconds = max(0.0, now - state.crossfade_start_time)
             duration = state.transition_seconds
             progress = 1.0 if duration <= 0 else min(elapsed_seconds / duration, 1.0)
             old_master = max(0.0, 1.0 - progress)
@@ -313,7 +321,7 @@ class AutopilotEngine(Engine):
                     self._send_layer_master(state.visible_layer, 0.0)
                 state.visible_layer = state.target_layer
                 state.target_layer = None
-                state.crossfade_start_tick = None
+                state.crossfade_start_time = None
 
     def shutdown(self) -> None:
         self._override_stop.set()
@@ -357,7 +365,7 @@ class AutopilotEngine(Engine):
             state.beat_in_clip = 0
             state.cycle_index = 0
             state.target_layer = None
-            state.crossfade_start_tick = None
+            state.crossfade_start_time = None
             if state.enabled and state.selected_layers():
                 state.visible_layer = state.selected_layers()[0]
 
@@ -417,7 +425,7 @@ class AutopilotEngine(Engine):
                     self._send_layer_transition(layer, state.transition_seconds)
             target = selected[state.cycle_index]
             state.target_layer = target
-            state.crossfade_start_tick = self._tick_count
+            state.crossfade_start_time = now
             if state.transition_seconds <= 0:
                 # Instant snap; the tick handler will close it on the next iteration,
                 # but pre-emit the final masters now so there's no visible gap.
@@ -426,7 +434,7 @@ class AutopilotEngine(Engine):
                 self._send_layer_master(target, 1.0)
                 state.visible_layer = target
                 state.target_layer = None
-                state.crossfade_start_tick = None
+                state.crossfade_start_time = None
 
     def _snap_to_first_selected(self, ch_key: str) -> None:
         state = self._states[ch_key]
@@ -437,7 +445,7 @@ class AutopilotEngine(Engine):
             return
         state.visible_layer = selected[0]
         state.target_layer = None
-        state.crossfade_start_tick = None
+        state.crossfade_start_time = None
         state.cycle_index = 0
         state.beat_in_clip = 0
         for layer in selected:
@@ -517,7 +525,10 @@ class AutopilotEngine(Engine):
 
     def _send_layer_transition(self, layer: int, seconds: float) -> None:
         path = self._osc_layer_transition_duration_template.format(n=layer)
-        self._osc.send(path, max(0.0, float(seconds)))
+        # Resolume normalizes 0-1 over RESOLUME_LAYER_TRANSITION_MAX_SECONDS.
+        # Send seconds/max so the value lands at the intended duration.
+        normalized = max(0.0, min(1.0, float(seconds) / RESOLUME_LAYER_TRANSITION_MAX_SECONDS))
+        self._osc.send(path, normalized)
 
     def _tick_to_seconds(self, tick_delta: int) -> float:
         # When we don't have BPM history yet, assume 120 BPM (0.5 s/beat).
@@ -594,7 +605,7 @@ class AutopilotEngine(Engine):
                 self._send_layer_master(layer, 1.0 if layer == new_visible else 0.0)
             state.visible_layer = new_visible
             state.target_layer = None
-            state.crossfade_start_tick = None
+            state.crossfade_start_time = None
             state.cycle_index = 0
             state.beat_in_clip = 0
             # Bags carry over — column shift doesn't invalidate clip choices.
