@@ -537,11 +537,33 @@ class FlashBlastEngine(Engine):
         self._last_strobe_opacity = STROBE_REST_OPACITY
 
     def _on_layer_change(self, new_layer: str) -> None:
-        self._debounce_until = self._clock() + self._layer_debounce_seconds
         if new_layer != EXPECTED_LAYER:
+            # Departing flash: gate brief CC flutter + force lanes idle.
+            self._debounce_until = self._clock() + self._layer_debounce_seconds
             for lane in (self._white_lane, self._color_lane):
                 self._force_lane_idle(lane)
             self._write_strobe_rest()
+            return
+        # Arriving on flash: no arrival debounce. Replay each lane's
+        # current trigger state so a held trigger fires its visual
+        # immediately instead of waiting for the next deck CC. At full
+        # pull we skip PENDING and fire FADE in the same call -- this is
+        # the latency-critical perform gesture ("hold R2 on chaser, hit
+        # Select -> instant white flash").
+        now = self._clock()
+        for lane in (self._white_lane, self._color_lane):
+            if lane.state != STATE_IDLE:
+                continue
+            if lane.last_norm >= RELEASE_NORM:
+                self._fire_fade(lane, now)
+                lane.state = STATE_RELEASING
+                self._tap_count += 1
+                LOGGER.info(
+                    "%s lane %s: layer-arrival fast-tap (norm=%.3f)",
+                    self.name, lane.name, lane.last_norm,
+                )
+            elif lane.last_norm > self._engage_floor():
+                self._enter_pending(lane, lane.last_norm, now)
 
     # ------------------------------------------------------------------
     # Status
