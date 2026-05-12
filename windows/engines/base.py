@@ -34,6 +34,16 @@ class Engine:
     def on_midi_in(self, channel: int, cc: int, value: int, now: float) -> None:
         """Called for every MIDI CC arriving on the feedback port."""
 
+    def on_note_in(self, channel: int, note: int, velocity: int, now: float) -> None:
+        """Called for every MIDI Note On arriving on the feedback port.
+
+        Note Off arrives as `velocity == 0`. The receiver loop only dispatches
+        this if its MIDI input backend exposes a note-poll path; backends that
+        don't will leave this method un-called. Engines that need note input
+        should also tolerate the no-call case (e.g. `steam_input_layer_tracker`
+        accepts CC-encoded layer signals as a fallback).
+        """
+
     def on_midi_clock(self, message_type: str, now: float) -> None:
         """Called for every MIDI System Real-Time clock message.
 
@@ -57,6 +67,17 @@ class Engine:
 
     def shutdown(self) -> None:
         """Called when the receiver is shutting down."""
+
+    def refresh(self) -> None:
+        """Re-pull any one-shot init-time state (e.g. REST tunables).
+
+        Called by the dev `POST /api/engines/refresh` endpoint. Default
+        no-op. Engines that read REST state once at `bind_registry`
+        override this so dashboards can re-pull on demand without a
+        full bridge restart. Per the "no REST after engine init unless
+        user-triggered" rule, periodic REST polling is forbidden; this
+        is the user-triggered escape hatch for development iteration.
+        """
 
     def status(self) -> dict:
         """Return a JSON-serializable dict describing engine state for the UI."""

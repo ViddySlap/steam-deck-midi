@@ -13,7 +13,29 @@ from windows.config import (
 )
 from windows.receiver import ActionReceiver
 from windows.midi import MidiControlChange, MidiError
-from protocol.messages import encode_axis_event, encode_heartbeat_event
+from protocol.messages import encode_action_event, encode_axis_event, encode_heartbeat_event
+
+
+class FakeEngineRegistry:
+    """Records on_midi_in / on_note_in calls so deck-emit fanout can be asserted."""
+
+    def __init__(self) -> None:
+        self.midi_in_calls: list[tuple[int, int, int, float]] = []
+        self.note_in_calls: list[tuple[int, int, int, float]] = []
+        self.engines: list = []
+
+    def on_midi_in(self, channel: int, cc: int, value: int, now: float) -> None:
+        self.midi_in_calls.append((channel, cc, value, now))
+
+    def on_note_in(
+        self, channel: int, note: int, velocity: int, now: float
+    ) -> None:
+        self.note_in_calls.append((channel, note, velocity, now))
+
+    def should_emit_note(
+        self, channel: int, note: int, velocity: int, now: float
+    ) -> bool:
+        return True
 
 
 class FakeMidiOut:
@@ -1623,3 +1645,179 @@ class AxisToCCReceiverTests(unittest.TestCase):
         )
         self.assertFalse(handled)
         self.assertEqual(self.midi.calls, [])
+
+
+class EngineFanoutOfDeckCCTests(unittest.TestCase):
+    """Receiver must dispatch every deck-originated CC emission to engines.
+
+    Without this, bridge engines that listen on `on_midi_in` for deck-trigger
+    CCs (e.g. flash_blast / bumper_blast / chaser_stack_dispatcher on
+    CC 1/CC 2 ch0) never see the events: deck CCs flow OUT via DECK_IN and
+    `engine_registry.on_midi_in` is only invoked from the feedback port.
+    """
+
+    def setUp(self) -> None:
+        self.midi = FakeMidiOut()
+        self.registry = FakeEngineRegistry()
+        self.addr = ("10.10.10.2", 45123)
+
+    def test_axis_to_cc_emit_fans_out_to_engines(self) -> None:
+        mapping = AxisToCCMapping(
+            action="R_TRIGGER_PRESSURE",
+            kind="axis_to_cc",
+            channel=0,
+            cc=2,
+            input_range=(1000, 32767),
+            output_range=(0, 127),
+            deadzone=1000,
+            curve="linear",
+        )
+        receiver = ActionReceiver(
+            self.midi,
+            {"R_TRIGGER_PRESSURE": mapping},
+            timeout_seconds=1.0,
+            engine_registry=self.registry,
+        )
+        receiver.handle_datagram(
+            encode_axis_event(action="R_TRIGGER_PRESSURE", value=32767, seq=1),
+            self.addr,
+            now=0.0,
+        )
+        self.assertEqual(self.midi.calls, [("cc", 0, 2, 127)])
+        self.assertEqual(len(self.registry.midi_in_calls), 1)
+        channel, cc, value, _now = self.registry.midi_in_calls[0]
+        self.assertEqual((channel, cc, value), (0, 2, 127))
+
+    def test_axis_to_cc_center_reset_fans_out_to_engines(self) -> None:
+        mapping = AxisToCCMapping(
+            action="L_TRIGGER_PRESSURE",
+            kind="axis_to_cc",
+            channel=0,
+            cc=1,
+            input_range=(1000, 32767),
+            output_range=(0, 127),
+            deadzone=1000,
+            curve="linear",
+        )
+        receiver = ActionReceiver(
+            self.midi,
+            {"L_TRIGGER_PRESSURE": mapping},
+            timeout_seconds=1.0,
+            engine_registry=self.registry,
+        )
+        receiver.handle_datagram(
+            encode_axis_event(action="L_TRIGGER_PRESSURE", value=20000, seq=1),
+            self.addr,
+            now=0.0,
+        )
+        receiver.handle_datagram(
+            encode_axis_event(action="L_TRIGGER_PRESSURE", value=0, seq=2),
+            self.addr,
+            now=0.1,
+        )
+        self.assertEqual(len(self.registry.midi_in_calls), 2)
+        center_call = self.registry.midi_in_calls[1]
+        self.assertEqual(center_call[:3], (0, 1, 0))
+
+    def test_axis_split_cc_emit_fans_out_to_engines(self) -> None:
+        from windows.config import AxisSplitCCMapping
+        mapping = AxisSplitCCMapping(
+            action="R_STICK_X_AXIS",
+            kind="axis_split_cc",
+            channel=15,
+            cc_positive=114,
+            cc_negative=116,
+            input_max=32767,
+            deadzone=3500,
+            curve="linear",
+        )
+        receiver = ActionReceiver(
+            self.midi,
+            {"R_STICK_X_AXIS": mapping},
+            timeout_seconds=1.0,
+            engine_registry=self.registry,
+        )
+        receiver.handle_datagram(
+            encode_axis_event(action="R_STICK_X_AXIS", value=20000, seq=1),
+            self.addr,
+            now=0.0,
+        )
+        self.assertEqual(len(self.registry.midi_in_calls), 1)
+        channel, cc, _value, _now = self.registry.midi_in_calls[0]
+        self.assertEqual((channel, cc), (15, 114))
+
+    def test_cc_button_press_and_release_both_fan_out(self) -> None:
+        mapping = ControlChangeMapping(
+            action="SELECT",
+            kind="cc",
+            channel=2,
+            cc=79,
+            on_value=127,
+            off_value=0,
+        )
+        receiver = ActionReceiver(
+            self.midi,
+            {"SELECT": mapping},
+            timeout_seconds=1.0,
+            engine_registry=self.registry,
+        )
+        receiver.handle_datagram(
+            encode_action_event(action="SELECT", state="down", seq=1),
+            self.addr,
+            now=0.0,
+        )
+        receiver.handle_datagram(
+            encode_action_event(action="SELECT", state="up", seq=2),
+            self.addr,
+            now=0.05,
+        )
+        triplets = [(c, cc, v) for c, cc, v, _ in self.registry.midi_in_calls]
+        self.assertIn((2, 79, 127), triplets)
+        self.assertIn((2, 79, 0), triplets)
+
+    def test_no_engine_registry_does_not_crash(self) -> None:
+        mapping = AxisToCCMapping(
+            action="R_TRIGGER_PRESSURE",
+            kind="axis_to_cc",
+            channel=0,
+            cc=2,
+            input_range=(1000, 32767),
+            output_range=(0, 127),
+            deadzone=1000,
+            curve="linear",
+        )
+        receiver = ActionReceiver(
+            self.midi,
+            {"R_TRIGGER_PRESSURE": mapping},
+            timeout_seconds=1.0,
+        )
+        receiver.handle_datagram(
+            encode_axis_event(action="R_TRIGGER_PRESSURE", value=32767, seq=1),
+            self.addr,
+            now=0.0,
+        )
+        self.assertEqual(self.midi.calls, [("cc", 0, 2, 127)])
+
+    def test_note_press_fans_out_to_engines_for_layer_tracking(self) -> None:
+        mapping = NoteMapping(
+            action="L1",
+            kind="note",
+            channel=0,
+            note=60,
+            velocity=127,
+        )
+        receiver = ActionReceiver(
+            self.midi,
+            {"L1": mapping},
+            timeout_seconds=1.0,
+            engine_registry=self.registry,
+        )
+        receiver.handle_datagram(
+            encode_action_event(action="L1", state="down", seq=1),
+            self.addr,
+            now=0.0,
+        )
+        self.assertEqual(self.midi.calls[0], ("note_on", 0, 60, 127))
+        self.assertEqual(len(self.registry.note_in_calls), 1)
+        channel, note, velocity, _now = self.registry.note_in_calls[0]
+        self.assertEqual((channel, note, velocity), (0, 60, 127))

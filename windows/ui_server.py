@@ -13,6 +13,7 @@ from flask import Flask, Response, jsonify, request, send_from_directory
 
 from windows.config import (
     AxisToCCMapping,
+    AxisSplitCCMapping,
     ConfigError,
     ControlChangeMapping,
     MacroCCMapping,
@@ -72,6 +73,10 @@ def _mapping_to_dict(m: MidiMapping) -> dict[str, Any]:
         return {"type": "axis_to_cc", "channel": m.channel, "cc": m.cc,
                 "input_range": list(m.input_range), "output_range": list(m.output_range),
                 "deadzone": m.deadzone, "curve": m.curve}
+    if isinstance(m, AxisSplitCCMapping):
+        return {"type": "axis_split_cc", "channel": m.channel,
+                "cc_positive": m.cc_positive, "cc_negative": m.cc_negative,
+                "input_max": m.input_max, "deadzone": m.deadzone, "curve": m.curve}
     raise TypeError(f"unknown mapping type: {type(m)!r}")
 
 
@@ -85,6 +90,12 @@ def _detect_conflicts(mappings: dict[str, Any]) -> list[dict[str, Any]]:
         cc = spec.get("cc")
         if cc is not None:
             by_channel_cc[(int(ch), int(cc))].append(action)
+        cc_pos = spec.get("cc_positive")
+        if cc_pos is not None:
+            by_channel_cc[(int(ch), int(cc_pos))].append(f"{action} (+)")
+        cc_neg = spec.get("cc_negative")
+        if cc_neg is not None:
+            by_channel_cc[(int(ch), int(cc_neg))].append(f"{action} (−)")
 
     conflicts: list[dict[str, Any]] = []
     seen: set[tuple[int, int]] = set()
@@ -391,6 +402,20 @@ class MappingUIServer:
             except Exception as exc:  # noqa: BLE001 - surface to UI
                 return jsonify({"error": str(exc)}), 500
             return jsonify({"ok": True, "target_count": count})
+
+        @app.route("/api/engines/refresh", methods=["POST"])
+        def refresh_engines() -> Response:
+            """Dev endpoint: trigger every engine's `refresh()` hook.
+
+            Replaces the old periodic REST polling that was choking
+            Arena's MIDI dispatch (2026-05-11 EVENING REST elimination).
+            Engines re-pull their one-shot init-time state on demand
+            (e.g. V-C-B dashboard tunables, StageFlow look altNames).
+            """
+            if self.engine_registry is None:
+                return jsonify({"error": "no engine registry"}), 404
+            results = self.engine_registry.refresh()
+            return jsonify({"ok": True, "results": results})
 
         return app
 

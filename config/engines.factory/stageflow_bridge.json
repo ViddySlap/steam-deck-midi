@@ -1,0 +1,18 @@
+{
+  "name": "StageFlow Bridge",
+  "type": "stageflow_bridge",
+  "enabled": true,
+  "inputs": {
+    "channel": 14,
+    "cc_rescan": 91
+  },
+  "comp_path": "C:/Users/Ben/OneDrive/Documents/Resolume Arena/Compositions/5-5-26 STEAMDECK V2.avc",
+  "wire_effect_name": "STAGEFLOW BRIDGE",
+  "look_count": 6,
+  "initial_rescan_delay_seconds": 1.0,
+  "strip_numeric_prefix": true,
+  "rest": {
+    "base_url": "http://127.0.0.1:8080",
+    "timeout_seconds": 1.5
+  }
+}

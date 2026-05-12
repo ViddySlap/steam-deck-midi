@@ -98,6 +98,18 @@ class AxisToCCMapping:
     curve: str
 
 
+@dataclass(frozen=True)
+class AxisSplitCCMapping:
+    action: str
+    kind: str
+    channel: int
+    cc_positive: int
+    cc_negative: int
+    input_max: int
+    deadzone: int
+    curve: str
+
+
 MidiMapping = (
     NoteMapping
     | ControlChangeMapping
@@ -105,6 +117,7 @@ MidiMapping = (
     | RelativeCCMapping
     | StagedNoteMacroMapping
     | AxisToCCMapping
+    | AxisSplitCCMapping
 )
 
 
@@ -355,11 +368,40 @@ def _parse_mapping(action: str, spec: dict[str, object]) -> MidiMapping:
             deadzone=deadzone,
             curve=curve,
         )
+    if kind == "axis_split_cc":
+        channel = _read_byte(spec, "channel", maximum=15, default=0)
+        cc_positive = _read_byte(spec, "cc_positive")
+        cc_negative = _read_byte(spec, "cc_negative")
+        if cc_positive == cc_negative:
+            raise ConfigError(
+                f"mapping for {action}: cc_positive and cc_negative must differ"
+            )
+        input_max = _read_positive_int(spec, "input_max", default=32767)
+        deadzone = _read_non_negative_int(spec, "deadzone", default=1000)
+        if deadzone >= input_max:
+            raise ConfigError(
+                f"mapping for {action}: deadzone must be less than input_max"
+            )
+        curve = spec.get("curve", "linear")
+        if curve not in {"linear", "quadratic", "s_curve"}:
+            raise ConfigError(
+                f"mapping for {action} curve must be 'linear', 'quadratic', or 's_curve'"
+            )
+        return AxisSplitCCMapping(
+            action=action,
+            kind="axis_split_cc",
+            channel=channel,
+            cc_positive=cc_positive,
+            cc_negative=cc_negative,
+            input_max=input_max,
+            deadzone=deadzone,
+            curve=curve,
+        )
     raise ConfigError(
         "mapping for"
         " "
         f"{action} must have type 'note', 'cc', 'macro_cc', 'relative_cc',"
-        " 'staged_note_macro', or 'axis_to_cc'"
+        " 'staged_note_macro', 'axis_to_cc', or 'axis_split_cc'"
     )
 
 

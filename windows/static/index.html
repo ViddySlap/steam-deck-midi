@@ -774,17 +774,19 @@ function groupOf(a) {
 // ─────────────────────────────────────────────────────────────────
 function mappingDotClass(spec) {
   const map = { note:'dot-note', cc:'dot-cc', macro_cc:'dot-macro',
-    relative_cc:'dot-rel', staged_note_macro:'dot-staged', axis_to_cc:'dot-axis' };
+    relative_cc:'dot-rel', staged_note_macro:'dot-staged', axis_to_cc:'dot-axis',
+    axis_split_cc:'dot-axis' };
   return map[spec?.type] || 'dot-none';
 }
 function mappingBadge(spec) {
   const labels = { note:'NOTE', cc:'CC', macro_cc:'MACRO', relative_cc:'REL',
-    staged_note_macro:'STAGED', axis_to_cc:'AXIS' };
+    staged_note_macro:'STAGED', axis_to_cc:'AXIS', axis_split_cc:'AXIS±' };
   return labels[spec?.type] || null;
 }
 function mappingBadgeClass(spec) {
   const map = { note:'badge-note', cc:'badge-cc', macro_cc:'badge-macro',
-    relative_cc:'badge-rel', staged_note_macro:'badge-staged', axis_to_cc:'badge-axis' };
+    relative_cc:'badge-rel', staged_note_macro:'badge-staged', axis_to_cc:'badge-axis',
+    axis_split_cc:'badge-axis' };
   return map[spec?.type] || 'badge-none';
 }
 function mappingDesc(spec) {
@@ -797,6 +799,7 @@ function mappingDesc(spec) {
   if (t === 'relative_cc')       return `${ch} · CC ${spec.cc ?? '?'} · step ${spec.step_value}`;
   if (t === 'staged_note_macro') return `note ${spec.note ?? '?'}  staged`;
   if (t === 'axis_to_cc')        return `${ch} · CC ${spec.cc ?? '?'} · axis`;
+  if (t === 'axis_split_cc')     return `${ch} · CC +${spec.cc_positive ?? '?'} / −${spec.cc_negative ?? '?'} · split`;
   return t;
 }
 
@@ -958,6 +961,7 @@ const TYPE_LABELS = {
   relative_cc:       'Relative CC (encoder tick)',
   staged_note_macro: 'Staged Note Macro',
   axis_to_cc:        'Axis → CC (analog input)',
+  axis_split_cc:     'Axis → split CC (bipolar split, center = 0)',
 };
 const DEFAULTS = {
   note:              { type:'note', channel:0, note:36, velocity:127 },
@@ -966,6 +970,7 @@ const DEFAULTS = {
   relative_cc:       { type:'relative_cc', channel:0, cc:47, step_value:1, repeat_interval_ms:40 },
   staged_note_macro: { type:'staged_note_macro', note:36, velocity:127, modifier_channel:0, trigger_channel:1, refresh_actions:[] },
   axis_to_cc:        { type:'axis_to_cc', channel:0, cc:1, input_range:[-32768,32767], output_range:[0,127], deadzone:1000, curve:'linear' },
+  axis_split_cc:     { type:'axis_split_cc', channel:15, cc_positive:114, cc_negative:116, input_max:32767, deadzone:1000, curve:'linear' },
 };
 
 function renderEditor(action) {
@@ -1150,6 +1155,21 @@ function renderFields(type, spec) {
       fld('f_dz',    'Deadzone',   num('f_dz', s.deadzone??1000, 0, 32768)),
       fld('f_curve', 'Curve',      sel('f_curve', [['linear','linear'],['quadratic','quadratic'],['s_curve','s_curve']], s.curve??'linear')),
     );
+  } else if (type === 'axis_split_cc') {
+    row(
+      fld('f_ch', 'Channel (0–15)', num('f_ch', s.channel??15, 0, 15)),
+    );
+    row(
+      fld('f_ccp', 'CC + (positive direction)', num('f_ccp', s.cc_positive??114, 0, 127)),
+      fld('f_ccn', 'CC − (negative direction)', num('f_ccn', s.cc_negative??116, 0, 127)),
+    );
+    row(
+      fld('f_imax', 'Input max (full deflection)', num('f_imax', s.input_max??32767, 1, 32767)),
+      fld('f_dz',   'Deadzone',                    num('f_dz',   s.deadzone??1000, 0, 32767)),
+    );
+    row(
+      fld('f_curve', 'Curve', sel('f_curve', [['linear','linear'],['quadratic','quadratic'],['s_curve','s_curve']], s.curve??'linear')),
+    );
   }
 }
 
@@ -1183,6 +1203,10 @@ function readFields(type) {
     return { type:'axis_to_cc', channel:n('f_ch'), cc:n('f_cc'),
       input_range:[n('f_irmin'),n('f_irmax')], output_range:[n('f_ormin'),n('f_ormax')],
       deadzone:n('f_dz'), curve:v('f_curve') };
+  if (type === 'axis_split_cc')
+    return { type:'axis_split_cc', channel:n('f_ch'),
+      cc_positive:n('f_ccp'), cc_negative:n('f_ccn'),
+      input_max:n('f_imax'), deadzone:n('f_dz'), curve:v('f_curve') };
   return null;
 }
 

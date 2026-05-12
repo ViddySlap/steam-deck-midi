@@ -1,0 +1,19 @@
+{
+  "name": "SteamInput Layer Tracker",
+  "type": "steam_input_layer_tracker",
+  "enabled": true,
+  "channel": null,
+  "default_layer": "chaser",
+  "chaser_notes": [60, 62],
+  "flash_notes": [61, 63],
+  "select_note": null,
+  "chaser_ccs": [],
+  "flash_ccs": [],
+  "select_cc": 79,
+  "emit_osc": false,
+  "osc_path": "/bridge/steaminput/currentlayer",
+  "osc": {
+    "host": "127.0.0.1",
+    "port": 7000
+  }
+}

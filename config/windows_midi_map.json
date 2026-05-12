@@ -393,6 +393,24 @@
       "channel": 0,
       "note": 97,
       "velocity": 127
+    },
+    "L_TRIGGER_PRESSURE": {
+      "type": "axis_to_cc",
+      "channel": 0,
+      "cc": 1,
+      "input_range": [1000, 32767],
+      "output_range": [0, 127],
+      "deadzone": 1000,
+      "curve": "linear"
+    },
+    "R_TRIGGER_PRESSURE": {
+      "type": "axis_to_cc",
+      "channel": 0,
+      "cc": 2,
+      "input_range": [1000, 32767],
+      "output_range": [0, 127],
+      "deadzone": 1000,
+      "curve": "linear"
     }
   }
 }

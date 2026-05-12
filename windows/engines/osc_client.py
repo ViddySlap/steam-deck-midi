@@ -34,6 +34,29 @@ def _build_message(address: str, value: Any) -> bytes:
     raise TypeError(f"Unsupported OSC value type: {type(value).__name__}")
 
 
+def _build_color_message(address: str, r: int, g: int, b: int, a: int) -> bytes:
+    """Build an OSC type 'r' message (32-bit packed RGBA).
+
+    Resolume's OSC API uses OSC type 'r' for ParamColor inputs. String hex
+    formats and 4-float RGBA are NOT accepted by Arena's OSC handler -- only
+    type 'r'. Verified 2026-05-11 on Arena 7.26.0.
+    """
+    addr = _pad4(address.encode("utf-8") + b"\x00")
+    type_tag = _pad4(b",r\x00\x00")
+    payload = struct.pack(">BBBB", r & 0xFF, g & 0xFF, b & 0xFF, a & 0xFF)
+    return addr + type_tag + payload
+
+
+def hex_to_rgba(hex_str: str) -> tuple[int, int, int, int]:
+    """Parse a Resolume-style #rrggbbaa or #rrggbb hex string into (r,g,b,a)."""
+    s = hex_str.lstrip("#")
+    if len(s) == 6:
+        s += "ff"
+    if len(s) != 8:
+        raise ValueError(f"invalid hex color {hex_str!r}")
+    return (int(s[0:2], 16), int(s[2:4], 16), int(s[4:6], 16), int(s[6:8], 16))
+
+
 class OscClient:
     """Connectionless UDP OSC sender. Cheap to construct, cheap to call."""
 
@@ -48,6 +71,17 @@ class OscClient:
             self._sock.sendto(data, (self._host, self._port))
         except OSError as exc:
             LOGGER.debug("OSC send failed for %s = %r: %s", address, value, exc)
+
+    def send_color(self, address: str, hex_value: str) -> None:
+        """Send a ParamColor using OSC type 'r' (Resolume's required format)."""
+        try:
+            r, g, b, a = hex_to_rgba(hex_value)
+            data = _build_color_message(address, r, g, b, a)
+            self._sock.sendto(data, (self._host, self._port))
+        except (OSError, ValueError) as exc:
+            LOGGER.debug(
+                "OSC color send failed for %s = %r: %s", address, hex_value, exc
+            )
 
     def close(self) -> None:
         try:

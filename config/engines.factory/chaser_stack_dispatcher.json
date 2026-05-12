@@ -1,0 +1,36 @@
+{
+  "name": "Chaser Stack Dispatcher",
+  "type": "chaser_stack_dispatcher",
+  "enabled": true,
+  "inputs": {
+    "channel": 0,
+    "cc_amount": 1,
+    "engage_threshold": 0.1,
+    "disengage_threshold": 0.1
+  },
+  "tick_hz": 30,
+  "defaults": {
+    "min_step": 0.0,
+    "max_step": 0.5,
+    "feedback_max": 0.7,
+    "rate_curve_exp": 2.0
+  },
+  "layer_debounce_seconds": 0.15,
+  "targets": {
+    "vcb_effect_name": "VIDDY-COLOR-BUMP"
+  },
+  "outputs": {
+    "osc": {"host": "127.0.0.1", "port": 7000},
+    "osc_paths": {
+      "chaser_step": "/composition/layers/8/video/effects/chaser/effect/step",
+      "feedback_hue": "/composition/layers/8/video/effects/feedbackpro/effect/feedbackhue",
+      "feedback_amount": "/composition/layers/8/video/effects/feedbackpro/effect/feedback",
+      "bumper_bypass": "/composition/layers/8/video/effects/bumper/bypassed",
+      "chaser_bypass": "/composition/layers/8/video/effects/chaser/bypassed"
+    }
+  },
+  "rest": {
+    "base_url": "http://127.0.0.1:8080",
+    "timeout_seconds": 1.5
+  }
+}
