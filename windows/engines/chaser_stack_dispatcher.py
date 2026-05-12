@@ -253,9 +253,16 @@ class ChaserStackDispatcherEngine(Engine):
         LOGGER.info("%s: disengage", self.name)
 
     def _on_layer_change(self, new_layer: str) -> None:
-        self._debounce_until = self._clock() + self._layer_debounce_seconds
-        if new_layer != EXPECTED_LAYER and self._engaged:
-            self._do_disengage()
+        if new_layer != EXPECTED_LAYER:
+            # Departing chaser: gate brief CC flutter + disengage.
+            self._debounce_until = self._clock() + self._layer_debounce_seconds
+            if self._engaged:
+                self._do_disengage()
+            return
+        # Arriving on chaser: no arrival debounce -- a held trigger from
+        # the previous layer should engage immediately.
+        if not self._engaged and self._last_amount >= self._engage_threshold:
+            self._do_engage()
 
     # ------------------------------------------------------------------
     # Output helpers

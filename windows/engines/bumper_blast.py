@@ -226,9 +226,18 @@ class BumperBlastEngine(Engine):
         self._last_sustain_sent = None
 
     def _on_layer_change(self, new_layer: str) -> None:
-        self._debounce_until = self._clock() + self._layer_debounce_seconds
-        if new_layer != EXPECTED_LAYER and self._engaged:
-            self._do_disengage()
+        if new_layer != EXPECTED_LAYER:
+            # Departing chaser: gate brief CC flutter during the layer
+            # transition + release the held sustain.
+            self._debounce_until = self._clock() + self._layer_debounce_seconds
+            if self._engaged:
+                self._do_disengage()
+            return
+        # Arriving on chaser: no arrival debounce -- a held trigger from
+        # the previous layer should engage immediately instead of waiting
+        # for the next deck CC change.
+        if not self._engaged and self._last_amount >= self._engage_threshold:
+            self._do_engage(self._last_amount)
 
     # ------------------------------------------------------------------
     # Output helpers
