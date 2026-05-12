@@ -1,0 +1,32 @@
+{
+  "name": "Flash Blast",
+  "type": "flash_blast",
+  "enabled": true,
+  "inputs": {
+    "channel": 0,
+    "cc_white_amount": 2,
+    "cc_color_amount": 1
+  },
+  "tolerance": 0.1,
+  "tap_window_seconds": 0.05,
+  "tap_peak_threshold": 0.5,
+  "fade_release_delay_seconds": 0.05,
+  "layer_debounce_seconds": 0.15,
+  "outputs": {
+    "osc": {"host": "127.0.0.1", "port": 7000},
+    "osc_paths": {
+      "white_build_opacity": "/composition/layers/10/video/effects/colorbump/opacity",
+      "white_build_bump":    "/composition/layers/10/video/effects/colorbump/effect/bump",
+      "white_build_decay":   "/composition/layers/10/video/effects/colorbump/effect/decay",
+      "white_fade_opacity":  "/composition/layers/10/video/effects/colorbump5/opacity",
+      "white_fade_bump":     "/composition/layers/10/video/effects/colorbump5/effect/bump",
+      "color_build_opacity": "/composition/layers/10/video/effects/colorbump2/opacity",
+      "color_build_bump":    "/composition/layers/10/video/effects/colorbump2/effect/bump",
+      "color_build_decay":   "/composition/layers/10/video/effects/colorbump2/effect/decay",
+      "color_fade_opacity":  "/composition/layers/10/video/effects/colorbump6/opacity",
+      "color_fade_bump":     "/composition/layers/10/video/effects/colorbump6/effect/bump",
+      "strobe_opacity": "/composition/layers/10/video/effects/strobe/opacity",
+      "strobe_bypass": "/composition/layers/10/video/effects/strobe/bypassed"
+    }
+  }
+}

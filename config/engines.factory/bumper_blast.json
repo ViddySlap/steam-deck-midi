@@ -1,0 +1,33 @@
+{
+  "name": "Bumper Blast",
+  "type": "bumper_blast",
+  "enabled": true,
+  "inputs": {
+    "channel": 0,
+    "cc_amount": 2,
+    "engage_threshold": 0.1,
+    "disengage_threshold": 0.1
+  },
+  "defaults": {
+    "min_speed": 0.10,
+    "max_speed": 0.95,
+    "curve_exp": 2.0,
+    "sustain_curve_exp": 2.0
+  },
+  "layer_debounce_seconds": 0.15,
+  "targets": {
+    "vcb_effect_name": "VIDDY-COLOR-BUMP"
+  },
+  "outputs": {
+    "osc": {"host": "127.0.0.1", "port": 7000},
+    "osc_paths": {
+      "sustain": "/composition/layers/8/video/effects/bumper/effect/sustain",
+      "blast_speed": "/composition/layers/8/video/effects/bumper/effect/blastspeed",
+      "blast": "/composition/layers/8/video/effects/bumper/effect/blast"
+    }
+  },
+  "rest": {
+    "base_url": "http://127.0.0.1:8080",
+    "timeout_seconds": 1.5
+  }
+}

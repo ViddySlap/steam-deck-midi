@@ -10,7 +10,13 @@ from typing import Callable, Iterable
 from windows.engines.audio_opacity import AudioOpacityEngine
 from windows.engines.autopilot import AutopilotEngine
 from windows.engines.base import Engine
+from windows.engines.bumper_blast import BumperBlastEngine
+from windows.engines.chaser_stack_dispatcher import ChaserStackDispatcherEngine
+from windows.engines.flash_blast import FlashBlastEngine
+from windows.engines.global_color import GlobalColorEngine
 from windows.engines.osc_sync import OscSyncEngine
+from windows.engines.stageflow_bridge import StageFlowBridgeEngine
+from windows.engines.steam_input_layer_tracker import SteamInputLayerTrackerEngine
 from windows.midi import MidiOut
 
 NoteEmitFilter = Callable[[int, int, int, float], bool]
@@ -22,6 +28,12 @@ _ENGINE_TYPES: dict[str, type[Engine]] = {
     AudioOpacityEngine.type_name: AudioOpacityEngine,
     OscSyncEngine.type_name: OscSyncEngine,
     AutopilotEngine.type_name: AutopilotEngine,
+    SteamInputLayerTrackerEngine.type_name: SteamInputLayerTrackerEngine,
+    BumperBlastEngine.type_name: BumperBlastEngine,
+    ChaserStackDispatcherEngine.type_name: ChaserStackDispatcherEngine,
+    FlashBlastEngine.type_name: FlashBlastEngine,
+    GlobalColorEngine.type_name: GlobalColorEngine,
+    StageFlowBridgeEngine.type_name: StageFlowBridgeEngine,
 }
 
 _USER_DIR_NAME = "engines"
@@ -86,6 +98,21 @@ class EngineRegistry:
             except Exception:
                 LOGGER.exception("engine %s on_midi_in failed", engine.name)
 
+    def on_note_in(self, channel: int, note: int, velocity: int, now: float) -> None:
+        """Fan note_on/note_off (velocity=0) events to every engine."""
+        for engine in self._engines:
+            try:
+                engine.on_note_in(channel, note, velocity, now)
+            except Exception:
+                LOGGER.exception("engine %s on_note_in failed", engine.name)
+
+    def get_by_type(self, type_name: str) -> Engine | None:
+        """Look up the (single) loaded engine for a given type, or None."""
+        for engine in self._engines:
+            if engine.type_name == type_name:
+                return engine
+        return None
+
     def on_midi_clock(self, message_type: str, now: float) -> None:
         for engine in self._engines:
             try:
@@ -107,6 +134,22 @@ class EngineRegistry:
             if engine.tick_interval_seconds() is not None
         ]
         return min(intervals) if intervals else None
+
+    def refresh(self) -> dict[str, str]:
+        """Trigger every engine's `refresh()` hook. Used by the dev endpoint.
+
+        Returns a {engine_name: "ok" | error_message} map so the caller can
+        report partial failures. One engine raising never blocks the others.
+        """
+        results: dict[str, str] = {}
+        for engine in self._engines:
+            try:
+                engine.refresh()
+                results[engine.name] = "ok"
+            except Exception as exc:  # noqa: BLE001 - surface to UI
+                LOGGER.exception("engine %s refresh failed", engine.name)
+                results[engine.name] = f"error: {exc}"
+        return results
 
     def shutdown(self) -> None:
         for engine in self._engines:
@@ -170,6 +213,11 @@ def load_engines(config_path: str | Path, midi_out: MidiOut) -> EngineRegistry:
         user_specs.append(fspec)
 
     registry = EngineRegistry()
+
+    # Pass 1: instantiate + register every engine. Inter-engine references
+    # (e.g. bumper_blast looking up the SteamInput layer tracker) must NOT
+    # happen here — config-driven load order is not deterministic, so a
+    # dependent engine may load before its dependency.
     for spec in user_specs:
         if not spec.get("enabled", True):
             LOGGER.info("engine %s is disabled in config; skipping", spec.get("name"))
@@ -183,13 +231,17 @@ def load_engines(config_path: str | Path, midi_out: MidiOut) -> EngineRegistry:
         try:
             engine = cls(name=name, config=spec, midi_out=midi_out)
             registry.add(engine)
-            try:
-                engine.bind_registry(registry)
-            except Exception:
-                LOGGER.exception("engine %s bind_registry failed", name)
             LOGGER.info("loaded engine %s (type=%s)", name, engine_type)
         except Exception:
             LOGGER.exception("failed to instantiate engine %s", name)
+
+    # Pass 2: bind every engine to the now-complete registry so cross-engine
+    # lookups resolve correctly regardless of load order.
+    for engine in registry.engines:
+        try:
+            engine.bind_registry(registry)
+        except Exception:
+            LOGGER.exception("engine %s bind_registry failed", engine.name)
 
     return registry
 

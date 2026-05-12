@@ -41,3 +41,12 @@ config/presets/*
 
 # Playwright test artifacts
 tests/playwright_screenshot.png
+
+# Session debug logs
+.session-logs/
+bridge.log
+bridge.log.err
+
+# Local scratch + comp backups (not source-of-truth)
+scratch/
+backups/

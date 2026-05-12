@@ -14,6 +14,7 @@ from typing import Callable
 from protocol.messages import ActionEvent, AxisEvent, HeartbeatEvent, ProtocolError, parse_action_event
 from windows.config import (
     AxisToCCMapping,
+    AxisSplitCCMapping,
     ControlChangeMapping,
     MacroCCMapping,
     MacroSettings,
@@ -143,6 +144,7 @@ class ActionReceiver:
         self._sender_states: dict[tuple[str, int], SenderState] = {}
         self._active_actions: dict[str, MidiMapping] = {}
         self._active_axis_actions: set[str] = set()
+        self._axis_split_directions: dict[str, str] = {}
         self._recent_events: dict[tuple[str, str], float] = {}
         self._event_times: deque[float] = deque()
         self._loop_guard_until = 0.0
@@ -166,6 +168,11 @@ class ActionReceiver:
         Returns True if the note was sent, False if an engine filter deferred
         it. Filters can return False to take responsibility for re-emitting
         (e.g. autopilot quantizing a column trigger to the next beat).
+
+        On successful emit, also fans the note out to subscribed engines via
+        `on_note_in`. This lets the SteamInput layer tracker self-correct
+        from deck button presses (notes 60-70 chaser, 61-71 flash) instead
+        of relying solely on the SELECT CC toggle.
         """
         if self._engine_registry is not None:
             allowed = self._engine_registry.should_emit_note(
@@ -180,7 +187,23 @@ class ActionReceiver:
                 )
                 return False
         self._midi_out.note_on(channel, note, velocity)
+        if self._engine_registry is not None:
+            self._engine_registry.on_note_in(channel, note, velocity, self._clock())
         return True
+
+    def _emit_cc(self, channel: int, cc: int, value: int) -> None:
+        """Emit a MIDI CC and fan it out to subscribed engines.
+
+        Why: deck-originated CCs (e.g. L_TRIGGER_PRESSURE → CC 1 ch0) flow
+        OUT via the MIDI output port to Resolume. Engines that listen on
+        on_midi_in only see the feedback port, so without this fanout the
+        engines never observe deck triggers. This makes "engines subscribe
+        to deck CCs directly" actually work for the per-surface V-C-B
+        designs (flash_blast / bumper_blast / chaser_stack_dispatcher).
+        """
+        self._midi_out.control_change(channel, cc, value)
+        if self._engine_registry is not None:
+            self._engine_registry.on_midi_in(channel, cc, value, self._clock())
 
     @property
     def fade_poll_interval_seconds(self) -> float | None:
@@ -403,7 +426,7 @@ class ActionReceiver:
 
         for active in list(self._active_relative_ccs.values()):
             while timestamp >= active.next_send_time:
-                self._midi_out.control_change(active.channel, active.cc, active.step_value)
+                self._emit_cc(active.channel, active.cc, active.step_value)
                 active.next_send_time += active.repeat_interval_seconds
 
     def advance_staged_note_macros(self, now: float | None = None) -> None:
@@ -517,7 +540,7 @@ class ActionReceiver:
             self._emit_note_on(mapping.channel, mapping.note, mapping.velocity)
             return
         if isinstance(mapping, ControlChangeMapping):
-            self._midi_out.control_change(mapping.channel, mapping.cc, mapping.on_value)
+            self._emit_cc(mapping.channel, mapping.cc, mapping.on_value)
             return
         if isinstance(mapping, MacroCCMapping):
             raise TypeError("macro mappings must be handled via _handle_macro_event")
@@ -535,7 +558,7 @@ class ActionReceiver:
             LOGGER.info("released note mapping for %s", action)
             return
         if isinstance(mapping, ControlChangeMapping):
-            self._midi_out.control_change(mapping.channel, mapping.cc, mapping.off_value)
+            self._emit_cc(mapping.channel, mapping.cc, mapping.off_value)
             LOGGER.info("released CC mapping for %s", action)
             return
         if isinstance(mapping, MacroCCMapping):
@@ -593,7 +616,7 @@ class ActionReceiver:
 
         self._cancel_relative_ccs_for_target(mapping.channel, mapping.cc)
         repeat_interval_seconds = mapping.repeat_interval_ms / 1000.0
-        self._midi_out.control_change(mapping.channel, mapping.cc, mapping.step_value)
+        self._emit_cc(mapping.channel, mapping.cc, mapping.step_value)
         self._active_relative_ccs[event.action] = ActiveRelativeCC(
             action=event.action,
             channel=mapping.channel,
@@ -784,6 +807,8 @@ class ActionReceiver:
 
     def _handle_axis_event(self, event: AxisEvent) -> bool:
         mapping = self._mappings.get(event.action)
+        if isinstance(mapping, AxisSplitCCMapping):
+            return self._handle_axis_split_event(event, mapping)
         if not isinstance(mapping, AxisToCCMapping):
             return False
 
@@ -793,7 +818,7 @@ class ActionReceiver:
                 center_cc = self._axis_to_cc_value(0, mapping)
                 key = (mapping.channel, mapping.cc)
                 self._active_macro_fades.pop(key, None)
-                self._midi_out.control_change(mapping.channel, mapping.cc, center_cc)
+                self._emit_cc(mapping.channel, mapping.cc, center_cc)
                 LOGGER.debug("axis center action=%s cc=%s", event.action, center_cc)
                 return True
             return False
@@ -802,8 +827,57 @@ class ActionReceiver:
         cc_value = self._axis_to_cc_value(event.value, mapping)
         key = (mapping.channel, mapping.cc)
         self._active_macro_fades.pop(key, None)
-        self._midi_out.control_change(mapping.channel, mapping.cc, cc_value)
+        self._emit_cc(mapping.channel, mapping.cc, cc_value)
         LOGGER.debug("axis action=%s value=%s cc=%s", event.action, event.value, cc_value)
+        return True
+
+    def _handle_axis_split_event(
+        self, event: AxisEvent, mapping: AxisSplitCCMapping
+    ) -> bool:
+        raw = event.value
+        pos_key = (mapping.channel, mapping.cc_positive)
+        neg_key = (mapping.channel, mapping.cc_negative)
+        last_direction = self._axis_split_directions.get(event.action, "zero")
+
+        if abs(raw) <= mapping.deadzone:
+            current_direction = "zero"
+        elif raw > 0:
+            current_direction = "pos"
+        else:
+            current_direction = "neg"
+
+        transition = current_direction != last_direction
+        if transition:
+            if last_direction == "pos":
+                self._active_macro_fades.pop(pos_key, None)
+                self._emit_cc(mapping.channel, mapping.cc_positive, 0)
+            elif last_direction == "neg":
+                self._active_macro_fades.pop(neg_key, None)
+                self._emit_cc(mapping.channel, mapping.cc_negative, 0)
+            self._axis_split_directions[event.action] = current_direction
+
+        if current_direction == "zero":
+            if transition:
+                self._active_axis_actions.discard(event.action)
+                LOGGER.debug("axis split center action=%s", event.action)
+                return True
+            return False
+
+        self._active_axis_actions.add(event.action)
+        if current_direction == "pos":
+            cc_value = self._axis_split_to_cc_value(raw, mapping)
+            self._active_macro_fades.pop(pos_key, None)
+            self._emit_cc(mapping.channel, mapping.cc_positive, cc_value)
+            LOGGER.debug(
+                "axis split + action=%s value=%s cc=%s", event.action, raw, cc_value
+            )
+        else:
+            cc_value = self._axis_split_to_cc_value(-raw, mapping)
+            self._active_macro_fades.pop(neg_key, None)
+            self._emit_cc(mapping.channel, mapping.cc_negative, cc_value)
+            LOGGER.debug(
+                "axis split - action=%s value=%s cc=%s", event.action, raw, cc_value
+            )
         return True
 
     def _axis_to_cc_value(self, value: int, mapping: AxisToCCMapping) -> int:
@@ -814,8 +888,19 @@ class ActionReceiver:
         cc = output_min + t * (output_max - output_min)
         return max(0, min(127, round(cc)))
 
+    def _axis_split_to_cc_value(
+        self, magnitude: int, mapping: AxisSplitCCMapping
+    ) -> int:
+        if magnitude >= mapping.input_max:
+            return 127
+        span = mapping.input_max - mapping.deadzone
+        if span <= 0:
+            return 127
+        t = (magnitude - mapping.deadzone) / span
+        return max(0, min(127, round(t * 127)))
+
     def _send_macro_value(self, channel: int, cc: int, value: int) -> None:
-        self._midi_out.control_change(channel, cc, value)
+        self._emit_cc(channel, cc, value)
         self._macro_values[(channel, cc)] = value
 
 

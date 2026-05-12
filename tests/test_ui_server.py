@@ -421,5 +421,70 @@ class MappingUIServerLoadRawTests(unittest.TestCase):
         self.assertNotIn("BTN_A", raw["mappings"])
 
 
+class _StubEngine:
+    """Minimal Engine stub for /api/engines/refresh endpoint tests."""
+
+    def __init__(self, name: str, *, raise_on_refresh: bool = False) -> None:
+        self.name = name
+        self.type_name = name
+        self.refresh_calls = 0
+        self._raise_on_refresh = raise_on_refresh
+
+    def refresh(self) -> None:
+        self.refresh_calls += 1
+        if self._raise_on_refresh:
+            raise RuntimeError("simulated refresh failure")
+
+    def status(self) -> dict:
+        return {"name": self.name, "type": self.type_name}
+
+
+class MappingUIServerEnginesRefreshTests(unittest.TestCase):
+    """Verify POST /api/engines/refresh fans out to each engine.
+
+    Replaces the periodic REST polling that was choking Arena's MIDI
+    dispatch (2026-05-11 EVENING REST elimination, Tier 1).
+    """
+
+    def _make_server_with_engines(self, engines):
+        from windows.engines.registry import EngineRegistry
+        server, _, _, _, _, _ = _make_server()
+        server.engine_registry = EngineRegistry(engines)
+        return server
+
+    def test_refresh_calls_each_engine(self):
+        e1 = _StubEngine("alpha")
+        e2 = _StubEngine("beta")
+        server = self._make_server_with_engines([e1, e2])
+        client = server._app.test_client()
+        resp = client.post("/api/engines/refresh")
+        self.assertEqual(resp.status_code, 200)
+        body = resp.get_json()
+        self.assertTrue(body["ok"])
+        self.assertEqual(body["results"], {"alpha": "ok", "beta": "ok"})
+        self.assertEqual(e1.refresh_calls, 1)
+        self.assertEqual(e2.refresh_calls, 1)
+
+    def test_refresh_isolates_engine_failures(self):
+        good = _StubEngine("good")
+        bad = _StubEngine("bad", raise_on_refresh=True)
+        server = self._make_server_with_engines([good, bad])
+        client = server._app.test_client()
+        resp = client.post("/api/engines/refresh")
+        self.assertEqual(resp.status_code, 200)
+        body = resp.get_json()
+        self.assertEqual(body["results"]["good"], "ok")
+        self.assertIn("error", body["results"]["bad"])
+        # Good engine still ran.
+        self.assertEqual(good.refresh_calls, 1)
+
+    def test_refresh_without_registry_returns_404(self):
+        server, _, _, _, _, _ = _make_server()
+        self.assertIsNone(server.engine_registry)
+        client = server._app.test_client()
+        resp = client.post("/api/engines/refresh")
+        self.assertEqual(resp.status_code, 404)
+
+
 if __name__ == "__main__":
     unittest.main()
