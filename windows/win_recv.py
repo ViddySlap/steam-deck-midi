@@ -152,6 +152,32 @@ def main(argv: list[str] | None = None) -> int:
         build_fingerprint.BUILD_TIME_UTC,
     )
 
+    # Tray mode is single-instance: if another tray-mode process already
+    # holds the named mutex, surface the existing instance's web UI in the
+    # default browser and exit silently. This prevents the v0.4.4 collision
+    # class where a double-click on the desktop icon crashed the second
+    # bootloader with WinError 10048 on UDP 45123. Acquired BEFORE any port
+    # binding so we never compete for sockets with the running instance.
+    _instance_lock_handle = None
+    if getattr(args, "tray", False):
+        from windows.tray import acquire_single_instance_lock
+
+        _instance_lock_handle, is_first = acquire_single_instance_lock()
+        if not is_first:
+            ui_url = f"http://127.0.0.1:{args.ui_port}"
+            logging.info(
+                "single-instance: another tray-mode process is running; "
+                "opening %s and exiting",
+                ui_url,
+            )
+            try:
+                import webbrowser
+
+                webbrowser.open(ui_url)
+            except Exception:
+                logging.exception("single-instance: failed to open browser")
+            return 0
+
     try:
         if args.list_ports:
             port_names = get_output_port_names()

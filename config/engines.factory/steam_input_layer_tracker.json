@@ -10,6 +10,7 @@
   "chaser_ccs": [],
   "flash_ccs": [],
   "select_cc": 79,
+  "select_cc_channel": 2,
   "emit_osc": false,
   "osc_path": "/bridge/steaminput/currentlayer",
   "osc": {

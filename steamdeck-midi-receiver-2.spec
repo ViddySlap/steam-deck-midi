@@ -72,3 +72,31 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
 )
+
+# Second target: windowed (no console window) build for tray-mode launches.
+# Same analysis, just different PE subsystem. The desktop shortcut and the
+# Windows auto-start Run-key entry point at this EXE so there is no console
+# flash on launch. Console output is routed to the rotating log via the
+# tray module's stdout/stderr tee.
+exe_tray = EXE(
+    pyz,
+    a.scripts,
+    a.binaries,
+    a.datas,
+    [],
+    name="STEAMDECK-MIDI-RECEIVER-2-Tray",
+    debug=False,
+    bootloader_ignore_signals=False,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    runtime_tmpdir=None,
+    icon=str(icon_path),
+    version=str(version_file_path),
+    console=False,
+    disable_windowed_traceback=False,
+    argv_emulation=False,
+    target_arch=None,
+    codesign_identity=None,
+    entitlements_file=None,
+)
