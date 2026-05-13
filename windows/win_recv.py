@@ -160,6 +160,19 @@ def main(argv: list[str] | None = None) -> int:
     # binding so we never compete for sockets with the running instance.
     _instance_lock_handle = None
     if getattr(args, "tray", False):
+        # Install the rotating-file log tee BEFORE anything else logs.
+        # In windowed PyInstaller builds sys.stderr is None and the default
+        # basicConfig() StreamHandler raises on emit, swallowing every
+        # startup log line and masking real errors behind useless "---
+        # Logging error ---" diagnostics. setup_log_tee installs a file
+        # handler and (in windowed mode) strips the broken stream handler.
+        try:
+            from windows.tray import setup_log_tee
+
+            setup_log_tee()
+        except Exception:
+            logging.exception("tray-mode: setup_log_tee failed")
+
         from windows.tray import acquire_single_instance_lock
 
         _instance_lock_handle, is_first = acquire_single_instance_lock()

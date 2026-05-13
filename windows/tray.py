@@ -278,8 +278,25 @@ def setup_log_tee(log_path: Optional[Path] = None) -> Path:
     file_handler._tray_tee_tag = tag  # type: ignore[attr-defined]
     root.addHandler(file_handler)
 
+    # PyInstaller windowed builds (console=False) have no stderr/stdout —
+    # sys.stderr is None and any logging.StreamHandler attached by an
+    # earlier logging.basicConfig() call will raise on emit, masking the
+    # real startup error behind "--- Logging error ---" diagnostics. Strip
+    # those handlers now so the file handler is the only sink. Console
+    # builds have a real stderr and don't hit this; the strip is a no-op
+    # for them because basicConfig's StreamHandler points at a valid
+    # stream.
+    if sys.stderr is None or sys.stdout is None:
+        for handler in list(root.handlers):
+            if isinstance(handler, logging.StreamHandler) and not isinstance(
+                handler, RotatingFileHandler
+            ):
+                root.removeHandler(handler)
+
     # Also tee raw stdout/stderr (covers print() and any third-party libs
-    # that bypass logging).
+    # that bypass logging). _TeeStream tolerates a None original stream
+    # gracefully, so this is safe in windowed mode where the original
+    # streams are None.
     log = logging.getLogger("bridge.stdout")
     log_err = logging.getLogger("bridge.stderr")
     sys.stdout = _TeeStream(sys.stdout, log.info)  # type: ignore[assignment]
