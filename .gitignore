@@ -50,3 +50,6 @@ bridge.log.err
 # Local scratch + comp backups (not source-of-truth)
 scratch/
 backups/
+
+# Local dev-bridge runtime logs
+logs/

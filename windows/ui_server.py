@@ -403,6 +403,25 @@ class MappingUIServer:
                 return jsonify({"error": str(exc)}), 500
             return jsonify({"ok": True, "target_count": count})
 
+        @app.route("/api/engines/gyro-feedback/resync", methods=["POST"])
+        def resync_gyro_feedback() -> Response:
+            """Flip the gyro_feedback engine's polarity and refresh outputs.
+
+            Use when the bridge's gyro state has drifted opposite to the
+            deck's konsole state (e.g. after bridge restart with deck mid-state,
+            or when L4 events were missed during a UDP sniff). Each call
+            inverts the engine's polarity and immediately pushes sprite +
+            layer to match.
+            """
+            engine = self._find_engine("gyro_feedback")
+            if engine is None:
+                return jsonify({"error": "gyro_feedback engine not loaded"}), 404
+            try:
+                state = engine.resync_gyro_polarity()
+            except Exception as exc:  # noqa: BLE001 - surface to UI
+                return jsonify({"error": str(exc)}), 500
+            return jsonify({"ok": True, **state})
+
         @app.route("/api/engines/refresh", methods=["POST"])
         def refresh_engines() -> Response:
             """Dev endpoint: trigger every engine's `refresh()` hook.

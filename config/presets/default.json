@@ -277,18 +277,16 @@
       "off_value": 0
     },
     "L_PAD_UP": {
-      "type": "relative_cc",
+      "type": "note",
       "channel": 0,
-      "cc": 48,
-      "step_value": 1,
-      "repeat_interval_ms": 40
+      "note": 88,
+      "velocity": 127
     },
     "L_PAD_DOWN": {
-      "type": "relative_cc",
+      "type": "note",
       "channel": 0,
-      "cc": 48,
-      "step_value": 127,
-      "repeat_interval_ms": 40
+      "note": 89,
+      "velocity": 127
     },
     "L_PAD_LEFT": {
       "type": "note",
@@ -382,17 +380,32 @@
       "note": 95,
       "velocity": 127
     },
-    "GYRO_FORWARD": {
-      "type": "note",
-      "channel": 0,
-      "note": 96,
-      "velocity": 127
+    "GYRO_PITCH": {
+      "type": "axis_to_cc",
+      "channel": 15,
+      "cc": 122,
+      "input_range": [-750, 750],
+      "output_range": [0, 127],
+      "deadzone": 100,
+      "curve": "linear"
     },
-    "GYRO_BACKWARD": {
-      "type": "note",
-      "channel": 0,
-      "note": 97,
-      "velocity": 127
+    "GYRO_YAW": {
+      "type": "axis_to_cc",
+      "channel": 15,
+      "cc": 123,
+      "input_range": [-750, 750],
+      "output_range": [0, 127],
+      "deadzone": 100,
+      "curve": "linear"
+    },
+    "GYRO_ROLL": {
+      "type": "axis_to_cc",
+      "channel": 15,
+      "cc": 124,
+      "input_range": [-750, 750],
+      "output_range": [0, 127],
+      "deadzone": 100,
+      "curve": "linear"
     }
   }
 }

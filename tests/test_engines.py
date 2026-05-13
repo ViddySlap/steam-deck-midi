@@ -1043,6 +1043,10 @@ class OscSyncEngineTests(unittest.TestCase):
         # dashboard group as an extra segment. JSON tree's params dict is flat.
         # The path-walker emits effect/<param-slug>; the resolver must find it
         # when the target uses effect/<group>/<param-slug>.
+        #
+        # Uses VIDEO ALWAYS (a behaviour-toggle bool) rather than ENGINE
+        # ENABLE because ENGINE ENABLE is now in the default engine-enable
+        # excludes list (would be skipped from the wiggle iteration).
         composition = {
             "master": {"id": 1, "value": 1.0},
             "video": {
@@ -1050,14 +1054,14 @@ class OscSyncEngineTests(unittest.TestCase):
                     {
                         "name": {"value": "AudioEngine"},
                         "params": {
-                            "ENGINE ENABLE": {"id": 100, "value": True},
+                            "VIDEO ALWAYS": {"id": 100, "value": True},
                         },
                     }
                 ]
             },
         }
         # XML target uses the full path with "engine" group segment
-        target_path = "/composition/video/effects/audioengine/effect/engine/engineenable"
+        target_path = "/composition/video/effects/audioengine/effect/engine/videoalways"
         targets = [SyncTarget(osc_path=target_path, kind=KIND_BOOL, param_node_name="RangedParam[bool]")]
         engine, _rest, osc, _midi = _build_osc_sync(targets=targets, composition=composition)
         engine.on_midi_in(channel=14, cc=90, value=127, now=0.0)

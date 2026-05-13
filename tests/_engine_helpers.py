@@ -70,6 +70,12 @@ class FakeOscClient:
         # assert on color writes the same way they assert on other sends.
         self.sends.append((address, hex_value))
 
+    def send_multi(self, address: str, *values: Any) -> None:
+        # Record the address with a tuple of all values so callers can
+        # introspect multi-arg messages (e.g. NestDrop /Deck<N>/Preset
+        # which takes 5 args).
+        self.sends.append((address, tuple(values)))
+
     def close(self) -> None:
         self.closed = True
 

@@ -750,15 +750,19 @@ class ActionReceiver:
         return changed
 
     def _publish_layer_state(self, publisher: LayerStatePublisher, timestamp: float) -> None:
+        # Route through _emit_cc so the layer-state CCs are fanned out to
+        # subscribed engines (e.g. gyro_feedback listens on cc 74 ch0/1).
+        # The direct _midi_out.control_change path hid the publish from
+        # engines, breaking the L4-driven gyro feedback hook.
         if publisher.state == LAYER_2:
-            self._midi_out.control_change(publisher.layer_1_channel, publisher.cc, 0)
-            self._midi_out.control_change(publisher.layer_2_channel, publisher.cc, 127)
+            self._emit_cc(publisher.layer_1_channel, publisher.cc, 0)
+            self._emit_cc(publisher.layer_2_channel, publisher.cc, 127)
         elif publisher.state == LAYER_1:
-            self._midi_out.control_change(publisher.layer_1_channel, publisher.cc, 127)
-            self._midi_out.control_change(publisher.layer_2_channel, publisher.cc, 0)
+            self._emit_cc(publisher.layer_1_channel, publisher.cc, 127)
+            self._emit_cc(publisher.layer_2_channel, publisher.cc, 0)
         else:
-            self._midi_out.control_change(publisher.layer_1_channel, publisher.cc, 0)
-            self._midi_out.control_change(publisher.layer_2_channel, publisher.cc, 0)
+            self._emit_cc(publisher.layer_1_channel, publisher.cc, 0)
+            self._emit_cc(publisher.layer_2_channel, publisher.cc, 0)
         publisher.last_published_state = publisher.state
 
     def _build_layer_publisher(self, action: str) -> LayerStatePublisher | None:
@@ -806,6 +810,14 @@ class ActionReceiver:
         return False
 
     def _handle_axis_event(self, event: AxisEvent) -> bool:
+        # Fan every axis event to engines first — including ones with no
+        # CC mapping (e.g. deck-side state pings like GYRO_STATE_NOW).
+        try:
+            self._engine_registry.on_axis_event(
+                event.action, event.value, self._clock()
+            )
+        except Exception:  # noqa: BLE001 - engines shouldn't break the loop
+            LOGGER.exception("engine_registry.on_axis_event failed")
         mapping = self._mappings.get(event.action)
         if isinstance(mapping, AxisSplitCCMapping):
             return self._handle_axis_split_event(event, mapping)

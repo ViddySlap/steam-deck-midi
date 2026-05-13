@@ -22,10 +22,17 @@ Trigger path:
     -> wire MIDI Out CC 90 ch15 -> DECK_OUT -> on_midi_in(rising edge)
     -> worker thread runs the wiggle pass
 
-The pass briefly drops /composition/master to 0 (so any tiny visible
-artifact during bool flips is invisible) and restores it after, paces
-messages ~2ms apart to avoid UDP packet loss, and serialises to the
-worker so spammed presses dont stack.
+The pass drops /composition/master to 0 BEFORE any other write (so any
+tiny visible artifact during bool flips is invisible) and restores it
+in a try/finally so the screen always returns even if a wiggle step
+raises. Paces messages ~2ms apart to avoid UDP packet loss, and
+serialises to the worker so spammed presses dont stack.
+
+Bool paths that disable the audio engine (engineenable / bypassed) are
+excluded from the wiggle iteration by default — flipping them produces
+a perceptible engine drop-out for the operator even though comp master
+is masked, because the audio_opacity bridge engine reacts to the CC
+echo and resets its state machine. See DEFAULT_ENGINE_ENABLE_EXCLUDES.
 """
 
 from __future__ import annotations
@@ -51,6 +58,21 @@ LOGGER = logging.getLogger(__name__)
 
 
 COMP_MASTER_PATH = "/composition/master"
+
+# Paths that, when wiggled as a bool flip, visibly toggle the audio engine
+# on/off rather than just nudging a parameter back to its original value.
+# These bool params are wired to either Resolume's effect bypass or to
+# Wire-patch dashboard "engine enable" inputs whose downstream effect is a
+# full-bypass disable. Flipping them mid-sync resets the audio_opacity
+# bridge engine's state machine (it listens for the CC echo on cc_enable)
+# and manifests as a perceptible engine drop-out at sync time even though
+# comp master is masked. The sync pass leaves these alone — values are
+# already correct (they were authored by the operator), and Resolume will
+# re-broadcast their state at the next natural occasion.
+DEFAULT_ENGINE_ENABLE_EXCLUDES: tuple[str, ...] = (
+    "/composition/video/effects/audioengine/effect/engine/engineenable",
+    "/composition/video/effects/audioengine/bypassed",
+)
 
 
 class OscSyncEngine(Engine):
@@ -84,6 +106,14 @@ class OscSyncEngine(Engine):
             float(config.get("inter_message_delay_ms", 50.0)) / 1000.0
         )
         self._mask_with_master = bool(config.get("mask_with_master", True))
+        # Bool wiggle on these paths flips the audio engine on/off, which is
+        # not a "tiny parameter nudge" — see DEFAULT_ENGINE_ENABLE_EXCLUDES.
+        # Operators can override (e.g. add an autopilot enable path) via
+        # `engine_enable_excludes` in engines/osc_sync.json.
+        raw_excludes = config.get("engine_enable_excludes", DEFAULT_ENGINE_ENABLE_EXCLUDES)
+        self._engine_enable_excludes: frozenset[str] = frozenset(
+            str(p) for p in raw_excludes if p
+        )
         # Engine writes this OSC path with 1 at sync start and 0 at sync end.
         # When Ben adds an OSC OUT for the same path in Resolume's preset,
         # TouchOSC echoes the bool back to the trigger button, so the button
@@ -202,22 +232,28 @@ class OscSyncEngine(Engine):
         self._last_pass_skipped_count = 0
         self._last_pass_skipped_paths = []
 
-        # Force a 0 -> 1 transition on the SYNC indicator. The button-press
-        # already drove the wire bool to 1, then ~200ms later the button
-        # release drove it back to 0. We need the wire bool at 1 throughout
-        # the pass, but writing True now would be a no-op (already 1) and
-        # might not broadcast — and even if it did, the upcoming button
-        # release would override us. So: write False explicitly first, sleep
-        # long enough for any pending button release to land, then write
-        # True. The False+True pair guarantees a 0 -> 1 transition that
-        # Resolume broadcasts via OSC OUT, lighting the TouchOSC button.
-        # We use float 0.0/1.0 (not bool) to match what button613 itself
-        # sends and keep the wire patch's input typing consistent.
-        self._osc.send(self._sync_indicator_path, 0.0)
-        self._sleep(0.3)
-        self._osc.send(self._sync_indicator_path, 1.0)
-        self._sleep(self._inter_message_delay_seconds)
+        # Sequencing rule (Bug 1, 2026-05-12): comp master must be at 0
+        # BEFORE any wiggle write goes out, and must be restored AFTER the
+        # last wiggle write. Concretely:
+        #   1. Parse targets (lazy first-pass parse from OSC preset XML)
+        #   2. REST GET composition (reads current master + builds path_index)
+        #   3. Drop comp master to 0 (mask) — done BEFORE the indicator dance
+        #      and BEFORE any wiggle write so the operator's screen is black
+        #      for the entire visible-side-effects window.
+        #   4. Sync indicator force-transition dance (0 -> sleep 0.3s -> 1)
+        #      runs DURING the mask so the 0.3s settle is hidden behind the
+        #      black-out, not visible on screen.
+        #   5. Wiggle all targets (master at 0 the whole time)
+        #   6. Restore comp master to cached value  (try/finally)
+        #   7. Release sync indicator (same try/finally)
+        # The try/finally on master restore guarantees the screen comes
+        # back even if a wiggle step raises mid-loop — the operator never
+        # ends up stuck behind a 0-opacity master.
 
+        masked = False
+        prev_master: Any = None
+        path_index: dict[str, dict[str, Any]] = {}
+        targets: list[SyncTarget] = []
         try:
             if self._targets is None:
                 try:
@@ -225,56 +261,79 @@ class OscSyncEngine(Engine):
                 except Exception as exc:  # noqa: BLE001 - never let the worker die silently
                     self._last_pass_error = f"target parse failed: {exc}"
                     LOGGER.exception("osc_sync: target parse failed")
+                    # Still run the indicator dance below so the operator's
+                    # button visually responds to the press even on no-op.
+                    self._do_indicator_dance()
                     return
 
             # Exclude paths the engine actively drives during the pass:
             # - sync indicator (engine holds true throughout, would otherwise
             #   wiggle off mid-pass)
             # - comp master (mask sets to 0; wiggling pulls back to cached value)
-            excluded = {self._sync_indicator_path, COMP_MASTER_PATH}
+            # - engine on/off bypass paths (flipping them disables the audio
+            #   engine briefly, which the audio_opacity bridge engine then
+            #   reacts to — visible to the operator even with master masked).
+            excluded = {self._sync_indicator_path, COMP_MASTER_PATH} | self._engine_enable_excludes
             targets = [t for t in (self._targets or ()) if t.osc_path not in excluded]
             self._last_pass_target_count = len(targets)
             if not targets:
                 LOGGER.warning("osc_sync: no targets; sync pass is a no-op")
+                # Still fire the indicator dance so the operator's button
+                # visually responds to the press.
+                self._do_indicator_dance()
                 return
 
+            # Single REST GET serves both purposes: cache prev_master for the
+            # mask + restore, and build the path_index for wiggle resolution.
+            # We do this BEFORE dropping master so the read returns the real
+            # current value rather than the masked 0.
             try:
                 path_index = self._build_path_index()
             except ResolumeRestError as exc:
                 self._last_pass_error = f"composition fetch failed: {exc}"
                 LOGGER.error("osc_sync: %s", self._last_pass_error)
+                # No mask possible without prev_master, but still fire the
+                # indicator dance so the button visually responds.
+                self._do_indicator_dance()
                 return
 
+            # DROP MASTER FIRST (bug 1 fix). prev_master must be cached
+            # before the OSC write so the finally clause can restore it.
             master_meta = path_index.get(COMP_MASTER_PATH)
             prev_master = master_meta.get("value") if master_meta else None
-            masked = False
             if self._mask_with_master and prev_master is not None:
                 self._osc.send(COMP_MASTER_PATH, 0.0)
                 self._sleep(self._inter_message_delay_seconds)
                 masked = True
 
-            try:
-                for target in targets:
-                    meta = self._resolve_target(target.osc_path, path_index)
-                    if meta is None or "value" not in meta:
-                        LOGGER.debug("osc_sync: no comp parameter for %s; skipping", target.osc_path)
-                        self._last_pass_skipped_count += 1
-                        self._last_pass_skipped_paths.append(target.osc_path)
-                        continue
-                    if self._wiggle(target, meta):
-                        self._last_pass_wiggle_count += 1
-                    else:
-                        self._last_pass_skipped_count += 1
-                        self._last_pass_skipped_paths.append(target.osc_path)
-                    self._sleep(self._inter_message_delay_seconds)
-            finally:
-                if masked:
-                    try:
-                        self._osc.send(COMP_MASTER_PATH, float(prev_master))
-                        self._sleep(self._inter_message_delay_seconds)
-                    except (TypeError, ValueError):
-                        LOGGER.warning("osc_sync: could not restore master to %r", prev_master)
+            # Now that master is at 0, force the sync-indicator dance. The
+            # 0.3s settle is hidden behind the black-out so nothing visible
+            # leaks out during the wait for any pending button release.
+            self._do_indicator_dance()
+
+            for target in targets:
+                meta = self._resolve_target(target.osc_path, path_index)
+                if meta is None or "value" not in meta:
+                    LOGGER.debug("osc_sync: no comp parameter for %s; skipping", target.osc_path)
+                    self._last_pass_skipped_count += 1
+                    self._last_pass_skipped_paths.append(target.osc_path)
+                    continue
+                if self._wiggle(target, meta):
+                    self._last_pass_wiggle_count += 1
+                else:
+                    self._last_pass_skipped_count += 1
+                    self._last_pass_skipped_paths.append(target.osc_path)
+                self._sleep(self._inter_message_delay_seconds)
         finally:
+            # Restore comp master FIRST (so the screen comes back even if
+            # sync_indicator release errors), then release sync_indicator.
+            # Both run regardless of how the pass exited.
+            if masked:
+                try:
+                    self._osc.send(COMP_MASTER_PATH, float(prev_master))
+                    self._sleep(self._inter_message_delay_seconds)
+                except (TypeError, ValueError):
+                    LOGGER.warning("osc_sync: could not restore master to %r", prev_master)
             # Release the SYNC indicator regardless of how the pass ended.
             # Operator's button visually un-highlights to signal "done."
             self._osc.send(self._sync_indicator_path, 0.0)
@@ -286,6 +345,26 @@ class OscSyncEngine(Engine):
                 self._last_pass_wiggle_count,
                 self._last_pass_skipped_count,
             )
+
+    def _do_indicator_dance(self) -> None:
+        """Force a 0 -> 1 transition on the SYNC indicator so Resolume
+        broadcasts OSC OUT to TouchOSC, lighting the operator's button.
+
+        The button-press already drove the wire bool to 1, then ~200ms
+        later the button release drove it back to 0. We need the wire
+        bool at 1 throughout the pass, but writing True now would be a
+        no-op (already 1) and might not broadcast — and even if it did,
+        the upcoming button release would override us. So: write False
+        explicitly first, sleep long enough for any pending button
+        release to land, then write True. The False+True pair guarantees
+        a 0 -> 1 transition that Resolume broadcasts. We use float
+        0.0/1.0 (not bool) to match what button613 itself sends and keep
+        the wire patch's input typing consistent.
+        """
+        self._osc.send(self._sync_indicator_path, 0.0)
+        self._sleep(0.3)
+        self._osc.send(self._sync_indicator_path, 1.0)
+        self._sleep(self._inter_message_delay_seconds)
 
     def _resolve_target(self, target_path: str, path_index: dict[str, dict[str, Any]]) -> dict[str, Any] | None:
         """Resolve an XML preset path to a JSON-tree parameter meta.

@@ -4,15 +4,22 @@
   "enabled": true,
   "inputs": {
     "channel": 14,
-    "cc_rescan": 91
+    "cc_rescan": 91,
+    "cc_sync": 90
   },
-  "comp_path": "C:/Users/Ben/OneDrive/Documents/Resolume Arena/Compositions/5-5-26 STEAMDECK V2.avc",
   "wire_effect_name": "STAGEFLOW BRIDGE",
-  "look_count": 6,
-  "initial_rescan_delay_seconds": 1.0,
+  "look_count": 15,
+  "layer_index": 1,
+  "wake_up_step_delay_ms": 120,
+  "pre_wake_delay_ms": 50,
   "strip_numeric_prefix": true,
+  "fallback_label": "-",
   "rest": {
     "base_url": "http://127.0.0.1:8080",
     "timeout_seconds": 1.5
+  },
+  "osc": {
+    "host": "127.0.0.1",
+    "port": 7000
   }
 }

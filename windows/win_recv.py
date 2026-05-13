@@ -80,6 +80,17 @@ def build_parser() -> argparse.ArgumentParser:
         help="port for the mapping web UI (default: 7723)",
     )
     parser.add_argument(
+        "--tray",
+        action="store_true",
+        help=(
+            "run in auto-start tray mode: bridge runs in a worker thread, "
+            "tray owns the main thread, console output is teed to a "
+            "rotating log under %%LOCALAPPDATA%%. Closing the console "
+            "window does NOT stop the bridge; only the Quit tray menu "
+            "stops it."
+        ),
+    )
+    parser.add_argument(
         "--engines",
         dest="engines_path",
         help=(
@@ -239,6 +250,7 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     tray = None
+    ui_server = None
     if not args.no_ui:
         from windows.ui_server import MappingUIServer
         ui_server = MappingUIServer(
@@ -252,26 +264,31 @@ def main(argv: list[str] | None = None) -> int:
         )
         ui_server.run_in_thread()
         logging.info("mapping UI available at %s", ui_server.url)
-        _open_browser_delayed(ui_server.url)
+        if not args.tray:
+            # Tray mode shows the browser via the tray menu instead.
+            _open_browser_delayed(ui_server.url)
 
-        try:
-            from windows.tray import ReceiverTray
-            import os
+        if not args.tray:
+            try:
+                from windows.tray import ReceiverTray
+                import os
 
-            stop_event = threading.Event()
+                stop_event = threading.Event()
 
-            def quit_receiver() -> None:
-                stop_event.set()
+                def quit_receiver() -> None:
+                    stop_event.set()
 
-            tray = ReceiverTray(ui_url=ui_server.url, quit_callback=quit_receiver)
-            tray.run_in_thread()
-        except Exception as exc:
-            logging.warning("system tray unavailable: %s", exc)
+                tray = ReceiverTray(ui_url=ui_server.url, quit_callback=quit_receiver)
+                tray.run_in_thread()
+            except Exception as exc:
+                logging.warning("system tray unavailable: %s", exc)
+                stop_event = None
+        else:
             stop_event = None
     else:
         stop_event = None
 
-    try:
+    def _run_bridge_loop() -> None:
         serve_forever(
             listen_host,
             listen_port,
@@ -282,6 +299,27 @@ def main(argv: list[str] | None = None) -> int:
             reload_config_fn=reload_config_fn,
             engine_registry=engine_registry,
         )
+
+    if args.tray:
+        # Auto-start tray mode: bridge runs in worker thread, tray owns
+        # main thread. Disabling --no-ui in tray mode is nonsensical
+        # because the tray needs a UI URL; warn and continue with a
+        # placeholder.
+        ui_url = ui_server.url if ui_server is not None else f"http://127.0.0.1:{args.ui_port}"
+        try:
+            from windows.tray import run_tray_mode
+
+            run_tray_mode(
+                ui_url=ui_url,
+                run_bridge=_run_bridge_loop,
+                stop_bridge=None,
+            )
+        finally:
+            midi_out.close()
+        return 0
+
+    try:
+        _run_bridge_loop()
     finally:
         midi_out.close()
         if tray is not None:

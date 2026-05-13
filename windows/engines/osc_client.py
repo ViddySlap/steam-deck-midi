@@ -34,6 +34,35 @@ def _build_message(address: str, value: Any) -> bytes:
     raise TypeError(f"Unsupported OSC value type: {type(value).__name__}")
 
 
+def _build_multi_message(address: str, values: tuple[Any, ...]) -> bytes:
+    """Build a multi-argument OSC message. Mixed str/int/float/bool supported.
+
+    NestDrop's `/Deck<N>/Preset` requires 5 args (path, name, state, activated,
+    speed) so the engine needs more than the single-arg builder above.
+    """
+    addr = _pad4(address.encode("utf-8") + b"\x00")
+    type_tag = b","
+    payload = b""
+    for value in values:
+        if isinstance(value, bool):
+            # Bools become true/false type tags with no payload
+            type_tag += b"T" if value else b"F"
+        elif isinstance(value, float):
+            type_tag += b"f"
+            payload += struct.pack(">f", value)
+        elif isinstance(value, int):
+            type_tag += b"i"
+            payload += struct.pack(">i", value)
+        elif isinstance(value, str):
+            type_tag += b"s"
+            payload += _pad4(value.encode("utf-8") + b"\x00")
+        else:
+            raise TypeError(
+                f"Unsupported OSC value type in multi: {type(value).__name__}"
+            )
+    return addr + _pad4(type_tag + b"\x00") + payload
+
+
 def _build_color_message(address: str, r: int, g: int, b: int, a: int) -> bytes:
     """Build an OSC type 'r' message (32-bit packed RGBA).
 
@@ -71,6 +100,14 @@ class OscClient:
             self._sock.sendto(data, (self._host, self._port))
         except OSError as exc:
             LOGGER.debug("OSC send failed for %s = %r: %s", address, value, exc)
+
+    def send_multi(self, address: str, *values: Any) -> None:
+        """Send a multi-argument OSC message (mixed str/int/float/bool)."""
+        try:
+            data = _build_multi_message(address, values)
+            self._sock.sendto(data, (self._host, self._port))
+        except OSError as exc:
+            LOGGER.debug("OSC multi-send failed for %s %r: %s", address, values, exc)
 
     def send_color(self, address: str, hex_value: str) -> None:
         """Send a ParamColor using OSC type 'r' (Resolume's required format)."""
