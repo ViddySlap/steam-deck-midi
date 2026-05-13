@@ -1,5 +1,124 @@
 {
-  "name": "global_color",
+  "name": "Global Color",
   "type": "global_color",
-  "enabled": false
+  "enabled": true,
+  "channel": 14,
+  "palette_channel": 13,
+  "cc_base": 40,
+  "palette_cc_base": 0,
+  "resync_cc": 99,
+  "fade_cc": 46,
+  "default_fade_seconds": 1.0,
+  "max_fade_seconds": 5.0,
+  "palette_defaults": [
+    "#ff0000ff", "#ff5b00ff", "#ffff00ff", "#00ff00ff", "#00ffffff",
+    "#0000ffff", "#7f00ffff", "#ff00ffff", "#ffffffff", "#000000ff"
+  ],
+  "channels": {
+    "chaser": [
+      {
+        "name": "Color Bump COLOR-long.Color",
+        "osc_path": "/composition/layers/10/video/effects/colorbump2/effect/color",
+        "format": "hex_rgba_string"
+      },
+      {
+        "name": "Color Bump COLOR SHORT.Color",
+        "osc_path": "/composition/layers/10/video/effects/colorbump4/effect/color",
+        "format": "hex_rgba_string"
+      },
+      {
+        "name": "Color Bump COLOR FADE.Color",
+        "osc_path": "/composition/layers/10/video/effects/colorbump6/effect/color",
+        "format": "hex_rgba_string"
+      },
+      {
+        "name": "ShockWave.Flash Color",
+        "osc_path": "/composition/layers/10/video/effects/shockwave/effect/flashcolor",
+        "format": "hex_rgba_string"
+      },
+      {
+        "name": "VIDDY-COLOR ISF V2 chaser.Highlight",
+        "osc_path": "/composition/layers/8/video/effects/viddy-colorisfv2/effect/colors/highlight",
+        "format": "hex_rgba_string"
+      },
+      {
+        "name": "VIDDY-COLOR ISF V2 chaser.Shadow",
+        "osc_path": "/composition/layers/8/video/effects/viddy-colorisfv2/effect/colors/shadow",
+        "format": "hex_rgba_string"
+      }
+    ],
+    "video_highlight": [
+      {
+        "name": "VIDDY-COLOR ISF V2 VIDEO.Highlight",
+        "osc_path": "/composition/groups/1/video/effects/viddy-colorisfv2/effect/colors/highlight",
+        "format": "hex_rgba_string"
+      }
+    ],
+    "video_shadow": [
+      {
+        "name": "VIDDY-COLOR ISF V2 VIDEO.Shadow",
+        "osc_path": "/composition/groups/1/video/effects/viddy-colorisfv2/effect/colors/shadow",
+        "format": "hex_rgba_string"
+      }
+    ],
+    "logo_highlight": [
+      {
+        "name": "VIDDY-COLOR ISF V2 LOGO.Highlight",
+        "osc_path": "/composition/groups/2/video/effects/viddy-colorisfv2/effect/colors/highlight",
+        "format": "hex_rgba_string"
+      }
+    ],
+    "logo_shadow": [
+      {
+        "name": "VIDDY-COLOR ISF V2 LOGO.Shadow",
+        "osc_path": "/composition/groups/2/video/effects/viddy-colorisfv2/effect/colors/shadow",
+        "format": "hex_rgba_string"
+      }
+    ],
+    "video_white": [
+      {
+        "name": "VIDDY-COLOR ISF V2 VIDEO.Replace White",
+        "osc_path": "/composition/groups/1/video/effects/viddy-colorisfv2/effect/colors/replacewhite",
+        "format": "hex_rgba_string"
+      }
+    ],
+    "logo_white": [
+      {
+        "name": "VIDDY-COLOR ISF V2 LOGO.Replace White",
+        "osc_path": "/composition/groups/2/video/effects/viddy-colorisfv2/effect/colors/replacewhite",
+        "format": "hex_rgba_string"
+      }
+    ],
+    "chaser_white": [
+      {
+        "name": "VIDDY-COLOR ISF V2 chaser.Replace White",
+        "osc_path": "/composition/layers/8/video/effects/viddy-colorisfv2/effect/colors/replacewhite",
+        "format": "hex_rgba_string"
+      }
+    ],
+    "video_black": [
+      {
+        "name": "VIDDY-COLOR ISF V2 VIDEO.Replace Black",
+        "osc_path": "/composition/groups/1/video/effects/viddy-colorisfv2/effect/colors/replaceblack",
+        "format": "hex_rgba_string"
+      }
+    ],
+    "logo_black": [
+      {
+        "name": "VIDDY-COLOR ISF V2 LOGO.Replace Black",
+        "osc_path": "/composition/groups/2/video/effects/viddy-colorisfv2/effect/colors/replaceblack",
+        "format": "hex_rgba_string"
+      }
+    ],
+    "chaser_black": [
+      {
+        "name": "VIDDY-COLOR ISF V2 chaser.Replace Black",
+        "osc_path": "/composition/layers/8/video/effects/viddy-colorisfv2/effect/colors/replaceblack",
+        "format": "hex_rgba_string"
+      }
+    ]
+  },
+  "outputs": {
+    "osc": {"host": "127.0.0.1", "port": 7000}
+  }
 }

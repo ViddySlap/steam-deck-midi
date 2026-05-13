@@ -1,0 +1,41 @@
+{
+  "name": "NestDrop",
+  "type": "nestdrop",
+  "enabled": true,
+  "channel": 0,
+  "buttons": {
+    "x": {
+      "notes": [40, 41],
+      "queue_path": "/Queue/Queue1",
+      "target_deck": 1,
+      "deactivate_siblings": ["/Queue/Queue2"]
+    },
+    "b": {
+      "notes": [38, 39],
+      "queue_path": "/Queue/Queue2",
+      "target_deck": 1,
+      "deactivate_siblings": ["/Queue/Queue1"]
+    },
+    "lpad_up": {
+      "notes": [88],
+      "queue_path": "/Queue/Queue3",
+      "target_deck": 2,
+      "fade_window_seconds": 0,
+      "deactivate_siblings": ["/Queue/Queue4", "/Queue/Queue5"]
+    },
+    "lpad_down": {
+      "notes": [89],
+      "queue_path": "/Queue/Queue4",
+      "target_deck": 2,
+      "fade_window_seconds": 0,
+      "deactivate_siblings": ["/Queue/Queue3", "/Queue/Queue5"]
+    }
+  },
+  "fade_window_seconds": 1.25,
+  "activate_delay_seconds": 0.1,
+  "btspace_path_template": "/Controls/Deck{deck}/btSpace",
+  "osc": {
+    "host": "127.0.0.1",
+    "port": 8000
+  }
+}

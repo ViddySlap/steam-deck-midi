@@ -44,6 +44,15 @@ class Engine:
         accepts CC-encoded layer signals as a fallback).
         """
 
+    def on_axis_event(self, action: str, value: int, now: float) -> None:
+        """Called for every analog axis event arriving from the deck.
+
+        `action` is the action ID (e.g. "L_STICK_X_AXIS", "GYRO_STATE_NOW").
+        `value` is the integer value from the deck-side sender. Engines
+        that care about specific axis-event broadcasts (state pings,
+        deck-side absolute-state signals) override this. Default no-op.
+        """
+
     def on_midi_clock(self, message_type: str, now: float) -> None:
         """Called for every MIDI System Real-Time clock message.
 

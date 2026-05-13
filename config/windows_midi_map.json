@@ -277,18 +277,16 @@
       "off_value": 0
     },
     "L_PAD_UP": {
-      "type": "relative_cc",
+      "type": "note",
       "channel": 0,
-      "cc": 48,
-      "step_value": 1,
-      "repeat_interval_ms": 40
+      "note": 88,
+      "velocity": 127
     },
     "L_PAD_DOWN": {
-      "type": "relative_cc",
+      "type": "note",
       "channel": 0,
-      "cc": 48,
-      "step_value": 127,
-      "repeat_interval_ms": 40
+      "note": 89,
+      "velocity": 127
     },
     "L_PAD_LEFT": {
       "type": "note",

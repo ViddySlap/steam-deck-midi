@@ -14,6 +14,8 @@ from windows.engines.bumper_blast import BumperBlastEngine
 from windows.engines.chaser_stack_dispatcher import ChaserStackDispatcherEngine
 from windows.engines.flash_blast import FlashBlastEngine
 from windows.engines.global_color import GlobalColorEngine
+from windows.engines.gyro_feedback import GyroFeedbackEngine
+from windows.engines.nestdrop_engine import NestdropEngine
 from windows.engines.osc_sync import OscSyncEngine
 from windows.engines.stageflow_bridge import StageFlowBridgeEngine
 from windows.engines.steam_input_layer_tracker import SteamInputLayerTrackerEngine
@@ -33,6 +35,8 @@ _ENGINE_TYPES: dict[str, type[Engine]] = {
     ChaserStackDispatcherEngine.type_name: ChaserStackDispatcherEngine,
     FlashBlastEngine.type_name: FlashBlastEngine,
     GlobalColorEngine.type_name: GlobalColorEngine,
+    GyroFeedbackEngine.type_name: GyroFeedbackEngine,
+    NestdropEngine.type_name: NestdropEngine,
     StageFlowBridgeEngine.type_name: StageFlowBridgeEngine,
 }
 
@@ -105,6 +109,14 @@ class EngineRegistry:
                 engine.on_note_in(channel, note, velocity, now)
             except Exception:
                 LOGGER.exception("engine %s on_note_in failed", engine.name)
+
+    def on_axis_event(self, action: str, value: int, now: float) -> None:
+        """Fan analog axis events to every engine."""
+        for engine in self._engines:
+            try:
+                engine.on_axis_event(action, value, now)
+            except Exception:
+                LOGGER.exception("engine %s on_axis_event failed", engine.name)
 
     def get_by_type(self, type_name: str) -> Engine | None:
         """Look up the (single) loaded engine for a given type, or None."""

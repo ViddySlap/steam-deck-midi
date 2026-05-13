@@ -3,13 +3,13 @@
   "type": "global_color",
   "enabled": true,
   "channel": 14,
-  "cc_base": 50,
-  "palette_refresh_hz": 1.0,
-  "palette_patch_slug": "colorpalette",
-  "palette_input_names": [
-    "red", "orange", "yellow", "green", "cyan",
-    "blue", "purple", "magenta", "white", "black"
-  ],
+  "palette_channel": 13,
+  "cc_base": 40,
+  "palette_cc_base": 0,
+  "resync_cc": 99,
+  "fade_cc": 46,
+  "default_fade_seconds": 1.0,
+  "max_fade_seconds": 5.0,
   "palette_defaults": [
     "#ff0000ff", "#ff5b00ff", "#ffff00ff", "#00ff00ff", "#00ffffff",
     "#0000ffff", "#7f00ffff", "#ff00ffff", "#ffffffff", "#000000ff"
@@ -17,8 +17,18 @@
   "channels": {
     "chaser": [
       {
-        "name": "Color Bump COLOR.Color",
+        "name": "Color Bump COLOR-long.Color",
         "osc_path": "/composition/layers/10/video/effects/colorbump2/effect/color",
+        "format": "hex_rgba_string"
+      },
+      {
+        "name": "Color Bump COLOR SHORT.Color",
+        "osc_path": "/composition/layers/10/video/effects/colorbump4/effect/color",
+        "format": "hex_rgba_string"
+      },
+      {
+        "name": "Color Bump COLOR FADE.Color",
+        "osc_path": "/composition/layers/10/video/effects/colorbump6/effect/color",
         "format": "hex_rgba_string"
       },
       {
@@ -34,9 +44,5 @@
   },
   "outputs": {
     "osc": {"host": "127.0.0.1", "port": 7000}
-  },
-  "rest": {
-    "base_url": "http://127.0.0.1:8080",
-    "timeout_seconds": 1.5
   }
 }
