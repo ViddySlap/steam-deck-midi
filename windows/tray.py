@@ -20,6 +20,7 @@ the icon (``Icon.run``) is what requires a Windows session.
 
 from __future__ import annotations
 
+import ctypes
 import logging
 import os
 import subprocess
@@ -27,6 +28,7 @@ import sys
 import threading
 import time
 import webbrowser
+from ctypes import wintypes
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from typing import Any, Callable, Optional
@@ -35,6 +37,62 @@ import pystray
 from PIL import Image, ImageDraw
 
 LOGGER = logging.getLogger(__name__)
+
+# ---------------------------------------------------------------------------
+# Single-instance lock
+# ---------------------------------------------------------------------------
+
+# Windows error code returned by CreateMutexW when the named mutex already
+# exists in another process. We use this to detect "am I a second launch?"
+# without needing pywin32 as a runtime dep.
+_ERROR_ALREADY_EXISTS = 183
+
+# Global namespace so the mutex is visible across user sessions on the same
+# machine. The trailing identifier should change if the lock semantics ever
+# change incompatibly.
+DEFAULT_INSTANCE_MUTEX_NAME = "Global\\STEAMDECK-MIDI-RECEIVER-2-singleinstance-v1"
+
+
+def acquire_single_instance_lock(
+    name: str = DEFAULT_INSTANCE_MUTEX_NAME,
+) -> tuple[Optional[int], bool]:
+    """Acquire a Windows named mutex to enforce single-instance launches.
+
+    Returns ``(handle, is_first)``:
+        handle: opaque mutex HANDLE to keep alive until process exit
+            (held implicitly by the kernel; we never release explicitly).
+            ``None`` on non-Windows platforms or on failure.
+        is_first: ``True`` if we are the first instance and acquired the
+            lock. ``False`` if another process already holds it — caller
+            should fall back to opening the UI in a browser and exiting.
+
+    The OS releases the mutex automatically when the process exits, even
+    on a hard crash, so there is no stuck-lock scenario.
+    """
+    if sys.platform != "win32":
+        return (None, True)
+    try:
+        kernel32 = ctypes.windll.kernel32  # type: ignore[attr-defined]
+        kernel32.CreateMutexW.restype = wintypes.HANDLE
+        kernel32.CreateMutexW.argtypes = [
+            wintypes.LPVOID,
+            wintypes.BOOL,
+            wintypes.LPCWSTR,
+        ]
+        kernel32.GetLastError.restype = wintypes.DWORD
+        handle = kernel32.CreateMutexW(None, False, name)
+        last_error = int(kernel32.GetLastError())
+    except Exception:  # noqa: BLE001 - lock is best-effort
+        LOGGER.exception("single-instance: CreateMutexW raised; allowing launch")
+        return (None, True)
+    if not handle:
+        LOGGER.warning(
+            "single-instance: CreateMutexW returned null handle (last_error=%d); "
+            "allowing launch",
+            last_error,
+        )
+        return (None, True)
+    return (int(handle), last_error != _ERROR_ALREADY_EXISTS)
 
 # ---------------------------------------------------------------------------
 # Icon

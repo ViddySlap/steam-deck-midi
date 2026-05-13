@@ -42,8 +42,15 @@ Name: "{app}\config\presets"; Permissions: users-modify
 Name: "{app}\config\engines"; Permissions: users-modify
 Name: "{app}\config\engines.factory"; Permissions: users-modify
 
+[Tasks]
+Name: "autostart"; Description: "Start STEAMDECK MIDI Receiver 2 when Windows starts"; GroupDescription: "Auto-start:"
+
+[Registry]
+Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "STEAMDECK MIDI Receiver 2"; ValueData: """{app}\STEAMDECK-MIDI-RECEIVER-2-Tray.exe"" --listen 0.0.0.0:45123 --map ""{app}\config\windows_midi_map.json"" --midi-port DECK_IN --feedback-port DECK_OUT --timeout 2.0 --ui-port 7723 --tray"; Tasks: autostart; Flags: uninsdeletevalue
+
 [Files]
 Source: "..\..\dist\STEAMDECK-MIDI-RECEIVER-2.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\dist\STEAMDECK-MIDI-RECEIVER-2-Tray.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\..\assets\windows\receiver.ico"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\..\config\windows_midi_map.json"; DestDir: "{app}\config"; Flags: ignoreversion
 Source: "..\..\config\windows_receiver_settings.example.json"; DestDir: "{app}\config"; Flags: ignoreversion
@@ -56,8 +63,8 @@ Source: "..\..\config\engines.factory\*.json"; DestDir: "{app}\config\engines.fa
 Source: "..\..\config\actions.yaml"; DestDir: "{app}\config"; Flags: ignoreversion
 
 [Icons]
-Name: "{autodesktop}\STEAMDECK MIDI Receiver 2"; Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -NoLogo -NoExit -File ""{app}\scripts\start_installed_receiver_v2.ps1"" -InstallRoot ""{app}"""; WorkingDir: "{app}"; IconFilename: "{app}\receiver.ico"
-Name: "{group}\STEAMDECK MIDI Receiver 2"; Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -NoLogo -NoExit -File ""{app}\scripts\start_installed_receiver_v2.ps1"" -InstallRoot ""{app}"""; WorkingDir: "{app}"; IconFilename: "{app}\receiver.ico"
+Name: "{autodesktop}\STEAMDECK MIDI Receiver 2"; Filename: "{app}\STEAMDECK-MIDI-RECEIVER-2-Tray.exe"; Parameters: "--listen 0.0.0.0:45123 --map ""{app}\config\windows_midi_map.json"" --midi-port DECK_IN --feedback-port DECK_OUT --timeout 2.0 --ui-port 7723 --tray"; WorkingDir: "{app}"; IconFilename: "{app}\receiver.ico"
+Name: "{group}\STEAMDECK MIDI Receiver 2"; Filename: "{app}\STEAMDECK-MIDI-RECEIVER-2-Tray.exe"; Parameters: "--listen 0.0.0.0:45123 --map ""{app}\config\windows_midi_map.json"" --midi-port DECK_IN --feedback-port DECK_OUT --timeout 2.0 --ui-port 7723 --tray"; WorkingDir: "{app}"; IconFilename: "{app}\receiver.ico"
 
 [Run]
-Filename: "powershell.exe"; Parameters: "-ExecutionPolicy Bypass -NoLogo -NoExit -File ""{app}\scripts\start_installed_receiver_v2.ps1"" -InstallRoot ""{app}"""; Description: "Launch STEAMDECK MIDI Receiver 2"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\STEAMDECK-MIDI-RECEIVER-2-Tray.exe"; Parameters: "--listen 0.0.0.0:45123 --map ""{app}\config\windows_midi_map.json"" --midi-port DECK_IN --feedback-port DECK_OUT --timeout 2.0 --ui-port 7723 --tray"; Description: "Launch STEAMDECK MIDI Receiver 2"; Flags: nowait postinstall skipifsilent

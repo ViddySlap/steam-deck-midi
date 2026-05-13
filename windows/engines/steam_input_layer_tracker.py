@@ -84,6 +84,17 @@ class SteamInputLayerTrackerEngine(Engine):
         self._flash_ccs: set[int] = {int(c) for c in flash_ccs}
         select_cc_raw = config.get("select_cc")
         self._select_cc: int | None = int(select_cc_raw) if select_cc_raw is not None else None
+        # The bumper layer publisher in receiver.py echoes the SELECT CC on
+        # channels 0/1 to broadcast layer state. Without this per-CC channel
+        # filter, those echoes are interpreted as additional SELECT presses
+        # and double-toggle the tracker (net zero change). The real SELECT
+        # button arrives on a distinct channel (2 in the factory map); set
+        # this to that channel to ignore publisher echoes. None means
+        # "any channel", which is only safe when the publisher cannot fire.
+        select_cc_channel_raw = config.get("select_cc_channel")
+        self._select_cc_channel: int | None = (
+            int(select_cc_channel_raw) if select_cc_channel_raw is not None else None
+        )
 
         # SteamInput's MIDI channel — engines that emit per-layer notes
         # all share one channel. None means "any channel" (useful while
@@ -172,6 +183,11 @@ class SteamInputLayerTrackerEngine(Engine):
         elif cc in self._flash_ccs:
             self._set_layer(LAYER_FLASH, now)
         elif self._select_cc is not None and cc == self._select_cc:
+            if (
+                self._select_cc_channel is not None
+                and channel != self._select_cc_channel
+            ):
+                return
             self._toggle_layer(now)
 
     # ------------------------------------------------------------------
@@ -226,6 +242,7 @@ class SteamInputLayerTrackerEngine(Engine):
             "chaser_ccs": sorted(self._chaser_ccs),
             "flash_ccs": sorted(self._flash_ccs),
             "select_cc": self._select_cc,
+            "select_cc_channel": self._select_cc_channel,
             "channel": self._channel,
             "note_events_total": self._note_events_total,
             "cc_events_total": self._cc_events_total,

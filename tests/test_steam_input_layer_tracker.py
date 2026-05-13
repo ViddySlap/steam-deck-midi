@@ -136,6 +136,66 @@ class SteamInputLayerTrackerCcFallbackTests(unittest.TestCase):
         self.assertEqual(engine.current_layer, LAYER_CHASER)
 
 
+class SteamInputLayerTrackerSelectCcChannelTests(unittest.TestCase):
+    """The bumper layer publisher in receiver.py echoes the SELECT CC on
+    channels 0/1 to broadcast layer state. Without per-CC channel filtering,
+    those echoes are interpreted as additional SELECT presses and double-
+    toggle the tracker (net zero change). `select_cc_channel` filters the
+    select-CC match to the channel of the real SELECT button so publisher
+    echoes are ignored.
+    """
+
+    def test_select_cc_channel_filters_publisher_echo(self) -> None:
+        # Channel-agnostic tracker — listens to any channel — but pinned to
+        # ch 2 for select_cc specifically (the channel the real SELECT
+        # button arrives on, distinct from publisher echo channels 0/1).
+        engine, _ = _tracker(channel=None, select_cc=79, select_cc_channel=2)
+        # Publisher echo on ch 0: must be ignored.
+        engine.on_midi_in(channel=0, cc=79, value=127, now=0.0)
+        self.assertEqual(engine.current_layer, LAYER_CHASER)
+        # Publisher echo on ch 1: must be ignored.
+        engine.on_midi_in(channel=1, cc=79, value=127, now=0.0)
+        self.assertEqual(engine.current_layer, LAYER_CHASER)
+        # Real SELECT press on ch 2: toggles.
+        engine.on_midi_in(channel=2, cc=79, value=127, now=0.0)
+        self.assertEqual(engine.current_layer, LAYER_FLASH)
+
+    def test_select_cc_channel_none_preserves_legacy_behavior(self) -> None:
+        # When select_cc_channel is None, any channel matches (backward
+        # compatible with configs predating the filter).
+        engine, _ = _tracker(channel=None, select_cc=79, select_cc_channel=None)
+        engine.on_midi_in(channel=0, cc=79, value=127, now=0.0)
+        self.assertEqual(engine.current_layer, LAYER_FLASH)
+
+    def test_select_cc_channel_does_not_filter_per_layer_ccs(self) -> None:
+        # The channel filter applies only to select_cc, not to
+        # chaser_ccs/flash_ccs. Those are absolute layer signals and
+        # should still match on any channel.
+        engine, _ = _tracker(
+            channel=None,
+            chaser_ccs=[20],
+            flash_ccs=[24],
+            select_cc=79,
+            select_cc_channel=2,
+        )
+        engine.on_midi_in(channel=0, cc=24, value=127, now=0.0)
+        self.assertEqual(engine.current_layer, LAYER_FLASH)
+        engine.on_midi_in(channel=1, cc=20, value=127, now=0.0)
+        self.assertEqual(engine.current_layer, LAYER_CHASER)
+
+    def test_double_toggle_reproduces_without_channel_filter(self) -> None:
+        # This is the bug. Without the filter, simulating the receiver's
+        # publisher echo (ch 1 CC 79 value 127) + raw SELECT (ch 2 CC 79
+        # value 127) double-toggles the tracker, leaving net state
+        # unchanged.
+        engine, _ = _tracker(channel=None, select_cc=79, select_cc_channel=None)
+        # Publisher echo: chaser -> flash.
+        engine.on_midi_in(channel=1, cc=79, value=127, now=0.0)
+        # Raw SELECT: flash -> chaser. Net zero.
+        engine.on_midi_in(channel=2, cc=79, value=127, now=0.0)
+        self.assertEqual(engine.current_layer, LAYER_CHASER)
+
+
 class SteamInputLayerTrackerObserverTests(unittest.TestCase):
     def test_observer_fires_on_layer_change(self) -> None:
         engine, _ = _tracker()
