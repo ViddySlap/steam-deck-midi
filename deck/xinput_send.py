@@ -6,6 +6,7 @@ import argparse
 import array
 import ctypes
 import ctypes.util
+import errno
 import fcntl
 import json
 import queue
@@ -17,14 +18,93 @@ import termios
 import threading
 import time
 from dataclasses import dataclass
+from pathlib import Path
 
 from protocol.messages import encode_action_event, encode_axis_event, encode_heartbeat_event
 
 
 HEARTBEAT_INTERVAL_SECONDS = 0.5
 AXIS_MIN_INTERVAL = 1.0 / 60.0
-HIDRAW_DEVICE = "/dev/hidraw2"
 _HIDIOCSFEATURE = (1 << 30) | (65 << 16) | (0x48 << 8) | 0x06
+# HIDIOCGRAWINFO = _IOR('H', 0x03, struct hidraw_devinfo) — 8 bytes (u32 bustype, s16 vendor, s16 product)
+_HIDIOCGRAWINFO = (2 << 30) | (8 << 16) | (0x48 << 8) | 0x03
+
+STEAM_DECK_CONTROLLER_HID_ID = "0003:000028DE:00001205"
+STEAM_DECK_CONTROLLER_VENDOR = 0x28DE
+STEAM_DECK_CONTROLLER_PRODUCT = 0x1205
+# `/input2` is the gamepad USB interface descriptor; `g0103` is HID_GROUP_STEAM
+# (set by the hid-steam kernel driver only on the gamepad interface). Both
+# survive hidraw-index reshuffle after suspend/resume or USB topology changes.
+STEAM_DECK_CONTROLLER_GAMEPAD_PHYS_SUFFIX = "/input2"
+STEAM_DECK_CONTROLLER_GAMEPAD_GROUP = "g0103"
+HIDRAW_OPEN_MAX_ATTEMPTS = 5
+HIDRAW_OPEN_RETRY_SECONDS = 0.2
+
+
+class HidrawDiscoveryError(RuntimeError):
+    """Raised when no Steam Deck controller gamepad hidraw can be located."""
+
+
+def _parse_uevent(path: Path) -> dict[str, str]:
+    try:
+        text = path.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return {}
+    out: dict[str, str] = {}
+    for line in text.splitlines():
+        if "=" in line:
+            k, _, v = line.partition("=")
+            out[k.strip()] = v.strip()
+    return out
+
+
+def _hidraw_matches_steam_gamepad(uevent: dict[str, str]) -> bool:
+    return (
+        uevent.get("HID_ID") == STEAM_DECK_CONTROLLER_HID_ID
+        and uevent.get("HID_PHYS", "").endswith(STEAM_DECK_CONTROLLER_GAMEPAD_PHYS_SUFFIX)
+        and STEAM_DECK_CONTROLLER_GAMEPAD_GROUP in uevent.get("MODALIAS", "")
+    )
+
+
+def discover_controller_hidraw(sysfs_root: str = "/sys/class/hidraw") -> tuple[str, dict[str, str]]:
+    """Find /dev/hidrawN for the Steam Deck controller gamepad interface.
+
+    Matches on (HID_ID == Valve Steam Deck Controller) AND (HID_PHYS endswith /input2)
+    AND (MODALIAS contains g0103 = HID_GROUP_STEAM). All three are baked into the
+    controller firmware or set by the hid-steam driver, so the match is index-independent.
+
+    Returns (device_path, uevent_dict). Raises HidrawDiscoveryError on no match,
+    with a diagnostic listing every hidraw we saw.
+    """
+    root = Path(sysfs_root)
+    try:
+        entries = sorted(root.iterdir())
+    except OSError as exc:
+        raise HidrawDiscoveryError(f"cannot read {sysfs_root}: {exc}") from exc
+    seen: list[tuple[str, dict[str, str]]] = []
+    matches: list[tuple[str, dict[str, str]]] = []
+    for entry in entries:
+        if not entry.name.startswith("hidraw"):
+            continue
+        uevent = _parse_uevent(entry / "device" / "uevent")
+        seen.append((entry.name, uevent))
+        if _hidraw_matches_steam_gamepad(uevent):
+            matches.append((entry.name, uevent))
+    if not matches:
+        diag = "\n".join(
+            f"  {name}: HID_ID={uevent.get('HID_ID', '?')}"
+            f" HID_PHYS={uevent.get('HID_PHYS', '?')}"
+            f" MODALIAS={uevent.get('MODALIAS', '?')}"
+            for name, uevent in seen
+        ) or "  (none)"
+        raise HidrawDiscoveryError(
+            "no Steam Deck controller gamepad hidraw found; scanned:\n" + diag
+        )
+    if len(matches) > 1:
+        extras = ", ".join(f"/dev/{n}" for n, _ in matches[1:])
+        print(f"warning: multiple gamepad hidraw matches; using /dev/{matches[0][0]}, also saw {extras}", flush=True)
+    name, uevent = matches[0]
+    return f"/dev/{name}", uevent
 
 GENERIC_EVENT = 35
 XI_RAW_KEY_PRESS = 13
@@ -266,8 +346,9 @@ class HidrawAxisReader:
         ("GYRO_ROLL", 34),
     ]
 
-    def __init__(self, deadzone: int = 1000) -> None:
+    def __init__(self, deadzone: int = 1000, device_path: str | None = None) -> None:
         self._deadzone = deadzone
+        self._device_path = device_path
         self._queue: queue.Queue[AxisSample] = queue.Queue()
         self._stop = threading.Event()
         self._file: object = None
@@ -279,21 +360,70 @@ class HidrawAxisReader:
         self._gyro_last_time: float = 0.0
 
     def __enter__(self) -> "HidrawAxisReader":
-        self._file = open(HIDRAW_DEVICE, "rb+", buffering=0)
-        self._send_feature([0x00, 0x81])
-        self._send_feature(
-            [
-                0x00, 0x87, 15,
-                7, 6, 0,
-                8, 6, 0,
-                52, 0xFF, 0xFF,
-                53, 0xFF, 0xFF,
-                71, 0, 0,
-            ]
+        if self._device_path is not None:
+            device_path = self._device_path
+            uevent: dict[str, str] = {}
+        else:
+            device_path, uevent = discover_controller_hidraw()
+        last_error: BaseException | None = None
+        for attempt in range(HIDRAW_OPEN_MAX_ATTEMPTS):
+            fd = None
+            try:
+                fd = open(device_path, "rb+", buffering=0)
+                self._verify_open_fd(fd, device_path)
+                self._file = fd
+                self._send_feature([0x00, 0x81])
+                self._send_feature(
+                    [
+                        0x00, 0x87, 15,
+                        7, 6, 0,
+                        8, 6, 0,
+                        52, 0xFF, 0xFF,
+                        53, 0xFF, 0xFF,
+                        71, 0, 0,
+                    ]
+                )
+            except OSError as exc:
+                self._file = None
+                if fd is not None:
+                    try:
+                        fd.close()
+                    except OSError:
+                        pass
+                last_error = exc
+                if exc.errno in (errno.EPIPE, errno.ENODEV, errno.EIO, errno.ENOENT):
+                    time.sleep(HIDRAW_OPEN_RETRY_SECONDS)
+                    continue
+                raise
+            print(
+                f"opened controller hidraw: {device_path}"
+                f" (HID_NAME={uevent.get('HID_NAME', '?')},"
+                f" HID_PHYS={uevent.get('HID_PHYS', '?')},"
+                f" attempt={attempt + 1})",
+                flush=True,
+            )
+            self._thread = threading.Thread(target=self._read_loop, daemon=True)
+            self._thread.start()
+            return self
+        raise OSError(
+            last_error.errno if isinstance(last_error, OSError) else errno.EIO,
+            f"failed to open controller hidraw {device_path} after"
+            f" {HIDRAW_OPEN_MAX_ATTEMPTS} attempts: {last_error}",
         )
-        self._thread = threading.Thread(target=self._read_loop, daemon=True)
-        self._thread.start()
-        return self
+
+    def _verify_open_fd(self, fd, device_path: str) -> None:
+        buf = array.array("B", [0] * 8)
+        fcntl.ioctl(fd, _HIDIOCGRAWINFO, buf, True)
+        bustype, vendor_s, product_s = struct.unpack("=Ihh", buf.tobytes())
+        vendor = vendor_s & 0xFFFF
+        product = product_s & 0xFFFF
+        if vendor != STEAM_DECK_CONTROLLER_VENDOR or product != STEAM_DECK_CONTROLLER_PRODUCT:
+            raise OSError(
+                errno.ENODEV,
+                f"{device_path} opened OK but reports vendor=0x{vendor:04x}"
+                f" product=0x{product:04x}, not Steam Deck Controller"
+                f" (0x{STEAM_DECK_CONTROLLER_VENDOR:04x}:0x{STEAM_DECK_CONTROLLER_PRODUCT:04x})",
+            )
 
     def __exit__(self, exc_type: object, exc: object, tb: object) -> bool:
         self._stop.set()
@@ -614,6 +744,8 @@ def run_sender(
 
     axis_last_sent: dict[str, float] = {}
     gyro_enabled = False
+    gyro_state_broadcast_at = 0.0  # forces immediate broadcast on first loop iter
+    GYRO_STATE_BROADCAST_INTERVAL_SECONDS = 0.5
 
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
         with TerminalNoEcho():
@@ -662,6 +794,17 @@ def run_sender(
                                         else:
                                             axis_reader.disable_gyro()
                                             print("gyro off")
+                                        # Broadcast new absolute state to the bridge
+                                        send_axis(
+                                            sock,
+                                            resolved_target,
+                                            action="GYRO_STATE_NOW",
+                                            value=(1 if gyro_enabled else 0),
+                                            seq=seq,
+                                        )
+                                        seq += 1
+                                        next_heartbeat_at = now + HEARTBEAT_INTERVAL_SECONDS
+                                        gyro_state_broadcast_at = now
                                     send_action(
                                         sock,
                                         resolved_target,
@@ -688,6 +831,20 @@ def run_sender(
                                 seq += 1
                                 axis_last_sent[axis_action] = now
                                 next_heartbeat_at = now + HEARTBEAT_INTERVAL_SECONDS
+
+                        # Periodic gyro-state heartbeat. Runs even during heavy
+                        # xi2 activity so the bridge always converges on the
+                        # deck's true gyro state within GYRO_STATE_BROADCAST_INTERVAL.
+                        if now - gyro_state_broadcast_at >= GYRO_STATE_BROADCAST_INTERVAL_SECONDS:
+                            send_axis(
+                                sock,
+                                resolved_target,
+                                action="GYRO_STATE_NOW",
+                                value=(1 if gyro_enabled else 0),
+                                seq=seq,
+                            )
+                            seq += 1
+                            gyro_state_broadcast_at = now
 
                     selector.close()
                 except KeyboardInterrupt:
