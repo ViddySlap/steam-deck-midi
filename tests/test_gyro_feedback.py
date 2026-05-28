@@ -1,40 +1,34 @@
-"""Tests for GyroFeedbackEngine (v2 gyro router).
+"""Tests for GyroFeedbackEngine (v3 — L4-gated gyro MIDI emission).
 
-The engine routes the deck's three gyro axes to Resolume OSC targets,
-with an L4 tap-vs-hold gesture selecting the mode:
+The engine turns the deck's gyro axes into MIDI CC streams the operator
+can MIDI-learn in Resolume, gated by the L4 button:
 
-- L4 TAP (down then up within tap_threshold): toggles `feedback_active`.
-- L4 HOLD (down, still down past tap_threshold per a tick): enters SHAKE
-  routing; release zeros SHAKE and reverts to feedback routing.
+- L4 TAP (down then up within tap_threshold): toggles `midi_active`.
+  While active, gyro emits SET 1 (config `toggle`).
+- L4 HOLD (down, still down past tap_threshold per a tick): emits SET 2
+  (config `hold`, different CCs/channel) while held; release reverts to
+  the current toggle state.
 
 Inputs:
-- L4 = CC 74 ch2 via on_midi_in (down=127, up=0).
-- GYRO_PITCH / GYRO_ROLL via on_axis_event as RAW bipolar values
-  (about [-750, 750]). GYRO_YAW is spare.
+- L4 = CC 74 ch2 via on_midi_in (down>=64, up=0).
+- GYRO_PITCH / GYRO_ROLL / GYRO_YAW via on_axis_event as RAW bipolar
+  values (about [-750, 750]).
 
-Covers:
-- TAP toggles feedback on/off.
-- Toggle-OFF writes opacity 0.0 once, then mutes.
-- feedback-on PITCH->opacity and ROLL->transform-X normalization.
-- HOLD enters SHAKE routing (PITCH->distance, ROLL->frequency).
-- HOLD release zeros SHAKE and reverts to feedback routing.
-- Bipolar normalization midpoint + endpoints.
-- Legacy GYRO_STATE_NOW axis event tolerated (no crash, no state flip).
-- Registry registration sanity.
+There is NO OSC: every output is a MIDI control_change on the bridge's
+MIDI-out (DECK_IN).
 """
 
 from __future__ import annotations
 
 import unittest
 
-from tests._engine_helpers import FakeOscClient, RecordingMidiOut
-from windows.engines.gyro_feedback import GyroFeedbackEngine
+from tests._engine_helpers import RecordingMidiOut
+from windows.engines.gyro_feedback import GyroFeedbackEngine, _scale_midi
 from windows.engines.registry import _ENGINE_TYPES
 
-OPACITY_PATH = "/composition/layers/11/master"
-TRANSFORM_X_PATH = "/composition/layers/11/video/transform/position-x"
-SHAKE_DISTANCE_PATH = "/shake/distance/test"
-SHAKE_FREQUENCY_PATH = "/shake/frequency/test"
+TOGGLE_CH = 15
+HOLD_CH = 13
+PITCH_CC, ROLL_CC, YAW_CC = 122, 124, 123
 
 
 class _Clock:
@@ -50,254 +44,261 @@ class _Clock:
         self.t += seconds
 
 
-def _build(*, bind: bool = True, **overrides):
+def _build(**overrides):
     cfg = {
         "name": "Gyro Feedback",
         "type": "gyro_feedback",
         "l4_cc": 74,
         "l4_channel": 2,
         "tap_threshold_ms": 200,
-        "initial_feedback_active": False,
+        "initial_midi_active": False,
         "axes": {"pitch": "GYRO_PITCH", "yaw": "GYRO_YAW", "roll": "GYRO_ROLL"},
         "raw_min": -750,
         "raw_max": 750,
-        "out_min": 0.0,
-        "out_max": 1.0,
-        "targets": {
-            "feedback_opacity": {"path": OPACITY_PATH},
-            "feedback_transform_x": {"path": TRANSFORM_X_PATH},
-            "shake_distance": {"path": SHAKE_DISTANCE_PATH},
-            "shake_frequency": {"path": SHAKE_FREQUENCY_PATH},
-        },
+        "out_min": 0,
+        "out_max": 127,
+        "deadzone": 100,
+        "toggle": {"channel": TOGGLE_CH, "pitch": PITCH_CC, "roll": ROLL_CC, "yaw": YAW_CC},
+        "hold": {"channel": HOLD_CH, "pitch": PITCH_CC, "roll": ROLL_CC, "yaw": YAW_CC},
     }
     cfg.update(overrides)
-    osc = FakeOscClient()
     clock = _Clock()
-    engine = GyroFeedbackEngine(
-        name="Gyro Feedback",
-        config=cfg,
-        midi_out=RecordingMidiOut(),
-        clock=clock,
-        osc_client=osc,
-    )
-    if bind:
-        engine.bind_registry(registry=None)
-        osc.sends.clear()  # discard the boot rest-state writes
-    return engine, osc, clock
+    midi = RecordingMidiOut()
+    engine = GyroFeedbackEngine(name="Gyro Feedback", config=cfg, midi_out=midi, clock=clock)
+    return engine, midi, clock
 
 
-def _values_for(osc: FakeOscClient, path: str) -> list:
-    return [v for p, v in osc.sends if p == path]
+def _ccs(midi, *, channel=None, cc=None):
+    return [
+        (ch, c, v)
+        for (kind, ch, c, v) in midi.events
+        if kind == "cc" and (channel is None or ch == channel) and (cc is None or c == cc)
+    ]
+
+
+def _tap(engine, clock, *, hold_ms: float = 50.0) -> None:
+    engine.on_midi_in(channel=2, cc=74, value=127, now=clock())
+    clock.advance(hold_ms / 1000.0)
+    engine.on_midi_in(channel=2, cc=74, value=0, now=clock())
+
+
+def _hold(engine, clock, *, hold_ms: float = 250.0) -> None:
+    engine.on_midi_in(channel=2, cc=74, value=127, now=clock())
+    clock.advance(hold_ms / 1000.0)
+    engine.tick(now=clock())
+
+
+class TestScaling(unittest.TestCase):
+    def test_endpoints_and_center(self) -> None:
+        self.assertEqual(_scale_midi(750, -750, 750, 0, 127, 100), 127)
+        self.assertEqual(_scale_midi(-750, -750, 750, 0, 127, 100), 0)
+        self.assertEqual(_scale_midi(0, -750, 750, 0, 127, 100), 64)
+
+    def test_deadzone_holds_center(self) -> None:
+        self.assertEqual(_scale_midi(50, -750, 750, 0, 127, 100), 64)
+        self.assertEqual(_scale_midi(-99, -750, 750, 0, 127, 100), 64)
+
+    def test_clamps_beyond_range(self) -> None:
+        # Unbounded accumulator past raw_max still clamps to the endpoint.
+        self.assertEqual(_scale_midi(5000, -750, 750, 0, 127, 100), 127)
+        self.assertEqual(_scale_midi(-5000, -750, 750, 0, 127, 100), 0)
 
 
 class TestBootState(unittest.TestCase):
-    def test_bind_registry_writes_idle_rest_state(self) -> None:
-        engine, osc, _ = _build(bind=False)
-        engine.bind_registry(registry=None)
-        # Opacity 0.0 once + SHAKE distance/frequency zeroed.
-        self.assertIn((OPACITY_PATH, 0.0), osc.sends)
-        self.assertIn((SHAKE_DISTANCE_PATH, 0.0), osc.sends)
-        self.assertIn((SHAKE_FREQUENCY_PATH, 0.0), osc.sends)
+    def test_no_emit_until_l4(self) -> None:
+        engine, midi, clock = _build()
+        self.assertFalse(engine.status()["midi_active"])
+        # Gyro streaming while inactive must produce NO MIDI.
+        engine.on_axis_event("GYRO_PITCH", 500, now=clock())
+        engine.on_axis_event("GYRO_ROLL", -300, now=clock())
+        self.assertEqual(midi.events, [])
 
 
 class TestTapToggle(unittest.TestCase):
-    def _tap(self, engine, clock, *, hold_ms: float = 50.0) -> None:
-        engine.on_midi_in(channel=2, cc=74, value=127, now=clock())
-        clock.advance(hold_ms / 1000.0)
-        engine.on_midi_in(channel=2, cc=74, value=0, now=clock())
-
-    def test_tap_toggles_feedback_on(self) -> None:
+    def test_tap_toggles_on(self) -> None:
         engine, _, clock = _build()
-        self.assertFalse(engine.status()["feedback_active"])
-        self._tap(engine, clock)
-        self.assertTrue(engine.status()["feedback_active"])
+        _tap(engine, clock)
+        self.assertTrue(engine.status()["midi_active"])
         self.assertEqual(engine.status()["tap_count"], 1)
 
-    def test_second_tap_toggles_feedback_off(self) -> None:
-        engine, osc, clock = _build()
-        self._tap(engine, clock)
-        # Feed a gyro value so opacity is non-zero while feedback is on.
-        engine.on_axis_event("GYRO_PITCH", 750, now=clock())
-        self.assertEqual(_values_for(osc, OPACITY_PATH)[-1], 1.0)
-        # Second tap toggles OFF -> opacity 0.0 written once.
-        self._tap(engine, clock)
-        self.assertFalse(engine.status()["feedback_active"])
-        self.assertEqual(_values_for(osc, OPACITY_PATH)[-1], 0.0)
+    def test_tap_on_recenters_and_emits_center(self) -> None:
+        engine, midi, clock = _build()
+        engine.on_axis_event("GYRO_PITCH", 600, now=clock())  # ignored (inactive)
+        self.assertEqual(midi.events, [])
+        _tap(engine, clock)  # ON -> recenter at the current raw, emit center
+        # Current position becomes the zero reference -> midpoint 64.
+        self.assertEqual(_ccs(midi, channel=TOGGLE_CH, cc=PITCH_CC)[-1], (TOGGLE_CH, PITCH_CC, 64))
+        midi.events.clear()
+        # Tilting +/- a full raw span from the recenter point covers 0..127.
+        engine.on_axis_event("GYRO_PITCH", 600 + 750, now=clock())
+        self.assertEqual(_ccs(midi, channel=TOGGLE_CH, cc=PITCH_CC)[-1], (TOGGLE_CH, PITCH_CC, 127))
+        engine.on_axis_event("GYRO_PITCH", 600 - 750, now=clock())
+        self.assertEqual(_ccs(midi, channel=TOGGLE_CH, cc=PITCH_CC)[-1], (TOGGLE_CH, PITCH_CC, 0))
 
-    def test_toggle_off_then_gyro_is_muted(self) -> None:
-        engine, osc, clock = _build()
-        self._tap(engine, clock)  # ON
-        self._tap(engine, clock)  # OFF -> writes opacity 0.0 once
-        osc.sends.clear()
-        # Gyro events while muted must produce NO writes.
+    def test_recenter_defeats_drift(self) -> None:
+        # A drifted accumulator (raw far outside [-750,750]) would clamp a
+        # non-recentered set to an endpoint. Recenter restores full travel.
+        engine, midi, clock = _build()
+        engine.on_axis_event("GYRO_PITCH", 4000, now=clock())  # drifted way out
+        _tap(engine, clock)  # recenter at 4000 -> center
+        self.assertEqual(_ccs(midi, channel=TOGGLE_CH, cc=PITCH_CC)[-1], (TOGGLE_CH, PITCH_CC, 64))
+        midi.events.clear()
+        engine.on_axis_event("GYRO_PITCH", 4000 + 700, now=clock())  # full range still reachable
+        self.assertGreater(_ccs(midi, channel=TOGGLE_CH, cc=PITCH_CC)[-1][2], 120)
+
+    def test_recenter_off_keeps_absolute(self) -> None:
+        engine, midi, clock = _build(recenter_on_activate=False)
+        engine.on_axis_event("GYRO_PITCH", 750, now=clock())
+        _tap(engine, clock)  # no recenter -> absolute raw 750 -> 127
+        self.assertEqual(_ccs(midi, channel=TOGGLE_CH, cc=PITCH_CC)[-1], (TOGGLE_CH, PITCH_CC, 127))
+
+    def test_axis_emits_toggle_set_when_active(self) -> None:
+        engine, midi, clock = _build()
+        _tap(engine, clock)
+        midi.events.clear()
+        engine.on_axis_event("GYRO_PITCH", 750, now=clock())
+        engine.on_axis_event("GYRO_ROLL", -750, now=clock())
+        engine.on_axis_event("GYRO_YAW", 425, now=clock())  # 0.5 of travel -> 95
+        self.assertEqual(_ccs(midi, channel=TOGGLE_CH, cc=PITCH_CC)[-1], (TOGGLE_CH, PITCH_CC, 127))
+        self.assertEqual(_ccs(midi, channel=TOGGLE_CH, cc=ROLL_CC)[-1], (TOGGLE_CH, ROLL_CC, 0))
+        self.assertEqual(_ccs(midi, channel=TOGGLE_CH, cc=YAW_CC)[-1], (TOGGLE_CH, YAW_CC, 95))
+        # Nothing on the hold channel.
+        self.assertEqual(_ccs(midi, channel=HOLD_CH), [])
+
+    def test_second_tap_off_then_muted(self) -> None:
+        engine, midi, clock = _build()
+        _tap(engine, clock)  # ON
+        _tap(engine, clock)  # OFF
+        self.assertFalse(engine.status()["midi_active"])
+        midi.events.clear()
         engine.on_axis_event("GYRO_PITCH", 500, now=clock())
         engine.on_axis_event("GYRO_ROLL", -300, now=clock())
-        self.assertEqual(osc.sends, [])
+        self.assertEqual(midi.events, [])
+
+    def test_dedupe_identical_values(self) -> None:
+        engine, midi, clock = _build()
+        _tap(engine, clock)
+        midi.events.clear()
+        engine.on_axis_event("GYRO_PITCH", 750, now=clock())
+        engine.on_axis_event("GYRO_PITCH", 750, now=clock())  # identical -> deduped
+        self.assertEqual(len(_ccs(midi, channel=TOGGLE_CH, cc=PITCH_CC)), 1)
 
     def test_wrong_cc_and_channel_ignored(self) -> None:
         engine, _, clock = _build()
         engine.on_midi_in(channel=2, cc=99, value=127, now=clock())
         engine.on_midi_in(channel=15, cc=74, value=127, now=clock())
-        # No L4 gesture registered.
         self.assertFalse(engine.status()["l4_down"])
-        self.assertFalse(engine.status()["feedback_active"])
-
-
-class TestFeedbackRouting(unittest.TestCase):
-    def _turn_feedback_on(self, engine, clock) -> None:
-        engine.on_midi_in(channel=2, cc=74, value=127, now=clock())
-        clock.advance(0.05)
-        engine.on_midi_in(channel=2, cc=74, value=0, now=clock())
-
-    def test_pitch_to_opacity_normalization(self) -> None:
-        engine, osc, clock = _build()
-        self._turn_feedback_on(engine, clock)
-        osc.sends.clear()
-        # raw +750 -> 1.0
-        engine.on_axis_event("GYRO_PITCH", 750, now=clock())
-        self.assertAlmostEqual(_values_for(osc, OPACITY_PATH)[-1], 1.0, places=4)
-        # raw 0 -> midpoint 0.5
-        engine.on_axis_event("GYRO_PITCH", 0, now=clock())
-        self.assertAlmostEqual(_values_for(osc, OPACITY_PATH)[-1], 0.5, places=4)
-        # raw -750 -> 0.0
-        engine.on_axis_event("GYRO_PITCH", -750, now=clock())
-        self.assertAlmostEqual(_values_for(osc, OPACITY_PATH)[-1], 0.0, places=4)
-
-    def test_roll_to_transform_x_normalization(self) -> None:
-        engine, osc, clock = _build()
-        self._turn_feedback_on(engine, clock)
-        osc.sends.clear()
-        engine.on_axis_event("GYRO_ROLL", 375, now=clock())
-        # 375 of [-750,750] -> 0.75
-        self.assertAlmostEqual(_values_for(osc, TRANSFORM_X_PATH)[-1], 0.75, places=4)
-
-    def test_yaw_is_spare_no_output(self) -> None:
-        engine, osc, clock = _build()
-        self._turn_feedback_on(engine, clock)
-        osc.sends.clear()
-        engine.on_axis_event("GYRO_YAW", 500, now=clock())
-        self.assertEqual(osc.sends, [])
+        self.assertFalse(engine.status()["midi_active"])
 
 
 class TestHoldMode(unittest.TestCase):
-    def test_hold_enters_shake_routing(self) -> None:
-        engine, osc, clock = _build()
-        engine.on_midi_in(channel=2, cc=74, value=127, now=clock())
-        # Advance past the 200ms tap threshold; tick should arm hold.
-        clock.advance(0.25)
-        engine.tick(now=clock())
+    def test_hold_emits_hold_set_not_toggle(self) -> None:
+        engine, midi, clock = _build()
+        _hold(engine, clock)
         self.assertTrue(engine.status()["hold_mode_active"])
         self.assertEqual(engine.status()["hold_enter_count"], 1)
-        osc.sends.clear()
-        # Now gyro routes to SHAKE, not feedback.
+        midi.events.clear()
         engine.on_axis_event("GYRO_PITCH", 750, now=clock())
         engine.on_axis_event("GYRO_ROLL", -750, now=clock())
-        self.assertAlmostEqual(_values_for(osc, SHAKE_DISTANCE_PATH)[-1], 1.0, places=4)
-        self.assertAlmostEqual(_values_for(osc, SHAKE_FREQUENCY_PATH)[-1], 0.0, places=4)
-        # No feedback writes while holding.
-        self.assertEqual(_values_for(osc, OPACITY_PATH), [])
+        self.assertEqual(_ccs(midi, channel=HOLD_CH, cc=PITCH_CC)[-1], (HOLD_CH, PITCH_CC, 127))
+        self.assertEqual(_ccs(midi, channel=HOLD_CH, cc=ROLL_CC)[-1], (HOLD_CH, ROLL_CC, 0))
+        # No emission on the toggle channel while holding.
+        self.assertEqual(_ccs(midi, channel=TOGGLE_CH), [])
 
-    def test_hold_release_zeros_shake_and_reverts(self) -> None:
-        engine, osc, clock = _build()
-        # Feedback ON first so we can verify the revert restores it.
-        engine.on_midi_in(channel=2, cc=74, value=127, now=clock())
-        clock.advance(0.05)
-        engine.on_midi_in(channel=2, cc=74, value=0, now=clock())
-        self.assertTrue(engine.status()["feedback_active"])
-        # Now HOLD L4.
-        engine.on_midi_in(channel=2, cc=74, value=127, now=clock())
-        clock.advance(0.25)
-        engine.tick(now=clock())
+    def test_hold_release_reverts_to_toggle(self) -> None:
+        engine, midi, clock = _build()
+        _tap(engine, clock)  # toggle ON
+        self.assertTrue(engine.status()["midi_active"])
+        _hold(engine, clock)  # now hold
         self.assertTrue(engine.status()["hold_mode_active"])
-        # Push SHAKE values up while holding.
-        engine.on_axis_event("GYRO_PITCH", 750, now=clock())
-        engine.on_axis_event("GYRO_ROLL", 750, now=clock())
-        osc.sends.clear()
-        # Release the hold.
-        engine.on_midi_in(channel=2, cc=74, value=0, now=clock())
+        engine.on_axis_event("GYRO_PITCH", 750, now=clock())  # to hold set
+        midi.events.clear()
+        engine.on_midi_in(channel=2, cc=74, value=0, now=clock())  # release
         self.assertFalse(engine.status()["hold_mode_active"])
         self.assertEqual(engine.status()["hold_exit_count"], 1)
-        # SHAKE explicitly zeroed on exit.
-        self.assertEqual(_values_for(osc, SHAKE_DISTANCE_PATH)[-1], 0.0)
-        self.assertEqual(_values_for(osc, SHAKE_FREQUENCY_PATH)[-1], 0.0)
-        # Reverted to feedback routing (feedback still ON).
-        self.assertTrue(engine.status()["feedback_active"])
+        # Toggle still active -> resumes emitting on the toggle channel.
+        self.assertTrue(engine.status()["midi_active"])
+        engine.on_axis_event("GYRO_ROLL", 750, now=clock())
+        self.assertEqual(_ccs(midi, channel=TOGGLE_CH, cc=ROLL_CC)[-1], (TOGGLE_CH, ROLL_CC, 127))
+
+    def test_hold_independent_of_toggle(self) -> None:
+        engine, midi, clock = _build()
+        # Toggle is OFF; hold should still emit set 2 while held...
+        _hold(engine, clock)
+        midi.events.clear()
+        engine.on_axis_event("GYRO_PITCH", 750, now=clock())
+        self.assertEqual(_ccs(midi, channel=HOLD_CH, cc=PITCH_CC)[-1], (HOLD_CH, PITCH_CC, 127))
+        # ...and on release, with toggle still OFF, nothing further emits.
+        engine.on_midi_in(channel=2, cc=74, value=0, now=clock())
+        midi.events.clear()
         engine.on_axis_event("GYRO_PITCH", 0, now=clock())
-        self.assertAlmostEqual(_values_for(osc, OPACITY_PATH)[-1], 0.5, places=4)
+        self.assertEqual(midi.events, [])
 
     def test_hold_does_not_count_as_tap(self) -> None:
         engine, _, clock = _build()
-        engine.on_midi_in(channel=2, cc=74, value=127, now=clock())
-        clock.advance(0.25)
-        engine.tick(now=clock())
+        _hold(engine, clock)
         engine.on_midi_in(channel=2, cc=74, value=0, now=clock())
-        # A hold must not toggle feedback.
-        self.assertFalse(engine.status()["feedback_active"])
+        self.assertFalse(engine.status()["midi_active"])
         self.assertEqual(engine.status()["tap_count"], 0)
 
-    def test_release_past_threshold_without_tick_zeros_shake(self) -> None:
-        """Defensive: if down->up exceeds threshold but no tick armed hold,
-        engine treats it as a hold-release (zeros SHAKE), not a tap."""
-        engine, osc, clock = _build()
+    def test_release_past_threshold_without_tick_is_not_tap(self) -> None:
+        engine, _, clock = _build()
         engine.on_midi_in(channel=2, cc=74, value=127, now=clock())
-        clock.advance(0.30)  # well past 200ms, but no tick() called
-        osc.sends.clear()
+        clock.advance(0.30)  # past 200ms, but no tick() armed hold
         engine.on_midi_in(channel=2, cc=74, value=0, now=clock())
-        # Not a tap.
-        self.assertFalse(engine.status()["feedback_active"])
+        self.assertFalse(engine.status()["midi_active"])
         self.assertEqual(engine.status()["tap_count"], 0)
-        # SHAKE zeroed defensively.
-        self.assertIn(SHAKE_DISTANCE_PATH, [p for p, _ in osc.sends])
 
 
 class TestLegacyTolerance(unittest.TestCase):
-    def test_gyro_state_now_ignored_no_crash_no_flip(self) -> None:
-        engine, osc, clock = _build()
-        before = engine.status()["feedback_active"]
-        # Legacy ping with value 1 (would have meant "gyro on" in v1).
+    def test_gyro_state_now_ignored(self) -> None:
+        engine, midi, clock = _build()
+        _tap(engine, clock)  # active, so a routed axis WOULD emit
+        midi.events.clear()
         engine.on_axis_event("GYRO_STATE_NOW", 1, now=clock())
         engine.on_axis_event("GYRO_STATE_NOW", 0, now=clock())
-        # State unchanged, counted, no OSC emitted.
-        self.assertEqual(engine.status()["feedback_active"], before)
         self.assertEqual(engine.status()["ignored_legacy_count"], 2)
-        self.assertEqual(osc.sends, [])
+        self.assertEqual(midi.events, [])
 
 
 class TestCustomMapping(unittest.TestCase):
-    def test_custom_out_range_applied(self) -> None:
-        engine, osc, clock = _build(
-            targets={
-                "feedback_opacity": {
-                    "path": OPACITY_PATH,
-                    "out_min": 0.2,
-                    "out_max": 0.8,
-                },
-                "feedback_transform_x": {"path": TRANSFORM_X_PATH},
-                "shake_distance": {"path": SHAKE_DISTANCE_PATH},
-                "shake_frequency": {"path": SHAKE_FREQUENCY_PATH},
-            }
+    def test_custom_cc_sets(self) -> None:
+        engine, midi, clock = _build(
+            toggle={"channel": 11, "pitch": 10, "roll": 11, "yaw": 12},
+            hold={"channel": 10, "pitch": 20, "roll": 21, "yaw": 22},
         )
-        engine.on_midi_in(channel=2, cc=74, value=127, now=clock())
-        clock.advance(0.05)
-        engine.on_midi_in(channel=2, cc=74, value=0, now=clock())
-        osc.sends.clear()
-        # raw +750 -> out_max 0.8
+        _tap(engine, clock)
+        midi.events.clear()
         engine.on_axis_event("GYRO_PITCH", 750, now=clock())
-        self.assertAlmostEqual(_values_for(osc, OPACITY_PATH)[-1], 0.8, places=4)
-        # raw 0 -> midpoint of [0.2, 0.8] = 0.5
-        engine.on_axis_event("GYRO_PITCH", 0, now=clock())
-        self.assertAlmostEqual(_values_for(osc, OPACITY_PATH)[-1], 0.5, places=4)
+        self.assertEqual(_ccs(midi, channel=11, cc=10)[-1], (11, 10, 127))
+
+    def test_custom_out_range(self) -> None:
+        engine, midi, clock = _build(out_min=0, out_max=100)
+        _tap(engine, clock)
+        midi.events.clear()
+        engine.on_axis_event("GYRO_PITCH", 750, now=clock())
+        self.assertEqual(_ccs(midi, channel=TOGGLE_CH, cc=PITCH_CC)[-1], (TOGGLE_CH, PITCH_CC, 100))
+
+    def test_per_axis_raw_range(self) -> None:
+        # pitch gets a tighter range (more sensitive); roll keeps the default.
+        engine, midi, clock = _build(axis_raw={"pitch": {"raw_min": -300, "raw_max": 300}})
+        _tap(engine, clock)  # recenter at 0
+        midi.events.clear()
+        engine.on_axis_event("GYRO_PITCH", 300, now=clock())  # full range at 300
+        self.assertEqual(_ccs(midi, channel=TOGGLE_CH, cc=PITCH_CC)[-1], (TOGGLE_CH, PITCH_CC, 127))
+        engine.on_axis_event("GYRO_ROLL", 300, now=clock())  # still mid-ish on default range
+        roll_v = _ccs(midi, channel=TOGGLE_CH, cc=ROLL_CC)[-1][2]
+        self.assertTrue(64 < roll_v < 127)
 
     def test_custom_tap_threshold(self) -> None:
         engine, _, clock = _build(tap_threshold_ms=500)
         self.assertEqual(engine.status()["tap_threshold_ms"], 500.0)
-        # A 300ms hold is now a TAP (below the 500ms threshold).
         engine.on_midi_in(channel=2, cc=74, value=127, now=clock())
         clock.advance(0.30)
         engine.tick(now=clock())  # 300ms < 500ms -> hold NOT armed
         self.assertFalse(engine.status()["hold_mode_active"])
         engine.on_midi_in(channel=2, cc=74, value=0, now=clock())
-        self.assertTrue(engine.status()["feedback_active"])
+        self.assertTrue(engine.status()["midi_active"])  # 300ms = tap
 
 
 class TestRegistryIntegration(unittest.TestCase):
