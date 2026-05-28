@@ -1,75 +1,63 @@
-"""Gyro router engine (v2 — bridge-side OSC fan-out).
+"""Gyro MIDI-gate engine (v3 — L4-gated gyro MIDI emission).
 
-Routes the Steam Deck's three continuous gyro axes (PITCH / YAW / ROLL)
-to Resolume targets over OSC, with an L4 tap-vs-hold gesture selecting
-the routing mode. There is NO NestDrop coupling and NO REST: every
-output is an OSC write to Resolume (ADR-0001 — REST on the live path
-drops frames and loses MIDI).
+Turns the Steam Deck's three continuous gyro axes (PITCH / YAW / ROLL)
+into MIDI CC streams that the operator can MIDI-learn to ANY Resolume
+parameter on the fly during a show. There is NO OSC and NO NestDrop
+coupling: every output is a MIDI CC emitted on the bridge's MIDI-out
+(DECK_IN), so Resolume's MIDI-learn sees it.
+
+## Why L4 gates emission
+
+The deck streams gyro continuously (always-on). If those CCs flowed to
+Resolume all the time, MIDI-learn would always grab the gyro and the
+gyro would constantly nudge every param it's mapped to. So the bridge
+gates emission behind the L4 button: gyro CCs only flow when the
+operator asks for them.
 
 ## Inputs
 
 Gyro axes arrive on `on_axis_event` as RAW bipolar integers (about
-[-750, 750]); the bridge's axis-to-cc mapping is for the MIDI-out path
-and is irrelevant here — engines see the pre-mapping raw value:
+[-750, 750] at the deadzone-scaled edges; the raw value is an unbounded
+position accumulator, so it can drift well past that — see raw_max /
+recenter tuning):
 
-  GYRO_PITCH  (deck CC 122 ch15 on the MIDI-out side)
-  GYRO_YAW    (deck CC 123 ch15)   -- spare in both modes
-  GYRO_ROLL   (deck CC 124 ch15)
+  GYRO_PITCH  (deck-side CC 122 ch15 historically)
+  GYRO_YAW    (deck-side CC 123 ch15)
+  GYRO_ROLL   (deck-side CC 124 ch15)
 
-L4 arrives on `on_midi_in` as CC 74 ch2 (down=127, up=0), fanned out
-from the receiver's `_emit_cc`. A short tap toggles feedback routing;
-a hold past the tap threshold routes gyro to the PUNCH PACK V4 SHAKE
-effect while held.
+L4 arrives on `on_midi_in` as CC 74 ch2 (down>=64, up=0), fanned out
+from the receiver. A short tap toggles the latched emission set; a hold
+past the tap threshold emits a SECOND set while held.
 
-## State
+## L4 gestures
 
-  feedback_active : bool — gyro routes to the Layer-11 feedback layer.
-  hold_mode_active: bool — L4 held past TAP_THRESHOLD; gyro routes to
-                           SHAKE (overrides feedback routing while held).
+  tap  (down then up < tap_threshold) : toggle `midi_active` (latched).
+                                        While active, gyro emits SET 1.
+  hold (down past tap_threshold)      : `hold_active` while held. Gyro
+                                        emits SET 2 (different CCs /
+                                        channel). Overrides SET 1 while
+                                        held; on release reverts to the
+                                        current `midi_active` state.
 
-## L4 tap-vs-hold (tick-driven, mirrors flash_blast)
+The two gestures are independent and composable: hold works whether or
+not the toggle is latched on.
 
-  on L4 down (127): record _l4_down_time, arm a pending-hold timer.
-  tick: if L4 still down and (now - _l4_down_time) >= tap_threshold and
-        not yet in hold mode -> enter hold mode (start SHAKE routing).
-  on L4 up (0):
-        elapsed = now - _l4_down_time
-        if hold_mode_active        -> exit hold (zero SHAKE, revert to
-                                      feedback routing for the current
-                                      feedback_active state).
-        elif elapsed < tap_threshold -> TAP: toggle feedback_active.
-        else (>= threshold but hold never entered, e.g. a missed tick)
-                                   -> treat as hold-release: ensure SHAKE
-                                      zeroed + revert. Defensive.
+## Emission
 
-## Routing fan-out
+  hold_active            : axes -> SET 2 CCs (config `hold`)
+  midi_active (not hold) : axes -> SET 1 CCs (config `toggle`)
+  neither                : nothing emitted. We do NOT reset the learned
+                           param — it holds its last value, which is the
+                           natural MIDI behaviour.
 
-  hold False + feedback True : PITCH -> Layer-11 master opacity
-                               ROLL  -> Layer-11 transform-X position
-  hold False + feedback False: outputs muted. On the toggle-OFF edge we
-                               write opacity 0.0 ONCE so the layer is
-                               cleanly hidden; we then stop writing.
-  hold True                  : PITCH -> SHAKE distance
-                               ROLL  -> SHAKE frequency  (YAW spare)
-                               On hold EXIT, SHAKE distance + frequency
-                               are explicitly zeroed so the effect does
-                               not latch.
-
-## Normalization
-
-`/composition/...` paths take 0..1 floats. PITCH->opacity and
-ROLL->transform-X are bipolar [-750, 750] mapped to [0, 1] centered at
-0.5 (raw 0 -> 0.5). SHAKE distance/frequency reuse the same bipolar
-mapping by default (config-overridable per target). All ranges and
-target paths are config-driven because the live OSC paths get
-verified/corrected on the rig (wave-3).
+Each axis maps RAW -> [out_min, out_max] (default 0..127) with a
+center-deadzone, and is deduped so we don't spam identical CC values at
+the gyro's ~58 Hz event rate.
 
 ## Legacy GYRO_STATE_NOW tolerance
 
-The not-yet-updated Deck sender still emits a GYRO_STATE_NOW axis
-event. The bridge now owns feedback state via the L4 tap, so this
-engine IGNORES GYRO_STATE_NOW entirely: it neither crashes nor lets
-the legacy ping flip `feedback_active`.
+An older deck sender emitted a GYRO_STATE_NOW axis ping. This engine
+ignores it entirely (never crashes, never lets it flip state).
 """
 
 from __future__ import annotations
@@ -79,7 +67,6 @@ import time
 from typing import Any, Callable
 
 from windows.engines.base import Engine
-from windows.engines.osc_client import OscClient
 from windows.midi import MidiOut
 
 LOGGER = logging.getLogger(__name__)
@@ -93,98 +80,94 @@ DEFAULT_AXIS_ROLL = "GYRO_ROLL"
 
 # --- Timing -----------------------------------------------------------
 DEFAULT_TAP_THRESHOLD_MS = 200.0
-TICK_INTERVAL_SECONDS = 0.02  # 50 Hz — fine-grained enough for a 200ms gate
+TICK_INTERVAL_SECONDS = 0.02  # 50 Hz — fine enough for a 200ms gate
 
-# --- OSC output -------------------------------------------------------
-DEFAULT_OSC_HOST = "127.0.0.1"
-DEFAULT_OSC_PORT = 7000
-
-# --- Default target paths (ALL UNVERIFIED placeholders for wave-3) ----
-# Layer-11 master opacity. Believed correct (matches the v1 feedback
-# layer path), but re-confirm against the live comp.
-DEFAULT_FEEDBACK_OPACITY_PATH = "/composition/layers/11/master"
-# Layer-11 transform-X position. UNVERIFIED — Resolume transform param
-# naming varies by version (position-x vs anchor, etc.).
-DEFAULT_FEEDBACK_TRANSFORM_X_PATH = (
-    "/composition/layers/11/video/transform/position-x"
-)
-# SHAKE distance / frequency — Wire-dashboard OSC paths, UNKNOWN.
-# Clearly-named placeholders to be discovered live.
-DEFAULT_SHAKE_DISTANCE_PATH = "/shake/distance/UNVERIFIED"
-DEFAULT_SHAKE_FREQUENCY_PATH = "/shake/frequency/UNVERIFIED"
-
-# --- Default value mapping --------------------------------------------
-# Raw bipolar gyro range. Centered map: raw_min -> out_min, 0 -> mid,
-# raw_max -> out_max.
+# --- Value mapping ----------------------------------------------------
 DEFAULT_RAW_MIN = -750.0
 DEFAULT_RAW_MAX = 750.0
-DEFAULT_OUT_MIN = 0.0
-DEFAULT_OUT_MAX = 1.0
+DEFAULT_OUT_MIN = 0
+DEFAULT_OUT_MAX = 127
+DEFAULT_DEADZONE = 100.0
+
+# --- Default CC sets (config-overridable) -----------------------------
+# Set 1 = tap-toggle (latched). Set 2 = hold (momentary), on a dedicated
+# free channel so its CC numbers can mirror set 1 without colliding.
+DEFAULT_TOGGLE = {"channel": 15, "pitch": 122, "roll": 124, "yaw": 123}
+DEFAULT_HOLD = {"channel": 13, "pitch": 122, "roll": 124, "yaw": 123}
 
 
-def _normalize_bipolar(
-    raw: float, raw_min: float, raw_max: float, out_min: float, out_max: float
-) -> float:
-    """Map a raw bipolar value to [out_min, out_max], clamped.
+def _scale_midi(
+    raw: float,
+    raw_min: float,
+    raw_max: float,
+    out_min: int,
+    out_max: int,
+    deadzone: float,
+) -> int:
+    """Map a raw bipolar gyro value to an integer MIDI value, clamped.
 
-    Linear shift-and-scale: raw_min -> out_min, raw_max -> out_max. With
-    the symmetric default range a raw value of 0 lands exactly at the
-    midpoint (0.5 for a 0..1 output), which is the documented PITCH=>0.5
-    rest behaviour.
+    A symmetric center-deadzone holds the output at its midpoint while the
+    raw value is within +/-deadzone of 0, then remaps the remaining travel
+    linearly to each half of the output range (no jump at the deadzone
+    edge). Assumes a roughly symmetric raw range centered on 0.
     """
-    span = raw_max - raw_min
-    if span == 0.0:
-        return out_min
-    frac = (raw - raw_min) / span
-    frac = max(0.0, min(1.0, frac))
-    return out_min + frac * (out_max - out_min)
+    center = (out_min + out_max) / 2.0
+    span = max(raw_max - deadzone, 1e-6)
+    if raw > deadzone:
+        frac = min(1.0, (raw - deadzone) / span)
+        out = center + frac * (out_max - center)
+    elif raw < -deadzone:
+        frac = min(1.0, (-raw - deadzone) / span)
+        out = center - frac * (center - out_min)
+    else:
+        out = center
+    return int(round(max(out_min, min(out_max, out))))
 
 
-class _Target:
-    """One OSC output target: a path plus its raw->out mapping range.
+class _CcSet:
+    """One channel + per-axis CC numbers, with per-CC last-sent dedupe and
+    a per-axis center offset.
 
-    Caches the last value sent so the engine doesn't spam identical
-    frames (mirrors flash_blast's opacity dedupe intent).
+    The center offset is the raw gyro position captured when the set is
+    activated (recenter). Emission scales `raw - center`, so "where the
+    deck is at activation" maps to the output midpoint and the operator
+    gets the full travel from there. This defeats the unbounded gyro
+    accumulator's drift: a latched set can't slowly clamp itself off,
+    because every activation re-zeros it.
     """
 
-    __slots__ = ("path", "raw_min", "raw_max", "out_min", "out_max", "last_sent")
+    __slots__ = ("channel", "pitch_cc", "roll_cc", "yaw_cc", "_last", "_center")
 
-    def __init__(
-        self,
-        path: str,
-        raw_min: float,
-        raw_max: float,
-        out_min: float,
-        out_max: float,
-    ) -> None:
-        self.path = path
-        self.raw_min = raw_min
-        self.raw_max = raw_max
-        self.out_min = out_min
-        self.out_max = out_max
-        self.last_sent: float | None = None
+    def __init__(self, cfg: dict, defaults: dict) -> None:
+        self.channel = int(cfg.get("channel", defaults["channel"]))
+        self.pitch_cc = cfg.get("pitch", defaults["pitch"])
+        self.roll_cc = cfg.get("roll", defaults["roll"])
+        self.yaw_cc = cfg.get("yaw", defaults["yaw"])
+        self._last: dict[int, int] = {}
+        self._center: dict[str, float] = {"pitch": 0.0, "roll": 0.0, "yaw": 0.0}
 
-    def value_for(self, raw: float) -> float:
-        return _normalize_bipolar(
-            raw, self.raw_min, self.raw_max, self.out_min, self.out_max
-        )
+    def cc_for(self, axis: str) -> int | None:
+        return {"pitch": self.pitch_cc, "roll": self.roll_cc, "yaw": self.yaw_cc}.get(axis)
 
+    def center_for(self, axis: str) -> float:
+        return self._center.get(axis, 0.0)
 
-def _target_from_config(
-    cfg: dict, default_path: str, defaults: dict
-) -> _Target:
-    """Build a _Target from a config sub-dict.
+    def recenter(self, pitch: float, roll: float, yaw: float) -> None:
+        self._center = {"pitch": pitch, "roll": roll, "yaw": yaw}
 
-    The sub-dict may carry `path` and any of raw_min/raw_max/out_min/
-    out_max; anything missing falls back to the engine-level defaults.
-    """
-    return _Target(
-        path=str(cfg.get("path", default_path)),
-        raw_min=float(cfg.get("raw_min", defaults["raw_min"])),
-        raw_max=float(cfg.get("raw_max", defaults["raw_max"])),
-        out_min=float(cfg.get("out_min", defaults["out_min"])),
-        out_max=float(cfg.get("out_max", defaults["out_max"])),
-    )
+    def changed(self, cc: int, value: int) -> bool:
+        if self._last.get(cc) == value:
+            return False
+        self._last[cc] = value
+        return True
+
+    def clear_dedupe(self) -> None:
+        self._last.clear()
+
+    def as_dict(self) -> dict:
+        return {"channel": self.channel, "pitch": self.pitch_cc,
+                "roll": self.roll_cc, "yaw": self.yaw_cc,
+                "center": dict(self._center)}
 
 
 class GyroFeedbackEngine(Engine):
@@ -197,24 +180,25 @@ class GyroFeedbackEngine(Engine):
         midi_out: MidiOut,
         *,
         clock: Callable[[], float] = time.monotonic,
-        osc_client: OscClient | None = None,
-        # Back-compat: the v1 engine + old tests passed `resolume_osc`.
-        # Accept it as an alias so nothing downstream breaks.
-        resolume_osc: OscClient | None = None,
+        # Back-compat: older callers/tests passed an osc client. Accept and
+        # ignore so construction never breaks; this engine emits MIDI only.
+        osc_client: Any = None,
+        resolume_osc: Any = None,
         **_legacy: Any,
     ) -> None:
         super().__init__(name, config, midi_out, clock=clock)
 
-        # --- Inputs ---
+        # --- L4 input ---
         self._l4_cc = int(config.get("l4_cc", config.get("trigger_cc", DEFAULT_L4_CC)))
         self._l4_channel = int(
             config.get("l4_channel", config.get("trigger_channel", DEFAULT_L4_CHANNEL))
         )
+
+        # --- Axis action names ---
         axes = config.get("axes", {})
         self._axis_pitch = str(axes.get("pitch", DEFAULT_AXIS_PITCH))
         self._axis_yaw = str(axes.get("yaw", DEFAULT_AXIS_YAW))
         self._axis_roll = str(axes.get("roll", DEFAULT_AXIS_ROLL))
-        # Legacy deck-side state ping we must tolerate + ignore.
         self._legacy_state_axis = str(
             config.get("legacy_state_axis_action", "GYRO_STATE_NOW")
         )
@@ -224,57 +208,50 @@ class GyroFeedbackEngine(Engine):
             float(config.get("tap_threshold_ms", DEFAULT_TAP_THRESHOLD_MS)) / 1000.0
         )
 
-        # --- OSC client ---
-        osc_cfg = config.get("osc", {})
-        self._osc = osc_client or resolume_osc or OscClient(
-            host=str(osc_cfg.get("host", DEFAULT_OSC_HOST)),
-            port=int(osc_cfg.get("port", DEFAULT_OSC_PORT)),
-        )
+        # --- Value mapping ---
+        self._raw_min = float(config.get("raw_min", DEFAULT_RAW_MIN))
+        self._raw_max = float(config.get("raw_max", DEFAULT_RAW_MAX))
+        self._out_min = int(config.get("out_min", DEFAULT_OUT_MIN))
+        self._out_max = int(config.get("out_max", DEFAULT_OUT_MAX))
+        self._deadzone = float(config.get("deadzone", DEFAULT_DEADZONE))
+        # Recenter each set on activation so the drifting accumulator can't
+        # clamp a latched set off. ON by default (matches the old deck's
+        # re-zero-on-L4 behaviour).
+        self._recenter = bool(config.get("recenter_on_activate", True))
+        # Per-axis raw-range override. The same raw window feels different
+        # per physical axis (forward/back tilt covers fewer raw units than a
+        # left/right twist for a comfortable gesture), so each axis can carry
+        # its own raw_min/raw_max. A smaller range = more sensitive = less
+        # tilt for full travel. Applies to BOTH sets. Falls back to the
+        # engine-level raw_min/raw_max.
+        axis_raw = config.get("axis_raw", {})
+        self._axis_raw: dict[str, tuple[float, float]] = {}
+        for _ax in ("pitch", "roll", "yaw"):
+            _o = axis_raw.get(_ax, {})
+            self._axis_raw[_ax] = (
+                float(_o.get("raw_min", self._raw_min)),
+                float(_o.get("raw_max", self._raw_max)),
+            )
 
-        # --- Targets ---
-        defaults = {
-            "raw_min": float(config.get("raw_min", DEFAULT_RAW_MIN)),
-            "raw_max": float(config.get("raw_max", DEFAULT_RAW_MAX)),
-            "out_min": float(config.get("out_min", DEFAULT_OUT_MIN)),
-            "out_max": float(config.get("out_max", DEFAULT_OUT_MAX)),
-        }
-        targets = config.get("targets", {})
-        self._feedback_opacity = _target_from_config(
-            targets.get("feedback_opacity", {}),
-            DEFAULT_FEEDBACK_OPACITY_PATH,
-            defaults,
-        )
-        self._feedback_transform_x = _target_from_config(
-            targets.get("feedback_transform_x", {}),
-            DEFAULT_FEEDBACK_TRANSFORM_X_PATH,
-            defaults,
-        )
-        self._shake_distance = _target_from_config(
-            targets.get("shake_distance", {}),
-            DEFAULT_SHAKE_DISTANCE_PATH,
-            defaults,
-        )
-        self._shake_frequency = _target_from_config(
-            targets.get("shake_frequency", {}),
-            DEFAULT_SHAKE_FREQUENCY_PATH,
-            defaults,
-        )
+        # --- CC sets ---
+        self._toggle = _CcSet(config.get("toggle", {}), DEFAULT_TOGGLE)
+        self._hold = _CcSet(config.get("hold", {}), DEFAULT_HOLD)
 
         # --- State ---
-        self._feedback_active = bool(config.get("initial_feedback_active", False))
+        self._midi_active = bool(config.get("initial_midi_active", False))
         self._hold_mode_active = False
-        # L4 gesture bookkeeping.
         self._l4_down = False
         self._l4_down_time: float | None = None
-        # Latest raw axis values (updated on every axis event).
         self._pitch_raw = 0.0
         self._roll_raw = 0.0
+        self._yaw_raw = 0.0
 
-        # --- Counters (status/debugging) ---
+        # --- Counters (status/debug) ---
         self._tap_count = 0
         self._hold_enter_count = 0
         self._hold_exit_count = 0
         self._ignored_legacy_count = 0
+        self._emit_count = 0
 
     # ------------------------------------------------------------------
     # Lifecycle
@@ -282,33 +259,12 @@ class GyroFeedbackEngine(Engine):
     def tick_interval_seconds(self) -> float | None:
         return TICK_INTERVAL_SECONDS
 
-    def bind_registry(self, registry) -> None:
-        """Establish the idle rest state.
-
-        Feedback boots inactive, so write opacity 0.0 once so the layer
-        starts hidden. SHAKE outputs are zeroed so a stale comp value
-        doesn't latch.
-        """
-        self._send(self._feedback_opacity, self._feedback_opacity.out_min)
-        self._zero_shake()
-
-    def shutdown(self) -> None:
-        try:
-            self._osc.close()
-        except Exception:
-            pass
-
     def refresh(self) -> None:
-        """Re-assert the idle rest state (dev escape hatch).
-
-        Resets feedback OFF + zeroes SHAKE, matching boot. Lets a
-        dashboard recover from any drift without a bridge restart. No
-        REST is involved.
-        """
-        self._feedback_active = False
+        """Dev escape hatch: force emission OFF (no MIDI), clear dedupe."""
+        self._midi_active = False
         self._hold_mode_active = False
-        self._send(self._feedback_opacity, self._feedback_opacity.out_min, force=True)
-        self._zero_shake(force=True)
+        self._toggle.clear_dedupe()
+        self._hold.clear_dedupe()
 
     # ------------------------------------------------------------------
     # MIDI input — L4 tap/hold
@@ -316,13 +272,12 @@ class GyroFeedbackEngine(Engine):
     def on_midi_in(self, channel: int, cc: int, value: int, now: float) -> None:
         if channel != self._l4_channel or cc != self._l4_cc:
             return
-        if value >= 64:  # L4 down (sender uses 127; tolerate any "on")
+        if value >= 64:
             self._on_l4_down(now)
-        else:  # L4 up (0)
+        else:
             self._on_l4_up(now)
 
     def _on_l4_down(self, now: float) -> None:
-        # Idempotent: ignore a repeated down with no intervening up.
         if self._l4_down:
             return
         self._l4_down = True
@@ -337,21 +292,16 @@ class GyroFeedbackEngine(Engine):
         elapsed = (now - down_time) if down_time is not None else 0.0
 
         if self._hold_mode_active:
-            # Release of a hold: exit SHAKE, revert to feedback routing.
             self._exit_hold()
             return
         if elapsed >= self._tap_threshold:
-            # Threshold reached but hold never armed (e.g. tick missed
-            # between down and up). Treat as hold-release defensively:
-            # make sure SHAKE is zeroed and feedback routing is current.
+            # Threshold reached but hold never armed (missed tick). Treat
+            # defensively as a hold-release: ensure we're not stuck holding.
             self._exit_hold()
             return
-        # Genuine tap: toggle feedback routing.
-        self._toggle_feedback()
+        self._toggle_midi()
 
     def tick(self, now: float) -> None:
-        # Hold ENTRY is timer-driven: if L4 is still down past the tap
-        # threshold and we haven't entered hold yet, enter it now.
         if (
             self._l4_down
             and not self._hold_mode_active
@@ -364,109 +314,91 @@ class GyroFeedbackEngine(Engine):
     # Axis input — gyro routing
 
     def on_axis_event(self, action: str, value: int, now: float) -> None:
-        # Tolerate the legacy deck-side state ping: never crash, never
-        # let it touch feedback state. The bridge owns feedback via L4.
         if action == self._legacy_state_axis:
             self._ignored_legacy_count += 1
             return
-
         if action == self._axis_pitch:
             self._pitch_raw = float(value)
         elif action == self._axis_roll:
             self._roll_raw = float(value)
         elif action == self._axis_yaw:
-            # YAW is spare in both modes. Track nothing, route nothing.
-            return
+            self._yaw_raw = float(value)
         else:
             return
-
         self._route_gyro()
 
     def _route_gyro(self) -> None:
         if self._hold_mode_active:
-            # SHAKE routing: PITCH -> distance, ROLL -> frequency.
-            self._send(self._shake_distance, self._shake_distance.value_for(self._pitch_raw))
-            self._send(self._shake_frequency, self._shake_frequency.value_for(self._roll_raw))
-            return
-        if self._feedback_active:
-            # Feedback routing: PITCH -> opacity, ROLL -> transform-X.
-            self._send(
-                self._feedback_opacity,
-                self._feedback_opacity.value_for(self._pitch_raw),
+            self._emit_set(self._hold)
+        elif self._midi_active:
+            self._emit_set(self._toggle)
+        # else: emit nothing (param holds its last learned value).
+
+    def _emit_set(self, cc_set: _CcSet) -> None:
+        for axis, raw in (
+            ("pitch", self._pitch_raw),
+            ("roll", self._roll_raw),
+            ("yaw", self._yaw_raw),
+        ):
+            cc = cc_set.cc_for(axis)
+            if cc is None:
+                continue
+            rmin, rmax = self._axis_raw.get(axis, (self._raw_min, self._raw_max))
+            value = _scale_midi(
+                raw - cc_set.center_for(axis), rmin, rmax,
+                self._out_min, self._out_max, self._deadzone,
             )
-            self._send(
-                self._feedback_transform_x,
-                self._feedback_transform_x.value_for(self._roll_raw),
-            )
-            return
-        # feedback OFF + not holding: outputs muted. Do nothing (the
-        # toggle-OFF edge already wrote opacity 0.0 once).
+            if cc_set.changed(cc, value):
+                try:
+                    self._midi_out.control_change(cc_set.channel, cc, value)
+                    self._emit_count += 1
+                except Exception:
+                    LOGGER.exception(
+                        "%s: MIDI emit failed ch%s cc%s", self.name, cc_set.channel, cc
+                    )
 
     # ------------------------------------------------------------------
     # State transitions
 
-    def _toggle_feedback(self) -> None:
-        self._feedback_active = not self._feedback_active
+    def _toggle_midi(self) -> None:
+        self._midi_active = not self._midi_active
         self._tap_count += 1
-        if self._feedback_active:
-            # Toggle ON: immediately route the current gyro position so
-            # the layer reflects the live tilt without waiting for the
+        if self._midi_active:
+            # Recenter on the current gyro position so "where the deck is
+            # now" maps to the output midpoint, then emit it immediately so
+            # the learned param settles at center without waiting for the
             # next axis event.
-            self._route_gyro()
-            LOGGER.info("%s: feedback toggled ON", self.name)
+            if self._recenter:
+                self._toggle.recenter(self._pitch_raw, self._roll_raw, self._yaw_raw)
+            self._toggle.clear_dedupe()
+            self._emit_set(self._toggle)
+            LOGGER.info("%s: gyro MIDI toggled ON (set 1, ch%s)",
+                        self.name, self._toggle.channel)
         else:
-            # Toggle OFF: write opacity 0.0 ONCE so the layer is cleanly
-            # hidden, then stop writing (muted).
-            self._send(self._feedback_opacity, self._feedback_opacity.out_min)
-            LOGGER.info("%s: feedback toggled OFF (opacity 0)", self.name)
+            self._toggle.clear_dedupe()
+            LOGGER.info("%s: gyro MIDI toggled OFF", self.name)
 
     def _enter_hold(self) -> None:
         self._hold_mode_active = True
         self._hold_enter_count += 1
-        # Start routing gyro to SHAKE from the current position.
-        self._route_gyro()
-        LOGGER.info("%s: hold mode ENTER (gyro -> SHAKE)", self.name)
+        if self._recenter:
+            self._hold.recenter(self._pitch_raw, self._roll_raw, self._yaw_raw)
+        self._hold.clear_dedupe()
+        self._emit_set(self._hold)
+        LOGGER.info("%s: hold mode ENTER (set 2, ch%s)", self.name, self._hold.channel)
 
     def _exit_hold(self) -> None:
         was_hold = self._hold_mode_active
         self._hold_mode_active = False
         if was_hold:
             self._hold_exit_count += 1
-        # Explicitly zero SHAKE so the effect doesn't latch. Force the
-        # write (bypass dedupe): a state-boundary guarantee that the
-        # SHAKE floor lands is worth one extra packet, and protects
-        # against any cached-value drift on the comp side.
-        self._zero_shake(force=True)
-        # Revert to feedback routing for the current feedback state.
-        if self._feedback_active:
-            self._route_gyro()
-        else:
-            # Feedback off: ensure the layer stays cleanly hidden.
-            self._send(self._feedback_opacity, self._feedback_opacity.out_min)
-        LOGGER.info("%s: hold mode EXIT (SHAKE zeroed)", self.name)
-
-    # ------------------------------------------------------------------
-    # OSC helpers
-
-    def _send(self, target: _Target, value: float, *, force: bool = False) -> None:
-        """Send a normalized float to an OSC target, deduped.
-
-        Skips the write when the value is unchanged from the last sent
-        value (unless `force`), to avoid spamming identical frames at
-        the gyro's high event rate.
-        """
-        clamped = float(value)
-        if not force and target.last_sent is not None and target.last_sent == clamped:
-            return
-        try:
-            self._osc.send(target.path, clamped)
-            target.last_sent = clamped
-        except Exception:
-            LOGGER.exception("%s: OSC send failed for %s", self.name, target.path)
-
-    def _zero_shake(self, *, force: bool = False) -> None:
-        self._send(self._shake_distance, self._shake_distance.out_min, force=force)
-        self._send(self._shake_frequency, self._shake_frequency.out_min, force=force)
+        self._hold.clear_dedupe()
+        # Revert to the latched toggle state: if still active, re-emit the
+        # current position on set 1 so it resumes cleanly.
+        if self._midi_active:
+            self._toggle.clear_dedupe()
+            self._emit_set(self._toggle)
+        LOGGER.info("%s: hold mode EXIT", self.name)
 
     # ------------------------------------------------------------------
     # Status
@@ -475,7 +407,7 @@ class GyroFeedbackEngine(Engine):
         return {
             "name": self.name,
             "type": self.type_name,
-            "feedback_active": self._feedback_active,
+            "midi_active": self._midi_active,
             "hold_mode_active": self._hold_mode_active,
             "l4_down": self._l4_down,
             "l4_cc": self._l4_cc,
@@ -486,14 +418,25 @@ class GyroFeedbackEngine(Engine):
                 "yaw": self._axis_yaw,
                 "roll": self._axis_roll,
             },
-            "targets": {
-                "feedback_opacity": self._feedback_opacity.path,
-                "feedback_transform_x": self._feedback_transform_x.path,
-                "shake_distance": self._shake_distance.path,
-                "shake_frequency": self._shake_frequency.path,
+            "value_map": {
+                "raw_min": self._raw_min,
+                "raw_max": self._raw_max,
+                "out_min": self._out_min,
+                "out_max": self._out_max,
+                "deadzone": self._deadzone,
+                "axis_raw": {ax: {"raw_min": r[0], "raw_max": r[1]} for ax, r in self._axis_raw.items()},
             },
+            "recenter_on_activate": self._recenter,
+            "raw_now": {
+                "pitch": self._pitch_raw,
+                "roll": self._roll_raw,
+                "yaw": self._yaw_raw,
+            },
+            "toggle_set": self._toggle.as_dict(),
+            "hold_set": self._hold.as_dict(),
             "tap_count": self._tap_count,
             "hold_enter_count": self._hold_enter_count,
             "hold_exit_count": self._hold_exit_count,
             "ignored_legacy_count": self._ignored_legacy_count,
+            "emit_count": self._emit_count,
         }
