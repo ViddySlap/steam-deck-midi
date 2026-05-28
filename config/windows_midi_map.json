@@ -105,30 +105,6 @@
       "cc": 21,
       "gesture": "long_press"
     },
-    "L_STICK_UP": {
-      "type": "note",
-      "channel": 0,
-      "note": 52,
-      "velocity": 127
-    },
-    "L_STICK_DOWN": {
-      "type": "note",
-      "channel": 0,
-      "note": 53,
-      "velocity": 127
-    },
-    "L_STICK_LEFT": {
-      "type": "note",
-      "channel": 0,
-      "note": 54,
-      "velocity": 127
-    },
-    "L_STICK_RIGHT": {
-      "type": "note",
-      "channel": 0,
-      "note": 55,
-      "velocity": 127
-    },
     "R_STICK_UP": {
       "type": "note",
       "channel": 0,
