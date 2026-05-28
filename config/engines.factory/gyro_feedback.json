@@ -2,19 +2,52 @@
   "name": "Gyro Feedback",
   "type": "gyro_feedback",
   "enabled": true,
-  "trigger_cc": 74,
-  "trigger_channel": 2,
-  "sprite_trigger_path": "/PresetID/Queue5/0",
-  "initial_sprite_active": true,
-  "nestdrop_osc": {
-    "host": "127.0.0.1",
-    "port": 8000
+  "l4_cc": 74,
+  "l4_channel": 2,
+  "tap_threshold_ms": 200,
+  "initial_feedback_active": false,
+  "legacy_state_axis_action": "GYRO_STATE_NOW",
+  "axes": {
+    "pitch": "GYRO_PITCH",
+    "yaw": "GYRO_YAW",
+    "roll": "GYRO_ROLL"
   },
-  "resolume_layer_path": "/composition/layers/11/master",
-  "resolume_layer_on_value": 1.0,
-  "resolume_layer_off_value": 0.0,
-  "resolume_osc": {
+  "osc": {
     "host": "127.0.0.1",
     "port": 7000
+  },
+  "raw_min": -750,
+  "raw_max": 750,
+  "out_min": 0.0,
+  "out_max": 1.0,
+  "targets": {
+    "feedback_opacity": {
+      "path": "/composition/layers/11/master",
+      "raw_min": -750,
+      "raw_max": 750,
+      "out_min": 0.0,
+      "out_max": 1.0
+    },
+    "feedback_transform_x": {
+      "path": "/composition/layers/11/video/transform/position-x",
+      "raw_min": -750,
+      "raw_max": 750,
+      "out_min": 0.0,
+      "out_max": 1.0
+    },
+    "shake_distance": {
+      "path": "/shake/distance/UNVERIFIED",
+      "raw_min": -750,
+      "raw_max": 750,
+      "out_min": 0.0,
+      "out_max": 1.0
+    },
+    "shake_frequency": {
+      "path": "/shake/frequency/UNVERIFIED",
+      "raw_min": -750,
+      "raw_max": 750,
+      "out_min": 0.0,
+      "out_max": 1.0
+    }
   }
 }
