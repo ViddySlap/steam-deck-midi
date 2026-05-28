@@ -80,11 +80,14 @@ CHANNEL_CC: dict[str, int] = {
     "video_black": 92,
     "logo_black": 93,
     "chaser_black": 94,
-    # gyro_feedback added 2026-05-28: dedicated channel for Layer 11
-    # (GYRO FEEDBACK) VIDDY-COLORISFV2 highlight + shadow. Slot 95 sits
-    # between the replace-blacks (92-94) and the resync trigger (99),
-    # outside the V-C-B pre-slim flood zone (50-59).
-    "gyro_feedback": 95,
+    # gyro highlight/shadow added 2026-05-28: split the former single
+    # gyro_feedback channel (CC 95) into two independent channels for Layer
+    # 11 (GYRO FEEDBACK) VIDDY-COLORISFV2's highlight and shadow color
+    # inputs. CCs 96/97 sit between the replace-blacks (92-94) and the
+    # resync trigger (99), outside the V-C-B pre-slim flood zone (50-59).
+    # CC 95 is now retired (was the combined gyro_feedback channel).
+    "gyro_highlight": 96,
+    "gyro_shadow": 97,
 }
 CHANNEL_ORDER = tuple(CHANNEL_CC.keys())
 GLOBAL_CHANNEL = "global"

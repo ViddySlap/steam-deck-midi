@@ -20,6 +20,12 @@ SHOCKWAVE_COLOR_PATH = (
     "/composition/layers/10/video/effects/shockwave/effect/flashcolor"
 )
 LOGO_HL_PATH = "/composition/video/effects/viddylut/effect/highlightcolor"
+GYRO_HL_PATH = (
+    "/composition/layers/11/video/effects/viddy-colorisfv2/effect/colors/highlight"
+)
+GYRO_SH_PATH = (
+    "/composition/layers/11/video/effects/viddy-colorisfv2/effect/colors/shadow"
+)
 
 
 def _build_engine(
@@ -134,6 +140,74 @@ class ChannelCcTests(unittest.TestCase):
     def test_unknown_cc_on_input_channel_ignored(self) -> None:
         engine, osc, _ = _build_engine()
         engine.on_midi_in(14, 70, 0, now=0.0)
+        self.assertEqual(osc.sends, [])
+
+
+class GyroChannelSplitTests(unittest.TestCase):
+    """The former single gyro_feedback channel (one CC, two consumers) is
+    split into two independent channels: gyro_highlight (CC 96) and
+    gyro_shadow (CC 97), each driving one consumer on Layer 11."""
+
+    def _build_gyro_engine(self):
+        return _build_engine(
+            config_overrides={
+                "channels": {
+                    "chaser": [
+                        {"osc_path": CHASER_COLOR_PATH, "format": "hex_rgba_string"}
+                    ],
+                    "gyro_highlight": [
+                        {
+                            "name": "VIDDY-COLOR ISF V2 gyro.Highlight",
+                            "osc_path": GYRO_HL_PATH,
+                            "format": "hex_rgba_string",
+                        }
+                    ],
+                    "gyro_shadow": [
+                        {
+                            "name": "VIDDY-COLOR ISF V2 gyro.Shadow",
+                            "osc_path": GYRO_SH_PATH,
+                            "format": "hex_rgba_string",
+                        }
+                    ],
+                }
+            }
+        )
+
+    def test_gyro_highlight_cc_96_writes_only_highlight(self) -> None:
+        engine, osc, _ = self._build_gyro_engine()
+        # CC 96 raw value 0 -> palette[0] = red.
+        engine.on_midi_in(14, 96, 0, now=0.0)
+        self.assertEqual(_writes(osc, GYRO_HL_PATH), ["#ff0000ff"])
+        # Shadow consumer must NOT be touched by the highlight CC.
+        self.assertEqual(_writes(osc, GYRO_SH_PATH), [])
+
+    def test_gyro_shadow_cc_97_writes_only_shadow(self) -> None:
+        engine, osc, _ = self._build_gyro_engine()
+        # CC 97 raw value 5 -> palette[5] = blue.
+        engine.on_midi_in(14, 97, 5, now=0.0)
+        self.assertEqual(_writes(osc, GYRO_SH_PATH), ["#0000ffff"])
+        self.assertEqual(_writes(osc, GYRO_HL_PATH), [])
+
+    def test_gyro_channels_are_independent(self) -> None:
+        engine, osc, _ = self._build_gyro_engine()
+        # Highlight to green (palette[3]), shadow to cyan (palette[4]).
+        engine.on_midi_in(14, 96, 3, now=0.0)
+        engine.on_midi_in(14, 97, 4, now=0.0)
+        self.assertEqual(_writes(osc, GYRO_HL_PATH), ["#00ff00ff"])
+        self.assertEqual(_writes(osc, GYRO_SH_PATH), ["#00ffffff"])
+        self.assertEqual(engine._channels["gyro_highlight"].active_index, 3)
+        self.assertEqual(engine._channels["gyro_shadow"].active_index, 4)
+
+    def test_gyro_channel_cc_assignments(self) -> None:
+        engine, _, _ = self._build_gyro_engine()
+        self.assertEqual(engine._channels["gyro_highlight"].cc, 96)
+        self.assertEqual(engine._channels["gyro_shadow"].cc, 97)
+
+    def test_old_gyro_feedback_channel_removed(self) -> None:
+        # The combined channel and its CC 95 no longer exist.
+        engine, osc, _ = self._build_gyro_engine()
+        self.assertNotIn("gyro_feedback", engine._channels)
+        engine.on_midi_in(14, 95, 0, now=0.0)  # retired CC -> no-op.
         self.assertEqual(osc.sends, [])
 
 
