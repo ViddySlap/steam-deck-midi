@@ -209,15 +209,6 @@
       "type": "note",
       "velocity": 127
     },
-    "L_STICK_X_AXIS": {
-      "cc_negative": 120,
-      "cc_positive": 118,
-      "channel": 15,
-      "curve": "linear",
-      "deadzone": 3500,
-      "input_max": 32767,
-      "type": "axis_split_cc"
-    },
     "L_TRIGGER_PRESSURE": {
       "cc": 1,
       "channel": 0,
@@ -235,15 +226,6 @@
       "input_range": [5500, 32767],
       "output_range": [0, 127],
       "type": "axis_to_cc"
-    },
-    "L_STICK_Y_AXIS": {
-      "cc_negative": 121,
-      "cc_positive": 119,
-      "channel": 15,
-      "curve": "linear",
-      "deadzone": 3500,
-      "input_max": 32767,
-      "type": "axis_split_cc"
     },
     "R1": {
       "channel": 0,
