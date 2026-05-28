@@ -40,7 +40,9 @@
     "video_highlight": [],
     "video_shadow": [],
     "logo_highlight": [],
-    "logo_shadow": []
+    "logo_shadow": [],
+    "gyro_highlight": [],
+    "gyro_shadow": []
   },
   "outputs": {
     "osc": {"host": "127.0.0.1", "port": 7000}
