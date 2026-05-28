@@ -1209,7 +1209,6 @@ def _autopilot_config() -> dict:
         "enabled": True,
         "update_hz": 30,
         "column_quantize": True,
-        "enable_override_poll": False,  # disable the worker thread in tests
         "tempo_source": {"kind": "midi_clock", "port": "PULSE_OUT", "ppqn": 24},
         "inputs": {
             "channel": 14,
@@ -1265,6 +1264,9 @@ def _make_autopilot(
         osc_client=osc_client,
         rng=_random.Random(0),
     )
+    # Mirror bind_registry: prime the one-shot clip cache from the fake REST
+    # comp so LINEAR/RANDOM enumeration works without a live beat-path REST read.
+    engine.refresh()
     return engine, midi, osc_client, rest_client
 
 

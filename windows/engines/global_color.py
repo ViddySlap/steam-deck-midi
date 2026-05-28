@@ -27,9 +27,11 @@ Channels:
 - chaser, video_highlight, video_shadow, logo_highlight, logo_shadow: each
   tracks an active palette index. On its CC, the engine writes
   palette[new_index] to every consumer in that channel's config.
-- global: stateless macro on CC 45. Fans current palette[new_index] to all
-  5 sub-channels' consumers, then discards. No persistent global state,
-  no sub-channel active-index updates.
+- global: "set all to" macro on CC 45. Fans current palette[new_index] to
+  every non-excluded sub-channel — writes the consumers AND updates each
+  sub-channel's active_index to new_index. Used as a single-CC alternative
+  to TouchOSC's local-message cascade for ALL COLORS, which historically
+  drops ~10% of cascaded messages. No state on the global channel itself.
 
 Spec: specs/global-color-engine.md
 """
@@ -78,6 +80,11 @@ CHANNEL_CC: dict[str, int] = {
     "video_black": 92,
     "logo_black": 93,
     "chaser_black": 94,
+    # gyro_feedback added 2026-05-28: dedicated channel for Layer 11
+    # (GYRO FEEDBACK) VIDDY-COLORISFV2 highlight + shadow. Slot 95 sits
+    # between the replace-blacks (92-94) and the resync trigger (99),
+    # outside the V-C-B pre-slim flood zone (50-59).
+    "gyro_feedback": 95,
 }
 CHANNEL_ORDER = tuple(CHANNEL_CC.keys())
 GLOBAL_CHANNEL = "global"
@@ -304,6 +311,7 @@ class GlobalColorEngine(Engine):
             for name, ch in self._channels.items():
                 if name == GLOBAL_CHANNEL or name in GLOBAL_EXCLUDES:
                     continue
+                ch.active_index = new_index
                 self._write_consumers(ch.consumers, hex_value, now)
             return
 

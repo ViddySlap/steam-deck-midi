@@ -4,8 +4,6 @@
   "enabled": true,
   "update_hz": 30,
   "column_quantize": true,
-  "enable_override_poll": true,
-  "override_poll_hz": 1.0,
   "tempo_source": {
     "kind": "midi_clock",
     "port": "PULSE_OUT",

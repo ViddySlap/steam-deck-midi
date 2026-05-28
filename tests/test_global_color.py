@@ -159,12 +159,32 @@ class GlobalChannelTests(unittest.TestCase):
         self.assertEqual(_writes(osc, CHASER_COLOR_PATH), ["#000000ff"])
         self.assertEqual(_writes(osc, LOGO_HL_PATH), ["#000000ff"])
 
-    def test_global_does_not_update_sub_channel_active_indices(self) -> None:
+    def test_global_updates_sub_channel_active_indices(self) -> None:
+        # Behavior change 2026-05-28: GLOBAL CC now sets each non-excluded
+        # sub-channel's active_index, so that a single CC 45 emission is a
+        # full equivalent of "select index N on every sub-channel" — the
+        # single-CC alternative to TouchOSC's drop-prone ALL COLORS cascade.
         engine, _, _ = _build_engine()
         engine.on_midi_in(14, 40, 3, now=0.0)
         self.assertEqual(engine._channels["chaser"].active_index, 3)
         engine.on_midi_in(14, 45, 0, now=0.1)
-        self.assertEqual(engine._channels["chaser"].active_index, 3)
+        self.assertEqual(engine._channels["chaser"].active_index, 0)
+        self.assertEqual(engine._channels["video_highlight"].active_index, 0)
+        self.assertEqual(engine._channels["video_shadow"].active_index, 0)
+        self.assertEqual(engine._channels["logo_highlight"].active_index, 0)
+        self.assertEqual(engine._channels["logo_shadow"].active_index, 0)
+
+    def test_global_does_not_touch_excluded_channels(self) -> None:
+        # Replace-black channels (video_black/logo_black/chaser_black) are
+        # in GLOBAL_EXCLUDES — they stay at their existing index when GLOBAL
+        # fires. Otherwise an ALL COLORS macro would unintentionally drag
+        # the replace-black colors along with the rest.
+        engine, _, _ = _build_engine()
+        # Seed video_black at index 4 directly (real-world it'd come from CC 92).
+        engine._channels["video_black"].active_index = 4
+        engine.on_midi_in(14, 45, 7, now=0.0)
+        self.assertEqual(engine._channels["video_black"].active_index, 4)
+        self.assertEqual(engine._channels["chaser"].active_index, 7)
 
     def test_global_uses_current_palette(self) -> None:
         engine, osc, _ = _build_engine()
