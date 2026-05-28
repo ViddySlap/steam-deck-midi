@@ -117,12 +117,14 @@
         "format": "hex_rgba_string"
       }
     ],
-    "gyro_feedback": [
+    "gyro_highlight": [
       {
         "name": "VIDDY-COLOR ISF V2 gyro.Highlight",
         "osc_path": "/composition/layers/11/video/effects/viddy-colorisfv2/effect/colors/highlight",
         "format": "hex_rgba_string"
-      },
+      }
+    ],
+    "gyro_shadow": [
       {
         "name": "VIDDY-COLOR ISF V2 gyro.Shadow",
         "osc_path": "/composition/layers/11/video/effects/viddy-colorisfv2/effect/colors/shadow",
