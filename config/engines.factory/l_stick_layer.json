@@ -1,0 +1,23 @@
+{
+  "name": "Left Stick Layer",
+  "type": "l_stick_layer",
+  "enabled": true,
+  "channel": 15,
+  "toggle_note": 72,
+  "toggle_note_channel": 0,
+  "deadzone": 3500,
+  "input_max": 32767,
+  "default_layer": "a",
+  "set_a": {
+    "x_pos": 118,
+    "x_neg": 120,
+    "y_pos": 119,
+    "y_neg": 121
+  },
+  "set_b": {
+    "x_pos": 110,
+    "x_neg": 112,
+    "y_pos": 111,
+    "y_neg": 113
+  }
+}

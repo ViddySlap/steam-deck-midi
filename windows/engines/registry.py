@@ -15,6 +15,7 @@ from windows.engines.chaser_stack_dispatcher import ChaserStackDispatcherEngine
 from windows.engines.flash_blast import FlashBlastEngine
 from windows.engines.global_color import GlobalColorEngine
 from windows.engines.gyro_feedback import GyroFeedbackEngine
+from windows.engines.l_stick_layer import LStickLayerEngine
 from windows.engines.nestdrop_engine import NestdropEngine
 from windows.engines.osc_sync import OscSyncEngine
 from windows.engines.stageflow_bridge import StageFlowBridgeEngine
@@ -36,6 +37,7 @@ _ENGINE_TYPES: dict[str, type[Engine]] = {
     FlashBlastEngine.type_name: FlashBlastEngine,
     GlobalColorEngine.type_name: GlobalColorEngine,
     GyroFeedbackEngine.type_name: GyroFeedbackEngine,
+    LStickLayerEngine.type_name: LStickLayerEngine,
     NestdropEngine.type_name: NestdropEngine,
     StageFlowBridgeEngine.type_name: StageFlowBridgeEngine,
 }
