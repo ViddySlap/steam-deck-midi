@@ -740,16 +740,17 @@ def run_sender(
 
     print_sender_binding_audit(bindings)
     print(f"watching XI2 raw key events for device {device_id} and sending to {target}")
-    print(f"gyro trigger: {gyro_trigger}")
+    print("gyro: always-on (L4 freed; bridge owns tap/hold + feedback state)")
 
     axis_last_sent: dict[str, float] = {}
-    gyro_enabled = False
-    gyro_state_broadcast_at = 0.0  # forces immediate broadcast on first loop iter
-    GYRO_STATE_BROADCAST_INTERVAL_SECONDS = 0.5
 
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
         with TerminalNoEcho():
             with HidrawAxisReader() as axis_reader:
+                # Gyro is always-on: the bridge gyro router owns routing +
+                # tap/hold via L4, so the sender streams PITCH/YAW/ROLL
+                # continuously and no longer gates gyro on L4.
+                axis_reader.enable_gyro()
                 try:
                     selector = selectors.DefaultSelector()
                     selector.register(listener.fileno(), selectors.EVENT_READ)
@@ -786,25 +787,6 @@ def run_sender(
                             while parsed is not None:
                                 event, action = flush_block(parsed, bindings, held_keys)
                                 if event is not None and action is not None:
-                                    if action == gyro_trigger and event.state == "down":
-                                        gyro_enabled = not gyro_enabled
-                                        if gyro_enabled:
-                                            axis_reader.enable_gyro()
-                                            print("gyro on")
-                                        else:
-                                            axis_reader.disable_gyro()
-                                            print("gyro off")
-                                        # Broadcast new absolute state to the bridge
-                                        send_axis(
-                                            sock,
-                                            resolved_target,
-                                            action="GYRO_STATE_NOW",
-                                            value=(1 if gyro_enabled else 0),
-                                            seq=seq,
-                                        )
-                                        seq += 1
-                                        next_heartbeat_at = now + HEARTBEAT_INTERVAL_SECONDS
-                                        gyro_state_broadcast_at = now
                                     send_action(
                                         sock,
                                         resolved_target,
@@ -831,20 +813,6 @@ def run_sender(
                                 seq += 1
                                 axis_last_sent[axis_action] = now
                                 next_heartbeat_at = now + HEARTBEAT_INTERVAL_SECONDS
-
-                        # Periodic gyro-state heartbeat. Runs even during heavy
-                        # xi2 activity so the bridge always converges on the
-                        # deck's true gyro state within GYRO_STATE_BROADCAST_INTERVAL.
-                        if now - gyro_state_broadcast_at >= GYRO_STATE_BROADCAST_INTERVAL_SECONDS:
-                            send_axis(
-                                sock,
-                                resolved_target,
-                                action="GYRO_STATE_NOW",
-                                value=(1 if gyro_enabled else 0),
-                                seq=seq,
-                            )
-                            seq += 1
-                            gyro_state_broadcast_at = now
 
                     selector.close()
                 except KeyboardInterrupt:
