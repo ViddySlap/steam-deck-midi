@@ -17,6 +17,14 @@ The engine receives Wire patch CCs via on_midi_in (channel 14, CCs 60-89) and
 emits OSC writes to layer masters, layer transition durations, and per-layer
 indexed-clip-connect triggers.
 
+REST policy (ADR-0001, no REST on the live-performance path): the only REST
+read is a one-shot composition pull in `_prime_clip_cache()`, called from
+`bind_registry` at init and from `refresh()` (the user-triggered
+`POST /api/engines/refresh` path). LINEAR/RANDOM clip enumeration is served
+entirely from that cache so the beat/hot path is OSC-only. There is no
+periodic REST polling — the old ~1 Hz mouse-override poll was removed because
+it dropped Steam Deck MIDI sends during shows.
+
 Per-channel MODE (NONE/LINEAR/RANDOM, v0.4.1):
 - NONE  — cycle layer masters; clips stay where they are.
 - LINEAR — also advance clips left-to-right (+1 with wrap) at each cycle.
@@ -35,7 +43,6 @@ from __future__ import annotations
 
 import logging
 import random
-import threading
 import time
 from collections import deque
 from dataclasses import dataclass, field
@@ -194,13 +201,13 @@ class AutopilotEngine(Engine):
         self._pending_column_note: int | None = None  # 86 or 87 if pending
         self._column_quantize = bool(config.get("column_quantize", True))
 
-        # mouse override
-        self._override_poll_hz = float(config.get("override_poll_hz", 5.0))
-        self._override_lock = threading.Lock()
-        self._override_last_seen: dict[int, int] = {}  # layer -> last-known selected-clip-index
-        self._override_thread: threading.Thread | None = None
-        self._override_stop = threading.Event()
-        self._enable_override_poll = bool(config.get("enable_override_poll", True))
+        # Loaded-clip index cache per managed layer, primed by a one-shot REST
+        # read at bind_registry / refresh() only (ADR-0001 — no REST on the hot
+        # path). LINEAR/RANDOM clip enumeration reads from here.
+        self._all_layers: list[int] = sorted(
+            {layer for ch in self._channels.values() for layer in ch.layer_ccs}
+        )
+        self._layer_clips: dict[int, list[int]] = {}
 
         self._registry = None
 
@@ -218,8 +225,13 @@ class AutopilotEngine(Engine):
         self._registry = registry
         if self._column_quantize:
             registry.add_note_emit_filter(self._note_emit_filter)
-        if self._enable_override_poll:
-            self._start_override_thread()
+        # One-shot init read of the loaded-clip layout (sanctioned by ADR-0001).
+        self._prime_clip_cache()
+
+    def refresh(self) -> None:
+        # User-triggered re-pull (POST /api/engines/refresh). Re-reads the clip
+        # layout so a mid-session clip reload is picked up without a restart.
+        self._prime_clip_cache()
 
     def tick_interval_seconds(self) -> float | None:
         return 1.0 / self._update_hz
@@ -324,9 +336,6 @@ class AutopilotEngine(Engine):
                 state.crossfade_start_time = None
 
     def shutdown(self) -> None:
-        self._override_stop.set()
-        if self._override_thread is not None:
-            self._override_thread.join(timeout=1.0)
         try:
             self._osc.close()
         except Exception:
@@ -499,24 +508,48 @@ class AutopilotEngine(Engine):
         return bag.pop(0) if bag else None
 
     def _enumerate_layer_clips(self, layer: int) -> list[int]:
+        # Cache-only — primed by _prime_clip_cache() at init/refresh. No REST
+        # on the beat/hot path (ADR-0001).
+        return list(self._layer_clips.get(layer, []))
+
+    def _prime_clip_cache(self) -> None:
+        """One-shot REST read of loaded-clip indices for every managed layer.
+
+        Called only from bind_registry (init) and refresh() (user-triggered) —
+        never on the beat/hot path. Builds `self._layer_clips[layer] = [indices]`
+        and invalidates the per-channel derived caches so a new clip layout
+        takes effect. REST failure leaves the previous cache intact.
+        """
         try:
             comp = self._rest.get_composition()
         except ResolumeRestError as exc:
-            LOGGER.debug("autopilot: failed to enumerate layer %d clips: %s", layer, exc)
-            return []
+            LOGGER.warning("autopilot: clip-cache prime failed (REST): %s", exc)
+            return
         layers = comp.get("layers", [])
-        try:
-            layer_obj = layers[layer - 1]  # OSC paths are 1-indexed; JSON tree is 0-indexed
-        except IndexError:
-            return []
-        clips = layer_obj.get("clips", [])
-        result: list[int] = []
-        for i, clip in enumerate(clips, start=1):
-            # Treat any clip with a non-empty file/source field as loaded.
-            video = clip.get("video") or clip.get("source")
-            if video:
-                result.append(i)
-        return result
+        new_cache: dict[int, list[int]] = {}
+        for layer in self._all_layers:
+            try:
+                layer_obj = layers[layer - 1]  # OSC 1-indexed; JSON tree 0-indexed
+            except IndexError:
+                new_cache[layer] = []
+                continue
+            clips = layer_obj.get("clips", [])
+            loaded: list[int] = []
+            for i, clip in enumerate(clips, start=1):
+                # Treat any clip with a non-empty file/source field as loaded.
+                video = clip.get("video") or clip.get("source")
+                if video:
+                    loaded.append(i)
+            new_cache[layer] = loaded
+        self._layer_clips = new_cache
+        # Derived caches must be rebuilt against the fresh layout.
+        for state in self._states.values():
+            state.clip_count_cache.clear()
+            state.bag.clear()
+        LOGGER.info(
+            "autopilot: clip cache primed for layers %s",
+            {k: len(v) for k, v in new_cache.items()},
+        )
 
     def _send_layer_master(self, layer: int, value: float) -> None:
         path = self._osc_layer_master_template.format(n=layer)
@@ -609,58 +642,3 @@ class AutopilotEngine(Engine):
             state.cycle_index = 0
             state.beat_in_clip = 0
             # Bags carry over — column shift doesn't invalidate clip choices.
-
-    # ----- mouse / TouchOSC override poll ------------------------------------
-
-    def _start_override_thread(self) -> None:
-        if self._override_thread is not None:
-            return
-        self._override_thread = threading.Thread(
-            target=self._override_loop,
-            daemon=True,
-            name=f"autopilot-override-{self.name}",
-        )
-        self._override_thread.start()
-
-    def _override_loop(self) -> None:
-        period = 1.0 / max(0.5, self._override_poll_hz)
-        while not self._override_stop.wait(period):
-            if not self._any_channel_enabled():
-                continue
-            try:
-                comp = self._rest.get_composition()
-            except ResolumeRestError as exc:
-                LOGGER.debug("autopilot: override poll comp fetch failed: %s", exc)
-                continue
-            self._consume_override_snapshot(comp)
-
-    def _consume_override_snapshot(self, comp: dict) -> None:
-        layers = comp.get("layers", [])
-        for state in self._states.values():
-            if not state.enabled:
-                continue
-            for layer in state.selected_layers():
-                idx = layer - 1
-                if idx < 0 or idx >= len(layers):
-                    continue
-                clip_idx = self._extract_selected_clip(layers[idx])
-                if clip_idx is None:
-                    continue
-                with self._override_lock:
-                    last = self._override_last_seen.get(layer)
-                    if last is not None and last != clip_idx:
-                        # User overrode the clip selection. Update internal cache
-                        # so random-bag stays consistent. Cycle counters are NOT
-                        # reset (per spec — user override is authoritative).
-                        state.last_clip[layer] = clip_idx
-                    self._override_last_seen[layer] = clip_idx
-
-    def _extract_selected_clip(self, layer_obj: dict) -> int | None:
-        clips = layer_obj.get("clips", [])
-        for i, clip in enumerate(clips, start=1):
-            connected = clip.get("connected") or {}
-            value = connected.get("value")
-            # Resolume reports "Connected"/"Connected & Triggered" for active clips.
-            if isinstance(value, str) and "Connect" in value:
-                return i
-        return None

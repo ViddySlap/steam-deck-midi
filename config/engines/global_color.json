@@ -116,6 +116,18 @@
         "osc_path": "/composition/layers/8/video/effects/viddy-colorisfv2/effect/colors/replaceblack",
         "format": "hex_rgba_string"
       }
+    ],
+    "gyro_feedback": [
+      {
+        "name": "VIDDY-COLOR ISF V2 gyro.Highlight",
+        "osc_path": "/composition/layers/11/video/effects/viddy-colorisfv2/effect/colors/highlight",
+        "format": "hex_rgba_string"
+      },
+      {
+        "name": "VIDDY-COLOR ISF V2 gyro.Shadow",
+        "osc_path": "/composition/layers/11/video/effects/viddy-colorisfv2/effect/colors/shadow",
+        "format": "hex_rgba_string"
+      }
     ]
   },
   "outputs": {
