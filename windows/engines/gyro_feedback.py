@@ -1,68 +1,190 @@
-"""Gyro-driven NestDrop feedback engine (v0.4.4).
+"""Gyro router engine (v2 — bridge-side OSC fan-out).
 
-Wires the Steam Deck's gyro on/off state to:
-1. A NestDrop "feedback" queue advance — toggles a nested Spout Sprite
-   on a target deck (Deck 2 by default), creating a visual feedback loop.
-2. A Resolume layer master master OSC value — typically the "GYRO FEEDBACK"
-   layer that hosts the affected NestDrop deck's spout source.
+Routes the Steam Deck's three continuous gyro axes (PITCH / YAW / ROLL)
+to Resolume targets over OSC, with an L4 tap-vs-hold gesture selecting
+the routing mode. There is NO NestDrop coupling and NO REST: every
+output is an OSC write to Resolume (ADR-0001 — REST on the live path
+drops frames and loses MIDI).
 
-## Gyro state signal
+## Inputs
 
-The engine subscribes to the L4 button's OWN MIDI mapping (ch 2 cc 74
-by default — the L4 ControlChangeMapping in windows_midi_map.json).
-Each press of L4 fires that CC with value 127 (release fires 0).
-Engine treats every value-127 event as a TOGGLE: gyro state flips
-on each L4 press. No dependency on the receiver's layer publisher
-which requires a "ground truth" gyro motion before L4 has any effect.
+Gyro axes arrive on `on_axis_event` as RAW bipolar integers (about
+[-750, 750]); the bridge's axis-to-cc mapping is for the MIDI-out path
+and is irrelevant here — engines see the pre-mapping raw value:
 
-Self-tracked state: `gyro_active: bool`. Boots False. Toggles per press.
+  GYRO_PITCH  (deck CC 122 ch15 on the MIDI-out side)
+  GYRO_YAW    (deck CC 123 ch15)   -- spare in both modes
+  GYRO_ROLL   (deck CC 124 ch15)
 
-## Sprite toggle gating
+L4 arrives on `on_midi_in` as CC 74 ch2 (down=127, up=0), fanned out
+from the receiver's `_emit_cc`. A short tap toggles feedback routing;
+a hold past the tap threshold routes gyro to the PUNCH PACK V4 SHAKE
+effect while held.
 
-NestDrop's only known OSC for sprite state is a TOGGLE (each
-`/Queue/Queue<N>` activate + `/Controls/Deck<M>/btSpace` toggles the
-sprite preset on/off). To avoid drift, the engine maintains its own
-`sprite_state` model:
+## State
 
-- Boot: assume sprite is OFF (matches DefaultUserProfile.xml default).
-- Gyro ON transition: if model says sprite_state==OFF, send toggle and
-  flip model to ON. If model already says ON, skip toggle (idempotent).
-- Gyro OFF transition: symmetric — toggle only if currently ON.
-- Resolume layer master is set on EVERY transition (cheap, no drift risk).
+  feedback_active : bool — gyro routes to the Layer-11 feedback layer.
+  hold_mode_active: bool — L4 held past TAP_THRESHOLD; gyro routes to
+                           SHAKE (overrides feedback routing while held).
 
-If the user manually clicks the sprite in NestDrop UI, model can desync.
-Workaround: a TouchOSC "reset gyro feedback" button calling
-`POST /api/engines/refresh` resets the model to OFF. Spec links the
-recovery path.
+## L4 tap-vs-hold (tick-driven, mirrors flash_blast)
 
-Spec: specs/nestdrop-integration.md § Gyro feedback
+  on L4 down (127): record _l4_down_time, arm a pending-hold timer.
+  tick: if L4 still down and (now - _l4_down_time) >= tap_threshold and
+        not yet in hold mode -> enter hold mode (start SHAKE routing).
+  on L4 up (0):
+        elapsed = now - _l4_down_time
+        if hold_mode_active        -> exit hold (zero SHAKE, revert to
+                                      feedback routing for the current
+                                      feedback_active state).
+        elif elapsed < tap_threshold -> TAP: toggle feedback_active.
+        else (>= threshold but hold never entered, e.g. a missed tick)
+                                   -> treat as hold-release: ensure SHAKE
+                                      zeroed + revert. Defensive.
+
+## Routing fan-out
+
+  hold False + feedback True : PITCH -> Layer-11 master opacity
+                               ROLL  -> Layer-11 transform-X position
+  hold False + feedback False: outputs muted. On the toggle-OFF edge we
+                               write opacity 0.0 ONCE so the layer is
+                               cleanly hidden; we then stop writing.
+  hold True                  : PITCH -> SHAKE distance
+                               ROLL  -> SHAKE frequency  (YAW spare)
+                               On hold EXIT, SHAKE distance + frequency
+                               are explicitly zeroed so the effect does
+                               not latch.
+
+## Normalization
+
+`/composition/...` paths take 0..1 floats. PITCH->opacity and
+ROLL->transform-X are bipolar [-750, 750] mapped to [0, 1] centered at
+0.5 (raw 0 -> 0.5). SHAKE distance/frequency reuse the same bipolar
+mapping by default (config-overridable per target). All ranges and
+target paths are config-driven because the live OSC paths get
+verified/corrected on the rig (wave-3).
+
+## Legacy GYRO_STATE_NOW tolerance
+
+The not-yet-updated Deck sender still emits a GYRO_STATE_NOW axis
+event. The bridge now owns feedback state via the L4 tap, so this
+engine IGNORES GYRO_STATE_NOW entirely: it neither crashes nor lets
+the legacy ping flip `feedback_active`.
 """
 
 from __future__ import annotations
 
 import logging
-import threading
 import time
 from typing import Any, Callable
 
-from windows.engines._nestdrop_listener import subscribe as listener_subscribe
 from windows.engines.base import Engine
 from windows.engines.osc_client import OscClient
 from windows.midi import MidiOut
 
 LOGGER = logging.getLogger(__name__)
 
-DEFAULT_TRIGGER_CC = 74
-DEFAULT_TRIGGER_CHANNEL = 2
-DEFAULT_SPRITE_TRIGGER_PATH = "/PresetID/Queue5/0"
-DEFAULT_NESTDROP_HOST = "127.0.0.1"
-DEFAULT_NESTDROP_OUT_PORT = 8001  # NestDrop's OSC output broadcast port
-DEFAULT_NESTDROP_PORT = 8000
-DEFAULT_RESOLUME_LAYER_PATH = "/composition/layers/11/master"
-DEFAULT_RESOLUME_LAYER_ON_VALUE = 1.0
-DEFAULT_RESOLUME_LAYER_OFF_VALUE = 0.0
-DEFAULT_RESOLUME_HOST = "127.0.0.1"
-DEFAULT_RESOLUME_PORT = 7000
+# --- Inputs -----------------------------------------------------------
+DEFAULT_L4_CC = 74
+DEFAULT_L4_CHANNEL = 2
+DEFAULT_AXIS_PITCH = "GYRO_PITCH"
+DEFAULT_AXIS_YAW = "GYRO_YAW"
+DEFAULT_AXIS_ROLL = "GYRO_ROLL"
+
+# --- Timing -----------------------------------------------------------
+DEFAULT_TAP_THRESHOLD_MS = 200.0
+TICK_INTERVAL_SECONDS = 0.02  # 50 Hz — fine-grained enough for a 200ms gate
+
+# --- OSC output -------------------------------------------------------
+DEFAULT_OSC_HOST = "127.0.0.1"
+DEFAULT_OSC_PORT = 7000
+
+# --- Default target paths (ALL UNVERIFIED placeholders for wave-3) ----
+# Layer-11 master opacity. Believed correct (matches the v1 feedback
+# layer path), but re-confirm against the live comp.
+DEFAULT_FEEDBACK_OPACITY_PATH = "/composition/layers/11/master"
+# Layer-11 transform-X position. UNVERIFIED — Resolume transform param
+# naming varies by version (position-x vs anchor, etc.).
+DEFAULT_FEEDBACK_TRANSFORM_X_PATH = (
+    "/composition/layers/11/video/transform/position-x"
+)
+# SHAKE distance / frequency — Wire-dashboard OSC paths, UNKNOWN.
+# Clearly-named placeholders to be discovered live.
+DEFAULT_SHAKE_DISTANCE_PATH = "/shake/distance/UNVERIFIED"
+DEFAULT_SHAKE_FREQUENCY_PATH = "/shake/frequency/UNVERIFIED"
+
+# --- Default value mapping --------------------------------------------
+# Raw bipolar gyro range. Centered map: raw_min -> out_min, 0 -> mid,
+# raw_max -> out_max.
+DEFAULT_RAW_MIN = -750.0
+DEFAULT_RAW_MAX = 750.0
+DEFAULT_OUT_MIN = 0.0
+DEFAULT_OUT_MAX = 1.0
+
+
+def _normalize_bipolar(
+    raw: float, raw_min: float, raw_max: float, out_min: float, out_max: float
+) -> float:
+    """Map a raw bipolar value to [out_min, out_max], clamped.
+
+    Linear shift-and-scale: raw_min -> out_min, raw_max -> out_max. With
+    the symmetric default range a raw value of 0 lands exactly at the
+    midpoint (0.5 for a 0..1 output), which is the documented PITCH=>0.5
+    rest behaviour.
+    """
+    span = raw_max - raw_min
+    if span == 0.0:
+        return out_min
+    frac = (raw - raw_min) / span
+    frac = max(0.0, min(1.0, frac))
+    return out_min + frac * (out_max - out_min)
+
+
+class _Target:
+    """One OSC output target: a path plus its raw->out mapping range.
+
+    Caches the last value sent so the engine doesn't spam identical
+    frames (mirrors flash_blast's opacity dedupe intent).
+    """
+
+    __slots__ = ("path", "raw_min", "raw_max", "out_min", "out_max", "last_sent")
+
+    def __init__(
+        self,
+        path: str,
+        raw_min: float,
+        raw_max: float,
+        out_min: float,
+        out_max: float,
+    ) -> None:
+        self.path = path
+        self.raw_min = raw_min
+        self.raw_max = raw_max
+        self.out_min = out_min
+        self.out_max = out_max
+        self.last_sent: float | None = None
+
+    def value_for(self, raw: float) -> float:
+        return _normalize_bipolar(
+            raw, self.raw_min, self.raw_max, self.out_min, self.out_max
+        )
+
+
+def _target_from_config(
+    cfg: dict, default_path: str, defaults: dict
+) -> _Target:
+    """Build a _Target from a config sub-dict.
+
+    The sub-dict may carry `path` and any of raw_min/raw_max/out_min/
+    out_max; anything missing falls back to the engine-level defaults.
+    """
+    return _Target(
+        path=str(cfg.get("path", default_path)),
+        raw_min=float(cfg.get("raw_min", defaults["raw_min"])),
+        raw_max=float(cfg.get("raw_max", defaults["raw_max"])),
+        out_min=float(cfg.get("out_min", defaults["out_min"])),
+        out_max=float(cfg.get("out_max", defaults["out_max"])),
+    )
 
 
 class GyroFeedbackEngine(Engine):
@@ -75,290 +197,276 @@ class GyroFeedbackEngine(Engine):
         midi_out: MidiOut,
         *,
         clock: Callable[[], float] = time.monotonic,
-        nestdrop_osc: OscClient | None = None,
+        osc_client: OscClient | None = None,
+        # Back-compat: the v1 engine + old tests passed `resolume_osc`.
+        # Accept it as an alias so nothing downstream breaks.
         resolume_osc: OscClient | None = None,
-        sleep: Callable[[float], None] = time.sleep,
-        spawn: Callable[[Callable[[], None]], None] | None = None,
+        **_legacy: Any,
     ) -> None:
         super().__init__(name, config, midi_out, clock=clock)
 
-        # L4 button raw mapping (channel 2, CC 74 by default). Engine
-        # toggles gyro state on every value-127 event. Kept as a fallback
-        # path; the authoritative state source is the deck-side
-        # GYRO_STATE_NOW axis broadcast handled in `on_axis_event`.
-        self._trigger_cc = int(config.get("trigger_cc", DEFAULT_TRIGGER_CC))
-        self._trigger_channel = int(
-            config.get("trigger_channel", DEFAULT_TRIGGER_CHANNEL)
+        # --- Inputs ---
+        self._l4_cc = int(config.get("l4_cc", config.get("trigger_cc", DEFAULT_L4_CC)))
+        self._l4_channel = int(
+            config.get("l4_channel", config.get("trigger_channel", DEFAULT_L4_CHANNEL))
         )
-        # Deck-side state ping action name. The deck sender broadcasts this
-        # axis event after every L4 toggle AND every 0.5s, with value 1
-        # (gyro on) or 0 (gyro off). Engine sets _gyro_active absolutely
-        # from each event, so bridge restarts / missed L4 presses self-heal
-        # at the next ping.
-        self._state_axis_action = str(
-            config.get("state_axis_action", "GYRO_STATE_NOW")
+        axes = config.get("axes", {})
+        self._axis_pitch = str(axes.get("pitch", DEFAULT_AXIS_PITCH))
+        self._axis_yaw = str(axes.get("yaw", DEFAULT_AXIS_YAW))
+        self._axis_roll = str(axes.get("roll", DEFAULT_AXIS_ROLL))
+        # Legacy deck-side state ping we must tolerate + ignore.
+        self._legacy_state_axis = str(
+            config.get("legacy_state_axis_action", "GYRO_STATE_NOW")
         )
 
-        # Direct sprite-toggle trigger. /PresetID/Queue<N>/<idx> INT(1)
-        # toggles the preset at that queue position on its assigned deck,
-        # bypassing the active-queue / btSpace mechanic entirely. No
-        # cross-engine race possible since this doesn't touch the
-        # active-queue state shared across queues on the same deck.
-        self._sprite_trigger_path = str(
-            config.get("sprite_trigger_path", DEFAULT_SPRITE_TRIGGER_PATH)
-        )
-        # NestDrop's OSC output broadcast port. Engine subscribes to
-        # /Deck<N>/Sprite messages so it always knows the actual sprite
-        # state in NestDrop (no drift if the user manually clicks or
-        # if NestDrop boots with a different state than assumed).
-        listener_cfg = config.get("nestdrop_listener", {})
-        self._listener_enabled = bool(listener_cfg.get("enabled", True))
-        self._listener_host = str(
-            listener_cfg.get("host", "0.0.0.0")
-        )
-        self._listener_port = int(
-            listener_cfg.get("port", DEFAULT_NESTDROP_OUT_PORT)
-        )
-        nestdrop_osc_cfg = config.get("nestdrop_osc", {})
-        self._nestdrop = nestdrop_osc or OscClient(
-            host=str(nestdrop_osc_cfg.get("host", DEFAULT_NESTDROP_HOST)),
-            port=int(nestdrop_osc_cfg.get("port", DEFAULT_NESTDROP_PORT)),
+        # --- Timing ---
+        self._tap_threshold = (
+            float(config.get("tap_threshold_ms", DEFAULT_TAP_THRESHOLD_MS)) / 1000.0
         )
 
-        # Resolume layer master config
-        self._resolume_layer_path = str(
-            config.get("resolume_layer_path", DEFAULT_RESOLUME_LAYER_PATH)
-        )
-        self._resolume_on_value = float(
-            config.get("resolume_layer_on_value", DEFAULT_RESOLUME_LAYER_ON_VALUE)
-        )
-        self._resolume_off_value = float(
-            config.get("resolume_layer_off_value", DEFAULT_RESOLUME_LAYER_OFF_VALUE)
-        )
-        resolume_osc_cfg = config.get("resolume_osc", {})
-        self._resolume = resolume_osc or OscClient(
-            host=str(resolume_osc_cfg.get("host", DEFAULT_RESOLUME_HOST)),
-            port=int(resolume_osc_cfg.get("port", DEFAULT_RESOLUME_PORT)),
+        # --- OSC client ---
+        osc_cfg = config.get("osc", {})
+        self._osc = osc_client or resolume_osc or OscClient(
+            host=str(osc_cfg.get("host", DEFAULT_OSC_HOST)),
+            port=int(osc_cfg.get("port", DEFAULT_OSC_PORT)),
         )
 
-        # State model: gyro starts OFF. Each L4 press toggles.
-        self._gyro_active: bool = False
-        # NestDrop's sprite state across bridge restarts depends on whether
-        # the sprite was active when the comp was last saved or last
-        # left at the gig. Default to True since Ben's setup boots with
-        # the sprite already active (left ON between sessions). Set to
-        # False if your NestDrop boots with the sprite inactive — that's
-        # the only knob needed to invert the gyro on/off polarity.
-        self._sprite_active: bool = bool(
-            config.get("initial_sprite_active", True)
+        # --- Targets ---
+        defaults = {
+            "raw_min": float(config.get("raw_min", DEFAULT_RAW_MIN)),
+            "raw_max": float(config.get("raw_max", DEFAULT_RAW_MAX)),
+            "out_min": float(config.get("out_min", DEFAULT_OUT_MIN)),
+            "out_max": float(config.get("out_max", DEFAULT_OUT_MAX)),
+        }
+        targets = config.get("targets", {})
+        self._feedback_opacity = _target_from_config(
+            targets.get("feedback_opacity", {}),
+            DEFAULT_FEEDBACK_OPACITY_PATH,
+            defaults,
         )
-        # When True, outputs (NestDrop sprite + Resolume layer master) are
-        # driven by the OPPOSITE of _gyro_active. Use this when the show
-        # wants "gyro on = feedback hidden, gyro off = feedback visible".
-        self._output_inverted: bool = bool(config.get("output_inverted", False))
-        self._transition_count = 0
-        self._toggle_send_count = 0
-        self._layer_send_count = 0
-
-        self._sleep = sleep
-        self._spawn = spawn or (
-            lambda fn: threading.Thread(target=fn, daemon=True).start()
+        self._feedback_transform_x = _target_from_config(
+            targets.get("feedback_transform_x", {}),
+            DEFAULT_FEEDBACK_TRANSFORM_X_PATH,
+            defaults,
         )
-        self._lock = threading.Lock()
+        self._shake_distance = _target_from_config(
+            targets.get("shake_distance", {}),
+            DEFAULT_SHAKE_DISTANCE_PATH,
+            defaults,
+        )
+        self._shake_frequency = _target_from_config(
+            targets.get("shake_frequency", {}),
+            DEFAULT_SHAKE_FREQUENCY_PATH,
+            defaults,
+        )
 
-        # Subscribe to NestDrop's OSC output. Each /Deck<N>/Sprite
-        # broadcast updates our internal sprite_active so the next
-        # toggle decision is always correct relative to NestDrop's
-        # actual state.
-        if self._listener_enabled:
-            listener_subscribe(
-                self._listener_host,
-                self._listener_port,
-                self._on_nestdrop_broadcast,
-            )
+        # --- State ---
+        self._feedback_active = bool(config.get("initial_feedback_active", False))
+        self._hold_mode_active = False
+        # L4 gesture bookkeeping.
+        self._l4_down = False
+        self._l4_down_time: float | None = None
+        # Latest raw axis values (updated on every axis event).
+        self._pitch_raw = 0.0
+        self._roll_raw = 0.0
+
+        # --- Counters (status/debugging) ---
+        self._tap_count = 0
+        self._hold_enter_count = 0
+        self._hold_exit_count = 0
+        self._ignored_legacy_count = 0
 
     # ------------------------------------------------------------------
     # Lifecycle
 
+    def tick_interval_seconds(self) -> float | None:
+        return TICK_INTERVAL_SECONDS
+
     def bind_registry(self, registry) -> None:
-        """At init, probe NestDrop's current sprite state.
+        """Establish the idle rest state.
 
-        Per manual page 49, sending the string "?" at `/Controls` (or
-        `/Controls/Deck<N>`) makes NestDrop re-send its state bundle.
-        We send the query and the listener catches whatever sprite
-        broadcasts NestDrop replies with — so by the time the user
-        presses L4 for the first time, sprite_active is in sync with
-        actual NestDrop state.
+        Feedback boots inactive, so write opacity 0.0 once so the layer
+        starts hidden. SHAKE outputs are zeroed so a stale comp value
+        doesn't latch.
         """
-        self._spawn(self._probe_nestdrop_state)
-
-    def _probe_nestdrop_state(self) -> None:
-        try:
-            # Some NestDrop versions accept the query on /Controls;
-            # others on /Controls/Deck<N>. Send both forms to be safe.
-            self._nestdrop.send("/Controls", "?")
-            self._nestdrop.send("/Controls/Deck1", "?")
-            self._nestdrop.send("/Controls/Deck2", "?")
-        except Exception:
-            LOGGER.debug("%s: state-probe send failed", self.name, exc_info=True)
-
-    def refresh(self) -> None:
-        """Flip the sprite state model (manual desync recovery).
-
-        Triggered by `POST /api/engines/refresh`. Use after manually
-        clicking the sprite in NestDrop UI to re-sync engine's mental
-        model with NestDrop's actual sprite state. Does NOT send OSC;
-        just flips the boolean. Next gyro transition fires toggle if
-        needed.
-        """
-        with self._lock:
-            self._sprite_active = not self._sprite_active
-            LOGGER.info(
-                "%s: sprite state model flipped (now %s)",
-                self.name,
-                "ON" if self._sprite_active else "OFF",
-            )
-
-    def resync_gyro_polarity(self) -> dict:
-        """Flip _gyro_active and immediately re-fire sprite + layer outputs.
-
-        Use when the bridge's gyro state has drifted out of sync with the
-        deck's gyro_enabled (e.g. after a bridge restart, or when L4 events
-        were missed during UDP sniffing). Each call inverts the polarity
-        and pushes outputs to match the new state. Exposed via
-        POST /api/engines/gyro-feedback/resync.
-        """
-        self._handle_gyro_transition()
-        with self._lock:
-            return {
-                "gyro_active": self._gyro_active,
-                "sprite_active": self._sprite_active,
-                "transition_count": self._transition_count,
-            }
+        self._send(self._feedback_opacity, self._feedback_opacity.out_min)
+        self._zero_shake()
 
     def shutdown(self) -> None:
         try:
-            self._nestdrop.close()
-        except Exception:
-            pass
-        try:
-            self._resolume.close()
+            self._osc.close()
         except Exception:
             pass
 
-    # ------------------------------------------------------------------
-    # NestDrop OSC OUT subscription — keep sprite_active synced
+    def refresh(self) -> None:
+        """Re-assert the idle rest state (dev escape hatch).
 
-    def _on_nestdrop_broadcast(self, address: str, args: list) -> None:
-        """Update sprite_active from NestDrop's /Deck<N>/Sprite broadcasts.
-
-        Broadcast format (per page 51 of the manual + sniffer confirm):
-        /Deck<N>/Sprite [<preset_path:str>, <name:str>, <active:int>,
-                         <mode:str>, <fx:int>, <overlay_count:int>,
-                         <nested_count:int>]
-
-        Match by preset_path equality. The deck number in the address
-        doesn't need to match — sprite state is identified by preset path.
+        Resets feedback OFF + zeroes SHAKE, matching boot. Lets a
+        dashboard recover from any drift without a bridge restart. No
+        REST is involved.
         """
-        if not address.startswith("/Deck") or not address.endswith("/Sprite"):
-            return
-        if len(args) < 3:
-            return
-        if args[0] != self._sprite_trigger_path:
-            return
-        try:
-            broadcast_active = bool(int(args[2]))
-        except (TypeError, ValueError):
-            return
-        with self._lock:
-            if self._sprite_active != broadcast_active:
-                self._sprite_active = broadcast_active
-                LOGGER.info(
-                    "%s: sprite state synced from broadcast: %s",
-                    self.name,
-                    "ON" if broadcast_active else "OFF",
-                )
+        self._feedback_active = False
+        self._hold_mode_active = False
+        self._send(self._feedback_opacity, self._feedback_opacity.out_min, force=True)
+        self._zero_shake(force=True)
 
     # ------------------------------------------------------------------
-    # Inbound: deck-side state broadcast (authoritative)
+    # MIDI input — L4 tap/hold
+
+    def on_midi_in(self, channel: int, cc: int, value: int, now: float) -> None:
+        if channel != self._l4_channel or cc != self._l4_cc:
+            return
+        if value >= 64:  # L4 down (sender uses 127; tolerate any "on")
+            self._on_l4_down(now)
+        else:  # L4 up (0)
+            self._on_l4_up(now)
+
+    def _on_l4_down(self, now: float) -> None:
+        # Idempotent: ignore a repeated down with no intervening up.
+        if self._l4_down:
+            return
+        self._l4_down = True
+        self._l4_down_time = now
+
+    def _on_l4_up(self, now: float) -> None:
+        if not self._l4_down:
+            return
+        self._l4_down = False
+        down_time = self._l4_down_time
+        self._l4_down_time = None
+        elapsed = (now - down_time) if down_time is not None else 0.0
+
+        if self._hold_mode_active:
+            # Release of a hold: exit SHAKE, revert to feedback routing.
+            self._exit_hold()
+            return
+        if elapsed >= self._tap_threshold:
+            # Threshold reached but hold never armed (e.g. tick missed
+            # between down and up). Treat as hold-release defensively:
+            # make sure SHAKE is zeroed and feedback routing is current.
+            self._exit_hold()
+            return
+        # Genuine tap: toggle feedback routing.
+        self._toggle_feedback()
+
+    def tick(self, now: float) -> None:
+        # Hold ENTRY is timer-driven: if L4 is still down past the tap
+        # threshold and we haven't entered hold yet, enter it now.
+        if (
+            self._l4_down
+            and not self._hold_mode_active
+            and self._l4_down_time is not None
+            and (now - self._l4_down_time) >= self._tap_threshold
+        ):
+            self._enter_hold()
+
+    # ------------------------------------------------------------------
+    # Axis input — gyro routing
 
     def on_axis_event(self, action: str, value: int, now: float) -> None:
-        """Set gyro state absolutely from deck's GYRO_STATE_NOW broadcast.
-
-        Authoritative source for `_gyro_active`. Each broadcast is
-        idempotent — repeats no-op once in the correct state. Recovers
-        from any drift (bridge restart, missed L4 events, etc.) within
-        the broadcast cadence (0.5s by default).
-        """
-        if action != self._state_axis_action:
+        # Tolerate the legacy deck-side state ping: never crash, never
+        # let it touch feedback state. The bridge owns feedback via L4.
+        if action == self._legacy_state_axis:
+            self._ignored_legacy_count += 1
             return
-        self._set_gyro_state(value != 0)
+
+        if action == self._axis_pitch:
+            self._pitch_raw = float(value)
+        elif action == self._axis_roll:
+            self._roll_raw = float(value)
+        elif action == self._axis_yaw:
+            # YAW is spare in both modes. Track nothing, route nothing.
+            return
+        else:
+            return
+
+        self._route_gyro()
+
+    def _route_gyro(self) -> None:
+        if self._hold_mode_active:
+            # SHAKE routing: PITCH -> distance, ROLL -> frequency.
+            self._send(self._shake_distance, self._shake_distance.value_for(self._pitch_raw))
+            self._send(self._shake_frequency, self._shake_frequency.value_for(self._roll_raw))
+            return
+        if self._feedback_active:
+            # Feedback routing: PITCH -> opacity, ROLL -> transform-X.
+            self._send(
+                self._feedback_opacity,
+                self._feedback_opacity.value_for(self._pitch_raw),
+            )
+            self._send(
+                self._feedback_transform_x,
+                self._feedback_transform_x.value_for(self._roll_raw),
+            )
+            return
+        # feedback OFF + not holding: outputs muted. Do nothing (the
+        # toggle-OFF edge already wrote opacity 0.0 once).
 
     # ------------------------------------------------------------------
     # State transitions
-    #
-    # NOTE: The L4 toggle CC (ch 2 / cc 74) is no longer consumed here.
-    # It was a legacy "toggle on each press" fallback, but the deck-side
-    # GYRO_STATE_NOW broadcast is now authoritative — sent immediately on
-    # every L4 toggle AND every 0.5s. Listening to both produced a
-    # double-fire stutter (GYRO_STATE_NOW set state, L4 toggled it back,
-    # next heartbeat corrected it). Single source of truth = no stutter.
 
-    def _handle_gyro_transition(self) -> None:
-        """Toggle gyro state. Kept for `resync_gyro_polarity` manual override."""
-        with self._lock:
-            new_active = not self._gyro_active
-        self._set_gyro_state(new_active)
-
-    def _set_gyro_state(self, active: bool) -> None:
-        """Set gyro state absolutely. Idempotent: no-op if already matching."""
-        need_toggle = False
-        with self._lock:
-            if active == self._gyro_active:
-                return
-            self._gyro_active = active
-            self._transition_count += 1
-            # Outputs follow gyro state, optionally inverted (see __init__).
-            desired_outputs_on = active != self._output_inverted
-            if desired_outputs_on != self._sprite_active:
-                need_toggle = True
-                self._sprite_active = desired_outputs_on
-        # OSC sends outside the lock + on a daemon thread.
-        self._spawn(
-            lambda: self._fire_osc(
-                active=active, outputs_on=desired_outputs_on, toggle=need_toggle
-            )
-        )
-
-    def _fire_osc(self, *, active: bool, outputs_on: bool, toggle: bool) -> None:
-        # Single-message sprite trigger. Each call flips NestDrop's
-        # sprite state. We send it only on actual gyro transitions
-        # (toggle=True) so the model stays aligned with NestDrop.
-        if toggle:
-            try:
-                self._nestdrop.send(self._sprite_trigger_path, 1)
-                self._toggle_send_count += 1
-                LOGGER.info(
-                    "%s: gyro %s -> sprite toggle (%s)",
-                    self.name,
-                    "on" if active else "off",
-                    self._sprite_trigger_path,
-                )
-            except Exception:
-                LOGGER.exception("%s: NestDrop sprite toggle send failed", self.name)
+    def _toggle_feedback(self) -> None:
+        self._feedback_active = not self._feedback_active
+        self._tap_count += 1
+        if self._feedback_active:
+            # Toggle ON: immediately route the current gyro position so
+            # the layer reflects the live tilt without waiting for the
+            # next axis event.
+            self._route_gyro()
+            LOGGER.info("%s: feedback toggled ON", self.name)
         else:
-            LOGGER.info(
-                "%s: gyro %s -> sprite already in correct state (no toggle)",
-                self.name,
-                "on" if active else "off",
-            )
-        # Resolume layer master: always set, every transition (no drift risk).
-        layer_value = self._resolume_on_value if outputs_on else self._resolume_off_value
+            # Toggle OFF: write opacity 0.0 ONCE so the layer is cleanly
+            # hidden, then stop writing (muted).
+            self._send(self._feedback_opacity, self._feedback_opacity.out_min)
+            LOGGER.info("%s: feedback toggled OFF (opacity 0)", self.name)
+
+    def _enter_hold(self) -> None:
+        self._hold_mode_active = True
+        self._hold_enter_count += 1
+        # Start routing gyro to SHAKE from the current position.
+        self._route_gyro()
+        LOGGER.info("%s: hold mode ENTER (gyro -> SHAKE)", self.name)
+
+    def _exit_hold(self) -> None:
+        was_hold = self._hold_mode_active
+        self._hold_mode_active = False
+        if was_hold:
+            self._hold_exit_count += 1
+        # Explicitly zero SHAKE so the effect doesn't latch. Force the
+        # write (bypass dedupe): a state-boundary guarantee that the
+        # SHAKE floor lands is worth one extra packet, and protects
+        # against any cached-value drift on the comp side.
+        self._zero_shake(force=True)
+        # Revert to feedback routing for the current feedback state.
+        if self._feedback_active:
+            self._route_gyro()
+        else:
+            # Feedback off: ensure the layer stays cleanly hidden.
+            self._send(self._feedback_opacity, self._feedback_opacity.out_min)
+        LOGGER.info("%s: hold mode EXIT (SHAKE zeroed)", self.name)
+
+    # ------------------------------------------------------------------
+    # OSC helpers
+
+    def _send(self, target: _Target, value: float, *, force: bool = False) -> None:
+        """Send a normalized float to an OSC target, deduped.
+
+        Skips the write when the value is unchanged from the last sent
+        value (unless `force`), to avoid spamming identical frames at
+        the gyro's high event rate.
+        """
+        clamped = float(value)
+        if not force and target.last_sent is not None and target.last_sent == clamped:
+            return
         try:
-            self._resolume.send(self._resolume_layer_path, layer_value)
-            self._layer_send_count += 1
+            self._osc.send(target.path, clamped)
+            target.last_sent = clamped
         except Exception:
-            LOGGER.exception("%s: Resolume layer master send failed", self.name)
+            LOGGER.exception("%s: OSC send failed for %s", self.name, target.path)
+
+    def _zero_shake(self, *, force: bool = False) -> None:
+        self._send(self._shake_distance, self._shake_distance.out_min, force=force)
+        self._send(self._shake_frequency, self._shake_frequency.out_min, force=force)
 
     # ------------------------------------------------------------------
     # Status
@@ -367,14 +475,25 @@ class GyroFeedbackEngine(Engine):
         return {
             "name": self.name,
             "type": self.type_name,
-            "gyro_active": self._gyro_active,
-            "sprite_active": self._sprite_active,
-            "trigger_cc": self._trigger_cc,
-            "trigger_channel": self._trigger_channel,
-            "sprite_trigger_path": self._sprite_trigger_path,
-            "resolume_layer_path": self._resolume_layer_path,
-            "transition_count": self._transition_count,
-            "toggle_send_count": self._toggle_send_count,
-            "layer_send_count": self._layer_send_count,
-            "output_inverted": self._output_inverted,
+            "feedback_active": self._feedback_active,
+            "hold_mode_active": self._hold_mode_active,
+            "l4_down": self._l4_down,
+            "l4_cc": self._l4_cc,
+            "l4_channel": self._l4_channel,
+            "tap_threshold_ms": round(self._tap_threshold * 1000.0, 1),
+            "axes": {
+                "pitch": self._axis_pitch,
+                "yaw": self._axis_yaw,
+                "roll": self._axis_roll,
+            },
+            "targets": {
+                "feedback_opacity": self._feedback_opacity.path,
+                "feedback_transform_x": self._feedback_transform_x.path,
+                "shake_distance": self._shake_distance.path,
+                "shake_frequency": self._shake_frequency.path,
+            },
+            "tap_count": self._tap_count,
+            "hold_enter_count": self._hold_enter_count,
+            "hold_exit_count": self._hold_exit_count,
+            "ignored_legacy_count": self._ignored_legacy_count,
         }
