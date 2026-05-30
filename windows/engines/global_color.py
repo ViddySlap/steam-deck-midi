@@ -88,6 +88,10 @@ CHANNEL_CC: dict[str, int] = {
     # CC 95 is now retired (was the combined gyro_feedback channel).
     "gyro_highlight": 96,
     "gyro_shadow": 97,
+    # gyro replace-white added 2026-05-28: dedicated Layer 11 (GYRO FEEDBACK)
+    # VIDDY-COLOR ISF V2 replace-white color, mirroring video/logo/chaser white.
+    # CC 98 keeps the gyro group contiguous (96 hl / 97 sh / 98 white); 99 = resync.
+    "gyro_white": 98,
 }
 CHANNEL_ORDER = tuple(CHANNEL_CC.keys())
 GLOBAL_CHANNEL = "global"
