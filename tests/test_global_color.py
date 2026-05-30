@@ -26,6 +26,9 @@ GYRO_HL_PATH = (
 GYRO_SH_PATH = (
     "/composition/layers/11/video/effects/viddy-colorisfv2/effect/colors/shadow"
 )
+GYRO_WHITE_PATH = (
+    "/composition/layers/11/video/effects/viddy-colorisfv2/effect/colors/replacewhite"
+)
 
 
 def _build_engine(
@@ -169,6 +172,13 @@ class GyroChannelSplitTests(unittest.TestCase):
                             "format": "hex_rgba_string",
                         }
                     ],
+                    "gyro_white": [
+                        {
+                            "name": "VIDDY-COLOR ISF V2 gyro.Replace White",
+                            "osc_path": GYRO_WHITE_PATH,
+                            "format": "hex_rgba_string",
+                        }
+                    ],
                 }
             }
         )
@@ -202,6 +212,15 @@ class GyroChannelSplitTests(unittest.TestCase):
         engine, _, _ = self._build_gyro_engine()
         self.assertEqual(engine._channels["gyro_highlight"].cc, 96)
         self.assertEqual(engine._channels["gyro_shadow"].cc, 97)
+        self.assertEqual(engine._channels["gyro_white"].cc, 98)
+
+    def test_gyro_white_cc_98_writes_only_replacewhite(self) -> None:
+        engine, osc, _ = self._build_gyro_engine()
+        # CC 98 raw value 5 -> palette[5] = blue, written to the L11 replace-white.
+        engine.on_midi_in(14, 98, 5, now=0.0)
+        self.assertEqual(_writes(osc, GYRO_WHITE_PATH), ["#0000ffff"])
+        self.assertEqual(_writes(osc, GYRO_HL_PATH), [])
+        self.assertEqual(_writes(osc, GYRO_SH_PATH), [])
 
     def test_old_gyro_feedback_channel_removed(self) -> None:
         # The combined channel and its CC 95 no longer exist.

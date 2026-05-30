@@ -130,6 +130,13 @@
         "osc_path": "/composition/layers/11/video/effects/viddy-colorisfv2/effect/colors/shadow",
         "format": "hex_rgba_string"
       }
+    ],
+    "gyro_white": [
+      {
+        "name": "VIDDY-COLOR ISF V2 gyro.Replace White",
+        "osc_path": "/composition/layers/11/video/effects/viddy-colorisfv2/effect/colors/replacewhite",
+        "format": "hex_rgba_string"
+      }
     ]
   },
   "outputs": {

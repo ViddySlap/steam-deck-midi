@@ -53,3 +53,6 @@ backups/
 
 # Local dev-bridge runtime logs
 logs/
+dev-bridge.out.log
+dev-bridge.err.log
+gyro-observe.log
