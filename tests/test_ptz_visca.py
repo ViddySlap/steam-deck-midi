@@ -388,10 +388,10 @@ class PanTiltMappingTests(unittest.TestCase):
 class ZoomTriggerTests(unittest.TestCase):
     def test_trigger_to_zoom_speed(self) -> None:
         eng, _ = _engine()
-        self.assertEqual(eng.trigger_to_zoom_speed(0), 0)
-        self.assertEqual(eng.trigger_to_zoom_speed(3500), 0)  # at deadzone
-        self.assertEqual(eng.trigger_to_zoom_speed(3501), 1)  # just past
-        self.assertEqual(eng.trigger_to_zoom_speed(32767), 7)  # max
+        self.assertEqual(eng.trigger_to_zoom_speed(0, "left"), 0)
+        self.assertEqual(eng.trigger_to_zoom_speed(3500, "left"), 0)  # at deadzone
+        self.assertEqual(eng.trigger_to_zoom_speed(3501, "left"), 1)  # just past
+        self.assertEqual(eng.trigger_to_zoom_speed(32767, "left"), 7)  # max
 
     def test_zoom_default_in(self) -> None:
         eng, sender = _engine()
@@ -543,9 +543,29 @@ class StopSafetyTests(unittest.TestCase):
 
 # Speed-control CC contract (channel 14, MIDI ch15 convention).
 SPEED_CH = 14
-PT_SPEED_CC = 92
-ZOOM_SPEED_CC = 93
+PT_SPEED_CC = 92    # left pan/tilt ceiling
+ZOOM_SPEED_CC = 93  # left zoom ceiling
+R_PT_CC = 96        # right pan/tilt ceiling
+R_ZOOM_CC = 97      # right zoom ceiling
 FULL_X = LX + 32767  # full right deflection -> t == 1.0 -> ceiling speed
+
+# Two-group config so per-side scaling can be exercised independently.
+_TWO_GROUPS = {
+    "left": {
+        "stick_x": "L_STICK_X_AXIS",
+        "stick_y": "L_STICK_Y_AXIS",
+        "zoom_axis": "L_TRIGGER_PRESSURE",
+        "zoom_invert_note": 60,
+        "startup_camera": 1,
+    },
+    "right": {
+        "stick_x": "R_STICK_X_AXIS",
+        "stick_y": "R_STICK_Y_AXIS",
+        "zoom_axis": "R_TRIGGER_PRESSURE",
+        "zoom_invert_note": None,
+        "startup_camera": 2,
+    },
+}
 
 
 def _pan_speed_at_full_deflection(eng, sender) -> int:
@@ -558,15 +578,15 @@ class GlobalSpeedTests(unittest.TestCase):
     def test_cc127_is_full_ceiling_identical_to_v1(self) -> None:
         eng, sender = _engine()
         eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 127, 0.0)
-        self.assertEqual(eng._eff_pan_max(), 24)
-        self.assertEqual(eng._eff_tilt_max(), 20)
+        self.assertEqual(eng._eff_pan_max("left"), 24)
+        self.assertEqual(eng._eff_tilt_max("left"), 20)
         self.assertEqual(_pan_speed_at_full_deflection(eng, sender), 24)
 
     def test_cc0_collapses_to_floor_crawl(self) -> None:
         eng, sender = _engine()
         eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 0, 0.0)
-        self.assertEqual(eng._eff_pan_max(), 1)  # default floor
-        self.assertEqual(eng._eff_tilt_max(), 1)
+        self.assertEqual(eng._eff_pan_max("left"), 1)  # default floor
+        self.assertEqual(eng._eff_tilt_max("left"), 1)
         # Full deflection now maps to speed 1 (the slowest VISCA move).
         self.assertEqual(_pan_speed_at_full_deflection(eng, sender), 1)
 
@@ -592,7 +612,7 @@ class GlobalSpeedTests(unittest.TestCase):
     def test_cc64_is_between_floor_and_max(self) -> None:
         eng, sender = _engine()
         eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 64, 0.0)
-        eff = eng._eff_pan_max()
+        eff = eng._eff_pan_max("left")
         self.assertGreater(eff, 1)
         self.assertLess(eff, 24)
         # Full deflection at mid-scale maps proportionally lower than at CC 127.
@@ -606,38 +626,38 @@ class GlobalSpeedTests(unittest.TestCase):
         eng, sender = _engine()
         # Scale pan/tilt down; zoom must stay at full ceiling.
         eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 0, 0.0)
-        self.assertEqual(eng._eff_zoom_max(), 7)
-        self.assertEqual(eng.trigger_to_zoom_speed(32767), 7)
+        self.assertEqual(eng._eff_zoom_max("left"), 7)
+        self.assertEqual(eng.trigger_to_zoom_speed(32767, "left"), 7)
         # Now scale zoom down; pan/tilt scale unchanged (still floor from above).
         eng.on_midi_in(SPEED_CH, ZOOM_SPEED_CC, 0, 0.0)
-        self.assertEqual(eng._eff_zoom_max(), 1)
-        self.assertEqual(eng.trigger_to_zoom_speed(32767), 1)
-        self.assertEqual(eng._eff_pan_max(), 1)
+        self.assertEqual(eng._eff_zoom_max("left"), 1)
+        self.assertEqual(eng.trigger_to_zoom_speed(32767, "left"), 1)
+        self.assertEqual(eng._eff_pan_max("left"), 1)
 
     def test_zoom_cc_scales_only_zoom(self) -> None:
         eng, _ = _engine()
         eng.on_midi_in(SPEED_CH, ZOOM_SPEED_CC, 0, 0.0)
-        self.assertEqual(eng._eff_zoom_max(), 1)
-        self.assertEqual(eng._eff_pan_max(), 24)  # pan/tilt untouched
-        self.assertEqual(eng._eff_tilt_max(), 20)
+        self.assertEqual(eng._eff_zoom_max("left"), 1)
+        self.assertEqual(eng._eff_pan_max("left"), 24)  # pan/tilt untouched
+        self.assertEqual(eng._eff_tilt_max("left"), 20)
 
     def test_wrong_channel_ignored(self) -> None:
         eng, _ = _engine()
         eng.on_midi_in(0, PT_SPEED_CC, 0, 0.0)  # right CC, wrong channel
-        self.assertEqual(eng._pan_tilt_scale, 1.0)
-        self.assertEqual(eng._eff_pan_max(), 24)
+        self.assertEqual(eng._pan_tilt_scale["left"], 1.0)
+        self.assertEqual(eng._eff_pan_max("left"), 24)
 
     def test_wrong_cc_ignored(self) -> None:
         eng, _ = _engine()
         eng.on_midi_in(SPEED_CH, 50, 0, 0.0)  # right channel, unrelated CC
-        self.assertEqual(eng._pan_tilt_scale, 1.0)
-        self.assertEqual(eng._zoom_scale, 1.0)
+        self.assertEqual(eng._pan_tilt_scale["left"], 1.0)
+        self.assertEqual(eng._zoom_scale["left"], 1.0)
 
     def test_default_no_cc_behaves_like_v1(self) -> None:
         eng, sender = _engine()
-        self.assertEqual(eng._eff_pan_max(), 24)
-        self.assertEqual(eng._eff_tilt_max(), 20)
-        self.assertEqual(eng._eff_zoom_max(), 7)
+        self.assertEqual(eng._eff_pan_max("left"), 24)
+        self.assertEqual(eng._eff_tilt_max("left"), 20)
+        self.assertEqual(eng._eff_zoom_max("left"), 7)
         self.assertEqual(_pan_speed_at_full_deflection(eng, sender), 24)
 
     def test_scale_persists_across_many_axis_events(self) -> None:
@@ -646,14 +666,14 @@ class GlobalSpeedTests(unittest.TestCase):
         for _ in range(50):
             eng.on_axis_event("L_STICK_X_AXIS", FULL_X, 0.0)
             eng.on_axis_event("L_STICK_X_AXIS", LX, 0.0)
-        self.assertEqual(eng._pan_tilt_scale, 0.0)
+        self.assertEqual(eng._pan_tilt_scale["left"], 0.0)
         self.assertEqual(_pan_speed_at_full_deflection(eng, sender), 1)
 
     def test_floor_config_raises_minimum(self) -> None:
         # A venue can set a higher floor so CC 0 still gives a usable speed.
         eng, sender = _engine(pan_speed_floor=4, tilt_speed_floor=4)
         eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 0, 0.0)
-        self.assertEqual(eng._eff_pan_max(), 4)
+        self.assertEqual(eng._eff_pan_max("left"), 4)
         self.assertEqual(_pan_speed_at_full_deflection(eng, sender), 4)
 
     def test_status_reports_scales_and_effective_max(self) -> None:
@@ -661,10 +681,35 @@ class GlobalSpeedTests(unittest.TestCase):
         eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 0, 0.0)
         eng.on_midi_in(SPEED_CH, ZOOM_SPEED_CC, 127, 0.0)
         s = eng.status()
-        self.assertEqual(s["pan_tilt_speed_scale"], 0.0)
-        self.assertEqual(s["zoom_speed_scale"], 1.0)
-        self.assertEqual(s["effective_speed_max"], {"pan": 1, "tilt": 1, "zoom": 7})
+        self.assertEqual(s["pan_tilt_speed_scale"]["left"], 0.0)
+        self.assertEqual(s["zoom_speed_scale"]["left"], 1.0)
+        self.assertEqual(
+            s["effective_speed_max"]["left"], {"pan": 1, "tilt": 1, "zoom": 7}
+        )
         json.dumps(s)  # must not raise
+
+    # --- per-side independence (the 2026-06-03 split) ----------------------
+    def test_left_and_right_scale_independently(self) -> None:
+        eng, _ = _engine(groups=_TWO_GROUPS)
+        # Left pan/tilt to floor (CC 92); right untouched at full ceiling.
+        eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 0, 0.0)
+        self.assertEqual(eng._eff_pan_max("left"), 1)
+        self.assertEqual(eng._eff_pan_max("right"), 24)
+        # Right pan/tilt to floor (CC 96); left stays where it was.
+        eng.on_midi_in(SPEED_CH, R_PT_CC, 0, 0.0)
+        self.assertEqual(eng._eff_pan_max("right"), 1)
+        self.assertEqual(eng._eff_pan_max("left"), 1)
+        # Right zoom (CC 97) independent of left zoom.
+        eng.on_midi_in(SPEED_CH, R_ZOOM_CC, 0, 0.0)
+        self.assertEqual(eng._eff_zoom_max("right"), 1)
+        self.assertEqual(eng._eff_zoom_max("left"), 7)
+
+    def test_right_cc_noop_without_right_group(self) -> None:
+        # Single-group (left only) config must not KeyError on a right-side CC.
+        eng, _ = _engine()
+        eng.on_midi_in(SPEED_CH, R_PT_CC, 0, 0.0)  # no "right" group -> no-op
+        self.assertNotIn("right", eng._pan_tilt_scale)
+        self.assertEqual(eng._eff_pan_max("left"), 24)
 
 
 # ---------------------------------------------------------------------------
