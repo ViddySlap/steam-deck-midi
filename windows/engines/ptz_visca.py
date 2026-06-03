@@ -40,6 +40,7 @@ import time
 from typing import Callable
 
 from windows.engines.base import Engine
+from windows.engines.osc_client import OscClient
 from windows.engines.visca_sender import (
     PAN_LEFT,
     PAN_RIGHT,
@@ -90,6 +91,7 @@ class PtzViscaEngine(Engine):
         *,
         clock: Callable[[], float] = time.monotonic,
         sender: "PtzViscaSender | None" = None,
+        osc_client: "OscClient | None" = None,
     ) -> None:
         super().__init__(name, config, midi_out, clock=clock)
 
@@ -172,6 +174,38 @@ class PtzViscaEngine(Engine):
         # Per-group persistent scales (default 1.0). Seeded once groups are built.
         self._pan_tilt_scale: dict[str, float] = {}
         self._zoom_scale: dict[str, float] = {}
+
+        # --- per-side zoom-direction toggle (latching; spec ptz-zoom-dir-feedback
+        #     2026-06-03) -------------------------------------------------------
+        # Zoom direction (IN default / OUT) is a *latching* per-side state set
+        # three ways that all funnel through `_set_zoom_inverted`: the same-side
+        # bumper (L1/R1 note -> TAP toggle), a TouchOSC IN/OUT button pair (CC ->
+        # absolute), and the engine's own broadcast. The engine is the source of
+        # truth: on every *edge* it writes the absolute state out over OSC to the
+        # PTZ SELECT effect param, which Resolume echoes to the TouchOSC indicator
+        # (the osc_sync feedback pattern). Edge-triggered + idempotent absolute
+        # set => the OSC->Resolume->Wire-CC->on_midi_in round-trip and the
+        # TouchOSC echo cannot oscillate. CC 98/99 on ch14 are free of the active
+        # PTZ engines (ptz 92-97, autopilot_ptz 47-52, osc_sync 90); they reuse a
+        # disabled-in-PTZ global_color CC by the same intentional-conflict rule as
+        # the speed CCs. Resolume OSC input is 127.0.0.1:7000 (mirrors osc_sync).
+        self._left_zoom_dir_cc = int(config.get("left_zoom_dir_cc", 98))
+        self._right_zoom_dir_cc = int(config.get("right_zoom_dir_cc", 99))
+        self._zoom_dir_cc_map: dict[int, str] = {
+            self._left_zoom_dir_cc: "left",
+            self._right_zoom_dir_cc: "right",
+        }
+        self._zoom_dir_osc_base = str(
+            config.get(
+                "zoom_dir_osc_base",
+                "/composition/video/effects/ptzselect/effect/zoomdir",
+            )
+        )
+        osc_cfg = config.get("osc", {})
+        self._osc = osc_client or OscClient(
+            str(osc_cfg.get("host", "127.0.0.1")),
+            int(osc_cfg.get("port", 7000)),
+        )
 
         # --- control groups -------------------------------------------------
         self._groups: dict[str, dict] = {
@@ -301,6 +335,12 @@ class PtzViscaEngine(Engine):
                         self._pan_tilt_scale[group] = scale
                 elif group in self._zoom_scale:
                     self._zoom_scale[group] = scale
+                return
+            # --- per-side zoom-direction (absolute set from TouchOSC IN/OUT) ---
+            dir_group = self._zoom_dir_cc_map.get(cc)
+            if dir_group is not None:
+                self._set_zoom_inverted(dir_group, value >= 64)
+                return
 
     def _select_camera(self, group: str, index: int) -> None:
         """Shared select core (MIDI + physical buttons both call this).
@@ -449,11 +489,45 @@ class PtzViscaEngine(Engine):
             direction = "out" if self._zoom_inverted.get(group) else "in"
             self._sender.send_zoom(ip, direction, speed)
 
+    def _set_zoom_inverted(self, group: str, inverted: bool) -> None:
+        """Single mutation point for the latched zoom direction.
+
+        Edge-triggered: a no-op when the state is unchanged, so the OSC
+        broadcast -> Resolume param -> Wire CC -> on_midi_in round-trip (and the
+        TouchOSC echo) is idempotent and cannot oscillate. The bumper tap, the
+        TouchOSC IN/OUT CCs, and any future surface all funnel through here, so
+        every surface stays in sync with the engine as the source of truth.
+        """
+        if group not in self._zoom_inverted:
+            return
+        if self._zoom_inverted[group] == inverted:
+            return
+        self._zoom_inverted[group] = inverted
+        # Flip a live zoom immediately (no need to re-press the trigger).
+        if self._zoom_speed.get(group, 0) > 0:
+            self._emit_zoom(group)
+        # Broadcast the absolute state so the TouchOSC indicator follows whichever
+        # surface changed it (Resolume echoes the effect param back to TouchOSC).
+        self._broadcast_zoom_dir(group)
+
+    def _broadcast_zoom_dir(self, group: str) -> None:
+        """Write the latched direction (0.0 IN / 1.0 OUT) to the PTZ SELECT param."""
+        if self._osc is None:
+            return
+        self._osc.send(
+            f"{self._zoom_dir_osc_base}/{group}",
+            1.0 if self._zoom_inverted.get(group) else 0.0,
+        )
+
     # ------------------------------------------------------------------
-    # Bumper hold-to-invert (leased-hold modifier)
+    # Bumper zoom-direction toggle + physical select
 
     def on_note_in(self, channel: int, note: int, velocity: int, now: float) -> None:
-        # Zoom-invert bumper (leased-hold; Note-Off clears the invert).
+        # Press-driven only (ignore Note-Off): the same-side bumper TAPS to
+        # toggle the latched zoom direction; everything routes through
+        # _set_zoom_inverted so bumper, TouchOSC, and broadcast stay consistent.
+        if velocity <= 0:
+            return
         for group, gcfg in self._groups.items():
             n = gcfg.get("zoom_invert_note")
             if n is None or note != n:
@@ -461,14 +535,10 @@ class PtzViscaEngine(Engine):
             ch = gcfg.get("zoom_invert_channel")
             if ch is not None and channel != ch:
                 continue
-            self._zoom_inverted[group] = velocity > 0  # held = invert to OUT
-            # Re-emit so a held trigger flips direction immediately, no re-move.
-            if self._zoom_speed[group] > 0:
-                self._emit_zoom(group)
-        # Physical camera-select (press-driven; ignore Note-Off). Shares this
-        # handler with the bumper and routes into the same _select_camera core.
-        if velocity > 0:
-            self._handle_physical_select(channel, note)
+            self._set_zoom_inverted(group, not self._zoom_inverted.get(group, False))
+        # Physical camera-select shares this handler and the same _select_camera
+        # core (currently config-disabled; harmless no-op when note maps empty).
+        self._handle_physical_select(channel, note)
 
     def _handle_physical_select(self, channel: int, note: int) -> None:
         cfg = self._physical_select
@@ -598,6 +668,10 @@ class PtzViscaEngine(Engine):
                 "last_stop_reason": self._last_stop_reason,
                 "pan_tilt_speed_scale": dict(self._pan_tilt_scale),
                 "zoom_speed_scale": dict(self._zoom_scale),
+                "zoom_direction": {
+                    g: ("out" if self._zoom_inverted.get(g) else "in")
+                    for g in self._groups
+                },
                 "effective_speed_max": {
                     g: {
                         "pan": self._eff_pan_max(g),

@@ -27,6 +27,13 @@
   "left_zoom_speed_cc": 93,
   "right_pan_tilt_speed_cc": 96,
   "right_zoom_speed_cc": 97,
+  "left_zoom_dir_cc": 98,
+  "right_zoom_dir_cc": 99,
+  "zoom_dir_osc_base": "/composition/video/effects/ptzselect/effect/zoomdir",
+  "osc": {
+    "host": "127.0.0.1",
+    "port": 7000
+  },
   "pan_speed_floor": 1,
   "tilt_speed_floor": 1,
   "zoom_speed_floor": 1,
@@ -42,14 +49,16 @@
       "stick_x": "L_STICK_X_AXIS",
       "stick_y": "L_STICK_Y_AXIS",
       "zoom_axis": "L_TRIGGER_PRESSURE",
-      "zoom_invert_note": null,
+      "zoom_invert_note": 60,
+      "zoom_invert_channel": 0,
       "startup_camera": 1
     },
     "right": {
       "stick_x": "R_STICK_X_AXIS",
       "stick_y": "R_STICK_Y_AXIS",
       "zoom_axis": "R_TRIGGER_PRESSURE",
-      "zoom_invert_note": null,
+      "zoom_invert_note": 62,
+      "zoom_invert_channel": 0,
       "startup_camera": 2
     }
   }
