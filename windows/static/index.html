@@ -870,6 +870,7 @@ async function loadAll() {
     updateCount();
     renderPresetDropdown();
     renderMacroLibrary();
+    renderEngines();  // refresh engine checkboxes to the loaded preset's states
     status('Ready', 'ok');
     setDirty(false);
   } catch (e) {
@@ -1829,14 +1830,57 @@ async function renderEngines() {
       list.innerHTML = '<p style="opacity:0.6">No engines loaded.</p>';
       return;
     }
-    list.innerHTML = engines.map(e => `
-      <div style="padding:10px 12px;border:1px solid rgba(255,255,255,0.08);border-radius:6px;margin-bottom:8px">
-        <div style="font-weight:600">${e.name}</div>
-        <div style="opacity:0.6;font-size:12px;margin-top:4px">type: ${e.type}</div>
+    list.innerHTML =
+      '<p style="opacity:0.6;font-size:12px;margin:0 0 10px">' +
+      'Toggle engines on/off for this preset. Changes apply live; <b>Save</b> the preset to keep them.' +
+      '</p>' +
+      engines.map(e => `
+      <div style="padding:10px 12px;border:1px solid rgba(255,255,255,0.08);border-radius:6px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div>
+          <div style="font-weight:600">${e.name}</div>
+          <div style="opacity:0.6;font-size:12px;margin-top:4px">type: ${e.type}</div>
+        </div>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap">
+          <input type="checkbox" class="engine-toggle" data-type="${e.type}" ${e.active === false ? '' : 'checked'}>
+          <span style="font-size:12px;opacity:0.8">${e.active === false ? 'Off' : 'On'}</span>
+        </label>
       </div>
     `).join('');
+    list.querySelectorAll('.engine-toggle').forEach(cb => {
+      cb.addEventListener('change', () => toggleEngine(cb));
+    });
   } catch (e) {
     list.innerHTML = `<p style="color:#f88">Failed to load engines: ${e.message}</p>`;
+  }
+}
+
+async function toggleEngine(cb) {
+  const type = cb.dataset.type;
+  const active = cb.checked;
+  const label = cb.parentElement.querySelector('span');
+  cb.disabled = true;
+  try {
+    const res = await fetch(`/api/engines/${encodeURIComponent(type)}/active`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({active}),
+    });
+    const data = await res.json();
+    if (data.error) {
+      cb.checked = !active;  // revert on failure
+      if (label) label.textContent = cb.checked ? 'On' : 'Off';
+    } else {
+      if (label) label.textContent = active ? 'On' : 'Off';
+      // The toggle is live now, but not persisted until the preset is saved.
+      // Mark dirty so the "Save & Apply" button enables (engine-only changes
+      // don't touch the mappings form, which is what normally enables it).
+      setDirty(true);
+    }
+  } catch (e) {
+    cb.checked = !active;
+    if (label) label.textContent = cb.checked ? 'On' : 'Off';
+  } finally {
+    cb.disabled = false;
   }
 }
 

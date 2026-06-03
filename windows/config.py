@@ -126,6 +126,10 @@ class ReceiverConfig:
     mappings: dict[str, MidiMapping]
     macro_settings: MacroSettings
     analog_settings: AnalogSettings = field(default_factory=AnalogSettings)
+    # Per-preset engine on/off overrides: {engine_type: active_bool}. Absent or
+    # malformed entries fall back to each engine's own config `enabled` default.
+    # Lets a preset (e.g. "PTZ") disable show engines that "EDM Show" leaves on.
+    engine_states: dict[str, bool] = field(default_factory=dict)
 
 
 def load_effective_midi_map(base_path: str | Path, local_path: str | Path) -> ReceiverConfig:
@@ -191,6 +195,7 @@ def load_midi_map(path: str | Path) -> ReceiverConfig:
 
     macro_settings = _parse_macro_settings(raw.get("macro_settings"))
     analog_settings = _parse_analog_settings(raw.get("analog_settings"))
+    engine_states = _parse_engine_states(raw.get("engines"))
 
     validated: dict[str, MidiMapping] = {}
     for action, spec in mappings.items():
@@ -204,7 +209,24 @@ def load_midi_map(path: str | Path) -> ReceiverConfig:
         mappings=validated,
         macro_settings=macro_settings,
         analog_settings=analog_settings,
+        engine_states=engine_states,
     )
+
+
+def _parse_engine_states(spec: object) -> dict[str, bool]:
+    """Parse the optional preset `engines` map of {engine_type: active_bool}.
+
+    Lenient by design: this rides the show-critical hot-reload path, so a
+    malformed entry must never raise and break a live preset switch. Non-dict
+    input → empty map; only string→bool entries are kept, others dropped.
+    """
+    if not isinstance(spec, dict):
+        return {}
+    states: dict[str, bool] = {}
+    for key, value in spec.items():
+        if isinstance(key, str) and key and isinstance(value, bool):
+            states[key] = value
+    return states
 
 
 def _parse_macro_settings(spec: object) -> MacroSettings:

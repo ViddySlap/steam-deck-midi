@@ -253,6 +253,11 @@ def main(argv: list[str] | None = None) -> int:
     def reload_config_fn():
         active = get_active_preset_path(presets_dir, base_map_path)
         cfg = load_midi_map(active)
+        # Apply the preset's per-engine on/off states on the receiver thread
+        # (this runs inside serve_forever's reload path, so no cross-thread race
+        # with engine dispatch). Engines absent from the map are left as-is.
+        if engine_registry is not None:
+            engine_registry.apply_engine_states(cfg.engine_states)
         return cfg.mappings, cfg.macro_settings
 
     engine_registry = None
@@ -262,11 +267,15 @@ def main(argv: list[str] | None = None) -> int:
         else:
             engines_path = base_map_path.parent / "engines"
         engine_registry = load_engines(engines_path, midi_out)
+        # Honor the active preset's engine on/off states at startup so a
+        # PTZ-style preset boots with show engines already disabled.
+        engine_registry.apply_engine_states(receiver_config.engine_states)
         if engine_registry.engines:
             logging.info(
-                "engine config: path=%s count=%d",
+                "engine config: path=%s count=%d active=%d",
                 engines_path,
                 len(engine_registry.engines),
+                sum(1 for e in engine_registry.engines if e.active),
             )
 
     pulse_in = None
