@@ -244,6 +244,9 @@ class MappingUIServer:
                 candidate["macro_settings"] = body["macro_settings"]
             if "analog_settings" in body:
                 candidate["analog_settings"] = body["analog_settings"]
+            engine_states = self._current_engine_states()
+            if engine_states:
+                candidate["engines"] = engine_states
 
             import tempfile, os
             with tempfile.NamedTemporaryFile(
@@ -302,6 +305,17 @@ class MappingUIServer:
             filename = safe + ".json"
             new_path = self.presets_dir / filename
             current_content = self._get_active_preset_path().read_text(encoding="utf-8")
+            # Bake the live engine on/off states into the new preset so the
+            # checkbox state the user sees is what gets saved.
+            engine_states = self._current_engine_states()
+            if engine_states:
+                try:
+                    doc = json.loads(current_content)
+                    if isinstance(doc, dict):
+                        doc["engines"] = engine_states
+                        current_content = json.dumps(doc, indent=2)
+                except json.JSONDecodeError:
+                    pass
             new_path.write_text(current_content, encoding="utf-8")
             set_active_preset(self.presets_dir, filename)
             self.reload_event.set()
@@ -392,6 +406,23 @@ class MappingUIServer:
                 return jsonify({"engines": []})
             return jsonify({"engines": self.engine_registry.status()})
 
+        @app.route("/api/engines/<type_name>/active", methods=["POST"])
+        def set_engine_active(type_name: str) -> Response:
+            """Toggle one engine on/off live (web-UI checkbox).
+
+            The new state is not persisted until the preset is saved — at which
+            point `_current_engine_states()` captures it into the preset file.
+            """
+            if self.engine_registry is None:
+                return jsonify({"error": "no engine registry"}), 404
+            body = request.get_json(force=True, silent=True) or {}
+            active = body.get("active")
+            if not isinstance(active, bool):
+                return jsonify({"error": "'active' must be a boolean"}), 400
+            if not self.engine_registry.set_active_by_type(type_name, active):
+                return jsonify({"error": f"engine not loaded: {type_name}"}), 404
+            return jsonify({"ok": True, "type": type_name, "active": active})
+
         @app.route("/api/engines/osc-sync/resync", methods=["POST"])
         def resync_osc_sync() -> Response:
             engine = self._find_engine("osc_sync")
@@ -437,6 +468,15 @@ class MappingUIServer:
             return jsonify({"ok": True, "results": results})
 
         return app
+
+    def _current_engine_states(self) -> dict[str, bool]:
+        """Snapshot loaded engines' active flags for persisting into a preset."""
+        if self.engine_registry is None:
+            return {}
+        try:
+            return self.engine_registry.current_states()
+        except Exception:
+            return {}
 
     def _find_engine(self, type_name: str):
         if self.engine_registry is None:

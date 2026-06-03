@@ -30,6 +30,15 @@ class Engine:
         self._config = config
         self._midi_out = midi_out
         self._clock = clock
+        # Runtime on/off gate. The registry skips dispatch (MIDI/notes/axis/
+        # clock/tick/note-emit filters) for inactive engines, so an inactive
+        # engine is inert without being torn down. Defaults from the config
+        # `enabled` flag; flipped live by the web UI and applied per-preset.
+        self.active: bool = bool(config.get("enabled", True))
+
+    def set_active(self, active: bool) -> None:
+        """Enable/disable this engine at runtime (registry stops dispatching when off)."""
+        self.active = bool(active)
 
     def on_midi_in(self, channel: int, cc: int, value: int, now: float) -> None:
         """Called for every MIDI CC arriving on the feedback port."""
@@ -90,4 +99,4 @@ class Engine:
 
     def status(self) -> dict:
         """Return a JSON-serializable dict describing engine state for the UI."""
-        return {"name": self.name, "type": self.type_name}
+        return {"name": self.name, "type": self.type_name, "active": self.active}
