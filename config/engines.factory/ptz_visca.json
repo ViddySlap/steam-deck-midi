@@ -35,6 +35,13 @@
       "zoom_axis": "L_TRIGGER_PRESSURE",
       "zoom_invert_note": null,
       "startup_camera": 1
+    },
+    "right": {
+      "stick_x": "R_STICK_X_AXIS",
+      "stick_y": "R_STICK_Y_AXIS",
+      "zoom_axis": "R_TRIGGER_PRESSURE",
+      "zoom_invert_note": null,
+      "startup_camera": 2
     }
   }
 }
