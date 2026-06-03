@@ -1,0 +1,27 @@
+{
+  "type": "autopilot_ptz",
+  "name": "Autopilot PTZ",
+  "enabled": true,
+  "inputs": {
+    "channel": 14,
+    "cc_enable": 47,
+    "cc_beats": 48,
+    "cc_mode": 49,
+    "cc_cam1": 50,
+    "cc_cam2": 51,
+    "cc_cam3": 52,
+    "beats_lookup": [1, 4, 8, 16, 32, 64, 128]
+  },
+  "outputs": {
+    "osc": {"host": "127.0.0.1", "port": 7000},
+    "cutting_layer": 4
+  },
+  "defaults": {
+    "enabled": false,
+    "beats_per_clip": 16,
+    "clip_mode": 0,
+    "cam1_enabled": true,
+    "cam2_enabled": true,
+    "cam3_enabled": true
+  }
+}

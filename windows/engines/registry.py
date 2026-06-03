@@ -9,6 +9,7 @@ from typing import Callable, Iterable
 
 from windows.engines.audio_opacity import AudioOpacityEngine
 from windows.engines.autopilot import AutopilotEngine
+from windows.engines.autopilot_ptz import AutopilotPtzEngine
 from windows.engines.base import Engine
 from windows.engines.bumper_blast import BumperBlastEngine
 from windows.engines.chaser_stack_dispatcher import ChaserStackDispatcherEngine
@@ -32,6 +33,7 @@ _ENGINE_TYPES: dict[str, type[Engine]] = {
     AudioOpacityEngine.type_name: AudioOpacityEngine,
     OscSyncEngine.type_name: OscSyncEngine,
     AutopilotEngine.type_name: AutopilotEngine,
+    AutopilotPtzEngine.type_name: AutopilotPtzEngine,
     SteamInputLayerTrackerEngine.type_name: SteamInputLayerTrackerEngine,
     BumperBlastEngine.type_name: BumperBlastEngine,
     ChaserStackDispatcherEngine.type_name: ChaserStackDispatcherEngine,
