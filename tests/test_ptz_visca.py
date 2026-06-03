@@ -537,5 +537,135 @@ class StopSafetyTests(unittest.TestCase):
         self.assertEqual(sender.of("zoom_stop"), [("zoom_stop", CAM1)] * 3)
 
 
+# ---------------------------------------------------------------------------
+# Global movement-speed control (CC-scaled ceilings) — spec ptz-global-speed
+# ---------------------------------------------------------------------------
+
+# Speed-control CC contract (channel 14, MIDI ch15 convention).
+SPEED_CH = 14
+PT_SPEED_CC = 92
+ZOOM_SPEED_CC = 93
+FULL_X = LX + 32767  # full right deflection -> t == 1.0 -> ceiling speed
+
+
+def _pan_speed_at_full_deflection(eng, sender) -> int:
+    sender.calls.clear()
+    eng.on_axis_event("L_STICK_X_AXIS", FULL_X, 0.0)
+    return sender.of("pantilt")[-1][2]  # (pantilt, ip, pan_speed, ...)
+
+
+class GlobalSpeedTests(unittest.TestCase):
+    def test_cc127_is_full_ceiling_identical_to_v1(self) -> None:
+        eng, sender = _engine()
+        eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 127, 0.0)
+        self.assertEqual(eng._eff_pan_max(), 24)
+        self.assertEqual(eng._eff_tilt_max(), 20)
+        self.assertEqual(_pan_speed_at_full_deflection(eng, sender), 24)
+
+    def test_cc0_collapses_to_floor_crawl(self) -> None:
+        eng, sender = _engine()
+        eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 0, 0.0)
+        self.assertEqual(eng._eff_pan_max(), 1)  # default floor
+        self.assertEqual(eng._eff_tilt_max(), 1)
+        # Full deflection now maps to speed 1 (the slowest VISCA move).
+        self.assertEqual(_pan_speed_at_full_deflection(eng, sender), 1)
+
+    def test_cc0_does_not_disable_stop_on_center(self) -> None:
+        eng, sender = _engine()
+        eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 0, 0.0)
+        eng.on_axis_event("L_STICK_X_AXIS", FULL_X, 0.0)  # crawl move
+        sender.calls.clear()
+        eng.on_axis_event("L_STICK_X_AXIS", LX, 0.0)  # deadzone -> still STOPs
+        self.assertEqual(sender.of("stop"), [("stop", CAM1)] * 3)
+
+    def test_cc0_does_not_disable_drop_watchdog(self) -> None:
+        clock = FakeClock()
+        eng, sender = _engine(clock=clock)
+        eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 0, clock.now)
+        eng.on_axis_event("L_STICK_X_AXIS", FULL_X, clock.now)  # crawl move
+        sender.calls.clear()
+        clock.advance(0.3)  # > drop_timeout
+        eng.tick(clock.now)
+        self.assertEqual(len(sender.of("stop")), 3)
+        self.assertEqual(eng.status()["last_stop_reason"], "drop")
+
+    def test_cc64_is_between_floor_and_max(self) -> None:
+        eng, sender = _engine()
+        eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 64, 0.0)
+        eff = eng._eff_pan_max()
+        self.assertGreater(eff, 1)
+        self.assertLess(eff, 24)
+        # Full deflection at mid-scale maps proportionally lower than at CC 127.
+        mid = _pan_speed_at_full_deflection(eng, sender)
+        self.assertEqual(mid, eff)
+        eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 127, 0.0)
+        full = _pan_speed_at_full_deflection(eng, sender)
+        self.assertLess(mid, full)
+
+    def test_pan_tilt_and_zoom_scales_independent(self) -> None:
+        eng, sender = _engine()
+        # Scale pan/tilt down; zoom must stay at full ceiling.
+        eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 0, 0.0)
+        self.assertEqual(eng._eff_zoom_max(), 7)
+        self.assertEqual(eng.trigger_to_zoom_speed(32767), 7)
+        # Now scale zoom down; pan/tilt scale unchanged (still floor from above).
+        eng.on_midi_in(SPEED_CH, ZOOM_SPEED_CC, 0, 0.0)
+        self.assertEqual(eng._eff_zoom_max(), 1)
+        self.assertEqual(eng.trigger_to_zoom_speed(32767), 1)
+        self.assertEqual(eng._eff_pan_max(), 1)
+
+    def test_zoom_cc_scales_only_zoom(self) -> None:
+        eng, _ = _engine()
+        eng.on_midi_in(SPEED_CH, ZOOM_SPEED_CC, 0, 0.0)
+        self.assertEqual(eng._eff_zoom_max(), 1)
+        self.assertEqual(eng._eff_pan_max(), 24)  # pan/tilt untouched
+        self.assertEqual(eng._eff_tilt_max(), 20)
+
+    def test_wrong_channel_ignored(self) -> None:
+        eng, _ = _engine()
+        eng.on_midi_in(0, PT_SPEED_CC, 0, 0.0)  # right CC, wrong channel
+        self.assertEqual(eng._pan_tilt_scale, 1.0)
+        self.assertEqual(eng._eff_pan_max(), 24)
+
+    def test_wrong_cc_ignored(self) -> None:
+        eng, _ = _engine()
+        eng.on_midi_in(SPEED_CH, 50, 0, 0.0)  # right channel, unrelated CC
+        self.assertEqual(eng._pan_tilt_scale, 1.0)
+        self.assertEqual(eng._zoom_scale, 1.0)
+
+    def test_default_no_cc_behaves_like_v1(self) -> None:
+        eng, sender = _engine()
+        self.assertEqual(eng._eff_pan_max(), 24)
+        self.assertEqual(eng._eff_tilt_max(), 20)
+        self.assertEqual(eng._eff_zoom_max(), 7)
+        self.assertEqual(_pan_speed_at_full_deflection(eng, sender), 24)
+
+    def test_scale_persists_across_many_axis_events(self) -> None:
+        eng, sender = _engine()
+        eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 0, 0.0)
+        for _ in range(50):
+            eng.on_axis_event("L_STICK_X_AXIS", FULL_X, 0.0)
+            eng.on_axis_event("L_STICK_X_AXIS", LX, 0.0)
+        self.assertEqual(eng._pan_tilt_scale, 0.0)
+        self.assertEqual(_pan_speed_at_full_deflection(eng, sender), 1)
+
+    def test_floor_config_raises_minimum(self) -> None:
+        # A venue can set a higher floor so CC 0 still gives a usable speed.
+        eng, sender = _engine(pan_speed_floor=4, tilt_speed_floor=4)
+        eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 0, 0.0)
+        self.assertEqual(eng._eff_pan_max(), 4)
+        self.assertEqual(_pan_speed_at_full_deflection(eng, sender), 4)
+
+    def test_status_reports_scales_and_effective_max(self) -> None:
+        eng, _ = _engine()
+        eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 0, 0.0)
+        eng.on_midi_in(SPEED_CH, ZOOM_SPEED_CC, 127, 0.0)
+        s = eng.status()
+        self.assertEqual(s["pan_tilt_speed_scale"], 0.0)
+        self.assertEqual(s["zoom_speed_scale"], 1.0)
+        self.assertEqual(s["effective_speed_max"], {"pan": 1, "tilt": 1, "zoom": 7})
+        json.dumps(s)  # must not raise
+
+
 if __name__ == "__main__":
     unittest.main()

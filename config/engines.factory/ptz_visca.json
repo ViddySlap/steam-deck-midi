@@ -22,6 +22,12 @@
   "select_channel": 14,
   "left_select_cc": 94,
   "right_select_cc": 95,
+  "speed_control_channel": 14,
+  "pan_tilt_speed_cc": 92,
+  "zoom_speed_cc": 93,
+  "pan_speed_floor": 1,
+  "tilt_speed_floor": 1,
+  "zoom_speed_floor": 1,
   "groups": {
     "left": {
       "stick_x": "L_STICK_X_AXIS",
