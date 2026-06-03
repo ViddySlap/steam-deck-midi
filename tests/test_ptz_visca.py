@@ -845,5 +845,90 @@ class CameraSelectTests(unittest.TestCase):
         self.assertEqual(sender.of("pantilt")[0][1], CAM1)  # .203 resumes
 
 
+# ---------------------------------------------------------------------------
+# Physical Deck-button camera-select — spec ptz-physical-button-select
+# ---------------------------------------------------------------------------
+
+_PHYS_DISCRETE = {
+    "mode": "discrete",
+    "channel": 0,
+    "discrete_notes": {
+        "80": ["left", 1], "81": ["left", 2], "82": ["left", 3],
+        "83": ["right", 1], "84": ["right", 2], "85": ["right", 3],
+    },
+}
+_PHYS_CYCLE = {
+    "mode": "cycle",
+    "channel": 0,
+    "cycle_notes": {"86": "left", "87": "right"},
+}
+
+
+class PhysicalButtonSelectTests(unittest.TestCase):
+    def _discrete(self, clock=None):
+        return _engine(clock=clock, groups=_TWO_GROUPS, physical_select=_PHYS_DISCRETE)
+
+    def _cycle(self, clock=None):
+        return _engine(clock=clock, groups=_TWO_GROUPS, physical_select=_PHYS_CYCLE)
+
+    def test_discrete_note_selects_group_camera(self) -> None:
+        eng, _ = self._discrete()
+        eng.on_note_in(0, 81, 127, 0.0)  # left -> Cam 2
+        self.assertEqual(eng._targets["left"], CAM2)
+        eng.on_note_in(0, 85, 127, 0.0)  # right -> Cam 3
+        self.assertEqual(eng._targets["right"], CAM3)
+
+    def test_note_off_ignored(self) -> None:
+        eng, _ = self._discrete()
+        eng.on_note_in(0, 81, 0, 0.0)  # Note-Off -> ignored
+        self.assertEqual(eng._targets["left"], CAM1)
+
+    def test_unknown_note_and_wrong_channel_ignored(self) -> None:
+        eng, _ = self._discrete()
+        eng.on_note_in(0, 99, 127, 0.0)  # not a select note
+        eng.on_note_in(5, 81, 127, 0.0)  # wrong channel
+        self.assertEqual(eng._targets["left"], CAM1)
+
+    def test_discrete_stop_then_retarget(self) -> None:
+        eng, sender = self._discrete()
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 30000, 0.0)  # left driving .203
+        sender.calls.clear()
+        eng.on_note_in(0, 82, 127, 0.0)  # left -> Cam 3
+        self.assertEqual(sender.of("stop"), [("stop", CAM1)] * 3)  # outgoing stopped
+        self.assertEqual(eng._targets["left"], CAM3)
+
+    def test_cycle_advances_and_wraps(self) -> None:
+        eng, _ = self._cycle()
+        self.assertEqual(eng._selected_index["left"], 1)
+        eng.on_note_in(0, 86, 127, 0.0)
+        self.assertEqual(eng._selected_index["left"], 2)
+        eng.on_note_in(0, 86, 127, 0.0)
+        self.assertEqual(eng._selected_index["left"], 3)
+        eng.on_note_in(0, 86, 127, 0.0)
+        self.assertEqual(eng._selected_index["left"], 1)  # wraps 3 -> 1
+        self.assertEqual(eng._targets["left"], CAM1)
+
+    def test_physical_and_touchosc_select_indistinguishable(self) -> None:
+        # A physical discrete select and a CC select to the same camera land in
+        # the same target state (both route through _select_camera).
+        phys, _ = self._discrete()
+        phys.on_note_in(0, 81, 127, 0.0)  # left -> Cam 2
+        midi, _ = self._discrete()
+        midi.on_midi_in(SELECT_CH, LEFT_SELECT_CC, 2, 0.0)  # left -> Cam 2
+        self.assertEqual(phys._targets["left"], midi._targets["left"])
+        self.assertEqual(phys._selected_index["left"], midi._selected_index["left"])
+
+    def test_bumper_and_select_notes_coexist(self) -> None:
+        # The zoom-invert bumper (note 60/61) and select notes share on_note_in.
+        eng, sender = self._discrete()
+        eng.on_axis_event("L_TRIGGER_PRESSURE", 16000, 0.0)  # left zoom IN
+        eng.on_note_in(0, 60, 127, 0.0)  # left bumper -> invert zoom only
+        self.assertTrue(eng._zoom_inverted["left"])
+        self.assertEqual(eng._targets["left"], CAM1)  # select untouched
+        eng.on_note_in(0, 81, 127, 0.0)  # select note -> retarget, zoom-invert intact
+        self.assertEqual(eng._targets["left"], CAM2)
+        self.assertTrue(eng._zoom_inverted["left"])
+
+
 if __name__ == "__main__":
     unittest.main()

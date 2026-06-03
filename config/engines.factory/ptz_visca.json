@@ -28,6 +28,22 @@
   "pan_speed_floor": 1,
   "tilt_speed_floor": 1,
   "zoom_speed_floor": 1,
+  "physical_select": {
+    "mode": "discrete",
+    "channel": 0,
+    "discrete_notes": {
+      "80": ["left", 1],
+      "81": ["left", 2],
+      "82": ["left", 3],
+      "83": ["right", 1],
+      "84": ["right", 2],
+      "85": ["right", 3]
+    },
+    "cycle_notes": {
+      "86": "left",
+      "87": "right"
+    }
+  },
   "groups": {
     "left": {
       "stick_x": "L_STICK_X_AXIS",
