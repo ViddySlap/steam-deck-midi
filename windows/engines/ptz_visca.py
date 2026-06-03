@@ -152,11 +152,15 @@ class PtzViscaEngine(Engine):
         self._groups: dict[str, dict] = {
             str(gname): dict(gcfg) for gname, gcfg in config.get("groups", {}).items()
         }
-        # Per-group current target camera IP (v1: fixed at startup_camera).
+        # Per-group current target camera IP + selected index. Startup is the
+        # group's `startup_camera`; the select CCs (and physical buttons) flip
+        # both at runtime via `_select_camera`.
         self._targets: dict[str, "str | None"] = {}
+        self._selected_index: dict[str, int] = {}
         for gname, gcfg in self._groups.items():
-            cam_key = str(gcfg.get("startup_camera", 1))
-            self._targets[gname] = self._cameras.get(cam_key)
+            idx = int(gcfg.get("startup_camera", 1))
+            self._selected_index[gname] = idx
+            self._targets[gname] = self._cameras.get(str(idx))
 
         # Axis-action -> (group, "x"/"y") and zoom-axis -> group lookups.
         self._stick_axis_to_group: dict[str, tuple[str, str]] = {}
@@ -230,23 +234,78 @@ class PtzViscaEngine(Engine):
         return max(1, round(self._lerp(self._zoom_speed_floor, self._zoom_speed_max, self._zoom_scale)))
 
     def on_midi_in(self, channel: int, cc: int, value: int, now: float) -> None:
-        """Consume the two global speed-ceiling CCs on the feedback port.
+        """Consume the feedback-port CCs this engine owns (all on channel 14).
 
-        CC 0..127 -> 0..1 scale, lerped between the config floor and the
-        configured ``*_speed_max`` to get the effective ceiling. Persistent
-        state (holds until changed); ignores any other channel/CC. A held
-        stick/trigger streams axis events at ``stream_hz``, so a new scale
-        applies on the next event (<~16 ms) — no forced re-emit needed.
-        Stop-safety is untouched: scaling to the floor is a crawl, never a
-        disabled stop.
+        Two CC families share the channel:
+
+        * **Camera-select** (CC 94 LEFT / 95 RIGHT): ``value`` is the camera
+          index 1/2/3; retarget that group via ``_select_camera`` (stop-then-
+          retarget). The signal arrives on DECK_OUT (no loop — the engine emits
+          VISCA over UDP, never MIDI).
+        * **Global speed ceiling** (CC 92 pan/tilt, 93 zoom): 0..127 -> a
+          persistent 0..1 scale, lerped between the config floor and the
+          configured ``*_speed_max``. A held stick/trigger re-streams at
+          ``stream_hz``, so a new scale applies on the next event (<~16 ms).
+
+        Anything else (other channel / unrelated CC) is ignored. Stop-safety is
+        untouched: scaling to the floor is a crawl, never a disabled stop.
         """
-        if channel != self._speed_control_channel:
+        # --- camera-select (retarget a group) ---
+        if channel == self._select_channel:
+            if cc == self._left_select_cc:
+                self._select_camera("left", value)
+                return
+            if cc == self._right_select_cc:
+                self._select_camera("right", value)
+                return
+        # --- global speed-ceiling control ---
+        if channel == self._speed_control_channel:
+            scale = min(1.0, max(0.0, value / 127.0))
+            if cc == self._pan_tilt_speed_cc:
+                self._pan_tilt_scale = scale
+            elif cc == self._zoom_speed_cc:
+                self._zoom_scale = scale
+
+    def _select_camera(self, group: str, index: int) -> None:
+        """Shared select core (MIDI + physical buttons both call this).
+
+        STOP the camera we're leaving *before* retargeting (pan/tilt and zoom
+        are continuous — a mid-move switch would otherwise leave the deselected
+        camera running away), then clear the group's surface latches so the new
+        camera starts clean. No-op if the group is unknown, the index isn't a
+        configured camera, or it's already the current target (no double-stop).
+        """
+        if group not in self._groups:
             return
-        scale = min(1.0, max(0.0, value / 127.0))
-        if cc == self._pan_tilt_speed_cc:
-            self._pan_tilt_scale = scale
-        elif cc == self._zoom_speed_cc:
-            self._zoom_scale = scale
+        new_ip = self._cameras.get(str(index))
+        if new_ip is None:
+            return  # 0 / out-of-range / unconfigured index -> ignore
+        old_ip = self._targets.get(group)
+        if new_ip == old_ip:
+            return  # already there -> no STOP, no state reset
+        if self._sender is not None and old_ip is not None:
+            for _ in range(self._redundant_stops):
+                self._sender.send_stop(old_ip)
+                self._sender.send_zoom_stop(old_ip)
+        self._reset_surface_state(group)
+        self._targets[group] = new_ip
+        self._selected_index[group] = index
+        self._last_stop_reason = "select"
+
+    def _reset_surface_state(self, group: str) -> None:
+        """Clear a group's motion + stop-safety latches across a camera switch.
+
+        The new camera receives nothing until the next axis event; a centered
+        stick simply leaves it stopped. Clearing the watchdog timestamps stops
+        a stale ``tick`` from firing a spurious drop-STOP at the new target.
+        """
+        self._pan[group] = (0, PT_STOP)
+        self._tilt[group] = (0, PT_STOP)
+        self._zoom_speed[group] = 0
+        self._centered[group] = {s: True for s in _SURFACES}
+        self._moving[group] = {s: False for s in _SURFACES}
+        self._last_axis_time[group] = {s: 0.0 for s in _SURFACES}
+        self._update_streaming()
 
     def axis_to_speed(self, raw: int, center: int, speed_max: int) -> tuple[int, int]:
         """Map a raw signed axis value to a (speed, sign) pair.
@@ -472,6 +531,7 @@ class PtzViscaEngine(Engine):
                 "camera_nic_ip": self._camera_nic_ip,
                 "sender": "bound" if self._sender is not None else "unbound",
                 "targets": dict(self._targets),
+                "selected": dict(self._selected_index),
                 "streaming": self._streaming,
                 "moving": {g: dict(self._moving[g]) for g in self._groups},
                 "last_stop_reason": self._last_stop_reason,

@@ -759,5 +759,91 @@ class TwoControlGroupTests(unittest.TestCase):
         self.assertEqual(sender.of("zoom")[-1], ("zoom", CAM2, "out", sender.of("zoom")[-1][3]))
 
 
+# ---------------------------------------------------------------------------
+# Engine camera-select + stop-then-retarget — spec ptz-engine-camera-select
+# ---------------------------------------------------------------------------
+
+CAM3 = "192.168.0.205"
+SELECT_CH = 14
+LEFT_SELECT_CC = 94
+RIGHT_SELECT_CC = 95
+
+
+class CameraSelectTests(unittest.TestCase):
+    def test_startup_selected_index(self) -> None:
+        eng, _ = _two_group_engine()
+        self.assertEqual(eng.status()["selected"], {"left": 1, "right": 2})
+
+    def test_decode_left_and_right_select(self) -> None:
+        eng, _ = _two_group_engine()
+        eng.on_midi_in(SELECT_CH, LEFT_SELECT_CC, 2, 0.0)
+        self.assertEqual(eng._targets["left"], CAM2)
+        eng.on_midi_in(SELECT_CH, RIGHT_SELECT_CC, 3, 0.0)
+        self.assertEqual(eng._targets["right"], CAM3)
+        self.assertEqual(eng.status()["selected"], {"left": 2, "right": 3})
+
+    def test_wrong_channel_and_cc_ignored(self) -> None:
+        eng, _ = _two_group_engine()
+        eng.on_midi_in(0, LEFT_SELECT_CC, 2, 0.0)  # wrong channel
+        eng.on_midi_in(SELECT_CH, 50, 2, 0.0)  # unrelated CC
+        self.assertEqual(eng._targets["left"], CAM1)  # unchanged
+
+    def test_out_of_range_index_ignored(self) -> None:
+        eng, sender = _two_group_engine()
+        eng.on_midi_in(SELECT_CH, LEFT_SELECT_CC, 0, 0.0)  # 0 = unset
+        eng.on_midi_in(SELECT_CH, LEFT_SELECT_CC, 9, 0.0)  # no such camera
+        self.assertEqual(eng._targets["left"], CAM1)
+        self.assertEqual(sender.calls, [])  # nothing sent
+
+    def test_stop_then_retarget(self) -> None:
+        eng, sender = _two_group_engine()
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 30000, 0.0)  # left driving .203
+        sender.calls.clear()
+        eng.on_midi_in(SELECT_CH, LEFT_SELECT_CC, 2, 0.0)  # switch to .204
+        # STOPs go to the OUTGOING camera (.203), before the target flips.
+        self.assertEqual(sender.of("stop"), [("stop", CAM1)] * 3)
+        self.assertEqual(sender.of("zoom_stop"), [("zoom_stop", CAM1)] * 3)
+        self.assertEqual(eng._targets["left"], CAM2)
+        # The next axis event now drives the new camera.
+        sender.calls.clear()
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 30000, 0.0)
+        self.assertEqual(sender.of("pantilt")[0][1], CAM2)
+
+    def test_noop_switch_sends_no_stop(self) -> None:
+        eng, sender = _two_group_engine()
+        eng.on_midi_in(SELECT_CH, LEFT_SELECT_CC, 1, 0.0)  # already Cam 1
+        self.assertEqual(sender.calls, [])
+        self.assertEqual(eng._targets["left"], CAM1)
+
+    def test_switch_resets_state_so_watchdog_does_not_misfire(self) -> None:
+        clock = FakeClock()
+        eng, sender = _two_group_engine(clock=clock)
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 30000, clock.now)  # moving on .203
+        eng.on_midi_in(SELECT_CH, LEFT_SELECT_CC, 2, clock.now)  # switch -> resets latches
+        sender.calls.clear()
+        clock.advance(0.3)
+        eng.tick(clock.now)  # moving was cleared -> no spurious drop-STOP
+        self.assertEqual(sender.calls, [])
+        # A fresh axis event re-arms cleanly on the new camera.
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 30000, clock.now)
+        self.assertEqual(sender.of("pantilt")[0][1], CAM2)
+
+    def test_both_groups_same_camera(self) -> None:
+        eng, sender = _two_group_engine()
+        eng.on_midi_in(SELECT_CH, RIGHT_SELECT_CC, 1, 0.0)  # right -> .203 too
+        self.assertEqual(eng._targets, {"left": CAM1, "right": CAM1})
+        # Both sticks drive .203.
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 30000, 0.0)
+        eng.on_axis_event("R_STICK_X_AXIS", RX + 30000, 0.0)
+        self.assertTrue(all(c[1] == CAM1 for c in sender.of("pantilt")))
+        # LEFT switches away -> STOP .203 (which right is still on); right resumes.
+        sender.calls.clear()
+        eng.on_midi_in(SELECT_CH, LEFT_SELECT_CC, 2, 0.0)
+        self.assertEqual(sender.of("stop"), [("stop", CAM1)] * 3)
+        sender.calls.clear()
+        eng.on_axis_event("R_STICK_X_AXIS", RX + 30000, 0.0)  # right's next event
+        self.assertEqual(sender.of("pantilt")[0][1], CAM1)  # .203 resumes
+
+
 if __name__ == "__main__":
     unittest.main()
