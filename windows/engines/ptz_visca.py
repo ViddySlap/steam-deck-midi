@@ -136,28 +136,50 @@ class PtzViscaEngine(Engine):
         # are placeholders until Ben assigns them in the PTZ SteamInput layout.
         self._physical_select: dict = dict(config.get("physical_select", {}))
 
-        # --- global movement-speed control (spec ptz-global-speed) ----------
-        # Two feedback CCs scale the *ceilings* the mapping math uses, leaving
-        # the deflection curve and stop-safety untouched. The scales are
-        # persistent state (NOT leased), default 1.0 = full configured ceiling
-        # (identical to v1 until a TouchOSC fader / Deck control moves them).
-        # Global across every group/camera. Floors are config so a venue can
-        # set a higher minimum (e.g. never crawl below speed 4). CC 92/93 ch14
-        # sit clear of the audited ch14 map (audio 100-109, autopilot 60-89,
-        # sync 90-91, select 94/95, global_color 99).
+        # --- per-side movement-speed control (spec ptz-global-speed;
+        #     per-side build 2026-06-03) ---------------------------------------
+        # Feedback CCs scale the *ceilings* the mapping math uses, leaving the
+        # deflection curve and stop-safety untouched. The scales are persistent
+        # state (NOT leased), default 1.0 = full configured ceiling (identical
+        # to v1 until a TouchOSC fader / Deck control moves them). Each hand
+        # scales independently: the left group (left stick + trigger) and the
+        # right group own separate pan/tilt + zoom scales, so the two cameras
+        # can run at different speeds and be MIDI-mapped separately. CC 92/93 =
+        # left pan/tilt + zoom, CC 96/97 = right pan/tilt + zoom — all on ch14,
+        # clear of the audited map (audio 100-109, autopilot 60-89, sync 90-91,
+        # select 94/95, global_color 99). Floors are config so a venue can set a
+        # higher minimum (e.g. never crawl below speed 4).
         self._speed_control_channel = int(config.get("speed_control_channel", 14))
-        self._pan_tilt_speed_cc = int(config.get("pan_tilt_speed_cc", 92))
-        self._zoom_speed_cc = int(config.get("zoom_speed_cc", 93))
+        # Old global keys seed the left group for backward compatibility.
+        self._left_pan_tilt_speed_cc = int(
+            config.get("left_pan_tilt_speed_cc", config.get("pan_tilt_speed_cc", 92))
+        )
+        self._left_zoom_speed_cc = int(
+            config.get("left_zoom_speed_cc", config.get("zoom_speed_cc", 93))
+        )
+        self._right_pan_tilt_speed_cc = int(config.get("right_pan_tilt_speed_cc", 96))
+        self._right_zoom_speed_cc = int(config.get("right_zoom_speed_cc", 97))
+        # CC -> (group, surface) dispatch for the speed-ceiling controls.
+        self._speed_cc_map: dict[int, tuple[str, str]] = {
+            self._left_pan_tilt_speed_cc: ("left", "pantilt"),
+            self._left_zoom_speed_cc: ("left", "zoom"),
+            self._right_pan_tilt_speed_cc: ("right", "pantilt"),
+            self._right_zoom_speed_cc: ("right", "zoom"),
+        }
         self._pan_speed_floor = int(config.get("pan_speed_floor", 1))
         self._tilt_speed_floor = int(config.get("tilt_speed_floor", 1))
         self._zoom_speed_floor = int(config.get("zoom_speed_floor", 1))
-        self._pan_tilt_scale = 1.0
-        self._zoom_scale = 1.0
+        # Per-group persistent scales (default 1.0). Seeded once groups are built.
+        self._pan_tilt_scale: dict[str, float] = {}
+        self._zoom_scale: dict[str, float] = {}
 
         # --- control groups -------------------------------------------------
         self._groups: dict[str, dict] = {
             str(gname): dict(gcfg) for gname, gcfg in config.get("groups", {}).items()
         }
+        # Seed per-group speed scales now that the group set is known.
+        self._pan_tilt_scale = {g: 1.0 for g in self._groups}
+        self._zoom_scale = {g: 1.0 for g in self._groups}
         # Per-group current target camera IP + selected index. Startup is the
         # group's `startup_camera`; the select CCs (and physical buttons) flip
         # both at runtime via `_select_camera`.
@@ -230,14 +252,17 @@ class PtzViscaEngine(Engine):
     def _lerp(floor: float, top: float, s: float) -> float:
         return floor + (top - floor) * s
 
-    def _eff_pan_max(self) -> int:
-        return max(1, round(self._lerp(self._pan_speed_floor, self._pan_speed_max, self._pan_tilt_scale)))
+    def _eff_pan_max(self, group: str) -> int:
+        s = self._pan_tilt_scale.get(group, 1.0)
+        return max(1, round(self._lerp(self._pan_speed_floor, self._pan_speed_max, s)))
 
-    def _eff_tilt_max(self) -> int:
-        return max(1, round(self._lerp(self._tilt_speed_floor, self._tilt_speed_max, self._pan_tilt_scale)))
+    def _eff_tilt_max(self, group: str) -> int:
+        s = self._pan_tilt_scale.get(group, 1.0)
+        return max(1, round(self._lerp(self._tilt_speed_floor, self._tilt_speed_max, s)))
 
-    def _eff_zoom_max(self) -> int:
-        return max(1, round(self._lerp(self._zoom_speed_floor, self._zoom_speed_max, self._zoom_scale)))
+    def _eff_zoom_max(self, group: str) -> int:
+        s = self._zoom_scale.get(group, 1.0)
+        return max(1, round(self._lerp(self._zoom_speed_floor, self._zoom_speed_max, s)))
 
     def on_midi_in(self, channel: int, cc: int, value: int, now: float) -> None:
         """Consume the feedback-port CCs this engine owns (all on channel 14).
@@ -248,10 +273,11 @@ class PtzViscaEngine(Engine):
           index 1/2/3; retarget that group via ``_select_camera`` (stop-then-
           retarget). The signal arrives on DECK_OUT (no loop — the engine emits
           VISCA over UDP, never MIDI).
-        * **Global speed ceiling** (CC 92 pan/tilt, 93 zoom): 0..127 -> a
-          persistent 0..1 scale, lerped between the config floor and the
-          configured ``*_speed_max``. A held stick/trigger re-streams at
-          ``stream_hz``, so a new scale applies on the next event (<~16 ms).
+        * **Per-side speed ceiling** (CC 92/93 left pan-tilt/zoom, 96/97 right):
+          0..127 -> a persistent 0..1 scale for that group's surface, lerped
+          between the config floor and the configured ``*_speed_max``. A held
+          stick/trigger re-streams at ``stream_hz``, so a new scale applies on
+          the next event (<~16 ms). Left and right scale independently.
 
         Anything else (other channel / unrelated CC) is ignored. Stop-safety is
         untouched: scaling to the floor is a crawl, never a disabled stop.
@@ -264,13 +290,17 @@ class PtzViscaEngine(Engine):
             if cc == self._right_select_cc:
                 self._select_camera("right", value)
                 return
-        # --- global speed-ceiling control ---
+        # --- per-side speed-ceiling control ---
         if channel == self._speed_control_channel:
-            scale = min(1.0, max(0.0, value / 127.0))
-            if cc == self._pan_tilt_speed_cc:
-                self._pan_tilt_scale = scale
-            elif cc == self._zoom_speed_cc:
-                self._zoom_scale = scale
+            entry = self._speed_cc_map.get(cc)
+            if entry is not None:
+                group, surface = entry
+                scale = min(1.0, max(0.0, value / 127.0))
+                if surface == "pantilt":
+                    if group in self._pan_tilt_scale:
+                        self._pan_tilt_scale[group] = scale
+                elif group in self._zoom_scale:
+                    self._zoom_scale[group] = scale
 
     def _select_camera(self, group: str, index: int) -> None:
         """Shared select core (MIDI + physical buttons both call this).
@@ -333,10 +363,11 @@ class PtzViscaEngine(Engine):
         sign = 1 if v > 0 else -1
         return speed, sign
 
-    def trigger_to_zoom_speed(self, raw: int) -> int:
+    def trigger_to_zoom_speed(self, raw: int, group: str) -> int:
         """Map an unsigned trigger value (0..trigger_max, 0=released) to 0..max.
 
-        0 means STOP; a moving zoom is 1..zoom_speed_max.
+        0 means STOP; a moving zoom is 1..zoom_speed_max, scaled by ``group``'s
+        zoom-speed ceiling.
         """
         if raw <= self._zoom_deadzone:
             return 0
@@ -344,7 +375,7 @@ class PtzViscaEngine(Engine):
         t = min(1.0, (raw - self._zoom_deadzone) / span) if span > 0 else 1.0
         t = max(0.0, t)
         t = apply_curve(t, self._curve)
-        return 1 + round(t * (self._eff_zoom_max() - 1))
+        return 1 + round(t * (self._eff_zoom_max(group) - 1))
 
     def _pan_dir(self, sign: int) -> int:
         # +x = right by default; invert_pan flips it.
@@ -371,11 +402,11 @@ class PtzViscaEngine(Engine):
         gcfg = self._groups[group]
         if axis == "x":
             center = self._axis_centers.get(str(gcfg.get("stick_x")), 0)
-            speed, sign = self.axis_to_speed(value, center, self._eff_pan_max())
+            speed, sign = self.axis_to_speed(value, center, self._eff_pan_max(group))
             self._pan[group] = (0, PT_STOP) if speed == 0 else (speed, self._pan_dir(sign))
         else:
             center = self._axis_centers.get(str(gcfg.get("stick_y")), 0)
-            speed, sign = self.axis_to_speed(value, center, self._eff_tilt_max())
+            speed, sign = self.axis_to_speed(value, center, self._eff_tilt_max(group))
             self._tilt[group] = (0, PT_STOP) if speed == 0 else (speed, self._tilt_dir(sign))
         self._emit_drive(group, now)
 
@@ -396,7 +427,7 @@ class PtzViscaEngine(Engine):
         self._update_streaming()
 
     def _handle_zoom_axis(self, group: str, value: int, now: float) -> None:
-        speed = self.trigger_to_zoom_speed(value)
+        speed = self.trigger_to_zoom_speed(value, group)
         self._zoom_speed[group] = speed
         if speed == 0:
             self._enter_center(group, "zoom", "center")
@@ -565,12 +596,15 @@ class PtzViscaEngine(Engine):
                 "streaming": self._streaming,
                 "moving": {g: dict(self._moving[g]) for g in self._groups},
                 "last_stop_reason": self._last_stop_reason,
-                "pan_tilt_speed_scale": self._pan_tilt_scale,
-                "zoom_speed_scale": self._zoom_scale,
+                "pan_tilt_speed_scale": dict(self._pan_tilt_scale),
+                "zoom_speed_scale": dict(self._zoom_scale),
                 "effective_speed_max": {
-                    "pan": self._eff_pan_max(),
-                    "tilt": self._eff_tilt_max(),
-                    "zoom": self._eff_zoom_max(),
+                    g: {
+                        "pan": self._eff_pan_max(g),
+                        "tilt": self._eff_tilt_max(g),
+                        "zoom": self._eff_zoom_max(g),
+                    }
+                    for g in self._groups
                 },
             }
         )
