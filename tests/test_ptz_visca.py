@@ -107,6 +107,16 @@ class FakeSocket:
         self.closed = True
 
 
+class FakeOsc:
+    """Records OSC broadcasts (zoom-direction feedback) the engine sends."""
+
+    def __init__(self) -> None:
+        self.sent: list[tuple[str, object]] = []
+
+    def send(self, address, value) -> None:
+        self.sent.append((address, value))
+
+
 CAM1 = "192.168.0.203"
 
 
@@ -151,7 +161,12 @@ def _engine(clock: FakeClock | None = None, sender: FakeSender | None = None, **
     clock = clock or FakeClock()
     sender = sender if sender is not None else FakeSender()
     eng = PtzViscaEngine(
-        "PTZ VISCA", _ptz_config(**overrides), RecordingMidiOut(), clock=clock, sender=sender
+        "PTZ VISCA",
+        _ptz_config(**overrides),
+        RecordingMidiOut(),
+        clock=clock,
+        sender=sender,
+        osc_client=FakeOsc(),
     )
     return eng, sender
 
@@ -400,15 +415,20 @@ class ZoomTriggerTests(unittest.TestCase):
         self.assertEqual(len(z), 1)
         self.assertEqual(z[0][2], "in")
 
-    def test_bumper_inverts_to_out_and_clears(self) -> None:
+    def test_bumper_taps_toggle_direction(self) -> None:
         eng, sender = _engine()
         eng.on_axis_event("L_TRIGGER_PRESSURE", 16000, 0.0)  # zoom IN, speed S
         sender.calls.clear()
-        eng.on_note_in(0, 60, 127, 0.0)  # bumper held -> OUT, re-emit
+        eng.on_note_in(0, 60, 127, 0.0)  # tap -> latch OUT, re-emit
         self.assertEqual(sender.of("zoom")[-1][2], "out")
+        self.assertTrue(eng._zoom_inverted["left"])
         sender.calls.clear()
-        eng.on_note_in(0, 60, 0, 0.0)  # release -> back to IN
+        eng.on_note_in(0, 60, 0, 0.0)  # Note-Off ignored -> still OUT, no re-emit
+        self.assertEqual(sender.of("zoom"), [])
+        self.assertTrue(eng._zoom_inverted["left"])
+        eng.on_note_in(0, 60, 127, 0.0)  # tap again -> latch back to IN
         self.assertEqual(sender.of("zoom")[-1][2], "in")
+        self.assertFalse(eng._zoom_inverted["left"])
 
     def test_held_trigger_flip_immediate(self) -> None:
         eng, sender = _engine()
@@ -416,7 +436,7 @@ class ZoomTriggerTests(unittest.TestCase):
         eng.on_axis_event("L_TRIGGER_PRESSURE", 18134, 0.0)
         self.assertEqual(sender.of("zoom")[-1], ("zoom", CAM1, "in", 4))
         sender.calls.clear()
-        eng.on_note_in(0, 60, 127, 0.0)  # bumper -> immediate OUT @ same speed
+        eng.on_note_in(0, 60, 127, 0.0)  # bumper tap -> immediate OUT @ same speed
         self.assertEqual(sender.of("zoom")[-1], ("zoom", CAM1, "out", 4))
 
     def test_trigger_release_stops_zoom(self) -> None:
@@ -447,6 +467,68 @@ class ZoomTriggerTests(unittest.TestCase):
         eng.on_axis_event("L_TRIGGER_PRESSURE", 16000, 0.0)
         self.assertTrue(sender.of("pantilt"))
         self.assertTrue(sender.of("zoom"))
+
+
+# ---------------------------------------------------------------------------
+# Latching zoom direction: bumper toggle + TouchOSC CC + OSC echo to TouchOSC
+# ---------------------------------------------------------------------------
+
+
+class ZoomDirectionFeedbackTests(unittest.TestCase):
+    LEFT_PATH = "/composition/video/effects/ptzselect/effect/zoomdir/left"
+
+    def test_dir_cc_sets_absolute(self) -> None:
+        eng, _ = _engine()
+        eng.on_midi_in(14, 98, 127, 0.0)  # TouchOSC OUT button
+        self.assertTrue(eng._zoom_inverted["left"])
+        eng.on_midi_in(14, 98, 0, 0.0)  # TouchOSC IN button
+        self.assertFalse(eng._zoom_inverted["left"])
+
+    def test_dir_cc_wrong_channel_ignored(self) -> None:
+        eng, _ = _engine()
+        eng.on_midi_in(0, 98, 127, 0.0)  # ch0, not the control channel
+        self.assertFalse(eng._zoom_inverted["left"])
+
+    def test_change_broadcasts_absolute_state(self) -> None:
+        eng, _ = _engine()
+        eng._osc.sent.clear()
+        eng.on_midi_in(14, 98, 127, 0.0)  # -> OUT
+        self.assertEqual(eng._osc.sent[-1], (self.LEFT_PATH, 1.0))
+        eng.on_midi_in(14, 98, 0, 0.0)  # -> IN
+        self.assertEqual(eng._osc.sent[-1], (self.LEFT_PATH, 0.0))
+
+    def test_idempotent_set_does_not_rebroadcast(self) -> None:
+        eng, _ = _engine()
+        eng.on_midi_in(14, 98, 127, 0.0)  # -> OUT (one broadcast)
+        eng._osc.sent.clear()
+        eng.on_midi_in(14, 98, 100, 0.0)  # still OUT -> no edge, no broadcast
+        self.assertEqual(eng._osc.sent, [])
+
+    def test_bumper_tap_broadcasts(self) -> None:
+        eng, _ = _engine()
+        eng._osc.sent.clear()
+        eng.on_note_in(0, 60, 127, 0.0)  # tap -> OUT
+        self.assertEqual(eng._osc.sent[-1], (self.LEFT_PATH, 1.0))
+
+    def test_bumper_and_cc_converge(self) -> None:
+        eng, _ = _engine()
+        eng.on_note_in(0, 60, 127, 0.0)  # bumper -> OUT
+        self.assertTrue(eng._zoom_inverted["left"])
+        eng.on_midi_in(14, 98, 0, 0.0)  # TouchOSC IN -> back to IN
+        self.assertFalse(eng._zoom_inverted["left"])
+        self.assertEqual(eng._osc.sent[-1], (self.LEFT_PATH, 0.0))
+
+    def test_unknown_group_dir_cc_is_safe_noop(self) -> None:
+        eng, _ = _engine()  # single-group config has no "right"
+        eng._osc.sent.clear()
+        eng.on_midi_in(14, 99, 127, 0.0)  # right dir CC, no right group
+        self.assertEqual(eng._osc.sent, [])
+
+    def test_status_reports_direction(self) -> None:
+        eng, _ = _engine()
+        self.assertEqual(eng.status()["zoom_direction"]["left"], "in")
+        eng.on_note_in(0, 60, 127, 0.0)
+        self.assertEqual(eng.status()["zoom_direction"]["left"], "out")
 
 
 # ---------------------------------------------------------------------------
