@@ -130,6 +130,12 @@ class PtzViscaEngine(Engine):
         self._left_select_cc = int(config.get("left_select_cc", 94))
         self._right_select_cc = int(config.get("right_select_cc", 95))
 
+        # Physical Deck-button select (notes -> the same _select_camera core as
+        # the TouchOSC/CC path). `discrete` maps one note per (group, index);
+        # `cycle` advances a side through its cameras on each press. The notes
+        # are placeholders until Ben assigns them in the PTZ SteamInput layout.
+        self._physical_select: dict = dict(config.get("physical_select", {}))
+
         # --- global movement-speed control (spec ptz-global-speed) ----------
         # Two feedback CCs scale the *ceilings* the mapping math uses, leaving
         # the deflection curve and stop-safety untouched. The scales are
@@ -416,6 +422,7 @@ class PtzViscaEngine(Engine):
     # Bumper hold-to-invert (leased-hold modifier)
 
     def on_note_in(self, channel: int, note: int, velocity: int, now: float) -> None:
+        # Zoom-invert bumper (leased-hold; Note-Off clears the invert).
         for group, gcfg in self._groups.items():
             n = gcfg.get("zoom_invert_note")
             if n is None or note != n:
@@ -427,6 +434,29 @@ class PtzViscaEngine(Engine):
             # Re-emit so a held trigger flips direction immediately, no re-move.
             if self._zoom_speed[group] > 0:
                 self._emit_zoom(group)
+        # Physical camera-select (press-driven; ignore Note-Off). Shares this
+        # handler with the bumper and routes into the same _select_camera core.
+        if velocity > 0:
+            self._handle_physical_select(channel, note)
+
+    def _handle_physical_select(self, channel: int, note: int) -> None:
+        cfg = self._physical_select
+        if not cfg:
+            return
+        sel_ch = cfg.get("channel")
+        if sel_ch is not None and sel_ch != channel:
+            return
+        mode = cfg.get("mode", "discrete")
+        if mode == "discrete":
+            entry = cfg.get("discrete_notes", {}).get(str(note))
+            if entry:
+                self._select_camera(str(entry[0]), int(entry[1]))
+        elif mode == "cycle":
+            group = cfg.get("cycle_notes", {}).get(str(note))
+            if group:
+                # 1 -> 2 -> 3 -> 1; _select_camera STOP-then-retargets each step.
+                nxt = (self._selected_index.get(group, 1) % 3) + 1
+                self._select_camera(group, nxt)
 
     # ------------------------------------------------------------------
     # Stop-safety
