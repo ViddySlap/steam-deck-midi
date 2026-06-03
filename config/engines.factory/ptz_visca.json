@@ -1,0 +1,34 @@
+{
+  "name": "PTZ VISCA",
+  "type": "ptz_visca",
+  "enabled": true,
+  "camera_nic_ip": "192.168.0.100",
+  "visca_port": 52381,
+  "cameras": {
+    "1": "192.168.0.203",
+    "2": "192.168.0.204",
+    "3": "192.168.0.205"
+  },
+  "deadzone": 3500,
+  "curve": "linear",
+  "pan_speed_max": 24,
+  "tilt_speed_max": 20,
+  "zoom_speed_max": 7,
+  "invert_pan": false,
+  "invert_tilt": false,
+  "redundant_stops": 3,
+  "drop_timeout_ms": 250,
+  "stream_hz": 60,
+  "select_channel": 14,
+  "left_select_cc": 94,
+  "right_select_cc": 95,
+  "groups": {
+    "left": {
+      "stick_x": "L_STICK_X_AXIS",
+      "stick_y": "L_STICK_Y_AXIS",
+      "zoom_axis": "L_TRIGGER_PRESSURE",
+      "zoom_invert_note": null,
+      "startup_camera": 1
+    }
+  }
+}

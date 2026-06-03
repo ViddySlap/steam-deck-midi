@@ -18,6 +18,7 @@ from windows.engines.gyro_feedback import GyroFeedbackEngine
 from windows.engines.l_stick_layer import LStickLayerEngine
 from windows.engines.nestdrop_engine import NestdropEngine
 from windows.engines.osc_sync import OscSyncEngine
+from windows.engines.ptz_visca import PtzViscaEngine
 from windows.engines.stageflow_bridge import StageFlowBridgeEngine
 from windows.engines.steam_input_layer_tracker import SteamInputLayerTrackerEngine
 from windows.midi import MidiOut
@@ -39,6 +40,7 @@ _ENGINE_TYPES: dict[str, type[Engine]] = {
     GyroFeedbackEngine.type_name: GyroFeedbackEngine,
     LStickLayerEngine.type_name: LStickLayerEngine,
     NestdropEngine.type_name: NestdropEngine,
+    PtzViscaEngine.type_name: PtzViscaEngine,
     StageFlowBridgeEngine.type_name: StageFlowBridgeEngine,
 }
 
@@ -90,6 +92,11 @@ class EngineRegistry:
         doesn't black-hole show-critical input.
         """
         for callback in self._note_emit_filters:
+            owner = getattr(callback, "__self__", None)
+            if isinstance(owner, Engine) and not owner.active:
+                # Owning engine is disabled — don't let its filter defer/drop
+                # notes (e.g. an inactive autopilot must not black-hole input).
+                continue
             try:
                 if callback(channel, note, velocity, now) is False:
                     return False
@@ -99,22 +106,28 @@ class EngineRegistry:
 
     def on_midi_in(self, channel: int, cc: int, value: int, now: float) -> None:
         for engine in self._engines:
+            if not engine.active:
+                continue
             try:
                 engine.on_midi_in(channel, cc, value, now)
             except Exception:
                 LOGGER.exception("engine %s on_midi_in failed", engine.name)
 
     def on_note_in(self, channel: int, note: int, velocity: int, now: float) -> None:
-        """Fan note_on/note_off (velocity=0) events to every engine."""
+        """Fan note_on/note_off (velocity=0) events to every active engine."""
         for engine in self._engines:
+            if not engine.active:
+                continue
             try:
                 engine.on_note_in(channel, note, velocity, now)
             except Exception:
                 LOGGER.exception("engine %s on_note_in failed", engine.name)
 
     def on_axis_event(self, action: str, value: int, now: float) -> None:
-        """Fan analog axis events to every engine."""
+        """Fan analog axis events to every active engine."""
         for engine in self._engines:
+            if not engine.active:
+                continue
             try:
                 engine.on_axis_event(action, value, now)
             except Exception:
@@ -129,6 +142,8 @@ class EngineRegistry:
 
     def on_midi_clock(self, message_type: str, now: float) -> None:
         for engine in self._engines:
+            if not engine.active:
+                continue
             try:
                 engine.on_midi_clock(message_type, now)
             except Exception:
@@ -136,6 +151,8 @@ class EngineRegistry:
 
     def tick(self, now: float) -> None:
         for engine in self._engines:
+            if not engine.active:
+                continue
             try:
                 engine.tick(now)
             except Exception:
@@ -145,9 +162,36 @@ class EngineRegistry:
         intervals = [
             engine.tick_interval_seconds()
             for engine in self._engines
-            if engine.tick_interval_seconds() is not None
+            if engine.active and engine.tick_interval_seconds() is not None
         ]
         return min(intervals) if intervals else None
+
+    def set_active_by_type(self, type_name: str, active: bool) -> bool:
+        """Set one engine's runtime active flag by type. Returns True if found."""
+        engine = self.get_by_type(type_name)
+        if engine is None:
+            return False
+        engine.set_active(active)
+        LOGGER.info("engine %s (%s) active=%s", engine.name, type_name, active)
+        return True
+
+    def apply_engine_states(self, states: dict[str, bool]) -> None:
+        """Apply a preset's {engine_type: active} map to the loaded engines.
+
+        Only engines present in the map are touched; engines absent from the
+        map keep their current active flag (so a preset that omits an engine
+        leaves it as-is rather than forcing it on). Unknown types are ignored.
+        Runs on the receiver thread via the hot-reload path.
+        """
+        if not states:
+            return
+        for engine in self._engines:
+            if engine.type_name in states:
+                engine.set_active(states[engine.type_name])
+
+    def current_states(self) -> dict[str, bool]:
+        """Snapshot the loaded engines' active flags as {engine_type: active}."""
+        return {engine.type_name: engine.active for engine in self._engines}
 
     def refresh(self) -> dict[str, str]:
         """Trigger every engine's `refresh()` hook. Used by the dev endpoint.
@@ -173,7 +217,13 @@ class EngineRegistry:
                 LOGGER.exception("engine %s shutdown failed", engine.name)
 
     def status(self) -> list[dict]:
-        return [engine.status() for engine in self._engines]
+        # Overlay the runtime `active` flag here so it's present regardless of
+        # whether a given engine's status() override calls super(). The web UI
+        # reads `active` to render its on/off checkbox.
+        return [
+            {**engine.status(), "active": engine.active}
+            for engine in self._engines
+        ]
 
 
 def load_engines(config_path: str | Path, midi_out: MidiOut) -> EngineRegistry:

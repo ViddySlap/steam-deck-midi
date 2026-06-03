@@ -374,5 +374,8 @@
     "min_value": 0,
     "modifier_hold_ms": 2000,
     "update_hz": 30
+  },
+  "engines": {
+    "ptz_visca": false
   }
 }
