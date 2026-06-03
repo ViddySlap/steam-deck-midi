@@ -124,8 +124,13 @@ class PtzViscaSender:
         else:
             self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             # Pin egress to the camera-facing dongle, ephemeral source port.
-            # Raises OSError if the NIC isn't present — propagated to the caller.
-            self._sock.bind((camera_nic_ip, 0))
+            # Raises OSError if the NIC isn't present — close the half-built
+            # socket before propagating so the caller can degrade cleanly.
+            try:
+                self._sock.bind((camera_nic_ip, 0))
+            except OSError:
+                self._sock.close()
+                raise
 
     # -- low-level send -----------------------------------------------------
 
