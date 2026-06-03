@@ -667,5 +667,97 @@ class GlobalSpeedTests(unittest.TestCase):
         json.dumps(s)  # must not raise
 
 
+# ---------------------------------------------------------------------------
+# Two independent control groups (LEFT / RIGHT) — spec ptz-two-control-groups
+# ---------------------------------------------------------------------------
+
+CAM2 = "192.168.0.204"
+RX = DEFAULT_AXIS_CENTERS["R_STICK_X_AXIS"]  # 280
+RY = DEFAULT_AXIS_CENTERS["R_STICK_Y_AXIS"]  # -336
+
+_TWO_GROUPS = {
+    "left": {
+        "stick_x": "L_STICK_X_AXIS",
+        "stick_y": "L_STICK_Y_AXIS",
+        "zoom_axis": "L_TRIGGER_PRESSURE",
+        "zoom_invert_note": 60,
+        "startup_camera": 1,
+    },
+    "right": {
+        "stick_x": "R_STICK_X_AXIS",
+        "stick_y": "R_STICK_Y_AXIS",
+        "zoom_axis": "R_TRIGGER_PRESSURE",
+        "zoom_invert_note": 61,
+        "startup_camera": 2,
+    },
+}
+
+
+def _two_group_engine(clock: FakeClock | None = None):
+    return _engine(clock=clock, groups=_TWO_GROUPS)
+
+
+class TwoControlGroupTests(unittest.TestCase):
+    def test_startup_targets_left_cam1_right_cam2(self) -> None:
+        eng, _ = _two_group_engine()
+        self.assertEqual(eng.status()["targets"], {"left": CAM1, "right": CAM2})
+
+    def test_action_routes_to_correct_group(self) -> None:
+        eng, sender = _two_group_engine()
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 30000, 0.0)
+        eng.on_axis_event("R_STICK_X_AXIS", RX + 30000, 0.0)
+        ips = [c[1] for c in sender.of("pantilt")]
+        self.assertIn(CAM1, ips)  # left -> .203
+        self.assertIn(CAM2, ips)  # right -> .204
+
+    def test_unrelated_action_ignored(self) -> None:
+        eng, sender = _two_group_engine()
+        eng.on_axis_event("GYRO_STATE_NOW", 12345, 0.0)
+        self.assertEqual(sender.calls, [])
+
+    def test_simultaneous_two_cameras_in_one_drain(self) -> None:
+        eng, sender = _two_group_engine()
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 30000, 0.0)
+        eng.on_axis_event("R_STICK_X_AXIS", RX + 30000, 0.0)
+        pantilt = sender.of("pantilt")
+        ips = {c[1] for c in pantilt}
+        self.assertEqual(ips, {CAM1, CAM2})  # two independent streams
+
+    def test_right_stick_uses_its_own_center(self) -> None:
+        # R_STICK_Y raw == its calibrated center (-336) -> magnitude 0 -> STOP.
+        eng, sender = _two_group_engine()
+        eng.on_axis_event("R_STICK_Y_AXIS", RY + 20000, 0.0)  # move .204 tilt
+        self.assertEqual(sender.of("pantilt")[-1][1], CAM2)
+        sender.calls.clear()
+        eng.on_axis_event("R_STICK_Y_AXIS", RY, 0.0)  # raw -336 == center -> STOP
+        self.assertEqual(sender.of("stop"), [("stop", CAM2)] * 3)
+
+    def test_per_group_drop_watchdog_independent(self) -> None:
+        clock = FakeClock()
+        eng, sender = _two_group_engine(clock=clock)
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 30000, clock.now)  # left @ t=0
+        eng.on_axis_event("R_STICK_X_AXIS", RX + 30000, clock.now)  # right @ t=0
+        clock.advance(0.1)
+        eng.on_axis_event("R_STICK_X_AXIS", RX + 30000, clock.now)  # refresh right @ t=0.1
+        sender.calls.clear()
+        clock.advance(0.2)  # t=0.3: left stale 0.3 (>250ms), right stale 0.2 (<250ms)
+        eng.tick(clock.now)
+        stops = sender.of("stop")
+        self.assertTrue(stops)
+        self.assertTrue(all(c == ("stop", CAM1) for c in stops))  # only left dropped
+        self.assertTrue(eng._moving["right"]["pantilt"])  # right still moving
+
+    def test_right_bumper_inverts_only_right_zoom(self) -> None:
+        eng, sender = _two_group_engine()
+        eng.on_axis_event("L_TRIGGER_PRESSURE", 16000, 0.0)  # left zoom IN
+        eng.on_axis_event("R_TRIGGER_PRESSURE", 16000, 0.0)  # right zoom IN
+        sender.calls.clear()
+        eng.on_note_in(0, 61, 127, 0.0)  # RIGHT bumper -> invert right only
+        self.assertTrue(eng._zoom_inverted["right"])
+        self.assertFalse(eng._zoom_inverted["left"])
+        # The re-emit on the right group goes OUT, to .204.
+        self.assertEqual(sender.of("zoom")[-1], ("zoom", CAM2, "out", sender.of("zoom")[-1][3]))
+
+
 if __name__ == "__main__":
     unittest.main()
