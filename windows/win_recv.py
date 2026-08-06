@@ -26,6 +26,7 @@ from windows.midi import (
     resolve_available_input_port_name,
     resolve_available_output_port_name,
 )
+from windows.osc_relay import OscRelay, OscRelayError, load_osc_relay_config
 from windows.receiver import ActionReceiver, serve_forever
 
 
@@ -117,6 +118,20 @@ def build_parser() -> argparse.ArgumentParser:
         "--no-pulse",
         action="store_true",
         help="don't open a clock-source MIDI input (for shows without Pulse)",
+    )
+    parser.add_argument(
+        "--osc-relay-config",
+        dest="osc_relay_config_path",
+        help=(
+            "path to osc_relay.json (fan Resolume's single OSC output out to "
+            "multiple control surfaces). Default: <map dir>/osc_relay.json. "
+            "A missing file disables the relay."
+        ),
+    )
+    parser.add_argument(
+        "--no-osc-relay",
+        action="store_true",
+        help="disable the OSC fan-out relay even if osc_relay.json exists",
     )
     return parser
 
@@ -297,6 +312,29 @@ def main(argv: list[str] | None = None) -> int:
         engine_registry=engine_registry,
     )
 
+    # OSC fan-out relay. Core infrastructure, not an engine -- deliberately
+    # has no per-preset toggle, because an off toggle here would kill OSC
+    # feedback to every control surface at once with no visible symptom.
+    osc_relay = None
+    if not args.no_osc_relay:
+        if args.osc_relay_config_path:
+            osc_relay_path = Path(args.osc_relay_config_path)
+        else:
+            osc_relay_path = base_map_path.parent / "osc_relay.json"
+        try:
+            osc_relay_config = load_osc_relay_config(osc_relay_path)
+        except OscRelayError as exc:
+            # Bad relay config must not stop the bridge; MIDI is the
+            # show-critical path and it does not depend on the relay.
+            logging.warning("osc_relay config invalid (%s); relay disabled", exc)
+        else:
+            if osc_relay_config.active:
+                osc_relay = OscRelay(osc_relay_config)
+                if not osc_relay.start():
+                    osc_relay = None
+            else:
+                logging.debug("osc_relay: not configured at %s", osc_relay_path)
+
     tray = None
     ui_server = None
     if not args.no_ui:
@@ -364,12 +402,16 @@ def main(argv: list[str] | None = None) -> int:
             )
         finally:
             midi_out.close()
+            if osc_relay is not None:
+                osc_relay.shutdown()
         return 0
 
     try:
         _run_bridge_loop()
     finally:
         midi_out.close()
+        if osc_relay is not None:
+            osc_relay.shutdown()
         if tray is not None:
             tray.stop()
     return 0
