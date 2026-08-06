@@ -1,0 +1,9 @@
+{
+  "_comment": "Resolume Arena's OSC output supports exactly ONE target (Preferences/osc.xml has a single <Output> element). This relay fans it out. Point Resolume's OSC Output at the 'listen' address below and it reaches every destination. Ports are per-destination: the Deck's TouchOSC receives on 7002, the iPad's on 7001 (verified live 2026-08-06). Neither .tosc patch needs changing.",
+  "enabled": true,
+  "listen": "127.0.0.1:7010",
+  "destinations": [
+    "10.10.10.5:7002",
+    "10.10.10.30:7001"
+  ]
+}

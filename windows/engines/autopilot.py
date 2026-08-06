@@ -63,6 +63,11 @@ COLUMN_TRIGGER_NOTES = COLUMN_PREV_NOTES | COLUMN_NEXT_NOTES
 COLUMN_TRIGGER_CHANNEL = 0  # Resolume MIDI shortcut binds on ch0 (mido 0-indexed)
 COLUMN_TRIGGER_VELOCITY = 127
 
+# Ceiling on synthetic beats replayed in one tick() when the fallback clock has
+# fallen behind (loop stall, machine sleep). Without it, waking from a long
+# pause would fire a burst of clip triggers at Resolume in a single frame.
+MAX_FALLBACK_CATCHUP_BEATS = 4
+
 # Resolume's /composition/layers/N/transition/duration accepts normalized
 # 0-1 over a 0-10 second range. Bridge stores transition in seconds (0-5 by
 # default per the Wire patch's TRANSITION fader); divide by this constant
@@ -87,6 +92,14 @@ class ChannelConfig:
     cc_transition: int
     cc_mode: int
     layer_ccs: dict[int, int]  # layer_index -> cc number
+    # Resolume layer-group index for this channel, or None if its layers are
+    # not inside a group. Column advance addresses
+    # /composition/groups/<group>/connectnextcolumn, so a channel with no
+    # group cannot advance columns. (FX / layer 5 is ungrouped today.)
+    group: int | None = None
+    # Advance the group's column each time the layer cycle wraps back to the
+    # first selected layer.
+    column_advance: bool = False
 
 
 @dataclass
@@ -156,6 +169,12 @@ class AutopilotEngine(Engine):
                 cc_transition=int(ch_inputs.get("cc_transition", 0)),
                 cc_mode=int(cc_mode_raw),
                 layer_ccs=layer_ccs,
+                group=(
+                    int(ch_inputs["group"])
+                    if ch_inputs.get("group") is not None
+                    else None
+                ),
+                column_advance=bool(ch_inputs.get("column_advance", False)),
             )
             self._channels[key] = channel_config
             self._cc_to_channel_param[channel_config.cc_enable] = (key, "enable", None)
@@ -218,6 +237,39 @@ class AutopilotEngine(Engine):
         self._osc_layer_transition_duration_template = (
             "/composition/layers/{n}/transition/duration"
         )
+        # Per-group column advance. Same path Resolume's own MIDI shortcut uses
+        # for the manual column-trigger notes (see _note_emit_filter).
+        self._osc_group_next_column_template = (
+            "/composition/groups/{g}/connectnextcolumn"
+        )
+
+        # --- Fallback clock -------------------------------------------------
+        # Shows without Pulse got no beats at all: every cycle event hangs off
+        # on_midi_clock, so with no clock source the engine sat idle. This is a
+        # free-running wall-clock beat generator that takes over when external
+        # ticks go quiet and yields the instant they come back.
+        fallback_cfg = config.get("fallback_clock", {}) or {}
+        self._fallback_enabled = bool(fallback_cfg.get("enabled", True))
+        self._fallback_bpm = float(fallback_cfg.get("bpm", 128.0))
+        if self._fallback_bpm <= 0:
+            LOGGER.warning(
+                "%s: fallback_clock.bpm must be > 0 (got %r); disabling fallback",
+                name,
+                self._fallback_bpm,
+            )
+            self._fallback_enabled = False
+            self._fallback_bpm = 128.0
+        self._fallback_takeover_seconds = float(
+            fallback_cfg.get("takeover_after_seconds", 2.0)
+        )
+        self._last_external_tick_at: float | None = None
+        self._fallback_next_beat_at: float | None = None
+        self._fallback_active = False
+        # Anchor for the takeover grace period before any tick has ever landed
+        # (set on the first tick()). Without it, a rig that simply hasn't
+        # started Pulse yet would flip to fallback on the very first frame
+        # instead of waiting takeover_after_seconds like the config promises.
+        self._clock_grace_anchor: float | None = None
 
     # ----- Engine ABC overrides ------------------------------------------------
 
@@ -309,10 +361,20 @@ class AutopilotEngine(Engine):
             return
         self._tick_count += 1
         self._tick_timestamps.append(now)
+        # Any real tick means Pulse is alive; the fallback stands down.
+        self._last_external_tick_at = now
+        if self._fallback_active:
+            LOGGER.info(
+                "%s: external MIDI clock resumed; fallback clock standing down",
+                self.name,
+            )
+            self._fallback_active = False
+            self._fallback_next_beat_at = None
         if self._tick_count % TICKS_PER_BEAT == 0:
             self._on_beat_boundary(now)
 
     def tick(self, now: float) -> None:
+        self._advance_fallback_clock(now)
         # Per-tick cross-fade ramping. Uses wall clock (not MIDI clock ticks)
         # so the fade is smooth even when Pulse → Windows MIDI input has timing
         # jitter. Decoupled from clock entirely — fades complete on schedule
@@ -347,7 +409,10 @@ class AutopilotEngine(Engine):
             "type": self.type_name,
             "tick_count": self._tick_count,
             "clock_running": self._clock_running,
-            "bpm": self._estimate_bpm(),
+            "bpm": self._fallback_bpm if self._fallback_active else self._estimate_bpm(),
+            "clock_source": "fallback" if self._fallback_active else "midi_clock",
+            "fallback_enabled": self._fallback_enabled,
+            "fallback_bpm": self._fallback_bpm,
             "pending_column_note": self._pending_column_note,
             "channels": {},
         }
@@ -358,6 +423,8 @@ class AutopilotEngine(Engine):
                 "transition_seconds": state.transition_seconds,
                 "clip_mode": state.clip_mode.name,
                 "layer_enabled": {str(k): v for k, v in state.layer_enabled.items()},
+                "group": self._channels[key].group,
+                "column_advance": self._channels[key].column_advance,
                 "visible_layer": state.visible_layer,
                 "target_layer": state.target_layer,
                 "beat_in_clip": state.beat_in_clip,
@@ -432,6 +499,9 @@ class AutopilotEngine(Engine):
                 for layer in selected:
                     self._fire_next_clip(state, layer)
                     self._send_layer_transition(layer, state.transition_seconds)
+                # ...and step the whole group to its next column, so the loop
+                # is: layer 1 -> 2 -> 3 -> column advance + back to layer 1.
+                self._fire_group_column_advance(ch_key)
             target = selected[state.cycle_index]
             state.target_layer = target
             state.crossfade_start_time = now
@@ -444,6 +514,94 @@ class AutopilotEngine(Engine):
                 state.visible_layer = target
                 state.target_layer = None
                 state.crossfade_start_time = None
+
+    def _external_clock_is_live(self, now: float) -> bool:
+        """True while Pulse (or any MIDI clock source) is actively ticking."""
+        if not self._clock_running:
+            return False
+        if self._last_external_tick_at is None:
+            return False
+        return (now - self._last_external_tick_at) < self._fallback_takeover_seconds
+
+    def _advance_fallback_clock(self, now: float) -> None:
+        """Generate beat boundaries from wall clock when no MIDI clock arrives.
+
+        Runs off tick() (update_hz, 30 Hz by default), which is ~33 ms of
+        granularity against a ~469 ms beat at 128 BPM -- inaudible jitter for
+        clip switching, and it keeps the whole thing dependency-free.
+
+        Deliberately yields to the external clock: the moment a real tick lands,
+        on_midi_clock clears _fallback_active, so Pulse always wins and the two
+        can never both drive _on_beat_boundary.
+        """
+        if not self._fallback_enabled:
+            return
+        if self._clock_grace_anchor is None:
+            self._clock_grace_anchor = now
+        if self._external_clock_is_live(now):
+            if self._fallback_active:
+                self._fallback_active = False
+            self._fallback_next_beat_at = None
+            return
+
+        # Honor the grace period measured from the last real tick, or from
+        # engine start if none has ever arrived.
+        reference = (
+            self._last_external_tick_at
+            if self._last_external_tick_at is not None
+            else self._clock_grace_anchor
+        )
+        if not self._fallback_active and (now - reference) < self._fallback_takeover_seconds:
+            return
+
+        beat_seconds = 60.0 / self._fallback_bpm
+        if not self._fallback_active:
+            self._fallback_active = True
+            LOGGER.info(
+                "%s: no MIDI clock for %.1fs; fallback clock running at %.1f BPM",
+                self.name,
+                self._fallback_takeover_seconds,
+                self._fallback_bpm,
+            )
+            # First synthetic beat lands one full beat from now, not instantly,
+            # so takeover doesn't produce a double-trigger against the last
+            # real beat.
+            self._fallback_next_beat_at = now + beat_seconds
+            return
+
+        if self._fallback_next_beat_at is None:
+            self._fallback_next_beat_at = now + beat_seconds
+            return
+
+        # Catch up if the loop stalled, but cap it: replaying a long backlog of
+        # beats would machine-gun clip triggers into Resolume.
+        fired = 0
+        while now >= self._fallback_next_beat_at and fired < MAX_FALLBACK_CATCHUP_BEATS:
+            self._on_beat_boundary(now)
+            self._fallback_next_beat_at += beat_seconds
+            fired += 1
+        if fired >= MAX_FALLBACK_CATCHUP_BEATS:
+            # Too far behind to be meaningful -- resync to now.
+            self._fallback_next_beat_at = now + beat_seconds
+
+    def _fire_group_column_advance(self, ch_key: str) -> None:
+        """Advance the channel's layer group to its next column.
+
+        Fired at the moment the layer cycle wraps back to the first selected
+        layer, so the sequence reads: layer 1 -> 2 -> 3 -> (column advance +
+        back to layer 1) -> repeat.
+        """
+        channel_config = self._channels.get(ch_key)
+        if channel_config is None or not channel_config.column_advance:
+            return
+        if channel_config.group is None:
+            # Channel's layers aren't in a Resolume group -- nothing to address.
+            return
+        path = self._osc_group_next_column_template.format(g=channel_config.group)
+        self._osc.send(path, True)
+        LOGGER.debug(
+            "%s: %s column advance -> group %s", self.name, ch_key, channel_config.group
+        )
 
     def _snap_to_first_selected(self, ch_key: str) -> None:
         state = self._states[ch_key]

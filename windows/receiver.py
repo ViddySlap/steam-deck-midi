@@ -321,10 +321,35 @@ class ActionReceiver:
             for mapping in new_mappings.values()
             if isinstance(mapping, MacroCCMapping)
         }
-        # Rebuild layer publishers from new mappings
+        # Rebuild layer publishers from new mappings. Carry the tracked layer
+        # across the reload: a preset swap does not change which Steam Input
+        # layer the deck is physically on, so resetting to UNKNOWN would
+        # discard true state. For ABXY/bumper the next button press would
+        # restore it anyway; for gyro there is no ground-truth action to
+        # restore from, so without this the gyro indicator would go dead
+        # again on every hot-reload even with the startup seed in place.
+        previous_states = {
+            "abxy": getattr(self._abxy_layer_publisher, "state", None),
+            "bumper": getattr(self._bumper_layer_publisher, "state", None),
+            "gyro": getattr(self._gyro_layer_publisher, "state", None),
+        }
         self._abxy_layer_publisher = self._build_layer_publisher("START")
         self._bumper_layer_publisher = self._build_layer_publisher("SELECT")
         self._gyro_layer_publisher = self._build_layer_publisher("L4")
+        for key, publisher in (
+            ("abxy", self._abxy_layer_publisher),
+            ("bumper", self._bumper_layer_publisher),
+            ("gyro", self._gyro_layer_publisher),
+        ):
+            carried = previous_states[key]
+            if publisher is not None and carried is not None:
+                publisher.state = carried
+        if (
+            self._gyro_layer_publisher is not None
+            and self._gyro_layer_publisher.state == LAYER_UNKNOWN
+        ):
+            # No prior state to carry (first load, or L4 was unmapped before).
+            self._seed_gyro_layer_state(self._clock())
         LOGGER.info("hot-reloaded mappings: %s actions", len(new_mappings))
 
     def advance_fades(self, now: float | None = None) -> None:
@@ -780,7 +805,36 @@ class ActionReceiver:
         timestamp = self._clock()
         self._set_layer_state(self._abxy_layer_publisher, LAYER_UNKNOWN, timestamp, "startup")
         self._set_layer_state(self._bumper_layer_publisher, LAYER_UNKNOWN, timestamp, "startup")
-        self._set_layer_state(self._gyro_layer_publisher, LAYER_UNKNOWN, timestamp, "startup")
+        self._seed_gyro_layer_state(timestamp)
+
+    def _seed_gyro_layer_state(self, timestamp: float) -> None:
+        """Give the gyro publisher a known starting layer.
+
+        The ABXY and bumper publishers can start UNKNOWN safely: their
+        ground-truth actions (BTN_A.., L1/R1..) arrive constantly and pull
+        them into a real state on the first button press.
+
+        The gyro publisher cannot. Its only ground truth is
+        GYRO_FORWARD/GYRO_BACKWARD (see GYRO_LAYER_2_ACTIONS), and those
+        actions were dropped from the presets when analog gyro replaced the
+        digital notes -- so nothing ever moves it off UNKNOWN. Since
+        _toggle_known_layer_state early-returns on UNKNOWN, every L4 press
+        was a silent no-op and the layer CC was never published, leaving the
+        TouchOSC gyro indicator dead.
+
+        Seeding LAYER_1 (= gyro off) matches how the deck boots and the
+        gyro_feedback engine's own `initial_midi_active: false`, so the
+        first L4 press correctly flips the indicator on.
+
+        NOTE: this is the tactical fix. It can still be wrong if the bridge
+        restarts while the gyro is already on, because nothing tells the
+        bridge the deck's real state. The durable fix is to restore the
+        deck-side absolute GYRO_STATE_NOW broadcast and drive this publisher
+        from it (idempotent + drift-proof).
+        """
+        self._set_layer_state(
+            self._gyro_layer_publisher, LAYER_1, timestamp, "startup-seed"
+        )
 
     def _toggle_target(self, current_value: int) -> int:
         midpoint = (self._macro_settings.min_value + self._macro_settings.max_value) / 2

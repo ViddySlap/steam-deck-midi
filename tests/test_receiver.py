@@ -356,6 +356,16 @@ class ActionReceiverTests(unittest.TestCase):
             timeout_seconds=1.0,
         )
 
+        # ABXY (78) and bumper (79) still start UNKNOWN = both lamps off:
+        # their ground-truth actions (BTN_*, L1/R1) arrive on the first
+        # button press and resolve them honestly.
+        #
+        # The gyro publisher (74) is the exception and is seeded to LAYER_1.
+        # Its only ground truth is GYRO_FORWARD/GYRO_BACKWARD, which no
+        # current preset maps (analog gyro replaced the digital notes), so
+        # leaving it UNKNOWN meant _toggle_known_layer_state early-returned
+        # forever and the TouchOSC gyro indicator was permanently dead.
+        # LAYER_1 = gyro off, matching deck boot state.
         self.assertEqual(
             self.midi.calls,
             [
@@ -363,7 +373,7 @@ class ActionReceiverTests(unittest.TestCase):
                 ("cc", 1, 78, 0),
                 ("cc", 0, 79, 0),
                 ("cc", 1, 79, 0),
-                ("cc", 0, 74, 0),
+                ("cc", 0, 74, 127),
                 ("cc", 1, 74, 0),
             ],
         )
@@ -371,7 +381,6 @@ class ActionReceiverTests(unittest.TestCase):
         self.assertNotIn(("cc", 1, 78, 127), self.midi.calls)
         self.assertNotIn(("cc", 0, 79, 127), self.midi.calls)
         self.assertNotIn(("cc", 1, 79, 127), self.midi.calls)
-        self.assertNotIn(("cc", 0, 74, 127), self.midi.calls)
         self.assertNotIn(("cc", 1, 74, 127), self.midi.calls)
 
     def test_unknown_layer_ignores_toggle_hint_without_republishing_lamps(self) -> None:
@@ -436,7 +445,17 @@ class ActionReceiverTests(unittest.TestCase):
             ],
         )
 
-    def test_gyro_layer_unknown_ignores_l4_toggle_hint(self) -> None:
+    def test_gyro_layer_l4_toggle_publishes_without_ground_truth(self) -> None:
+        """L4 must drive the indicator even with no GYRO_* action mapped.
+
+        Replaces the former `test_gyro_layer_unknown_ignores_l4_toggle_hint`,
+        which asserted that L4 was a no-op while the gyro layer was UNKNOWN.
+        That was correct when GYRO_FORWARD/GYRO_BACKWARD were mapped and
+        supplied ground truth, but analog gyro dropped those notes from every
+        preset -- so "ignore the toggle until ground truth arrives" became
+        "ignore the toggle forever" and the TouchOSC gyro indicator never lit.
+        The gyro publisher is now seeded to LAYER_1 so the toggle works.
+        """
         receiver = ActionReceiver(
             self.midi,
             {
@@ -452,14 +471,22 @@ class ActionReceiverTests(unittest.TestCase):
             timeout_seconds=1.0,
         )
 
-        self.assertEqual(self.midi.calls, [("cc", 0, 74, 0), ("cc", 1, 74, 0)])
+        # Seeded to LAYER_1 (gyro off) rather than UNKNOWN (both lamps off).
+        self.assertEqual(self.midi.calls, [("cc", 0, 74, 127), ("cc", 1, 74, 0)])
         receiver.handle_datagram(
             b'{"action":"L4","state":"down","seq":1}', self.addr, now=0.0
         )
 
+        # ch2 is L4's own raw mapping; ch0/ch1 are the indicator lamps.
         self.assertEqual(
             self.midi.calls,
-            [("cc", 0, 74, 0), ("cc", 1, 74, 0), ("cc", 2, 74, 127)],
+            [
+                ("cc", 0, 74, 127),
+                ("cc", 1, 74, 0),
+                ("cc", 0, 74, 0),
+                ("cc", 1, 74, 127),
+                ("cc", 2, 74, 127),
+            ],
         )
 
     def test_gyro_layer_ground_truth_then_l4_toggle_publishes_expected_lamps(self) -> None:
@@ -491,10 +518,13 @@ class ActionReceiverTests(unittest.TestCase):
             b'{"action":"L4","state":"down","seq":2}', self.addr, now=0.1
         )
 
+        # Ground truth still wins when it IS available: GYRO_FORWARD forces
+        # LAYER_2, then L4 toggles to LAYER_1. Only the startup publish
+        # changed (seeded LAYER_1 lamps instead of UNKNOWN both-off).
         self.assertEqual(
             self.midi.calls,
             [
-                ("cc", 0, 74, 0),
+                ("cc", 0, 74, 127),
                 ("cc", 1, 74, 0),
                 ("cc", 0, 74, 0),
                 ("cc", 1, 74, 127),
