@@ -9,6 +9,12 @@
     "port": "PULSE_OUT",
     "ppqn": 24
   },
+  "fallback_clock": {
+    "_comment": "Free-running internal clock for shows without Pulse. Takes over when no MIDI clock tick has arrived for takeover_after_seconds, and hands straight back the moment real ticks resume.",
+    "enabled": true,
+    "bpm": 128.0,
+    "takeover_after_seconds": 2.0
+  },
   "inputs": {
     "channel": 14,
     "video": {
@@ -16,21 +22,28 @@
       "cc_beats": 61,
       "cc_transition": 62,
       "cc_mode": 63,
-      "layer_ccs": {"1": 64, "2": 65, "3": 66, "4": 67}
+      "layer_ccs": {"1": 64, "2": 65, "3": 66, "4": 67},
+      "group": 1,
+      "column_advance": true
     },
     "fx": {
       "cc_enable": 70,
       "cc_beats": 71,
       "cc_transition": 72,
       "cc_mode": 73,
-      "layer_ccs": {"5": 74}
+      "layer_ccs": {"5": 74},
+      "_comment": "FX is layer 5, which is NOT inside a Resolume layer group, so there is no /composition/groups/N to advance -- group stays null and column_advance stays false by design. FX advances to the next CLIP on its own layer instead, which the single-layer path already does every beats_per_clip whenever MODE is LINEAR or RANDOM. Set the fx MODE selector to LINEAR to get it.",
+      "group": null,
+      "column_advance": false
     },
     "logo": {
       "cc_enable": 80,
       "cc_beats": 81,
       "cc_transition": 82,
       "cc_mode": 83,
-      "layer_ccs": {"6": 84, "7": 85}
+      "layer_ccs": {"6": 84, "7": 85},
+      "group": 2,
+      "column_advance": true
     },
     "transition_max_seconds": 5.0,
     "beats_lookup": [1, 4, 8, 16, 32, 64, 128]
