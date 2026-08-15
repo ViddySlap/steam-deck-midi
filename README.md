@@ -1,6 +1,7 @@
 # steam-deck-midi
 
-Steam Deck MIDI is a show-focused Steam Deck to Windows MIDI bridge for Resolume.
+Steam Deck MIDI is a show-focused bridge that turns a Steam Deck into a MIDI and OSC
+control surface for Resolume. The receiver runs on Windows and macOS.
 
 The control contract is stable Action IDs:
 
@@ -8,7 +9,9 @@ The control contract is stable Action IDs:
 - Deck sender maps button tokens to Action IDs and sends UDP JSON events.
 - Windows receiver maps Action IDs to MIDI note/CC output for Resolume.
 
-## Current status (v0.2.0 — in progress)
+## Current status (v0.4.9)
+
+Core bridge:
 
 - Deck sender runtime uses direct X11/XI2 raw key listening (no `xinput test` subprocess parsing).
 - Sender emits one `down`/`up` pair per press/release and heartbeat messages while held.
@@ -29,7 +32,18 @@ The control contract is stable Action IDs:
   - `STEAMDECK-MIDI-SENDER`
 - Windows release flow includes PyInstaller + Inno Setup packaging.
 
-See `TODO.md` for the remaining steps before the v0.2.0 release.
+Added since v0.2.0:
+
+- OSC relay that fans Resolume's single OSC output out to several control surfaces at once,
+  so a TouchOSC tablet and the Deck can both hold live feedback.
+- Autopilot with a fallback clock for shows with no Pulse source, plus per-group column advance.
+- PTZ camera control over VISCA, including latching zoom direction with TouchOSC feedback.
+- NestDrop integration.
+- Audio-reactive opacity, global color, chaser stacks, and flash and bumper blast engines.
+- Gyro and analog stick layer control with indicator feedback.
+- macOS receiver via the IAC Driver, started by `scripts/mac/run_receiver.command`.
+
+See `TODO.md` for open work.
 
 ## Docs
 
