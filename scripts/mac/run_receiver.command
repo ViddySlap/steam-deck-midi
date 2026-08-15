@@ -3,7 +3,21 @@
 # Double-click to start the bridge. The Terminal window stays open as the live log.
 
 # 1. Configuration
-PROJECT_DIR="/Users/USERNAME/Documents/project-workspaces/steam-deck-midi"
+# Resolve the repo root from this script's own location (scripts/mac -> repo root) so
+# the launcher works from any clone path. Symlinks are followed, so a Dock alias or a
+# ~/bin symlink still resolves back to the real checkout.
+SOURCE="${BASH_SOURCE[0]}"
+while [ -L "$SOURCE" ]; do
+    LINK_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+    SOURCE="$(readlink "$SOURCE")"
+    case "$SOURCE" in
+        /*) ;;
+        *) SOURCE="$LINK_DIR/$SOURCE" ;;
+    esac
+done
+SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+PROJECT_DIR="$(cd -P "$SCRIPT_DIR/../.." && pwd)"
+
 LOG_FILE="$PROJECT_DIR/logs/bridge.log"
 UI_URL="http://127.0.0.1:7723"
 
