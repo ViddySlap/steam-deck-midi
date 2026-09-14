@@ -62,7 +62,8 @@
     background: var(--surface);
     border-bottom: 1px solid var(--border);
     padding: 0 16px;
-    height: 48px;
+    min-height: 48px;
+    flex-wrap: wrap;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -93,7 +94,7 @@
     margin-left: 6px;
   }
 
-  .hdr-actions { display: flex; gap: 6px; align-items: center; }
+  .hdr-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; padding: 6px 0; }
 
   /* ── Buttons ── */
   .btn {
@@ -510,6 +511,11 @@
         <div class="preset-item preset-save-as" id="presetSaveAs">+ Save as new preset…</div>
       </div>
     </div>
+    <label for="sectionSelect">Section</label>
+    <select class="btn" id="sectionSelect" aria-label="Preset section"></select>
+    <button class="btn btn-ghost btn-sm" id="btnSectionAdd">Add section</button>
+    <button class="btn btn-ghost btn-sm" id="btnSectionRename">Rename section</button>
+    <button class="btn btn-ghost btn-sm" id="btnSectionDelete">Delete section</button>
     <button class="btn btn-primary" id="btnSave" disabled>Save &amp; Apply</button>
   </div>
 </header>
@@ -603,6 +609,7 @@
 <!-- ── Status bar ── -->
 <div class="statusbar">
   <span id="statusText" class="status-text status-ok">Ready</span>
+  <span id="sectionStatus" class="status-text"></span>
   <span style="flex:1"></span>
   <span id="mappingCount">—</span>
   <span>·</span>
@@ -739,6 +746,15 @@ let selected = null;
 let dirty = false;
 let presets = [];
 let macroLibrary = [];
+let selectedSection;
+let bridgeSection = null;
+let sectionNames = [];
+let legacyPreset = true;
+let activePreset = '';
+let engineStates = {};
+let engineCatalog = [];
+let sharedMappings = {};
+let sectionDocument = {};
 let _pendingRenameFile = null;
 let _pendingDeleteFile = null;
 let _pendingDeleteMacroId = null;
@@ -845,15 +861,25 @@ async function apiFetch(path, opts = {}) {
 // ─────────────────────────────────────────────────────────────────
 // Load
 // ─────────────────────────────────────────────────────────────────
-async function loadAll() {
-  status('Loading…');
+async function loadAll(section = selectedSection) {
+  status('Loading...');
   try {
-    const [ar, mr, pr, mcr] = await Promise.all([
+    const [ar, mr, pr, mcr, er] = await Promise.all([
       apiFetch('/api/actions'),
-      apiFetch('/api/mappings'),
+      apiFetch('/api/mappings' + (section == null ? '' : '?section=' + encodeURIComponent(section))),
       apiFetch('/api/presets'),
       apiFetch('/api/macros'),
+      apiFetch('/api/engines'),
     ]);
+    selectedSection = mr.section;
+    bridgeSection = mr.bridge_section;
+    sectionNames = mr.sections || [];
+    legacyPreset = mr.legacy;
+    activePreset = mr.preset;
+    sectionDocument = mr.document || {};
+    sharedMappings = mr.shared_mappings || {};
+    engineStates = Object.fromEntries(Object.entries(mr.engines || {}).filter(([k, v]) => k && typeof v === 'boolean'));
+    engineCatalog = er.engines || [];
     allActions = ar.actions || [];
     const raw = mr.mappings || {};
     macroSettings = mr.macro_settings || {};
@@ -870,13 +896,81 @@ async function loadAll() {
     updateCount();
     renderPresetDropdown();
     renderMacroLibrary();
-    renderEngines();  // refresh engine checkboxes to the loaded preset's states
+    renderSectionSelector();
+    await renderEngines();
+    if (selected) renderEditor(selected);
     status('Ready', 'ok');
     setDirty(false);
+    return true;
   } catch (e) {
     status('Load failed: ' + e.message, 'err');
+    return false;
   }
 }
+
+// Section editing uses a separate selection from the bridge's local identity.
+function escHtml(value) {
+  return String(value).replace(/[&<>"']/g, char => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[char]));
+}
+function isLocalSection() {
+  return legacyPreset || selectedSection === bridgeSection;
+}
+function discardChanges() {
+  return !dirty || window.confirm('You have unsaved changes. Discard them?');
+}
+function renderSectionSelector() {
+  const select = document.getElementById('sectionSelect');
+  select.replaceChildren();
+  const names = legacyPreset ? [selectedSection] : sectionNames;
+  for (const name of names) {
+    const option = document.createElement('option');
+    option.value = name ?? '';
+    option.textContent = legacyPreset ? 'All machines (legacy)' : name + (name === bridgeSection ? ' (this machine)' : '');
+    option.selected = name === selectedSection;
+    select.appendChild(option);
+  }
+  select.disabled = legacyPreset;
+  document.getElementById('btnSectionRename').disabled = legacyPreset;
+  document.getElementById('btnSectionDelete').disabled = legacyPreset || selectedSection === bridgeSection || sectionNames.length < 2;
+  document.getElementById('sectionStatus').textContent = `Machine: ${bridgeSection ?? 'all (legacy)'} | Preset: ${activePreset}`;
+  document.getElementById('btnResyncOscWiggles').disabled = !isLocalSection();
+}
+async function switchSection(name) {
+  if (name === selectedSection) return;
+  if (!discardChanges()) { renderSectionSelector(); return; }
+  if (!await loadAll(name)) renderSectionSelector();
+}
+document.getElementById('sectionSelect').addEventListener('change', e => switchSection(e.target.value));
+
+async function changeSection(path, body, nextSection) {
+  try {
+    const response = await apiFetch(path, {
+      method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body),
+    });
+    await loadAll(nextSection === undefined ? response.bridge_section : nextSection);
+  } catch (e) {
+    toast('Section change failed: ' + e.message, 'err', 5000);
+  }
+}
+document.getElementById('btnSectionAdd').addEventListener('click', async () => {
+  if (!discardChanges()) return;
+  const name = window.prompt(legacyPreset && bridgeSection == null ? "Name this machine's first section (keeps the legacy mappings):" : 'New section name:');
+  if (!name?.trim()) return;
+  const copy = selectedSection != null && window.confirm('Copy the selected section? Cancel creates an empty section.');
+  const body = {name: name.trim()};
+  if (copy) body.copy_from = selectedSection;
+  await changeSection('/api/presets/sections/add', body, body.name);
+});
+document.getElementById('btnSectionRename').addEventListener('click', async () => {
+  if (!discardChanges()) return;
+  const name = window.prompt('Rename section:', selectedSection);
+  if (!name?.trim() || name.trim() === selectedSection) return;
+  await changeSection('/api/presets/sections/rename', {old: selectedSection, new: name.trim()}, name.trim());
+});
+document.getElementById('btnSectionDelete').addEventListener('click', async () => {
+  if (!discardChanges() || !window.confirm(`Delete section "${selectedSection}"?`)) return;
+  await changeSection('/api/presets/sections/delete', {name: selectedSection});
+});
 
 // ─────────────────────────────────────────────────────────────────
 // Sidebar
@@ -1299,13 +1393,14 @@ document.getElementById('presetSaveAs').addEventListener('click', () => {
 });
 
 async function loadPreset(name) {
+  if (!discardChanges()) return;
   status('Switching preset…');
   try {
     await apiFetch('/api/presets/load', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ name }),
     });
-    await loadAll();
+    await loadAll(null);
     if (selected) renderEditor(selected);
     toast(`Switched to preset: ${name.replace('.json','')}`, 'ok');
   } catch (e) {
@@ -1316,6 +1411,7 @@ async function loadPreset(name) {
 
 // Save As
 function openSaveAsModal() {
+  if (!discardChanges()) return;
   document.getElementById('saveAsInput').value = '';
   document.getElementById('saveAsOverlay').classList.add('open');
   setTimeout(() => document.getElementById('saveAsInput').focus(), 50);
@@ -1365,7 +1461,9 @@ document.getElementById('btnRenameConfirm').addEventListener('click', async () =
     toast(`Renamed to "${newName}"`, 'ok');
     const [pr] = await Promise.all([apiFetch('/api/presets')]);
     presets = pr.presets || [];
+    activePreset = presets.find(p => p.active)?.name || activePreset;
     renderPresetDropdown();
+    renderSectionSelector();
   } catch (e) {
     toast('Rename failed: ' + e.message, 'err', 5000);
   }
@@ -1377,6 +1475,7 @@ document.getElementById('renameInput').addEventListener('keydown', e => {
 
 // Delete preset
 function openDeletePresetModal(filename, displayName) {
+  if (!discardChanges()) return;
   _pendingDeleteFile = filename;
   document.getElementById('deletePresetBody').textContent = `Delete "${displayName}"? This cannot be undone.`;
   document.getElementById('deletePresetOverlay').classList.add('open');
@@ -1393,7 +1492,7 @@ document.getElementById('btnDeletePresetConfirm').addEventListener('click', asyn
       body: JSON.stringify({ name: _pendingDeleteFile }),
     });
     toast('Preset deleted', 'ok');
-    await loadAll();
+    await loadAll(null);
     if (selected) renderEditor(selected);
   } catch (e) {
     toast('Delete failed: ' + e.message, 'err', 5000);
@@ -1750,15 +1849,18 @@ async function triggerSave() {
 
 async function doSave() {
   const mappings = {};
-  for (const [a, s] of Object.entries(state)) if (s) mappings[a] = s;
-  const body = { mappings };
+  for (const [a, s] of Object.entries(state)) {
+    if (s && (Object.hasOwn(sectionDocument.mappings || {}, a) || JSON.stringify(s) !== JSON.stringify(sharedMappings[a]))) mappings[a] = s;
+  }
+  const body = { mappings, engines: engineStates };
   if (Object.keys(macroSettings).length) body.macro_settings = macroSettings;
   if (Object.keys(analogSettings).length) body.analog_settings = analogSettings;
   status('Saving…');
   try {
     const r = await apiFetch('/api/save', {
-      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body),
+      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({section: selectedSection, document: body}),
     });
+    sectionDocument = body;
     setDirty(false);
     status('Saved & applied', 'ok');
     toast(`Saved to ${r.saved_to || 'preset'} ✓`, 'ok');
@@ -1801,7 +1903,7 @@ document.getElementById('btnResetConfirm').addEventListener('click', async () =>
   document.getElementById('resetOverlay').classList.remove('open');
   status('Resetting…');
   try {
-    await apiFetch('/api/reset', { method:'POST', headers:{'Content-Type':'application/json'}, body:'{}' });
+    await apiFetch('/api/reset', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({section: selectedSection}) });
     toast('Factory reset applied to current preset');
     await loadAll();
     if (selected) renderEditor(selected);
@@ -1822,65 +1924,48 @@ function switchTab(name) {
 
 async function renderEngines() {
   const list = document.getElementById('enginesList');
-  try {
-    const res = await fetch('/api/engines');
-    const data = await res.json();
-    const engines = data.engines || [];
-    if (engines.length === 0) {
-      list.innerHTML = '<p style="opacity:0.6">No engines loaded.</p>';
-      return;
-    }
-    list.innerHTML =
-      '<p style="opacity:0.6;font-size:12px;margin:0 0 10px">' +
-      'Toggle engines on/off for this preset. Changes apply live; <b>Save</b> the preset to keep them.' +
-      '</p>' +
-      engines.map(e => `
-      <div style="padding:10px 12px;border:1px solid rgba(255,255,255,0.08);border-radius:6px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:12px">
-        <div>
-          <div style="font-weight:600">${e.name}</div>
-          <div style="opacity:0.6;font-size:12px;margin-top:4px">type: ${e.type}</div>
-        </div>
-        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap">
-          <input type="checkbox" class="engine-toggle" data-type="${e.type}" ${e.active === false ? '' : 'checked'}>
-          <span style="font-size:12px;opacity:0.8">${e.active === false ? 'Off' : 'On'}</span>
-        </label>
-      </div>
-    `).join('');
-    list.querySelectorAll('.engine-toggle').forEach(cb => {
-      cb.addEventListener('change', () => toggleEngine(cb));
-    });
-  } catch (e) {
-    list.innerHTML = `<p style="color:#f88">Failed to load engines: ${e.message}</p>`;
+  const byType = new Map(engineCatalog.map(e => [e.type, e]));
+  for (const type of Object.keys(engineStates)) if (!byType.has(type)) byType.set(type, {type, name: type});
+  const engines = [...byType.values()].map(e => ({...e,
+    active: Object.hasOwn(engineStates, e.type) ? engineStates[e.type] : (isLocalSection() ? e.active : null),
+  }));
+  if (!engines.length) {
+    list.innerHTML = '<p style="opacity:0.6">No engines loaded or saved in this section.</p>';
+    return;
   }
+  list.innerHTML = '<p style="opacity:0.6;font-size:12px;margin:0 0 10px">' +
+    (isLocalSection() ? "Loaded engines apply live. Save to keep this section's states." : "Editing this section's saved engine states. Save to apply on its bridge. Default means no saved override.") + '</p>' +
+    engines.map(e => `
+      <div style="padding:10px 12px;border:1px solid rgba(255,255,255,0.08);border-radius:6px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div><div style="font-weight:600">${escHtml(e.name)}</div>
+          <div style="opacity:0.6;font-size:12px;margin-top:4px">type: ${escHtml(e.type)}</div></div>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap">
+          <input type="checkbox" class="engine-toggle" data-type="${escHtml(e.type)}" ${e.active === true ? 'checked' : ''}>
+          <span style="font-size:12px;opacity:0.8">${e.active == null ? 'Default' : e.active ? 'On' : 'Off'}</span>
+        </label>
+      </div>`).join('');
+  list.querySelectorAll('.engine-toggle').forEach(cb => {
+    cb.indeterminate = engines.find(e => e.type === cb.dataset.type).active == null;
+    cb.addEventListener('change', () => toggleEngine(cb));
+  });
 }
 
 async function toggleEngine(cb) {
   const type = cb.dataset.type;
   const active = cb.checked;
-  const label = cb.parentElement.querySelector('span');
   cb.disabled = true;
   try {
-    const res = await fetch(`/api/engines/${encodeURIComponent(type)}/active`, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({active}),
-    });
-    const data = await res.json();
-    if (data.error) {
-      cb.checked = !active;  // revert on failure
-      if (label) label.textContent = cb.checked ? 'On' : 'Off';
-    } else {
-      if (label) label.textContent = active ? 'On' : 'Off';
-      // The toggle is live now, but not persisted until the preset is saved.
-      // Mark dirty so the "Save & Apply" button enables (engine-only changes
-      // don't touch the mappings form, which is what normally enables it).
-      setDirty(true);
+    if (isLocalSection() && engineCatalog.some(e => e.type === type)) {
+      await apiFetch(`/api/engines/${encodeURIComponent(type)}/active`, {
+        method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({active}),
+      });
     }
+    engineStates[type] = active;
+    setDirty(true);
   } catch (e) {
-    cb.checked = !active;
-    if (label) label.textContent = cb.checked ? 'On' : 'Off';
+    toast('Engine change failed: ' + e.message, 'err');
   } finally {
-    cb.disabled = false;
+    await renderEngines();
   }
 }
 

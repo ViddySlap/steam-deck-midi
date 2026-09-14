@@ -1,0 +1,208 @@
+{
+  "predecessor": "0f86e921ea5e3ddf21418b19c95e5898f23e4b49",
+  "baseline_suite": {
+    "tests": 672,
+    "errors": 2,
+    "skipped": 1
+  },
+  "final_suite": {
+    "tests": 691,
+    "errors": 2,
+    "skipped": 1,
+    "seconds": 1.864
+  },
+  "error_modules": [
+    "test_deck_sender",
+    "test_learn_wizard"
+  ],
+  "focused_tests": 88,
+  "existing_test_bodies_unchanged": 51,
+  "new_unittest_cases": 19,
+  "html_api_bar": "HTML API bar: 19 paths registered; HTML parsed; ids unique",
+  "registered_method_paths": 27,
+  "source_sha256": {
+    "windows/ui_server.py": "b9697532e5c421a289261712c1e62364e37e891eb99cc3f8eed215755a489d88",
+    "windows/static/index.html": "705ce03d7f404c0a699430677d88bbee81410cc9ac192786f5abe7f2a3964cd8",
+    "tests/test_ui_server.py": "fa3e84f1b3b068e81ec2c975b2d71ce874ef8e725085e8f72a7ae6e73fdffcf5",
+    "tests/ui_sections_check.cjs": "2c3e5b60b8be79c297927abedee0bf4cd091de2a8aa90afe91c374f8688b42a4",
+    "docs/api.md": "89fd0dd3e6fe8e51a26e9aa6e8a67cd9b7725981d92149a00308ea85c4c2b061",
+    "docs/sdcore-s2/reversions.py": "aebabbc09f229ea6ce049ed9c1a637eb45b53773f55caaa3962106842ef8fce8"
+  },
+  "controls": [
+    {
+      "name": "pristine-python",
+      "expected": "GREEN",
+      "exit": 0,
+      "passed": true
+    },
+    {
+      "name": "pristine-ui",
+      "expected": "GREEN",
+      "exit": 0,
+      "passed": true
+    },
+    {
+      "name": "requested-section-ignored",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "section-list-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "save-flattens-preset",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "siblings-reserialized",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "loader-validation-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "live-engine-state-bleeds-to-remote",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "copy-ignores-source",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "own-delete-guard-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "last-delete-guard-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "rename-identity-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "first-identity-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "identity-failure-rollback-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "reload-signals-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "atomic-replacement-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "save-as-engine-state-at-top-level",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "section-list-switches-preset",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "ui-section-query-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "ui-unsaved-guard-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "ui-load-skips-engine-render",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "ui-renders-local-engine-states",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "ui-save-targets-local-section",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "ui-remote-toggle-is-live",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "ui-save-materializes-shared",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "api-bar-missing-route",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "html-unclosed-element",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "restored-python",
+      "expected": "GREEN",
+      "exit": 0,
+      "passed": true
+    },
+    {
+      "name": "restored-ui",
+      "expected": "GREEN",
+      "exit": 0,
+      "passed": true
+    }
+  ],
+  "browser_and_physical_acceptance": "OWED TO THE GATE"
+}

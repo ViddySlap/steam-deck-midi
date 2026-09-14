@@ -2,7 +2,7 @@
 
 The bridge serves HTTP on `http://127.0.0.1:7723` by default. JSON write requests
 use `Content-Type: application/json`. This inventory is taken from
-`windows/ui_server.py`: 22 explicit method/path registrations after S1, plus
+`windows/ui_server.py`: 26 explicit method/path registrations after S2, plus
 Flask's static-file route. Flask also supplies HEAD for GET and automatic OPTIONS.
 Later links must extend this inventory with every new UI or control action.
 
@@ -12,14 +12,18 @@ Later links must extend this inventory with every new UI or control action.
 | GET | `/static/<path:filename>` | Serve the editor's static assets (Flask-generated route). |
 | GET | `/api/settings` | Return live preset_section, listen, midi_port, feedback_port, pulse_port, ui_port, and map_path. |
 | PUT | `/api/settings` | Persist preset_section in bridge.local.json and request a live reload. |
-| GET | `/api/mappings` | Read the active preset JSON. |
+| GET | `/api/mappings` | Read selected section mappings, settings, and section/preset metadata; optional ?section=name defaults to this machine. |
 | GET | `/api/actions` | List action IDs from actions.yaml. |
 | POST | `/api/conflicts` | Check supplied mappings for unintentional MIDI CC conflicts. |
-| POST | `/api/save` | Validate and save supplied mappings and settings to the active preset, then reload. |
-| POST | `/api/reset` | Replace the active preset with the base map's factory defaults and reload. |
+| POST | `/api/save` | Validate and save {section, document} into one active-preset section, preserving sibling bytes, then reload. Legacy flat bodies still work. |
+| POST | `/api/reset` | Restore the selected section from the base map; {section} defaults to this machine. Preserve siblings and reload. |
 | GET | `/api/presets` | List preset names and the shared active selection. |
+| GET | `/api/presets/<name>/sections` | List the sections of a named preset without activating it. |
+| POST | `/api/presets/sections/add` | Add a section to the active preset; optional copy_from clones one section. |
+| POST | `/api/presets/sections/rename` | Rename one active-preset section; persist local identity too if it is this machine's section. |
+| POST | `/api/presets/sections/delete` | Delete one active-preset section; refuse this machine's section and the last section. |
 | POST | `/api/presets/load` | Change the shared active preset marker and request reload. |
-| POST | `/api/presets/save-as` | Copy the active preset under a new name, capture live engine states, and activate it. |
+| POST | `/api/presets/save-as` | Copy the complete active preset under a new name, capture this machine's live engine states only in its section, and activate it. |
 | POST | `/api/presets/rename` | Rename a preset and update the active marker if needed; default is protected. |
 | POST | `/api/presets/delete` | Delete a preset, falling back to default if active; default is protected. |
 | GET | `/api/macros` | List reusable macro-library entries. |
@@ -37,3 +41,60 @@ input ports are `null`. `map_path` is the absolute, resolved active preset path,
 so it follows scene changes. `listen` is a host:port string and `ui_port` is an
 integer. The PUT response has the same fields as GET after the change. Only
 `preset_section` is writable in S1; see [section semantics](preset-sections.md).
+
+## Section editing
+
+`GET /api/mappings?section=windows` returns the selected effective document's
+`mappings`, `macro_settings`, `analog_settings`, and `engines` (when present), plus:
+
+- `section`: the returned selection; defaults to the current live bridge setting.
+- `bridge_section`: the machine-local selection, independent of editor selection.
+- `sections`: all named sections, in file order; empty for a legacy flat preset.
+- `preset`: the active preset filename, including `.json`.
+- `legacy`: true for the universal v0.4.9 format.
+- `document`: the stored section document, before merging shared mappings.
+- `shared_mappings`: the shared mapping defaults, for editors preserving inheritance.
+
+`POST /api/save` accepts `{"section":"windows","document":{"mappings":{},
+"engines":{"osc_sync":false}}}`. The document replaces only that section's
+mappings, optional macro/analog settings, and engine overrides. Validation uses
+the preset loader before atomic replacement; siblings and shared data retain
+literal bytes, including whitespace. Missing sections return 422. Invalid JSON
+bodies or missing mappings return 400; invalid mapping values return 422; failed
+writes return 500. Failures do not request reload. The older flat save body
+still defaults to this machine and captures its live engine states, as before.
+An explicit document never captures another section's live states.
+
+`GET /api/presets/<name>/sections` accepts a display name or `.json` filename
+(URL-encode spaces), returning section metadata without changing `.active`.
+An invalid filename returns 400, a missing file 404, and an invalid preset 422.
+
+The three section writes accept, respectively:
+
+- Add: `{"name":"grandma","copy_from":"windows"}`; omit `copy_from` for empty
+  mappings. Copies retain the source's entire section document.
+- Rename: `{"old":"windows","new":"grandma"}`. Renaming this machine's own
+  section also persists its new local identity. If local persistence fails,
+  the preset is restored and no reload is requested. Other machines' local
+  identities are not changed; their agents must use PUT /api/settings as needed.
+  Only the active preset is renamed; names in other presets remain as stored.
+- Delete: `{"name":"grandma"}`. This machine's own section and the last remaining
+  section are protected, including when local identity is absent from the file.
+
+Names follow S1's case-sensitive ASCII charset. Malformed bodies/names return
+400, missing sections/copy sources 404, duplicate names or protected deletions
+409, invalid preset content 422, and filesystem failures 500. Successful writes
+return `ok` with section metadata and set the bridge's reload event.
+
+Legacy presets remain flat when read or saved and apply to any machine name.
+Adding a section migrates the old complete document under this machine's name.
+If no local name is set, the first add names the existing document and persists
+that name locally; it preserves the legacy mappings. Subsequent adds create
+empty sections or copies. Legacy rename/delete require adding a named section
+first (422).
+
+The editor keeps mapping and remote engine changes as drafts until `/api/save`.
+A loaded engine's checkbox in this machine's section also uses the existing live
+`/api/engines/<type_name>/active` endpoint. Remote section checkboxes never toggle
+this bridge's engines; absent remote overrides display Default. Runtime resync
+controls operate on this bridge and are disabled while editing another section.

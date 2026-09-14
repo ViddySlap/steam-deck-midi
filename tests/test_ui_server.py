@@ -571,5 +571,266 @@ class MappingUIServerEnginesRefreshTests(unittest.TestCase):
         self.assertEqual(resp.status_code, 404)
 
 
+
+
+
+class SectionApiTests(unittest.TestCase):
+    def setUp(self):
+        import shutil
+        self.doc = {"shared": {"mappings": {"BTN_B": {"type": "note", "channel": 0, "note": 42}}},
+                    "sections": {"macbook": BASE_MAP, "windows": {
+                        "mappings": {"BTN_A": {"type": "note", "channel": 0, "note": 80}},
+                        "engines": {"rec": False}}}}
+        (self.server, self.reload_event, self.tmpdir, self.active_path,
+         self.presets_dir, _) = _make_server(self.doc, section="macbook")
+        self.addCleanup(shutil.rmtree, self.tmpdir)
+        self.client = self.server._app.test_client()
+
+    def test_mappings_selects_own_and_requested_section_with_metadata(self):
+        own = self.client.get("/api/mappings").get_json()
+        self.assertEqual(own["section"], "macbook")
+        self.assertEqual(own["bridge_section"], "macbook")
+        self.assertEqual(set(own["sections"]), {"macbook", "windows"})
+        self.assertEqual(own["preset"], "default.json")
+        self.assertEqual(own["mappings"]["BTN_A"]["note"], 36)
+        other = self.client.get("/api/mappings?section=windows").get_json()
+        self.assertEqual(other["section"], "windows")
+        self.assertEqual(other["mappings"]["BTN_A"]["note"], 80)
+        self.assertEqual(other["mappings"]["BTN_B"]["note"], 42)
+        self.assertEqual(other["document"], self.doc["sections"]["windows"])
+        self.assertEqual(other["engines"], {"rec": False})
+        self.client.put("/api/settings", json={"preset_section": "windows"})
+        self.assertEqual(self.client.get("/api/mappings").get_json()["section"], "windows")
+
+    def test_missing_section_read_and_save_refused(self):
+        before = self.active_path.read_bytes()
+        self.assertEqual(self.client.get("/api/mappings?section=missing").status_code, 422)
+        response = self.client.post("/api/save", json={"section": "missing", "document": BASE_MAP})
+        self.assertEqual(response.status_code, 422)
+        self.assertEqual(self.active_path.read_bytes(), before)
+        self.assertFalse(self.reload_event.is_set())
+
+    def test_section_save_preserves_literal_sibling_and_shared_bytes(self):
+        # Deliberately noncanonical whitespace and escapes: equality of decoded
+        # dictionaries alone would not detect a rewrite of a sibling value.
+        sibling = '{ "mappings" : {"BTN_A":{"type":"note", "channel":0,"note":80}}, "engines":{"rec":false}, "tag":"a\\u0062" }'
+        shared = '{ "mappings" : {"BTN_B":{"type":"note","channel":0,"note":42}} }'
+        original = '{"shared":' + shared + ',"sections":{"windows":' + sibling + ',"macbook":' + json.dumps(BASE_MAP) + '}}'
+        self.active_path.write_text(original)
+        candidate = {"mappings": {"BTN_A": {"type": "note", "channel": 0, "note": 60}},
+                     "engines": {"rec": True}, "analog_settings": {"deadzone": 800}}
+        response = self.client.post("/api/save", json={"section": "macbook", "document": candidate})
+        self.assertEqual(response.status_code, 200)
+        saved = self.active_path.read_text()
+        self.assertIn(sibling.encode(), self.active_path.read_bytes())
+        self.assertIn(shared.encode(), self.active_path.read_bytes())
+        self.assertEqual(json.loads(saved)["sections"]["macbook"], candidate)
+        self.assertTrue(self.reload_event.is_set())
+
+    def test_remote_save_does_not_capture_local_live_engines(self):
+        from tests.test_engine_states import RecordingEngine
+        from windows.engines.registry import EngineRegistry
+        self.server.engine_registry = EngineRegistry([RecordingEngine("rec")])
+        sibling = self.doc["sections"]["macbook"]
+        candidate = self.doc["sections"]["windows"]
+        response = self.client.post("/api/save", json={"section": "windows", "document": candidate})
+        self.assertEqual(response.status_code, 200)
+        saved = json.loads(self.active_path.read_text())
+        self.assertEqual(saved["sections"]["windows"]["engines"], {"rec": False})
+        self.assertEqual(saved["sections"]["macbook"], sibling)
+        self.assertTrue(self.server.engine_registry.engines[0].active)
+
+    def test_invalid_save_never_writes_or_reloads(self):
+        before = self.active_path.read_bytes()
+        for body, code in (([], 400), ({"section": "windows", "document": []}, 400),
+                           ({"section": "windows", "document": {}}, 400),
+                           ({"section": "windows", "document": {"mappings": {"BTN_A": {"type": "note", "note": 999, "channel": 0}}}}, 422)):
+            with self.subTest(body=body):
+                self.assertEqual(self.client.post("/api/save", json=body).status_code, code)
+                self.assertEqual(self.active_path.read_bytes(), before)
+                self.assertFalse(self.reload_event.is_set())
+
+    def test_list_named_preset_sections_does_not_switch_active(self):
+        (self.presets_dir / "Other scene.json").write_text(json.dumps({"sections": {"Grandma 2_-": BASE_MAP}}))
+        response = self.client.get("/api/presets/Other%20scene.json/sections")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.get_json()["sections"], ["Grandma 2_-"])
+        self.assertEqual((self.presets_dir / ".active").read_text(), "default.json")
+        self.assertEqual(self.client.get("/api/presets/missing.json/sections").status_code, 404)
+        self.assertEqual(self.client.get("/api/presets/bad!.json/sections").status_code, 400)
+
+    def test_add_empty_and_copy_sections(self):
+        for body, expected in (({"name": "grandma"}, {"mappings": {}}),
+                               ({"name": "Copied", "copy_from": "windows"}, self.doc["sections"]["windows"])):
+            with self.subTest(body=body):
+                self.reload_event.clear()
+                response = self.client.post("/api/presets/sections/add", json=body)
+                self.assertEqual(response.status_code, 200)
+                saved = json.loads(self.active_path.read_text())
+                self.assertEqual(saved["sections"][body["name"]], expected)
+                self.assertEqual(saved["shared"], self.doc["shared"])
+                self.assertTrue(self.reload_event.is_set())
+
+    def test_rename_and_delete_preserve_siblings(self):
+        response = self.client.post("/api/presets/sections/rename", json={"old": "windows", "new": "grandma"})
+        self.assertEqual(response.status_code, 200)
+        saved = json.loads(self.active_path.read_text())
+        self.assertEqual(saved["sections"]["grandma"], self.doc["sections"]["windows"])
+        self.assertNotIn("windows", saved["sections"])
+        self.assertTrue(self.reload_event.is_set())
+        self.reload_event.clear()
+        response = self.client.post("/api/presets/sections/delete", json={"name": "grandma"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(json.loads(self.active_path.read_text())["sections"], {"macbook": BASE_MAP})
+        self.assertTrue(self.reload_event.is_set())
+
+    def test_rename_own_section_updates_local_identity(self):
+        response = self.client.post("/api/presets/sections/rename", json={"old": "macbook", "new": "Mac 2"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.client.get("/api/settings").get_json()["preset_section"], "Mac 2")
+        self.assertEqual(json.loads(self.server.bridge_settings.path.read_text()), {"preset_section": "Mac 2"})
+        self.assertEqual(self.client.get("/api/mappings").get_json()["section"], "Mac 2")
+
+    def test_crud_refusals_leave_file_and_reload_untouched(self):
+        before = self.active_path.read_bytes()
+        cases = [("add", {"name": "windows"}, 409), ("add", {"name": "bad/name"}, 400),
+                 ("add", {"name": "bad\n"}, 400), ("add", {"name": None}, 400),
+                 ("add", {"name": "x", "copy_from": "absent"}, 404),
+                 ("rename", {"old": "windows", "new": "macbook"}, 409),
+                 ("rename", {"old": "absent", "new": "x"}, 404),
+                 ("delete", {"name": "absent"}, 404), ("delete", {"name": "macbook"}, 409),
+                 ("rename", [], 400), ("delete", {}, 400)]
+        for route, body, code in cases:
+            with self.subTest(route=route, body=body):
+                self.assertEqual(self.client.post("/api/presets/sections/" + route, json=body).status_code, code)
+                self.assertEqual(self.active_path.read_bytes(), before)
+                self.assertFalse(self.reload_event.is_set())
+
+    def test_last_section_cannot_be_deleted_even_if_machine_is_missing(self):
+        self.active_path.write_text(json.dumps({"sections": {"windows": BASE_MAP}}))
+        before = self.active_path.read_bytes()
+        response = self.client.post("/api/presets/sections/delete", json={"name": "windows"})
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(self.active_path.read_bytes(), before)
+        self.assertFalse(self.reload_event.is_set())
+
+    def test_legacy_reads_saves_and_add_migration_preserve_document(self):
+        self.active_path.write_text(json.dumps(BASE_MAP))
+        response = self.client.get("/api/mappings?section=windows")
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.get_json()["legacy"])
+        self.assertEqual(response.get_json()["sections"], [])
+        self.assertEqual(response.get_json()["mappings"], BASE_MAP["mappings"])
+        self.assertEqual(self.client.post("/api/save", json={"section": "windows", "document": BASE_MAP}).status_code, 200)
+        self.assertNotIn("sections", json.loads(self.active_path.read_text()))
+        self.assertEqual(self.client.post("/api/presets/sections/add", json={"name": "windows", "copy_from": "macbook"}).status_code, 200)
+        self.assertEqual(json.loads(self.active_path.read_text())["sections"], {"macbook": BASE_MAP, "windows": BASE_MAP})
+
+    def test_reset_selected_section_and_save_as_preserve_siblings(self):
+        self.server.base_map_path.write_text(json.dumps(BASE_MAP))
+        response = self.client.post("/api/reset", json={"section": "windows"})
+        self.assertEqual(response.status_code, 200)
+        saved = json.loads(self.active_path.read_text())
+        self.assertEqual(saved["sections"]["windows"], BASE_MAP)
+        self.assertEqual(saved["sections"]["macbook"], BASE_MAP)
+        from tests.test_engine_states import RecordingEngine
+        from windows.engines.registry import EngineRegistry
+        self.server.engine_registry = EngineRegistry([RecordingEngine("rec")])
+        response = self.client.post("/api/presets/save-as", json={"name": "Copy"})
+        self.assertEqual(response.status_code, 200)
+        copied = json.loads((self.presets_dir / "Copy.json").read_text())
+        self.assertEqual(copied["sections"]["windows"], saved["sections"]["windows"])
+        self.assertEqual(copied["sections"]["macbook"]["engines"], {"rec": True})
+        self.assertNotIn("engines", copied)
+
+    def test_crlf_sibling_bytes_are_preserved(self):
+        sibling = json.dumps(self.doc["sections"]["windows"], indent=2).replace("\n", "\r\n")
+        original = '{\r\n"sections":{"windows":' + sibling + ',"macbook":' + json.dumps(BASE_MAP) + '}}'
+        self.active_path.write_bytes(original.encode())
+        response = self.client.post("/api/save", json={"section": "macbook", "document": BASE_MAP})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(sibling.encode(), self.active_path.read_bytes())
+        self.assertTrue(self.active_path.read_bytes().startswith(b'{\r\n'))
+
+    def test_failed_atomic_save_keeps_file_and_reload_untouched(self):
+        from unittest.mock import patch
+        before = self.active_path.read_bytes()
+        with patch("windows.ui_server.os.replace", side_effect=OSError("disk failure")):
+            response = self.client.post("/api/save", json={"section": "windows", "document": BASE_MAP})
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(self.active_path.read_bytes(), before)
+        self.assertFalse(self.reload_event.is_set())
+        self.assertEqual(list(self.presets_dir.glob(".preset-*")), [])
+
+    def test_failed_rename_identity_write_rolls_back_preset(self):
+        from unittest.mock import patch
+        before = self.active_path.read_bytes()
+        with patch.object(self.server.bridge_settings, "save", side_effect=OSError("disk failure")):
+            response = self.client.post("/api/presets/sections/rename", json={"old": "macbook", "new": "Mac 2"})
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(self.active_path.read_bytes(), before)
+        self.assertEqual(self.server.bridge_settings.preset_section, "macbook")
+        self.assertFalse(self.reload_event.is_set())
+
+    def test_first_section_names_legacy_document_and_persists_identity(self):
+        self.active_path.write_text(json.dumps(BASE_MAP))
+        self.server.bridge_settings.preset_section = None
+        response = self.client.post("/api/presets/sections/add", json={"name": "macbook"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(json.loads(self.active_path.read_text()), {"sections": {"macbook": BASE_MAP}})
+        self.assertEqual(json.loads(self.server.bridge_settings.path.read_text()), {"preset_section": "macbook"})
+        self.assertEqual(self.client.get("/api/mappings").get_json()["section"], "macbook")
+        self.assertTrue(self.reload_event.is_set())
+
+    def test_malformed_sections_list_returns_422(self):
+        self.active_path.write_text('{"sections": null}')
+        self.assertEqual(self.client.get("/api/presets/default/sections").status_code, 422)
+
+
+
+class HtmlApiBarTests(unittest.TestCase):
+    def test_html_parses_and_all_api_paths_are_registered(self):
+        import re
+        import shutil
+        from html.parser import HTMLParser
+        server, _, tmpdir, _, _, _ = _make_server()
+        self.addCleanup(shutil.rmtree, tmpdir)
+        with server._app.test_client().get("/") as response:
+            html = response.data.decode()
+        class Parser(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.ids = []
+                self.tags = []
+                self.stack = []
+                self.errors = []
+            def handle_starttag(self, tag, attrs):
+                self.tags.append(tag)
+                self.ids.extend(value for key, value in attrs if key == "id")
+                if tag not in {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}:
+                    self.stack.append(tag)
+            def handle_endtag(self, tag):
+                if not self.stack or self.stack.pop() != tag:
+                    self.errors.append(tag)
+        parser = Parser()
+        parser.feed(html)
+        parser.close()
+        self.assertEqual(parser.errors, [], "mismatched HTML closing tags")
+        self.assertEqual(parser.stack, [], "unclosed HTML tags")
+        self.assertIn("html", parser.tags)
+        self.assertIn("script", parser.tags)
+        self.assertEqual(len(parser.ids), len(set(parser.ids)), "duplicate HTML ids")
+        adapter = server._app.url_map.bind("localhost")
+        paths = set(re.findall(r"[\"'`](/api/[^\"'`\s]*)", html))
+        self.assertTrue(paths, "API path detector must find actual calls")
+        for path in sorted(paths):
+            # Dynamic JS template slots represent one encoded route component.
+            concrete = re.sub(r"\$\{[^}]+\}", "example", path).split("?")[0]
+            with self.subTest(path=path):
+                allowed = adapter.allowed_methods(concrete)
+                self.assertTrue(allowed, f"HTML API path has no registered route: {path}")
+        print(f"HTML API bar: {len(paths)} paths registered; HTML parsed; ids unique")
+
+
 if __name__ == "__main__":
     unittest.main()

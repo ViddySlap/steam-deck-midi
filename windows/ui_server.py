@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import copy
 import json
+import os
+import tempfile
 import threading
 import uuid
 from pathlib import Path
@@ -27,6 +30,7 @@ from windows.config import (
     set_active_preset,
     load_midi_map,
     validate_preset_section,
+    select_preset_section,
 )
 
 # ---------------------------------------------------------------------------
@@ -120,6 +124,35 @@ def _safe_preset_name(name: str) -> str | None:
     return name
 
 
+def _member_span(text: str, key: str, start: int = 0) -> tuple[int, int]:
+    """Locate a JSON object member's value without reserializing its siblings."""
+    decoder = json.JSONDecoder()
+    index = start + 1  # opening brace of an already parsed object
+    while True:
+        while text[index].isspace() or text[index] == ',':
+            index += 1
+        if text[index] == '}':
+            raise ConfigError(f"missing JSON member: {key}")
+        name, index = decoder.raw_decode(text, index)
+        while text[index].isspace() or text[index] == ':':
+            index += 1
+        value_start = index
+        _, index = decoder.raw_decode(text, index)
+        if name == key:
+            return value_start, index
+
+
+def _section_content(content: str, section: str | None, document: dict) -> str:
+    """Replace only the selected value, retaining every other byte."""
+    raw = json.loads(content)
+    select_preset_section(raw, section)
+    if 'sections' not in raw:
+        return json.dumps(document, indent=2)
+    sections_start, _ = _member_span(content, 'sections', len(content) - len(content.lstrip()))
+    start, end = _member_span(content, section, sections_start)
+    return content[:start] + json.dumps(document, indent=2) + content[end:]
+
+
 class MappingUIServer:
     def __init__(
         self,
@@ -178,6 +211,30 @@ class MappingUIServer:
             return json.loads(active.read_text(encoding="utf-8"))
         except (json.JSONDecodeError, OSError):
             return {}
+
+    def _write_preset(self, target: Path, content: str) -> None:
+        """Validate every section with the loader before an atomic replacement."""
+        raw = json.loads(content)
+        sections = list(raw.get("sections", {})) if isinstance(raw, dict) and "sections" in raw else [None]
+        if not sections:
+            raise ConfigError("sections must be a non-empty object")
+        tmp_path = None
+        try:
+            with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=target.parent,
+                                             prefix=".preset-", suffix=".tmp", delete=False, newline="") as tmp:
+                tmp_path = Path(tmp.name)
+                tmp.write(content)
+            for section in sections:
+                load_midi_map(tmp_path, section)
+            os.replace(tmp_path, target)
+        finally:
+            if tmp_path is not None:
+                tmp_path.unlink(missing_ok=True)
+
+    def _section_metadata(self, raw: dict, preset: str, section: str | None) -> dict:
+        return {"section": section, "sections": list(raw.get("sections", {})),
+                "bridge_section": self.bridge_settings.preset_section,
+                "preset": preset, "legacy": "sections" not in raw}
 
     def _list_presets(self) -> list[dict[str, Any]]:
         active_path = self._get_active_preset_path()
@@ -266,10 +323,18 @@ class MappingUIServer:
 
         @app.route("/api/mappings", methods=["GET"])
         def get_mappings() -> Response:
+            section = request.args.get("section", self.bridge_settings.preset_section)
             try:
-                return jsonify(self._load_raw_json())
-            except Exception as exc:
-                return jsonify({"error": str(exc)}), 500
+                validate_preset_section(section)
+                raw = self._load_raw_json()
+                effective = select_preset_section(raw, section)
+                load_midi_map(self._get_active_preset_path(), section)
+                document = raw["sections"][section] if "sections" in raw else raw
+                return jsonify({**effective, "document": document,
+                                "shared_mappings": raw.get("shared", {}).get("mappings", {}) if "sections" in raw else {},
+                                **self._section_metadata(raw, self._get_active_preset_path().name, section)})
+            except ConfigError as exc:
+                return jsonify({"error": str(exc)}), 422
 
         @app.route("/api/actions", methods=["GET"])
         def get_actions() -> Response:
@@ -285,54 +350,151 @@ class MappingUIServer:
             body = request.get_json(force=True, silent=True)
             if not isinstance(body, dict):
                 return jsonify({"error": "expected JSON object"}), 400
-            mappings_raw = body.get("mappings")
-            if not isinstance(mappings_raw, dict):
-                return jsonify({"error": "missing 'mappings' key"}), 400
-
-            candidate: dict[str, Any] = {"mappings": mappings_raw}
-            if "macro_settings" in body:
-                candidate["macro_settings"] = body["macro_settings"]
-            if "analog_settings" in body:
-                candidate["analog_settings"] = body["analog_settings"]
-            engine_states = self._current_engine_states()
-            if engine_states:
-                candidate["engines"] = engine_states
-
-            import tempfile, os
-            with tempfile.NamedTemporaryFile(
-                mode="w", suffix=".json", delete=False, encoding="utf-8"
-            ) as tmp:
-                json.dump(candidate, tmp)
-                tmp_path = tmp.name
-            try:
-                load_midi_map(tmp_path)
-            except ConfigError as exc:
-                return jsonify({"error": str(exc)}), 422
-            finally:
+            section = body.get("section", self.bridge_settings.preset_section)
+            document = body.get("document", body)
+            if not isinstance(document, dict) or not isinstance(document.get("mappings"), dict):
+                return jsonify({"error": "document must contain a 'mappings' object"}), 400
+            candidate = {key: document[key] for key in
+                         ("mappings", "macro_settings", "analog_settings", "engines") if key in document}
+            # Retain the old flat caller's live-engine snapshot behavior. Explicit
+            # section documents always own their engine states, including omissions.
+            if "document" not in body and section == self.bridge_settings.preset_section:
+                engine_states = self._current_engine_states()
+                if engine_states:
+                    candidate["engines"] = engine_states
+            with self._settings_lock:
                 try:
-                    os.unlink(tmp_path)
-                except OSError:
-                    pass
-
-            active = self._get_active_preset_path()
-            active.write_text(json.dumps(candidate, indent=2), encoding="utf-8")
-            self.reload_event.set()
-            return jsonify({"ok": True, "saved_to": active.name})
+                    validate_preset_section(section)
+                    active = self._get_active_preset_path()
+                    content = _section_content(active.read_bytes().decode("utf-8"), section, candidate)
+                    self._write_preset(active, content)
+                except (ConfigError, ValueError) as exc:
+                    return jsonify({"error": str(exc)}), 422
+                except OSError as exc:
+                    return jsonify({"error": str(exc)}), 500
+                self.reload_event.set()
+            return jsonify({"ok": True, "saved_to": active.name, "section": section})
 
         @app.route("/api/reset", methods=["POST"])
         def factory_reset() -> Response:
-            """Overwrite the active preset with factory defaults."""
-            factory_content = self.base_map_path.read_text(encoding="utf-8")
-            active = self._get_active_preset_path()
-            active.write_text(factory_content, encoding="utf-8")
-            self.reload_event.set()
-            return jsonify({"ok": True})
+            """Restore factory defaults in the selected section only."""
+            body = request.get_json(force=True, silent=True)
+            if not isinstance(body, dict):
+                return jsonify({"error": "expected JSON object"}), 400
+            section = body.get("section", self.bridge_settings.preset_section)
+            with self._settings_lock:
+                try:
+                    factory = json.loads(self.base_map_path.read_text(encoding="utf-8"))
+                    document = select_preset_section(factory, section)
+                    active = self._get_active_preset_path()
+                    self._write_preset(active, _section_content(active.read_bytes().decode("utf-8"), section, document))
+                except (ConfigError, ValueError) as exc:
+                    return jsonify({"error": str(exc)}), 422
+                except OSError as exc:
+                    return jsonify({"error": str(exc)}), 500
+                self.reload_event.set()
+            return jsonify({"ok": True, "section": section})
 
         # ── Presets ────────────────────────────────────────────────
 
         @app.route("/api/presets", methods=["GET"])
         def get_presets() -> Response:
             return jsonify({"presets": self._list_presets()})
+
+        @app.route("/api/presets/<name>/sections", methods=["GET"])
+        def get_preset_sections(name: str) -> Response:
+            stem = name[:-5] if name.endswith(".json") else name
+            if not _SAFE_FILENAME_RE.fullmatch(stem):
+                return jsonify({"error": "invalid preset name"}), 400
+            target = self.presets_dir / (stem + ".json")
+            try:
+                raw = json.loads(target.read_text(encoding="utf-8"))
+                sections = list(raw.get("sections", {}))
+                load_midi_map(target, sections[0] if sections else None)
+                return jsonify(self._section_metadata(raw, target.name, self.bridge_settings.preset_section))
+            except FileNotFoundError:
+                return jsonify({"error": "preset not found"}), 404
+            except (ConfigError, ValueError, TypeError, AttributeError) as exc:
+                return jsonify({"error": str(exc)}), 422
+
+        def edit_sections(operation: str) -> Response:
+            body = request.get_json(force=True, silent=True)
+            keys = ("old", "new") if operation == "rename" else ("name",)
+            if not isinstance(body, dict):
+                return jsonify({"error": "expected JSON object"}), 400
+            try:
+                for key in keys + (("copy_from",) if "copy_from" in body else ()):
+                    value = body.get(key)
+                    if not isinstance(value, str) or not value.strip():
+                        raise ConfigError(f"{key} must be a non-empty section name")
+                    validate_preset_section(value)
+            except ConfigError as exc:
+                return jsonify({"error": str(exc)}), 400
+            with self._settings_lock:
+                active = self._get_active_preset_path()
+                own = self.bridge_settings.preset_section
+                try:
+                    original = active.read_bytes().decode("utf-8")
+                    raw = json.loads(original)
+                    first_section = "sections" not in raw and own is None and operation == "add"
+                    if "sections" not in raw:
+                        if operation != "add":
+                            return jsonify({"error": "legacy preset: add a named section first"}), 422
+                        raw = {"sections": {body["name"] if first_section else own: raw}}
+                    sections = raw["sections"]
+                    if not isinstance(sections, dict) or not sections:
+                        raise ConfigError("sections must be a non-empty object")
+                    if operation == "add":
+                        name = body["name"]
+                        if name in sections and not first_section:
+                            return jsonify({"error": "section already exists"}), 409
+                        source = body.get("copy_from")
+                        if source is not None and source not in sections:
+                            return jsonify({"error": "copy source not found"}), 404
+                        if not first_section:
+                            sections[name] = copy.deepcopy(sections[source]) if source else {"mappings": {}}
+                    elif operation == "rename":
+                        old, new = body["old"], body["new"]
+                        if old not in sections:
+                            return jsonify({"error": "section not found"}), 404
+                        if new in sections:
+                            return jsonify({"error": "section already exists"}), 409
+                        sections[new] = sections.pop(old)
+                    else:
+                        name = body["name"]
+                        if name not in sections:
+                            return jsonify({"error": "section not found"}), 404
+                        if name == own:
+                            return jsonify({"error": "cannot delete this machine's section"}), 409
+                        if len(sections) == 1:
+                            return jsonify({"error": "cannot delete the last section"}), 409
+                        del sections[name]
+                    self._write_preset(active, json.dumps(raw, indent=2))
+                    if first_section or (operation == "rename" and body["old"] == own):
+                        try:
+                            self.bridge_settings.save(body["name"] if first_section else body["new"])
+                        except OSError:
+                            # Restore the preset if local identity cannot be persisted.
+                            self._write_preset(active, original)
+                            raise
+                except (ConfigError, ValueError, TypeError) as exc:
+                    return jsonify({"error": str(exc)}), 422
+                except OSError as exc:
+                    return jsonify({"error": str(exc)}), 500
+                self.reload_event.set()
+                return jsonify({"ok": True, **self._section_metadata(raw, active.name, self.bridge_settings.preset_section)})
+
+        @app.route("/api/presets/sections/add", methods=["POST"])
+        def add_section() -> Response:
+            return edit_sections("add")
+
+        @app.route("/api/presets/sections/rename", methods=["POST"])
+        def rename_section() -> Response:
+            return edit_sections("rename")
+
+        @app.route("/api/presets/sections/delete", methods=["POST"])
+        def delete_section() -> Response:
+            return edit_sections("delete")
 
         @app.route("/api/presets/load", methods=["POST"])
         def load_preset() -> Response:
@@ -354,7 +516,7 @@ class MappingUIServer:
                 return jsonify({"error": "preset name must be letters, numbers, spaces, hyphens, or underscores"}), 400
             filename = safe + ".json"
             new_path = self.presets_dir / filename
-            current_content = self._get_active_preset_path().read_text(encoding="utf-8")
+            current_content = self._get_active_preset_path().read_bytes().decode("utf-8")
             # Bake the live engine on/off states into the new preset so the
             # checkbox state the user sees is what gets saved.
             engine_states = self._current_engine_states()
@@ -362,11 +524,19 @@ class MappingUIServer:
                 try:
                     doc = json.loads(current_content)
                     if isinstance(doc, dict):
-                        doc["engines"] = engine_states
-                        current_content = json.dumps(doc, indent=2)
-                except json.JSONDecodeError:
-                    pass
-            new_path.write_text(current_content, encoding="utf-8")
+                        section = self.bridge_settings.preset_section
+                        select_preset_section(doc, section)
+                        document = copy.deepcopy(doc["sections"][section] if "sections" in doc else doc)
+                        document["engines"] = engine_states
+                        current_content = _section_content(current_content, section, document)
+                except (ConfigError, ValueError) as exc:
+                    return jsonify({"error": str(exc)}), 422
+            try:
+                self._write_preset(new_path, current_content)
+            except (ConfigError, ValueError) as exc:
+                return jsonify({"error": str(exc)}), 422
+            except OSError as exc:
+                return jsonify({"error": str(exc)}), 500
             set_active_preset(self.presets_dir, filename)
             self.reload_event.set()
             return jsonify({"ok": True, "active": filename})
@@ -390,6 +560,7 @@ class MappingUIServer:
             active_file = self.presets_dir / ".active"
             if active_file.exists() and active_file.read_text(encoding="utf-8").strip() == old_name:
                 set_active_preset(self.presets_dir, new_name)
+            self.reload_event.set()
             return jsonify({"ok": True, "name": new_name})
 
         @app.route("/api/presets/delete", methods=["POST"])
