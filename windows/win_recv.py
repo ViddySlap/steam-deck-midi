@@ -11,6 +11,7 @@ import webbrowser
 from pathlib import Path
 
 from windows import build_fingerprint
+from windows.bridge_settings import BridgeSettings
 from windows.config import (
     ConfigError,
     ensure_presets_initialized,
@@ -50,6 +51,10 @@ def build_parser() -> argparse.ArgumentParser:
         "--map",
         dest="map_path",
         help="path to windows_midi_map.json",
+    )
+    parser.add_argument(
+        "--preset-section",
+        help="named preset section for this bridge (overrides config/bridge.local.json)",
     )
     parser.add_argument(
         "--timeout",
@@ -237,13 +242,16 @@ def main(argv: list[str] | None = None) -> int:
             raise ConfigError("--map is required unless --list-ports or --check-midi-port is used")
 
         base_map_path = Path(args.map_path)
+        bridge_settings = BridgeSettings.load(
+            base_map_path.parent / "bridge.local.json", args.preset_section,
+        )
         presets_dir = base_map_path.parent / "presets"
         macro_library_path = base_map_path.parent / "macro_library.json"
         ensure_presets_initialized(base_map_path)
         active_preset_path = get_active_preset_path(presets_dir, base_map_path)
 
         listen_host, listen_port = parse_listen(args.listen)
-        receiver_config = load_midi_map(active_preset_path)
+        receiver_config = load_midi_map(active_preset_path, bridge_settings.preset_section)
         midi_out = open_midi_output(args.midi_port, args.dry_run)
         midi_in = open_midi_input(args.feedback_port, args.dry_run)
     except (argparse.ArgumentTypeError, ConfigError, MidiError) as exc:
@@ -267,7 +275,7 @@ def main(argv: list[str] | None = None) -> int:
 
     def reload_config_fn():
         active = get_active_preset_path(presets_dir, base_map_path)
-        cfg = load_midi_map(active)
+        cfg = load_midi_map(active, bridge_settings.preset_section)
         # Apply the preset's per-engine on/off states on the receiver thread
         # (this runs inside serve_forever's reload path, so no cross-thread race
         # with engine dispatch). Engines absent from the map are left as-is.
@@ -347,6 +355,11 @@ def main(argv: list[str] | None = None) -> int:
             reload_event=reload_event,
             port=args.ui_port,
             engine_registry=engine_registry,
+            bridge_settings=bridge_settings,
+            listen=f"{listen_host}:{listen_port}",
+            midi_port=midi_out.port_name,
+            feedback_port=midi_in.port_name if midi_in is not None else None,
+            pulse_port=pulse_in.port_name if pulse_in is not None else None,
         )
         ui_server.run_in_thread()
         logging.info("mapping UI available at %s", ui_server.url)

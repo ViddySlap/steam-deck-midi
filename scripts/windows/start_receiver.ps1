@@ -62,6 +62,21 @@ $args = @(
     [string]$settings.timeout
 )
 
+# The launcher setting bootstraps old installs. Once HTTP settings have been
+# saved, bridge.local.json is the machine-local source for future launches.
+$presetSection = [string]$settings.preset_section
+$bridgeSettingsPath = Join-Path $RepoRoot "config\bridge.local.json"
+if (Test-Path $bridgeSettingsPath) {
+    $bridgeSettings = Get-Content $bridgeSettingsPath -Raw | ConvertFrom-Json
+    if ($bridgeSettings.PSObject.Properties.Name -contains "preset_section") {
+        $presetSection = [string]$bridgeSettings.preset_section
+    }
+}
+if (-not [string]::IsNullOrWhiteSpace($presetSection)) {
+    $args += "--preset-section"
+    $args += $presetSection
+}
+
 if ($settings.verbose) {
     $args += "--verbose"
 }

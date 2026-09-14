@@ -23,7 +23,7 @@ BASE_MAP = {
 }
 
 
-def _make_server(base_map=None):
+def _make_server(base_map=None, section=None):
     tmpdir = tempfile.mkdtemp()
     base_path = Path(tmpdir) / "windows_midi_map.json"
     presets_dir = Path(tmpdir) / "presets"
@@ -47,9 +47,94 @@ def _make_server(base_map=None):
         macro_library_path=macro_library_path,
         actions_yaml_path=actions_path,
         reload_event=reload_event,
+        preset_section=section,
     )
     active_preset_path = presets_dir / "default.json"
     return server, reload_event, tmpdir, active_preset_path, presets_dir, macro_library_path
+
+
+class BridgeSettingsApiTests(unittest.TestCase):
+    def setUp(self):
+        import shutil
+        self.doc = {"sections": {
+            "macbook": BASE_MAP,
+            "windows": {"mappings": {"BTN_A": {"type": "note", "channel": 0, "note": 80}}},
+        }}
+        (self.server, self.reload_event, self.tmpdir, self.active_path,
+         self.presets_dir, _) = _make_server(self.doc, section="macbook")
+        self.addCleanup(shutil.rmtree, self.tmpdir)
+        self.client = self.server._app.test_client()
+        self.settings_path = Path(self.tmpdir) / "bridge.local.json"
+
+    def test_get_settings_reports_runtime_values_and_active_map(self):
+        response = self.client.get("/api/settings")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.get_json(), {
+            "preset_section": "macbook", "listen": "0.0.0.0:45123",
+            "midi_port": "DECK_IN", "feedback_port": None, "pulse_port": "PULSE_OUT",
+            "ui_port": 7723, "map_path": str(self.active_path.resolve()),
+        })
+        other = self.presets_dir / "other.json"
+        other.write_text(json.dumps(self.doc))
+        (self.presets_dir / ".active").write_text("other.json")
+        self.assertEqual(self.client.get("/api/settings").get_json()["map_path"], str(other.resolve()))
+
+    def test_put_round_trip_persists_and_requests_reload(self):
+        before = self.active_path.read_bytes()
+        response = self.client.put("/api/settings", json={"preset_section": "windows"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.get_json()["preset_section"], "windows")
+        self.assertEqual(self.client.get("/api/settings").get_json(), response.get_json())
+        self.assertEqual(json.loads(self.settings_path.read_text()), {"preset_section": "windows"})
+        self.assertTrue(self.reload_event.is_set())
+        self.assertEqual(self.active_path.read_bytes(), before)
+
+    def test_put_rejects_invalid_body_without_writing_or_reload(self):
+        for body in ([], {}, {"midi_port": "other"}, {"preset_section": 1},
+                     {"preset_section": "bad/name"}, {"preset_section": "bad\n"},
+                     {"preset_section": "windows", "ui_port": 9999}):
+            with self.subTest(body=body):
+                response = self.client.put("/api/settings", json=body)
+                self.assertEqual(response.status_code, 400)
+                self.assertFalse(self.settings_path.exists())
+                self.assertFalse(self.reload_event.is_set())
+                self.assertEqual(self.client.get("/api/settings").get_json()["preset_section"], "macbook")
+
+    def test_absent_section_refused_with_available_names_and_no_side_effects(self):
+        for section in (None, "missing"):
+            with self.subTest(section=section):
+                response = self.client.put("/api/settings", json={"preset_section": section})
+                self.assertEqual(response.status_code, 422)
+                self.assertIn("macbook", response.get_json()["error"])
+                self.assertIn("windows", response.get_json()["error"])
+                self.assertFalse(self.settings_path.exists())
+                self.assertFalse(self.reload_event.is_set())
+
+    def test_legacy_preset_allows_any_safe_section_and_null(self):
+        self.active_path.write_text(json.dumps(BASE_MAP))
+        for section in ("Grandma 2_-", None):
+            with self.subTest(section=section):
+                response = self.client.put("/api/settings", json={"preset_section": section})
+                self.assertEqual(response.status_code, 200)
+                self.assertEqual(response.get_json()["preset_section"], section)
+                self.assertEqual(json.loads(self.settings_path.read_text()), {"preset_section": section})
+
+    def test_failed_persistence_keeps_running_selection(self):
+        from unittest.mock import patch
+        with patch("os.replace", side_effect=OSError("read-only disk")):
+            response = self.client.put("/api/settings", json={"preset_section": "windows"})
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(self.client.get("/api/settings").get_json()["preset_section"], "macbook")
+        self.assertFalse(self.reload_event.is_set())
+        self.assertFalse(self.settings_path.exists())
+
+    def test_api_inventory_matches_registered_method_paths(self):
+        import re
+        documented = set(re.findall(r"\| (GET|POST|PUT|DELETE) \| `([^`]+)` \|",
+                                    (Path(__file__).resolve().parents[1] / "docs/api.md").read_text()))
+        registered = {(method, rule.rule) for rule in self.server._app.url_map.iter_rules()
+                      for method in rule.methods if method not in {"OPTIONS", "HEAD"}}
+        self.assertEqual(documented, registered)
 
 
 class DetectConflictsTests(unittest.TestCase):

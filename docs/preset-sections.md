@@ -1,0 +1,100 @@
+# Preset sections
+
+A preset without `sections` keeps the v0.4.9 format and applies to every bridge,
+including a bridge with no section setting. No installed legacy config needs to
+be recreated.
+
+A sectioned preset contains a non-empty `sections` object. Its keys are names
+made of ASCII letters, digits, spaces, underscores, and hyphens, using the same
+charset as preset filenames. Names are case-sensitive. Each value has the old
+document shape: required `mappings`, optional `macro_settings`, `analog_settings`,
+and `engines`. The existing validation and default settings still apply;
+malformed `engines` values are ignored, and only non-empty string-to-boolean
+engine entries are retained.
+
+`load_midi_map(path, section=None)` selects the named section. A missing selection
+or an absent name raises `ConfigError` listing the available sections. On a
+failed hot reload, the receiver continues using its last good mappings.
+
+The optional `shared` object holds `mappings` only; macro, analog, and engine
+settings belong to each section.
+
+Shared mappings apply to every section, and a section's mapping replaces the
+entire shared mapping for the same action.
+
+For example, both bridges receive BTN_B as note 40, while BTN_A is note 36 on
+Windows and CC 72 on the MacBook:
+
+```json
+{
+  "shared": {
+    "mappings": {
+      "BTN_A": {"type": "note", "channel": 0, "note": 60},
+      "BTN_B": {"type": "note", "channel": 0, "note": 40}
+    }
+  },
+  "sections": {
+    "windows": {
+      "mappings": {
+        "BTN_A": {"type": "note", "channel": 0, "note": 36}
+      },
+      "macro_settings": {"update_hz": 30},
+      "engines": {"osc_sync": true}
+    },
+    "macbook": {
+      "mappings": {
+        "BTN_A": {"type": "cc", "channel": 1, "cc": 72}
+      },
+      "macro_settings": {"update_hz": 30},
+      "analog_settings": {"deadzone": 1000},
+      "engines": {"osc_sync": false}
+    }
+  }
+}
+```
+
+The Deck sends the same action IDs to each host; hosts select their own mappings.
+`config/presets/.active` selects the scene for every machine and remains separate
+from the machine-local identity.
+
+## Machine-local selection
+
+The bridge reads `bridge.local.json` beside its `--map` base file at startup
+(normally `config/bridge.local.json`). The file is gitignored. Use
+`config/bridge.example.json` as a template:
+
+```json
+{"preset_section": "macbook"}
+```
+
+`--preset-section NAME` overrides the file for that process without changing the
+file. If both are absent, selection is `null` and only legacy presets load.
+UTF-8 with or without a Windows BOM is accepted.
+
+```sh
+.venv/bin/python -m windows.win_recv --map config/windows_midi_map.json --preset-section macbook
+```
+
+`GET /api/settings` returns the running selection and ports. `PUT /api/settings`
+accepts only `{"preset_section": "name"}`, validates the current preset for that
+name, atomically writes the local file, changes the running selection, and sets
+the receiver's reload event. It does not restart the bridge or change the shared
+active marker. A successful HTTP write supersedes the startup argv selection for
+the current process. `null` clears selection only while the active preset is
+legacy. Invalid bodies return 400, unavailable sections return 422, and a failed
+write returns 500 without changing the running selection. See [API](api.md).
+
+The Mac launcher reads the local file and passes the section as one argv value.
+All three Windows launchers back-fill `preset_section` from the launcher example
+(initially `windows`) and pass `--preset-section`. An existing `bridge.local.json`
+takes priority over that launcher bootstrap value so an HTTP change survives the
+next launch. A manually supplied argv flag still wins over the bridge file.
+
+## Initial migration
+
+For this run, default.json, PTZ.json, and EDM Show.json each wrap the complete old
+document in identical `windows` and `macbook` sections. Ben can customize the
+MacBook mappings later. The two user presets have byte-for-byte backups named
+`PTZ.json.v049.bak` and `EDM Show.json.v049.bak` beside them; both presets and
+backups remain untracked. Only default.json is committed. This machine's local
+selection is `macbook`.

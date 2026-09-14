@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -132,55 +133,45 @@ class ReceiverConfig:
     engine_states: dict[str, bool] = field(default_factory=dict)
 
 
-def load_effective_midi_map(base_path: str | Path, local_path: str | Path) -> ReceiverConfig:
-    """Load base map merged with local override if it exists."""
-    base = Path(base_path)
-    local = Path(local_path)
-    if not local.exists():
-        return load_midi_map(base)
-    try:
-        base_raw = json.loads(base.read_text(encoding="utf-8"))
-    except FileNotFoundError as exc:
-        raise ConfigError(f"mapping file not found: {base}") from exc
-    except json.JSONDecodeError as exc:
-        raise ConfigError(f"mapping file is not valid JSON: {base}") from exc
-    try:
-        local_raw = json.loads(local.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as exc:
-        raise ConfigError(f"local mapping file is not valid JSON: {local}") from exc
-
-    merged: dict[str, object] = {}
-    if isinstance(base_raw.get("macro_settings"), dict):
-        merged["macro_settings"] = base_raw["macro_settings"]
-    if isinstance(local_raw.get("macro_settings"), dict):
-        merged["macro_settings"] = {
-            **(merged.get("macro_settings") or {}),  # type: ignore[dict-item]
-            **local_raw["macro_settings"],
-        }
-    if isinstance(base_raw.get("analog_settings"), dict):
-        merged["analog_settings"] = base_raw["analog_settings"]
-    if isinstance(local_raw.get("analog_settings"), dict):
-        merged["analog_settings"] = {
-            **(merged.get("analog_settings") or {}),  # type: ignore[dict-item]
-            **local_raw["analog_settings"],
-        }
-    base_mappings = base_raw.get("mappings") or {}
-    local_mappings = local_raw.get("mappings") or {}
-    merged["mappings"] = {**base_mappings, **local_mappings}
-
-    import tempfile, os  # noqa: E401
-    with tempfile.NamedTemporaryFile(
-        mode="w", suffix=".json", delete=False, encoding="utf-8"
-    ) as tmp:
-        json.dump(merged, tmp)
-        tmp_path = tmp.name
-    try:
-        return load_midi_map(tmp_path)
-    finally:
-        os.unlink(tmp_path)
+# Same charset as preset filenames; use fullmatch so trailing newlines fail.
+_SAFE_FILENAME_RE = re.compile(r"^[A-Za-z0-9 _\-]+$")
 
 
-def load_midi_map(path: str | Path) -> ReceiverConfig:
+def validate_preset_section(section: object) -> None:
+    """Validate a machine-local section name (None supports legacy presets)."""
+    if section is not None and (
+        not isinstance(section, str) or not _SAFE_FILENAME_RE.fullmatch(section)
+    ):
+        raise ConfigError("preset_section must be letters, numbers, spaces, hyphens, or underscores")
+
+
+def select_preset_section(raw: object, section: str | None = None) -> dict:
+    """Resolve a legacy document or one named section, including shared mappings."""
+    if not isinstance(raw, dict):
+        raise ConfigError("mapping file must be an object")
+    if "sections" not in raw:
+        return raw
+    sections = raw["sections"]
+    if not isinstance(sections, dict) or not sections:
+        raise ConfigError("sections must be a non-empty object; available sections: (none)")
+    for name, document in sections.items():
+        validate_preset_section(name)
+        if not isinstance(document, dict):
+            raise ConfigError(f"section {name!r} must be an object")
+    available = ", ".join(sorted(sections))
+    if section is None or section not in sections:
+        raise ConfigError(f"preset section {section!r} is not available; available sections: {available}")
+    selected = sections[section]
+    mappings = selected.get("mappings")
+    if not isinstance(mappings, dict):
+        raise ConfigError(f"section {section!r} must contain an object at 'mappings'")
+    shared = raw.get("shared", {})
+    if not isinstance(shared, dict) or not isinstance(shared.get("mappings", {}), dict):
+        raise ConfigError("shared must be an object containing a mappings object")
+    return {**selected, "mappings": {**shared.get("mappings", {}), **mappings}}
+
+
+def load_midi_map(path: str | Path, section: str | None = None) -> ReceiverConfig:
     config_path = Path(path)
     try:
         raw = json.loads(config_path.read_text(encoding="utf-8"))
@@ -189,6 +180,7 @@ def load_midi_map(path: str | Path) -> ReceiverConfig:
     except json.JSONDecodeError as exc:
         raise ConfigError(f"mapping file is not valid JSON: {config_path}") from exc
 
+    raw = select_preset_section(raw, section)
     mappings = raw.get("mappings")
     if not isinstance(mappings, dict):
         raise ConfigError("mapping file must contain an object at 'mappings'")

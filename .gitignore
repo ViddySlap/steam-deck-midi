@@ -36,6 +36,7 @@ RESUME-NOTES.txt
 scripts/windows/.ssh_task.local
 
 # User-managed preset files (default.json is the factory default and is tracked)
+config/bridge.local.json
 config/presets/*
 !config/presets/default.json
 

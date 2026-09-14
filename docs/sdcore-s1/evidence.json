@@ -1,0 +1,165 @@
+{
+  "base_commit": "5d778eb",
+  "baseline_suite": {
+    "command": ".venv/bin/python -m unittest discover -s tests -p \"test_*.py\"",
+    "result": "Ran 648 tests in 1.550s; FAILED (errors=2, skipped=1)"
+  },
+  "final_suite": {
+    "command": ".venv/bin/python -m unittest discover -s tests -p \"test_*.py\"",
+    "result": "Ran 672 tests in 1.886s; FAILED (errors=2, skipped=1)"
+  },
+  "known_errors": [
+    "test_deck_sender import: OSError: failed to locate shared library: Xi",
+    "test_learn_wizard import: OSError: failed to locate shared library: Xi"
+  ],
+  "migration": [
+    {
+      "path": "config/presets/PTZ.json",
+      "backup": "config/presets/PTZ.json.v049.bak",
+      "mappings_per_section": 52,
+      "v049_sha256": "3d5b996a843a541a5d2606fd2b2c4078e0287c9d31f009598f11ae4344abbf8d",
+      "converted_sha256": "11b37cd675fab1a32df5070d11d4219399b6a46a0d6ff6728d10c6eac89752c6",
+      "sections_match_original": true
+    },
+    {
+      "path": "config/presets/EDM Show.json",
+      "backup": "config/presets/EDM Show.json.v049.bak",
+      "mappings_per_section": 56,
+      "v049_sha256": "3b2ef2e5702e014ef897517618ef79b588d6d29bfba48e10d0270b135d78567b",
+      "converted_sha256": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "sections_match_original": true
+    },
+    {
+      "path": "config/presets/default.json",
+      "backup": null,
+      "mappings_per_section": 56,
+      "v049_sha256": "5ebcf1e85dc3881d59e1658103ec17a0a3add438571679b3fca4f30b0f9a52a1",
+      "converted_sha256": "2f7f3cf6943609c92068c7943801e2b948e6001de872a59eb099414605d7055c",
+      "sections_match_original": true
+    }
+  ],
+  "source_boot": {
+    "mode": "source bridge, dry-run MIDI, browser and tray suppressed",
+    "command": " .venv/bin/python -m windows.win_recv --map config/windows_midi_map.json --preset-section macbook --dry-run --no-engines --no-osc-relay --no-pulse",
+    "temporary_active": "PTZ.json",
+    "settings": {
+      "feedback_port": null,
+      "listen": "0.0.0.0:45123",
+      "map_path": "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/config/presets/PTZ.json",
+      "midi_port": "DECK_IN",
+      "preset_section": "macbook",
+      "pulse_port": null,
+      "ui_port": 7723
+    },
+    "source_process_running": true,
+    "exit_before_cleanup": null,
+    "active_marker_restored": true,
+    "process_reaped": true
+  },
+  "reversion_controls": [
+    {
+      "control": "pristine",
+      "exit": 0,
+      "result": "Ran 94 tests in 0.541s; OK"
+    },
+    {
+      "control": "shared_omitted",
+      "test": "tests.test_windows_config.PresetSectionTests.test_shared_mappings_apply_everywhere_with_whole_action_override",
+      "exit": 1,
+      "result": "Ran 1 test in 0.001s; FAILED (errors=1)"
+    },
+    {
+      "control": "shared_overrides_section",
+      "test": "tests.test_windows_config.PresetSectionTests.test_shared_mappings_apply_everywhere_with_whole_action_override",
+      "exit": 1,
+      "result": "Ran 1 test in 0.001s; FAILED (errors=1)"
+    },
+    {
+      "control": "invalid_section_names_allowed",
+      "test": "tests.test_windows_config.PresetSectionTests.test_bad_names_and_shapes_raise_config_error",
+      "exit": 1,
+      "result": "Ran 1 test in 0.002s; FAILED (failures=3)"
+    },
+    {
+      "control": "implicit_first_section",
+      "test": "tests.test_windows_config.PresetSectionTests.test_missing_selection_names_available_sections",
+      "exit": 1,
+      "result": "Ran 1 test in 0.001s; FAILED (failures=1, errors=1)"
+    },
+    {
+      "control": "legacy_requires_section",
+      "test": "tests.test_windows_config.PresetSectionTests.test_legacy_applies_with_none_or_any_section",
+      "exit": 1,
+      "result": "Ran 1 test in 0.001s; FAILED (errors=1)"
+    },
+    {
+      "control": "engines_strict",
+      "test": "tests.test_windows_config.PresetSectionTests.test_section_engines_stay_lenient",
+      "exit": 1,
+      "result": "Ran 1 test in 0.001s; FAILED (errors=3)"
+    },
+    {
+      "control": "file_selection_ignored",
+      "test": "tests.test_win_recv_settings.BridgeStartupSettingsTests.test_startup_reads_machine_file",
+      "exit": 1,
+      "result": "Ran 1 test in 0.003s; FAILED (errors=1)"
+    },
+    {
+      "control": "argv_selection_ignored",
+      "test": "tests.test_win_recv_settings.BridgeStartupSettingsTests.test_argv_section_beats_machine_file_without_overwriting_it",
+      "exit": 1,
+      "result": "Ran 1 test in 0.002s; FAILED (failures=1)"
+    },
+    {
+      "control": "reload_selection_ignored",
+      "test": "tests.test_win_recv_settings.BridgeStartupSettingsTests.test_put_switch_is_used_by_real_reload_loop_and_next_startup",
+      "exit": 1,
+      "result": "Ran 1 test in 0.009s; FAILED (failures=1)"
+    },
+    {
+      "control": "put_not_persisted",
+      "test": "tests.test_ui_server.BridgeSettingsApiTests.test_put_round_trip_persists_and_requests_reload",
+      "exit": 1,
+      "result": "Ran 1 test in 0.007s; FAILED (errors=1)"
+    },
+    {
+      "control": "put_no_reload_event",
+      "test": "tests.test_win_recv_settings.BridgeStartupSettingsTests.test_put_switch_is_used_by_real_reload_loop_and_next_startup",
+      "exit": 1,
+      "result": "Ran 1 test in 0.008s; FAILED (failures=1)"
+    },
+    {
+      "control": "failed_reload_discards_good_mappings",
+      "test": "tests.test_win_recv_settings.BridgeStartupSettingsTests.test_bad_active_preset_switch_keeps_last_good_midi",
+      "exit": 1,
+      "result": "Ran 1 test in 0.008s; FAILED (failures=1)"
+    },
+    {
+      "control": "get_settings_wrong_live_ports",
+      "test": "tests.test_win_recv_settings.BridgeStartupSettingsTests.test_put_switch_is_used_by_real_reload_loop_and_next_startup",
+      "exit": 1,
+      "result": "Ran 1 test in 0.007s; FAILED (failures=1)"
+    },
+    {
+      "control": "mac_flag_not_passed",
+      "test": "tests.test_section_launchers.MacSectionLauncherTests",
+      "exit": 1,
+      "result": "Ran 1 test in 0.320s; FAILED (errors=1)"
+    },
+    {
+      "control": "windows_flag_not_passed",
+      "test": "tests.test_section_launchers.WindowsSectionLauncherContractTests",
+      "exit": 1,
+      "result": "Ran 1 test in 0.000s; FAILED (failures=1)"
+    },
+    {
+      "control": "restored",
+      "exit": 0,
+      "result": "Ran 94 tests in 0.484s; OK"
+    }
+  ],
+  "existing_assertions": "AST-equal test bodies: all 8 prior test_windows_config tests and all 44 prior test_ui_server tests",
+  "route_inventory": "22 explicit method/path registrations plus the Flask-generated static route; exact equality checked by the suite",
+  "windows_launcher_limit": "No pwsh installed; launcher source contract passed, real Windows execution owed to gate",
+  "scratch": "/tmp/sdcore-s1"
+}

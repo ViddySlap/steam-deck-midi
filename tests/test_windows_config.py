@@ -18,6 +18,86 @@ from windows.config import (
 )
 
 
+class PresetSectionTests(unittest.TestCase):
+    def setUp(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        self.path = Path(tmp.name) / "map.json"
+        self.windows = {"mappings": {"BTN_A": {"type": "note", "channel": 0, "note": 36}}}
+        self.macbook = {"mappings": {"BTN_A": {"type": "cc", "channel": 1, "cc": 72}},
+                        "macro_settings": {"update_hz": 15},
+                        "analog_settings": {"deadzone": 123}}
+        self.doc = {"sections": {"windows": self.windows, "macbook": self.macbook}}
+
+    def load(self, doc, section=None):
+        self.path.write_text(json.dumps(doc), encoding="utf-8")
+        return load_midi_map(self.path, section=section)
+
+    def test_legacy_applies_with_none_or_any_section(self):
+        expected = self.load(self.windows)
+        for section in ("macbook", "grandma", "any/name"):
+            with self.subTest(section=section):
+                self.assertEqual(self.load(self.windows, section), expected)
+
+    def test_named_sections_select_all_settings(self):
+        cfg = self.load(self.doc, "macbook")
+        self.assertEqual(cfg.mappings["BTN_A"].cc, 72)
+        self.assertEqual(cfg.mappings["BTN_A"].channel, 1)
+        self.assertEqual(cfg.macro_settings.update_hz, 15)
+        self.assertEqual(cfg.analog_settings.deadzone, 123)
+        self.assertEqual(self.load(self.doc, "windows").mappings["BTN_A"].note, 36)
+
+    def test_missing_selection_names_available_sections(self):
+        for section in (None, "missing"):
+            with self.subTest(section=section), self.assertRaises(ConfigError) as caught:
+                self.load(self.doc, section)
+            self.assertIn("windows", str(caught.exception))
+            self.assertIn("macbook", str(caught.exception))
+            if section:
+                self.assertIn(section, str(caught.exception))
+
+    def test_arbitrary_safe_names_are_allowed(self):
+        self.assertEqual(self.load({"sections": {"Grandma 2_-": self.windows}},
+                                   "Grandma 2_-").mappings["BTN_A"].note, 36)
+
+    def test_bad_names_and_shapes_raise_config_error(self):
+        for doc in ([], {"sections": []}, {"sections": {}},
+                    {"sections": {"": self.windows, "macbook": self.macbook}},
+                    {"sections": {"bad/name": self.windows, "macbook": self.macbook}},
+                    {"sections": {"bad\n": self.windows, "macbook": self.macbook}},
+                    {"sections": {"macbook": []}},
+                    {"sections": {"macbook": {"mappings": []}}},
+                    {**self.doc, "shared": []},
+                    {**self.doc, "shared": {"mappings": []}}):
+            with self.subTest(doc=doc), self.assertRaises(ConfigError):
+                self.load(doc, "macbook")
+
+    def test_shared_mappings_apply_everywhere_with_whole_action_override(self):
+        self.doc["shared"] = {"mappings": {
+            "BTN_A": {"type": "note", "channel": 3, "note": 99},
+            "BTN_B": {"type": "note", "channel": 0, "note": 40},
+        }}
+        for section in ("macbook", "windows"):
+            cfg = self.load(self.doc, section)
+            self.assertEqual(cfg.mappings["BTN_B"].note, 40)
+        self.assertEqual(self.load(self.doc, "macbook").mappings["BTN_A"].cc, 72)
+        self.assertEqual(self.load(self.doc, "windows").mappings["BTN_A"].note, 36)
+
+    def test_section_engines_stay_lenient(self):
+        for engines, expected in ((None, {}), ([], {}), ("bad", {}),
+                                  ({"osc_sync": False, "audio_opacity": "yes", "": True},
+                                   {"osc_sync": False})):
+            with self.subTest(engines=engines):
+                self.macbook["engines"] = engines
+                self.assertEqual(self.load(self.doc, "macbook").engine_states, expected)
+
+    def test_section_validation_stays_strict_for_other_settings(self):
+        for key, value in (("macro_settings", []), ("analog_settings", []),
+                           ("mappings", {"BTN_A": {"type": "note", "note": 999}})):
+            with self.subTest(key=key), self.assertRaises(ConfigError):
+                self.load({"sections": {"macbook": {**self.macbook, key: value}}}, "macbook")
+
+
 class LoadMidiMapTests(unittest.TestCase):
     def test_loads_note_and_cc_mappings(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:

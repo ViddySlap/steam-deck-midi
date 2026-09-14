@@ -3,6 +3,7 @@
   "midi_port": "DECK_IN",
   "feedback_port": "DECK_OUT",
   "map_path": "config/windows_midi_map.json",
+  "preset_section": "windows",
   "timeout": 2.0,
   "verbose": true,
   "no_ui": false,

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import re
 import threading
 import uuid
 from pathlib import Path
@@ -11,7 +10,9 @@ from typing import Any
 
 from flask import Flask, Response, jsonify, request, send_from_directory
 
+from windows.bridge_settings import BridgeSettings
 from windows.config import (
+    _SAFE_FILENAME_RE,
     AxisToCCMapping,
     AxisSplitCCMapping,
     ConfigError,
@@ -25,6 +26,7 @@ from windows.config import (
     get_active_preset_path,
     set_active_preset,
     load_midi_map,
+    validate_preset_section,
 )
 
 # ---------------------------------------------------------------------------
@@ -41,9 +43,6 @@ INTENTIONAL_SAME_CHANNEL_CC: frozenset[tuple[int, int]] = frozenset(
     }
 )
 INTENTIONAL_MULTI_CHANNEL_CC: frozenset[int] = frozenset({74, 78, 79})
-
-_SAFE_FILENAME_RE = re.compile(r'^[A-Za-z0-9 _\-]+$')
-
 
 def _mapping_to_dict(m: MidiMapping) -> dict[str, Any]:
     if isinstance(m, NoteMapping):
@@ -131,6 +130,12 @@ class MappingUIServer:
         reload_event: threading.Event,
         port: int = 7723,
         engine_registry: Any = None,
+        preset_section: str | None = None,
+        bridge_settings: BridgeSettings | None = None,
+        listen: str = "0.0.0.0:45123",
+        midi_port: str = "DECK_IN",
+        feedback_port: str | None = None,
+        pulse_port: str | None = "PULSE_OUT",
     ) -> None:
         self.base_map_path = base_map_path
         self.presets_dir = presets_dir
@@ -139,6 +144,14 @@ class MappingUIServer:
         self.reload_event = reload_event
         self.port = port
         self.engine_registry = engine_registry
+        self.bridge_settings = bridge_settings or BridgeSettings.load(
+            base_map_path.parent / "bridge.local.json", preset_section,
+        )
+        self.listen = listen
+        self.midi_port = midi_port
+        self.feedback_port = feedback_port
+        self.pulse_port = pulse_port
+        self._settings_lock = threading.Lock()
         self._app = self._build_app()
 
     # ------------------------------------------------------------------
@@ -147,6 +160,17 @@ class MappingUIServer:
 
     def _get_active_preset_path(self) -> Path:
         return get_active_preset_path(self.presets_dir, self.base_map_path)
+
+    def _live_settings(self) -> dict[str, Any]:
+        return {
+            "preset_section": self.bridge_settings.preset_section,
+            "listen": self.listen,
+            "midi_port": self.midi_port,
+            "feedback_port": self.feedback_port,
+            "pulse_port": self.pulse_port,
+            "ui_port": self.port,
+            "map_path": str(self._get_active_preset_path().resolve()),
+        }
 
     def _load_raw_json(self) -> dict[str, Any]:
         active = self._get_active_preset_path()
@@ -211,6 +235,32 @@ class MappingUIServer:
         @app.route("/")
         def index() -> Response:
             return send_from_directory(str(static_dir), "index.html")
+
+        @app.route("/api/settings", methods=["GET"])
+        def get_settings() -> Response:
+            return jsonify(self._live_settings())
+
+        @app.route("/api/settings", methods=["PUT"])
+        def put_settings() -> Response:
+            body = request.get_json(force=True, silent=True)
+            if not isinstance(body, dict) or set(body) != {"preset_section"}:
+                return jsonify({"error": "expected only 'preset_section' in a JSON object"}), 400
+            section = body["preset_section"]
+            try:
+                validate_preset_section(section)
+            except ConfigError as exc:
+                return jsonify({"error": str(exc)}), 400
+            with self._settings_lock:
+                try:
+                    load_midi_map(self._get_active_preset_path(), section)
+                except ConfigError as exc:
+                    return jsonify({"error": str(exc)}), 422
+                try:
+                    self.bridge_settings.save(section)
+                except OSError as exc:
+                    return jsonify({"error": str(exc)}), 500
+                self.reload_event.set()
+                return jsonify(self._live_settings())
 
         # ── Mappings ───────────────────────────────────────────────
 
