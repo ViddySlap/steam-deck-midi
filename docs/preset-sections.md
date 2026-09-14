@@ -87,9 +87,9 @@ write returns 500 without changing the running selection. See [API](api.md).
 
 The Mac launcher initializes an absent local file to `macbook`, reads it, and
 passes the section as one argv value.
-All three Windows launchers back-fill `preset_section` from the launcher example
-(initially `windows`) and pass `--preset-section`. An existing `bridge.local.json`
-takes priority over that launcher bootstrap value so an HTTP change survives the
+All three Windows launchers back-fill `preset_section` in an existing settings
+file from the launcher example (initially `windows`) and pass `--preset-section`.
+An existing `bridge.local.json` takes priority over that launcher bootstrap value so an HTTP change survives the
 next launch. A manually supplied argv flag still wins over the bridge file.
 
 ## Upgrading and first run
@@ -107,8 +107,26 @@ local file or explicit selection exists. It logs the created filename. It does
 not create a file for a flat preset. Other platforms, or a sectioned preset
 without `macbook`, keep the error listing available sections. Existing files,
 including an explicit null or unavailable selection, are never overwritten by
-first-run initialization. Windows launchers already back-fill a missing
-`preset_section` key with `windows` from the example before passing the flag.
+first-run initialization.
+
+### Windows launcher execution (2026-09-14)
+
+Executed on Windows PowerShell 5.1 in the isolated laptop clone, with each
+unchanged launcher pointed at temporary settings and an argv-only executable:
+
+| Launcher | Existing file, no section key | Existing `grandma` | No settings file |
+| --- | --- | --- | --- |
+| `scripts/windows/start_receiver.ps1` | Writes and passes `windows`; exit 0 | Bytes unchanged; passes `grandma`; exit 0 | Exit 1; file stays absent; no executable call |
+| `scripts/windows/start_installed_receiver.ps1` | Writes and passes `windows`; exit 0 | Bytes unchanged; passes `grandma`; exit 0 | Exit 1; file stays absent; no executable call |
+| `scripts/windows/start_installed_receiver_v2.ps1` | Writes and passes `windows`; exit 0 | Bytes unchanged; passes `grandma`; exit 0 | Exit 1; file stays absent; no executable call |
+
+The absent-file failure occurs at line 35 in each launcher: strict mode rejects
+`.PSObject.Properties.Name` on the empty object created at line 30. This is a
+recorded first-run defect; W2's missing-key back-fill arm succeeds and needed no
+product fix. No receiver or real MIDI port was opened. See
+[W2 executed evidence](sdwin-w2/REPORT.md) for settings hashes, captured argv,
+process checks, and the Windows and Mac suite results. R1's historical
+UNVERIFIED-BY-EXECUTION debt for the existing-file back-fill is now discharged.
 
 ## Initial migration
 

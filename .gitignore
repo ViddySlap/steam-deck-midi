@@ -60,3 +60,6 @@ gyro-observe.log
 
 # SwiftPM host build products
 mac/.build/
+
+# Read-only show-ready fixture captures
+.showready/

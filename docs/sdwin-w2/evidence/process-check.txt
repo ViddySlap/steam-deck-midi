@@ -1,0 +1,34 @@
+[
+    {
+        "ProcessId":  274976,
+        "ParentProcessId":  266740,
+        "Name":  "cmd.exe",
+        "ExecutablePath":  "c:\\windows\\system32\\cmd.exe",
+        "CommandLine":  "\"c:\\windows\\system32\\cmd.exe\" /c \"powershell -NoProfile -ExecutionPolicy Bypass -File \"C:/Users/Ben/AppData/Local/Temp/sdwin/w2/arms.ps1\" \"-Label\" \"executed\"\""
+    },
+    {
+        "ProcessId":  273344,
+        "ParentProcessId":  274976,
+        "Name":  "powershell.exe",
+        "ExecutablePath":  "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "CommandLine":  "powershell  -NoProfile -ExecutionPolicy Bypass -File \"C:/Users/Ben/AppData/Local/Temp/sdwin/w2/arms.ps1\" \"-Label\" \"executed\""
+    },
+    {
+        "ProcessId":  262716,
+        "ParentProcessId":  242976,
+        "Name":  "cmd.exe",
+        "ExecutablePath":  "c:\\windows\\system32\\cmd.exe",
+        "CommandLine":  "\"c:\\windows\\system32\\cmd.exe\" /c \"powershell -NoProfile -ExecutionPolicy Bypass -File \"C:/Users/Ben/AppData/Local/Temp/sdwin/w2/process-check.ps1\"\""
+    },
+    {
+        "ProcessId":  272608,
+        "ParentProcessId":  262716,
+        "Name":  "powershell.exe",
+        "ExecutablePath":  "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "CommandLine":  "powershell  -NoProfile -ExecutionPolicy Bypass -File \"C:/Users/Ben/AppData/Local/Temp/sdwin/w2/process-check.ps1\""
+    }
+]
+
+Name     Length LastWriteTime
+----     ------ -------------
+arms.ps1   5907 9/14/2026 5:01:03 PM

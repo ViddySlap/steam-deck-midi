@@ -1,0 +1,14 @@
+Already up to date.
+CLONE_HEAD 72d3a21239fbb79d3b2552c690bee4769b604c74
+CAPTURE 11 files; all before/after/copy hashes equal
+
+Name                                    Length
+----                                    ------
+.active                                     13
+.active.bak-20260529-pre-v047-sync          15
+default.json                              7722
+default.json.bak-20260529-pre-v047-sync   8035
+EDM Show.json                             8219
+PTZ.json                                  7263
+test 1.json                               8581
+v1 Default.json                           8800

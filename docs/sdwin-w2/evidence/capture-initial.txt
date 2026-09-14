@@ -1,0 +1,34 @@
+From https://github.com/ViddySlap/steam-deck-midi
+   84e583b..72d3a21  chain/steamdeck-20260914 -> origin/chain/steamdeck-20260914
+Updating 84e583b..72d3a21
+Fast-forward
+ docs/sdwin-w1/REPORT.md              | 254 ++++++++++
+ docs/sdwin-w1/cleanup.ps1            |  19 +
+ docs/sdwin-w1/cleanup.txt            |   5 +
+ docs/sdwin-w1/guard-final.txt        |   1 +
+ docs/sdwin-w1/inspect.txt            |  35 ++
+ docs/sdwin-w1/mac-suites.txt         |  29 ++
+ docs/sdwin-w1/pin-control.json       |  35 ++
+ docs/sdwin-w1/rail-proof.json        |  14 +
+ docs/sdwin-w1/route.txt              |   5 +
+ docs/sdwin-w1/update-final-code.txt  |  14 +
+ docs/sdwin-w1/windows-final-code.txt | 958 +++++++++++++++++++++++++++++++++++
+ 11 files changed, 1369 insertions(+)
+ create mode 100644 docs/sdwin-w1/REPORT.md
+ create mode 100644 docs/sdwin-w1/cleanup.ps1
+ create mode 100644 docs/sdwin-w1/cleanup.txt
+ create mode 100644 docs/sdwin-w1/guard-final.txt
+ create mode 100644 docs/sdwin-w1/inspect.txt
+ create mode 100644 docs/sdwin-w1/mac-suites.txt
+ create mode 100644 docs/sdwin-w1/pin-control.json
+ create mode 100644 docs/sdwin-w1/rail-proof.json
+ create mode 100644 docs/sdwin-w1/route.txt
+ create mode 100644 docs/sdwin-w1/update-final-code.txt
+ create mode 100644 docs/sdwin-w1/windows-final-code.txt
+CLONE_HEAD 72d3a21239fbb79d3b2552c690bee4769b604c74
+No installed tray observation
+At C:\Users\Ben\AppData\Local\Temp\sdwin\w2\capture.ps1:15 char:31
++ if ($processes.Count -lt 1) { throw 'No installed tray observation' }
++                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (No installed tray observation:String) [], RuntimeException
+    + FullyQualifiedErrorId : No installed tray observation

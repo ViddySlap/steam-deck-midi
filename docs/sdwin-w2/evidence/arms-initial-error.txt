@@ -1,0 +1,6 @@
+The property 'Count' cannot be found on this object. Verify that the property exists.
+At C:\Users\Ben\AppData\Local\Temp\sdwin\w2\arms.ps1:82 char:53
++ ...       Write-Output "$name $arm exit=$code calls=$($argv.Count) before ...
++                                                       ~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : PropertyNotFoundStrict

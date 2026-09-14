@@ -1,0 +1,600 @@
+[
+    {
+        "launcher":  "start_receiver.ps1",
+        "arm":  "missing-key",
+        "launcher_sha256":  "55ce1dee67d95ef7dab9d97616b786369d6d49d72de2c8145761f79248d773bd",
+        "settings_sha256_before":  "5e5989f680d216769f43de6cf0921753a569848144d6feeef975c3605e3f5366",
+        "settings_sha256_after":  "34837d235dcc2c366f22abe9fa348f012e52494a3d5e9f46fedd69cad38afe46",
+        "saved":  {
+                      "listen":  "127.0.0.1:45282",
+                      "midi_port":  "SDWIN_ARGV_ONLY_NO_MIDI",
+                      "feedback_port":  "",
+                      "map_path":  "config/windows_midi_map.json",
+                      "timeout":  2.0,
+                      "verbose":  true,
+                      "no_ui":  true,
+                      "ui_port":  7782,
+                      "preset_section":  "windows"
+                  },
+        "calls":  [
+                      {
+                          "pid":  271000,
+                          "argv":  [
+                                       "-m",
+                                       "windows.win_recv",
+                                       "--listen",
+                                       "127.0.0.1:45282",
+                                       "--map",
+                                       "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w2\\final\\start_receiver-missing-key\\config\\windows_midi_map.json",
+                                       "--midi-port",
+                                       "SDWIN_ARGV_ONLY_NO_MIDI",
+                                       "--timeout",
+                                       "2.0",
+                                       "--preset-section",
+                                       "windows",
+                                       "--verbose"
+                                   ],
+                          "executable":  "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w2\\final\\start_receiver-missing-key\\.venv\\Scripts\\python.exe"
+                      }
+                  ],
+        "exit_code":  0,
+        "powershell_pid":  270468,
+        "all_child_pids_gone":  true,
+        "before":  [
+                       {
+                           "pid":  5268,
+                           "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                           "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                           "started":  "2026-08-16T06:29:37.4311374Z"
+                       },
+                       {
+                           "pid":  23640,
+                           "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                           "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                           "started":  "2026-08-16T06:29:37.8390240Z"
+                       }
+                   ],
+        "after":  [
+                      {
+                          "pid":  5268,
+                          "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                          "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                          "started":  "2026-08-16T06:29:37.4311374Z"
+                      },
+                      {
+                          "pid":  23640,
+                          "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                          "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                          "started":  "2026-08-16T06:29:37.8390240Z"
+                      }
+                  ],
+        "receiver_started":  false,
+        "stderr":  ""
+    },
+    {
+        "launcher":  "start_receiver.ps1",
+        "arm":  "grandma",
+        "launcher_sha256":  "55ce1dee67d95ef7dab9d97616b786369d6d49d72de2c8145761f79248d773bd",
+        "settings_sha256_before":  "096bf84cdab2305a52565928265f6c2ec7f129019b4767480ac1a7529a61db8b",
+        "settings_sha256_after":  "096bf84cdab2305a52565928265f6c2ec7f129019b4767480ac1a7529a61db8b",
+        "saved":  {
+                      "listen":  "127.0.0.1:45282",
+                      "midi_port":  "SDWIN_ARGV_ONLY_NO_MIDI",
+                      "feedback_port":  "",
+                      "map_path":  "config/windows_midi_map.json",
+                      "timeout":  2.0,
+                      "verbose":  true,
+                      "no_ui":  true,
+                      "ui_port":  7782,
+                      "preset_section":  "grandma"
+                  },
+        "calls":  [
+                      {
+                          "pid":  271668,
+                          "argv":  [
+                                       "-m",
+                                       "windows.win_recv",
+                                       "--listen",
+                                       "127.0.0.1:45282",
+                                       "--map",
+                                       "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w2\\final\\start_receiver-grandma\\config\\windows_midi_map.json",
+                                       "--midi-port",
+                                       "SDWIN_ARGV_ONLY_NO_MIDI",
+                                       "--timeout",
+                                       "2.0",
+                                       "--preset-section",
+                                       "grandma",
+                                       "--verbose"
+                                   ],
+                          "executable":  "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w2\\final\\start_receiver-grandma\\.venv\\Scripts\\python.exe"
+                      }
+                  ],
+        "exit_code":  0,
+        "powershell_pid":  274988,
+        "all_child_pids_gone":  true,
+        "before":  [
+                       {
+                           "pid":  5268,
+                           "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                           "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                           "started":  "2026-08-16T06:29:37.4311374Z"
+                       },
+                       {
+                           "pid":  23640,
+                           "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                           "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                           "started":  "2026-08-16T06:29:37.8390240Z"
+                       }
+                   ],
+        "after":  [
+                      {
+                          "pid":  5268,
+                          "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                          "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                          "started":  "2026-08-16T06:29:37.4311374Z"
+                      },
+                      {
+                          "pid":  23640,
+                          "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                          "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                          "started":  "2026-08-16T06:29:37.8390240Z"
+                      }
+                  ],
+        "receiver_started":  false,
+        "stderr":  ""
+    },
+    {
+        "launcher":  "start_receiver.ps1",
+        "arm":  "absent-file",
+        "launcher_sha256":  "55ce1dee67d95ef7dab9d97616b786369d6d49d72de2c8145761f79248d773bd",
+        "settings_sha256_before":  "ABSENT",
+        "settings_sha256_after":  "ABSENT",
+        "saved":  null,
+        "calls":  [
+
+                  ],
+        "exit_code":  1,
+        "powershell_pid":  271044,
+        "all_child_pids_gone":  true,
+        "before":  [
+                       {
+                           "pid":  5268,
+                           "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                           "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                           "started":  "2026-08-16T06:29:37.4311374Z"
+                       },
+                       {
+                           "pid":  23640,
+                           "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                           "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                           "started":  "2026-08-16T06:29:37.8390240Z"
+                       }
+                   ],
+        "after":  [
+                      {
+                          "pid":  5268,
+                          "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                          "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                          "started":  "2026-08-16T06:29:37.4311374Z"
+                      },
+                      {
+                          "pid":  23640,
+                          "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                          "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                          "started":  "2026-08-16T06:29:37.8390240Z"
+                      }
+                  ],
+        "receiver_started":  false,
+        "stderr":  "The property \u0027Name\u0027 cannot be found on this object. Verify that the property exists.\r\nAt C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\scripts\\windows\\start_receiver.ps1:35 char:9\r\n+     if ($settings.PSObject.Properties.Name -contains $property.Name)  ...\r\n+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : InvalidOperation: (:) [], ParentContainsErrorRecordException\r\n    + FullyQualifiedErrorId : PropertyNotFoundStrict\r\n \r\n"
+    },
+    {
+        "launcher":  "start_installed_receiver.ps1",
+        "arm":  "missing-key",
+        "launcher_sha256":  "6a7cfbe39de60b17930dd9b65513d141592fe22ac37522d440a267c523ea952b",
+        "settings_sha256_before":  "5e5989f680d216769f43de6cf0921753a569848144d6feeef975c3605e3f5366",
+        "settings_sha256_after":  "34837d235dcc2c366f22abe9fa348f012e52494a3d5e9f46fedd69cad38afe46",
+        "saved":  {
+                      "listen":  "127.0.0.1:45282",
+                      "midi_port":  "SDWIN_ARGV_ONLY_NO_MIDI",
+                      "feedback_port":  "",
+                      "map_path":  "config/windows_midi_map.json",
+                      "timeout":  2.0,
+                      "verbose":  true,
+                      "no_ui":  true,
+                      "ui_port":  7782,
+                      "preset_section":  "windows"
+                  },
+        "calls":  [
+                      {
+                          "pid":  274756,
+                          "argv":  [
+                                       "--check-midi-port",
+                                       "--midi-port",
+                                       "SDWIN_ARGV_ONLY_NO_MIDI"
+                                   ],
+                          "executable":  "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w2\\final\\start_installed_receiver-missing-key\\STEAMDECK-MIDI-RECEIVER.exe"
+                      },
+                      {
+                          "pid":  272888,
+                          "argv":  [
+                                       "--listen",
+                                       "127.0.0.1:45282",
+                                       "--map",
+                                       "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w2\\final\\start_installed_receiver-missing-key\\config\\windows_midi_map.json",
+                                       "--midi-port",
+                                       "SDWIN_ARGV_ONLY_NO_MIDI",
+                                       "--timeout",
+                                       "2.0",
+                                       "--preset-section",
+                                       "windows",
+                                       "--verbose"
+                                   ],
+                          "executable":  "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w2\\final\\start_installed_receiver-missing-key\\STEAMDECK-MIDI-RECEIVER.exe"
+                      }
+                  ],
+        "exit_code":  0,
+        "powershell_pid":  268344,
+        "all_child_pids_gone":  true,
+        "before":  [
+                       {
+                           "pid":  5268,
+                           "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                           "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                           "started":  "2026-08-16T06:29:37.4311374Z"
+                       },
+                       {
+                           "pid":  23640,
+                           "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                           "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                           "started":  "2026-08-16T06:29:37.8390240Z"
+                       }
+                   ],
+        "after":  [
+                      {
+                          "pid":  5268,
+                          "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                          "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                          "started":  "2026-08-16T06:29:37.4311374Z"
+                      },
+                      {
+                          "pid":  23640,
+                          "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                          "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                          "started":  "2026-08-16T06:29:37.8390240Z"
+                      }
+                  ],
+        "receiver_started":  false,
+        "stderr":  ""
+    },
+    {
+        "launcher":  "start_installed_receiver.ps1",
+        "arm":  "grandma",
+        "launcher_sha256":  "6a7cfbe39de60b17930dd9b65513d141592fe22ac37522d440a267c523ea952b",
+        "settings_sha256_before":  "096bf84cdab2305a52565928265f6c2ec7f129019b4767480ac1a7529a61db8b",
+        "settings_sha256_after":  "096bf84cdab2305a52565928265f6c2ec7f129019b4767480ac1a7529a61db8b",
+        "saved":  {
+                      "listen":  "127.0.0.1:45282",
+                      "midi_port":  "SDWIN_ARGV_ONLY_NO_MIDI",
+                      "feedback_port":  "",
+                      "map_path":  "config/windows_midi_map.json",
+                      "timeout":  2.0,
+                      "verbose":  true,
+                      "no_ui":  true,
+                      "ui_port":  7782,
+                      "preset_section":  "grandma"
+                  },
+        "calls":  [
+                      {
+                          "pid":  273680,
+                          "argv":  [
+                                       "--check-midi-port",
+                                       "--midi-port",
+                                       "SDWIN_ARGV_ONLY_NO_MIDI"
+                                   ],
+                          "executable":  "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w2\\final\\start_installed_receiver-grandma\\STEAMDECK-MIDI-RECEIVER.exe"
+                      },
+                      {
+                          "pid":  271168,
+                          "argv":  [
+                                       "--listen",
+                                       "127.0.0.1:45282",
+                                       "--map",
+                                       "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w2\\final\\start_installed_receiver-grandma\\config\\windows_midi_map.json",
+                                       "--midi-port",
+                                       "SDWIN_ARGV_ONLY_NO_MIDI",
+                                       "--timeout",
+                                       "2.0",
+                                       "--preset-section",
+                                       "grandma",
+                                       "--verbose"
+                                   ],
+                          "executable":  "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w2\\final\\start_installed_receiver-grandma\\STEAMDECK-MIDI-RECEIVER.exe"
+                      }
+                  ],
+        "exit_code":  0,
+        "powershell_pid":  270632,
+        "all_child_pids_gone":  true,
+        "before":  [
+                       {
+                           "pid":  5268,
+                           "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                           "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                           "started":  "2026-08-16T06:29:37.4311374Z"
+                       },
+                       {
+                           "pid":  23640,
+                           "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                           "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                           "started":  "2026-08-16T06:29:37.8390240Z"
+                       }
+                   ],
+        "after":  [
+                      {
+                          "pid":  5268,
+                          "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                          "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                          "started":  "2026-08-16T06:29:37.4311374Z"
+                      },
+                      {
+                          "pid":  23640,
+                          "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                          "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                          "started":  "2026-08-16T06:29:37.8390240Z"
+                      }
+                  ],
+        "receiver_started":  false,
+        "stderr":  ""
+    },
+    {
+        "launcher":  "start_installed_receiver.ps1",
+        "arm":  "absent-file",
+        "launcher_sha256":  "6a7cfbe39de60b17930dd9b65513d141592fe22ac37522d440a267c523ea952b",
+        "settings_sha256_before":  "ABSENT",
+        "settings_sha256_after":  "ABSENT",
+        "saved":  null,
+        "calls":  [
+
+                  ],
+        "exit_code":  1,
+        "powershell_pid":  275792,
+        "all_child_pids_gone":  true,
+        "before":  [
+                       {
+                           "pid":  5268,
+                           "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                           "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                           "started":  "2026-08-16T06:29:37.4311374Z"
+                       },
+                       {
+                           "pid":  23640,
+                           "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                           "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                           "started":  "2026-08-16T06:29:37.8390240Z"
+                       }
+                   ],
+        "after":  [
+                      {
+                          "pid":  5268,
+                          "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                          "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                          "started":  "2026-08-16T06:29:37.4311374Z"
+                      },
+                      {
+                          "pid":  23640,
+                          "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                          "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                          "started":  "2026-08-16T06:29:37.8390240Z"
+                      }
+                  ],
+        "receiver_started":  false,
+        "stderr":  "The property \u0027Name\u0027 cannot be found on this object. Verify that the property exists.\r\nAt C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\scripts\\windows\\start_installed_receiver.ps1:35 char:9\r\n+     if ($settings.PSObject.Properties.Name -contains $property.Name)  ...\r\n+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : InvalidOperation: (:) [], ParentContainsErrorRecordException\r\n    + FullyQualifiedErrorId : PropertyNotFoundStrict\r\n \r\n"
+    },
+    {
+        "launcher":  "start_installed_receiver_v2.ps1",
+        "arm":  "missing-key",
+        "launcher_sha256":  "2e3c2c2444890bd1bf3baf454b9527f6b7c82d774d08912a64602563ed633edb",
+        "settings_sha256_before":  "5e5989f680d216769f43de6cf0921753a569848144d6feeef975c3605e3f5366",
+        "settings_sha256_after":  "34837d235dcc2c366f22abe9fa348f012e52494a3d5e9f46fedd69cad38afe46",
+        "saved":  {
+                      "listen":  "127.0.0.1:45282",
+                      "midi_port":  "SDWIN_ARGV_ONLY_NO_MIDI",
+                      "feedback_port":  "",
+                      "map_path":  "config/windows_midi_map.json",
+                      "timeout":  2.0,
+                      "verbose":  true,
+                      "no_ui":  true,
+                      "ui_port":  7782,
+                      "preset_section":  "windows"
+                  },
+        "calls":  [
+                      {
+                          "pid":  268592,
+                          "argv":  [
+                                       "--check-midi-port",
+                                       "--midi-port",
+                                       "SDWIN_ARGV_ONLY_NO_MIDI"
+                                   ],
+                          "executable":  "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w2\\final\\start_installed_receiver_v2-missing-key\\STEAMDECK-MIDI-RECEIVER-2.exe"
+                      },
+                      {
+                          "pid":  267800,
+                          "argv":  [
+                                       "--listen",
+                                       "127.0.0.1:45282",
+                                       "--map",
+                                       "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w2\\final\\start_installed_receiver_v2-missing-key\\config\\windows_midi_map.json",
+                                       "--midi-port",
+                                       "SDWIN_ARGV_ONLY_NO_MIDI",
+                                       "--timeout",
+                                       "2.0",
+                                       "--preset-section",
+                                       "windows",
+                                       "--verbose",
+                                       "--no-ui",
+                                       "--ui-port",
+                                       "7782"
+                                   ],
+                          "executable":  "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w2\\final\\start_installed_receiver_v2-missing-key\\STEAMDECK-MIDI-RECEIVER-2.exe"
+                      }
+                  ],
+        "exit_code":  0,
+        "powershell_pid":  270176,
+        "all_child_pids_gone":  true,
+        "before":  [
+                       {
+                           "pid":  5268,
+                           "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                           "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                           "started":  "2026-08-16T06:29:37.4311374Z"
+                       },
+                       {
+                           "pid":  23640,
+                           "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                           "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                           "started":  "2026-08-16T06:29:37.8390240Z"
+                       }
+                   ],
+        "after":  [
+                      {
+                          "pid":  5268,
+                          "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                          "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                          "started":  "2026-08-16T06:29:37.4311374Z"
+                      },
+                      {
+                          "pid":  23640,
+                          "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                          "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                          "started":  "2026-08-16T06:29:37.8390240Z"
+                      }
+                  ],
+        "receiver_started":  false,
+        "stderr":  ""
+    },
+    {
+        "launcher":  "start_installed_receiver_v2.ps1",
+        "arm":  "grandma",
+        "launcher_sha256":  "2e3c2c2444890bd1bf3baf454b9527f6b7c82d774d08912a64602563ed633edb",
+        "settings_sha256_before":  "096bf84cdab2305a52565928265f6c2ec7f129019b4767480ac1a7529a61db8b",
+        "settings_sha256_after":  "096bf84cdab2305a52565928265f6c2ec7f129019b4767480ac1a7529a61db8b",
+        "saved":  {
+                      "listen":  "127.0.0.1:45282",
+                      "midi_port":  "SDWIN_ARGV_ONLY_NO_MIDI",
+                      "feedback_port":  "",
+                      "map_path":  "config/windows_midi_map.json",
+                      "timeout":  2.0,
+                      "verbose":  true,
+                      "no_ui":  true,
+                      "ui_port":  7782,
+                      "preset_section":  "grandma"
+                  },
+        "calls":  [
+                      {
+                          "pid":  274556,
+                          "argv":  [
+                                       "--check-midi-port",
+                                       "--midi-port",
+                                       "SDWIN_ARGV_ONLY_NO_MIDI"
+                                   ],
+                          "executable":  "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w2\\final\\start_installed_receiver_v2-grandma\\STEAMDECK-MIDI-RECEIVER-2.exe"
+                      },
+                      {
+                          "pid":  274704,
+                          "argv":  [
+                                       "--listen",
+                                       "127.0.0.1:45282",
+                                       "--map",
+                                       "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w2\\final\\start_installed_receiver_v2-grandma\\config\\windows_midi_map.json",
+                                       "--midi-port",
+                                       "SDWIN_ARGV_ONLY_NO_MIDI",
+                                       "--timeout",
+                                       "2.0",
+                                       "--preset-section",
+                                       "grandma",
+                                       "--verbose",
+                                       "--no-ui",
+                                       "--ui-port",
+                                       "7782"
+                                   ],
+                          "executable":  "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w2\\final\\start_installed_receiver_v2-grandma\\STEAMDECK-MIDI-RECEIVER-2.exe"
+                      }
+                  ],
+        "exit_code":  0,
+        "powershell_pid":  262632,
+        "all_child_pids_gone":  true,
+        "before":  [
+                       {
+                           "pid":  5268,
+                           "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                           "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                           "started":  "2026-08-16T06:29:37.4311374Z"
+                       },
+                       {
+                           "pid":  23640,
+                           "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                           "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                           "started":  "2026-08-16T06:29:37.8390240Z"
+                       }
+                   ],
+        "after":  [
+                      {
+                          "pid":  5268,
+                          "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                          "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                          "started":  "2026-08-16T06:29:37.4311374Z"
+                      },
+                      {
+                          "pid":  23640,
+                          "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                          "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                          "started":  "2026-08-16T06:29:37.8390240Z"
+                      }
+                  ],
+        "receiver_started":  false,
+        "stderr":  ""
+    },
+    {
+        "launcher":  "start_installed_receiver_v2.ps1",
+        "arm":  "absent-file",
+        "launcher_sha256":  "2e3c2c2444890bd1bf3baf454b9527f6b7c82d774d08912a64602563ed633edb",
+        "settings_sha256_before":  "ABSENT",
+        "settings_sha256_after":  "ABSENT",
+        "saved":  null,
+        "calls":  [
+
+                  ],
+        "exit_code":  1,
+        "powershell_pid":  275368,
+        "all_child_pids_gone":  true,
+        "before":  [
+                       {
+                           "pid":  5268,
+                           "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                           "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                           "started":  "2026-08-16T06:29:37.4311374Z"
+                       },
+                       {
+                           "pid":  23640,
+                           "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                           "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                           "started":  "2026-08-16T06:29:37.8390240Z"
+                       }
+                   ],
+        "after":  [
+                      {
+                          "pid":  5268,
+                          "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                          "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                          "started":  "2026-08-16T06:29:37.4311374Z"
+                      },
+                      {
+                          "pid":  23640,
+                          "name":  "STEAMDECK-MIDI-RECEIVER-2-Tray",
+                          "path":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+                          "started":  "2026-08-16T06:29:37.8390240Z"
+                      }
+                  ],
+        "receiver_started":  false,
+        "stderr":  "The property \u0027Name\u0027 cannot be found on this object. Verify that the property exists.\r\nAt C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\scripts\\windows\\start_installed_receiver_v2.ps1:35 \r\nchar:9\r\n+     if ($settings.PSObject.Properties.Name -contains $property.Name)  ...\r\n+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : InvalidOperation: (:) [], ParentContainsErrorRecordException\r\n    + FullyQualifiedErrorId : PropertyNotFoundStrict\r\n \r\n"
+    }
+]

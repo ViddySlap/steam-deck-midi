@@ -1,0 +1,91 @@
+[
+  {
+    "control": "pristine",
+    "exit": 0,
+    "expected": 0,
+    "detail": "GREEN: 16 fixture hashes; 9 executed arms; nonempty process/argv controls"
+  },
+  {
+    "control": "changed fixture byte",
+    "exit": 1,
+    "expected": 1,
+    "detail": "Traceback (most recent call last):\n  File \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w2/verify.py\", line 64, in <module>\n    files, arms = verify(args.fixtures.resolve(), args.arms)\n                  ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w2/verify.py\", line 25, in verify\n    assert digest == entry['sha256_before'] == entry['sha256_after'] == entry['sha256_copy'], path\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: /private/tmp/sdwin-w2/tmpfksa8xus/fixtures/windows-installed/presets/EDM Show.json"
+  },
+  {
+    "control": "fixture restored",
+    "exit": 0,
+    "expected": 0,
+    "detail": "GREEN: 16 fixture hashes; 9 executed arms; nonempty process/argv controls"
+  },
+  {
+    "control": "zero arm observations",
+    "exit": 1,
+    "expected": 1,
+    "detail": "Traceback (most recent call last):\n  File \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w2/verify.py\", line 64, in <module>\n    files, arms = verify(args.fixtures.resolve(), args.arms)\n                  ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w2/verify.py\", line 31, in verify\n    assert len(records) == 9 and {(r['launcher'], r['arm']) for r in records} == expected, 'missing/duplicate arms'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: missing/duplicate arms"
+  },
+  {
+    "control": "zero arm observations restored",
+    "exit": 0,
+    "expected": 0,
+    "detail": "GREEN: 16 fixture hashes; 9 executed arms; nonempty process/argv controls"
+  },
+  {
+    "control": "zero argv observations",
+    "exit": 1,
+    "expected": 1,
+    "detail": "Traceback (most recent call last):\n  File \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w2/verify.py\", line 64, in <module>\n    files, arms = verify(args.fixtures.resolve(), args.arms)\n                  ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w2/verify.py\", line 44, in verify\n    assert len(calls) == (1 if record['launcher'] == names[0] else 2), 'missing argv observation'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: missing argv observation"
+  },
+  {
+    "control": "zero argv observations restored",
+    "exit": 0,
+    "expected": 0,
+    "detail": "GREEN: 16 fixture hashes; 9 executed arms; nonempty process/argv controls"
+  },
+  {
+    "control": "wrong backfill value",
+    "exit": 1,
+    "expected": 1,
+    "detail": "Traceback (most recent call last):\n  File \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w2/verify.py\", line 64, in <module>\n    files, arms = verify(args.fixtures.resolve(), args.arms)\n                  ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w2/verify.py\", line 42, in verify\n    assert record['saved']['preset_section'] == section\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError"
+  },
+  {
+    "control": "wrong backfill value restored",
+    "exit": 0,
+    "expected": 0,
+    "detail": "GREEN: 16 fixture hashes; 9 executed arms; nonempty process/argv controls"
+  },
+  {
+    "control": "grandma settings changed",
+    "exit": 1,
+    "expected": 1,
+    "detail": "Traceback (most recent call last):\n  File \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w2/verify.py\", line 64, in <module>\n    files, arms = verify(args.fixtures.resolve(), args.arms)\n                  ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w2/verify.py\", line 53, in verify\n    assert record['settings_sha256_before'] == record['settings_sha256_after'], 'existing settings changed'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: existing settings changed"
+  },
+  {
+    "control": "grandma settings changed restored",
+    "exit": 0,
+    "expected": 0,
+    "detail": "GREEN: 16 fixture hashes; 9 executed arms; nonempty process/argv controls"
+  },
+  {
+    "control": "both process observations empty",
+    "exit": 1,
+    "expected": 1,
+    "detail": "Traceback (most recent call last):\n  File \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w2/verify.py\", line 64, in <module>\n    files, arms = verify(args.fixtures.resolve(), args.arms)\n                  ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w2/verify.py\", line 33, in verify\n    assert record['before'] and record['before'] == record['after'], 'process inventory missing/changed'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: process inventory missing/changed"
+  },
+  {
+    "control": "both process observations empty restored",
+    "exit": 0,
+    "expected": 0,
+    "detail": "GREEN: 16 fixture hashes; 9 executed arms; nonempty process/argv controls"
+  },
+  {
+    "control": "changed mapping detected",
+    "key": "BTN_A",
+    "result": "differing_mapping_keys contains exactly the changed key"
+  },
+  {
+    "control": "all restored",
+    "exit": 0,
+    "expected": 0,
+    "detail": "GREEN: 16 fixture hashes; 9 executed arms; nonempty process/argv controls"
+  }
+]

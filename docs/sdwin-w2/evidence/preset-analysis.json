@@ -1,0 +1,260 @@
+{
+  "rows": [
+    {
+      "host": "windows-installed",
+      "file": "EDM Show.json",
+      "shape": "flat",
+      "sections": [],
+      "section": "flat",
+      "keys": 56,
+      "types": {
+        "axis_split_cc": 2,
+        "axis_to_cc": 2,
+        "cc": 3,
+        "macro_cc": 7,
+        "note": 36,
+        "relative_cc": 4,
+        "staged_note_macro": 2
+      }
+    },
+    {
+      "host": "windows-installed",
+      "file": "PTZ.json",
+      "shape": "flat",
+      "sections": [],
+      "section": "flat",
+      "keys": 52,
+      "types": {
+        "cc": 3,
+        "macro_cc": 7,
+        "note": 36,
+        "relative_cc": 4,
+        "staged_note_macro": 2
+      }
+    },
+    {
+      "host": "windows-installed",
+      "file": "default.json",
+      "shape": "flat",
+      "sections": [],
+      "section": "flat",
+      "keys": 56,
+      "types": {
+        "axis_split_cc": 2,
+        "axis_to_cc": 2,
+        "cc": 3,
+        "macro_cc": 7,
+        "note": 36,
+        "relative_cc": 4,
+        "staged_note_macro": 2
+      }
+    },
+    {
+      "host": "windows-installed",
+      "file": "default.json.bak-20260529-pre-v047-sync",
+      "shape": "flat",
+      "sections": [],
+      "section": "flat",
+      "keys": 62,
+      "types": {
+        "cc": 3,
+        "macro_cc": 7,
+        "note": 44,
+        "relative_cc": 6,
+        "staged_note_macro": 2
+      }
+    },
+    {
+      "host": "windows-installed",
+      "file": "test 1.json",
+      "shape": "flat",
+      "sections": [],
+      "section": "flat",
+      "keys": 63,
+      "types": {
+        "axis_to_cc": 3,
+        "cc": 3,
+        "macro_cc": 7,
+        "note": 42,
+        "relative_cc": 6,
+        "staged_note_macro": 2
+      }
+    },
+    {
+      "host": "windows-installed",
+      "file": "v1 Default.json",
+      "shape": "flat",
+      "sections": [],
+      "section": "flat",
+      "keys": 61,
+      "types": {
+        "axis_split_cc": 4,
+        "axis_to_cc": 5,
+        "cc": 3,
+        "macro_cc": 7,
+        "note": 36,
+        "relative_cc": 4,
+        "staged_note_macro": 2
+      }
+    },
+    {
+      "host": "mac",
+      "file": "EDM Show.json",
+      "shape": "sectioned",
+      "sections": [
+        "macbook",
+        "windows"
+      ],
+      "section": "windows",
+      "keys": 56,
+      "types": {
+        "axis_split_cc": 2,
+        "axis_to_cc": 2,
+        "cc": 3,
+        "macro_cc": 7,
+        "note": 36,
+        "relative_cc": 4,
+        "staged_note_macro": 2
+      }
+    },
+    {
+      "host": "mac",
+      "file": "EDM Show.json",
+      "shape": "sectioned",
+      "sections": [
+        "macbook",
+        "windows"
+      ],
+      "section": "macbook",
+      "keys": 56,
+      "types": {
+        "axis_split_cc": 2,
+        "axis_to_cc": 2,
+        "cc": 3,
+        "macro_cc": 7,
+        "note": 36,
+        "relative_cc": 4,
+        "staged_note_macro": 2
+      }
+    },
+    {
+      "host": "mac",
+      "file": "EDM Show.json.v049.bak",
+      "shape": "flat",
+      "sections": [],
+      "section": "flat",
+      "keys": 56,
+      "types": {
+        "axis_split_cc": 2,
+        "axis_to_cc": 2,
+        "cc": 3,
+        "macro_cc": 7,
+        "note": 36,
+        "relative_cc": 4,
+        "staged_note_macro": 2
+      }
+    },
+    {
+      "host": "mac",
+      "file": "PTZ.json",
+      "shape": "sectioned",
+      "sections": [
+        "macbook",
+        "windows"
+      ],
+      "section": "windows",
+      "keys": 52,
+      "types": {
+        "cc": 3,
+        "macro_cc": 7,
+        "note": 36,
+        "relative_cc": 4,
+        "staged_note_macro": 2
+      }
+    },
+    {
+      "host": "mac",
+      "file": "PTZ.json",
+      "shape": "sectioned",
+      "sections": [
+        "macbook",
+        "windows"
+      ],
+      "section": "macbook",
+      "keys": 52,
+      "types": {
+        "cc": 3,
+        "macro_cc": 7,
+        "note": 36,
+        "relative_cc": 4,
+        "staged_note_macro": 2
+      }
+    },
+    {
+      "host": "mac",
+      "file": "PTZ.json.v049.bak",
+      "shape": "flat",
+      "sections": [],
+      "section": "flat",
+      "keys": 52,
+      "types": {
+        "cc": 3,
+        "macro_cc": 7,
+        "note": 36,
+        "relative_cc": 4,
+        "staged_note_macro": 2
+      }
+    },
+    {
+      "host": "mac",
+      "file": "default.json",
+      "shape": "flat",
+      "sections": [],
+      "section": "flat",
+      "keys": 56,
+      "types": {
+        "axis_split_cc": 2,
+        "axis_to_cc": 2,
+        "cc": 3,
+        "macro_cc": 7,
+        "note": 36,
+        "relative_cc": 4,
+        "staged_note_macro": 2
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "preset": "EDM Show",
+      "target": "mac-backup",
+      "sorted_json_equal": true,
+      "differing_mapping_keys": [],
+      "mapping_differences": {},
+      "non_mapping_differences": []
+    },
+    {
+      "preset": "EDM Show",
+      "target": "mac-windows-section",
+      "sorted_json_equal": true,
+      "differing_mapping_keys": [],
+      "mapping_differences": {},
+      "non_mapping_differences": []
+    },
+    {
+      "preset": "PTZ",
+      "target": "mac-backup",
+      "sorted_json_equal": true,
+      "differing_mapping_keys": [],
+      "mapping_differences": {},
+      "non_mapping_differences": []
+    },
+    {
+      "preset": "PTZ",
+      "target": "mac-windows-section",
+      "sorted_json_equal": true,
+      "differing_mapping_keys": [],
+      "mapping_differences": {},
+      "non_mapping_differences": []
+    }
+  ]
+}

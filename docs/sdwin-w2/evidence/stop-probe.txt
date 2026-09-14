@@ -1,0 +1,6 @@
+Probe remains
+At C:\Users\Ben\AppData\Local\Temp\sdwin\w2\stop-probe.ps1:9 char:63
++ ... -Id $probeId -ErrorAction SilentlyContinue) { throw 'Probe remains' }
++                                                   ~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Probe remains:String) [], RuntimeException
+    + FullyQualifiedErrorId : Probe remains

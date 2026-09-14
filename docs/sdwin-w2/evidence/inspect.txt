@@ -1,0 +1,24 @@
+[
+    {
+        "ProcessId":  5268,
+        "Name":  "STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+        "ExecutablePath":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+        "CommandLine":  "\"C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe\" --listen 0.0.0.0:45123 --map \"C:\\Program Files\\STEAMDECK MIDI Receiver 2\\config\\windows_midi_map.json\" --midi-port DECK_IN --feedback-port DECK_OUT --timeout 2.0 --ui-port 7723 --tray"
+    },
+    {
+        "ProcessId":  23640,
+        "Name":  "STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+        "ExecutablePath":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+        "CommandLine":  "\"C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe\" --listen 0.0.0.0:45123 --map \"C:\\Program Files\\STEAMDECK MIDI Receiver 2\\config\\windows_midi_map.json\" --midi-port DECK_IN --feedback-port DECK_OUT --timeout 2.0 --ui-port 7723 --tray"
+    }
+]
+
+Name                               Mode
+----                               ----
+config                             d-----
+scripts                            d-----
+receiver.ico                       -a----
+STEAMDECK-MIDI-RECEIVER-2-Tray.exe -a----
+STEAMDECK-MIDI-RECEIVER-2.exe      -a----
+unins000.dat                       -a----
+unins000.exe                       -a----
