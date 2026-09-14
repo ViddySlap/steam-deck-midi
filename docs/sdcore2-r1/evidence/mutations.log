@@ -1,0 +1,26 @@
+pristine-focused GREEN
+flat-default-pristine GREEN
+flat-default-mutant RED
+flat-default-restored GREEN
+mac-default-disabled-pristine GREEN
+mac-default-disabled-mutant RED
+mac-default-disabled-restored GREEN
+all-platforms-default-pristine GREEN
+all-platforms-default-mutant RED
+all-platforms-default-restored GREEN
+no-macbook-guard-pristine GREEN
+no-macbook-guard-mutant RED
+no-macbook-guard-restored GREEN
+existing-selection-overwritten-pristine GREEN
+existing-selection-overwritten-mutant RED
+existing-selection-overwritten-restored GREEN
+identity-not-persisted-pristine GREEN
+identity-not-persisted-mutant RED
+identity-not-persisted-restored GREEN
+argv-ignored-pristine GREEN
+argv-ignored-mutant RED
+argv-ignored-restored GREEN
+launcher-not-initialized-pristine GREEN
+launcher-not-initialized-mutant RED
+launcher-not-initialized-restored GREEN
+ALL 8 MUTANTS BITE; RESTORED BYTES MATCH

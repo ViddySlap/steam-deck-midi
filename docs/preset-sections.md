@@ -68,7 +68,8 @@ The bridge reads `bridge.local.json` beside its `--map` base file at startup
 ```
 
 `--preset-section NAME` overrides the file for that process without changing the
-file. If both are absent, selection is `null` and only legacy presets load.
+file. If both are absent, selection is `null`, except for the macOS first-run
+rule below.
 UTF-8 with or without a Windows BOM is accepted.
 
 ```sh
@@ -84,16 +85,36 @@ the current process. `null` clears selection only while the active preset is
 legacy. Invalid bodies return 400, unavailable sections return 422, and a failed
 write returns 500 without changing the running selection. See [API](api.md).
 
-The Mac launcher reads the local file and passes the section as one argv value.
+The Mac launcher initializes an absent local file to `macbook`, reads it, and
+passes the section as one argv value.
 All three Windows launchers back-fill `preset_section` from the launcher example
 (initially `windows`) and pass `--preset-section`. An existing `bridge.local.json`
 takes priority over that launcher bootstrap value so an HTTP change survives the
 next launch. A manually supplied argv flag still wins over the bridge file.
 
+## Upgrading and first run
+
+The tracked `config/presets/default.json` retains the flat v0.4.9 format and
+original bytes. A fresh clone or git-pulled install with no `.active` marker and
+no `bridge.local.json` boots with that preset on every platform. Existing user
+presets and local settings do not need to be recreated.
+
+The Mac launcher atomically creates `config/bridge.local.json` with
+`{"preset_section": "macbook"}` only when the file is absent. Direct Python
+bridge startup (including a Mac host that passes no section flag) also creates
+that file on macOS when the active preset has a valid `macbook` section and no
+local file or explicit selection exists. It logs the created filename. It does
+not create a file for a flat preset. Other platforms, or a sectioned preset
+without `macbook`, keep the error listing available sections. Existing files,
+including an explicit null or unavailable selection, are never overwritten by
+first-run initialization. Windows launchers already back-fill a missing
+`preset_section` key with `windows` from the example before passing the flag.
+
 ## Initial migration
 
-For this run, default.json, PTZ.json, and EDM Show.json each wrap the complete old
-document in identical `windows` and `macbook` sections. Ben can customize the
+S1 initially wrapped default.json, PTZ.json, and EDM Show.json in identical
+`windows` and `macbook` sections. R1 restored the tracked default to flat format
+for upgrades; the two untracked user presets remain sectioned. Ben can customize the
 MacBook mappings later. The two user presets have byte-for-byte backups named
 `PTZ.json.v049.bak` and `EDM Show.json.v049.bak` beside them; both presets and
 backups remain untracked. Only default.json is committed. This machine's local

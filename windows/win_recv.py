@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import logging
 import sys
 import threading
@@ -14,6 +15,7 @@ from windows import build_fingerprint
 from windows.bridge_settings import BridgeSettings
 from windows.config import (
     ConfigError,
+    ReceiverConfig,
     ensure_presets_initialized,
     get_active_preset_path,
     load_midi_map,
@@ -30,6 +32,35 @@ from windows.midi import (
 from windows.osc_relay import OscRelay, OscRelayError, load_osc_relay_config
 from windows.receiver import ActionReceiver, serve_forever
 from windows.preset_watch import PresetWatcher, file_signature
+
+
+def load_startup_config(
+    base_map_path: Path, override: str | None = None, *, platform: str,
+) -> tuple[BridgeSettings, Path, ReceiverConfig]:
+    """Load the active preset and initialize an absent macOS identity if usable."""
+    settings = BridgeSettings.load(base_map_path.parent / "bridge.local.json", override)
+    ensure_presets_initialized(base_map_path)
+    active = get_active_preset_path(base_map_path.parent / "presets", base_map_path)
+    section = settings.preset_section
+    if platform == "darwin" and section is None and not settings.path.exists():
+        try:
+            raw = json.loads(active.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            raw = None  # The normal loader below supplies the existing error.
+        if isinstance(raw, dict) and isinstance(raw.get("sections"), dict) and "macbook" in raw["sections"]:
+            section = "macbook"
+    config = load_midi_map(active, section)
+    if section != settings.preset_section:
+        try:
+            created = settings.save_if_missing(section)
+        except OSError as exc:
+            raise ConfigError(f"cannot create bridge settings {settings.path}: {exc}") from exc
+        if created:
+            logging.info("created bridge settings %s with preset_section=macbook", settings.path)
+        else:
+            # Another launcher created the file after our read; respect its choice.
+            config = load_midi_map(active, settings.preset_section)
+    return settings, active, config
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -247,16 +278,13 @@ def main(argv: list[str] | None = None) -> int:
             raise ConfigError("--map is required unless --list-ports or --check-midi-port is used")
 
         base_map_path = Path(args.map_path)
-        bridge_settings = BridgeSettings.load(
-            base_map_path.parent / "bridge.local.json", args.preset_section,
+        bridge_settings, active_preset_path, receiver_config = load_startup_config(
+            base_map_path, args.preset_section, platform=sys.platform,
         )
         presets_dir = base_map_path.parent / "presets"
         macro_library_path = base_map_path.parent / "macro_library.json"
-        ensure_presets_initialized(base_map_path)
-        active_preset_path = get_active_preset_path(presets_dir, base_map_path)
 
         listen_host, listen_port = parse_listen(args.listen)
-        receiver_config = load_midi_map(active_preset_path, bridge_settings.preset_section)
         midi_out = open_midi_output(args.midi_port, args.dry_run)
         midi_in = open_midi_input(args.feedback_port, args.dry_run)
     except (argparse.ArgumentTypeError, ConfigError, MidiError) as exc:

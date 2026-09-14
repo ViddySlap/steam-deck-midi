@@ -118,7 +118,8 @@ class BridgeStartupSettingsTests(unittest.TestCase):
 
     def test_missing_selection_on_sectioned_startup_names_sections(self):
         import io
-        self.local.unlink()
+        # An explicitly cleared selection remains an error on every platform.
+        self.local.write_text('{"preset_section": null}')
         stderr = io.StringIO()
         with contextlib.redirect_stderr(stderr), self.assertRaises(SystemExit) as caught:
             win_recv.main(["--map", str(self.base), "--no-ui"])

@@ -1,0 +1,24 @@
+v049 BOOTS; child PID 65205 OWNS UDP 45199
+COMMAND   PID      USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+Python  65205 viddyslap    3u  IPv4 0xf6d57d73cd6a22c2      0t0  UDP 127.0.0.1:45199
+v049 REAPED -15
+v049 PORT RELEASED
+before EXPECTED EXIT 2
+before REAPED 2
+before PORT RELEASED
+before-withlocal BOOTS; child PID 65376 OWNS UDP 45199
+COMMAND   PID      USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+Python  65376 viddyslap    3u  IPv4 0xa36b70a75e9890e5      0t0  UDP 127.0.0.1:45199
+before-withlocal REAPED -15
+before-withlocal PORT RELEASED
+after BOOTS; child PID 65387 OWNS UDP 45199
+COMMAND   PID      USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+Python  65387 viddyslap    3u  IPv4 0x2e77c4afa50e44c7      0t0  UDP 127.0.0.1:45199
+after REAPED -15
+after PORT RELEASED
+after-sectioned BOOTS; child PID 65406 OWNS UDP 45199
+COMMAND   PID      USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+Python  65406 viddyslap    3u  IPv4 0x498b8c1965271111      0t0  UDP 127.0.0.1:45199
+after-sectioned REAPED -15
+after-sectioned PORT RELEASED
+ALL FIVE BOOT CONTROLS PASS

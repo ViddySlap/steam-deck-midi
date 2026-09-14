@@ -39,14 +39,12 @@ cd "$PROJECT_DIR" || { echo "ERROR: project dir not found: $PROJECT_DIR"; read -
 # 5. Activate the venv and run the bridge with the full macOS IAC Driver port names.
 #    Do NOT use --tray on macOS (windows/tray.py imports ctypes.wintypes). tee mirrors output to the log.
 source .venv/bin/activate
-# Read the same machine-local setting as direct bridge startup. Keep it one
-# argv element even when the section name contains spaces.
+# Initialize only an absent machine-local file, then read it as direct startup
+# does. Keep the section one argv element even when its name contains spaces.
 SECTION_ARGS=()
-if [ -f config/bridge.local.json ]; then
-    PRESET_SECTION=$(python -c 'from pathlib import Path; from windows.bridge_settings import BridgeSettings; print(BridgeSettings.load(Path("config/bridge.local.json")).preset_section or "")') || exit 1
-    if [ -n "$PRESET_SECTION" ]; then
-        SECTION_ARGS=(--preset-section "$PRESET_SECTION")
-    fi
+PRESET_SECTION=$(python -c 'from pathlib import Path; from windows.bridge_settings import BridgeSettings; settings = BridgeSettings.load(Path("config/bridge.local.json")); settings.save_if_missing("macbook"); print(settings.preset_section or "")') || exit 1
+if [ -n "$PRESET_SECTION" ]; then
+    SECTION_ARGS=(--preset-section "$PRESET_SECTION")
 fi
 python -m windows.win_recv "${SECTION_ARGS[@]}" \
     --listen 0.0.0.0:45123 \

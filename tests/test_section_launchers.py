@@ -59,7 +59,8 @@ class MacSectionLauncherTests(unittest.TestCase):
                     if section:
                         self.assertEqual(argv[argv.index("--preset-section") + 1], section)
                     else:
-                        self.assertNotIn("--preset-section", argv)
+                        self.assertEqual(argv[argv.index("--preset-section") + 1], "macbook")
+                        self.assertEqual(json.loads(local.read_text()), {"preset_section": "macbook"})
 
 
 class WindowsSectionLauncherContractTests(unittest.TestCase):

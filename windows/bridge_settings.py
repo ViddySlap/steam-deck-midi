@@ -36,6 +36,16 @@ class BridgeSettings:
 
     def save(self, section: str | None) -> None:
         """Persist atomically before changing the running bridge's selection."""
+        self._save(section, overwrite=True)
+
+    def save_if_missing(self, section: str) -> bool:
+        """Create a complete first-run file without replacing an existing one."""
+        if self.path.exists():
+            self.preset_section = self.load(self.path).preset_section
+            return False
+        return self._save(section, overwrite=False)
+
+    def _save(self, section: str | None, *, overwrite: bool) -> bool:
         validate_preset_section(section)
         tmp_path = None
         try:
@@ -46,8 +56,16 @@ class BridgeSettings:
                 tmp_path = Path(tmp.name)
                 json.dump({"preset_section": section}, tmp, indent=2)
                 tmp.write("\n")
-            os.replace(tmp_path, self.path)
+            if overwrite:
+                os.replace(tmp_path, self.path)
+            else:
+                try:
+                    os.link(tmp_path, self.path)
+                except FileExistsError:
+                    self.preset_section = self.load(self.path).preset_section
+                    return False
         finally:
             if tmp_path is not None:
                 tmp_path.unlink(missing_ok=True)
         self.preset_section = section
+        return True

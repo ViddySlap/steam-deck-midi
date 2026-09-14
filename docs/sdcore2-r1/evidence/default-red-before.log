@@ -1,0 +1,47 @@
+FEE
+======================================================================
+ERROR: test_git_pull_default_without_marker_or_local_file_boots_everywhere (tests.test_upgrade_boot.UpgradeBootTests.test_git_pull_default_without_marker_or_local_file_boots_everywhere) (platform='win32')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_upgrade_boot.py", line 49, in test_git_pull_default_without_marker_or_local_file_boots_everywhere
+    settings, active, config = win_recv.load_startup_config(self.base, platform=platform)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/win_recv.py", line 52, in load_startup_config
+    config = load_midi_map(active, section)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/config.py", line 183, in load_midi_map
+    raw = select_preset_section(raw, section)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/config.py", line 163, in select_preset_section
+    raise ConfigError(f"preset section {section!r} is not available; available sections: {available}")
+windows.config.ConfigError: preset section None is not available; available sections: macbook, windows
+
+======================================================================
+ERROR: test_git_pull_default_without_marker_or_local_file_boots_everywhere (tests.test_upgrade_boot.UpgradeBootTests.test_git_pull_default_without_marker_or_local_file_boots_everywhere) (platform='linux')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_upgrade_boot.py", line 49, in test_git_pull_default_without_marker_or_local_file_boots_everywhere
+    settings, active, config = win_recv.load_startup_config(self.base, platform=platform)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/win_recv.py", line 52, in load_startup_config
+    config = load_midi_map(active, section)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/config.py", line 183, in load_midi_map
+    raw = select_preset_section(raw, section)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/config.py", line 163, in select_preset_section
+    raise ConfigError(f"preset section {section!r} is not available; available sections: {available}")
+windows.config.ConfigError: preset section None is not available; available sections: macbook, windows
+
+======================================================================
+FAIL: test_git_pull_default_without_marker_or_local_file_boots_everywhere (tests.test_upgrade_boot.UpgradeBootTests.test_git_pull_default_without_marker_or_local_file_boots_everywhere) (platform='darwin')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_upgrade_boot.py", line 53, in test_git_pull_default_without_marker_or_local_file_boots_everywhere
+    self.assertIsNone(settings.preset_section)
+AssertionError: 'macbook' is not None
+
+----------------------------------------------------------------------
+Ran 1 test in 0.003s
+
+FAILED (failures=1, errors=2)

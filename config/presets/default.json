@@ -1,790 +1,381 @@
 {
-  "sections": {
-    "windows": {
-      "mappings": {
-        "BTN_A": {
-          "channel": 0,
-          "note": 36,
-          "type": "note",
-          "velocity": 127
-        },
-        "BTN_A_LAYER_2": {
-          "channel": 0,
-          "note": 37,
-          "type": "note",
-          "velocity": 127
-        },
-        "BTN_B": {
-          "channel": 0,
-          "note": 38,
-          "type": "note",
-          "velocity": 127
-        },
-        "BTN_B_LAYER_2": {
-          "channel": 0,
-          "note": 39,
-          "type": "note",
-          "velocity": 127
-        },
-        "BTN_X": {
-          "channel": 0,
-          "note": 40,
-          "type": "note",
-          "velocity": 127
-        },
-        "BTN_X_LAYER_2": {
-          "channel": 0,
-          "note": 41,
-          "type": "note",
-          "velocity": 127
-        },
-        "BTN_Y": {
-          "channel": 0,
-          "note": 42,
-          "type": "note",
-          "velocity": 127
-        },
-        "BTN_Y_LAYER_2": {
-          "channel": 0,
-          "note": 43,
-          "type": "note",
-          "velocity": 127
-        },
-        "DPAD_DOWN": {
-          "channel": 0,
-          "note": 98,
-          "type": "note",
-          "velocity": 127
-        },
-        "DPAD_DOWN_LONG_PRESS": {
-          "cc": 20,
-          "channel": 0,
-          "gesture": "long_press",
-          "type": "macro_cc"
-        },
-        "DPAD_LEFT": {
-          "cc": 23,
-          "channel": 0,
-          "gesture": "click",
-          "type": "macro_cc"
-        },
-        "DPAD_LEFT_LONG_PRESS": {
-          "cc": 23,
-          "channel": 0,
-          "gesture": "long_press",
-          "type": "macro_cc"
-        },
-        "DPAD_RIGHT": {
-          "cc": 21,
-          "channel": 0,
-          "gesture": "click",
-          "type": "macro_cc"
-        },
-        "DPAD_RIGHT_LONG_PRESS": {
-          "cc": 21,
-          "channel": 0,
-          "gesture": "long_press",
-          "type": "macro_cc"
-        },
-        "DPAD_UP": {
-          "cc": 22,
-          "channel": 0,
-          "gesture": "click",
-          "type": "macro_cc"
-        },
-        "DPAD_UP_LONG_PRESS": {
-          "cc": 22,
-          "channel": 0,
-          "gesture": "long_press",
-          "type": "macro_cc"
-        },
-        "L1": {
-          "channel": 0,
-          "note": 60,
-          "type": "note",
-          "velocity": 127
-        },
-        "L1_LAYER_2": {
-          "channel": 0,
-          "note": 61,
-          "type": "note",
-          "velocity": 127
-        },
-        "L2_FULL": {
-          "channel": 0,
-          "note": 66,
-          "type": "note",
-          "velocity": 127
-        },
-        "L2_FULL_LAYER_2": {
-          "channel": 0,
-          "note": 67,
-          "type": "note",
-          "velocity": 127
-        },
-        "L2_SOFT": {
-          "channel": 0,
-          "note": 64,
-          "type": "note",
-          "velocity": 127
-        },
-        "L2_SOFT_LAYER_2": {
-          "channel": 0,
-          "note": 65,
-          "type": "note",
-          "velocity": 127
-        },
-        "L4": {
-          "cc": 74,
-          "channel": 2,
-          "off_value": 0,
-          "on_value": 127,
-          "type": "cc"
-        },
-        "L5": {
-          "channel": 0,
-          "note": 75,
-          "type": "note",
-          "velocity": 127
-        },
-        "LEFT_STICK_CLICK_L3": {
-          "channel": 0,
-          "note": 72,
-          "type": "note",
-          "velocity": 127
-        },
-        "L_PAD_DOWN": {
-          "channel": 0,
-          "note": 89,
-          "type": "note",
-          "velocity": 127
-        },
-        "L_PAD_DOWN_LONG_PRESS": {
-          "channel": 0,
-          "note": 85,
-          "type": "note",
-          "velocity": 127
-        },
-        "L_PAD_LEFT": {
-          "channel": 0,
-          "note": 82,
-          "type": "note",
-          "velocity": 127
-        },
-        "L_PAD_LEFT_LONG_PRESS": {
-          "modifier_channel": 0,
-          "note": 86,
-          "refresh_actions": [
-            "L_PAD_LEFT",
-            "L_PAD_RIGHT"
-          ],
-          "trigger_channel": 1,
-          "type": "staged_note_macro",
-          "velocity": 127
-        },
-        "L_PAD_RIGHT": {
-          "channel": 0,
-          "note": 83,
-          "type": "note",
-          "velocity": 127
-        },
-        "L_PAD_RIGHT_LONG_PRESS": {
-          "modifier_channel": 0,
-          "note": 87,
-          "refresh_actions": [
-            "L_PAD_LEFT",
-            "L_PAD_RIGHT"
-          ],
-          "trigger_channel": 1,
-          "type": "staged_note_macro",
-          "velocity": 127
-        },
-        "L_PAD_UP": {
-          "channel": 0,
-          "note": 88,
-          "type": "note",
-          "velocity": 127
-        },
-        "L_PAD_UP_LONG_PRESS": {
-          "channel": 0,
-          "note": 84,
-          "type": "note",
-          "velocity": 127
-        },
-        "L_TRIGGER_PRESSURE": {
-          "cc": 1,
-          "channel": 0,
-          "curve": "linear",
-          "deadzone": 5000,
-          "input_range": [
-            5000,
-            32767
-          ],
-          "output_range": [
-            0,
-            127
-          ],
-          "type": "axis_to_cc"
-        },
-        "R_TRIGGER_PRESSURE": {
-          "cc": 2,
-          "channel": 0,
-          "curve": "linear",
-          "deadzone": 5500,
-          "input_range": [
-            5500,
-            32767
-          ],
-          "output_range": [
-            0,
-            127
-          ],
-          "type": "axis_to_cc"
-        },
-        "R1": {
-          "channel": 0,
-          "note": 62,
-          "type": "note",
-          "velocity": 127
-        },
-        "R1_LAYER_2": {
-          "channel": 0,
-          "note": 63,
-          "type": "note",
-          "velocity": 127
-        },
-        "R2_FULL": {
-          "channel": 0,
-          "note": 70,
-          "type": "note",
-          "velocity": 127
-        },
-        "R2_FULL_LAYER_2": {
-          "channel": 0,
-          "note": 71,
-          "type": "note",
-          "velocity": 127
-        },
-        "R2_SOFT": {
-          "channel": 0,
-          "note": 68,
-          "type": "note",
-          "velocity": 127
-        },
-        "R2_SOFT_LAYER_2": {
-          "channel": 0,
-          "note": 69,
-          "type": "note",
-          "velocity": 127
-        },
-        "R4": {
-          "channel": 0,
-          "note": 76,
-          "type": "note",
-          "velocity": 127
-        },
-        "R5": {
-          "channel": 0,
-          "note": 77,
-          "type": "note",
-          "velocity": 127
-        },
-        "RIGHT_STICK_CLICK_R3": {
-          "channel": 0,
-          "note": 73,
-          "type": "note",
-          "velocity": 127
-        },
-        "R_PAD_DOWN": {
-          "cc": 49,
-          "channel": 0,
-          "repeat_interval_ms": 40,
-          "step_value": 127,
-          "type": "relative_cc"
-        },
-        "R_PAD_DOWN_LONG_PRESS": {
-          "channel": 0,
-          "note": 93,
-          "type": "note",
-          "velocity": 127
-        },
-        "R_PAD_LEFT": {
-          "cc": 47,
-          "channel": 0,
-          "repeat_interval_ms": 40,
-          "step_value": 127,
-          "type": "relative_cc"
-        },
-        "R_PAD_LEFT_LONG_PRESS": {
-          "channel": 0,
-          "note": 94,
-          "type": "note",
-          "velocity": 127
-        },
-        "R_PAD_RIGHT": {
-          "cc": 47,
-          "channel": 0,
-          "repeat_interval_ms": 40,
-          "step_value": 1,
-          "type": "relative_cc"
-        },
-        "R_PAD_RIGHT_LONG_PRESS": {
-          "channel": 0,
-          "note": 95,
-          "type": "note",
-          "velocity": 127
-        },
-        "R_PAD_UP": {
-          "cc": 49,
-          "channel": 0,
-          "repeat_interval_ms": 40,
-          "step_value": 1,
-          "type": "relative_cc"
-        },
-        "R_PAD_UP_LONG_PRESS": {
-          "channel": 0,
-          "note": 92,
-          "type": "note",
-          "velocity": 127
-        },
-        "R_STICK_X_AXIS": {
-          "cc_negative": 116,
-          "cc_positive": 114,
-          "channel": 15,
-          "curve": "linear",
-          "deadzone": 3500,
-          "input_max": 32767,
-          "type": "axis_split_cc"
-        },
-        "R_STICK_Y_AXIS": {
-          "cc_negative": 117,
-          "cc_positive": 115,
-          "channel": 15,
-          "curve": "linear",
-          "deadzone": 3500,
-          "input_max": 32767,
-          "type": "axis_split_cc"
-        },
-        "SELECT": {
-          "cc": 79,
-          "channel": 2,
-          "off_value": 0,
-          "on_value": 127,
-          "type": "cc"
-        },
-        "START": {
-          "cc": 78,
-          "channel": 2,
-          "off_value": 0,
-          "on_value": 127,
-          "type": "cc"
-        }
-      },
-      "macro_settings": {
-        "fade_duration_seconds": 2.0,
-        "layer_refresh_ms": 500,
-        "macro_delay_ms": 80,
-        "max_value": 127,
-        "min_value": 0,
-        "modifier_hold_ms": 2000,
-        "update_hz": 30
-      },
-      "engines": {
-        "ptz_visca": false
-      }
+  "mappings": {
+    "BTN_A": {
+      "channel": 0,
+      "note": 36,
+      "type": "note",
+      "velocity": 127
     },
-    "macbook": {
-      "mappings": {
-        "BTN_A": {
-          "channel": 0,
-          "note": 36,
-          "type": "note",
-          "velocity": 127
-        },
-        "BTN_A_LAYER_2": {
-          "channel": 0,
-          "note": 37,
-          "type": "note",
-          "velocity": 127
-        },
-        "BTN_B": {
-          "channel": 0,
-          "note": 38,
-          "type": "note",
-          "velocity": 127
-        },
-        "BTN_B_LAYER_2": {
-          "channel": 0,
-          "note": 39,
-          "type": "note",
-          "velocity": 127
-        },
-        "BTN_X": {
-          "channel": 0,
-          "note": 40,
-          "type": "note",
-          "velocity": 127
-        },
-        "BTN_X_LAYER_2": {
-          "channel": 0,
-          "note": 41,
-          "type": "note",
-          "velocity": 127
-        },
-        "BTN_Y": {
-          "channel": 0,
-          "note": 42,
-          "type": "note",
-          "velocity": 127
-        },
-        "BTN_Y_LAYER_2": {
-          "channel": 0,
-          "note": 43,
-          "type": "note",
-          "velocity": 127
-        },
-        "DPAD_DOWN": {
-          "channel": 0,
-          "note": 98,
-          "type": "note",
-          "velocity": 127
-        },
-        "DPAD_DOWN_LONG_PRESS": {
-          "cc": 20,
-          "channel": 0,
-          "gesture": "long_press",
-          "type": "macro_cc"
-        },
-        "DPAD_LEFT": {
-          "cc": 23,
-          "channel": 0,
-          "gesture": "click",
-          "type": "macro_cc"
-        },
-        "DPAD_LEFT_LONG_PRESS": {
-          "cc": 23,
-          "channel": 0,
-          "gesture": "long_press",
-          "type": "macro_cc"
-        },
-        "DPAD_RIGHT": {
-          "cc": 21,
-          "channel": 0,
-          "gesture": "click",
-          "type": "macro_cc"
-        },
-        "DPAD_RIGHT_LONG_PRESS": {
-          "cc": 21,
-          "channel": 0,
-          "gesture": "long_press",
-          "type": "macro_cc"
-        },
-        "DPAD_UP": {
-          "cc": 22,
-          "channel": 0,
-          "gesture": "click",
-          "type": "macro_cc"
-        },
-        "DPAD_UP_LONG_PRESS": {
-          "cc": 22,
-          "channel": 0,
-          "gesture": "long_press",
-          "type": "macro_cc"
-        },
-        "L1": {
-          "channel": 0,
-          "note": 60,
-          "type": "note",
-          "velocity": 127
-        },
-        "L1_LAYER_2": {
-          "channel": 0,
-          "note": 61,
-          "type": "note",
-          "velocity": 127
-        },
-        "L2_FULL": {
-          "channel": 0,
-          "note": 66,
-          "type": "note",
-          "velocity": 127
-        },
-        "L2_FULL_LAYER_2": {
-          "channel": 0,
-          "note": 67,
-          "type": "note",
-          "velocity": 127
-        },
-        "L2_SOFT": {
-          "channel": 0,
-          "note": 64,
-          "type": "note",
-          "velocity": 127
-        },
-        "L2_SOFT_LAYER_2": {
-          "channel": 0,
-          "note": 65,
-          "type": "note",
-          "velocity": 127
-        },
-        "L4": {
-          "cc": 74,
-          "channel": 2,
-          "off_value": 0,
-          "on_value": 127,
-          "type": "cc"
-        },
-        "L5": {
-          "channel": 0,
-          "note": 75,
-          "type": "note",
-          "velocity": 127
-        },
-        "LEFT_STICK_CLICK_L3": {
-          "channel": 0,
-          "note": 72,
-          "type": "note",
-          "velocity": 127
-        },
-        "L_PAD_DOWN": {
-          "channel": 0,
-          "note": 89,
-          "type": "note",
-          "velocity": 127
-        },
-        "L_PAD_DOWN_LONG_PRESS": {
-          "channel": 0,
-          "note": 85,
-          "type": "note",
-          "velocity": 127
-        },
-        "L_PAD_LEFT": {
-          "channel": 0,
-          "note": 82,
-          "type": "note",
-          "velocity": 127
-        },
-        "L_PAD_LEFT_LONG_PRESS": {
-          "modifier_channel": 0,
-          "note": 86,
-          "refresh_actions": [
-            "L_PAD_LEFT",
-            "L_PAD_RIGHT"
-          ],
-          "trigger_channel": 1,
-          "type": "staged_note_macro",
-          "velocity": 127
-        },
-        "L_PAD_RIGHT": {
-          "channel": 0,
-          "note": 83,
-          "type": "note",
-          "velocity": 127
-        },
-        "L_PAD_RIGHT_LONG_PRESS": {
-          "modifier_channel": 0,
-          "note": 87,
-          "refresh_actions": [
-            "L_PAD_LEFT",
-            "L_PAD_RIGHT"
-          ],
-          "trigger_channel": 1,
-          "type": "staged_note_macro",
-          "velocity": 127
-        },
-        "L_PAD_UP": {
-          "channel": 0,
-          "note": 88,
-          "type": "note",
-          "velocity": 127
-        },
-        "L_PAD_UP_LONG_PRESS": {
-          "channel": 0,
-          "note": 84,
-          "type": "note",
-          "velocity": 127
-        },
-        "L_TRIGGER_PRESSURE": {
-          "cc": 1,
-          "channel": 0,
-          "curve": "linear",
-          "deadzone": 5000,
-          "input_range": [
-            5000,
-            32767
-          ],
-          "output_range": [
-            0,
-            127
-          ],
-          "type": "axis_to_cc"
-        },
-        "R_TRIGGER_PRESSURE": {
-          "cc": 2,
-          "channel": 0,
-          "curve": "linear",
-          "deadzone": 5500,
-          "input_range": [
-            5500,
-            32767
-          ],
-          "output_range": [
-            0,
-            127
-          ],
-          "type": "axis_to_cc"
-        },
-        "R1": {
-          "channel": 0,
-          "note": 62,
-          "type": "note",
-          "velocity": 127
-        },
-        "R1_LAYER_2": {
-          "channel": 0,
-          "note": 63,
-          "type": "note",
-          "velocity": 127
-        },
-        "R2_FULL": {
-          "channel": 0,
-          "note": 70,
-          "type": "note",
-          "velocity": 127
-        },
-        "R2_FULL_LAYER_2": {
-          "channel": 0,
-          "note": 71,
-          "type": "note",
-          "velocity": 127
-        },
-        "R2_SOFT": {
-          "channel": 0,
-          "note": 68,
-          "type": "note",
-          "velocity": 127
-        },
-        "R2_SOFT_LAYER_2": {
-          "channel": 0,
-          "note": 69,
-          "type": "note",
-          "velocity": 127
-        },
-        "R4": {
-          "channel": 0,
-          "note": 76,
-          "type": "note",
-          "velocity": 127
-        },
-        "R5": {
-          "channel": 0,
-          "note": 77,
-          "type": "note",
-          "velocity": 127
-        },
-        "RIGHT_STICK_CLICK_R3": {
-          "channel": 0,
-          "note": 73,
-          "type": "note",
-          "velocity": 127
-        },
-        "R_PAD_DOWN": {
-          "cc": 49,
-          "channel": 0,
-          "repeat_interval_ms": 40,
-          "step_value": 127,
-          "type": "relative_cc"
-        },
-        "R_PAD_DOWN_LONG_PRESS": {
-          "channel": 0,
-          "note": 93,
-          "type": "note",
-          "velocity": 127
-        },
-        "R_PAD_LEFT": {
-          "cc": 47,
-          "channel": 0,
-          "repeat_interval_ms": 40,
-          "step_value": 127,
-          "type": "relative_cc"
-        },
-        "R_PAD_LEFT_LONG_PRESS": {
-          "channel": 0,
-          "note": 94,
-          "type": "note",
-          "velocity": 127
-        },
-        "R_PAD_RIGHT": {
-          "cc": 47,
-          "channel": 0,
-          "repeat_interval_ms": 40,
-          "step_value": 1,
-          "type": "relative_cc"
-        },
-        "R_PAD_RIGHT_LONG_PRESS": {
-          "channel": 0,
-          "note": 95,
-          "type": "note",
-          "velocity": 127
-        },
-        "R_PAD_UP": {
-          "cc": 49,
-          "channel": 0,
-          "repeat_interval_ms": 40,
-          "step_value": 1,
-          "type": "relative_cc"
-        },
-        "R_PAD_UP_LONG_PRESS": {
-          "channel": 0,
-          "note": 92,
-          "type": "note",
-          "velocity": 127
-        },
-        "R_STICK_X_AXIS": {
-          "cc_negative": 116,
-          "cc_positive": 114,
-          "channel": 15,
-          "curve": "linear",
-          "deadzone": 3500,
-          "input_max": 32767,
-          "type": "axis_split_cc"
-        },
-        "R_STICK_Y_AXIS": {
-          "cc_negative": 117,
-          "cc_positive": 115,
-          "channel": 15,
-          "curve": "linear",
-          "deadzone": 3500,
-          "input_max": 32767,
-          "type": "axis_split_cc"
-        },
-        "SELECT": {
-          "cc": 79,
-          "channel": 2,
-          "off_value": 0,
-          "on_value": 127,
-          "type": "cc"
-        },
-        "START": {
-          "cc": 78,
-          "channel": 2,
-          "off_value": 0,
-          "on_value": 127,
-          "type": "cc"
-        }
-      },
-      "macro_settings": {
-        "fade_duration_seconds": 2.0,
-        "layer_refresh_ms": 500,
-        "macro_delay_ms": 80,
-        "max_value": 127,
-        "min_value": 0,
-        "modifier_hold_ms": 2000,
-        "update_hz": 30
-      },
-      "engines": {
-        "ptz_visca": false
-      }
+    "BTN_A_LAYER_2": {
+      "channel": 0,
+      "note": 37,
+      "type": "note",
+      "velocity": 127
+    },
+    "BTN_B": {
+      "channel": 0,
+      "note": 38,
+      "type": "note",
+      "velocity": 127
+    },
+    "BTN_B_LAYER_2": {
+      "channel": 0,
+      "note": 39,
+      "type": "note",
+      "velocity": 127
+    },
+    "BTN_X": {
+      "channel": 0,
+      "note": 40,
+      "type": "note",
+      "velocity": 127
+    },
+    "BTN_X_LAYER_2": {
+      "channel": 0,
+      "note": 41,
+      "type": "note",
+      "velocity": 127
+    },
+    "BTN_Y": {
+      "channel": 0,
+      "note": 42,
+      "type": "note",
+      "velocity": 127
+    },
+    "BTN_Y_LAYER_2": {
+      "channel": 0,
+      "note": 43,
+      "type": "note",
+      "velocity": 127
+    },
+    "DPAD_DOWN": {
+      "channel": 0,
+      "note": 98,
+      "type": "note",
+      "velocity": 127
+    },
+    "DPAD_DOWN_LONG_PRESS": {
+      "cc": 20,
+      "channel": 0,
+      "gesture": "long_press",
+      "type": "macro_cc"
+    },
+    "DPAD_LEFT": {
+      "cc": 23,
+      "channel": 0,
+      "gesture": "click",
+      "type": "macro_cc"
+    },
+    "DPAD_LEFT_LONG_PRESS": {
+      "cc": 23,
+      "channel": 0,
+      "gesture": "long_press",
+      "type": "macro_cc"
+    },
+    "DPAD_RIGHT": {
+      "cc": 21,
+      "channel": 0,
+      "gesture": "click",
+      "type": "macro_cc"
+    },
+    "DPAD_RIGHT_LONG_PRESS": {
+      "cc": 21,
+      "channel": 0,
+      "gesture": "long_press",
+      "type": "macro_cc"
+    },
+    "DPAD_UP": {
+      "cc": 22,
+      "channel": 0,
+      "gesture": "click",
+      "type": "macro_cc"
+    },
+    "DPAD_UP_LONG_PRESS": {
+      "cc": 22,
+      "channel": 0,
+      "gesture": "long_press",
+      "type": "macro_cc"
+    },
+    "L1": {
+      "channel": 0,
+      "note": 60,
+      "type": "note",
+      "velocity": 127
+    },
+    "L1_LAYER_2": {
+      "channel": 0,
+      "note": 61,
+      "type": "note",
+      "velocity": 127
+    },
+    "L2_FULL": {
+      "channel": 0,
+      "note": 66,
+      "type": "note",
+      "velocity": 127
+    },
+    "L2_FULL_LAYER_2": {
+      "channel": 0,
+      "note": 67,
+      "type": "note",
+      "velocity": 127
+    },
+    "L2_SOFT": {
+      "channel": 0,
+      "note": 64,
+      "type": "note",
+      "velocity": 127
+    },
+    "L2_SOFT_LAYER_2": {
+      "channel": 0,
+      "note": 65,
+      "type": "note",
+      "velocity": 127
+    },
+    "L4": {
+      "cc": 74,
+      "channel": 2,
+      "off_value": 0,
+      "on_value": 127,
+      "type": "cc"
+    },
+    "L5": {
+      "channel": 0,
+      "note": 75,
+      "type": "note",
+      "velocity": 127
+    },
+    "LEFT_STICK_CLICK_L3": {
+      "channel": 0,
+      "note": 72,
+      "type": "note",
+      "velocity": 127
+    },
+    "L_PAD_DOWN": {
+      "channel": 0,
+      "note": 89,
+      "type": "note",
+      "velocity": 127
+    },
+    "L_PAD_DOWN_LONG_PRESS": {
+      "channel": 0,
+      "note": 85,
+      "type": "note",
+      "velocity": 127
+    },
+    "L_PAD_LEFT": {
+      "channel": 0,
+      "note": 82,
+      "type": "note",
+      "velocity": 127
+    },
+    "L_PAD_LEFT_LONG_PRESS": {
+      "modifier_channel": 0,
+      "note": 86,
+      "refresh_actions": [
+        "L_PAD_LEFT",
+        "L_PAD_RIGHT"
+      ],
+      "trigger_channel": 1,
+      "type": "staged_note_macro",
+      "velocity": 127
+    },
+    "L_PAD_RIGHT": {
+      "channel": 0,
+      "note": 83,
+      "type": "note",
+      "velocity": 127
+    },
+    "L_PAD_RIGHT_LONG_PRESS": {
+      "modifier_channel": 0,
+      "note": 87,
+      "refresh_actions": [
+        "L_PAD_LEFT",
+        "L_PAD_RIGHT"
+      ],
+      "trigger_channel": 1,
+      "type": "staged_note_macro",
+      "velocity": 127
+    },
+    "L_PAD_UP": {
+      "channel": 0,
+      "note": 88,
+      "type": "note",
+      "velocity": 127
+    },
+    "L_PAD_UP_LONG_PRESS": {
+      "channel": 0,
+      "note": 84,
+      "type": "note",
+      "velocity": 127
+    },
+    "L_TRIGGER_PRESSURE": {
+      "cc": 1,
+      "channel": 0,
+      "curve": "linear",
+      "deadzone": 5000,
+      "input_range": [5000, 32767],
+      "output_range": [0, 127],
+      "type": "axis_to_cc"
+    },
+    "R_TRIGGER_PRESSURE": {
+      "cc": 2,
+      "channel": 0,
+      "curve": "linear",
+      "deadzone": 5500,
+      "input_range": [5500, 32767],
+      "output_range": [0, 127],
+      "type": "axis_to_cc"
+    },
+    "R1": {
+      "channel": 0,
+      "note": 62,
+      "type": "note",
+      "velocity": 127
+    },
+    "R1_LAYER_2": {
+      "channel": 0,
+      "note": 63,
+      "type": "note",
+      "velocity": 127
+    },
+    "R2_FULL": {
+      "channel": 0,
+      "note": 70,
+      "type": "note",
+      "velocity": 127
+    },
+    "R2_FULL_LAYER_2": {
+      "channel": 0,
+      "note": 71,
+      "type": "note",
+      "velocity": 127
+    },
+    "R2_SOFT": {
+      "channel": 0,
+      "note": 68,
+      "type": "note",
+      "velocity": 127
+    },
+    "R2_SOFT_LAYER_2": {
+      "channel": 0,
+      "note": 69,
+      "type": "note",
+      "velocity": 127
+    },
+    "R4": {
+      "channel": 0,
+      "note": 76,
+      "type": "note",
+      "velocity": 127
+    },
+    "R5": {
+      "channel": 0,
+      "note": 77,
+      "type": "note",
+      "velocity": 127
+    },
+    "RIGHT_STICK_CLICK_R3": {
+      "channel": 0,
+      "note": 73,
+      "type": "note",
+      "velocity": 127
+    },
+    "R_PAD_DOWN": {
+      "cc": 49,
+      "channel": 0,
+      "repeat_interval_ms": 40,
+      "step_value": 127,
+      "type": "relative_cc"
+    },
+    "R_PAD_DOWN_LONG_PRESS": {
+      "channel": 0,
+      "note": 93,
+      "type": "note",
+      "velocity": 127
+    },
+    "R_PAD_LEFT": {
+      "cc": 47,
+      "channel": 0,
+      "repeat_interval_ms": 40,
+      "step_value": 127,
+      "type": "relative_cc"
+    },
+    "R_PAD_LEFT_LONG_PRESS": {
+      "channel": 0,
+      "note": 94,
+      "type": "note",
+      "velocity": 127
+    },
+    "R_PAD_RIGHT": {
+      "cc": 47,
+      "channel": 0,
+      "repeat_interval_ms": 40,
+      "step_value": 1,
+      "type": "relative_cc"
+    },
+    "R_PAD_RIGHT_LONG_PRESS": {
+      "channel": 0,
+      "note": 95,
+      "type": "note",
+      "velocity": 127
+    },
+    "R_PAD_UP": {
+      "cc": 49,
+      "channel": 0,
+      "repeat_interval_ms": 40,
+      "step_value": 1,
+      "type": "relative_cc"
+    },
+    "R_PAD_UP_LONG_PRESS": {
+      "channel": 0,
+      "note": 92,
+      "type": "note",
+      "velocity": 127
+    },
+    "R_STICK_X_AXIS": {
+      "cc_negative": 116,
+      "cc_positive": 114,
+      "channel": 15,
+      "curve": "linear",
+      "deadzone": 3500,
+      "input_max": 32767,
+      "type": "axis_split_cc"
+    },
+    "R_STICK_Y_AXIS": {
+      "cc_negative": 117,
+      "cc_positive": 115,
+      "channel": 15,
+      "curve": "linear",
+      "deadzone": 3500,
+      "input_max": 32767,
+      "type": "axis_split_cc"
+    },
+    "SELECT": {
+      "cc": 79,
+      "channel": 2,
+      "off_value": 0,
+      "on_value": 127,
+      "type": "cc"
+    },
+    "START": {
+      "cc": 78,
+      "channel": 2,
+      "off_value": 0,
+      "on_value": 127,
+      "type": "cc"
     }
+  },
+  "macro_settings": {
+    "fade_duration_seconds": 2.0,
+    "layer_refresh_ms": 500,
+    "macro_delay_ms": 80,
+    "max_value": 127,
+    "min_value": 0,
+    "modifier_hold_ms": 2000,
+    "update_hz": 30
+  },
+  "engines": {
+    "ptz_visca": false
   }
 }

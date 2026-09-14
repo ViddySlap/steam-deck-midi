@@ -1,0 +1,568 @@
+...........Autopilot: fallback_clock.bpm must be > 0 (got 0.0); disabling fallback
+......................................................................................................................................................................................................................................./opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/case.py:589: ResourceWarning: unclosed <socket.socket fd=3, family=2, type=2, proto=0, laddr=('0.0.0.0', 0)>
+  if method() is not None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+........duplicate engine type 'audio_opacity' in audio_opacity.json and z_audio_variant.json; keeping audio_opacity.json
+...failed to parse OSC preset /tmp/sdcore-r1/tmpns4q7cbu.xml: not well-formed (invalid token): line 1, column 12
+..........osc_sync: no targets; sync pass is a no-op
+........osc_sync: composition fetch failed: simulated GET failure
+......................s...........................................................................................l_stick_layer: invalid default_layer 'bogus'; using 'a'
+..................................................osc_relay: duplicate destination 10.10.10.5:7002 ignored
+.................osc_sync: no targets; sync pass is a no-op
+..osc_sync: no targets; sync pass is a no-op
+....osc_sync: no targets; sync pass is a no-op
+...preset watch poll failed; retrying
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/preset_watch.py", line 74, in run
+    self.reload_event.set()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_preset_watch.py", line 119, in fail_once
+    raise RuntimeError('event failed')
+RuntimeError: event failed
+.preset watch initial scan failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/preset_watch.py", line 40, in __init__
+    self._snapshot = self._scan()
+                     ^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/mock.py", line 1198, in _execute_mock_call
+    raise effect
+OSError: initial scan failed
+..preset watch poll failed; retrying
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/preset_watch.py", line 58, in run
+    current = self._scan()
+              ^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/mock.py", line 1202, in _execute_mock_call
+    raise result
+RuntimeError: scan failed
+...INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=dry-run index=n/a
+INFO mapping UI available at http://127.0.0.1:7723
+INFO preset watch changed: /tmp/sdcore-r1/tmpm2dtb_5m/presets/.active
+INFO preset watch changed: /tmp/sdcore-r1/tmpm2dtb_5m/presets/Other.json
+INFO listening on udp://0.0.0.0:45123
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=2
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=3
+INFO shutdown requested
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=dry-run index=n/a
+INFO mapping UI available at http://127.0.0.1:7723
+INFO preset watch changed: /tmp/sdcore-r1/tmptmqs6_ox/bridge.local.json
+INFO listening on udp://0.0.0.0:45123
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=2
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=3
+INFO shutdown requested
+INFO preset watch changed: /tmp/sdcore-r1/tmptmqs6_ox/bridge.local.json
+INFO listening on udp://0.0.0.0:45123
+ERROR hot-reload failed: cannot read bridge settings /tmp/sdcore-r1/tmptmqs6_ox/bridge.local.json: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+INFO action=BTN_A state=down seq=4
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=5
+INFO shutdown requested
+INFO preset watch changed: /tmp/sdcore-r1/tmptmqs6_ox/bridge.local.json
+INFO listening on udp://0.0.0.0:45123
+ERROR hot-reload failed: preset section 'missing' is not available; available sections: macbook, windows
+INFO action=BTN_A state=down seq=6
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=7
+INFO shutdown requested
+INFO preset watch changed: /tmp/sdcore-r1/tmptmqs6_ox/bridge.local.json
+INFO listening on udp://0.0.0.0:45123
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=8
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=9
+INFO shutdown requested
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=dry-run index=n/a
+INFO mapping UI available at http://127.0.0.1:7723
+INFO listening on udp://0.0.0.0:45123
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=2
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=3
+INFO shutdown requested
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=dry-run index=n/a
+INFO mapping UI available at http://127.0.0.1:7723
+INFO preset watch changed: /tmp/sdcore-r1/tmpvu769u4f/presets/default.json
+INFO listening on udp://0.0.0.0:45123
+ERROR hot-reload failed: mapping file is not valid JSON: /tmp/sdcore-r1/tmpvu769u4f/presets/default.json
+INFO action=BTN_A state=down seq=2
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=3
+INFO shutdown requested
+INFO preset watch changed: /tmp/sdcore-r1/tmpvu769u4f/presets/default.json
+INFO listening on udp://0.0.0.0:45123
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=4
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=5
+INFO shutdown requested
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=dry-run index=n/a
+INFO preset watch changed: /tmp/sdcore-r1/tmp1d9bxt6i/presets/default.json
+INFO listening on udp://0.0.0.0:45123
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=2
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=3
+INFO shutdown requested
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=dry-run index=n/a
+INFO mapping UI available at http://127.0.0.1:7723
+INFO listening on udp://0.0.0.0:45123
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=2
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=3
+INFO shutdown requested
+INFO preset watch changed: /tmp/sdcore-r1/tmpu4ut3y4g/presets/default.json
+INFO preset watch changed: /tmp/sdcore-r1/tmpu4ut3y4g/presets/default.json
+INFO listening on udp://0.0.0.0:45123
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=4
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=5
+INFO shutdown requested
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=dry-run index=n/a
+INFO mapping UI available at http://127.0.0.1:7723
+INFO listening on udp://0.0.0.0:45123
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=2
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=3
+INFO shutdown requested
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=dry-run index=n/a
+INFO mapping UI available at http://127.0.0.1:7723
+INFO preset watch changed: /tmp/sdcore-r1/tmpwzzahtbn/presets/default.json
+INFO listening on udp://0.0.0.0:45123
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=2
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=3
+INFO shutdown requested
+...........................................................WARNING ptz_visca: VISCA socket bind to 203.0.113.255 failed (camera NIC absent?); sender unbound \u2014 engine loads but sends nothing
+........................................INFO action=R_STICK_RIGHT state=down seq=1
+INFO released note mapping for R_STICK_RIGHT
+INFO action=R_STICK_RIGHT state=up seq=2
+.INFO action=L1_LAYER_2 state=down seq=1
+.INFO action=DPAD_DOWN_LONG_PRESS state=down seq=1
+INFO action=DPAD_DOWN state=down seq=2
+INFO released note mapping for DPAD_DOWN
+INFO action=DPAD_DOWN state=up seq=3
+.INFO action=DPAD_DOWN state=down seq=1
+INFO released note mapping for DPAD_DOWN
+INFO action=DPAD_DOWN state=up seq=2
+INFO action=DPAD_DOWN state=down seq=3
+.INFO action=BTN_A state=down seq=1
+.INFO action=BTN_A state=down seq=1
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=2
+...INFO action=R4 state=down seq=1
+INFO action=L4 state=down seq=2
+INFO action=SELECT state=down seq=3
+INFO action=R2_FULL_LAYER_2 state=down seq=4
+INFO action=R2_SOFT_LAYER_2 state=down seq=5
+.INFO layer state resync for cc=74 from=layer_1 to=layer_2 via=GYRO_FORWARD
+INFO action=GYRO_FORWARD state=down seq=1
+INFO layer state resync for cc=74 from=layer_2 to=layer_1 via=toggle
+INFO action=L4 state=down seq=2
+.INFO layer state resync for cc=74 from=layer_1 to=layer_2 via=toggle
+INFO action=L4 state=down seq=1
+.INFO action=BTN_A state=down seq=1
+.INFO action=BTN_A state=down seq=5
+WARNING ignored out-of-order packet from 10.10.10.2:45123 seq=4 last_seq=5
+.INFO action=R2_FULL_LAYER_2 state=down seq=1
+INFO released note mapping for R2_FULL_LAYER_2
+INFO action=R2_FULL_LAYER_2 state=up seq=2
+..INFO action=START state=down seq=1
+INFO action=BTN_A_LAYER_2 state=down seq=2
+INFO layer state resync for cc=78 from=layer_2 to=layer_1 via=toggle
+INFO action=START state=down seq=3
+INFO layer state resync for cc=78 from=layer_1 to=layer_2 via=BTN_A_LAYER_2
+INFO action=BTN_A_LAYER_2 state=down seq=4
+.INFO action=BTN_A state=down seq=1
+INFO layer state resync for cc=78 from=layer_1 to=unknown via=test
+.INFO action=R2_FULL state=down seq=1
+INFO layer state resync for cc=79 from=layer_1 to=layer_2 via=toggle
+INFO action=SELECT state=down seq=2
+INFO action=R2_FULL_LAYER_2 state=down seq=3
+INFO released note mapping for R2_FULL_LAYER_2
+INFO action=R2_FULL_LAYER_2 state=up seq=4
+.INFO action=BTN_A state=down seq=1
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=2
+INFO action=BTN_A state=down seq=3
+ERROR loop guard tripped: received 4 events in 1.00s; muting MIDI for 0.50s
+INFO released note mapping for BTN_A
+WARNING dropping event during loop-guard cooldown: action=BTN_A state=down seq=5
+.INFO action=DPAD_RIGHT_LONG_PRESS state=down seq=1
+.INFO action=DPAD_DOWN_LONG_PRESS state=down seq=1
+INFO action=DPAD_RIGHT_LONG_PRESS state=down seq=2
+.INFO action=DPAD_DOWN_LONG_PRESS state=down seq=1
+INFO action=DPAD_DOWN_LONG_PRESS state=up seq=2
+.INFO action=DPAD_DOWN_LONG_PRESS state=down seq=1
+.INFO action=DPAD_DOWN_LONG_PRESS state=down seq=1
+.INFO action=DPAD_DOWN_LONG_PRESS state=down seq=1
+INFO manual override detected; canceling fade channel=0 cc=20 value=90
+.INFO action=R_PAD_LEFT state=down seq=1
+.INFO action=R_PAD_RIGHT state=down seq=1
+INFO action=R_PAD_LEFT state=down seq=2
+.INFO action=R_PAD_RIGHT state=down seq=1
+INFO action=R_PAD_RIGHT state=up seq=2
+.INFO action=BTN_A state=down seq=1
+WARNING input timeout reached; releasing active MIDI state
+INFO released note mapping for BTN_A
+.INFO action=R2_SOFT state=down seq=1
+INFO released note mapping for R2_SOFT
+INFO action=R2_SOFT state=up seq=2
+INFO action=R2_FULL state=down seq=3
+INFO released note mapping for R2_FULL
+INFO action=R2_FULL state=up seq=4
+INFO action=R2_SOFT_LAYER_2 state=down seq=5
+INFO released note mapping for R2_SOFT_LAYER_2
+INFO action=R2_SOFT_LAYER_2 state=up seq=6
+INFO action=R2_FULL_LAYER_2 state=down seq=7
+INFO released note mapping for R2_FULL_LAYER_2
+INFO action=R2_FULL_LAYER_2 state=up seq=8
+.INFO action=L_PAD_LEFT_LONG_PRESS state=down seq=1
+INFO action=L_PAD_RIGHT state=down seq=2
+INFO released note mapping for L_PAD_RIGHT
+INFO action=L_PAD_RIGHT state=up seq=3
+INFO action=L_PAD_LEFT state=down seq=4
+INFO released note mapping for L_PAD_LEFT
+INFO action=L_PAD_LEFT state=up seq=5
+.INFO action=L_PAD_RIGHT_LONG_PRESS state=down seq=1
+INFO action=L_PAD_RIGHT_LONG_PRESS state=down seq=2
+.INFO action=L_PAD_LEFT_LONG_PRESS state=down seq=1
+INFO action=L_PAD_LEFT_LONG_PRESS state=up seq=2
+.INFO action=BTN_A state=down seq=1
+INFO action=R_STICK_RIGHT state=down seq=3
+INFO action=R_STICK_RIGHT state=down seq=4
+.INFO action=BTN_A state=down seq=1
+WARNING input timeout reached; releasing active MIDI state
+ERROR MIDI output error while releasing BTN_A: note_off failed
+ERROR MIDI output error during panic reset: panic failed
+.ERROR MIDI output error while handling BTN_A: note_on failed
+.INFO action=START state=down seq=1
+.INFO action=DPAD_DOWN_LONG_PRESS state=down seq=1
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'FakeEngineRegistry' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'FakeEngineRegistry' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'FakeEngineRegistry' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'FakeEngineRegistry' object has no attribute 'on_axis_event'
+.INFO action=SELECT state=down seq=1
+INFO released CC mapping for SELECT
+INFO action=SELECT state=up seq=2
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 872, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.INFO action=L1 state=down seq=1
+......WARNING SF: canonical layer 99 out of range (1 layers in comp)
+.WARNING SF: could not find 'STAGEFLOW BRIDGE' effect in comp
+.WARNING SF: comp GET failed: simulated GET failure
+...INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '-', '-']
+.INFO SF: rescan triggered (cc_rescan, CC 91)
+INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '-', '-']
+.INFO SF: rescan triggered (cc_sync, CC 90)
+INFO SF: rescan already in flight (trigger=cc_sync ignored)
+INFO SF: rescan triggered (cc_rescan, CC 91)
+INFO SF: rescan already in flight (trigger=cc_rescan ignored)
+.INFO SF: rescan triggered (cc_rescan, CC 91)
+INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '-', '-']
+.INFO SF: rescan triggered (cc_sync, CC 90)
+INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '-', '-']
+..INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '-', '-']
+.INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '-', '-']
+.INFO SF: discovered 6 Wire String In param IDs
+INFO SF: rescan wrote 6 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '-', '-']
+.INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '(empty)', '(empty)']
+.INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '-', '-']
+.INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['1-FULL SCREEN', '2-EACH SECTION', '3-SPLIT', '4-LOGO', '-', '-']
+.INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '-', '-']
+.INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '-', '-']
+....INFO steam_input_layer_tracker: layer -> chaser
+.INFO steam_input_layer_tracker: layer -> flash
+..INFO steam_input_layer_tracker: layer -> flash
+....WARNING steam_input_layer_tracker: invalid default_layer 'bogus'; using 'chaser'
+.INFO steam_input_layer_tracker: layer -> flash
+.INFO steam_input_layer_tracker: layer -> chaser
+.INFO steam_input_layer_tracker: layer -> flash
+..INFO steam_input_layer_tracker: layer -> flash
+INFO steam_input_layer_tracker: layer -> chaser
+....INFO steam_input_layer_tracker: layer -> flash
+ERROR steam_input_layer_tracker: observer raised on layer change to 'flash'
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/engines/steam_input_layer_tracker.py", line 209, in _set_layer
+    callback(new_layer)
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_steam_input_layer_tracker.py", line 220, in bad_observer
+    raise RuntimeError("boom")
+RuntimeError: boom
+.INFO steam_input_layer_tracker: layer -> flash
+INFO steam_input_layer_tracker: layer -> chaser
+.INFO steam_input_layer_tracker: layer -> flash
+.INFO steam_input_layer_tracker: layer -> flash
+..INFO steam_input_layer_tracker: layer -> flash
+INFO steam_input_layer_tracker: layer -> chaser
+.INFO steam_input_layer_tracker: layer -> flash
+INFO steam_input_layer_tracker: layer -> chaser
+.INFO steam_input_layer_tracker: layer -> flash
+.INFO steam_input_layer_tracker: layer -> flash
+.INFO steam_input_layer_tracker: layer -> flash
+......................../opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/case.py:589: ResourceWarning: unclosed file <_io.BufferedReader name='/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/static/index.html'>
+  if method() is not None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.........ERROR engine bad refresh failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/engines/registry.py", line 207, in refresh
+    engine.refresh()
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_ui_server.py", line 521, in refresh
+    raise RuntimeError("simulated refresh failure")
+RuntimeError: simulated refresh failure
+.............................................INFO created bridge settings /tmp/sdcore-r1/tmpr0yfc3uu/config/bridge.local.json with preset_section=macbook
+..........INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=resolved output index=2
+INFO action=BTN_A state=down seq=1
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=resolved output index=2
+INFO mapping UI available at http://127.0.0.1:7723
+INFO listening on udp://0.0.0.0:45123
+ERROR hot-reload failed: preset section 'macbook' is not available; available sections: windows
+INFO action=BTN_A state=down seq=1
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=2
+INFO shutdown requested
+..INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=resolved output index=2
+INFO action=BTN_A state=down seq=1
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=resolved output index=2
+INFO mapping UI available at http://127.0.0.1:7900
+INFO listening on udp://127.0.0.1:49000
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=1
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=2
+INFO shutdown requested
+INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=resolved output index=2
+INFO action=BTN_A state=down seq=1
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=resolved output index=2
+INFO action=BTN_A state=down seq=1
+..............................
+----------------------------------------------------------------------
+Ran 807 tests in 10.716s
+
+OK (skipped=1)
+sent action=BTN_A state=down seq=17
+sent action=BTN_A state=up seq=1
+MIDI note_on channel=1 note=80 velocity=127
+MIDI note_off channel=1 note=80 velocity=0
+MIDI panic
+MIDI note_on channel=1 note=80 velocity=127
+MIDI note_off channel=1 note=80 velocity=0
+MIDI panic
+MIDI note_on channel=1 note=80 velocity=127
+MIDI note_off channel=1 note=80 velocity=0
+MIDI panic
+MIDI note_on channel=1 note=80 velocity=127
+MIDI note_off channel=1 note=80 velocity=0
+MIDI panic
+MIDI note_on channel=0 note=36 velocity=127
+MIDI note_off channel=0 note=36 velocity=0
+MIDI panic
+MIDI note_on channel=0 note=36 velocity=127
+MIDI note_off channel=0 note=36 velocity=0
+MIDI panic
+MIDI note_on channel=0 note=36 velocity=127
+MIDI note_off channel=0 note=36 velocity=0
+MIDI panic
+MIDI note_on channel=0 note=61 velocity=127
+MIDI note_off channel=0 note=61 velocity=0
+MIDI panic
+MIDI note_on channel=1 note=80 velocity=127
+MIDI note_off channel=1 note=80 velocity=0
+MIDI panic
+MIDI note_on channel=0 note=45 velocity=127
+MIDI note_off channel=0 note=45 velocity=0
+MIDI panic
+MIDI note_on channel=0 note=57 velocity=127
+MIDI note_off channel=0 note=57 velocity=0
+MIDI panic
+MIDI note_on channel=1 note=80 velocity=127
+MIDI note_off channel=1 note=80 velocity=0
+MIDI panic
+MIDI note_on channel=0 note=36 velocity=127
+MIDI note_off channel=0 note=36 velocity=0
+MIDI panic
+HTML API bar: 21 paths registered; HTML parsed; ids unique

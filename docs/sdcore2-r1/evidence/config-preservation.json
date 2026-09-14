@@ -1,0 +1,9 @@
+{
+  "files_checked": 36,
+  "changed_paths": [
+    "config/presets/default.json"
+  ],
+  "default_before_sha256": "2f7f3cf6943609c92068c7943801e2b948e6001de872a59eb099414605d7055c",
+  "default_after_sha256": "5ebcf1e85dc3881d59e1658103ec17a0a3add438571679b3fca4f30b0f9a52a1",
+  "all_other_config_bytes_equal": true
+}
