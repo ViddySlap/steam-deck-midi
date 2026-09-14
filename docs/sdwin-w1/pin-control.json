@@ -1,0 +1,35 @@
+[
+  {
+    "phase": "green",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-c",
+      "from pathlib import Path; from tests.test_showready_rail import verify_pins; verify_pins(Path('/tmp/sdwin-w1/pin-control'))"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "phase": "red",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-c",
+      "from pathlib import Path; from tests.test_showready_rail import verify_pins; verify_pins(Path('/tmp/sdwin-w1/pin-control'))"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_showready_rail.py\", line 29, in verify_pins\n    raise AssertionError('SHA256SUMS mismatch: ' + repr(sorted(set(pins) ^ set(actual)))\nAssertionError: SHA256SUMS mismatch: [] changed=['scripts/showready/win_rail.sh']\n"
+  },
+  {
+    "phase": "restored",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-c",
+      "from pathlib import Path; from tests.test_showready_rail import verify_pins; verify_pins(Path('/tmp/sdwin-w1/pin-control'))"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

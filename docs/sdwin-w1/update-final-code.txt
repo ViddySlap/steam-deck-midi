@@ -1,0 +1,14 @@
+From https://github.com/ViddySlap/steam-deck-midi
+   62b0dc4..84e583b  chain/steamdeck-20260914 -> origin/chain/steamdeck-20260914
+Updating 62b0dc4..84e583b
+Fast-forward
+ docs/sdwin-w1/guard-utf8-green.txt | 12 ++++++++++++
+ docs/sdwin-w1/guard-utf8-red.txt   | 21 +++++++++++++++++++++
+ scripts/showready/SHA256SUMS       |  2 +-
+ scripts/showready/win_guard.ps1    |  2 +-
+ tests/test_showready_rail.py       |  9 +++++----
+ 5 files changed, 40 insertions(+), 6 deletions(-)
+ create mode 100644 docs/sdwin-w1/guard-utf8-green.txt
+ create mode 100644 docs/sdwin-w1/guard-utf8-red.txt
+CLONE_HEAD 84e583b329bff502553864d1b5f3663dadd6559a
+CLONE PORCELAIN EMPTY

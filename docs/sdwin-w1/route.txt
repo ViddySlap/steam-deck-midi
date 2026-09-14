@@ -1,0 +1,5 @@
+command: ssh -i ~/.ssh/claude-mac-win-key -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=10 ben@viddyslaptop.local 'hostname & whoami'
+exit: 0
+stdout:
+ViddySlaptop
+viddyslaptop\ben

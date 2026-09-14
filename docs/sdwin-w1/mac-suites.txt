@@ -1,0 +1,29 @@
+mac-before
+command: .venv/bin/python -m unittest discover -s tests -p "test_*.py"
+Ran 821 tests in 11.454s
+OK (skipped=1)
+exit: 0
+
+mac-kit
+command: .venv/bin/python -m unittest discover -s tests -p "test_*.py"
+Ran 827 tests in 11.493s
+OK (skipped=2)
+exit: 0
+
+mac-final-code
+command: .venv/bin/python -m unittest discover -s tests -p "test_*.py"
+Ran 828 tests in 11.154s
+OK (skipped=2)
+exit: 0
+
+mac-final
+command: .venv/bin/python -m unittest discover -s tests -p "test_*.py"
+Ran 828 tests in 11.302s
+OK (skipped=2)
+exit: 0
+
+mac-final-utf8
+command: .venv/bin/python -m unittest discover -s tests -p "test_*.py"
+Ran 828 tests in 11.803s
+OK (skipped=2)
+exit: 0

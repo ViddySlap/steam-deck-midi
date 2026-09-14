@@ -1,0 +1,14 @@
+[
+  {
+    "command": "scripts/showready/win_rail.sh run w1 /tmp/sdwin-w1/exit7.ps1",
+    "exit": 7,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": "scripts/showready/win_rail.sh run w1 /tmp/sdwin-w1/stderr0.ps1",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "RAIL STDERR control\n"
+  }
+]

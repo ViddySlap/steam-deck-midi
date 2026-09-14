@@ -1,0 +1,35 @@
+[
+    {
+        "ProcessId":  5268,
+        "Name":  "STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+        "ExecutablePath":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+        "CommandLine":  "\"C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe\" --listen 0.0.0.0:45123 --map \"C:\\Program Files\\STEAMDECK MIDI Receiver 2\\config\\windows_midi_map.json\" --midi-port DECK_IN --feedback-port DECK_OUT --timeout 2.0 --ui-port 7723 --tray"
+    },
+    {
+        "ProcessId":  23640,
+        "Name":  "STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+        "ExecutablePath":  "C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe",
+        "CommandLine":  "\"C:\\Program Files\\STEAMDECK MIDI Receiver 2\\STEAMDECK-MIDI-RECEIVER-2-Tray.exe\" --listen 0.0.0.0:45123 --map \"C:\\Program Files\\STEAMDECK MIDI Receiver 2\\config\\windows_midi_map.json\" --midi-port DECK_IN --feedback-port DECK_OUT --timeout 2.0 --ui-port 7723 --tray"
+    }
+]
+PATH C:\Program Files\STEAMDECK MIDI Receiver 2\config EXISTS True
+
+Name                                   Mode
+----                                   ----
+engines                                d-----
+engines.factory                        d-----
+presets                                d-----
+_backup-pre-v048-20260604-162800       d-----
+actions.yaml                           -a----
+engines.factory.json                   -a----
+engines.json.migrated                  -a----
+macro_library.json                     -a----
+osc_relay.json                         -a----
+windows_midi_map.json                  -a----
+windows_receiver_settings.example.json -a----
+windows_receiver_settings.local.json   -a----
+PATH C:\Users\Ben\AppData\Local\STEAMDECK MIDI Receiver 2 EXISTS True
+logs                                   d-----
+PATH C:\Users\Ben\AppData\Roaming\STEAMDECK MIDI Receiver 2 EXISTS False
+PATH C:\Users\Ben\AppData\Local\VirtualStore\Program Files\STEAMDECK MIDI Receiver 2\config EXISTS False
+CLONE_EXISTS False
