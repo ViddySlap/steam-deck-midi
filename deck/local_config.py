@@ -5,9 +5,10 @@ from __future__ import annotations
 import ipaddress
 import json
 import os
+import re
 import subprocess
 import tempfile
-from dataclasses import dataclass
+from dataclasses import dataclass, field, replace
 
 
 @dataclass(frozen=True)
@@ -26,6 +27,7 @@ class DeckRuntimeSettings:
     profile_name: str | None
     profile_hash: str | None
     presets: list[TargetPreset]
+    active_targets: list[str] = field(default_factory=list)
 
 
 def validate_ipv4_address(value: str) -> str:
@@ -36,6 +38,39 @@ def validate_ipv4_address(value: str) -> str:
     if parsed.version != 4:
         raise ValueError(f"invalid IPv4 address: {value}")
     return str(parsed)
+
+
+def validate_target_host(value: str) -> str:
+    """Accept IPv4 or ASCII DNS labels, including .local and single-label hosts."""
+    value = value.strip()
+    try:
+        return validate_ipv4_address(value)
+    except ValueError:
+        pass
+    hostname = value[:-1] if value.endswith(".") else value
+    labels = hostname.split(".")
+    if (not hostname or len(hostname) > 253
+            or re.fullmatch(r"[0-9.]+", hostname)
+            or any(not re.fullmatch(r"[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?", label)
+                   for label in labels)):
+        raise ValueError(f"invalid IPv4 address or hostname: {value}")
+    return value
+
+
+def _validate_active_targets(names: list[str], presets: list[TargetPreset]) -> None:
+    if not isinstance(names, list) or any(not isinstance(name, str) for name in names):
+        raise ValueError("active_targets must be a list of preset names")
+    if len(names) != len(set(names)):
+        raise ValueError("active_targets must not repeat a preset name")
+    for name in names:
+        matches = sum(preset.name == name for preset in presets)
+        if matches != 1:
+            raise ValueError(f"active_targets has an unknown or ambiguous preset name: {name}")
+
+
+def with_active_targets(settings: DeckRuntimeSettings, names: list[str]) -> DeckRuntimeSettings:
+    _validate_active_targets(names, settings.presets)
+    return replace(settings, active_targets=list(names))
 
 
 def load_runtime_settings(path: str) -> DeckRuntimeSettings:
@@ -49,6 +84,7 @@ def load_runtime_settings(path: str) -> DeckRuntimeSettings:
     profile_name = raw.get("profile_name")
     profile_hash = raw.get("profile_hash")
     presets_raw = raw.get("presets", [])
+    active_targets = raw.get("active_targets", [])
 
     if device_id is not None:
         device_id = str(device_id).strip()
@@ -80,7 +116,9 @@ def load_runtime_settings(path: str) -> DeckRuntimeSettings:
             raise ValueError("preset host must be a non-empty string")
         if not isinstance(port, int) or not (1 <= port <= 65535):
             raise ValueError("preset port must be an integer between 1 and 65535")
-        presets.append(TargetPreset(name=name.strip(), host=host.strip(), port=port))
+        presets.append(TargetPreset(name=name.strip(), host=validate_target_host(host), port=port))
+
+    _validate_active_targets(active_targets, presets)
 
     return DeckRuntimeSettings(
         device_id=device_id,
@@ -90,12 +128,14 @@ def load_runtime_settings(path: str) -> DeckRuntimeSettings:
         profile_name=profile_name,
         profile_hash=profile_hash,
         presets=presets,
+        active_targets=active_targets,
     )
 
 
 def write_runtime_settings(path: str, settings: DeckRuntimeSettings) -> None:
     if os.path.isdir(path):
         raise ValueError(f"settings path points to a directory, not a file: {path}")
+    _validate_active_targets(settings.active_targets, settings.presets)
 
     payload = {
         "device_id": settings.device_id,
@@ -104,6 +144,7 @@ def write_runtime_settings(path: str, settings: DeckRuntimeSettings) -> None:
         "default_port": settings.default_port,
         "profile_name": settings.profile_name,
         "profile_hash": settings.profile_hash,
+        "active_targets": settings.active_targets,
         "presets": [
             {"name": preset.name, "host": preset.host, "port": preset.port}
             for preset in settings.presets
@@ -135,8 +176,9 @@ def save_runtime_settings(path: str, settings: DeckRuntimeSettings) -> None:
     write_runtime_settings(path, settings)
 
 
-def describe_preset(index: int, preset: TargetPreset) -> str:
-    return f"{index}. {preset.name} ({preset.host}:{preset.port})"
+def describe_preset(index: int, preset: TargetPreset, active: bool = False) -> str:
+    marker = " [active]" if active else ""
+    return f"{index}. {preset.name} ({preset.host}:{preset.port}){marker}"
 
 
 def with_device_id(settings: DeckRuntimeSettings, device_id: str) -> DeckRuntimeSettings:
@@ -151,6 +193,7 @@ def with_device_id(settings: DeckRuntimeSettings, device_id: str) -> DeckRuntime
         profile_name=settings.profile_name,
         profile_hash=settings.profile_hash,
         presets=settings.presets,
+        active_targets=settings.active_targets,
     )
 
 
@@ -160,7 +203,9 @@ def with_added_preset(
     normalized_name = name.strip()
     if not normalized_name:
         raise ValueError("target name must be a non-empty string")
-    normalized_host = validate_ipv4_address(host)
+    if any(preset.name == normalized_name for preset in settings.presets):
+        raise ValueError(f"preset name already exists: {normalized_name}")
+    normalized_host = validate_target_host(host)
     updated_presets = settings.presets + [
         TargetPreset(name=normalized_name, host=normalized_host, port=settings.default_port)
     ]
@@ -172,6 +217,7 @@ def with_added_preset(
         profile_name=settings.profile_name,
         profile_hash=settings.profile_hash,
         presets=updated_presets,
+        active_targets=settings.active_targets,
     )
 
 
@@ -183,6 +229,8 @@ def with_renamed_preset(
         raise ValueError("preset name must be a non-empty string")
     if not (0 <= index < len(settings.presets)):
         raise ValueError(f"preset index out of range: {index}")
+    if any(preset.name == normalized for i, preset in enumerate(settings.presets) if i != index):
+        raise ValueError(f"preset name already exists: {normalized}")
     updated = list(settings.presets)
     updated[index] = TargetPreset(
         name=normalized, host=updated[index].host, port=updated[index].port
@@ -195,6 +243,8 @@ def with_renamed_preset(
         profile_name=settings.profile_name,
         profile_hash=settings.profile_hash,
         presets=updated,
+        active_targets=[normalized if name == settings.presets[index].name else name
+                        for name in settings.active_targets],
     )
 
 
@@ -210,6 +260,8 @@ def with_deleted_preset(settings: DeckRuntimeSettings, index: int) -> DeckRuntim
         profile_name=settings.profile_name,
         profile_hash=settings.profile_hash,
         presets=updated,
+        active_targets=[name for name in settings.active_targets
+                        if name != settings.presets[index].name],
     )
 
 
@@ -224,4 +276,3 @@ def get_xinput_list_output() -> str:
     except (OSError, subprocess.CalledProcessError):
         return ""
     return result.stdout.strip()
-

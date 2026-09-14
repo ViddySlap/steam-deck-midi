@@ -1,0 +1,263 @@
+{
+  "item": "sdcore-q001.S4",
+  "predecessor": "8dcb482fe34a4389031e9eae1f015530e62ce4ac",
+  "baseline": {
+    "tests": 706,
+    "seconds": 7.531,
+    "errors": 2,
+    "skipped": 1,
+    "result": "FAILED"
+  },
+  "final": {
+    "tests": 769,
+    "seconds": 5.919,
+    "errors": 0,
+    "skipped": 1,
+    "result": "OK"
+  },
+  "new_tests": 30,
+  "recovered_original_tests": 35,
+  "replaced_import_error_placeholders": 2,
+  "smoke": {
+    "status": "PASS",
+    "receivers": 2,
+    "packets_per_receiver": 3,
+    "identical_payloads": true,
+    "seq": [
+      1,
+      2,
+      3
+    ],
+    "sender_source_count": 1,
+    "feedback_count": 2,
+    "scope": "real macOS loopback UDP; no physical Deck or MIDI"
+  },
+  "mutation_controls": [
+    {
+      "name": "pristine",
+      "expected": "GREEN",
+      "exit": 0,
+      "passed": true
+    },
+    {
+      "name": "fanout-first-only",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "fanout-two-only",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "fanout-reversed",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "send-error-stops-later",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "error-rate-limit-missing",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "error-rate-limit-too-long",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "dns-cache-never-refreshes",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "dns-no-cache",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "dns-failure-not-cached",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "parse-first-only",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "axis-does-not-send",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "heartbeat-single-only",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "eager-xi-load",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "lazy-load-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "sender-discards-list",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "sender-seq-advances-per-host",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "cli-new-spelling-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "config-legacy-default-missing",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "config-selection-not-persisted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "config-unknown-accepted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "config-repeated-accepted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "config-replace-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "hostnames-rejected",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "host-invalid-accepted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "config-active-lost-other-edits",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "config-rename-loses-active",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "config-delete-loses-survivor",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "config-duplicate-add-accepted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "active-marker-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "menu-toggle-off-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "menu-toggle-on-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "menu-only-first-host",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "menu-single-retains-set",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "restored",
+      "expected": "GREEN",
+      "exit": 0,
+      "passed": true
+    }
+  ],
+  "unchanged_existing_config_methods": 11,
+  "protocol_unchanged": true,
+  "source_sha256": {
+    "deck/transport.py": "c0b710edad4c5f8a2a069658b3f96b17041d4dd2e0b9ff40397ccc947217f612",
+    "deck/xinput_send.py": "68cc88b933ebe0fcaa9ce91b4e8d594e6ea26334941d76c4b062dea7b4ee42eb",
+    "deck/local_config.py": "25d4ece94b3621e4007b9a557cca968b94faee0149306b5cdfdd6b7472ac588c",
+    "deck/launch_send.py": "17009d0fcda2e2e588f9e7ef678bc39314f1fd15270cfdad5eb98c7e49848b07",
+    "config/deck_runtime_settings.example.json": "995afb1174dab94d4be58975b63c2ecaf638b04353d088ba04e0a1191a53ec56",
+    "tests/test_deck_transport.py": "7e0132ae5f790bbc4581972b4c543970d1cacae39a455c4986ba527af79e5211",
+    "tests/test_deck_fanout_launch.py": "29bfc7c536e36af535ddb2cd51dab79e3d43770245632af017d91d0698e1a90e",
+    "tests/test_deck_local_config.py": "3b13cbab2fa39c9063433a6e39ef3f4647da52fe6d1eb80169a1b9cee66806dd",
+    "docs/deck-fanout.md": "df6d0f52358bd6c77424a4e2e1676eb69ef6156d4a7dc407f070a1cbbd38e1e2",
+    "docs/api.md": "e8cde61cae9be766862fdb143b24d9937b4a005955d089c3df7aee898d745f85",
+    "docs/sdcore-s4/smoke.py": "ea561aff30643c4183e4cbf6d9bd77a0388e1334d38173f686fe8eca4e6d287d",
+    "docs/sdcore-s4/reversions.py": "a66a1a7cc69725349a48f9260ab0d5638f7bd2ea54a4bf235c010e96a2dd705b"
+  }
+}

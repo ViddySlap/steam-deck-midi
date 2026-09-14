@@ -13,6 +13,7 @@ from deck.local_config import (
     with_added_preset,
     with_deleted_preset,
     with_renamed_preset,
+    with_active_targets,
 )
 from deck.xinput_send import run_sender
 
@@ -35,7 +36,7 @@ def prompt_new_preset(settings_path: str, settings):
     print("")
     print("Create New Preset")
     while True:
-        host = input("What is your target IP address? ").strip()
+        host = input("What is your target IPv4 address or hostname? ").strip()
         name = input("What is the name of the target? ").strip()
         try:
             updated = with_added_preset(settings, name=name, host=host)
@@ -56,7 +57,7 @@ def prompt_rename_preset(settings_path: str, settings):
     print("")
     print("Rename Preset")
     for index, preset in enumerate(settings.presets, start=1):
-        print(describe_preset(index, preset))
+        print(describe_preset(index, preset, preset.name in settings.active_targets))
     while True:
         choice = input(f"Rename which preset? (1-{len(settings.presets)}): ").strip()
         try:
@@ -86,7 +87,7 @@ def prompt_delete_preset(settings_path: str, settings):
     print("")
     print("Delete Preset")
     for index, preset in enumerate(settings.presets, start=1):
-        print(describe_preset(index, preset))
+        print(describe_preset(index, preset, preset.name in settings.active_targets))
     while True:
         choice = input(f"Delete which preset? (1-{len(settings.presets)}): ").strip()
         try:
@@ -108,6 +109,39 @@ def prompt_delete_preset(settings_path: str, settings):
         return updated
 
 
+def prompt_select_multiple(settings_path: str, settings):
+    names = list(settings.active_targets)
+    while True:
+        print("")
+        print("Select multiple targets")
+        for index, preset in enumerate(settings.presets, start=1):
+            print(describe_preset(index, preset, preset.name in names))
+        choice = input("Toggle a preset number, s to save, or q to cancel: ").strip().lower()
+        if choice == "q":
+            return settings
+        if choice == "s":
+            try:
+                updated = with_active_targets(settings, names)
+                save_runtime_settings(settings_path, updated)
+            except (OSError, ValueError) as exc:
+                print(f"Error: {exc}")
+                continue
+            return updated
+        try:
+            index = int(choice) - 1
+        except ValueError:
+            print("Invalid selection.")
+            continue
+        if not 0 <= index < len(settings.presets):
+            print("Invalid selection.")
+            continue
+        name = settings.presets[index].name
+        if name in names:
+            names.remove(name)
+        else:
+            names.append(name)
+
+
 def prompt_for_preset(settings_path: str, settings, device_id: str):
     while True:
         print("")
@@ -118,12 +152,15 @@ def prompt_for_preset(settings_path: str, settings, device_id: str):
         print("Select a target preset:")
         if settings.presets:
             for index, preset in enumerate(settings.presets, start=1):
-                print(describe_preset(index, preset))
+                print(describe_preset(index, preset, preset.name in settings.active_targets))
         else:
             print("No presets saved yet.")
         create_index = len(settings.presets) + 1
         print(f"{create_index}. Create new preset")
         if settings.presets:
+            print("m. Select multiple targets")
+            if settings.active_targets:
+                print("s. Start active targets")
             print("r. Rename a preset")
             print("d. Delete a preset")
         print("q. Quit")
@@ -132,6 +169,12 @@ def prompt_for_preset(settings_path: str, settings, device_id: str):
         choice = input("Selection: ").strip().lower()
         if choice == "q":
             return None, settings
+        if choice == "m" and settings.presets:
+            settings = prompt_select_multiple(settings_path, settings)
+            continue
+        if choice == "s" and settings.active_targets:
+            preset = next(p for p in settings.presets if p.name == settings.active_targets[0])
+            return preset, settings
         if choice == str(create_index):
             settings = prompt_new_preset(settings_path, settings)
             continue
@@ -147,6 +190,9 @@ def prompt_for_preset(settings_path: str, settings, device_id: str):
             print("Invalid selection.")
             continue
         if 1 <= selected_index <= len(settings.presets):
+            if settings.active_targets:
+                settings = with_active_targets(settings, [])
+                save_runtime_settings(settings_path, settings)
             return settings.presets[selected_index - 1], settings
         print("Invalid selection.")
 
@@ -173,15 +219,17 @@ def main(argv: list[str] | None = None) -> int:
         print("Sender cancelled.")
         return 0
 
-    target = f"{preset.host}:{preset.port}"
+    by_name = {p.name: p for p in settings.presets}
+    selected = [by_name[name] for name in settings.active_targets] or [preset]
+    targets = [(p.host, p.port) for p in selected]
     print("")
-    print(f"Starting sender for preset: {preset.name}")
-    print(f"Target: {target}")
+    print(f"Starting sender for presets: {', '.join(p.name for p in selected)}")
+    print(f"Targets: {', '.join(f'{host}:{port}' for host, port in targets)}")
     print("")
     return run_sender(
         device_id=device_id,
         bindings_path=settings.bindings_path,
-        target=target,
+        targets=targets,
         profile_name=settings.profile_name,
         profile_hash=settings.profile_hash,
     )

@@ -20,7 +20,7 @@ import time
 from dataclasses import dataclass
 from pathlib import Path
 
-from protocol.messages import encode_action_event, encode_axis_event, encode_heartbeat_event
+from deck.transport import parse_target, parse_targets, send_action, send_axis, send_heartbeat
 
 
 HEARTBEAT_INTERVAL_SECONDS = 0.5
@@ -132,8 +132,8 @@ def _load_library(name: str) -> ctypes.CDLL:
     return ctypes.CDLL(path)
 
 
-_LIB_X11 = _load_library("X11")
-_LIB_XI = _load_library("Xi")
+_LIB_X11 = None
+_LIB_XI = None
 
 
 class XGenericEventCookie(ctypes.Structure):
@@ -180,46 +180,53 @@ class XIRawEventHead(ctypes.Structure):
     ]
 
 
-_LIB_X11.XOpenDisplay.argtypes = [ctypes.c_char_p]
-_LIB_X11.XOpenDisplay.restype = ctypes.c_void_p
-_LIB_X11.XCloseDisplay.argtypes = [ctypes.c_void_p]
-_LIB_X11.XCloseDisplay.restype = ctypes.c_int
-_LIB_X11.XDefaultRootWindow.argtypes = [ctypes.c_void_p]
-_LIB_X11.XDefaultRootWindow.restype = ctypes.c_ulong
-_LIB_X11.XQueryExtension.argtypes = [
-    ctypes.c_void_p,
-    ctypes.c_char_p,
-    ctypes.POINTER(ctypes.c_int),
-    ctypes.POINTER(ctypes.c_int),
-    ctypes.POINTER(ctypes.c_int),
-]
-_LIB_X11.XQueryExtension.restype = ctypes.c_int
-_LIB_X11.XConnectionNumber.argtypes = [ctypes.c_void_p]
-_LIB_X11.XConnectionNumber.restype = ctypes.c_int
-_LIB_X11.XPending.argtypes = [ctypes.c_void_p]
-_LIB_X11.XPending.restype = ctypes.c_int
-_LIB_X11.XNextEvent.argtypes = [ctypes.c_void_p, ctypes.POINTER(XEvent)]
-_LIB_X11.XNextEvent.restype = ctypes.c_int
-_LIB_X11.XGetEventData.argtypes = [ctypes.c_void_p, ctypes.POINTER(XGenericEventCookie)]
-_LIB_X11.XGetEventData.restype = ctypes.c_int
-_LIB_X11.XFreeEventData.argtypes = [ctypes.c_void_p, ctypes.POINTER(XGenericEventCookie)]
-_LIB_X11.XFreeEventData.restype = None
-_LIB_X11.XFlush.argtypes = [ctypes.c_void_p]
-_LIB_X11.XFlush.restype = ctypes.c_int
+def _ensure_x11_libraries() -> None:
+    """Load native libraries only when opening a real XI2 listener."""
+    global _LIB_X11, _LIB_XI
+    if _LIB_X11 is not None and _LIB_XI is not None:
+        return
+    _LIB_X11 = _load_library("X11")
+    _LIB_XI = _load_library("Xi")
+    _LIB_X11.XOpenDisplay.argtypes = [ctypes.c_char_p]
+    _LIB_X11.XOpenDisplay.restype = ctypes.c_void_p
+    _LIB_X11.XCloseDisplay.argtypes = [ctypes.c_void_p]
+    _LIB_X11.XCloseDisplay.restype = ctypes.c_int
+    _LIB_X11.XDefaultRootWindow.argtypes = [ctypes.c_void_p]
+    _LIB_X11.XDefaultRootWindow.restype = ctypes.c_ulong
+    _LIB_X11.XQueryExtension.argtypes = [
+        ctypes.c_void_p,
+        ctypes.c_char_p,
+        ctypes.POINTER(ctypes.c_int),
+        ctypes.POINTER(ctypes.c_int),
+        ctypes.POINTER(ctypes.c_int),
+    ]
+    _LIB_X11.XQueryExtension.restype = ctypes.c_int
+    _LIB_X11.XConnectionNumber.argtypes = [ctypes.c_void_p]
+    _LIB_X11.XConnectionNumber.restype = ctypes.c_int
+    _LIB_X11.XPending.argtypes = [ctypes.c_void_p]
+    _LIB_X11.XPending.restype = ctypes.c_int
+    _LIB_X11.XNextEvent.argtypes = [ctypes.c_void_p, ctypes.POINTER(XEvent)]
+    _LIB_X11.XNextEvent.restype = ctypes.c_int
+    _LIB_X11.XGetEventData.argtypes = [ctypes.c_void_p, ctypes.POINTER(XGenericEventCookie)]
+    _LIB_X11.XGetEventData.restype = ctypes.c_int
+    _LIB_X11.XFreeEventData.argtypes = [ctypes.c_void_p, ctypes.POINTER(XGenericEventCookie)]
+    _LIB_X11.XFreeEventData.restype = None
+    _LIB_X11.XFlush.argtypes = [ctypes.c_void_p]
+    _LIB_X11.XFlush.restype = ctypes.c_int
 
-_LIB_XI.XIQueryVersion.argtypes = [
-    ctypes.c_void_p,
-    ctypes.POINTER(ctypes.c_int),
-    ctypes.POINTER(ctypes.c_int),
-]
-_LIB_XI.XIQueryVersion.restype = ctypes.c_int
-_LIB_XI.XISelectEvents.argtypes = [
-    ctypes.c_void_p,
-    ctypes.c_ulong,
-    ctypes.POINTER(XIEventMask),
-    ctypes.c_int,
-]
-_LIB_XI.XISelectEvents.restype = ctypes.c_int
+    _LIB_XI.XIQueryVersion.argtypes = [
+        ctypes.c_void_p,
+        ctypes.POINTER(ctypes.c_int),
+        ctypes.POINTER(ctypes.c_int),
+    ]
+    _LIB_XI.XIQueryVersion.restype = ctypes.c_int
+    _LIB_XI.XISelectEvents.argtypes = [
+        ctypes.c_void_p,
+        ctypes.c_ulong,
+        ctypes.POINTER(XIEventMask),
+        ctypes.c_int,
+    ]
+    _LIB_XI.XISelectEvents.restype = ctypes.c_int
 
 
 @dataclass(frozen=True)
@@ -230,6 +237,7 @@ class Xi2KeyEvent:
 
 class Xi2RawListener:
     def __init__(self, device_id: int) -> None:
+        _ensure_x11_libraries()
         self._device_id = device_id
         self._display = _LIB_X11.XOpenDisplay(None)
         if not self._display:
@@ -544,9 +552,10 @@ def build_parser() -> argparse.ArgumentParser:
         help="path to deck_bindings.json containing keycode-to-action bindings",
     )
     parser.add_argument(
-        "--target",
+        "--targets", "--target",
+        dest="target",
         required=True,
-        help="receiver address in host:port form, for example 10.10.10.15:45123",
+        help="comma-separated receivers in host:port form (IPv4 or hostname)",
     )
     parser.add_argument(
         "--profile-name",
@@ -564,11 +573,6 @@ def build_parser() -> argparse.ArgumentParser:
         help="action ID that toggles gyro position mode on/off (default: L4)",
     )
     return parser
-
-
-def parse_target(value: str) -> tuple[str, int]:
-    host, port_text = value.rsplit(":", 1)
-    return host, int(port_text)
 
 
 def load_bindings(path: str) -> tuple[str | None, dict[str, str]]:
@@ -661,67 +665,23 @@ def next_select_timeout(
     return max(0.0, next_heartbeat_at - now)
 
 
-def send_action(
-    sock: socket.socket,
-    target: tuple[str, int],
-    *,
-    action: str,
-    state: str,
-    seq: int,
-    profile_name: str | None,
-    profile_hash: str | None,
-) -> None:
-    payload = encode_action_event(
-        action=action,
-        state=state,
-        seq=seq,
-        profile_name=profile_name,
-        profile_hash=profile_hash,
-    )
-    sock.sendto(payload, target)
-    print(f"sent action={action} state={state} seq={seq}")
-
-
-def send_axis(
-    sock: socket.socket,
-    target: tuple[str, int],
-    *,
-    action: str,
-    value: int,
-    seq: int,
-) -> None:
-    payload = encode_axis_event(action=action, value=value, seq=seq)
-    sock.sendto(payload, target)
-
-
-def send_heartbeat(
-    sock: socket.socket,
-    target: tuple[str, int],
-    *,
-    seq: int,
-    profile_name: str | None,
-    profile_hash: str | None,
-) -> None:
-    payload = encode_heartbeat_event(
-        seq=seq,
-        profile_name=profile_name,
-        profile_hash=profile_hash,
-    )
-    sock.sendto(payload, target)
-
-
 def run_sender(
     *,
     device_id: str,
     bindings_path: str,
-    target: str,
+    target: str | None = None,
+    targets: list[tuple[str, int]] | None = None,
     profile_name: str | None,
     profile_hash: str | None,
     gyro_trigger: str = "L4",
 ) -> int:
     try:
         loaded_profile_name, bindings = load_bindings(bindings_path)
-        resolved_target = parse_target(target)
+        resolved_targets = list(targets) if targets is not None else parse_targets(target or "")
+        if not resolved_targets:
+            raise ValueError("at least one target is required")
+        # Validate addresses without resolving them; DNS belongs to the send path.
+        resolved_targets = [parse_target(f"{host}:{port}") for host, port in resolved_targets]
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         print(f"Error: {exc}")
         return 2
@@ -739,7 +699,7 @@ def run_sender(
         return 2
 
     print_sender_binding_audit(bindings)
-    print(f"watching XI2 raw key events for device {device_id} and sending to {target}")
+    print(f"watching XI2 raw key events for device {device_id} and sending to {resolved_targets}")
     print("gyro: always-on (L4 freed; bridge owns tap/hold + feedback state)")
 
     axis_last_sent: dict[str, float] = {}
@@ -775,7 +735,7 @@ def run_sender(
                             if now >= next_heartbeat_at:
                                 send_heartbeat(
                                     sock,
-                                    resolved_target,
+                                    resolved_targets,
                                     seq=seq,
                                     profile_name=resolved_profile_name,
                                     profile_hash=profile_hash,
@@ -789,7 +749,7 @@ def run_sender(
                                 if event is not None and action is not None:
                                     send_action(
                                         sock,
-                                        resolved_target,
+                                        resolved_targets,
                                         action=action,
                                         state=event.state,
                                         seq=seq,
@@ -805,7 +765,7 @@ def run_sender(
                             if now - last_sent >= AXIS_MIN_INTERVAL:
                                 send_axis(
                                     sock,
-                                    resolved_target,
+                                    resolved_targets,
                                     action=axis_action,
                                     value=value,
                                     seq=seq,

@@ -127,3 +127,12 @@ section, current action, and Engines tab. Dirty editors show a persistent,
 non-modal notice and Reload button; Reload uses `/api/reload` and the existing
 unsaved-change confirmation. Background reads also check for edits made while
 HTTP requests were in flight before replacing any draft.
+
+## Deck sender API status
+
+The Deck has no HTTP API yet. S4 adds saved multi-target selection in its TTY
+launcher and the `--targets` CLI option (the `--target` alias accepts the same
+comma-separated list). See [deck-fanout.md](deck-fanout.md) for setup. S5 adds the
+Deck HTTP API, including target preset CRUD, active target selection, and sender
+controls. The lane-wide HTTP parity bar remains owed to S5 and the gate; these
+TTY actions are not available through the bridge endpoints above.
