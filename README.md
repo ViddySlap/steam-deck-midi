@@ -43,6 +43,9 @@ Added since v0.2.0:
 - Gyro and analog stick layer control with indicator feedback.
 - macOS receiver via the IAC Driver, started by `scripts/mac/run_receiver.command`.
 
+On macOS the bridge currently ignores Ctrl-C, so stop it with the tray/host Quit, `curl -X POST http://127.0.0.1:7723/api/shutdown`, or `kill -TERM <pid>`.
+The Ctrl-C fix is an open backlog item.
+
 See `TODO.md` for open work.
 
 ## Docs

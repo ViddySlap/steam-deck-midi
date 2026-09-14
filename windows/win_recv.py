@@ -404,6 +404,7 @@ def main(argv: list[str] | None = None) -> int:
             macro_library_path=macro_library_path,
             actions_yaml_path=actions_yaml,
             reload_event=reload_event,
+            shutdown_fn=receiver.request_shutdown,
             port=args.ui_port,
             engine_registry=engine_registry,
             bridge_settings=bridge_settings,
@@ -422,22 +423,10 @@ def main(argv: list[str] | None = None) -> int:
         if not args.tray:
             try:
                 from windows.tray import ReceiverTray
-                import os
-
-                stop_event = threading.Event()
-
-                def quit_receiver() -> None:
-                    stop_event.set()
-
-                tray = ReceiverTray(ui_url=ui_server.url, quit_callback=quit_receiver)
+                tray = ReceiverTray(ui_url=ui_server.url, quit_callback=receiver.request_shutdown)
                 tray.run_in_thread()
             except Exception as exc:
                 logging.warning("system tray unavailable: %s", exc)
-                stop_event = None
-        else:
-            stop_event = None
-    else:
-        stop_event = None
 
     def _run_bridge_loop() -> None:
         serve_forever(
@@ -463,7 +452,7 @@ def main(argv: list[str] | None = None) -> int:
             run_tray_mode(
                 ui_url=ui_url,
                 run_bridge=_run_bridge_loop,
-                stop_bridge=None,
+                stop_bridge=receiver.request_shutdown,
             )
         finally:
             preset_watcher.stop()
@@ -471,6 +460,8 @@ def main(argv: list[str] | None = None) -> int:
             midi_out.close()
             if osc_relay is not None:
                 osc_relay.shutdown()
+            if ui_server is not None:
+                ui_server.stop()
         return 0
 
     try:
@@ -481,6 +472,8 @@ def main(argv: list[str] | None = None) -> int:
         midi_out.close()
         if osc_relay is not None:
             osc_relay.shutdown()
+        if ui_server is not None:
+            ui_server.stop()
         if tray is not None:
             tray.stop()
     return 0

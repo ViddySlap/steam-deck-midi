@@ -131,6 +131,7 @@ class ActionReceiver:
         engine_registry: Any = None,
     ) -> None:
         self.state_version = 0
+        self.stop_event = threading.Event()
         self._midi_out = midi_out
         self._mappings = mappings
         self._timeout_seconds = timeout_seconds
@@ -283,6 +284,10 @@ class ActionReceiver:
             LOGGER.warning("input timeout reached; releasing active MIDI state")
             self.release_all()
         return True
+
+    def request_shutdown(self) -> None:
+        """Ask the serve thread to release MIDI and run its normal teardown."""
+        self.stop_event.set()
 
     def release_all(self) -> None:
         for action, mapping in list(self._active_actions.items()):
@@ -1006,7 +1011,7 @@ def serve_forever(
             ", ".join(f"{e.name}({e.type_name})" for e in engine_registry.engines),
         )
     try:
-        while True:
+        while not receiver.stop_event.is_set():
             _drain_midi_feedback(receiver, midi_in, engine_registry)
             _drain_midi_clock(pulse_in, engine_registry)
             if engine_registry is not None:
@@ -1046,9 +1051,9 @@ def serve_forever(
     except KeyboardInterrupt:
         LOGGER.info("shutdown requested")
     finally:
+        receiver.release_all()
         if engine_registry is not None:
             engine_registry.shutdown()
-        receiver.release_all()
         sock.close()
         if midi_in is not None:
             midi_in.close()

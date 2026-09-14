@@ -137,6 +137,69 @@ class BridgeSettingsApiTests(unittest.TestCase):
         self.assertEqual(documented, registered)
 
 
+class BridgeShutdownApiTests(unittest.TestCase):
+    def setUp(self):
+        import shutil
+        from unittest.mock import Mock
+        self.server, _, tmpdir, *_ = _make_server()
+        self.addCleanup(shutil.rmtree, tmpdir)
+        self.stop_event = threading.Event()
+        self.shutdown = Mock(side_effect=self.stop_event.set)
+        self.server.shutdown_fn = self.shutdown
+        self.client = self.server._app.test_client()
+
+    def test_shutdown_route_is_registered_for_post_only(self):
+        rules = [r for r in self.server._app.url_map.iter_rules()
+                 if r.rule == "/api/shutdown"]
+        self.assertEqual(len(rules), 1)
+        self.assertEqual(rules[0].methods - {"OPTIONS"}, {"POST"})
+        self.assertEqual(self.client.get("/api/shutdown").status_code, 405)
+        self.assertFalse(self.stop_event.is_set())
+
+    def test_shutdown_sets_stop_event_and_returns_202(self):
+        response = self.client.post("/api/shutdown")
+        self.assertEqual(response.status_code, 202)
+        self.assertEqual(response.get_json(), {"stopping": True})
+        self.assertTrue(self.stop_event.is_set())
+
+    def test_shutdown_is_idempotent(self):
+        for _ in range(2):
+            response = self.client.post("/api/shutdown")
+            self.assertEqual(response.status_code, 202)
+            self.assertEqual(response.get_json(), {"stopping": True})
+        self.assertTrue(self.stop_event.is_set())
+        self.shutdown.assert_called_once_with()
+
+    def test_shutdown_refuses_non_loopback_even_with_forwarded_header(self):
+        for remote in ("192.168.1.7", "203.0.113.1", "::", "", "invalid"):
+            with self.subTest(remote=remote):
+                response = self.client.post(
+                    "/api/shutdown", environ_base={"REMOTE_ADDR": remote},
+                    headers={"X-Forwarded-For": "127.0.0.1"},
+                )
+                self.assertEqual(response.status_code, 403)
+                self.assertIn("loopback", response.get_json()["error"])
+                self.assertFalse(self.stop_event.is_set())
+        self.shutdown.assert_not_called()
+
+    def test_unwired_ui_refuses_shutdown(self):
+        self.server.shutdown_fn = None
+        response = self.client.post("/api/shutdown")
+        self.assertEqual(response.status_code, 503)
+        self.assertFalse(self.stop_event.is_set())
+
+    def test_non_loopback_is_still_refused_while_stopping(self):
+        self.assertEqual(self.client.post("/api/shutdown").status_code, 202)
+        response = self.client.post("/api/shutdown", environ_base={"REMOTE_ADDR": "10.0.0.1"})
+        self.assertEqual(response.status_code, 403)
+        self.shutdown.assert_called_once_with()
+
+    def test_shutdown_accepts_ipv6_loopback(self):
+        response = self.client.post("/api/shutdown", environ_base={"REMOTE_ADDR": "::1"})
+        self.assertEqual(response.status_code, 202)
+        self.assertTrue(self.stop_event.is_set())
+
+
 class DetectConflictsTests(unittest.TestCase):
     def test_no_conflict_returns_empty(self):
         mappings = {

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import ipaddress
 import json
 import os
 import tempfile
@@ -12,6 +13,7 @@ from pathlib import Path
 from typing import Any, Callable
 
 from flask import Flask, Response, jsonify, request, send_from_directory
+from werkzeug.serving import make_server
 
 from windows.bridge_settings import BridgeSettings
 from windows.config import (
@@ -170,12 +172,18 @@ class MappingUIServer:
         feedback_port: str | None = None,
         pulse_port: str | None = "PULSE_OUT",
         state_version_fn: Callable[[], int] | None = None,
+        shutdown_fn: Callable[[], None] | None = None,
     ) -> None:
         self.base_map_path = base_map_path
         self.presets_dir = presets_dir
         self.macro_library_path = macro_library_path
         self.actions_yaml_path = actions_yaml_path
         self.reload_event = reload_event
+        self.shutdown_fn = shutdown_fn
+        self._shutdown_lock = threading.Lock()
+        self._stopping = False
+        self._http_server = None
+        self._thread = None
         self.state_version_fn = state_version_fn or (lambda: 0)
         self.port = port
         self.engine_registry = engine_registry
@@ -305,6 +313,22 @@ class MappingUIServer:
         def reload_now() -> Response:
             self.reload_event.set()
             return jsonify({"ok": True})
+
+        @app.route("/api/shutdown", methods=["POST"])
+        def shutdown() -> Response:
+            try:
+                loopback = ipaddress.ip_address(request.remote_addr or "").is_loopback
+            except ValueError:
+                loopback = False
+            if not loopback:
+                return jsonify({"error": "shutdown requires a loopback remote address"}), 403
+            with self._shutdown_lock:
+                if self.shutdown_fn is None:
+                    return jsonify({"error": "bridge shutdown is unavailable"}), 503
+                if not self._stopping:
+                    self.shutdown_fn()
+                    self._stopping = True
+            return jsonify({"stopping": True}), 202
 
         @app.route("/api/settings", methods=["GET"])
         def get_settings() -> Response:
@@ -725,15 +749,29 @@ class MappingUIServer:
     # ------------------------------------------------------------------
 
     def run_in_thread(self) -> threading.Thread:
+        self._http_server = make_server("127.0.0.1", self.port, self._app, threaded=True)
+        # server_close waits for every response to finish, including shutdown's
+        # 202. A timer or a daemon request thread could truncate that response.
+        self._http_server.daemon_threads = False
+        self.port = self._http_server.server_port
         t = threading.Thread(
-            target=self._app.run,
-            kwargs={"host": "127.0.0.1", "port": self.port,
-                    "use_reloader": False, "debug": False},
+            target=self._http_server.serve_forever,
+            kwargs={"poll_interval": 0.05},
             daemon=True,
             name="ui-server",
         )
+        self._thread = t
         t.start()
         return t
+
+    def stop(self) -> None:
+        """Close HTTP from the bridge owner, after in-flight replies finish."""
+        if self._http_server is not None:
+            self._http_server.shutdown()
+            self._http_server.server_close()
+            self._thread.join()
+            self._http_server = None
+            self._thread = None
 
     @property
     def url(self) -> str:

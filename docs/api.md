@@ -2,7 +2,7 @@
 
 The bridge serves HTTP on `http://127.0.0.1:7723` by default. JSON write requests
 use `Content-Type: application/json`. This inventory is taken from
-`windows/ui_server.py`: 28 explicit method/path registrations after S3, plus
+`windows/ui_server.py`: 29 explicit method/path registrations after R2, plus
 Flask's static-file route. Flask also supplies HEAD for GET and automatic OPTIONS.
 Later links must extend this inventory with every new UI or control action.
 
@@ -12,6 +12,7 @@ Later links must extend this inventory with every new UI or control action.
 | GET | `/static/<path:filename>` | Serve the editor's static assets (Flask-generated route). |
 | GET | `/api/state-version` | Return the integer count of successfully applied reloads in this bridge process. |
 | POST | `/api/reload` | Request an immediate reload of the active preset and changed local settings. |
+| POST | `/api/shutdown` | Loopback only: request graceful bridge Quit; return 202 {"stopping": true}, including repeated calls while stopping. |
 | GET | `/api/settings` | Return live preset_section, listen, midi_port, feedback_port, pulse_port, ui_port, and map_path. |
 | PUT | `/api/settings` | Persist preset_section in bridge.local.json and request a live reload. |
 | GET | `/api/mappings` | Read selected section mappings, settings, and section/preset metadata; optional ?section=name defaults to this machine. |
@@ -43,6 +44,13 @@ input ports are `null`. `map_path` is the absolute, resolved active preset path,
 so it follows scene changes. `listen` is a host:port string and `ui_port` is an
 integer. The PUT response has the same fields as GET after the change. Only
 `preset_section` is writable in S1; see [section semantics](preset-sections.md).
+
+`POST /api/shutdown` uses the same stop request as both Windows tray Quit modes.
+It releases held MIDI controls before stopping engines, closes MIDI ports and
+UDP, and closes HTTP after in-flight replies finish. The process then exits 0.
+Non-loopback remote addresses receive 403, regardless of the bind address or
+forwarded headers. A standalone UI server with no bridge shutdown callback
+returns 503. No request body is required.
 
 ## Section editing
 

@@ -1,0 +1,8 @@
+UDP 45123 and TCP 7723 successfully rebound
+ARGV ["/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python", "-B", "-u", "-m", "windows.win_recv", "--preset-section", "macbook", "--listen", "0.0.0.0:45123", "--map", "config/windows_midi_map.json", "--midi-port", "IAC Driver DECK_IN", "--feedback-port", "IAC Driver DECK_OUT", "--pulse-port", "IAC Driver PULSE_OUT", "--timeout", "2.0", "--ui-port", "7723", "--dry-run"]
+CONFIG 36 files; changed: []
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdcore2-r2/scripts/verify_shutdown.py", line 51, in <module>
+    assert child.poll() is None, f'bridge exited early: {child.returncode}'
+           ^^^^^^^^^^^^^^^^^^^^
+AssertionError: bridge exited early: -6

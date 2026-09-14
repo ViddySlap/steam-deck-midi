@@ -1,0 +1,14 @@
+.....F
+======================================================================
+FAIL: test_api_inventory_matches_registered_method_paths (tests.test_ui_server.BridgeSettingsApiTests.test_api_inventory_matches_registered_method_paths)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_ui_server.py", line 137, in test_api_inventory_matches_registered_method_paths
+    self.assertEqual(documented, registered)
+AssertionError: Items in the second set but not the first:
+('POST', '/api/shutdown')
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.033s
+
+FAILED (failures=1)

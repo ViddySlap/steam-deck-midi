@@ -1,0 +1,77 @@
+FFFFFFFFF
+======================================================================
+FAIL: test_shutdown_accepts_ipv6_loopback (tests.test_ui_server.BridgeShutdownApiTests.test_shutdown_accepts_ipv6_loopback)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_ui_server.py", line 187, in test_shutdown_accepts_ipv6_loopback
+    self.assertEqual(response.status_code, 202)
+AssertionError: 404 != 202
+
+======================================================================
+FAIL: test_shutdown_is_idempotent (tests.test_ui_server.BridgeShutdownApiTests.test_shutdown_is_idempotent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_ui_server.py", line 168, in test_shutdown_is_idempotent
+    self.assertEqual(response.status_code, 202)
+AssertionError: 404 != 202
+
+======================================================================
+FAIL: test_shutdown_refuses_non_loopback_even_with_forwarded_header (tests.test_ui_server.BridgeShutdownApiTests.test_shutdown_refuses_non_loopback_even_with_forwarded_header) (remote='192.168.1.7')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_ui_server.py", line 180, in test_shutdown_refuses_non_loopback_even_with_forwarded_header
+    self.assertEqual(response.status_code, 403)
+AssertionError: 404 != 403
+
+======================================================================
+FAIL: test_shutdown_refuses_non_loopback_even_with_forwarded_header (tests.test_ui_server.BridgeShutdownApiTests.test_shutdown_refuses_non_loopback_even_with_forwarded_header) (remote='203.0.113.1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_ui_server.py", line 180, in test_shutdown_refuses_non_loopback_even_with_forwarded_header
+    self.assertEqual(response.status_code, 403)
+AssertionError: 404 != 403
+
+======================================================================
+FAIL: test_shutdown_refuses_non_loopback_even_with_forwarded_header (tests.test_ui_server.BridgeShutdownApiTests.test_shutdown_refuses_non_loopback_even_with_forwarded_header) (remote='::')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_ui_server.py", line 180, in test_shutdown_refuses_non_loopback_even_with_forwarded_header
+    self.assertEqual(response.status_code, 403)
+AssertionError: 404 != 403
+
+======================================================================
+FAIL: test_shutdown_refuses_non_loopback_even_with_forwarded_header (tests.test_ui_server.BridgeShutdownApiTests.test_shutdown_refuses_non_loopback_even_with_forwarded_header) (remote='')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_ui_server.py", line 180, in test_shutdown_refuses_non_loopback_even_with_forwarded_header
+    self.assertEqual(response.status_code, 403)
+AssertionError: 404 != 403
+
+======================================================================
+FAIL: test_shutdown_refuses_non_loopback_even_with_forwarded_header (tests.test_ui_server.BridgeShutdownApiTests.test_shutdown_refuses_non_loopback_even_with_forwarded_header) (remote='invalid')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_ui_server.py", line 180, in test_shutdown_refuses_non_loopback_even_with_forwarded_header
+    self.assertEqual(response.status_code, 403)
+AssertionError: 404 != 403
+
+======================================================================
+FAIL: test_shutdown_route_is_registered_for_post_only (tests.test_ui_server.BridgeShutdownApiTests.test_shutdown_route_is_registered_for_post_only)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_ui_server.py", line 154, in test_shutdown_route_is_registered_for_post_only
+    self.assertEqual(len(rules), 1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_shutdown_sets_stop_event_and_returns_202 (tests.test_ui_server.BridgeShutdownApiTests.test_shutdown_sets_stop_event_and_returns_202)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_ui_server.py", line 161, in test_shutdown_sets_stop_event_and_returns_202
+    self.assertEqual(response.status_code, 202)
+AssertionError: 404 != 202
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.029s
+
+FAILED (failures=9)

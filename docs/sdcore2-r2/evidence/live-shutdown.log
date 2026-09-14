@@ -1,0 +1,27 @@
+HEADLESS_TRAY True
+UDP 45123 and TCP 7723 successfully rebound
+ARGV ["/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python", "-B", "-u", "-m", "windows.win_recv", "--preset-section", "macbook", "--listen", "0.0.0.0:45123", "--map", "config/windows_midi_map.json", "--midi-port", "IAC Driver DECK_IN", "--feedback-port", "IAC Driver DECK_OUT", "--pulse-port", "IAC Driver PULSE_OUT", "--timeout", "2.0", "--ui-port", "7723", "--dry-run"]
+SETTINGS {"feedback_port": "IAC Driver DECK_OUT", "listen": "0.0.0.0:45123", "map_path": "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/config/presets/EDM Show.json", "midi_port": "IAC Driver DECK_IN", "preset_section": "macbook", "pulse_port": "IAC Driver PULSE_OUT", "ui_port": 7723}
+COMMAND   PID      USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+Python  71275 viddyslap    3u  IPv4 0x9b1e6afac04be683      0t0  UDP *:55949
+Python  71275 viddyslap    4u  IPv4 0x498b8c1965271111      0t0  UDP *:*
+Python  71275 viddyslap    5u  IPv4 0x81d22614f8e0e627      0t0  UDP *:*
+Python  71275 viddyslap    6u  IPv4 0x970afff9bb61a232      0t0  UDP *:*
+Python  71275 viddyslap    7u  IPv4 0xa04d2ded6485e141      0t0  UDP *:*
+Python  71275 viddyslap    8u  IPv4 0x7dd6a46ea430ce39      0t0  UDP *:*
+Python  71275 viddyslap    9u  IPv4 0xa36b70a75e9890e5      0t0  UDP *:50350
+Python  71275 viddyslap   10u  IPv4 0x18f4c1dfa01882e6      0t0  UDP *:58004
+Python  71275 viddyslap   11u  IPv4 0x7fa15f7c8e9098ec      0t0  UDP *:*
+Python  71275 viddyslap   12u  IPv4 0x7f7bf00ce1b5db9a      0t0  UDP *:*
+Python  71275 viddyslap   13u  IPv4 0xa2ddc52794db116b      0t0  UDP *:*
+Python  71275 viddyslap   14u  IPv4 0xac3f875736d4a034      0t0  UDP 127.0.0.1:7010
+Python  71275 viddyslap   15u  IPv4 0xf6d57d73cd6a22c2      0t0  UDP *:*
+Python  71275 viddyslap   16u  IPv4 0xeef5f30e15730b14      0t0  TCP 127.0.0.1:7723 (LISTEN)
+Python  71275 viddyslap   19u  IPv4 0x70c8371aed48c2e1      0t0  UDP *:45123
+CURL {"stopping":true}
+
+202
+EXIT 0 elapsed_seconds 0.106
+CONFIG 36 files; changed: []
+UDP 45123 and TCP 7723 successfully rebound
+SHUTDOWN_PASS

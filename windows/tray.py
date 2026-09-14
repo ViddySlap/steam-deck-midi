@@ -392,11 +392,8 @@ class TrayApp:
 
     ``run_bridge`` is a zero-arg callable that runs the bridge loop
     (typically a thin wrapper around ``serve_forever``). When Quit is
-    selected we attempt a graceful shutdown via the stop callback, wait
-    a short grace period, then ``os._exit(0)`` to ensure the process
-    actually terminates — the underlying ``serve_forever`` doesn't
-    currently honor a stop event (see ``installer-changes.md`` for the
-    follow-up to plumb that through cleanly).
+    selected we request shutdown through the same callback as HTTP and
+    join the bridge thread before returning to the owner's final cleanup.
     """
 
     def __init__(
@@ -429,25 +426,14 @@ class TrayApp:
                 self._icon.stop()
 
     def _on_quit(self) -> None:
+        if self._quit_requested.is_set():
+            return
         self._quit_requested.set()
         if self._stop_bridge is not None:
             try:
                 self._stop_bridge()
             except Exception:  # noqa: BLE001
                 LOGGER.exception("stop_bridge callback failed")
-        # Give the bridge a brief grace window to flush state, then
-        # force-exit. The bridge thread is a non-daemon (so MIDI release
-        # has a chance), but we own the process exit.
-        threading.Thread(
-            target=self._force_exit_after_grace,
-            daemon=True,
-            name="tray-quit",
-        ).start()
-
-    def _force_exit_after_grace(self) -> None:
-        time.sleep(self._grace)
-        LOGGER.info("tray-mode quit: forcing process exit")
-        os._exit(0)
 
     def run(self) -> None:
         """Start the bridge thread, then run the tray on the main thread."""
@@ -456,8 +442,6 @@ class TrayApp:
             daemon=False,
             name="bridge",
         )
-        self._bridge_thread.start()
-
         menu = build_tray_menu(
             ui_url=self._ui_url,
             on_quit=self._on_quit,
@@ -469,15 +453,22 @@ class TrayApp:
             title="Steam Deck MIDI Receiver 2",
             menu=menu,
         )
+        self._bridge_thread.start()
         # First-run balloon: pystray notify is best-effort on Windows.
         try:
             self._icon.run(setup=self._on_icon_ready)
         except Exception:  # noqa: BLE001
             LOGGER.exception("tray icon crashed")
             raise
+        finally:
+            self._on_quit()
+            self._bridge_thread.join()
 
     def _on_icon_ready(self, icon: pystray.Icon) -> None:
         icon.visible = True
+        if self._bridge_thread is not None and not self._bridge_thread.is_alive():
+            icon.stop()
+            return
         try:
             icon.notify(
                 "Bridge is running in the system tray.",
