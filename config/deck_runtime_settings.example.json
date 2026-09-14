@@ -6,5 +6,8 @@
   "profile_name": "default",
   "profile_hash": null,
   "active_targets": [],
-  "presets": []
+  "presets": [],
+  "api_bind": "127.0.0.1",
+  "api_port": 7724,
+  "api_token": null
 }

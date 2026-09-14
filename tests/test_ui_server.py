@@ -131,7 +131,7 @@ class BridgeSettingsApiTests(unittest.TestCase):
     def test_api_inventory_matches_registered_method_paths(self):
         import re
         documented = set(re.findall(r"\| (GET|POST|PUT|DELETE) \| `([^`]+)` \|",
-                                    (Path(__file__).resolve().parents[1] / "docs/api.md").read_text()))
+                                    (Path(__file__).resolve().parents[1] / "docs/api.md").read_text().split("## Deck sender\n", 1)[0]))
         registered = {(method, rule.rule) for rule in self.server._app.url_map.iter_rules()
                       for method in rule.methods if method not in {"OPTIONS", "HEAD"}}
         self.assertEqual(documented, registered)

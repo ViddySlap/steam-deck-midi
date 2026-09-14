@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import array
 import ctypes
+import contextlib
 import ctypes.util
 import errno
 import fcntl
@@ -579,6 +580,12 @@ def load_bindings(path: str) -> tuple[str | None, dict[str, str]]:
     with open(path, "r", encoding="utf-8") as handle:
         raw = json.load(handle)
 
+    return validate_bindings(raw)
+
+
+def validate_bindings(raw: dict) -> tuple[str | None, dict[str, str]]:
+    if not isinstance(raw, dict):
+        raise ValueError("bindings document must be an object")
     profile_name = raw.get("profile_name")
     bindings = raw.get("bindings")
     if profile_name is not None and not isinstance(profile_name, str):
@@ -674,9 +681,14 @@ def run_sender(
     profile_name: str | None,
     profile_hash: str | None,
     gyro_trigger: str = "L4",
+    stop_event: threading.Event | None = None,
+    on_status=None,
+    bindings_document: dict | None = None,
+    manage_terminal: bool = True,
 ) -> int:
     try:
-        loaded_profile_name, bindings = load_bindings(bindings_path)
+        loaded_profile_name, bindings = (load_bindings(bindings_path) if bindings_document is None
+                                         else validate_bindings(bindings_document))
         resolved_targets = list(targets) if targets is not None else parse_targets(target or "")
         if not resolved_targets:
             raise ValueError("at least one target is required")
@@ -687,7 +699,13 @@ def run_sender(
         return 2
 
     resolved_profile_name = profile_name or loaded_profile_name
+    stop_event = stop_event if stop_event is not None else threading.Event()
+    if stop_event.is_set():
+        return 0
     seq = 1
+    def observe(heartbeat_at=None):
+        if on_status is not None:
+            on_status(seq=seq, heartbeat_at=heartbeat_at)
     held_keys: set[str] = set()
     try:
         listener = Xi2RawListener(int(device_id))
@@ -704,18 +722,21 @@ def run_sender(
 
     axis_last_sent: dict[str, float] = {}
 
-    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-        with TerminalNoEcho():
+    with contextlib.ExitStack() as resources:
+        resources.callback(listener.close)
+        sock = resources.enter_context(socket.socket(socket.AF_INET, socket.SOCK_DGRAM))
+        with TerminalNoEcho() if manage_terminal else contextlib.nullcontext():
             with HidrawAxisReader() as axis_reader:
                 # Gyro is always-on: the bridge gyro router owns routing +
                 # tap/hold via L4, so the sender streams PITCH/YAW/ROLL
                 # continuously and no longer gates gyro on L4.
                 axis_reader.enable_gyro()
+                selector = None
                 try:
                     selector = selectors.DefaultSelector()
                     selector.register(listener.fileno(), selectors.EVENT_READ)
                     next_heartbeat_at = time.monotonic() + HEARTBEAT_INTERVAL_SECONDS
-                    while True:
+                    while not stop_event.is_set():
                         now = time.monotonic()
                         x11_timeout = next_select_timeout(
                             held_keys=held_keys,
@@ -729,6 +750,8 @@ def run_sender(
                             else min(x11_timeout, AXIS_MIN_INTERVAL)
                         )
                         events = selector.select(timeout)
+                        if stop_event.is_set():
+                            break
                         now = time.monotonic()
 
                         if not events:
@@ -740,11 +763,12 @@ def run_sender(
                                     profile_name=resolved_profile_name,
                                     profile_hash=profile_hash,
                                 )
+                                observe(heartbeat_at=now)
                                 seq += 1
                                 next_heartbeat_at = now + HEARTBEAT_INTERVAL_SECONDS
                         else:
                             parsed = listener.read_event()
-                            while parsed is not None:
+                            while parsed is not None and not stop_event.is_set():
                                 event, action = flush_block(parsed, bindings, held_keys)
                                 if event is not None and action is not None:
                                     send_action(
@@ -756,6 +780,7 @@ def run_sender(
                                         profile_name=resolved_profile_name,
                                         profile_hash=profile_hash,
                                     )
+                                    observe()
                                     seq += 1
                                     next_heartbeat_at = now + HEARTBEAT_INTERVAL_SECONDS
                                 parsed = listener.read_event()
@@ -770,15 +795,16 @@ def run_sender(
                                     value=value,
                                     seq=seq,
                                 )
+                                observe()
                                 seq += 1
                                 axis_last_sent[axis_action] = now
                                 next_heartbeat_at = now + HEARTBEAT_INTERVAL_SECONDS
 
-                    selector.close()
                 except KeyboardInterrupt:
                     print("stopping sender")
                 finally:
-                    listener.close()
+                    if selector is not None:
+                        selector.close()
     return 0
 
 

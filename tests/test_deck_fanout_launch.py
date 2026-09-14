@@ -2,6 +2,7 @@
 
 import contextlib
 import io
+import itertools
 import json
 import tempfile
 import unittest
@@ -25,10 +26,10 @@ class DeckFanoutLaunchTests(unittest.TestCase):
         self.path.write_text(json.dumps(self.raw))
 
     def launch_menu(self, choices):
-        with patch("builtins.input", side_effect=choices), \
+        with patch("builtins.input", side_effect=itertools.chain(choices, ["q"])), \
                 contextlib.redirect_stdout(io.StringIO()) as output, \
                 patch("deck.launch_send.run_sender", return_value=0) as run:
-            self.assertEqual(launch_send.main(["--settings", str(self.path)]), 0)
+            self.assertEqual(launch_send.main(["--settings", str(self.path), "--api-port", "0"]), 0)
         return run, output.getvalue()
 
     def test_toggle_save_start_and_relaunch_use_all_saved_hosts(self):
@@ -37,7 +38,9 @@ class DeckFanoutLaunchTests(unittest.TestCase):
         self.assertEqual(run.call_args.kwargs["targets"], [("viddymac.local", 45124), ("192.0.2.1", 45123)])
         self.assertIn("[active]", output)
         run_again, _ = self.launch_menu(["s"])
-        self.assertEqual(run_again.call_args, run.call_args)
+        # Runtime events/callbacks belong to each launch; original sender options remain equal.
+        for key in ("device_id", "bindings_path", "targets", "profile_name", "profile_hash"):
+            self.assertEqual(run_again.call_args.kwargs[key], run.call_args.kwargs[key])
 
     def test_legacy_menu_starts_one_without_changing_settings(self):
         before = self.path.read_bytes()

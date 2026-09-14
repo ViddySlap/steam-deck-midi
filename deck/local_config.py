@@ -28,6 +28,9 @@ class DeckRuntimeSettings:
     profile_hash: str | None
     presets: list[TargetPreset]
     active_targets: list[str] = field(default_factory=list)
+    api_bind: str = "127.0.0.1"
+    api_port: int = 7724
+    api_token: str | None = None
 
 
 def validate_ipv4_address(value: str) -> str:
@@ -77,6 +80,12 @@ def load_runtime_settings(path: str) -> DeckRuntimeSettings:
     with open(path, "r", encoding="utf-8") as handle:
         raw = json.load(handle)
 
+    return runtime_settings_from_dict(raw)
+
+
+def runtime_settings_from_dict(raw: dict) -> DeckRuntimeSettings:
+    if not isinstance(raw, dict):
+        raise ValueError("settings must be an object")
     device_id = raw.get("device_id", "5")
     bindings_path = raw.get("bindings_path", "config/deck_bindings.json")
     actions_path = raw.get("actions_path", "config/actions.yaml")
@@ -86,7 +95,18 @@ def load_runtime_settings(path: str) -> DeckRuntimeSettings:
     presets_raw = raw.get("presets", [])
     active_targets = raw.get("active_targets", [])
 
+    api_bind = raw.get("api_bind", "127.0.0.1")
+    api_port = raw.get("api_port", 7724)
+    api_token = raw.get("api_token")
+    validate_api_bind(api_bind)
+    if type(api_port) is not int or not 1 <= api_port <= 65535:
+        raise ValueError("api_port must be an integer between 1 and 65535")
+    if api_token is not None and (not isinstance(api_token, str) or not api_token.strip()
+                                  or not api_token.isascii() or not api_token.isprintable()):
+        raise ValueError("api_token must be a non-empty printable ASCII string")
     if device_id is not None:
+        if not isinstance(device_id, (str, int)) or isinstance(device_id, bool):
+            raise ValueError("device_id must be a string or integer")
         device_id = str(device_id).strip()
         if not device_id:
             device_id = None
@@ -94,7 +114,7 @@ def load_runtime_settings(path: str) -> DeckRuntimeSettings:
         raise ValueError("bindings_path must be a non-empty string")
     if not isinstance(actions_path, str) or not actions_path:
         raise ValueError("actions_path must be a non-empty string")
-    if not isinstance(default_port, int) or not (1 <= default_port <= 65535):
+    if type(default_port) is not int or not (1 <= default_port <= 65535):
         raise ValueError("default_port must be an integer between 1 and 65535")
     if profile_name is not None and not isinstance(profile_name, str):
         raise ValueError("profile_name must be a string when provided")
@@ -114,7 +134,7 @@ def load_runtime_settings(path: str) -> DeckRuntimeSettings:
             raise ValueError("preset name must be a non-empty string")
         if not isinstance(host, str) or not host.strip():
             raise ValueError("preset host must be a non-empty string")
-        if not isinstance(port, int) or not (1 <= port <= 65535):
+        if type(port) is not int or not (1 <= port <= 65535):
             raise ValueError("preset port must be an integer between 1 and 65535")
         presets.append(TargetPreset(name=name.strip(), host=validate_target_host(host), port=port))
 
@@ -129,6 +149,9 @@ def load_runtime_settings(path: str) -> DeckRuntimeSettings:
         profile_hash=profile_hash,
         presets=presets,
         active_targets=active_targets,
+        api_bind=api_bind,
+        api_port=api_port,
+        api_token=api_token,
     )
 
 
@@ -145,6 +168,9 @@ def write_runtime_settings(path: str, settings: DeckRuntimeSettings) -> None:
         "profile_name": settings.profile_name,
         "profile_hash": settings.profile_hash,
         "active_targets": settings.active_targets,
+        "api_bind": settings.api_bind,
+        "api_port": settings.api_port,
+        "api_token": settings.api_token,
         "presets": [
             {"name": preset.name, "host": preset.host, "port": preset.port}
             for preset in settings.presets
@@ -185,7 +211,8 @@ def with_device_id(settings: DeckRuntimeSettings, device_id: str) -> DeckRuntime
     normalized = device_id.strip()
     if not normalized:
         raise ValueError("device id must be a non-empty string")
-    return DeckRuntimeSettings(
+    return replace(
+        settings,
         device_id=normalized,
         bindings_path=settings.bindings_path,
         actions_path=settings.actions_path,
@@ -209,7 +236,8 @@ def with_added_preset(
     updated_presets = settings.presets + [
         TargetPreset(name=normalized_name, host=normalized_host, port=settings.default_port)
     ]
-    return DeckRuntimeSettings(
+    return replace(
+        settings,
         device_id=settings.device_id,
         bindings_path=settings.bindings_path,
         actions_path=settings.actions_path,
@@ -235,7 +263,8 @@ def with_renamed_preset(
     updated[index] = TargetPreset(
         name=normalized, host=updated[index].host, port=updated[index].port
     )
-    return DeckRuntimeSettings(
+    return replace(
+        settings,
         device_id=settings.device_id,
         bindings_path=settings.bindings_path,
         actions_path=settings.actions_path,
@@ -252,7 +281,8 @@ def with_deleted_preset(settings: DeckRuntimeSettings, index: int) -> DeckRuntim
     if not (0 <= index < len(settings.presets)):
         raise ValueError(f"preset index out of range: {index}")
     updated = [p for i, p in enumerate(settings.presets) if i != index]
-    return DeckRuntimeSettings(
+    return replace(
+        settings,
         device_id=settings.device_id,
         bindings_path=settings.bindings_path,
         actions_path=settings.actions_path,
@@ -276,3 +306,16 @@ def get_xinput_list_output() -> str:
     except (OSError, subprocess.CalledProcessError):
         return ""
     return result.stdout.strip()
+
+
+def validate_api_bind(bind: str) -> str:
+    """Use literal IPv4 binds so authentication cannot depend on changing DNS."""
+    if bind == "localhost":
+        return "127.0.0.1"
+    if not isinstance(bind, str):
+        raise ValueError("api_bind must be an IPv4 address or localhost")
+    return validate_ipv4_address(bind)
+
+
+def api_is_loopback(bind: str) -> bool:
+    return ipaddress.ip_address(validate_api_bind(bind)).is_loopback

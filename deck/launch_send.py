@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import os
 import sys
 
 from deck.local_config import (
@@ -16,6 +15,7 @@ from deck.local_config import (
     with_active_targets,
 )
 from deck.xinput_send import run_sender
+from deck.control_api import ControlServer, SenderController, add_api_arguments, interrupt_launcher
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -30,9 +30,17 @@ def build_parser() -> argparse.ArgumentParser:
         default="config/deck_runtime_settings.example.json",
         help="path to example deck runtime settings JSON",
     )
+    add_api_arguments(parser)
     return parser
 
-def prompt_new_preset(settings_path: str, settings):
+def _save_menu_settings(path, updated, previous, controller):
+    if controller is None:
+        save_runtime_settings(path, updated)
+    else:
+        controller.commit_settings(updated, expected=previous)
+
+
+def prompt_new_preset(settings_path: str, settings, controller=None):
     print("")
     print("Create New Preset")
     while True:
@@ -45,12 +53,12 @@ def prompt_new_preset(settings_path: str, settings):
             print("Try again.")
             print("")
             continue
-        save_runtime_settings(settings_path, updated)
+        _save_menu_settings(settings_path, updated, settings, controller)
         print(f"Saved preset: {updated.presets[-1].name} ({updated.presets[-1].host})")
         return updated
 
 
-def prompt_rename_preset(settings_path: str, settings):
+def prompt_rename_preset(settings_path: str, settings, controller=None):
     if not settings.presets:
         print("No presets to rename.")
         return settings
@@ -75,12 +83,12 @@ def prompt_rename_preset(settings_path: str, settings):
         except ValueError as exc:
             print(f"Error: {exc}")
             continue
-        save_runtime_settings(settings_path, updated)
+        _save_menu_settings(settings_path, updated, settings, controller)
         print(f"Renamed to: {updated.presets[selected - 1].name}")
         return updated
 
 
-def prompt_delete_preset(settings_path: str, settings):
+def prompt_delete_preset(settings_path: str, settings, controller=None):
     if not settings.presets:
         print("No presets to delete.")
         return settings
@@ -104,12 +112,12 @@ def prompt_delete_preset(settings_path: str, settings):
             print("Cancelled.")
             return settings
         updated = with_deleted_preset(settings, selected - 1)
-        save_runtime_settings(settings_path, updated)
+        _save_menu_settings(settings_path, updated, settings, controller)
         print(f"Deleted: {preset.name}")
         return updated
 
 
-def prompt_select_multiple(settings_path: str, settings):
+def prompt_select_multiple(settings_path: str, settings, controller=None):
     names = list(settings.active_targets)
     while True:
         print("")
@@ -122,7 +130,7 @@ def prompt_select_multiple(settings_path: str, settings):
         if choice == "s":
             try:
                 updated = with_active_targets(settings, names)
-                save_runtime_settings(settings_path, updated)
+                _save_menu_settings(settings_path, updated, settings, controller)
             except (OSError, ValueError) as exc:
                 print(f"Error: {exc}")
                 continue
@@ -142,8 +150,11 @@ def prompt_select_multiple(settings_path: str, settings):
             names.append(name)
 
 
-def prompt_for_preset(settings_path: str, settings, device_id: str):
+def prompt_for_preset(settings_path: str, settings, device_id: str, controller=None):
     while True:
+        if controller is not None:
+            settings = controller.snapshot()
+            device_id = settings.device_id or "5"
         print("")
         print("STEAMDECK-MIDI-SENDER")
         print(f"Bindings: {settings.bindings_path}")
@@ -163,26 +174,38 @@ def prompt_for_preset(settings_path: str, settings, device_id: str):
                 print("s. Start active targets")
             print("r. Rename a preset")
             print("d. Delete a preset")
+        if controller is not None:
+            print("t. Stop sender")
+            print("x. Restart sender")
         print("q. Quit")
         print("")
 
         choice = input("Selection: ").strip().lower()
         if choice == "q":
             return None, settings
+        if controller is not None and controller.snapshot() != settings:
+            print("Settings changed; menu refreshed. Select again.")
+            continue
+        if controller is not None and choice in {"t", "x"}:
+            if choice == "t":
+                controller.stop()
+            else:
+                controller.restart()
+            continue
         if choice == "m" and settings.presets:
-            settings = prompt_select_multiple(settings_path, settings)
+            settings = prompt_select_multiple(settings_path, settings, controller)
             continue
         if choice == "s" and settings.active_targets:
             preset = next(p for p in settings.presets if p.name == settings.active_targets[0])
             return preset, settings
         if choice == str(create_index):
-            settings = prompt_new_preset(settings_path, settings)
+            settings = prompt_new_preset(settings_path, settings, controller)
             continue
         if choice == "r" and settings.presets:
-            settings = prompt_rename_preset(settings_path, settings)
+            settings = prompt_rename_preset(settings_path, settings, controller)
             continue
         if choice == "d" and settings.presets:
-            settings = prompt_delete_preset(settings_path, settings)
+            settings = prompt_delete_preset(settings_path, settings, controller)
             continue
         try:
             selected_index = int(choice)
@@ -191,8 +214,9 @@ def prompt_for_preset(settings_path: str, settings, device_id: str):
             continue
         if 1 <= selected_index <= len(settings.presets):
             if settings.active_targets:
-                settings = with_active_targets(settings, [])
-                save_runtime_settings(settings_path, settings)
+                updated = with_active_targets(settings, [])
+                _save_menu_settings(settings_path, updated, settings, controller)
+                settings = updated
             return settings.presets[selected_index - 1], settings
         print("Invalid selection.")
 
@@ -207,32 +231,35 @@ def main(argv: list[str] | None = None) -> int:
         parser.error(str(exc))
         return 2
 
-    if not os.path.exists(settings.bindings_path):
-        parser.error(
-            f"bindings file not found: {settings.bindings_path}. Run Learn Steam Input Map first."
-        )
-        return 2
-
-    device_id = settings.device_id or "5"
-    preset, settings = prompt_for_preset(args.settings, settings, device_id)
-    if preset is None:
-        print("Sender cancelled.")
+    controller = SenderController(args.settings, settings, run=run_sender)
+    try:
+        server = ControlServer(controller, bind=args.api_bind, port=args.api_port, on_shutdown=interrupt_launcher)
+    except (OSError, ValueError) as exc:
+        parser.error(str(exc))
+    server.start()
+    print(f"Deck control API: http://{server.server_address[0]}:{server.server_address[1]}")
+    try:
+        while True:
+            try:
+                settings = controller.snapshot()
+                preset, settings = prompt_for_preset(args.settings, settings, settings.device_id or "5", controller)
+                if preset is None:
+                    return 0
+                with controller.lock:
+                    if controller.snapshot() != settings:
+                        raise ValueError("Settings changed; select again.")
+                    controller.stop()
+                    status = controller.start(single_target=preset.name)
+                print(f"Sender requested for targets: {status['active_targets']}")
+            except (OSError, ValueError) as exc:
+                print(f"Error: {exc}")
+    except (KeyboardInterrupt, EOFError):
         return 0
-
-    by_name = {p.name: p for p in settings.presets}
-    selected = [by_name[name] for name in settings.active_targets] or [preset]
-    targets = [(p.host, p.port) for p in selected]
-    print("")
-    print(f"Starting sender for presets: {', '.join(p.name for p in selected)}")
-    print(f"Targets: {', '.join(f'{host}:{port}' for host, port in targets)}")
-    print("")
-    return run_sender(
-        device_id=device_id,
-        bindings_path=settings.bindings_path,
-        targets=targets,
-        profile_name=settings.profile_name,
-        profile_hash=settings.profile_hash,
-    )
+    finally:
+        if controller.learn is not None:
+            controller.learn.cancel()
+        controller.stop()
+        server.close()
 
 
 if __name__ == "__main__":

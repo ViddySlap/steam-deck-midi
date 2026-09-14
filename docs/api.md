@@ -128,11 +128,33 @@ non-modal notice and Reload button; Reload uses `/api/reload` and the existing
 unsaved-change confirmation. Background reads also check for edits made while
 HTTP requests were in flight before replacing any draft.
 
-## Deck sender API status
+## Deck sender
 
-The Deck has no HTTP API yet. S4 adds saved multi-target selection in its TTY
-launcher and the `--targets` CLI option (the `--target` alias accepts the same
-comma-separated list). See [deck-fanout.md](deck-fanout.md) for setup. S5 adds the
-Deck HTTP API, including target preset CRUD, active target selection, and sender
-controls. The lane-wide HTTP parity bar remains owed to S5 and the gate; these
-TTY actions are not available through the bridge endpoints above.
+The independent Deck service uses stdlib HTTP on `http://127.0.0.1:7724`.
+These routes are served by both `deck.launch_send` and `deck.control_api`, not
+by the bridge above. See [deck-api.md](deck-api.md) for request bodies, token
+setup, CLI commands, persistence, telemetry meaning, and learn workflow.
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| POST | `/api/shutdown` | Stop capture, close the API, and quit its launcher after replying. |
+| GET | `/api/status` | Read sender liveness, destinations, sequence, heartbeat age, profile, bindings path, and device. |
+| GET | `/api/targets` | Read saved receiver presets and active target names. |
+| POST | `/api/targets` | Atomically replace receiver presets, retaining surviving active names. |
+| POST | `/api/targets/active` | Select and persist ordered target names; apply to the running sender. |
+| POST | `/api/targets/add` | Add a named host and optional port. |
+| POST | `/api/targets/delete` | Delete a target and remove it from the active set. |
+| POST | `/api/targets/rename` | Rename a target and follow its active selection. |
+| POST | `/api/sender/start` | Start the sender worker; poll status for hardware startup outcome. |
+| POST | `/api/sender/stop` | Set the sender stop Event and wait for capture/socket cleanup. |
+| POST | `/api/sender/restart` | Stop the old worker before starting another with current settings. |
+| GET | `/api/bindings` | Return the currently loaded bindings JSON snapshot. |
+| POST | `/api/bindings/reload` | Validate and load bindings from disk, restarting a running sender. |
+| GET | `/api/settings` | Read machine-local settings, redacting the shared token. |
+| PUT | `/api/settings` | Atomically persist settings; token rotation is live, bind/port wait for relaunch. |
+| GET | `/api/actions` | List the learn wizard's available action IDs. |
+| GET | `/api/learn` | Inspect the current action, captured candidate, draft bindings and save state. |
+| POST | `/api/learn/start` | Start full learning or single-action re-learning. |
+| POST | `/api/learn/confirm` | Confirm the captured token; atomically save when learning finishes. |
+| POST | `/api/learn/skip` | Skip a full-learn action or cancel single-action re-learning. |
+| POST | `/api/learn/cancel` | Cancel learning and discard the unsaved draft. |

@@ -1,0 +1,232 @@
+{
+  "chain": "sdcore",
+  "link": "S5",
+  "branch": "chain/steamdeck-20260914",
+  "predecessor": "e360646bac14404bfdd9e5a587c9a038ed63de20",
+  "suite_command": "TMPDIR=/tmp/sdcore-s5 .venv/bin/python -m unittest discover -s tests -p \"test_*.py\"",
+  "baseline": {
+    "tests": 769,
+    "result": "OK",
+    "skipped": 1,
+    "seconds": 7.133
+  },
+  "final": {
+    "tests": 795,
+    "result": "OK",
+    "skipped": 1,
+    "seconds": 10.065
+  },
+  "new_tests": 26,
+  "deck_routes": 21,
+  "red_before": "ModuleNotFoundError: deck.control_api",
+  "smoke_command": "python3 docs/sdcore-s5/smoke.py",
+  "smoke_result": "PASS: standalone and TTY launcher, system Python, real HTTP/CLI, disk activation, HTTP shutdown, exit 0 and reaped children",
+  "integration": "Real HTTP starts/stops real sender loop with substituted hardware; UDP action/axis/heartbeat seq 1/2/3 and status telemetry verified",
+  "mutation_command": ".venv/bin/python docs/sdcore-s5/reversions.py",
+  "mutation_controls": {
+    "pristine": "GREEN",
+    "mutations": [
+      {
+        "mutation": "shutdown",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "token-check",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "off-loopback-no-token",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "start-worker",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "stop-event",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "restart-stops-first",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "seq-telemetry",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "heartbeat-telemetry",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "running-truth",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "persist-settings",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "publish-settings",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "active-order",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "port-override",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "rename-selection",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "delete-target",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "replace-list",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "bindings-reload",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "loaded-snapshot",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "restart-new-settings",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "live-token-rotation",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "menu-stale-snapshot",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "tty-preserve-token",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "skip-stops-single",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "learn-save",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "learn-cancel-no-save",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "learn-duplicate",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "learn-candidate",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "learn-single-preserve",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "learn-sender-conflict",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "select-stop-path",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "sender-real-telemetry",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "selector-close",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "listener-error-close",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "cli-activate",
+        "result": "RED",
+        "exit_code": 1
+      },
+      {
+        "mutation": "json-errors",
+        "result": "RED",
+        "exit_code": 1
+      }
+    ],
+    "restored": "GREEN"
+  },
+  "mutation_suite_tests": 35,
+  "source_copy_matches_final_checkout": true,
+  "sha256": {
+    "deck/control_api.py": "b591ed8ba8e1b3a8ac309191b4bd91552aae5edb20ecf513040434bb791001b6",
+    "deck/control_learn.py": "0868237b58a4a72776aab1e3533f6acef1eb3d4a8eb67c401d34fb63ba8c112b",
+    "deck/deckctl.py": "5a1b2d37da2b87c7e650a212a05e995d7f88010a6c4eb484919af3c6750f1f44",
+    "deck/launch_send.py": "0db7d86096ab716f1cdd33ff28e4db266099e9ebb3dd990a0496317a05745eb1",
+    "deck/local_config.py": "6aaedd115487bb71e40f84008cf8419f295abe4f6b373ab51268400e475b564c",
+    "deck/xinput_send.py": "611b2ad8d1bb855e34711901d80819d4d604ceba8c078fd3ea03ee3554054311",
+    "tests/test_deck_control_api.py": "e041d36fe9f4ff35c2c51d3fb2cd8ca7f3dfe2b3058004366489571235b76452",
+    "tests/test_deck_fanout_launch.py": "5a541659387848fa4c6edd0b1dfbd4b2ddbe395700523bfcbac16d8b6966f532",
+    "docs/api.md": "9e47513461f560ea8d6ff92e48e7db26097df818f04a6279b8f8aefc9cfea97f"
+  },
+  "public_api_names_preserved": true,
+  "existing_tests_adapted": [
+    "test_api_inventory_matches_registered_method_paths",
+    "test_toggle_save_start_and_relaunch_use_all_saved_hosts"
+  ],
+  "dependencies_added": [],
+  "owed_to_gate": [
+    "Physical Deck XI2/HID and TTY/HTTP capture",
+    "Travel-router LAN/token reachability",
+    "Physical multi-bridge MIDI acceptance"
+  ],
+  "lane_log": "Outside executor writable roots; committed REPORT.md is the durable baton"
+}
