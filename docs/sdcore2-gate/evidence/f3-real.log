@@ -1,0 +1,48 @@
+PRE ports free: True
+BOOT1 cmd: /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python -B -u -m windows.win_recv --preset-section macbook --listen 0.0.0.0:45123 --map config/windows_midi_map.json --midi-port 'IAC Driver DECK_IN' --feedback-port 'IAC Driver DECK_OUT' --pulse-port 'IAC Driver PULSE_OUT' --timeout 2.0 --ui-port 7723
+BOOT1 alive=True rc=None boot_s=1.21
+   lsof: Python  23090 viddyslap    3u  IPv4 0xf6d57d73cd6a22c2      0t0  UDP *:59848
+   lsof: Python  23090 viddyslap    4u  IPv4 0x498b8c1965271111      0t0  UDP *:*
+   lsof: Python  23090 viddyslap    5u  IPv4 0x970afff9bb61a232      0t0  UDP *:*
+   lsof: Python  23090 viddyslap    6u  IPv4 0xa04d2ded6485e141      0t0  UDP *:*
+   lsof: Python  23090 viddyslap    7u  IPv4 0x7dd6a46ea430ce39      0t0  UDP *:*
+   lsof: Python  23090 viddyslap    8u  IPv4 0xa36b70a75e9890e5      0t0  UDP *:*
+   lsof: Python  23090 viddyslap    9u  IPv4 0x18f4c1dfa01882e6      0t0  UDP *:60243
+   lsof: Python  23090 viddyslap   10u  IPv4 0x7fa15f7c8e9098ec      0t0  UDP *:54660
+   lsof: Python  23090 viddyslap   11u  IPv4 0x7f7bf00ce1b5db9a      0t0  UDP *:*
+   lsof: Python  23090 viddyslap   12u  IPv4 0x277627352ec4efbf      0t0  UDP *:*
+   lsof: Python  23090 viddyslap   13u  IPv4 0xac3f875736d4a034      0t0  UDP *:*
+   lsof: Python  23090 viddyslap   14u  IPv4 0x35ca8e4bc3076af1      0t0  UDP 127.0.0.1:7010
+   lsof: Python  23090 viddyslap   15u  IPv4 0xef39d1c720f3f8dd      0t0  UDP *:*
+   lsof: Python  23090 viddyslap   16u  IPv4 0xe7e325e9f26d4ec5      0t0  TCP 127.0.0.1:7723 (LISTEN)
+   lsof: Python  23090 viddyslap   19u  IPv4 0x498bd4f86d3c8985      0t0  UDP *:45123
+  after BTN_A down (no up): IAC msgs [(1.879, [176, 78, 127]), (1.879, [177, 78, 0]), (1.879, [144, 36, 127])]
+  POST first: (202, '{"stopping":true}\n', 0.003)  second: (202, '{"stopping":true}\n', 0.001)
+  process exit code=-5 seconds_from_POST=0.085
+  IAC DECK_IN after POST (17 msgs): [(2.195, [128, 36, 0]), (2.195, [176, 123, 0]), (2.195, [177, 123, 0]), (2.195, [178, 123, 0]), (2.195, [179, 123, 0]), (2.195, [180, 123, 0]), (2.195, [181, 123, 0]), (2.195, [182, 123, 0]), (2.195, [183, 123, 0]), (2.195, [184, 123, 0]), (2.195, [185, 123, 0]), (2.195, [186, 123, 0]), (2.195, [187, 123, 0]), (2.195, [188, 123, 0]), (2.195, [189, 123, 0]), (2.195, [190, 123, 0]), (2.195, [191, 123, 0])]
+   log: WARNING autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:8080/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+AFTER1 ports free: True
+BOOT2 cmd: /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python -B -u -m windows.win_recv --preset-section macbook --listen 0.0.0.0:45123 --map config/windows_midi_map.json --midi-port 'IAC Driver DECK_IN' --feedback-port 'IAC Driver DECK_OUT' --pulse-port 'IAC Driver PULSE_OUT' --timeout 2.0 --ui-port 7723
+BOOT2 alive=True rc=None boot_s=1.22
+   lsof: Python  23106 viddyslap    3u  IPv4 0xa04d2ded6485e141      0t0  UDP *:53178
+   lsof: Python  23106 viddyslap    4u  IPv4 0x7dd6a46ea430ce39      0t0  UDP *:*
+   lsof: Python  23106 viddyslap    5u  IPv4 0xa36b70a75e9890e5      0t0  UDP *:*
+   lsof: Python  23106 viddyslap    6u  IPv4 0x18f4c1dfa01882e6      0t0  UDP *:*
+   lsof: Python  23106 viddyslap    7u  IPv4 0x7fa15f7c8e9098ec      0t0  UDP *:*
+   lsof: Python  23106 viddyslap    8u  IPv4 0x7f7bf00ce1b5db9a      0t0  UDP *:*
+   lsof: Python  23106 viddyslap    9u  IPv4 0x277627352ec4efbf      0t0  UDP *:61278
+   lsof: Python  23106 viddyslap   10u  IPv4 0xac3f875736d4a034      0t0  UDP *:56178
+   lsof: Python  23106 viddyslap   11u  IPv4 0xea15d4a452843eca      0t0  UDP *:*
+   lsof: Python  23106 viddyslap   12u  IPv4 0x1568c29d5efa15ce      0t0  UDP *:*
+   lsof: Python  23106 viddyslap   13u  IPv4 0x69eeeeb58ef69d12      0t0  UDP *:*
+   lsof: Python  23106 viddyslap   14u  IPv4 0x82a966322ba1d13c      0t0  UDP 127.0.0.1:7010
+   lsof: Python  23106 viddyslap   15u  IPv4 0xf8868e527635e501      0t0  UDP *:*
+   lsof: Python  23106 viddyslap   16u  IPv4  0x9ff1e4163ad6146      0t0  TCP 127.0.0.1:7723 (LISTEN)
+   lsof: Python  23106 viddyslap   19u  IPv4 0x70c8371aed48c2e1      0t0  UDP *:45123
+SECOND bridge bound: True
+SECOND log MIDI ports: ['INFO selected MIDI output port: name=IAC Driver DECK_IN index=0', 'INFO selected MIDI input feedback port: name=IAC Driver DECK_OUT index=1']
+  POST first: (202, '{"stopping":true}\n', 0.001)  second: ('EXC', "ConnectionResetError(54, 'Connection reset by peer')", 0.0)
+  process exit code=-5 seconds_from_POST=0.014
+  IAC DECK_IN after POST (16 msgs): [(4.119, [176, 123, 0]), (4.119, [177, 123, 0]), (4.119, [178, 123, 0]), (4.119, [179, 123, 0]), (4.119, [180, 123, 0]), (4.119, [181, 123, 0]), (4.119, [182, 123, 0]), (4.119, [183, 123, 0]), (4.119, [184, 123, 0]), (4.119, [185, 123, 0]), (4.119, [186, 123, 0]), (4.119, [187, 123, 0]), (4.119, [188, 123, 0]), (4.119, [189, 123, 0]), (4.119, [190, 123, 0]), (4.119, [191, 123, 0])]
+   log: WARNING autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:8080/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+FINAL ports free: True rc1 -5 rc2 -5

@@ -1,0 +1,10 @@
+== ARM C0-f809be1-fresh: tree=/tmp/sdcore2-gate/arms/C0-f809be1-fresh
+  pre: bridge.local.json=ABSENT .active=ABSENT
+  cmd: /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python -B -u -m windows.win_recv --listen 0.0.0.0:45123 --map config/windows_midi_map.json --midi-port 'IAC Driver DECK_IN' --feedback-port 'IAC Driver DECK_OUT' --pulse-port 'IAC Driver PULSE_OUT' --timeout 2.0 --ui-port 7723 --dry-run --no-ui --no-engines --no-pulse --no-osc-relay
+  booted=False exit=2
+   log:                    [--preset-section PRESET_SECTION] [--timeout TIMEOUT]
+   log:                    [--preset-poll-interval PRESET_POLL_INTERVAL] [--dry-run]
+   log: win_recv.py: error: preset section None is not available; available sections: macbook, windows
+  after: 45123/7723 free=True
+  post: bridge.local.json=ABSENT
+CONTROL {'name': 'C0-f809be1-fresh', 'booted': False, 'exit': 2, 'settings': None, 'local': None, 'free': True}

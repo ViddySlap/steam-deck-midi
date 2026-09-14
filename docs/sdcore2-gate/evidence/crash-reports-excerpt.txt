@@ -1,0 +1,48 @@
+== Python-2026-09-14-135749.ips
+pid 23090 captureTime 2026-09-14 13:57:49.2390 -0600 exception EXC_BREAKPOINT SIGTRAP asi {"libsystem_c.dylib": ["Must only be used from the main thread"]}
+faulting thread 7 not-main
+   AppKit -[NSWMWindowCoordinator performTransactionUsingBlock:]
+   AppKit _NSWMTransactionAddOrderingActionWithInfoForOptions
+   AppKit _NSWMOrderWindow
+   AppKit _NSOrderWindow
+   AppKit -[NSWindow _orderOut:calculatingKeyWithOptions:documentWindow:]
+   AppKit NSPerformVisuallyAtomicChange
+   AppKit -[NSWindow _reallyDoOrderWindowOutRelativeTo:]
+   AppKit -[NSWindow _reallyDoOrderWindow:]
+   AppKit -[NSWindow _doOrderWindow:]
+   AppKit -[NSWindow _finishClosingWindow]
+   AppKit -[NSWindow _close]
+   AppKit -[NSStatusItem _uninstall]
+   libffi.dylib ffi_call_SYSV
+== Python-2026-09-14-135751.ips
+pid 23106 captureTime 2026-09-14 13:57:51.1097 -0600 exception EXC_BREAKPOINT SIGTRAP asi {"libsystem_c.dylib": ["Must only be used from the main thread"]}
+faulting thread 9 not-main
+   AppKit -[NSWMWindowCoordinator performTransactionUsingBlock:]
+   AppKit _NSWMTransactionAddOrderingActionWithInfoForOptions
+   AppKit _NSWMOrderWindow
+   AppKit _NSOrderWindow
+   AppKit -[NSWindow _orderOut:calculatingKeyWithOptions:documentWindow:]
+   AppKit NSPerformVisuallyAtomicChange
+   AppKit -[NSWindow _reallyDoOrderWindowOutRelativeTo:]
+   AppKit -[NSWindow _reallyDoOrderWindow:]
+   AppKit -[NSWindow _doOrderWindow:]
+   AppKit -[NSWindow _finishClosingWindow]
+   AppKit -[NSWindow _close]
+   AppKit -[NSStatusItem _uninstall]
+   libffi.dylib ffi_call_SYSV
+== Python-2026-09-14-134448.ips
+pid 69060 captureTime 2026-09-14 13:44:47.9384 -0600 exception EXC_CRASH SIGABRT asi {"libsystem_c.dylib": ["abort() called"]}
+faulting thread 0 main
+   libsystem_kernel.dylib __pthread_kill
+   libsystem_pthread.dylib pthread_kill
+   libsystem_c.dylib abort
+   HIServices _RegisterApplication
+   HIServices GetCurrentProcess
+   AppKit -[NSMenuBarPresentationInstance _getAggregateUIMode:withOptions:]
+   AppKit _NSGetAggregateUIMode
+   AppKit -[NSMenuBarPresentationInstance _isVisible]
+   AppKit +[NSMenuBarPresentationInstance _isMenuBarVisible]
+   AppKit _NSInitializeAppContext
+   AppKit -[NSApplication init]
+   AppKit +[NSApplication sharedApplication]
+   libffi.dylib ffi_call_SYSV

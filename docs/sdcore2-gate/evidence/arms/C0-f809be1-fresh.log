@@ -1,0 +1,10 @@
+INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+usage: win_recv.py [-h] [--listen LISTEN] [--midi-port MIDI_PORT]
+                   [--feedback-port FEEDBACK_PORT] [--map MAP_PATH]
+                   [--preset-section PRESET_SECTION] [--timeout TIMEOUT]
+                   [--preset-poll-interval PRESET_POLL_INTERVAL] [--dry-run]
+                   [--verbose] [--list-ports] [--check-midi-port] [--no-ui]
+                   [--ui-port UI_PORT] [--tray] [--engines ENGINES_PATH]
+                   [--no-engines] [--pulse-port PULSE_PORT] [--no-pulse]
+                   [--osc-relay-config OSC_RELAY_CONFIG_PATH] [--no-osc-relay]
+win_recv.py: error: preset section None is not available; available sections: macbook, windows

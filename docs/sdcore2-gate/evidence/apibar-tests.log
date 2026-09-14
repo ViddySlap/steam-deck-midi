@@ -1,0 +1,9 @@
+test_html_parses_and_all_api_paths_are_registered (tests.test_ui_server.HtmlApiBarTests.test_html_parses_and_all_api_paths_are_registered) ... ok
+test_api_inventory_matches_registered_method_paths (tests.test_ui_server.BridgeSettingsApiTests.test_api_inventory_matches_registered_method_paths) ... ok
+test_every_deck_route_is_documented (tests.test_deck_control_api.DeckControlAPITests.test_every_deck_route_is_documented) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.069s
+
+OK
+HTML API bar: 21 paths registered; HTML parsed; ids unique

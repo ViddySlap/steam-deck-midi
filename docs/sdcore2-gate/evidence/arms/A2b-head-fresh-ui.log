@@ -1,0 +1,12 @@
+INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=IAC Driver DECK_IN index=n/a
+INFO selected MIDI input feedback port: name=IAC Driver DECK_OUT index=n/a
+MIDI cc channel=0 control=78 value=0
+MIDI cc channel=1 control=78 value=0
+MIDI cc channel=0 control=79 value=0
+MIDI cc channel=1 control=79 value=0
+MIDI cc channel=0 control=74 value=127
+MIDI cc channel=1 control=74 value=0
+INFO mapping UI available at http://127.0.0.1:7723
+INFO listening on udp://0.0.0.0:45123
+INFO listening for MIDI feedback: name=IAC Driver DECK_OUT index=n/a

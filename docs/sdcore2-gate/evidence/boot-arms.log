@@ -1,0 +1,181 @@
+== ARM A1-v049: tree=/tmp/sdcore2-gate/arms/A1-v049
+  pre: bridge.local.json=ABSENT .active=ABSENT
+  cmd: /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python -B -u -m windows.win_recv --listen 0.0.0.0:45123 --map config/windows_midi_map.json --midi-port 'IAC Driver DECK_IN' --feedback-port 'IAC Driver DECK_OUT' --pulse-port 'IAC Driver PULSE_OUT' --timeout 2.0 --ui-port 7723 --dry-run --no-ui --no-engines --no-pulse --no-osc-relay
+  lsof(child):
+    Python  18916 viddyslap    3u  IPv4 0x9b1e6afac04be683      0t0  UDP *:45123
+  booted=True exit=-15
+   log: INFO listening on udp://0.0.0.0:45123
+  after: 45123/7723 free=True
+  post: bridge.local.json=ABSENT
+== ARM A2-head-fresh-noui: tree=/tmp/sdcore2-gate/arms/A2-head-fresh
+  pre: bridge.local.json=ABSENT .active=ABSENT
+  cmd: /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python -B -u -m windows.win_recv --listen 0.0.0.0:45123 --map config/windows_midi_map.json --midi-port 'IAC Driver DECK_IN' --feedback-port 'IAC Driver DECK_OUT' --pulse-port 'IAC Driver PULSE_OUT' --timeout 2.0 --ui-port 7723 --dry-run --no-ui --no-engines --no-pulse --no-osc-relay
+  lsof(child):
+    Python  18945 viddyslap    3u  IPv4 0x43112ad1a4f46aa9      0t0  UDP *:45123
+  booted=True exit=-15
+   log: INFO listening on udp://0.0.0.0:45123
+  after: 45123/7723 free=True
+  post: bridge.local.json=ABSENT
+== ARM A2b-head-fresh-ui: tree=/tmp/sdcore2-gate/arms/A2b-head-fresh-ui
+  pre: bridge.local.json=ABSENT .active=ABSENT
+  cmd: /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python -B -u -m windows.win_recv --listen 0.0.0.0:45123 --map config/windows_midi_map.json --midi-port 'IAC Driver DECK_IN' --feedback-port 'IAC Driver DECK_OUT' --pulse-port 'IAC Driver PULSE_OUT' --timeout 2.0 --ui-port 7723 --dry-run --no-engines --no-pulse --no-osc-relay
+  lsof(child):
+    Python  18952 viddyslap    3u  IPv4 0xed195cb006e4faba      0t0  TCP 127.0.0.1:7723 (LISTEN)
+    Python  18952 viddyslap    6u  IPv4 0x43112ad1a4f46aa9      0t0  UDP *:45123
+  GET /api/settings 200 {"feedback_port": "IAC Driver DECK_OUT", "listen": "0.0.0.0:45123", "map_path": "/private/tmp/sdcore2-gate/arms/A2b-head-fresh-ui/config/presets/default.json", "midi_port": "IAC Driver DECK_IN", "preset_section": null, "pulse_port": null, "ui_port": 7723}
+  booted=True exit=-15
+   log: INFO mapping UI available at http://127.0.0.1:7723
+   log: INFO listening on udp://0.0.0.0:45123
+  after: 45123/7723 free=True
+  post: bridge.local.json=ABSENT
+== ARM A3-head-ptz-noui: tree=/tmp/sdcore2-gate/arms/A3-head-ptz
+  pre: bridge.local.json=ABSENT .active=PTZ.json
+  cmd: /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python -B -u -m windows.win_recv --listen 0.0.0.0:45123 --map config/windows_midi_map.json --midi-port 'IAC Driver DECK_IN' --feedback-port 'IAC Driver DECK_OUT' --pulse-port 'IAC Driver PULSE_OUT' --timeout 2.0 --ui-port 7723 --dry-run --no-ui --no-engines --no-pulse --no-osc-relay
+  lsof(child):
+    Python  18959 viddyslap    3u  IPv4 0x1568c29d5efa15ce      0t0  UDP *:45123
+  booted=True exit=-15
+   log: INFO created bridge settings config/bridge.local.json with preset_section=macbook
+   log: INFO listening on udp://0.0.0.0:45123
+  after: 45123/7723 free=True
+  post: bridge.local.json=present bytes b'{\n  "preset_section": "macbook"\n}\n' sha 7476c2693ddb295f59b80171ac32624d21b66fa34442f2b01205ee6716f2b6c0
+== ARM A3b-head-ptz-ui: tree=/tmp/sdcore2-gate/arms/A3b-head-ptz-ui
+  pre: bridge.local.json=ABSENT .active=PTZ.json
+  cmd: /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python -B -u -m windows.win_recv --listen 0.0.0.0:45123 --map config/windows_midi_map.json --midi-port 'IAC Driver DECK_IN' --feedback-port 'IAC Driver DECK_OUT' --pulse-port 'IAC Driver PULSE_OUT' --timeout 2.0 --ui-port 7723 --dry-run --no-engines --no-pulse --no-osc-relay
+  lsof(child):
+    Python  18968 viddyslap    3u  IPv4  0x3460f75df0b468a      0t0  TCP 127.0.0.1:7723 (LISTEN)
+    Python  18968 viddyslap    6u  IPv4 0xf6d57d73cd6a22c2      0t0  UDP *:45123
+  GET /api/settings 200 {"feedback_port": "IAC Driver DECK_OUT", "listen": "0.0.0.0:45123", "map_path": "/private/tmp/sdcore2-gate/arms/A3b-head-ptz-ui/config/presets/PTZ.json", "midi_port": "IAC Driver DECK_IN", "preset_section": "macbook", "pulse_port": null, "ui_port": 7723}
+  booted=True exit=-15
+   log: INFO created bridge settings config/bridge.local.json with preset_section=macbook
+   log: INFO mapping UI available at http://127.0.0.1:7723
+   log: INFO listening on udp://0.0.0.0:45123
+  after: 45123/7723 free=True
+  post: bridge.local.json=present bytes b'{\n  "preset_section": "macbook"\n}\n' sha 7476c2693ddb295f59b80171ac32624d21b66fa34442f2b01205ee6716f2b6c0
+== ARM A4-head-windows-noui: tree=/tmp/sdcore2-gate/arms/A4-head-windows-noui
+  pre: bridge.local.json=present sha d9e354efeea9b8c9d81a6b0eaf6ac6025affaa55e83f82583e86ce704f6ad342 .active=PTZ.json
+  cmd: /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python -B -u -m windows.win_recv --listen 0.0.0.0:45123 --map config/windows_midi_map.json --midi-port 'IAC Driver DECK_IN' --feedback-port 'IAC Driver DECK_OUT' --pulse-port 'IAC Driver PULSE_OUT' --timeout 2.0 --ui-port 7723 --dry-run --no-ui --no-engines --no-pulse --no-osc-relay
+  lsof(child):
+    Python  18975 viddyslap    3u  IPv4 0x498b8c1965271111      0t0  UDP *:45123
+  booted=True exit=-15
+   log: INFO listening on udp://0.0.0.0:45123
+  after: 45123/7723 free=True
+  post: bridge.local.json=present bytes b'{"preset_section": "windows"}\n' sha d9e354efeea9b8c9d81a6b0eaf6ac6025affaa55e83f82583e86ce704f6ad342
+  byte_identical=True
+== ARM A4b-head-windows-ui: tree=/tmp/sdcore2-gate/arms/A4b-head-windows-ui
+  pre: bridge.local.json=present sha d9e354efeea9b8c9d81a6b0eaf6ac6025affaa55e83f82583e86ce704f6ad342 .active=PTZ.json
+  cmd: /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python -B -u -m windows.win_recv --listen 0.0.0.0:45123 --map config/windows_midi_map.json --midi-port 'IAC Driver DECK_IN' --feedback-port 'IAC Driver DECK_OUT' --pulse-port 'IAC Driver PULSE_OUT' --timeout 2.0 --ui-port 7723 --dry-run --no-engines --no-pulse --no-osc-relay
+  lsof(child):
+    Python  18988 viddyslap    3u  IPv4  0xcd9036ba5023934      0t0  TCP 127.0.0.1:7723 (LISTEN)
+    Python  18988 viddyslap    6u  IPv4 0xea15d4a452843eca      0t0  UDP *:45123
+  GET /api/settings 200 {"feedback_port": "IAC Driver DECK_OUT", "listen": "0.0.0.0:45123", "map_path": "/private/tmp/sdcore2-gate/arms/A4b-head-windows-ui/config/presets/PTZ.json", "midi_port": "IAC Driver DECK_IN", "preset_section": "windows", "pulse_port": null, "ui_port": 7723}
+  booted=True exit=-15
+   log: INFO mapping UI available at http://127.0.0.1:7723
+   log: INFO listening on udp://0.0.0.0:45123
+  after: 45123/7723 free=True
+  post: bridge.local.json=present bytes b'{"preset_section": "windows"}\n' sha d9e354efeea9b8c9d81a6b0eaf6ac6025affaa55e83f82583e86ce704f6ad342
+  byte_identical=True
+== ARM A5 snippet (extracted verbatim from run_receiver.command): python -c 'from pathlib import Path; from windows.bridge_settings import BridgeSettings; settings = BridgeSettings.load(Path("config/bridge.local.json")); settings.save_if_missing("macbook"); print(settings.preset_section or "")'
+  pre: bridge.local.json ABSENT
+  exit 0 PRESET_SECTION=macbook
+  post: bridge.local.json bytes b'{\n  "preset_section": "macbook"\n}\n'
+== ARM A5b-snippet-then-boot: tree=/tmp/sdcore2-gate/arms/A5-snippet
+  pre: bridge.local.json=present sha 7476c2693ddb295f59b80171ac32624d21b66fa34442f2b01205ee6716f2b6c0 .active=ABSENT
+  cmd: /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python -B -u -m windows.win_recv --preset-section macbook --listen 0.0.0.0:45123 --map config/windows_midi_map.json --midi-port 'IAC Driver DECK_IN' --feedback-port 'IAC Driver DECK_OUT' --pulse-port 'IAC Driver PULSE_OUT' --timeout 2.0 --ui-port 7723 --dry-run --no-ui --no-engines --no-pulse --no-osc-relay
+  lsof(child):
+    Python  19026 viddyslap    3u  IPv4 0x43112ad1a4f46aa9      0t0  UDP *:45123
+  booted=True exit=-15
+   log: INFO listening on udp://0.0.0.0:45123
+  after: 45123/7723 free=True
+  post: bridge.local.json=present bytes b'{\n  "preset_section": "macbook"\n}\n' sha 7476c2693ddb295f59b80171ac32624d21b66fa34442f2b01205ee6716f2b6c0
+SUMMARY {
+ "A1": {
+  "name": "A1-v049",
+  "booted": true,
+  "exit": -15,
+  "settings": null,
+  "local": null,
+  "free": true
+ },
+ "A2": {
+  "name": "A2-head-fresh-noui",
+  "booted": true,
+  "exit": -15,
+  "settings": null,
+  "local": null,
+  "free": true
+ },
+ "A2b": {
+  "name": "A2b-head-fresh-ui",
+  "booted": true,
+  "exit": -15,
+  "settings": {
+   "feedback_port": "IAC Driver DECK_OUT",
+   "listen": "0.0.0.0:45123",
+   "map_path": "/private/tmp/sdcore2-gate/arms/A2b-head-fresh-ui/config/presets/default.json",
+   "midi_port": "IAC Driver DECK_IN",
+   "preset_section": null,
+   "pulse_port": null,
+   "ui_port": 7723
+  },
+  "local": null,
+  "free": true
+ },
+ "A3": {
+  "name": "A3-head-ptz-noui",
+  "booted": true,
+  "exit": -15,
+  "settings": null,
+  "local": "{\n  \"preset_section\": \"macbook\"\n}\n",
+  "free": true
+ },
+ "A3b": {
+  "name": "A3b-head-ptz-ui",
+  "booted": true,
+  "exit": -15,
+  "settings": {
+   "feedback_port": "IAC Driver DECK_OUT",
+   "listen": "0.0.0.0:45123",
+   "map_path": "/private/tmp/sdcore2-gate/arms/A3b-head-ptz-ui/config/presets/PTZ.json",
+   "midi_port": "IAC Driver DECK_IN",
+   "preset_section": "macbook",
+   "pulse_port": null,
+   "ui_port": 7723
+  },
+  "local": "{\n  \"preset_section\": \"macbook\"\n}\n",
+  "free": true
+ },
+ "A4-head-windows-noui": {
+  "name": "A4-head-windows-noui",
+  "booted": true,
+  "exit": -15,
+  "settings": null,
+  "local": "{\"preset_section\": \"windows\"}\n",
+  "free": true,
+  "byte_identical": true
+ },
+ "A4b-head-windows-ui": {
+  "name": "A4b-head-windows-ui",
+  "booted": true,
+  "exit": -15,
+  "settings": {
+   "feedback_port": "IAC Driver DECK_OUT",
+   "listen": "0.0.0.0:45123",
+   "map_path": "/private/tmp/sdcore2-gate/arms/A4b-head-windows-ui/config/presets/PTZ.json",
+   "midi_port": "IAC Driver DECK_IN",
+   "preset_section": "windows",
+   "pulse_port": null,
+   "ui_port": 7723
+  },
+  "local": "{\"preset_section\": \"windows\"}\n",
+  "free": true,
+  "byte_identical": true
+ },
+ "A5b": {
+  "name": "A5b-snippet-then-boot",
+  "booted": true,
+  "exit": -15,
+  "settings": null,
+  "local": "{\n  \"preset_section\": \"macbook\"\n}\n",
+  "free": true
+ }
+}

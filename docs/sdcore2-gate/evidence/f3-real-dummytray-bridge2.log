@@ -1,0 +1,50 @@
+INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=IAC Driver DECK_IN index=0
+INFO selected MIDI input feedback port: name=IAC Driver DECK_OUT index=1
+INFO auto-merging factory default for engine type 'autopilot' (not in engines/)
+INFO auto-merging factory default for engine type 'autopilot_ptz' (not in engines/)
+INFO auto-merging factory default for engine type 'bumper_blast' (not in engines/)
+INFO auto-merging factory default for engine type 'chaser_stack_dispatcher' (not in engines/)
+INFO auto-merging factory default for engine type 'flash_blast' (not in engines/)
+INFO auto-merging factory default for engine type 'gyro_feedback' (not in engines/)
+INFO auto-merging factory default for engine type 'l_stick_layer' (not in engines/)
+INFO auto-merging factory default for engine type 'nestdrop' (not in engines/)
+INFO auto-merging factory default for engine type 'ptz_visca' (not in engines/)
+INFO auto-merging factory default for engine type 'stageflow_bridge' (not in engines/)
+INFO auto-merging factory default for engine type 'steam_input_layer_tracker' (not in engines/)
+INFO loaded engine Audio Engine (type=audio_opacity)
+INFO loaded engine Global Color (type=global_color)
+INFO loaded engine OSC Sync (type=osc_sync)
+INFO loaded engine Autopilot (type=autopilot)
+INFO loaded engine Autopilot PTZ (type=autopilot_ptz)
+INFO loaded engine Bumper Blast (type=bumper_blast)
+INFO loaded engine Chaser Stack Dispatcher (type=chaser_stack_dispatcher)
+INFO loaded engine Flash Blast (type=flash_blast)
+INFO loaded engine Gyro Feedback (type=gyro_feedback)
+INFO loaded engine Left Stick Layer (type=l_stick_layer)
+INFO loaded engine NestDrop (type=nestdrop)
+WARNING ptz_visca: VISCA socket bind to 192.168.0.100 failed (camera NIC absent?); sender unbound \u2014 engine loads but sends nothing
+INFO loaded engine PTZ VISCA (type=ptz_visca)
+INFO loaded engine StageFlow Bridge (type=stageflow_bridge)
+INFO loaded engine SteamInput Layer Tracker (type=steam_input_layer_tracker)
+WARNING autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:8080/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+INFO Bumper Blast: bound to steam_input_layer_tracker (current=chaser)
+INFO Flash Blast: bound to steam_input_layer_tracker (current=chaser)
+INFO engine config: path=config/engines count=14 active=13
+INFO osc_relay: listening on udp://127.0.0.1:7010 -> 10.10.10.5:7002, 10.10.10.30:7001
+INFO mapping UI available at http://127.0.0.1:7723
+Exception in thread tray:
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/threading.py", line 1075, in _bootstrap_inner
+INFO listening on udp://0.0.0.0:45123
+    INFO listening for MIDI feedback: name=IAC Driver DECK_OUT index=1
+self.run()INFO listening for MIDI clock: name=IAC Driver PULSE_OUT index=2
+INFO engines loaded: Audio Engine(audio_opacity), Global Color(global_color), OSC Sync(osc_sync), Autopilot(autopilot), Autopilot PTZ(autopilot_ptz), Bumper Blast(bumper_blast), Chaser Stack Dispatcher(chaser_stack_dispatcher), Flash Blast(flash_blast), Gyro Feedback(gyro_feedback), Left Stick Layer(l_stick_layer), NestDrop(nestdrop), PTZ VISCA(ptz_visca), StageFlow Bridge(stageflow_bridge), SteamInput Layer Tracker(steam_input_layer_tracker)
+
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/threading.py", line 1012, in run
+    self._target(*self._args, **self._kwargs)
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/lib/python3.12/site-packages/pystray/_base.py", line 212, in run
+    self._run()
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/lib/python3.12/site-packages/pystray/_base.py", line 379, in _run
+    raise NotImplementedError()
+NotImplementedError

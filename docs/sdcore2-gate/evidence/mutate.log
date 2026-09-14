@@ -1,0 +1,58 @@
+PRISTINE exit=0 Ran 821 tests in 6.782s / OK (skipped=1)
+[a] re-section the tracked default.json (f809be1 bytes)
+    files=['config/presets/default.json']
+    MUTANT exit=1 Ran 821 tests in 6.848s / FAILED (failures=1, errors=2, skipped=1)
+      ERROR: test_git_pull_default_without_marker_or_local_file_boots_everywhere (test_upgrade_boot.UpgradeBootTests.test_git_pull_default_without_marker_or_local_file_boots_everywhere) (platform='win32')
+      ERROR: test_git_pull_default_without_marker_or_local_file_boots_everywhere (test_upgrade_boot.UpgradeBootTests.test_git_pull_default_without_marker_or_local_file_boots_everywhere) (platform='linux')
+      FAIL: test_git_pull_default_without_marker_or_local_file_boots_everywhere (test_upgrade_boot.UpgradeBootTests.test_git_pull_default_without_marker_or_local_file_boots_everywhere) (platform='darwin')
+    RESTORED exit=0 Ran 821 tests in 6.760s / OK (skipped=1) sha_equal=True -> BITES
+[b] darwin first-run default overwrites an existing bridge.local.json
+    files=['windows/bridge_settings.py', 'windows/win_recv.py']
+    MUTANT exit=1 Ran 821 tests in 7.503s / FAILED (failures=13, skipped=1)
+      FAIL: test_unchanged_settings_preserve_argv_on_explicit_reload (test_preset_watch.ReloadIntegrationTests.test_unchanged_settings_preserve_argv_on_explicit_reload)
+      FAIL: test_local_section_is_passed_as_one_argument_and_missing_file_still_works (test_section_launchers.MacSectionLauncherTests.test_local_section_is_passed_as_one_argument_and_missing_file_still_works) (section='Grandma 2_-')
+      FAIL: test_section_snippet_creates_missing_file_and_preserves_existing_bytes (test_upgrade_boot.MacLauncherSnippetTests.test_section_snippet_creates_missing_file_and_preserves_existing_bytes) (before=b'{ "preset_section": "Grandma 2_-", "sentinel": 9 }\n')
+      FAIL: test_atomic_publish_race_uses_existing_choice_and_mapping (test_upgrade_boot.UpgradeBootTests.test_atomic_publish_race_uses_existing_choice_and_mapping)
+      FAIL: test_existing_local_selection_and_sentinel_bytes_survive (test_upgrade_boot.UpgradeBootTests.test_existing_local_selection_and_sentinel_bytes_survive)
+      FAIL: test_existing_null_or_unavailable_selection_is_not_defaulted (test_upgrade_boot.UpgradeBootTests.test_existing_null_or_unavailable_selection_is_not_defaulted) (section=None)
+      FAIL: test_existing_null_or_unavailable_selection_is_not_defaulted (test_upgrade_boot.UpgradeBootTests.test_existing_null_or_unavailable_selection_is_not_defaulted) (section='sentinel')
+      FAIL: test_explicit_override_does_not_create_local_file (test_upgrade_boot.UpgradeBootTests.test_explicit_override_does_not_create_local_file)
+      FAIL: test_initialization_does_not_replace_file_created_since_load (test_upgrade_boot.UpgradeBootTests.test_initialization_does_not_replace_file_created_since_load)
+      FAIL: test_publish_failure_leaves_no_partial_local_file (test_upgrade_boot.UpgradeBootTests.test_publish_failure_leaves_no_partial_local_file)
+      FAIL: test_argv_section_beats_machine_file_without_overwriting_it (test_win_recv_settings.BridgeStartupSettingsTests.test_argv_section_beats_machine_file_without_overwriting_it)
+      FAIL: test_missing_selection_on_sectioned_startup_names_sections (test_win_recv_settings.BridgeStartupSettingsTests.test_missing_selection_on_sectioned_startup_names_sections)
+      FAIL: test_put_switch_is_used_by_real_reload_loop_and_next_startup (test_win_recv_settings.BridgeStartupSettingsTests.test_put_switch_is_used_by_real_reload_loop_and_next_startup)
+    RESTORED exit=0 Ran 821 tests in 6.817s / OK (skipped=1) sha_equal=True -> BITES
+[b2] save_if_missing alone overwrites (loader guard intact)
+    files=['windows/bridge_settings.py']
+    MUTANT exit=1 Ran 821 tests in 6.869s / FAILED (failures=5, skipped=1)
+      FAIL: test_local_section_is_passed_as_one_argument_and_missing_file_still_works (test_section_launchers.MacSectionLauncherTests.test_local_section_is_passed_as_one_argument_and_missing_file_still_works) (section='Grandma 2_-')
+      FAIL: test_section_snippet_creates_missing_file_and_preserves_existing_bytes (test_upgrade_boot.MacLauncherSnippetTests.test_section_snippet_creates_missing_file_and_preserves_existing_bytes) (before=b'{ "preset_section": "Grandma 2_-", "sentinel": 9 }\n')
+      FAIL: test_atomic_publish_race_uses_existing_choice_and_mapping (test_upgrade_boot.UpgradeBootTests.test_atomic_publish_race_uses_existing_choice_and_mapping)
+      FAIL: test_initialization_does_not_replace_file_created_since_load (test_upgrade_boot.UpgradeBootTests.test_initialization_does_not_replace_file_created_since_load)
+      FAIL: test_publish_failure_leaves_no_partial_local_file (test_upgrade_boot.UpgradeBootTests.test_publish_failure_leaves_no_partial_local_file)
+    RESTORED exit=0 Ran 821 tests in 6.827s / OK (skipped=1) sha_equal=True -> BITES
+[c] POST /api/shutdown skips the loopback check
+    files=['windows/ui_server.py']
+    MUTANT exit=1 Ran 821 tests in 6.741s / FAILED (failures=7, skipped=1)
+      FAIL: test_non_loopback_is_still_refused_while_stopping (test_ui_server.BridgeShutdownApiTests.test_non_loopback_is_still_refused_while_stopping)
+      FAIL: test_shutdown_refuses_non_loopback_even_with_forwarded_header (test_ui_server.BridgeShutdownApiTests.test_shutdown_refuses_non_loopback_even_with_forwarded_header) (remote='192.168.1.7')
+      FAIL: test_shutdown_refuses_non_loopback_even_with_forwarded_header (test_ui_server.BridgeShutdownApiTests.test_shutdown_refuses_non_loopback_even_with_forwarded_header) (remote='203.0.113.1')
+      FAIL: test_shutdown_refuses_non_loopback_even_with_forwarded_header (test_ui_server.BridgeShutdownApiTests.test_shutdown_refuses_non_loopback_even_with_forwarded_header) (remote='::')
+      FAIL: test_shutdown_refuses_non_loopback_even_with_forwarded_header (test_ui_server.BridgeShutdownApiTests.test_shutdown_refuses_non_loopback_even_with_forwarded_header) (remote='')
+      FAIL: test_shutdown_refuses_non_loopback_even_with_forwarded_header (test_ui_server.BridgeShutdownApiTests.test_shutdown_refuses_non_loopback_even_with_forwarded_header) (remote='invalid')
+      FAIL: test_shutdown_refuses_non_loopback_even_with_forwarded_header (test_ui_server.BridgeShutdownApiTests.test_shutdown_refuses_non_loopback_even_with_forwarded_header)
+    RESTORED exit=0 Ran 821 tests in 6.709s / OK (skipped=1) sha_equal=True -> BITES
+[d] route returns 202 before setting the stop event
+    files=['windows/ui_server.py']
+    MUTANT exit=1 Ran 821 tests in 9.617s / FAILED (failures=8, skipped=1)
+      FAIL: test_http_stop_waits_for_shutdown_reply_and_releases_port (test_bridge_shutdown.BridgeShutdownTests.test_http_stop_waits_for_shutdown_reply_and_releases_port)
+      FAIL: test_main_wires_both_tray_modes_to_the_http_shutdown_function (test_bridge_shutdown.BridgeShutdownTests.test_main_wires_both_tray_modes_to_the_http_shutdown_function) (tray_mode=False)
+      FAIL: test_main_wires_both_tray_modes_to_the_http_shutdown_function (test_bridge_shutdown.BridgeShutdownTests.test_main_wires_both_tray_modes_to_the_http_shutdown_function) (tray_mode=True)
+      FAIL: test_non_loopback_is_still_refused_while_stopping (test_ui_server.BridgeShutdownApiTests.test_non_loopback_is_still_refused_while_stopping)
+      FAIL: test_shutdown_accepts_ipv6_loopback (test_ui_server.BridgeShutdownApiTests.test_shutdown_accepts_ipv6_loopback)
+      FAIL: test_shutdown_is_idempotent (test_ui_server.BridgeShutdownApiTests.test_shutdown_is_idempotent)
+      FAIL: test_shutdown_sets_stop_event_and_returns_202 (test_ui_server.BridgeShutdownApiTests.test_shutdown_sets_stop_event_and_returns_202)
+      FAIL: test_unwired_ui_refuses_shutdown (test_ui_server.BridgeShutdownApiTests.test_unwired_ui_refuses_shutdown)
+    RESTORED exit=0 Ran 821 tests in 6.776s / OK (skipped=1) sha_equal=True -> BITES
+ALL_BITE
