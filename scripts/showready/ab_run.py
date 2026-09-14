@@ -265,9 +265,18 @@ def run(args):
         step_events = {s['id']: s for s in script['steps']}
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sender:
             start = time.monotonic_ns()
-            last_send, previous_at = start, 0
+            last_event_send, previous_event_at, step_start = start, 0, start
             for row in script['packets']:
-                wait_gap(last_send, round((row['at_ns'] - previous_at) / args.speed))
+                step = step_events[row['step']]
+                is_event = row['at_ns'] == step['at_ns']
+                # Deck inputs never catch up. Timer probes use offsets inside
+                # that input's dwell, so late probes cannot compound delay.
+                # Yielding waits keep axis rates from OS short-sleep coalescing.
+                sleeper = (lambda seconds: time.sleep(0)) if step['event']['kind'] == 'axis' else time.sleep
+                if is_event:
+                    wait_gap(last_event_send, round((row['at_ns'] - previous_event_at) / args.speed), sleep=sleeper)
+                else:
+                    wait_gap(step_start, round((row['at_ns'] - step['at_ns']) / args.speed), sleep=sleeper)
                 payload = bytes.fromhex(row['hex'])
                 wire_digest.update(__import__('struct').pack('!I', len(payload)))
                 wire_digest.update(payload)
@@ -278,9 +287,11 @@ def run(args):
                     sent = sender.sendto(payload, ('127.0.0.1', result['arms'][name]['udp_port']))
                     if sent != len(payload):
                         raise RuntimeError('Partial UDP send')
-                    if row['at_ns'] == step_events[row['step']]['at_ns']:
+                    if is_event:
                         sends[name][row['step']] = sent_at
-                last_send, previous_at = time.monotonic_ns(), row['at_ns']
+                if is_event:
+                    last_event_send = step_start = time.monotonic_ns()
+                    previous_event_at = row['at_ns']
             result['replay_wall_seconds'] = (time.monotonic_ns() - start) / 1e9
         result['pacing'] = pacing_summary(script, sends, args.speed)
         result['sent_packet_stream_sha256'] = wire_digest.hexdigest()

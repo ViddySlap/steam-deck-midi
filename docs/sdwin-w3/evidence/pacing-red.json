@@ -1,0 +1,40 @@
+{
+  "source": "unpaced-edm.json.gz",
+  "sha256": "984014c31aaa88427a012e43f52e87324e856275ded86ef795f0739493ab3327",
+  "command": "pacing_summary(recorded_script, recorded_send_monotonic_ns, speed=1)",
+  "accepted": false,
+  "measured": {
+    "A": {
+      "axis-60hz": {
+        "count": 229,
+        "min_ns": 26416,
+        "median_ns": 65750,
+        "max_ns": 460019333,
+        "no_overspeed": false
+      },
+      "axis-10hz": {
+        "count": 229,
+        "min_ns": 141708,
+        "median_ns": 94404708,
+        "max_ns": 1242647875,
+        "no_overspeed": false
+      }
+    },
+    "B1": {
+      "axis-60hz": {
+        "count": 229,
+        "min_ns": 26125,
+        "median_ns": 62042,
+        "max_ns": 460021000,
+        "no_overspeed": false
+      },
+      "axis-10hz": {
+        "count": 229,
+        "min_ns": 141625,
+        "median_ns": 94401958,
+        "max_ns": 1242650250,
+        "no_overspeed": false
+      }
+    }
+  }
+}

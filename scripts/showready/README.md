@@ -166,7 +166,9 @@ replace dispatch, fades, staged notes, relative CC, timeout or release logic.
 Legal heartbeat packets every 10 ms drive delayed work to fixed instants in
 both arms. Wall pacing defaults to --speed 1. Each full stream takes at least
 470 seconds; delayed wakes extend the run. The sender preserves every
-inter-packet gap after a delay, so it never sends catch-up bursts. Measured
+Deck-event gap after a delay, so mapped inputs never arrive in catch-up
+bursts. Heartbeat timer probes use offsets within each event dwell. Axis
+waits yield until due to avoid short-sleep coalescing; button waits sleep. Measured
 axis interval counts/minimum/median/maximum are retained per arm and phase;
 any interval below the scripted minimum makes the run fail. This is synthetic Deck input and controlled receiver time, with
 real loopback UDP and real MIDI-backend calls. It proves byte regression under

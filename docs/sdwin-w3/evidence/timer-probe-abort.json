@@ -1,0 +1,373 @@
+{
+  "injected_packets": [
+    {
+      "pid": 28175,
+      "work": "/tmp/sdwin-w3/ab-y5qq0p01",
+      "bound": [
+        "127.0.0.1",
+        64697
+      ],
+      "fault": "unexpected packet sequence"
+    },
+    {
+      "pid": 28176,
+      "work": "/tmp/sdwin-w3/ab-vpfzs6s9",
+      "bound": [
+        "127.0.0.1",
+        61056
+      ],
+      "fault": "unexpected packet sequence"
+    },
+    {
+      "pid": 28180,
+      "work": "/tmp/sdwin-w3/ab-wrjelag2",
+      "bound": [
+        "127.0.0.1",
+        55168
+      ],
+      "fault": "unexpected packet sequence"
+    },
+    {
+      "pid": 28177,
+      "work": "/tmp/sdwin-w3/ab-z6y90dn9",
+      "bound": [
+        "127.0.0.1",
+        55639
+      ],
+      "fault": "unexpected packet sequence"
+    },
+    {
+      "pid": 28173,
+      "work": "/tmp/sdwin-w3/ab-iarx9ggx",
+      "bound": [
+        "127.0.0.1",
+        61180
+      ],
+      "fault": "unexpected packet sequence"
+    },
+    {
+      "pid": 28181,
+      "work": "/tmp/sdwin-w3/ab-hm4p75vz",
+      "bound": [
+        "127.0.0.1",
+        60413
+      ],
+      "fault": "unexpected packet sequence"
+    },
+    {
+      "pid": 80840,
+      "work": "/tmp/sdwin-w3/ab-gdrx30mb",
+      "bound": [
+        "127.0.0.1",
+        61080
+      ],
+      "fault": "unexpected packet sequence"
+    },
+    {
+      "pid": 80841,
+      "work": "/tmp/sdwin-w3/ab-4_4p6xhs",
+      "bound": [
+        "127.0.0.1",
+        51530
+      ],
+      "fault": "unexpected packet sequence"
+    },
+    {
+      "pid": 80846,
+      "work": "/tmp/sdwin-w3/ab-dk7em00d",
+      "bound": [
+        "127.0.0.1",
+        61998
+      ],
+      "fault": "unexpected packet sequence"
+    },
+    {
+      "pid": 80839,
+      "work": "/tmp/sdwin-w3/ab-1qti_yyv",
+      "bound": [
+        "127.0.0.1",
+        60974
+      ],
+      "fault": "unexpected packet sequence"
+    },
+    {
+      "pid": 80842,
+      "work": "/tmp/sdwin-w3/ab-_n2pi5mu",
+      "bound": [
+        "127.0.0.1",
+        62620
+      ],
+      "fault": "unexpected packet sequence"
+    }
+  ],
+  "results": [
+    {
+      "file": "aa-wall-noise.json.gz",
+      "error": "RuntimeError: Arm died during replay: A",
+      "arms": {
+        "A": {
+          "pid": 80846,
+          "cleanup": {
+            "exit_code": 1,
+            "method": "already-exited",
+            "pid_gone": true,
+            "proof": "Popen.wait plus kill(pid,0)"
+          }
+        },
+        "B1": {
+          "pid": 81080,
+          "cleanup": {
+            "exit_code": -15,
+            "method": "terminate",
+            "pid_gone": true,
+            "proof": "Popen.wait plus kill(pid,0)"
+          }
+        }
+      }
+    },
+    {
+      "file": "aa-real-2.json.gz",
+      "error": "RuntimeError: Arm died during replay: A",
+      "arms": {
+        "A": {
+          "pid": 80842,
+          "cleanup": {
+            "exit_code": 1,
+            "method": "already-exited",
+            "pid_gone": true,
+            "proof": "Popen.wait plus kill(pid,0)"
+          }
+        },
+        "B1": {
+          "pid": 81075,
+          "cleanup": {
+            "exit_code": -15,
+            "method": "terminate",
+            "pid_gone": true,
+            "proof": "Popen.wait plus kill(pid,0)"
+          }
+        }
+      }
+    },
+    {
+      "file": "windows-installed-v1-default.json.gz",
+      "error": "RuntimeError: Arm died during replay: A",
+      "arms": {
+        "A": {
+          "pid": 80840,
+          "cleanup": {
+            "exit_code": 1,
+            "method": "already-exited",
+            "pid_gone": true,
+            "proof": "Popen.wait plus kill(pid,0)"
+          }
+        },
+        "B1": {
+          "pid": 81158,
+          "cleanup": {
+            "exit_code": -15,
+            "method": "terminate",
+            "pid_gone": true,
+            "proof": "Popen.wait plus kill(pid,0)"
+          }
+        }
+      }
+    },
+    {
+      "file": "aa-real-1.json.gz",
+      "error": "RuntimeError: Arm died during replay: A",
+      "arms": {
+        "A": {
+          "pid": 80839,
+          "cleanup": {
+            "exit_code": 1,
+            "method": "already-exited",
+            "pid_gone": true,
+            "proof": "Popen.wait plus kill(pid,0)"
+          }
+        },
+        "B1": {
+          "pid": 81076,
+          "cleanup": {
+            "exit_code": -15,
+            "method": "terminate",
+            "pid_gone": true,
+            "proof": "Popen.wait plus kill(pid,0)"
+          }
+        }
+      }
+    },
+    {
+      "file": "windows-installed-test-1.json.gz",
+      "error": "RuntimeError: Arm died during replay: A",
+      "arms": {
+        "A": {
+          "pid": 80841,
+          "cleanup": {
+            "exit_code": 1,
+            "method": "already-exited",
+            "pid_gone": true,
+            "proof": "Popen.wait plus kill(pid,0)"
+          }
+        },
+        "B1": {
+          "pid": 81123,
+          "cleanup": {
+            "exit_code": -15,
+            "method": "terminate",
+            "pid_gone": true,
+            "proof": "Popen.wait plus kill(pid,0)"
+          }
+        }
+      }
+    }
+  ],
+  "driver_exit": 130,
+  "reason": "Stop superseded cumulative timer pacing. Session interrupt reached the first cohort; queued arms then failed closed on injected packet mismatch. PID absence checked independently after driver exit.",
+  "pid_observations": [
+    {
+      "pid": 28801,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 28177,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 28521,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 80841,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 81123,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 80839,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 81076,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 28181,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 28511,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 80840,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 81158,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 28176,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 28520,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 28180,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 28522,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 28851,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 28175,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 28538,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 80846,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 81080,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 80842,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 81075,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 28173,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    },
+    {
+      "pid": 28523,
+      "gone": true,
+      "proof": "os.kill(pid,0)",
+      "error": null
+    }
+  ]
+}
