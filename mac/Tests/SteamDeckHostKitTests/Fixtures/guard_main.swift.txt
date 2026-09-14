@@ -1,0 +1,12 @@
+import Foundation
+import SteamDeckHostKit
+
+do {
+    let args = Array(CommandLine.arguments.dropFirst())
+    let path = URL(fileURLWithPath: args[0])
+    let invocation = try BridgeGuard.Invocation.parse(Array(args.dropFirst()))
+    exit(try BridgeGuard.run(invocation, pidFile: path))
+} catch {
+    FileHandle.standardError.write(Data((error.localizedDescription + "\n").utf8))
+    exit(70)
+}

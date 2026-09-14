@@ -343,7 +343,7 @@ class DeckControlAPITests(unittest.TestCase):
 
     def test_every_deck_route_is_documented(self):
         import re
-        doc = (Path(__file__).resolve().parents[1] / "docs/api.md").read_text().split("## Deck sender\n", 1)[1]
+        doc = (Path(__file__).resolve().parents[1] / "docs/api.md").read_text().split("## Deck sender\n", 1)[1].split("\n## ", 1)[0]
         documented = set(re.findall(r"\| (GET|POST|PUT|DELETE) \| `([^`]+)` \|", doc))
         self.assertEqual(documented, self.server.routes)
 

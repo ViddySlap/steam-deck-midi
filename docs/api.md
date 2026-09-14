@@ -166,3 +166,32 @@ setup, CLI commands, persistence, telemetry meaning, and learn workflow.
 | POST | `/api/learn/confirm` | Confirm the captured token; atomically save when learning finishes. |
 | POST | `/api/learn/skip` | Skip a full-learn action or cancel single-action re-learning. |
 | POST | `/api/learn/cancel` | Cancel learning and discard the unsaved draft. |
+
+## Mac host (127.0.0.1:7724)
+
+The Swift host serves these routes on the Mac, separately from the Deck
+sender's API. All responses are JSON. See [mac-host.md](mac-host.md) for
+settings defaults, lifecycle states, guard ownership and executable wiring.
+
+| Method | Path | Body | Response |
+| --- | --- | --- | --- |
+| GET | `/host/status` | None | State fields, owned PIDs, health, active UI URL. |
+| POST | `/host/bridge/start` | None or `{}` | Status after requesting start; poll until healthy. |
+| POST | `/host/bridge/stop` | None or `{}` | Status after owned child exit. |
+| POST | `/host/bridge/restart` | None or `{}` | Status after old child exits and new start is requested. |
+| GET | `/host/log?lines=N` | None | `{"lines":[...],"path":".../bridge.log"}`; default 200, allowed 0-2000. |
+| GET | `/host/login-item` | None | `{"status":"..."}` using one of the four login-item states. |
+| PUT | `/host/login-item` | `{"enabled":true}` or `false` | Updated login-item status. |
+| GET | `/host/settings` | None | Settings object including defaults and unknown keys. |
+| PUT | `/host/settings` | Partial settings object | Persisted settings including defaults and unknown keys. |
+| POST | `/host/window/open` | None or `{}` | `{"ok":true}` after calling the window handler. |
+| POST | `/host/quit` | None or `{}` | 202 `{"quitting":true}`; after reply, stop bridge and quit host. |
+
+Only a bind to `127.0.0.1` is allowed. The server supports HTTP/1.1 with
+Content-Length bodies capped at 64 KB. Bad JSON/values return 400, unknown
+paths 404, and wrong methods 405; errors have `{"error":"..."}`. Start and
+restart report lifecycle status, not a promise of immediate bridge health.
+Settings changes affecting the child apply on its next start/restart; changing
+the control port requires a host relaunch. Quit replies before stopping the
+bridge and terminating the host. The seven status-menu entries are generated
+from a model whose routes are checked against the same route table.

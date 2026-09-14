@@ -1,0 +1,74 @@
+[
+  {
+    "mutation": "settings-unknown",
+    "test": "settingsRoundTripAndAtomicReplacementPreserveUnknownKeys",
+    "baseline": 0,
+    "mutated": 1,
+    "restored": 0,
+    "red_summary": "\u2718 Test run with 1 test failed after 0.012 seconds with 1 issue.",
+    "restored_summary": "\u2714 Test run with 1 test passed after 0.010 seconds."
+  },
+  {
+    "mutation": "health-html",
+    "test": "only200JSONObjectIsHealthyWithOneSecondTimeout",
+    "baseline": 0,
+    "mutated": 1,
+    "restored": 0,
+    "red_summary": "\u2718 Test run with 1 test failed after 0.003 seconds with 5 issues.",
+    "restored_summary": "\u2714 Test run with 1 test passed after 0.003 seconds."
+  },
+  {
+    "mutation": "down-page",
+    "test": "everyViewStateRowIsDistinctFromAHealthyPage",
+    "baseline": 0,
+    "mutated": 1,
+    "restored": 0,
+    "red_summary": "\u2718 Test run with 1 test failed after 0.001 seconds with 2 issues.",
+    "restored_summary": "\u2714 Test run with 1 test passed after 0.001 seconds."
+  },
+  {
+    "mutation": "menu-route",
+    "test": "menuRouteAndControllerActionBar",
+    "baseline": 0,
+    "mutated": 1,
+    "restored": 0,
+    "red_summary": "\u2718 Test run with 1 test failed after 0.001 seconds with 1 issue.",
+    "restored_summary": "\u2714 Test run with 1 test passed after 0.001 seconds."
+  },
+  {
+    "mutation": "environment",
+    "test": "exactlyTwoEnvironmentOverridesAndOneOwnedChild",
+    "baseline": 0,
+    "mutated": 1,
+    "restored": 0,
+    "red_summary": "\u2718 Test run with 1 test failed after 0.009 seconds with 2 issues.",
+    "restored_summary": "\u2714 Test run with 1 test passed after 0.007 seconds."
+  },
+  {
+    "mutation": "port-ownership",
+    "test": "heldPortStaysHeldAndHolderIsNeverSignalled",
+    "baseline": 0,
+    "mutated": 1,
+    "restored": 0,
+    "red_summary": "\u2718 Test run with 1 test failed after 0.008 seconds with 2 issues.",
+    "restored_summary": "\u2714 Test run with 1 test passed after 0.817 seconds."
+  },
+  {
+    "mutation": "login-route",
+    "test": "ephemeralHTTPServerEveryRouteHappyPathAndErrors",
+    "baseline": 0,
+    "mutated": 1,
+    "restored": 0,
+    "red_summary": "\u2718 Test run with 1 test failed after 0.031 seconds with 1 issue.",
+    "restored_summary": "\u2714 Test run with 1 test passed after 0.078 seconds."
+  },
+  {
+    "mutation": "orphan-ownership",
+    "test": "orphanDecisionWithInjectedIdentityStillAssertsRealProcess",
+    "baseline": 0,
+    "mutated": 1,
+    "restored": 0,
+    "red_summary": "\u2718 Test run with 1 test failed after 0.005 seconds with 3 issues.",
+    "restored_summary": "\u2714 Test run with 1 test passed after 0.129 seconds."
+  }
+]

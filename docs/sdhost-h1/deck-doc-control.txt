@@ -1,0 +1,29 @@
+BASELINE
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.055s
+
+OK
+
+RED
+F
+======================================================================
+FAIL: test_every_deck_route_is_documented (tests.test_deck_control_api.DeckControlAPITests.test_every_deck_route_is_documented)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/sdhost-h1/deck-doc-control/tests/test_deck_control_api.py", line 348, in test_every_deck_route_is_documented
+    self.assertEqual(documented, self.server.routes)
+AssertionError: Items in the second set but not the first:
+('POST', '/api/learn/cancel')
+
+----------------------------------------------------------------------
+Ran 1 test in 0.056s
+
+FAILED (failures=1)
+
+RESTORED
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.056s
+
+OK

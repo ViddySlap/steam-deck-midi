@@ -57,3 +57,6 @@ logs/
 dev-bridge.out.log
 dev-bridge.err.log
 gyro-observe.log
+
+# SwiftPM host build products
+mac/.build/

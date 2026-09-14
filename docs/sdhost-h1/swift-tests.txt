@@ -1,0 +1,110 @@
+warning: /Users/viddyslap/Library/org.swift.swiftpm/configuration is not accessible or not writable, disabling user-level cache features.
+warning: /Users/viddyslap/Library/org.swift.swiftpm/security is not accessible or not writable, disabling user-level cache features.
+warning: /Users/viddyslap/Library/Caches/org.swift.swiftpm is not accessible or not writable, disabling user-level cache features.
+warning: 'mac': failed storing manifest for 'mac' in cache: attempt to write a readonly database
+[0/1] Planning build
+Building for debugging...
+[0/5] Write swift-version--1AB21518FC5DEDBE.txt
+[1/3] Write sources
+[3/4] Emitting module SteamDeckHostKitTests
+[4/5] Compiling SteamDeckHostKitTests SettingsAndPresentationTests.swift
+[4/6] Write Objects.LinkFileList
+[5/6] Linking SteamDeckMIDIPackageTests
+Build complete! (1.42s)
+\u25c7 Test run started.
+\u21b3 Testing Library Version: 124.4
+\u21b3 Target Platform: arm64e-apple-macos14.0
+\u25c7 Suite SupervisorTests started.
+\u25c7 Suite GuardTests started.
+\u25c7 Suite HealthTests started.
+\u25c7 Suite SettingsAndPresentationTests started.
+\u25c7 Suite ControlTests started.
+\u25c7 Test only200JSONObjectIsHealthyWithOneSecondTimeout() started.
+\u25c7 Test guardInvocationIsStrict() started.
+\u25c7 Test everyViewStateRowIsDistinctFromAHealthyPage() started.
+\u25c7 Test malformedSettingsNameFileAndRemainByteIdentical(_:) started.
+\u25c7 Test menuRouteAndControllerActionBar() started.
+\u25c7 Test macAPIInventoryMatchesBothDocumentationTables() started.
+\u25c7 Test portsComeFromSettingsAndArguments() started.
+\u25c7 Test defaultsMatchLauncherWithoutSectionOverride() started.
+\u25c7 Test launchContextBothDirections() started.
+\u25c7 Test ephemeralHTTPServerEveryRouteHappyPathAndErrors() started.
+\u25c7 Test invalidTypedSettingsAreRefused() started.
+\u25c7 Test realProcessLogsEnvironmentCwdAndStopWaitsForESRCH() started.
+\u25c7 Passing 1 argument content \u2192 "{" to malformedSettingsNameFileAndRemainByteIdentical(_:)
+\u25c7 Passing 1 argument content \u2192 "{"ui_url":"http://evil.invalid"}" to malformedSettingsNameFileAndRemainByteIdentical(_:)
+\u25c7 Passing 1 argument content \u2192 "[]" to malformedSettingsNameFileAndRemainByteIdentical(_:)
+\u25c7 Passing 1 argument content \u2192 "{"control_port":true}" to malformedSettingsNameFileAndRemainByteIdentical(_:)
+\u25c7 Passing 1 argument content \u2192 "{"bridge_env":42}" to malformedSettingsNameFileAndRemainByteIdentical(_:)
+\u25c7 Test settingsRoundTripAndAtomicReplacementPreserveUnknownKeys() started.
+\u2714 Test launchContextBothDirections() passed after 0.001 seconds.
+\u2714 Test defaultsMatchLauncherWithoutSectionOverride() passed after 0.001 seconds.
+\u2714 Test menuRouteAndControllerActionBar() passed after 0.001 seconds.
+\u2714 Test everyViewStateRowIsDistinctFromAHealthyPage() passed after 0.001 seconds.
+\u2714 Test portsComeFromSettingsAndArguments() passed after 0.001 seconds.
+\u2714 Test invalidTypedSettingsAreRefused() passed after 0.001 seconds.
+\u2714 Test only200JSONObjectIsHealthyWithOneSecondTimeout() passed after 0.003 seconds.
+\u2714 Suite HealthTests passed after 0.003 seconds.
+\u2714 Test macAPIInventoryMatchesBothDocumentationTables() passed after 0.003 seconds.
+\u2714 Test malformedSettingsNameFileAndRemainByteIdentical(_:) passed after 0.005 seconds.
+\u2714 Test settingsRoundTripAndAtomicReplacementPreserveUnknownKeys() passed after 0.005 seconds.
+\u2714 Suite SettingsAndPresentationTests passed after 0.005 seconds.
+\u2714 Test guardInvocationIsStrict() passed after 0.006 seconds.
+\u25c7 Test guardReapsBridgeOnHostDeathOrForwardedSignal(_:) started.
+\u25c7 Passing 1 argument mode \u2192 "host-kill" to guardReapsBridgeOnHostDeathOrForwardedSignal(_:)
+\u2714 Test ephemeralHTTPServerEveryRouteHappyPathAndErrors() passed after 0.078 seconds.
+\u25c7 Test nonLoopbackBindIsRefusedBeforeOpeningSocket() started.
+\u2714 Test nonLoopbackBindIsRefusedBeforeOpeningSocket() passed after 0.001 seconds.
+\u25c7 Test parserRetainsSplitBodyAndRefusesSmugglingAndOversizeBodies() started.
+\u2714 Test parserRetainsSplitBodyAndRefusesSmugglingAndOversizeBodies() passed after 0.001 seconds.
+\u25c7 Test rawHTTPFramingErrorsAreJSONAndBodyCapIsEnforcedOnWire() started.
+\u2714 Test realProcessLogsEnvironmentCwdAndStopWaitsForESRCH() passed after 0.122 seconds.
+\u25c7 Test ringRetainsLast2000LinesAndFileRetainsAllBytes() started.
+\u2714 Test ringRetainsLast2000LinesAndFileRetainsAllBytes() passed after 0.002 seconds.
+\u25c7 Test exactlyTwoEnvironmentOverridesAndOneOwnedChild() started.
+\u2714 Test exactlyTwoEnvironmentOverridesAndOneOwnedChild() passed after 0.001 seconds.
+\u25c7 Test stoppingPersistsUntilExitAndEscalatesAtEightSeconds() started.
+\u2714 Test stoppingPersistsUntilExitAndEscalatesAtEightSeconds() passed after 0.050 seconds.
+\u25c7 Test realStubbornProcessIsKilledAndReapedAfterTermDeadline() started.
+\u2714 Test realStubbornProcessIsKilledAndReapedAfterTermDeadline() passed after 0.099 seconds.
+\u25c7 Test guardIsNeverKilledBySupervisor() started.
+\u2714 Test guardIsNeverKilledBySupervisor() passed after 0.049 seconds.
+\u25c7 Test realExitThreeRestartsAtBackoffAndFiveCrashesLatchFailed() started.
+\u2714 Test rawHTTPFramingErrorsAreJSONAndBodyCapIsEnforcedOnWire() passed after 1.002 seconds.
+\u25c7 Test loginFakeAndControllerPropagateApprovalStatesAndErrors() started.
+\u2714 Test loginFakeAndControllerPropagateApprovalStatesAndErrors() passed after 0.001 seconds.
+\u25c7 Test routerEveryWrongMethodAndQuitDefersUntilResponseCompletion() started.
+\u2714 Test routerEveryWrongMethodAndQuitDefersUntilResponseCompletion() passed after 0.001 seconds.
+\u2714 Suite ControlTests passed after 1.083 seconds.
+\u2714 Test realExitThreeRestartsAtBackoffAndFiveCrashesLatchFailed() passed after 0.798 seconds.
+\u25c7 Test backoffCapsAtThirtyAndCrashWindowExpires() started.
+\u2714 Test backoffCapsAtThirtyAndCrashWindowExpires() passed after 0.350 seconds.
+\u25c7 Test heldPortStaysHeldAndHolderIsNeverSignalled(_:) started.
+\u25c7 Passing 1 argument transport \u2192 .tcp to heldPortStaysHeldAndHolderIsNeverSignalled(_:)
+\u25c7 Passing 1 argument transport \u2192 .udp to heldPortStaysHeldAndHolderIsNeverSignalled(_:)
+\u2714 Test heldPortStaysHeldAndHolderIsNeverSignalled(_:) passed after 0.540 seconds.
+\u25c7 Test unhealthyChildNeverBecomesRunningAndSpawnFailureNamesReason() started.
+\u2714 Test unhealthyChildNeverBecomesRunningAndSpawnFailureNamesReason() passed after 0.050 seconds.
+\u25c7 Test guardedLauncherUsesHostExecutableWithExactGuardArgv() started.
+\u2714 Test guardedLauncherUsesHostExecutableWithExactGuardArgv() passed after 0.249 seconds.
+\u25c7 Test settingsChangesWaitForRestartAndForeignOrphanPreventsSpawn() started.
+\u2714 Test settingsChangesWaitForRestartAndForeignOrphanPreventsSpawn() passed after 0.001 seconds.
+\u2714 Suite SupervisorTests passed after 2.318 seconds.
+\u25c7 Passing 1 argument mode \u2192 "term" to guardReapsBridgeOnHostDeathOrForwardedSignal(_:)
+\u25c7 Passing 1 argument mode \u2192 "int" to guardReapsBridgeOnHostDeathOrForwardedSignal(_:)
+\u25c7 Passing 1 argument mode \u2192 "host-kill-stubborn" to guardReapsBridgeOnHostDeathOrForwardedSignal(_:)
+\u2714 Test guardReapsBridgeOnHostDeathOrForwardedSignal(_:) passed after 34.059 seconds.
+\u25c7 Test leftoverPIDReapsOnlyMatchingCommand(_:) started.
+\u25c7 Passing 1 argument matching \u2192 true to leftoverPIDReapsOnlyMatchingCommand(_:)
+\u2718 Test leftoverPIDReapsOnlyMatchingCommand(_:) recorded an issue with 1 argument matching \u2192 true at GuardTests.swift:77:6: Caught error: HostError(message: "Cannot run /bin/ps: The operation couldn\u2019t be completed. Operation not permitted")
+\u25c7 Passing 1 argument matching \u2192 false to leftoverPIDReapsOnlyMatchingCommand(_:)
+\u2718 Test leftoverPIDReapsOnlyMatchingCommand(_:) recorded an issue with 1 argument matching \u2192 false at GuardTests.swift:77:6: Caught error: HostError(message: "Cannot run /bin/ps: The operation couldn\u2019t be completed. Operation not permitted")
+\u2718 Test leftoverPIDReapsOnlyMatchingCommand(_:) failed after 0.038 seconds with 2 issues.
+\u25c7 Test pidfileReplacementCannotBeRemovedByOldGuard() started.
+\u2714 Test pidfileReplacementCannotBeRemovedByOldGuard() passed after 0.002 seconds.
+\u25c7 Test orphanDecisionWithInjectedIdentityStillAssertsRealProcess(_:) started.
+\u25c7 Passing 1 argument matching \u2192 true to orphanDecisionWithInjectedIdentityStillAssertsRealProcess(_:)
+\u25c7 Passing 1 argument matching \u2192 false to orphanDecisionWithInjectedIdentityStillAssertsRealProcess(_:)
+\u2714 Test orphanDecisionWithInjectedIdentityStillAssertsRealProcess(_:) passed after 0.135 seconds.
+\u2718 Suite GuardTests failed after 34.243 seconds with 2 issues.
+\u2718 Test run with 33 tests failed after 34.243 seconds with 2 issues.

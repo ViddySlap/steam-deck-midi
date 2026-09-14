@@ -1,0 +1,14 @@
+Entry HEAD e50b78f799d4425c4d9a66310bc4518dc4d6f6e5
+Command: .venv/bin/python -m unittest discover -s tests -p "test_*.py"
+Ran 821 tests in 10.833s
+OK (skipped=1)
+
+First post-edit run:
+Ran 821 tests in 9.245s
+FAILED (failures=1, skipped=1)
+Only failure: test_every_deck_route_is_documented treated the appended Mac section as Deck routes.
+Section extraction fixed; equality assertion unchanged.
+
+Final run:
+Ran 821 tests in 9.436s
+OK (skipped=1)
