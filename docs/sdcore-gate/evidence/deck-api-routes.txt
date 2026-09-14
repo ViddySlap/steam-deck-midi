@@ -1,0 +1,55 @@
+control_api pid=73600
+GET /api/status -> HTTP 200: {"running": false, "active_targets": [], "running_targets": [], "seq": 0, "heartbeat_age": null, "profile_name": "default", "profile_hash": null, "bindings_path": "/tmp/sdcore-gate/deck/bindings.json", "device_id": "5", "last_error": null, "exit_code": null}
+GET /api/targets -> HTTP 200: {"presets": [], "active_targets": []}
+POST /api/targets/add body={"name":"macbook","host":"127.0.0.1","port":45123} -> HTTP 200: {"presets": [{"name": "macbook", "host": "127.0.0.1", "port": 45123}], "active_targets": []}
+POST /api/targets/add body={"name":"windows","host":"127.0.0.1","port":45124} -> HTTP 200: {"presets": [{"name": "macbook", "host": "127.0.0.1", "port": 45123}, {"name": "windows", "host": "127.0.0.1", "port": 45124}], "active_targets": []}
+POST /api/targets/add body={"name":"bad","host":"not a host!","port":1} -> HTTP 400: {"error": "invalid IPv4 address or hostname: not a host!"}
+POST /api/targets body={"presets":[{"name":"macbook","host":"127.0.0.1","port":45123},{"name":"windows","host":"127.0.0.1","port":45124},{"name":"grandma","host":"grandma.local"}]} -> HTTP 200: {"presets": [{"name": "macbook", "host": "127.0.0.1", "port": 45123}, {"name": "windows", "host": "127.0.0.1", "port": 45124}, {"name": "grandma", "host": "grandma.local", "port": 45123}], "active_targets": []}
+POST /api/targets/rename body={"old":"grandma","new":"grandma2"} -> HTTP 200: {"presets": [{"name": "macbook", "host": "127.0.0.1", "port": 45123}, {"name": "windows", "host": "127.0.0.1", "port": 45124}, {"name": "grandma2", "host": "grandma.local", "port": 45123}], "active_targets": []}
+POST /api/targets/active body={"names":["windows","macbook"]} -> HTTP 200: {"presets": [{"name": "macbook", "host": "127.0.0.1", "port": 45123}, {"name": "windows", "host": "127.0.0.1", "port": 45124}, {"name": "grandma2", "host": "grandma.local", "port": 45123}], "active_targets": ["windows", "macbook"]}
+POST /api/targets/active body={"names":["nope"]} -> HTTP 400: {"error": "active_targets has an unknown or ambiguous preset name: nope"}
+on disk after activate: ['windows', 'macbook'] ['macbook', 'windows', 'grandma2']
+POST /api/targets/delete body={"name":"grandma2"} -> HTTP 200: {"presets": [{"name": "macbook", "host": "127.0.0.1", "port": 45123}, {"name": "windows", "host": "127.0.0.1", "port": 45124}], "active_targets": ["windows", "macbook"]}
+GET /api/bindings -> HTTP 200: {"profile_name": "default", "bindings": {}}
+POST /api/bindings/reload -> HTTP 200: {"profile_name": "default", "bindings": {}}
+GET /api/settings -> HTTP 200: {"device_id": "5", "bindings_path": "/tmp/sdcore-gate/deck/bindings.json", "actions_path": "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/config/actions.yaml", "default_port": 45123, "profile_name": "default", "profile_hash": null, "presets": [{"name": "macbook", "host": "127.0.0.1",
+PUT /api/settings body={"profile_name":"gate-profile"} -> HTTP 200: {"device_id": "5", "bindings_path": "/tmp/sdcore-gate/deck/bindings.json", "actions_path": "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/config/actions.yaml", "default_port": 45123, "profile_name": "gate-profile", "profile_hash": null, "presets": [{"name": "macbook", "host": "127.0.
+on disk profile_name: gate-profile
+GET /api/actions -> HTTP 200: {"actions": ["BTN_A", "BTN_B", "BTN_X", "BTN_Y", "BTN_A_LAYER_2", "BTN_B_LAYER_2", "BTN_X_LAYER_2", "BTN_Y_LAYER_2", "DPAD_UP", "DPAD_DOWN", "DPAD_LEFT", "DPAD_RIGHT", "DPAD_UP_LONG_PRESS", "DPAD_DOWN_LONG_PRESS", "DPAD_LEFT_LONG_PRESS", "DPAD_RIGHT_LONG_PRESS", "L_STICK_UP", "L_STICK_DOWN", "L_STIC
+GET /api/learn -> HTTP 200: {"active": false}
+POST /api/learn/start body={"action":"BTN_A"} -> HTTP 400: {"error": "failed to locate shared library: Xi"}
+GET /api/learn -> HTTP 200: {"active": false}
+POST /api/learn/confirm -> HTTP 400: {"error": "no learn session"}
+POST /api/learn/skip -> HTTP 400: {"error": "no learn session"}
+POST /api/learn/cancel -> HTTP 400: {"error": "no learn session"}
+POST /api/sender/start -> HTTP 200: {"running": true, "active_targets": [{"name": "windows", "host": "127.0.0.1", "port": 45124}, {"name": "macbook", "host": "127.0.0.1", "port": 45123}], "running_targets": [{"name": "windows", "host": "127.0.0.1", "port": 45124}, {"name": "macbook", "host": "127.0.0.1", "port": 45123}], "seq": 0, "he
+GET /api/status -> HTTP 200: {"running": false, "active_targets": [{"name": "windows", "host": "127.0.0.1", "port": 45124}, {"name": "macbook", "host": "127.0.0.1", "port": 45123}], "running_targets": [], "seq": 0, "heartbeat_age": null, "profile_name": "gate-profile", "profile_hash": null, "bindings_path": "/tmp/sdcore-gate/de
+POST /api/sender/stop -> HTTP 200: {"running": false, "active_targets": [{"name": "windows", "host": "127.0.0.1", "port": 45124}, {"name": "macbook", "host": "127.0.0.1", "port": 45123}], "running_targets": [], "seq": 0, "heartbeat_age": null, "profile_name": "gate-profile", "profile_hash": null, "bindings_path": "/tmp/sdcore-gate/de
+POST /api/sender/restart -> HTTP 200: {"running": true, "active_targets": [{"name": "windows", "host": "127.0.0.1", "port": 45124}, {"name": "macbook", "host": "127.0.0.1", "port": 45123}], "running_targets": [{"name": "windows", "host": "127.0.0.1", "port": 45124}, {"name": "macbook", "host": "127.0.0.1", "port": 45123}], "seq": 0, "he
+GET /api/status -> HTTP 200: {"running": false, "active_targets": [{"name": "windows", "host": "127.0.0.1", "port": 45124}, {"name": "macbook", "host": "127.0.0.1", "port": 45123}], "running_targets": [], "seq": 0, "heartbeat_age": null, "profile_name": "gate-profile", "profile_hash": null, "bindings_path": "/tmp/sdcore-gate/de
+POST /api/sender/stop -> HTTP 200: {"running": false, "active_targets": [{"name": "windows", "host": "127.0.0.1", "port": 45124}, {"name": "macbook", "host": "127.0.0.1", "port": 45123}], "running_targets": [], "seq": 0, "heartbeat_age": null, "profile_name": "gate-profile", "profile_hash": null, "bindings_path": "/tmp/sdcore-gate/de
+POST /api/shutdown -> HTTP 200: {"ok": true}
+control_api exited after /api/shutdown
+7724 bound after shutdown? lsof exit=1 (1=released)
+ROUTES EXERCISED: 21
+  "GET /api/actions" -> 200
+  "GET /api/bindings" -> 200
+  "GET /api/learn" -> 200
+  "GET /api/settings" -> 200
+  "GET /api/status" -> 200
+  "GET /api/targets" -> 200
+  "POST /api/bindings/reload" -> 200
+  "POST /api/learn/cancel" -> 400
+  "POST /api/learn/confirm" -> 400
+  "POST /api/learn/skip" -> 400
+  "POST /api/learn/start" -> 400
+  "POST /api/sender/restart" -> 200
+  "POST /api/sender/start" -> 200
+  "POST /api/sender/stop" -> 200
+  "POST /api/shutdown" -> 200
+  "POST /api/targets" -> 200
+  "POST /api/targets/active" -> 400
+  "POST /api/targets/add" -> 400
+  "POST /api/targets/delete" -> 200
+  "POST /api/targets/rename" -> 200
+  "PUT /api/settings" -> 200

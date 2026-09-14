@@ -1,0 +1,3 @@
+after 2nd SIGINT (3s): ALIVE
+after SIGTERM: EXITED
+lsof exit=1

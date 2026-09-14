@@ -1,0 +1,12 @@
+label=v049 pid=63424 tree=/tmp/sdcore-gate/v049 extra=
+http up after ~1s
+  PID ELAPSED      TIME  %CPU
+63424   00:11   0:09.61  94.2
+SIGINT: still alive after 6s
+SIGTERM: exited
+ports bound after stop? lsof exit=1 (1=released)
+log tail:
+INFO listening for MIDI feedback: name=IAC Driver DECK_OUT index=1
+INFO listening for MIDI clock: name=IAC Driver PULSE_OUT index=2
+INFO engines loaded: Audio Engine(audio_opacity), Global Color(global_color), OSC Sync(osc_sync), Autopilot(autopilot), Autopilot PTZ(autopilot_ptz), Bumper Blast(bumper_blast), Chaser Stack Dispatcher(chaser_stack_dispatcher), Flash Blast(flash_blast), Gyro Feedback(gyro_feedback), Left Stick Layer(l_stick_layer), NestDrop(nestdrop), PTZ VISCA(ptz_visca), StageFlow Bridge(stageflow_bridge), SteamInput Layer Tracker(steam_input_layer_tracker)
+INFO Autopilot: no MIDI clock for 2.0s; fallback clock running at 128.0 BPM

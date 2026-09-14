@@ -1,0 +1,14 @@
+## pristine
+Ran 1 test in 0.010s
+OK
+HTML API bar: 21 paths registered; HTML parsed; ids unique
+## mutant: fake /api/nope in index.html (occurrences: 1)
+FAIL: test_html_parses_and_all_api_paths_are_registered (tests.test_ui_server.HtmlApiBarTests.test_html_parses_and_all_api_paths_are_registered) (path='/api/nope')
+AssertionError: [] is not true : HTML API path has no registered route: /api/nope
+Ran 1 test in 0.010s
+FAILED (failures=1)
+## restored
+Ran 1 test in 0.010s
+OK
+HTML API bar: 21 paths registered; HTML parsed; ids unique
+INDEX_IDENTICAL_TO_RUNROOT

@@ -1,0 +1,11 @@
+deck.transport from /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/deck/transport.py
+parse_targets -> [('127.0.0.1', 45123), ('127.0.0.1', 45124)]
+sent action=BTN_A state=down seq=1
+pkt1: seq=1/1 sha256=d3ed9ca64d344a8d/d3ed9ca64d344a8d identical_bytes=True src=('127.0.0.1', 64160)/('127.0.0.1', 64160)
+  bytes: {"kind":"action","action":"BTN_A","state":"down","seq":1,"profile_name":"gate","profile_hash":"abc"}
+pkt2: seq=2/2 sha256=d115640487b650ea/d115640487b650ea identical_bytes=True src=('127.0.0.1', 64160)/('127.0.0.1', 64160)
+  bytes: {"kind":"axis","action":"LSTICK_X","value":12345,"seq":2}
+pkt3: seq=3/3 sha256=7e3e67ac13b420e3/7e3e67ac13b420e3 identical_bytes=True src=('127.0.0.1', 64160)/('127.0.0.1', 64160)
+  bytes: {"kind":"heartbeat","seq":3,"profile_name":"gate","profile_hash":"abc"}
+sender source ('0.0.0.0', 64160) same source seen by both: True
+FANOUT_PASS

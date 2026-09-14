@@ -1,0 +1,12 @@
+label=head pid=64735 tree=/tmp/sdcore-gate/tree extra=--preset-section macbook
+http up after ~1s
+  PID ELAPSED      TIME  %CPU
+64735   00:10   0:09.62  94.4
+SIGINT: still alive after 6s
+SIGTERM: exited
+ports bound after stop? lsof exit=1 (1=released)
+log tail:
+INFO listening for MIDI feedback: name=IAC Driver DECK_OUT index=1
+INFO listening for MIDI clock: name=IAC Driver PULSE_OUT index=2
+INFO engines loaded: Audio Engine(audio_opacity), Global Color(global_color), OSC Sync(osc_sync), Autopilot(autopilot), Autopilot PTZ(autopilot_ptz), Bumper Blast(bumper_blast), Chaser Stack Dispatcher(chaser_stack_dispatcher), Flash Blast(flash_blast), Gyro Feedback(gyro_feedback), Left Stick Layer(l_stick_layer), NestDrop(nestdrop), PTZ VISCA(ptz_visca), StageFlow Bridge(stageflow_bridge), SteamInput Layer Tracker(steam_input_layer_tracker)
+INFO Autopilot: no MIDI clock for 2.0s; fallback clock running at 128.0 BPM

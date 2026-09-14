@@ -1,0 +1,8 @@
+before: state-version 0 macbook BTN_A {'channel': 0, 'note': 36, 'type': 'note', 'velocity': 127}
+after: state-version 1 macbook BTN_A {'channel': 0, 'note': 48, 'type': 'note', 'velocity': 127} t_mappings_read=0.627
+elapsed seconds: {'changed': 0.424, 'hot': 0.6, 'ver': 0.601}
+new log lines:
+INFO preset watch changed: config/presets/EDM Show.json
+INFO hot-reloaded mappings: 56 actions
+
+PASS

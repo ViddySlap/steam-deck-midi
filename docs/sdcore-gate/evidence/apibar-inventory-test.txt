@@ -1,0 +1,22 @@
+## bridge pristine
+Ran 1 test in 0.006s
+OK
+## bridge mutant: undocumented GET /api/nope registered (occurrences 1)
+('GET', '/api/nope')
+Ran 1 test in 0.006s
+FAILED (failures=1)
+## bridge restored
+Ran 1 test in 0.006s
+OK
+UI_SERVER_IDENTICAL
+## deck pristine
+Ran 1 test in 0.057s
+OK
+## deck mutant: undocumented GET /api/nope in ROUTES (occurrences 1)
+('GET', '/api/nope')
+Ran 1 test in 0.056s
+FAILED (failures=1)
+## deck restored
+Ran 1 test in 0.056s
+OK
+CONTROL_API_IDENTICAL

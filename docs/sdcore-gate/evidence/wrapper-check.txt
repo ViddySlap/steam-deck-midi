@@ -1,0 +1,2 @@
+handler under wrapper: <built-in function default_int_handler>
+handler WITHOUT wrapper: 1

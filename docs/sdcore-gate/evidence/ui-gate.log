@@ -1,0 +1,23 @@
+1 header options: ["windows=windows","macbook*=macbook (this machine)"]
+1 sectionStatus: Machine: macbook | Preset: EDM Show.json
+2 control states: ["btnSectionAdd:enabled","btnSectionRename:enabled","btnSectionDelete:disabled"]
+3 macbook f_note = 48
+3 windows f_note = 36 options ["windows*=windows","macbook=macbook (this machine)"]
+3 delete enabled on remote section: true
+3 bridge preset_section while editing windows (must stay macbook): macbook
+  dialog prompt: "New section name:" -> "gatecheck"
+  dialog confirm: "Copy the selected section? Cancel creates an empty section." -> true
+4 after add: ["windows=windows","macbook=macbook (this machine)","gatecheck*=gatecheck"] api sections ["windows","macbook","gatecheck"]
+  dialog prompt: "Rename section:" -> "gatecheck-renamed"
+4 after rename: ["windows=windows","macbook=macbook (this machine)","gatecheck-renamed*=gatecheck-renamed"]
+  dialog confirm: "Delete section "gatecheck-renamed"?" -> true
+4 after delete: ["windows=windows","macbook*=macbook (this machine)"] api sections ["windows","macbook"]
+5 edit applied locally: f_note 61 unsaved badge visible true
+5 second process changed macbook BTN_B note to 50 on disk; state-version was 9
+5 notice visible: true text: "preset changed on disk - reload to see it Reload"
+5 state-version now 10 ; f_note still 61 ; unsaved badge true
+5 disk macbook BTN_A note (edit NOT saved, must be 48): 48 BTN_B: 50
+  dialog confirm: "You have unsaved changes. Discard them?" -> false
+6 reload cancelled: f_note 61 notice true
+  dialog confirm: "You have unsaved changes. Discard them?" -> true
+6 reload accepted: BTN_B f_note 50 unsaved badge false

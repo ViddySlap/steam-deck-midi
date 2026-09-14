@@ -1,0 +1,25 @@
+## 1. off-loopback bind with NO token must refuse startup
+exited, exit code 2
+usage: python3.14 -m deck.control_api [-h] [--settings SETTINGS]
+                                      [--settings-example SETTINGS_EXAMPLE]
+                                      [--api-bind API_BIND]
+                                      [--api-port API_PORT]
+python3.14 -m deck.control_api: error: api_token is required when binding off-loopback
+7725 bound? lsof exit=1 (1=not bound)
+## 2. persist a token over loopback
+PUT api_token -> HTTP 200
+GET settings token fields: {'api_token_configured': True}
+shutdown -> HTTP 200
+loopback api exited
+## 3. off-loopback bind with token: every request needs X-Deck-Token (via LAN address 192.168.1.63)
+LAN GET /api/status no token -> HTTP 401
+LAN GET /api/status wrong token -> HTTP 401
+{"error": "X-Deck-Token required"} <- LAN POST /api/targets/add no token -> HTTP 401
+LAN POST /api/shutdown no token -> HTTP 401
+LOOPBACK GET /api/status no token on 0.0.0.0 bind -> HTTP 401
+settings sha before/after refused writes: 24890eac934d262b / 24890eac934d262b
+api still alive after refused shutdown: yes
+{"running": false, "active_targets": [{"name": "windows", "host": "127.0.0.1", "port": 45124}, {"name": "macbook", "host
+LAN POST /api/shutdown right token -> HTTP 200
+LAN api exited after authenticated shutdown
+7724/7725 bound? lsof exit=1 (1=released)

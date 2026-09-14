@@ -1,0 +1,14 @@
+pid before: 47350
+state-version before: 1
+{"feedback_port":"IAC Driver DECK_OUT","listen":"0.0.0.0:45123","map_path":"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/config/presets/EDM Show.json","midi_port":"IAC Driver DECK_IN","preset_section":"windows","pulse_port":"IAC Driver PULSE_OUT","ui_port":7723}
+
+HTTP=200
+state-version after: 3
+{"feedback_port":"IAC Driver DECK_OUT","listen":"0.0.0.0:45123","map_path":"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/config/presets/EDM Show.json","midi_port":"IAC Driver DECK_IN","preset_section":"windows","pulse_port":"IAC Driver PULSE_OUT","ui_port":7723}
+
+section windows bridge_section windows BTN_A {'channel': 0, 'note': 36, 'type': 'note', 'velocity': 127}
+bridge.local.json: {
+  "preset_section": "windows"
+}
+IAC DECK_IN received: [('note_on', 0, 36, 127), ('note_off', 0, 36, 0)]
+pid after: 47350

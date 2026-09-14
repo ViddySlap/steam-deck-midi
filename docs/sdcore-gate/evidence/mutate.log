@@ -1,0 +1,37 @@
+S1 windows/config.py test=tests.test_windows_config.PresetSectionTests.test_shared_mappings_apply_everywhere_with_whole_action_override
+  pristine rc=0 [Ran 1 test in 0.001s | OK]
+  mutant   rc=1 [Ran 1 test in 0.001s | FAILED (errors=1)]
+  restored rc=0 [Ran 1 test in 0.001s | OK] sha_restored=True
+  => BITES
+  mutant failure: ERROR: test_shared_mappings_apply_everywhere_with_whole_action_override (tests.test_windows_config.PresetSectionTests.test_shared_mappings_apply_everywhere_with_whole_action_override)
+S2 windows/ui_server.py test=tests.test_ui_server.SectionApiTests.test_crud_refusals_leave_file_and_reload_untouched
+  pristine rc=0 [Ran 1 test in 0.008s | OK]
+  mutant   rc=1 [Ran 1 test in 0.009s | FAILED (failures=3)]
+  restored rc=0 [Ran 1 test in 0.008s | OK] sha_restored=True
+  => BITES
+  mutant failure: FAIL: test_crud_refusals_leave_file_and_reload_untouched (tests.test_ui_server.SectionApiTests.test_crud_refusals_leave_file_and_reload_untouched) (route='delete', body={'name': 'macbook'}) / AssertionError: 200 != 409 / FAIL: test_crud_refusals_leave_file_and_reload_untouched (tests.test_ui_server.SectionApiTests.test_crud_refusals_leave_file_and_reload_untouched) (route='rename', body=[])
+S3 windows/preset_watch.py test=tests.test_preset_watch.PresetWatcherTests.test_touch_add_delete_marker_and_local_settings
+  pristine rc=0 [Ran 1 test in 0.173s | OK]
+  mutant   rc=1 [Ran 1 test in 1.108s | FAILED (failures=1)]
+  restored rc=0 [Ran 1 test in 0.169s | OK] sha_restored=True
+  => BITES
+  mutant failure: FAIL: test_touch_add_delete_marker_and_local_settings (tests.test_preset_watch.PresetWatcherTests.test_touch_add_delete_marker_and_local_settings) / AssertionError: False is not true
+S3b windows/receiver.py test=tests.test_preset_watch.ReloadIntegrationTests.test_save_and_disk_reload_versions_and_real_midi
+  pristine rc=0 [Ran 1 test in 0.332s | OK]
+  mutant   rc=1 [Ran 1 test in 0.016s | FAILED (failures=1)]
+  restored rc=0 [Ran 1 test in 0.329s | OK] sha_restored=True
+  => BITES
+  mutant failure: FAIL: test_save_and_disk_reload_versions_and_real_midi (tests.test_preset_watch.ReloadIntegrationTests.test_save_and_disk_reload_versions_and_real_midi) / AssertionError: 0 != 1
+S4 deck/transport.py test=tests.test_deck_transport.DeckTransportTests.test_action_identical_bytes_and_seq_in_target_order
+  pristine rc=0 [Ran 1 test in 0.000s | OK]
+  mutant   rc=1 [Ran 1 test in 0.000s | FAILED (failures=1)]
+  restored rc=0 [Ran 1 test in 0.000s | OK] sha_restored=True
+  => BITES
+  mutant failure: FAIL: test_action_identical_bytes_and_seq_in_target_order (tests.test_deck_transport.DeckTransportTests.test_action_identical_bytes_and_seq_in_target_order) / AssertionError: Lists differ: [(b'{[119 chars]123))] != [(b'{[119 chars]123)), (b'{"kind":"action","action":"BTN_A","s[85 chars]24))]
+S5 deck/control_api.py test=tests.test_deck_control_api.DeckControlAPITests.test_off_loopback_requires_token_on_every_route
+  pristine rc=0 [Ran 1 test in 0.118s | OK]
+  mutant   rc=1 [Ran 1 test in 0.071s | FAILED (failures=9, errors=13)]
+  restored rc=0 [Ran 1 test in 0.118s | OK] sha_restored=True
+  => BITES
+  mutant failure: ERROR: test_off_loopback_requires_token_on_every_route (tests.test_deck_control_api.DeckControlAPITests.test_off_loopback_requires_token_on_every_route) (method='POST', path='/api/learn/confirm') / ERROR: test_off_loopback_requires_token_on_every_route (tests.test_deck_control_api.DeckControlAPITests.test_off_loopback_requires_token_on_every_route) (method='GET', path='/api/targets') / ERROR: test_off_loopback_requires_token_on_every_route (tests.test_deck_control_api.DeckControlAPITests.test_off_loopback_requires_token_on_every_route) (method='POST', path='/api/targets/active')
+ALL_BITE
