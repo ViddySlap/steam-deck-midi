@@ -13,7 +13,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
-@unittest.skipUnless(shutil.which("bash"), "bash is required to run the Mac launcher")
+@unittest.skipUnless(os.name == "posix" and shutil.which("bash"),
+                     "Mac launcher execution requires POSIX bash and executable shebangs")
 class MacSectionLauncherTests(unittest.TestCase):
     def test_local_section_is_passed_as_one_argument_and_missing_file_still_works(self):
         with tempfile.TemporaryDirectory() as tmp:

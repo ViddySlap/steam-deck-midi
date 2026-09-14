@@ -2,6 +2,7 @@
 
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -145,6 +146,8 @@ class UpgradeBootTests(unittest.TestCase):
         self.assertEqual(list(self.config.glob(".bridge-*.tmp")), [])
 
 
+@unittest.skipUnless(os.name == "posix" and shutil.which("bash"),
+                     "Mac launcher execution requires POSIX bash and paths")
 class MacLauncherSnippetTests(unittest.TestCase):
     def test_section_snippet_creates_missing_file_and_preserves_existing_bytes(self):
         source = (ROOT / "scripts/mac/run_receiver.command").read_text()

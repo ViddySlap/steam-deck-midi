@@ -9,8 +9,6 @@ import re
 import selectors
 import sys
 import tempfile
-import termios
-import tty
 from dataclasses import dataclass
 
 from deck.xinput_send import Xi2RawListener
@@ -26,12 +24,17 @@ class LearnCandidate:
 
 class TerminalCbreak:
     def __enter__(self) -> "TerminalCbreak":
+        import termios
+        import tty
+
         self._fd = sys.stdin.fileno()
         self._old_attrs = termios.tcgetattr(self._fd)
         tty.setcbreak(self._fd)
         return self
 
     def __exit__(self, exc_type, exc, tb) -> None:
+        import termios
+
         termios.tcsetattr(self._fd, termios.TCSADRAIN, self._old_attrs)
 
 

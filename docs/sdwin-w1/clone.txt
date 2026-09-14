@@ -1,0 +1,4 @@
+Cloning into 'C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc'...
+CLONE_HEAD 1b12b59b18be6963b1d65c591d588be36de55839
+TAG_COMMIT e66ff44b36eadb6d43db01680c65279df82cd63c
+Python 3.12.10

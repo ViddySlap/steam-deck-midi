@@ -1,0 +1,153 @@
+======================================================================
+ERROR: test_deck_control_api (unittest.loader._FailedTest.test_deck_control_api)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_deck_control_api
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\tests\test_deck_control_api.py", line 14, in <module>
+    from deck.control_api import ControlServer, SenderController
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\deck\control_api.py", line 22, in <module>
+    from deck.xinput_send import run_sender, validate_bindings
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\deck\xinput_send.py", line 11, in <module>
+    import fcntl
+ModuleNotFoundError: No module named 'fcntl'
+
+
+======================================================================
+ERROR: test_deck_fanout_launch (unittest.loader._FailedTest.test_deck_fanout_launch)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_deck_fanout_launch
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\tests\test_deck_fanout_launch.py", line 12, in <module>
+    from deck import launch_send, xinput_send
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\deck\launch_send.py", line 17, in <module>
+    from deck.xinput_send import run_sender
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\deck\xinput_send.py", line 11, in <module>
+    import fcntl
+ModuleNotFoundError: No module named 'fcntl'
+
+
+======================================================================
+ERROR: test_deck_sender (unittest.loader._FailedTest.test_deck_sender)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_deck_sender
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\tests\test_deck_sender.py", line 9, in <module>
+    from deck.xinput_send import (
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\deck\xinput_send.py", line 11, in <module>
+    import fcntl
+ModuleNotFoundError: No module named 'fcntl'
+
+
+======================================================================
+ERROR: test_learn_wizard (unittest.loader._FailedTest.test_learn_wizard)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_learn_wizard
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\tests\test_learn_wizard.py", line 8, in <module>
+    from deck.learn_wizard import (
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\deck\learn_wizard.py", line 12, in <module>
+    import termios
+ModuleNotFoundError: No module named 'termios'
+
+
+======================================================================
+ERROR: test_section_snippet_creates_missing_file_and_preserves_existing_bytes (test_upgrade_boot.MacLauncherSnippetTests.test_section_snippet_creates_missing_file_and_preserves_existing_bytes) (before=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\tests\test_upgrade_boot.py", line 166, in test_section_snippet_creates_missing_file_and_preserves_existing_bytes
+    self.assertEqual(json.loads(local.read_text()), {"preset_section": "macbook"})
+                                ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w1\\tmp31jogl31\\config\\bridge.local.json'
+
+======================================================================
+FAIL: test_sender_and_wizard_import_without_loading_shared_libraries (test_deck_transport.DeckTransportTests.test_sender_and_wizard_import_without_loading_shared_libraries)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\tests\test_deck_transport.py", line 126, in test_sender_and_wizard_import_without_loading_shared_libraries
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: 1 != 0 : Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\deck\xinput_send.py", line 11, in <module>
+    import fcntl
+ModuleNotFoundError: No module named 'fcntl'
+
+
+======================================================================
+FAIL: test_disk_active_marker_applies_new_scene (test_preset_watch.ReloadIntegrationTests.test_disk_active_marker_applies_new_scene)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\tests\test_preset_watch.py", line 284, in test_disk_active_marker_applies_new_scene
+    self.boot(check)
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\tests\test_preset_watch.py", line 160, in boot
+    return startup.BridgeStartupSettingsTests.boot(self, check, '--preset-poll-interval', '0.01', *extra, ui=ui)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\tests\test_win_recv_settings.py", line 50, in boot
+    self.assertEqual(win_recv.main(argv), 0)
+                     ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\windows\win_recv.py", line 468, in main
+    _run_bridge_loop()
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\windows\win_recv.py", line 432, in _run_bridge_loop
+    serve_forever(
+  File "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\unittest\mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\unittest\mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\unittest\mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\tests\test_preset_watch.py", line 283, in check
+    self.assertTrue(client.get('/api/settings').get_json()['map_path'].endswith('/Other.json'))
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_local_section_is_passed_as_one_argument_and_missing_file_still_works (test_section_launchers.MacSectionLauncherTests.test_local_section_is_passed_as_one_argument_and_missing_file_still_works) (section='Grandma 2_-')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\tests\test_section_launchers.py", line 56, in test_local_section_is_passed_as_one_argument_and_missing_file_still_works
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: 127 != 0 : /bin/bash: C:UsersBenAppDataLocalTempsdwinw1tmpkd7n0cktscriptsmacrun_receiver.command: No such file or directory
+
+
+======================================================================
+FAIL: test_local_section_is_passed_as_one_argument_and_missing_file_still_works (test_section_launchers.MacSectionLauncherTests.test_local_section_is_passed_as_one_argument_and_missing_file_still_works) (section=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\tests\test_section_launchers.py", line 56, in test_local_section_is_passed_as_one_argument_and_missing_file_still_works
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: 127 != 0 : /bin/bash: C:UsersBenAppDataLocalTempsdwinw1tmpkd7n0cktscriptsmacrun_receiver.command: No such file or directory
+
+
+----------------------------------------------------------------------
+Ran 755 tests in 15.125s
+
+FAILED (failures=4, errors=5, skipped=1)
+GONE suite PID 215220 EXIT 1
+GET-PROCESS: no python under CLONE or LAPTOP WORK

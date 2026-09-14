@@ -280,7 +280,8 @@ class ReloadIntegrationTests(unittest.TestCase):
                 emitted.assert_called_with(1, 80, 127)
             client = self.servers[-1]._app.test_client()
             self.assertEqual(client.get('/api/state-version').get_json(), 1)
-            self.assertTrue(client.get('/api/settings').get_json()['map_path'].endswith('/Other.json'))
+            self.assertEqual(Path(client.get('/api/settings').get_json()['map_path']),
+                             (presets / 'Other.json').resolve())
         self.boot(check)
 
     def test_unchanged_settings_preserve_argv_on_explicit_reload(self):

@@ -8,14 +8,12 @@ import ctypes
 import contextlib
 import ctypes.util
 import errno
-import fcntl
 import json
 import queue
 import selectors
 import socket
 import struct
 import sys
-import termios
 import threading
 import time
 from dataclasses import dataclass
@@ -317,6 +315,7 @@ class TerminalNoEcho:
         self._old_attrs = None
         if not sys.stdin.isatty():
             return self
+        import termios
         self._fd = sys.stdin.fileno()
         self._old_attrs = termios.tcgetattr(self._fd)
         new_attrs = termios.tcgetattr(self._fd)
@@ -327,6 +326,7 @@ class TerminalNoEcho:
     def __exit__(self, exc_type, exc, tb) -> None:
         if self._fd is None or self._old_attrs is None:
             return
+        import termios
         termios.tcsetattr(self._fd, termios.TCSADRAIN, self._old_attrs)
 
 
@@ -421,6 +421,8 @@ class HidrawAxisReader:
         )
 
     def _verify_open_fd(self, fd, device_path: str) -> None:
+        import fcntl
+
         buf = array.array("B", [0] * 8)
         fcntl.ioctl(fd, _HIDIOCGRAWINFO, buf, True)
         bustype, vendor_s, product_s = struct.unpack("=Ihh", buf.tobytes())
@@ -448,6 +450,8 @@ class HidrawAxisReader:
         return False
 
     def _send_feature(self, payload: list[int]) -> None:
+        import fcntl
+
         buf = array.array("B", [0] * 65)
         for i, b in enumerate(payload):
             buf[i] = b

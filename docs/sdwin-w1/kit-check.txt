@@ -1,0 +1,12 @@
+test_clean_changed_missing_and_python_observations (test_showready_rail.ShowreadyGuardTests.test_clean_changed_missing_and_python_observations) ... ok
+test_every_transport_invocation_uses_the_required_options (test_showready_rail.ShowreadyPinTests.test_every_transport_invocation_uses_the_required_options) ... ok
+test_pins_match_exact_file_set_and_bytes (test_showready_rail.ShowreadyPinTests.test_pins_match_exact_file_set_and_bytes) ... ok
+test_unpinned_edit_and_extra_file_are_red (test_showready_rail.ShowreadyPinTests.test_unpinned_edit_and_extra_file_are_red) ... ok
+test_remote_status_stderr_arguments_and_scp_failure (test_showready_rail.ShowreadyTransportTests.test_remote_status_stderr_arguments_and_scp_failure) ... skipped 'Mac rail execution requires POSIX bash'
+test_unsafe_arguments_are_refused_before_transport (test_showready_rail.ShowreadyTransportTests.test_unsafe_arguments_are_refused_before_transport) ... skipped 'Mac rail execution requires POSIX bash'
+
+----------------------------------------------------------------------
+Ran 6 tests in 2.233s
+
+OK (skipped=2)
+GONE kit-check PID 274140 EXIT 0

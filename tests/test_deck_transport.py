@@ -125,6 +125,16 @@ class DeckTransportTests(unittest.TestCase):
                                 capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
 
+    def test_sender_and_wizard_import_without_posix_hardware_modules(self):
+        result = subprocess.run([sys.executable, "-c", "import sys; "
+                                 "sys.modules.update(fcntl=None, termios=None, tty=None); "
+                                 "import deck.xinput_send; import deck.learn_wizard; "
+                                 "import deck.control_api; import deck.launch_send; "
+                                 "assert callable(deck.xinput_send.run_sender); "
+                                 "assert callable(deck.learn_wizard.write_bindings)"],
+                                capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()
