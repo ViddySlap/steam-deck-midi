@@ -2,7 +2,7 @@
 
 The bridge serves HTTP on `http://127.0.0.1:7723` by default. JSON write requests
 use `Content-Type: application/json`. This inventory is taken from
-`windows/ui_server.py`: 26 explicit method/path registrations after S2, plus
+`windows/ui_server.py`: 28 explicit method/path registrations after S3, plus
 Flask's static-file route. Flask also supplies HEAD for GET and automatic OPTIONS.
 Later links must extend this inventory with every new UI or control action.
 
@@ -10,6 +10,8 @@ Later links must extend this inventory with every new UI or control action.
 | --- | --- | --- |
 | GET | `/` | Serve the mapping editor HTML. |
 | GET | `/static/<path:filename>` | Serve the editor's static assets (Flask-generated route). |
+| GET | `/api/state-version` | Return the integer count of successfully applied reloads in this bridge process. |
+| POST | `/api/reload` | Request an immediate reload of the active preset and changed local settings. |
 | GET | `/api/settings` | Return live preset_section, listen, midi_port, feedback_port, pulse_port, ui_port, and map_path. |
 | PUT | `/api/settings` | Persist preset_section in bridge.local.json and request a live reload. |
 | GET | `/api/mappings` | Read selected section mappings, settings, and section/preset metadata; optional ?section=name defaults to this machine. |
@@ -98,3 +100,30 @@ A loaded engine's checkbox in this machine's section also uses the existing live
 `/api/engines/<type_name>/active` endpoint. Remote section checkboxes never toggle
 this bridge's engines; absent remote overrides display Default. Runtime resync
 controls operate on this bridge and are disabled while editing another section.
+
+## Reload and disk synchronization
+
+`GET /api/state-version` returns a JSON integer (initially `0`), with
+`Cache-Control: no-store`. It increases after every successful `reload_mappings`
+application, including reloads requested by `/api/save`, `/api/reload`, or the
+disk watcher. A rejected preset or settings file leaves the version and last
+good mappings unchanged. The counter belongs to one process and resets on
+restart; clients should compare for inequality, not just increases.
+
+`POST /api/reload` takes no body and returns `200 {"ok":true}` after setting the
+reload event. This acknowledges the request; it does not promise application.
+The receiver picks it up within its normal 250 ms poll, and clients can poll the
+version to observe success. Multiple requests may coalesce. An API write can
+also be observed by the watcher, producing an additional applied reload/version.
+
+Disk polling defaults to 0.5 seconds (`--preset-poll-interval SECONDS`) with a
+150 ms quiet period before requesting reload. It watches preset JSON files,
+`.active`, and `bridge.local.json`. A changed local file updates live identity
+only after its selected preset validates; an unchanged local file preserves
+startup argv precedence. Missing/legacy local settings remain supported.
+
+The UI checks the version every 2 seconds. Clean editors refresh their selected
+section, current action, and Engines tab. Dirty editors show a persistent,
+non-modal notice and Reload button; Reload uses `/api/reload` and the existing
+unsaved-change confirmation. Background reads also check for edits made while
+HTTP requests were in flight before replacing any draft.

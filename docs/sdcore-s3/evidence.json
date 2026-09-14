@@ -1,0 +1,237 @@
+{
+  "predecessor": "b91d24879b362e566f9965098273d9faa32919d8",
+  "baseline": {
+    "tests": 691,
+    "errors": [
+      "test_deck_sender",
+      "test_learn_wizard"
+    ],
+    "skipped": 1,
+    "exit": 1
+  },
+  "final_suite": {
+    "command": "TMPDIR=/tmp/sdcore-s3 .venv/bin/python -m unittest discover -s tests -p \"test_*.py\"",
+    "tests": 706,
+    "seconds": 6.459,
+    "errors": [
+      "test_deck_sender (unittest.loader._FailedTest.test_deck_sender)",
+      "test_learn_wizard (unittest.loader._FailedTest.test_learn_wizard)"
+    ],
+    "skipped": 1,
+    "exit": 1,
+    "new_failures_or_errors": 0
+  },
+  "new_tests": 15,
+  "new_tests_before_implementation": "RED: ModuleNotFoundError for windows.preset_watch",
+  "source_smoke": {
+    "source_root": "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi",
+    "elapsed_seconds": 0.717965,
+    "log_line": "INFO hot-reloaded mappings: 1 actions",
+    "state_version": 1,
+    "note_returned": 64,
+    "second_process_exit": 0,
+    "child_exit": 0,
+    "child_reaped": true
+  },
+  "controls": [
+    {
+      "name": "pristine-python",
+      "expected": "GREEN",
+      "exit": 0,
+      "passed": true
+    },
+    {
+      "name": "pristine-ui",
+      "expected": "GREEN",
+      "exit": 0,
+      "passed": true
+    },
+    {
+      "name": "pristine-sections",
+      "expected": "GREEN",
+      "exit": 0,
+      "passed": true
+    },
+    {
+      "name": "watch-event-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "watch-marker-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "watch-local-settings-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "watch-debounce-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "watch-exception-exits",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "watch-not-started",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "tray-only-watch-stopped",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "reload-loop-application-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "last-good-cleared-on-error",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "applied-version-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "api-version-disconnected",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "api-reload-event-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "disk-identity-not-read",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "ui-timer-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "ui-clean-refresh-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "ui-dirty-notice-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "ui-all-draft-guards-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "ui-inflight-guard-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "ui-unapplied-fields-unguarded",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "ui-settings-draft-unguarded",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "ui-engine-render-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "ui-editor-render-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "ui-explicit-reload-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "ui-explicit-reload-loses-later-edit",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "ui-missing-section-fallback-omitted",
+      "expected": "RED",
+      "exit": 1,
+      "passed": true
+    },
+    {
+      "name": "restored-python",
+      "expected": "GREEN",
+      "exit": 0,
+      "passed": true
+    },
+    {
+      "name": "restored-ui",
+      "expected": "GREEN",
+      "exit": 0,
+      "passed": true
+    },
+    {
+      "name": "restored-sections",
+      "expected": "GREEN",
+      "exit": 0,
+      "passed": true
+    }
+  ],
+  "sha256": {
+    "windows/preset_watch.py": "2dbbc944aab5479e7a757a1c8e8c345f464f7bf05c0f3d4a2026394b0816ae90",
+    "windows/win_recv.py": "5d01dc47587f0f122d31a729351e55d08aa728eda9ca906f8897305bb778b99f",
+    "windows/receiver.py": "9383a7499582a6697f5a9edd933a79ce0eabfce067716170faf68aa73ef5532a",
+    "windows/ui_server.py": "102988897106b639178a130c4d963c96f0ded84f4773aaa67a5f7afe53030786",
+    "windows/static/index.html": "1abac6c1d50d4abcd873f7b61c0de34c97f3aa6ee1764ebd1ec008ea93d721a3",
+    "tests/test_preset_watch.py": "2b504c34d1e4d8041668f982ddf212f9f040be8092fb22dd933da8fc84c04061",
+    "tests/ui_reload_check.cjs": "2921aa86d636cc7296c2a5345cd25d7b30c3e8c478303fd92f6186f41310b8da",
+    "tests/ui_sections_check.cjs": "392b06f5ec8bdc9033293f77488e4a9d490de58afd3da5ffc7c7119d6d95116e",
+    "docs/api.md": "5dba793ec52774c3f67795d0155f0e7dafdc11039f12a5c230300be2ea66e0b3",
+    "docs/sdcore-s3/reversions.py": "ae1923d077628042bf27944cec41386fd3fbd509da4469822932fd00d03b36be",
+    "docs/sdcore-s3/smoke.py": "e8604a24e066e0cf51f177ce9563bcfae5132e47508c75d5804919bcb9724c76"
+  }
+}

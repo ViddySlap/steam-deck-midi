@@ -29,6 +29,7 @@ from windows.midi import (
 )
 from windows.osc_relay import OscRelay, OscRelayError, load_osc_relay_config
 from windows.receiver import ActionReceiver, serve_forever
+from windows.preset_watch import PresetWatcher, file_signature
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -61,6 +62,10 @@ def build_parser() -> argparse.ArgumentParser:
         type=float,
         default=2.0,
         help="seconds before active notes/controls are released",
+    )
+    parser.add_argument(
+        "--preset-poll-interval", type=float, default=0.5,
+        help="seconds between preset disk polls (default: 0.5)",
     )
     parser.add_argument("--dry-run", action="store_true", help="log MIDI output only")
     parser.add_argument("--verbose", action="store_true", help="enable verbose logging")
@@ -271,16 +276,34 @@ def main(argv: list[str] | None = None) -> int:
         )
 
     reload_event = threading.Event()
+    try:
+        preset_watcher = PresetWatcher(
+            presets_dir, bridge_settings.path, reload_event,
+            poll_interval=args.preset_poll_interval,
+        )
+    except ValueError as exc:
+        parser.error(str(exc))
+    settings_stamp = file_signature(bridge_settings.path)
+    preset_watcher.start()
     actions_yaml = base_map_path.parent / "actions.yaml"
 
     def reload_config_fn():
+        nonlocal settings_stamp
+        new_stamp = file_signature(bridge_settings.path)
+        section = bridge_settings.preset_section
+        if new_stamp != settings_stamp:
+            section = BridgeSettings.load(bridge_settings.path).preset_section
         active = get_active_preset_path(presets_dir, base_map_path)
-        cfg = load_midi_map(active, bridge_settings.preset_section)
+        cfg = load_midi_map(active, section)
         # Apply the preset's per-engine on/off states on the receiver thread
         # (this runs inside serve_forever's reload path, so no cross-thread race
         # with engine dispatch). Engines absent from the map are left as-is.
         if engine_registry is not None:
             engine_registry.apply_engine_states(cfg.engine_states)
+        # Publish identity only after the complete candidate has loaded. An
+        # unchanged file preserves startup argv; PUT still supersedes it live.
+        bridge_settings.preset_section = section
+        settings_stamp = new_stamp
         return cfg.mappings, cfg.macro_settings
 
     engine_registry = None
@@ -356,6 +379,7 @@ def main(argv: list[str] | None = None) -> int:
             port=args.ui_port,
             engine_registry=engine_registry,
             bridge_settings=bridge_settings,
+            state_version_fn=lambda: receiver.state_version,
             listen=f"{listen_host}:{listen_port}",
             midi_port=midi_out.port_name,
             feedback_port=midi_in.port_name if midi_in is not None else None,
@@ -414,6 +438,8 @@ def main(argv: list[str] | None = None) -> int:
                 stop_bridge=None,
             )
         finally:
+            preset_watcher.stop()
+            preset_watcher.join()
             midi_out.close()
             if osc_relay is not None:
                 osc_relay.shutdown()
@@ -422,6 +448,8 @@ def main(argv: list[str] | None = None) -> int:
     try:
         _run_bridge_loop()
     finally:
+        preset_watcher.stop()
+        preset_watcher.join()
         midi_out.close()
         if osc_relay is not None:
             osc_relay.shutdown()

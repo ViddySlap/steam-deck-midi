@@ -519,6 +519,10 @@
     <button class="btn btn-primary" id="btnSave" disabled>Save &amp; Apply</button>
   </div>
 </header>
+<div id="presetChangeNotice" role="status" hidden style="padding:10px 16px;color:var(--warning)">
+  <span>preset changed on disk - reload to see it</span>
+  <button class="btn btn-ghost btn-sm" id="btnReloadPreset">Reload</button>
+</div>
 
 <!-- ── Main ── -->
 <div class="main">
@@ -744,6 +748,11 @@ let macroSettings = {};
 let analogSettings = {};
 let selected = null;
 let dirty = false;
+let editRevision = 0;
+let formDirty = false;
+let loadRequest = 0;
+let stateVersion = null;
+let versionPollBusy = false;
 let presets = [];
 let macroLibrary = [];
 let selectedSection;
@@ -844,6 +853,7 @@ function updateCount() {
 }
 function setDirty(d) {
   dirty = d;
+  if (d) editRevision++;
   document.getElementById('unsavedBadge').classList.toggle('show', d);
   document.getElementById('btnSave').disabled = !d;
 }
@@ -854,16 +864,20 @@ function setDirty(d) {
 async function apiFetch(path, opts = {}) {
   const r = await fetch(path, opts);
   const data = await r.json().catch(() => ({}));
-  if (!r.ok) throw Object.assign(new Error(data.error || `HTTP ${r.status}`), { data });
+  if (!r.ok) throw Object.assign(new Error(data.error || `HTTP ${r.status}`), { data, httpStatus: r.status });
   return data;
 }
 
 // ─────────────────────────────────────────────────────────────────
 // Load
 // ─────────────────────────────────────────────────────────────────
-async function loadAll(section = selectedSection) {
+async function loadAll(section = selectedSection, {preserveEdits = false} = {}) {
+  const revision = editRevision;
+  const requestId = ++loadRequest;
+  if (preserveEdits && hasUnsavedEdits()) { showPresetChangeNotice(); return false; }
   status('Loading...');
   try {
+    const version = await apiFetch('/api/state-version');
     const [ar, mr, pr, mcr, er] = await Promise.all([
       apiFetch('/api/actions'),
       apiFetch('/api/mappings' + (section == null ? '' : '?section=' + encodeURIComponent(section))),
@@ -871,6 +885,11 @@ async function loadAll(section = selectedSection) {
       apiFetch('/api/macros'),
       apiFetch('/api/engines'),
     ]);
+    if (requestId !== loadRequest) return false;
+    if (editRevision !== revision || (preserveEdits && hasUnsavedEdits())) {
+      showPresetChangeNotice();
+      return false;
+    }
     selectedSection = mr.section;
     bridgeSection = mr.bridge_section;
     sectionNames = mr.sections || [];
@@ -897,15 +916,58 @@ async function loadAll(section = selectedSection) {
     renderPresetDropdown();
     renderMacroLibrary();
     renderSectionSelector();
-    await renderEngines();
+    renderEngines();
     if (selected) renderEditor(selected);
     status('Ready', 'ok');
     setDirty(false);
+    formDirty = false;
+    stateVersion = version;
+    document.getElementById('presetChangeNotice').hidden = true;
     return true;
   } catch (e) {
+    if (requestId !== loadRequest) return false;
+    if (e.httpStatus === 422 && section != null) return loadAll(null, {preserveEdits});
     status('Load failed: ' + e.message, 'err');
     return false;
   }
+}
+
+function showPresetChangeNotice() {
+  document.getElementById('presetChangeNotice').hidden = false;
+}
+async function pollStateVersion() {
+  if (versionPollBusy) return;
+  versionPollBusy = true;
+  try {
+    const version = await apiFetch('/api/state-version');
+    if (version !== stateVersion) {
+      if (hasUnsavedEdits()) showPresetChangeNotice();
+      else await loadAll(selectedSection, {preserveEdits: true});
+    }
+  } catch (e) {
+    // A later poll retries. Failed requests never replace a draft or version.
+  } finally {
+    versionPollBusy = false;
+  }
+}
+document.getElementById('btnReloadPreset').addEventListener('click', async () => {
+  if (!discardChanges()) return;
+  const revision = editRevision;
+  try {
+    await apiFetch('/api/reload', {method: 'POST'});
+    if (editRevision !== revision) { showPresetChangeNotice(); return; }
+    await loadAll();
+  } catch (e) {
+    toast('Reload failed: ' + e.message, 'err');
+  }
+});
+
+// Unapplied mapping fields/JSON are drafts too. Keep the existing Apply step.
+for (const event of ['input', 'change']) {
+  document.getElementById('editorContent').addEventListener(event, () => {
+    formDirty = true;
+    editRevision++;
+  });
 }
 
 // Section editing uses a separate selection from the bridge's local identity.
@@ -915,8 +977,11 @@ function escHtml(value) {
 function isLocalSection() {
   return legacyPreset || selectedSection === bridgeSection;
 }
+function hasUnsavedEdits() {
+  return dirty || formDirty;
+}
 function discardChanges() {
-  return !dirty || window.confirm('You have unsaved changes. Discard them?');
+  return !hasUnsavedEdits() || window.confirm('You have unsaved changes. Discard them?');
 }
 function renderSectionSelector() {
   const select = document.getElementById('sectionSelect');
@@ -1040,6 +1105,7 @@ function refreshChip(action) {
 
 function commit(action, spec) {
   state[action] = spec;
+  formDirty = false;
   setDirty(true);
   updateCount();
   refreshChip(action);
@@ -1817,6 +1883,15 @@ function renderSettingsGrid(gridId, fields, values, pfx) {
     g.appendChild(field);
   }
 }
+for (const grid of ['macroGrid', 'analogGrid']) {
+  for (const event of ['input', 'change']) {
+    document.getElementById(grid).addEventListener(event, () => {
+      macroSettings = readSettings(MACRO_FIELDS, 'ms');
+      analogSettings = readSettings(ANALOG_FIELDS, 'as');
+      setDirty(true);
+    });
+  }
+}
 function readSettings(fields, pfx) {
   const r = {};
   for (const f of fields) {
@@ -2016,6 +2091,7 @@ document.addEventListener('keydown', e => {
 // ─────────────────────────────────────────────────────────────────
 // Boot
 // ─────────────────────────────────────────────────────────────────
+setInterval(pollStateVersion, 2000);
 loadAll();
 </script>
 </body>

@@ -26,7 +26,7 @@ const document = {
   getElementById(id) { if (!elements.has(id)) elements.set(id, element()); return elements.get(id); },
   createElement: element, addEventListener() {}, querySelectorAll() { return []; },
 };
-const context = vm.createContext({document, assert, window: {confirm: () => true}, setTimeout() {}});
+const context = vm.createContext({document, assert, window: {confirm: () => true}, setTimeout() {}, setInterval() {}});
 vm.runInContext(source, context);
 vm.runInContext(`
   // Suppress unrelated rendering; execute the actual section, engine and save flows.
@@ -49,6 +49,7 @@ vm.runInContext(`
       return {...doc, mappings:{...inherited,...doc.mappings}, document:doc, shared_mappings:inherited,
               section, bridge_section:own, sections:Object.keys(documents), preset:'Show.json', legacy:false};
     }
+    if (path === '/api/state-version') return 0;
     if (path === '/api/actions') return {actions:['BTN_A','BTN_B']};
     if (path === '/api/presets') return {presets:[]};
     if (path === '/api/macros') return {macros:[]};

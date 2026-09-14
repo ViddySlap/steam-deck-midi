@@ -130,6 +130,7 @@ class ActionReceiver:
         clock: Callable[[], float] = time.monotonic,
         engine_registry: Any = None,
     ) -> None:
+        self.state_version = 0
         self._midi_out = midi_out
         self._mappings = mappings
         self._timeout_seconds = timeout_seconds
@@ -350,6 +351,7 @@ class ActionReceiver:
         ):
             # No prior state to carry (first load, or L4 was unmapped before).
             self._seed_gyro_layer_state(self._clock())
+        self.state_version += 1
         LOGGER.info("hot-reloaded mappings: %s actions", len(new_mappings))
 
     def advance_fades(self, now: float | None = None) -> None:

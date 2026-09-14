@@ -9,7 +9,7 @@ import tempfile
 import threading
 import uuid
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from flask import Flask, Response, jsonify, request, send_from_directory
 
@@ -169,12 +169,14 @@ class MappingUIServer:
         midi_port: str = "DECK_IN",
         feedback_port: str | None = None,
         pulse_port: str | None = "PULSE_OUT",
+        state_version_fn: Callable[[], int] | None = None,
     ) -> None:
         self.base_map_path = base_map_path
         self.presets_dir = presets_dir
         self.macro_library_path = macro_library_path
         self.actions_yaml_path = actions_yaml_path
         self.reload_event = reload_event
+        self.state_version_fn = state_version_fn or (lambda: 0)
         self.port = port
         self.engine_registry = engine_registry
         self.bridge_settings = bridge_settings or BridgeSettings.load(
@@ -292,6 +294,17 @@ class MappingUIServer:
         @app.route("/")
         def index() -> Response:
             return send_from_directory(str(static_dir), "index.html")
+
+        @app.route("/api/state-version", methods=["GET"])
+        def state_version() -> Response:
+            response = jsonify(self.state_version_fn())
+            response.headers["Cache-Control"] = "no-store"
+            return response
+
+        @app.route("/api/reload", methods=["POST"])
+        def reload_now() -> Response:
+            self.reload_event.set()
+            return jsonify({"ok": True})
 
         @app.route("/api/settings", methods=["GET"])
         def get_settings() -> Response:
