@@ -116,7 +116,7 @@ class ShowreadyGuardTests(unittest.TestCase):
         setup = '''
 $work = $PSScriptRoot
 function Get-Snapshot {
-    return (Get-Content -LiteralPath (Join-Path $PSScriptRoot 'current.json') -Raw | ConvertFrom-Json)
+    return (Get-Content -LiteralPath (Join-Path $PSScriptRoot 'current.json') -Raw -Encoding UTF8 | ConvertFrom-Json)
 }
 '''
         with tempfile.TemporaryDirectory() as tmp:
@@ -126,14 +126,15 @@ function Get-Snapshot {
             data = {'udp45123': [{'pid': 17}], 'tcp7723': [{'pid': 17}],
                     'protectedProcesses': [{'pid': 17}], 'install': {'fileCount': 1},
                     'userConfig': {'locations': [{'files': [{'path': 'x', 'sha256': 'abc'}]}]},
-                    'pythonProcesses': [], 'scalar': True, 'empty': [], 'nullable': None}
+                    'pythonProcesses': [], 'scalar': True, 'empty': [], 'nullable': None,
+                    'filename': '\u00e9.json'}
             baseline = root / 'baseline.json'
-            baseline.write_text(json.dumps(data), encoding='ascii')
+            baseline.write_text(json.dumps(data, ensure_ascii=False), encoding='utf-8')
             command = [POWERSHELL, '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', str(guard),
                        '-Mode', 'compare', '-Out', str(root / 'out.json'), '-Baseline', str(baseline)]
 
             def run(current):
-                (root / 'current.json').write_text(json.dumps(current), encoding='ascii')
+                (root / 'current.json').write_text(json.dumps(current, ensure_ascii=False), encoding='utf-8')
                 result = subprocess.run(command, capture_output=True, text=True, timeout=30)
                 self.assertEqual(json.loads((root / 'out.json').read_text(encoding='utf-8')), current)
                 return result

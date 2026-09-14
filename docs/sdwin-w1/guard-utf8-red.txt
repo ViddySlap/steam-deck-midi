@@ -1,0 +1,21 @@
+test_clean_changed_missing_and_python_observations (test_showready_rail.ShowreadyGuardTests.test_clean_changed_missing_and_python_observations) ... FAIL
+test_every_transport_invocation_uses_the_required_options (test_showready_rail.ShowreadyPinTests.test_every_transport_invocation_uses_the_required_options) ... ok
+test_pins_match_exact_file_set_and_bytes (test_showready_rail.ShowreadyPinTests.test_pins_match_exact_file_set_and_bytes) ... ok
+test_unpinned_edit_and_extra_file_are_red (test_showready_rail.ShowreadyPinTests.test_unpinned_edit_and_extra_file_are_red) ... ok
+test_remote_status_stderr_arguments_and_scp_failure (test_showready_rail.ShowreadyTransportTests.test_remote_status_stderr_arguments_and_scp_failure) ... skipped 'Mac rail execution requires POSIX bash'
+test_unsafe_arguments_are_refused_before_transport (test_showready_rail.ShowreadyTransportTests.test_unsafe_arguments_are_refused_before_transport) ... skipped 'Mac rail execution requires POSIX bash'
+
+======================================================================
+FAIL: test_clean_changed_missing_and_python_observations (test_showready_rail.ShowreadyGuardTests.test_clean_changed_missing_and_python_observations)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\w1\kit-check\tests\test_showready_rail.py", line 143, in test_clean_changed_missing_and_python_observations
+    self.assertEqual(clean.returncode, 0, clean.stdout + clean.stderr)
+AssertionError: 1 != 0 : DIFF $.filename baseline="Ac.json" current=",.json"
+
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.406s
+
+FAILED (failures=1, skipped=2)
+GONE kit-check PID 275620 EXIT 1

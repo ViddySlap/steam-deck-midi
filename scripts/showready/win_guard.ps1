@@ -93,7 +93,7 @@ try {
     if ($Mode -eq 'compare') {
         if (-not $Baseline) { throw 'compare requires -Baseline' }
         if ($outPath -eq [IO.Path]::GetFullPath($Baseline)) { throw 'Out must not overwrite Baseline' }
-        $before = Get-Content -LiteralPath $Baseline -Raw | ConvertFrom-Json
+        $before = Get-Content -LiteralPath $Baseline -Raw -Encoding UTF8 | ConvertFrom-Json
     }
     $snapshot = Get-Snapshot
     # Only Out is written; its parent must already exist.
