@@ -22,6 +22,18 @@ KIT = Path(__file__).resolve().parent
 ROOT = KIT.parents[1]
 
 
+def default_scratch():
+    if os.name == 'nt':
+        return Path(os.environ['LOCALAPPDATA']) / 'Temp/sdwin/w3'
+    return Path('/tmp/sdwin-w3')
+
+
+def validate_scratch(path):
+    allowed = Path(os.environ['LOCALAPPDATA']) / 'Temp/sdwin' if os.name == 'nt' else Path('/tmp')
+    if not Path(path).resolve().is_relative_to(allowed.resolve()):
+        raise ValueError('Scratch must be under ' + str(allowed))
+
+
 def git(repo, *args, binary=False):
     result = subprocess.run(['git', '-C', str(repo), *args], check=True, capture_output=True)
     return result.stdout if binary else result.stdout.decode().strip()
@@ -163,8 +175,7 @@ def run(args):
               'script_parameters': script['parameters'],
               'instrument_sha256': {name: sha((KIT / name).read_bytes()) for name in ('deck_script.py', 'capture_runner.py', 'ab_run.py')},
               'arms': {}, 'comparisons': {}, 'passed': False}
-    if not args.scratch.resolve().is_relative_to(Path(tempfile.gettempdir()).resolve()) and os.name != 'nt':
-        raise ValueError('Scratch must be under the host temp directory')
+    validate_scratch(args.scratch)
     args.scratch.mkdir(parents=True, exist_ok=True)
     work = Path(tempfile.mkdtemp(prefix='ab-', dir=args.scratch)).resolve()
     result['work'] = str(work)
@@ -315,7 +326,7 @@ def main():
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--repo', type=Path, default=ROOT)
     parser.add_argument('--fixtures', type=Path, default=ROOT / '.showready/fixtures')
-    parser.add_argument('--scratch', type=Path, default=Path(tempfile.gettempdir()) / 'sdwin-w3')
+    parser.add_argument('--scratch', type=Path, default=default_scratch())
     parser.add_argument('--clock', choices=('script', 'wall'), default='script')
     parser.add_argument('--speed', type=float, default=1.0, help='1 = real wall pacing; other values are explicitly synthetic controls')
     parser.add_argument('--control', choices=('sensitivity', 'coverage', 'dead-seam'))

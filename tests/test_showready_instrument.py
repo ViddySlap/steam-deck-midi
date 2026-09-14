@@ -1,6 +1,7 @@
 """Fast assertions at the packet, MIDI-byte, coverage and real-port seams."""
 import importlib.util
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -18,6 +19,14 @@ import ab_run as ab
 
 
 class InstrumentTests(unittest.TestCase):
+    def test_scratch_is_on_the_authorized_showready_rail(self):
+        expected = (Path(os.environ['LOCALAPPDATA']) / 'Temp/sdwin/w3'
+                    if os.name == 'nt' else Path('/tmp/sdwin-w3'))
+        self.assertEqual(ab.default_scratch(), expected)
+        ab.validate_scratch(expected)
+        with self.assertRaises(ValueError):
+            ab.validate_scratch(ROOT)
+
     def script(self):
         return deck.generate(ROOT / 'config/actions.yaml', ROOT / 'deck/xinput_send.py',
                              [('default', deck.read_json(ROOT / 'config/presets/default.json'))])

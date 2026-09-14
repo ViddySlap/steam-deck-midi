@@ -1,0 +1,14 @@
+.......E.
+======================================================================
+ERROR: test_scratch_is_on_the_authorized_showready_rail (test_showready_instrument.InstrumentTests.test_scratch_is_on_the_authorized_showready_rail)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_showready_instrument.py", line 25, in test_scratch_is_on_the_authorized_showready_rail
+    self.assertEqual(ab.default_scratch(), expected)
+                     ^^^^^^^^^^^^^^^^^^
+AttributeError: module 'ab_run' has no attribute 'default_scratch'
+
+----------------------------------------------------------------------
+Ran 9 tests in 22.258s
+
+FAILED (errors=1)
