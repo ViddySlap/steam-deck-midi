@@ -1,0 +1,31 @@
+[
+  {
+    "command": [
+      "git",
+      "diff",
+      "a205d16",
+      "HEAD",
+      "--",
+      "windows",
+      "protocol",
+      "deck",
+      "config",
+      "mac",
+      "tests/test_showready_rail.py"
+    ],
+    "exit": 0,
+    "result": "Empty diff: product, parked mac kit and pre-existing rail tests unchanged"
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "v0.4.9",
+      "HEAD",
+      "--",
+      "windows/midi.py"
+    ],
+    "exit": 0,
+    "result": "Empty MIDI backend diff from v0.4.9"
+  }
+]

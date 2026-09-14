@@ -25,7 +25,7 @@ class InstrumentTests(unittest.TestCase):
         self.assertEqual(ab.default_scratch(), expected)
         ab.validate_scratch(expected)
         with self.assertRaises(ValueError):
-            ab.validate_scratch(ROOT)
+            ab.validate_scratch(Path('/').resolve())
 
     def script(self):
         return deck.generate(ROOT / 'config/actions.yaml', ROOT / 'deck/xinput_send.py',
