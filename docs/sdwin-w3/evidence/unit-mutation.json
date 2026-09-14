@@ -8,13 +8,13 @@
       "unittest",
       "discover",
       "-s",
-      "/tmp/sdwin-w3/unit-mutation-portable/tests",
+      "/tmp/sdwin-w3/unit-mutation-paced/tests",
       "-p",
       "test_showready_instrument.py"
     ],
     "exit": 0,
     "stdout": "",
-    "stderr": ".........\n----------------------------------------------------------------------\nRan 9 tests in 0.428s\n\nOK\n"
+    "stderr": "..........\n----------------------------------------------------------------------\nRan 10 tests in 0.437s\n\nOK\n"
   },
   {
     "arm": "mutant",
@@ -25,13 +25,13 @@
       "unittest",
       "discover",
       "-s",
-      "/tmp/sdwin-w3/unit-mutation-portable/tests",
+      "/tmp/sdwin-w3/unit-mutation-paced/tests",
       "-p",
       "test_showready_instrument.py"
     ],
     "exit": 1,
     "stdout": "",
-    "stderr": ".F...F...\n======================================================================\nFAIL: test_midi_spec_status_and_data_bytes_channels_one_and_sixteen (test_showready_instrument.InstrumentTests.test_midi_spec_status_and_data_bytes_channels_one_and_sixteen)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/sdwin-w3/unit-mutation-portable/tests/test_showready_instrument.py\", line 68, in test_midi_spec_status_and_data_bytes_channels_one_and_sixteen\n    self.assertEqual(capture.midi_bytes('note_on', channel, 60, 127), bytes([on, 60, 127]))\nAssertionError: b'\\x80<\\x7f' != b'\\x90<\\x7f'\n\n======================================================================\nFAIL: test_recorder_keeps_bytes_timestamps_and_panic (test_showready_instrument.InstrumentTests.test_recorder_keeps_bytes_timestamps_and_panic)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/sdwin-w3/unit-mutation-portable/tests/test_showready_instrument.py\", line 133, in test_recorder_keeps_bytes_timestamps_and_panic\n    self.assertEqual(rows[0]['bytes'], [159, 127, 99])\nAssertionError: Lists differ: [143, 127, 99] != [159, 127, 99]\n\nFirst differing element 0:\n143\n159\n\n- [143, 127, 99]\n?   ^^\n\n+ [159, 127, 99]\n?   ^^\n\n\n----------------------------------------------------------------------\nRan 9 tests in 0.426s\n\nFAILED (failures=2)\n"
+    "stderr": ".F....F...\n======================================================================\nFAIL: test_midi_spec_status_and_data_bytes_channels_one_and_sixteen (test_showready_instrument.InstrumentTests.test_midi_spec_status_and_data_bytes_channels_one_and_sixteen)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/sdwin-w3/unit-mutation-paced/tests/test_showready_instrument.py\", line 85, in test_midi_spec_status_and_data_bytes_channels_one_and_sixteen\n    self.assertEqual(capture.midi_bytes('note_on', channel, 60, 127), bytes([on, 60, 127]))\nAssertionError: b'\\x80<\\x7f' != b'\\x90<\\x7f'\n\n======================================================================\nFAIL: test_recorder_keeps_bytes_timestamps_and_panic (test_showready_instrument.InstrumentTests.test_recorder_keeps_bytes_timestamps_and_panic)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/sdwin-w3/unit-mutation-paced/tests/test_showready_instrument.py\", line 150, in test_recorder_keeps_bytes_timestamps_and_panic\n    self.assertEqual(rows[0]['bytes'], [159, 127, 99])\nAssertionError: Lists differ: [143, 127, 99] != [159, 127, 99]\n\nFirst differing element 0:\n143\n159\n\n- [143, 127, 99]\n?   ^^\n\n+ [159, 127, 99]\n?   ^^\n\n\n----------------------------------------------------------------------\nRan 10 tests in 0.431s\n\nFAILED (failures=2)\n"
   },
   {
     "arm": "restored",
@@ -42,12 +42,12 @@
       "unittest",
       "discover",
       "-s",
-      "/tmp/sdwin-w3/unit-mutation-portable/tests",
+      "/tmp/sdwin-w3/unit-mutation-paced/tests",
       "-p",
       "test_showready_instrument.py"
     ],
     "exit": 0,
     "stdout": "",
-    "stderr": ".........\n----------------------------------------------------------------------\nRan 9 tests in 0.417s\n\nOK\n"
+    "stderr": "..........\n----------------------------------------------------------------------\nRan 10 tests in 0.431s\n\nOK\n"
   }
 ]

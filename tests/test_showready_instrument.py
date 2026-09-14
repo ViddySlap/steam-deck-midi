@@ -19,6 +19,23 @@ import ab_run as ab
 
 
 class InstrumentTests(unittest.TestCase):
+    def test_pacer_never_bursts_after_delay_and_detector_fires(self):
+        now = [3_000_000_000]
+        sleeps = []
+        def sleep(seconds):
+            sleeps.append(seconds)
+            now[0] += round(seconds * 1e9)
+        # A late previous send still requires the entire next interval.
+        sent = ab.wait_gap(now[0], 16_666_667, lambda: now[0], sleep)
+        self.assertEqual(sent, 3_016_666_667)
+        self.assertEqual(sleeps, [0.016666667])
+        steps = [{'id': i, 'at_ns': i * 16_666_667, 'phase': 'axis-60hz',
+                  'event': {'action': 'L_STICK_X_AXIS'}} for i in range(2)]
+        good = ab.pacing_summary({'steps': steps}, {'A': {0: 1, 1: 16_666_668}}, 1)
+        bad = ab.pacing_summary({'steps': steps}, {'A': {0: 1, 1: 20}}, 1)
+        self.assertTrue(good['A']['axis-60hz']['no_overspeed'])
+        self.assertFalse(bad['A']['axis-60hz']['no_overspeed'])
+
     def test_scratch_is_on_the_authorized_showready_rail(self):
         expected = (Path(os.environ['LOCALAPPDATA']) / 'Temp/sdwin/w3'
                     if os.name == 'nt' else Path('/tmp/sdwin-w3'))

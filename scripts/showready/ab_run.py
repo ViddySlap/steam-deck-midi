@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 import shutil
 import socket
+import statistics
 import subprocess
 import sys
 import tarfile
@@ -32,6 +33,34 @@ def validate_scratch(path):
     allowed = Path(os.environ['LOCALAPPDATA']) / 'Temp/sdwin' if os.name == 'nt' else Path('/tmp')
     if not Path(path).resolve().is_relative_to(allowed.resolve()):
         raise ValueError('Scratch must be under ' + str(allowed))
+
+
+def wait_gap(last_send_ns, interval_ns, clock=time.monotonic_ns, sleep=time.sleep):
+    """No catch-up: preserve the gap even after a delayed wake or send."""
+    due = last_send_ns + interval_ns
+    while True:
+        now = clock()
+        if now >= due:
+            return now
+        sleep((due - now) / 1e9)
+
+
+def pacing_summary(script, sends, speed):
+    result = {}
+    for arm, times in sends.items():
+        result[arm] = {}
+        for phase in ('axis-60hz', 'axis-10hz'):
+            intervals = []
+            minimums = []
+            for left, right in zip(script['steps'], script['steps'][1:]):
+                if left['phase'] == right['phase'] == phase and left['event']['action'] == right['event']['action']:
+                    intervals.append(times[right['id']] - times[left['id']])
+                    minimums.append(round((right['at_ns'] - left['at_ns']) / speed))
+            result[arm][phase] = {'count': len(intervals), 'min_ns': min(intervals) if intervals else None,
+                                 'median_ns': statistics.median(intervals) if intervals else None,
+                                 'max_ns': max(intervals) if intervals else None,
+                                 'no_overspeed': bool(intervals) and all(a >= b for a, b in zip(intervals, minimums))}
+    return result
 
 
 def git(repo, *args, binary=False):
@@ -236,11 +265,9 @@ def run(args):
         step_events = {s['id']: s for s in script['steps']}
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sender:
             start = time.monotonic_ns()
+            last_send, previous_at = start, 0
             for row in script['packets']:
-                target_ns = start + round(row['at_ns'] / args.speed)
-                remaining = (target_ns - time.monotonic_ns()) / 1e9
-                if remaining > 0:
-                    time.sleep(remaining)
+                wait_gap(last_send, round((row['at_ns'] - previous_at) / args.speed))
                 payload = bytes.fromhex(row['hex'])
                 wire_digest.update(__import__('struct').pack('!I', len(payload)))
                 wire_digest.update(payload)
@@ -253,7 +280,9 @@ def run(args):
                         raise RuntimeError('Partial UDP send')
                     if row['at_ns'] == step_events[row['step']]['at_ns']:
                         sends[name][row['step']] = sent_at
+                last_send, previous_at = time.monotonic_ns(), row['at_ns']
             result['replay_wall_seconds'] = (time.monotonic_ns() - start) / 1e9
+        result['pacing'] = pacing_summary(script, sends, args.speed)
         result['sent_packet_stream_sha256'] = wire_digest.hexdigest()
         for name in names:
             done = wait_file(Path(str(captures[name]) + '.done.json'), processes[name])
@@ -280,7 +309,8 @@ def run(args):
                     row['send_monotonic_ns'][arm] = sent
                     row['latency_ns'][arm] = midi[0]['monotonic_ns'] - sent if midi and sent is not None else None
             result['comparisons'][name] = comparison
-        result['passed'] = all(c['passed'] for c in result['comparisons'].values())
+        result['passed'] = (all(c['passed'] for c in result['comparisons'].values()) and
+                            all(phase['no_overspeed'] for arm in result['pacing'].values() for phase in arm.values()))
     except Exception as exc:
         result['error'] = type(exc).__name__ + ': ' + str(exc)
     finally:
