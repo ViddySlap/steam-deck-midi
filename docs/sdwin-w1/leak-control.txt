@@ -1,0 +1,17 @@
+
+    Id ProcessName Path
+    -- ----------- ----
+273052 python      C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\python.exe
+276236 python      C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe
+
+
+GUARD RED: pythonProcesses [{"pid":276236,"name":"python","path":"C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv\\Scripts\\python.exe","startTimeUtc":"2026-09-14T22:42:39.5156168Z"}]
+DIFF $.pythonProcesses.count baseline=0 current=1
+DIFF $.pythonProcesses[0].keys baseline= current=["name","path","pid","startTimeUtc"]
+DIFF $.pythonProcesses[0].name baseline= current="python"
+DIFF $.pythonProcesses[0].path baseline= current="C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv\\Scripts\\python.exe"
+DIFF $.pythonProcesses[0].pid baseline= current=276236
+DIFF $.pythonProcesses[0].startTimeUtc baseline= current="2026-09-14T22:42:39.5156168Z"
+LEAK_COMPARE_EXIT 1
+GET-PROCESS GONE 276236
+GET-PROCESS GONE 273052

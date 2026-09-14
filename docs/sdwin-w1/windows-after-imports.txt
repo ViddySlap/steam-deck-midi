@@ -1,0 +1,33 @@
+======================================================================
+ERROR: test_learn_single_action_preserves_siblings_and_cancel_does_not_write (test_deck_control_api.DeckControlAPITests.test_learn_single_action_preserves_siblings_and_cancel_does_not_write)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\tests\test_deck_control_api.py", line 415, in test_learn_single_action_preserves_siblings_and_cancel_does_not_write
+    listener.emit("19")
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\tests\test_deck_control_api.py", line 370, in emit
+    os.write(inner.writer, b"x")
+OSError: [Errno 9] Bad file descriptor
+
+======================================================================
+ERROR: test_learn_single_skip_cancels_and_invalid_action_is_rejected (test_deck_control_api.DeckControlAPITests.test_learn_single_skip_cancels_and_invalid_action_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\tests\test_deck_control_api.py", line 432, in test_learn_single_skip_cancels_and_invalid_action_is_rejected
+    self.assertEqual(self.request("POST", "/api/learn/skip")[1]["saved"], False)
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+KeyError: 'saved'
+
+======================================================================
+FAIL: test_learn_full_capture_confirm_duplicate_skip_and_save (test_deck_control_api.DeckControlAPITests.test_learn_full_capture_confirm_duplicate_skip_and_save)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\tests\test_deck_control_api.py", line 397, in test_learn_full_capture_confirm_duplicate_skip_and_save
+    self.assertEqual(self.request("POST", "/api/sender/start")[0], 400)
+AssertionError: 200 != 400
+
+----------------------------------------------------------------------
+Ran 828 tests in 15.002s
+
+FAILED (failures=1, errors=2, skipped=5)
+GONE suite PID 272972 EXIT 1
+GET-PROCESS: no python under CLONE or LAPTOP WORK

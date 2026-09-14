@@ -348,29 +348,30 @@ class DeckControlAPITests(unittest.TestCase):
         self.assertEqual(documented, self.server.routes)
 
     def learn_listener(self):
-        import os
+        import socket
         import queue
         from deck.xinput_send import Xi2KeyEvent
         class Listener:
             def __init__(inner):
-                inner.reader, inner.writer = os.pipe()
-                os.set_blocking(inner.reader, False)
+                # Windows select() accepts sockets, not POSIX pipe handles.
+                inner.reader, inner.writer = socket.socketpair()
+                inner.reader.setblocking(False)
                 inner.queue = queue.Queue()
                 inner.closed = threading.Event()
             def fileno(inner):
-                return inner.reader
+                return inner.reader.fileno()
             def read_event(inner):
                 try:
-                    os.read(inner.reader, 1)
+                    inner.reader.recv(1)
                     return inner.queue.get_nowait()
                 except BlockingIOError:
                     return None
             def emit(inner, token):
                 inner.queue.put(Xi2KeyEvent(token, "down"))
-                os.write(inner.writer, b"x")
+                inner.writer.sendall(b"x")
             def close(inner):
-                os.close(inner.reader)
-                os.close(inner.writer)
+                inner.reader.close()
+                inner.writer.close()
                 inner.closed.set()
         listener = Listener()
         self.addCleanup(lambda: self.controller.learn.cancel() if self.controller.learn else None)

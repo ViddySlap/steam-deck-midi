@@ -1,0 +1,54 @@
+test_learn_full_capture_confirm_duplicate_skip_and_save (test_control_fixed.DeckControlAPITests.test_learn_full_capture_confirm_duplicate_skip_and_save) ... ok
+test_learn_single_action_preserves_siblings_and_cancel_does_not_write (test_control_fixed.DeckControlAPITests.test_learn_single_action_preserves_siblings_and_cancel_does_not_write) ... ok
+test_learn_single_skip_cancels_and_invalid_action_is_rejected (test_control_fixed.DeckControlAPITests.test_learn_single_skip_cancels_and_invalid_action_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.514s
+
+OK
+GONE fixed PID 275576 EXIT 0
+test_learn_full_capture_confirm_duplicate_skip_and_save (test_control_mutant.DeckControlAPITests.test_learn_full_capture_confirm_duplicate_skip_and_save) ... FAIL
+test_learn_single_action_preserves_siblings_and_cancel_does_not_write (test_control_mutant.DeckControlAPITests.test_learn_single_action_preserves_siblings_and_cancel_does_not_write) ... ERROR
+test_learn_single_skip_cancels_and_invalid_action_is_rejected (test_control_mutant.DeckControlAPITests.test_learn_single_skip_cancels_and_invalid_action_is_rejected) ... ERROR
+
+======================================================================
+ERROR: test_learn_single_action_preserves_siblings_and_cancel_does_not_write (test_control_mutant.DeckControlAPITests.test_learn_single_action_preserves_siblings_and_cancel_does_not_write)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\w1\test_control_mutant.py", line 415, in test_learn_single_action_preserves_siblings_and_cancel_does_not_write
+    listener.emit("19")
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\w1\test_control_mutant.py", line 370, in emit
+    os.write(inner.writer, b"x")
+OSError: [Errno 9] Bad file descriptor
+
+======================================================================
+ERROR: test_learn_single_skip_cancels_and_invalid_action_is_rejected (test_control_mutant.DeckControlAPITests.test_learn_single_skip_cancels_and_invalid_action_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\w1\test_control_mutant.py", line 432, in test_learn_single_skip_cancels_and_invalid_action_is_rejected
+    self.assertEqual(self.request("POST", "/api/learn/skip")[1]["saved"], False)
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+KeyError: 'saved'
+
+======================================================================
+FAIL: test_learn_full_capture_confirm_duplicate_skip_and_save (test_control_mutant.DeckControlAPITests.test_learn_full_capture_confirm_duplicate_skip_and_save)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\w1\test_control_mutant.py", line 397, in test_learn_full_capture_confirm_duplicate_skip_and_save
+    self.assertEqual(self.request("POST", "/api/sender/start")[0], 400)
+AssertionError: 200 != 400
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.246s
+
+FAILED (failures=1, errors=2)
+GONE mutant PID 254100 EXIT 1
+test_learn_full_capture_confirm_duplicate_skip_and_save (test_control_fixed.DeckControlAPITests.test_learn_full_capture_confirm_duplicate_skip_and_save) ... ok
+test_learn_single_action_preserves_siblings_and_cancel_does_not_write (test_control_fixed.DeckControlAPITests.test_learn_single_action_preserves_siblings_and_cancel_does_not_write) ... ok
+test_learn_single_skip_cancels_and_invalid_action_is_rejected (test_control_fixed.DeckControlAPITests.test_learn_single_skip_cancels_and_invalid_action_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.508s
+
+OK
+GONE fixed PID 273244 EXIT 0
