@@ -1,0 +1,113 @@
+[
+  {
+    "name": "determinism-1",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/ab_run.py",
+      "--candidate",
+      "v0.4.9",
+      "--preset",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/mac/presets/default.json",
+      "--script",
+      "/tmp/sdwin-w3/deck-script.json",
+      "--speed",
+      "50",
+      "--out",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/determinism-1.json"
+    ],
+    "exit": 0,
+    "stdout": "{\"result\": \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/determinism-1.json.gz\", \"passed\": true, \"error\": null, \"comparisons\": {\"B1\": {\"totals\": {\"steps\": 732, \"mappings\": 56, \"mappings_exercised\": 56, \"messages_A\": 1531, \"messages_B\": 1531}, \"different_mappings\": [], \"unexercised_mappings\": []}}}\n",
+    "stderr": ""
+  },
+  {
+    "name": "determinism-2",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/ab_run.py",
+      "--candidate",
+      "v0.4.9",
+      "--preset",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/mac/presets/default.json",
+      "--script",
+      "/tmp/sdwin-w3/deck-script.json",
+      "--speed",
+      "50",
+      "--out",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/determinism-2.json"
+    ],
+    "exit": 0,
+    "stdout": "{\"result\": \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/determinism-2.json.gz\", \"passed\": true, \"error\": null, \"comparisons\": {\"B1\": {\"totals\": {\"steps\": 732, \"mappings\": 56, \"mappings_exercised\": 56, \"messages_A\": 1531, \"messages_B\": 1531}, \"different_mappings\": [], \"unexercised_mappings\": []}}}\n",
+    "stderr": ""
+  },
+  {
+    "name": "sensitivity",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/ab_run.py",
+      "--candidate",
+      "v0.4.9",
+      "--preset",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/mac/presets/default.json",
+      "--script",
+      "/tmp/sdwin-w3/deck-script.json",
+      "--speed",
+      "50",
+      "--out",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/sensitivity.json",
+      "--control",
+      "sensitivity"
+    ],
+    "exit": 1,
+    "stdout": "{\"result\": \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/sensitivity.json.gz\", \"passed\": false, \"error\": null, \"comparisons\": {\"B1\": {\"totals\": {\"steps\": 732, \"mappings\": 56, \"mappings_exercised\": 56, \"messages_A\": 1531, \"messages_B\": 1531}, \"different_mappings\": [\"BTN_A\"], \"unexercised_mappings\": []}}}\n",
+    "stderr": ""
+  },
+  {
+    "name": "coverage",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/ab_run.py",
+      "--candidate",
+      "v0.4.9",
+      "--preset",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/mac/presets/default.json",
+      "--script",
+      "/tmp/sdwin-w3/deck-script.json",
+      "--speed",
+      "50",
+      "--out",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/coverage.json",
+      "--control",
+      "coverage"
+    ],
+    "exit": 1,
+    "stdout": "{\"result\": \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/coverage.json.gz\", \"passed\": false, \"error\": null, \"comparisons\": {\"B1\": {\"totals\": {\"steps\": 728, \"mappings\": 56, \"mappings_exercised\": 55, \"messages_A\": 1527, \"messages_B\": 1527}, \"different_mappings\": [\"BTN_A\"], \"unexercised_mappings\": [\"BTN_A\"]}}}\n",
+    "stderr": ""
+  },
+  {
+    "name": "dead-seam",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/ab_run.py",
+      "--candidate",
+      "v0.4.9",
+      "--preset",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/mac/presets/default.json",
+      "--script",
+      "/tmp/sdwin-w3/deck-script.json",
+      "--speed",
+      "50",
+      "--out",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/dead-seam.json",
+      "--control",
+      "dead-seam"
+    ],
+    "exit": 1,
+    "stdout": "{\"result\": \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/dead-seam.json.gz\", \"passed\": false, \"error\": null, \"comparisons\": {\"B1\": {\"totals\": {\"steps\": 732, \"mappings\": 56, \"mappings_exercised\": 0, \"messages_A\": 0, \"messages_B\": 0}, \"different_mappings\": [], \"unexercised_mappings\": [\"BTN_A\", \"BTN_A_LAYER_2\", \"BTN_B\", \"BTN_B_LAYER_2\", \"BTN_X\", \"BTN_X_LAYER_2\", \"BTN_Y\", \"BTN_Y_LAYER_2\", \"DPAD_DOWN\", \"DPAD_DOWN_LONG_PRESS\", \"DPAD_LEFT\", \"DPAD_LEFT_LONG_PRESS\", \"DPAD_RIGHT\", \"DPAD_RIGHT_LONG_PRESS\", \"DPAD_UP\", \"DPAD_UP_LONG_PRESS\", \"L1\", \"L1_LAYER_2\", \"L2_FULL\", \"L2_FULL_LAYER_2\", \"L2_SOFT\", \"L2_SOFT_LAYER_2\", \"L4\", \"L5\", \"LEFT_STICK_CLICK_L3\", \"L_PAD_DOWN\", \"L_PAD_DOWN_LONG_PRESS\", \"L_PAD_LEFT\", \"L_PAD_LEFT_LONG_PRESS\", \"L_PAD_RIGHT\", \"L_PAD_RIGHT_LONG_PRESS\", \"L_PAD_UP\", \"L_PAD_UP_LONG_PRESS\", \"L_TRIGGER_PRESSURE\", \"R1\", \"R1_LAYER_2\", \"R2_FULL\", \"R2_FULL_LAYER_2\", \"R2_SOFT\", \"R2_SOFT_LAYER_2\", \"R4\", \"R5\", \"RIGHT_STICK_CLICK_R3\", \"R_PAD_DOWN\", \"R_PAD_DOWN_LONG_PRESS\", \"R_PAD_LEFT\", \"R_PAD_LEFT_LONG_PRESS\", \"R_PAD_RIGHT\", \"R_PAD_RIGHT_LONG_PRESS\", \"R_PAD_UP\", \"R_PAD_UP_LONG_PRESS\", \"R_STICK_X_AXIS\", \"R_STICK_Y_AXIS\", \"R_TRIGGER_PRESSURE\", \"SELECT\", \"START\"]}}}\n",
+    "stderr": ""
+  }
+]

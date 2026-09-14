@@ -119,3 +119,92 @@ cp /tmp/sdwin-w1/SHA256SUMS scripts/showready/SHA256SUMS
 ```
 
 Pinning detects drift; it does not replace live rail and guard controls.
+
+## A/B MIDI instrument (W3)
+
+Harness code uses only the Python standard library. The bridge arms use the
+checkout venv. Run from the Mac run root. The generator verifies BOTH W2
+fixture manifests before reading any presets; ab_run repeats that verification
+and refuses a preset that is absent from those manifests.
+
+Generate ONE script, shared by every comparison (create scratch first):
+
+```bash
+mkdir -p /tmp/sdwin-w3
+.venv/bin/python -B scripts/showready/deck_script.py --out /tmp/sdwin-w3/deck-script.json
+```
+
+Each line below is a complete later-gate command. Replace HEAD with the
+candidate commit when pinning a release. Outputs over 1 MB get a .gz suffix.
+Sectioned fixtures automatically run A(flat), B1(same flat), and B2(sectioned
+with --preset-section windows); both candidate arms must equal A.
+
+```bash
+.venv/bin/python -B scripts/showready/ab_run.py --candidate HEAD --preset '.showready/fixtures/mac/presets/EDM Show.json' --section windows --script /tmp/sdwin-w3/deck-script.json --out /tmp/sdwin-w3/mac-edm.json
+.venv/bin/python -B scripts/showready/ab_run.py --candidate HEAD --preset '.showready/fixtures/mac/presets/PTZ.json' --section windows --script /tmp/sdwin-w3/deck-script.json --out /tmp/sdwin-w3/mac-ptz.json
+.venv/bin/python -B scripts/showready/ab_run.py --candidate HEAD --preset '.showready/fixtures/mac/presets/default.json' --script /tmp/sdwin-w3/deck-script.json --out /tmp/sdwin-w3/mac-default.json
+.venv/bin/python -B scripts/showready/ab_run.py --candidate HEAD --preset '.showready/fixtures/windows-installed/presets/EDM Show.json' --script /tmp/sdwin-w3/deck-script.json --out /tmp/sdwin-w3/windows-edm.json
+.venv/bin/python -B scripts/showready/ab_run.py --candidate HEAD --preset '.showready/fixtures/windows-installed/presets/PTZ.json' --script /tmp/sdwin-w3/deck-script.json --out /tmp/sdwin-w3/windows-ptz.json
+.venv/bin/python -B scripts/showready/ab_run.py --candidate HEAD --preset '.showready/fixtures/windows-installed/presets/default.json' --script /tmp/sdwin-w3/deck-script.json --out /tmp/sdwin-w3/windows-default.json
+.venv/bin/python -B scripts/showready/ab_run.py --candidate HEAD --preset '.showready/fixtures/windows-installed/presets/test 1.json' --script /tmp/sdwin-w3/deck-script.json --out /tmp/sdwin-w3/windows-test1.json
+.venv/bin/python -B scripts/showready/ab_run.py --candidate HEAD --preset '.showready/fixtures/windows-installed/presets/v1 Default.json' --script /tmp/sdwin-w3/deck-script.json --out /tmp/sdwin-w3/windows-v1-default.json
+```
+
+The same capture_runner.py runs both untouched archived code trees. It replaces
+open_midi_output with a raw-byte recorder, denies MIDI input and all mido/rtmidi
+port constructors, validates loopback/non-default ports, and runs that arm's
+windows.win_recv.main with --no-engines --no-pulse --no-osc-relay --no-ui.
+No --tray. The config argument must be inside its disposable arm. Both the
+runner and driver check ports by binding before boot. The receiver's actual
+socket bind writes the ready file; logs are never used as readiness evidence.
+Every received packet is checked against the script, in order, and hashed.
+Every capture includes raw status/data bytes and time.monotonic_ns timestamps.
+
+The default --clock script injects the receiver's EXISTING clock argument,
+advancing it at each actual UDP receipt to the script timestamp. It does not
+replace dispatch, fades, staged notes, relative CC, timeout or release logic.
+Legal heartbeat packets every 10 ms drive delayed work to fixed instants in
+both arms. Wall pacing defaults to --speed 1. Each full stream takes about
+470 seconds. This is synthetic Deck input and controlled receiver time, with
+real loopback UDP and real MIDI-backend calls. It proves byte regression under
+that schedule; it does not certify live scheduler timing or physical MIDI.
+--clock wall uses the ordinary receiver clock for diagnosing A/A timer noise.
+--speed other than 1 is explicitly an accelerated control, not real-rate credit.
+
+The script has all 75 Action IDs: 62 button IDs at 100 ms and 1.6 s dwell;
+13 axes, nine evenly spaced range points plus zero, out and back, at 60 Hz
+and 10 Hz. HID representable ranges include stick center offsets, unsigned
+16-bit triggers, signed pad positions, and clamped integrated gyro positions.
+This is source-derived, not a measurement of physical end stops. Explicit zero
+probes include centers that the current HID reader suppresses. LONG_PRESS and
+LAYER_2 are already separate IDs on the wire, not derived by a bridge hold
+threshold. relative_cc does repeat while held. The 2.25 s isolation gap is the
+longest preset fade/staged delay (2 s) plus one 250 ms receiver poll. Gaps are
+between button trials and completed axis sweeps; intra-sweep events keep the
+specified rate. The result embeds parameters, sources, and the entire script.
+
+All steps, including startup output and unmapped IDs, must compare byte-for-
+byte. A mapping earns coverage only with received inputs and mapping-directed
+MIDI on BOTH sides; startup bytes cannot pay coverage. Missing mappings, dropped
+packets, zero capture, early death and cleanup failure are nonzero. No mapping
+in these presets needs an engine to emit its direct MIDI; engine subscriptions,
+feedback-driven behavior and real hardware remain outside this instrument.
+No missing mapping is silently labeled NOT COVERED. An unknown/new unsupported
+mapping remains red until explicitly investigated.
+
+Controls (same preset/script; A against A uses --candidate v0.4.9):
+
+```bash
+.venv/bin/python -B scripts/showready/ab_run.py --candidate v0.4.9 --preset '.showready/fixtures/mac/presets/default.json' --script /tmp/sdwin-w3/deck-script.json --out /tmp/sdwin-w3/aa.json
+.venv/bin/python -B scripts/showready/ab_run.py --candidate v0.4.9 --preset '.showready/fixtures/mac/presets/default.json' --script /tmp/sdwin-w3/deck-script.json --control sensitivity --mapping BTN_A --out /tmp/sdwin-w3/sensitivity.json
+.venv/bin/python -B scripts/showready/ab_run.py --candidate v0.4.9 --preset '.showready/fixtures/mac/presets/default.json' --script /tmp/sdwin-w3/deck-script.json --control coverage --mapping BTN_A --out /tmp/sdwin-w3/coverage.json
+.venv/bin/python -B scripts/showready/ab_run.py --candidate v0.4.9 --preset '.showready/fixtures/mac/presets/default.json' --script /tmp/sdwin-w3/deck-script.json --control dead-seam --out /tmp/sdwin-w3/dead-seam.json
+```
+
+Run A/A twice. Sensitivity increments only BTN_A's note in the disposable
+candidate config; expected exit 1 and different_mappings=[BTN_A]. Coverage
+removes BTN_A input packets; expected exit 1 and unexercised_mappings=[BTN_A].
+Dead seam records no MIDI on either arm; expected exit 1 even if bytes match.
+The result retains process IDs, terminate/wait method and PID absence proof.
+Raw captures, arm stdout and copied trees remain in the unique reported scratch
+folder, with no running processes. The driver never calls an HTTP shutdown API.

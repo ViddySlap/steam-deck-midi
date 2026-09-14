@@ -1,0 +1,53 @@
+[
+  {
+    "arm": "pristine",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "/tmp/sdwin-w3/unit-mutation/tests",
+      "-p",
+      "test_showready_instrument.py"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "........\n----------------------------------------------------------------------\nRan 8 tests in 0.449s\n\nOK\n"
+  },
+  {
+    "arm": "mutant",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "/tmp/sdwin-w3/unit-mutation/tests",
+      "-p",
+      "test_showready_instrument.py"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": ".F...F..\n======================================================================\nFAIL: test_midi_spec_status_and_data_bytes_channels_one_and_sixteen (test_showready_instrument.InstrumentTests.test_midi_spec_status_and_data_bytes_channels_one_and_sixteen)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/sdwin-w3/unit-mutation/tests/test_showready_instrument.py\", line 59, in test_midi_spec_status_and_data_bytes_channels_one_and_sixteen\n    self.assertEqual(capture.midi_bytes('note_on', channel, 60, 127), bytes([on, 60, 127]))\nAssertionError: b'\\x80<\\x7f' != b'\\x90<\\x7f'\n\n======================================================================\nFAIL: test_recorder_keeps_bytes_timestamps_and_panic (test_showready_instrument.InstrumentTests.test_recorder_keeps_bytes_timestamps_and_panic)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/sdwin-w3/unit-mutation/tests/test_showready_instrument.py\", line 124, in test_recorder_keeps_bytes_timestamps_and_panic\n    self.assertEqual(rows[0]['bytes'], [159, 127, 99])\nAssertionError: Lists differ: [143, 127, 99] != [159, 127, 99]\n\nFirst differing element 0:\n143\n159\n\n- [143, 127, 99]\n?   ^^\n\n+ [159, 127, 99]\n?   ^^\n\n\n----------------------------------------------------------------------\nRan 8 tests in 0.414s\n\nFAILED (failures=2)\n"
+  },
+  {
+    "arm": "restored",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "/tmp/sdwin-w3/unit-mutation/tests",
+      "-p",
+      "test_showready_instrument.py"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "........\n----------------------------------------------------------------------\nRan 8 tests in 0.402s\n\nOK\n"
+  }
+]
