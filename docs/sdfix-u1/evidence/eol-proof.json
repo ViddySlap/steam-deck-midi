@@ -1,0 +1,167 @@
+{
+  "work": "/tmp/sdfix-u1/eol-0a1l_80r",
+  "pinned_sha256": "b49c9d1641ea3c72cec3a934b940ec1a493fcf55e4aae6356dac9dfa4650299f",
+  "rows": [
+    {
+      "case": "pristine",
+      "sha256": "b49c9d1641ea3c72cec3a934b940ec1a493fcf55e4aae6356dac9dfa4650299f",
+      "equals_pinned_bytes": true,
+      "crlf_count": 0
+    },
+    {
+      "case": "removed-rule",
+      "sha256": "2f44aee2046f89ee634edc38e65c4d65795c19971e5f7114c5c8dec542d04bea",
+      "equals_pinned_bytes": false,
+      "crlf_count": 154
+    },
+    {
+      "case": "restored",
+      "sha256": "b49c9d1641ea3c72cec3a934b940ec1a493fcf55e4aae6356dac9dfa4650299f",
+      "equals_pinned_bytes": true,
+      "crlf_count": 0
+    }
+  ],
+  "commands": [
+    [
+      "git",
+      "-c",
+      "core.hooksPath=/dev/null",
+      "-c",
+      "user.name=EOL control",
+      "-c",
+      "user.email=eol@example.invalid",
+      "init",
+      "-q",
+      "/tmp/sdfix-u1/eol-0a1l_80r/origin"
+    ],
+    [
+      "git",
+      "-c",
+      "core.hooksPath=/dev/null",
+      "-c",
+      "user.name=EOL control",
+      "-c",
+      "user.email=eol@example.invalid",
+      "-C",
+      "/tmp/sdfix-u1/eol-0a1l_80r/origin",
+      "add",
+      "tests"
+    ],
+    [
+      "git",
+      "-c",
+      "core.hooksPath=/dev/null",
+      "-c",
+      "user.name=EOL control",
+      "-c",
+      "user.email=eol@example.invalid",
+      "-C",
+      "/tmp/sdfix-u1/eol-0a1l_80r/origin",
+      "commit",
+      "-q",
+      "-F",
+      "/tmp/sdfix-u1/eol-0a1l_80r/commit.txt"
+    ],
+    [
+      "git",
+      "-c",
+      "core.hooksPath=/dev/null",
+      "-c",
+      "user.name=EOL control",
+      "-c",
+      "user.email=eol@example.invalid",
+      "-c",
+      "core.autocrlf=true",
+      "clone",
+      "--quiet",
+      "/tmp/sdfix-u1/eol-0a1l_80r/origin",
+      "/tmp/sdfix-u1/eol-0a1l_80r/pristine"
+    ],
+    [
+      "git",
+      "-c",
+      "core.hooksPath=/dev/null",
+      "-c",
+      "user.name=EOL control",
+      "-c",
+      "user.email=eol@example.invalid",
+      "-C",
+      "/tmp/sdfix-u1/eol-0a1l_80r/origin",
+      "add",
+      "tests"
+    ],
+    [
+      "git",
+      "-c",
+      "core.hooksPath=/dev/null",
+      "-c",
+      "user.name=EOL control",
+      "-c",
+      "user.email=eol@example.invalid",
+      "-C",
+      "/tmp/sdfix-u1/eol-0a1l_80r/origin",
+      "commit",
+      "-q",
+      "-F",
+      "/tmp/sdfix-u1/eol-0a1l_80r/commit.txt"
+    ],
+    [
+      "git",
+      "-c",
+      "core.hooksPath=/dev/null",
+      "-c",
+      "user.name=EOL control",
+      "-c",
+      "user.email=eol@example.invalid",
+      "-c",
+      "core.autocrlf=true",
+      "clone",
+      "--quiet",
+      "/tmp/sdfix-u1/eol-0a1l_80r/origin",
+      "/tmp/sdfix-u1/eol-0a1l_80r/removed-rule"
+    ],
+    [
+      "git",
+      "-c",
+      "core.hooksPath=/dev/null",
+      "-c",
+      "user.name=EOL control",
+      "-c",
+      "user.email=eol@example.invalid",
+      "-C",
+      "/tmp/sdfix-u1/eol-0a1l_80r/origin",
+      "add",
+      "tests"
+    ],
+    [
+      "git",
+      "-c",
+      "core.hooksPath=/dev/null",
+      "-c",
+      "user.name=EOL control",
+      "-c",
+      "user.email=eol@example.invalid",
+      "-C",
+      "/tmp/sdfix-u1/eol-0a1l_80r/origin",
+      "commit",
+      "-q",
+      "-F",
+      "/tmp/sdfix-u1/eol-0a1l_80r/commit.txt"
+    ],
+    [
+      "git",
+      "-c",
+      "core.hooksPath=/dev/null",
+      "-c",
+      "user.name=EOL control",
+      "-c",
+      "user.email=eol@example.invalid",
+      "-c",
+      "core.autocrlf=true",
+      "clone",
+      "--quiet",
+      "/tmp/sdfix-u1/eol-0a1l_80r/origin",
+      "/tmp/sdfix-u1/eol-0a1l_80r/restored"
+    ]
+  ]
+}

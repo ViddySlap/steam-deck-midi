@@ -138,7 +138,7 @@ async function measure(page, expected) {
       if(out)await page.screenshot({path:path.join(out,`${base}-open-btn_a.png`)});
       const nearest=await page.evaluate(()=>{
         const c=document.getElementById('controllerCard').getBoundingClientRect();
-        return [...document.querySelectorAll('.controller-label')].map(e=>{const b=e.getBoundingClientRect();return {id:e.dataset.control,d:Math.hypot(Math.max(c.left-b.right,b.left-c.right,0),Math.max(c.top-b.bottom,b.top-c.bottom,0))};}).sort((a,b)=>a.d-b.d||a.id.localeCompare(b.id))[0].id;
+        return [...document.querySelectorAll('.controller-label')].map(e=>{const b=e.getBoundingClientRect();return {id:e.dataset.control,textWidth:e.querySelector('span').getBoundingClientRect().width,d:Math.hypot(Math.max(c.left-b.right,b.left-c.right,0),Math.max(c.top-b.bottom,b.top-c.bottom,0))};}).sort((a,b)=>a.d-b.d||b.textWidth-a.textWidth||a.id.localeCompare(b.id))[0].id;
       });
       await open(nearest);assertGeometry(`${base}.open-nearest-${nearest}`,await measure(page,expected));
       for(const c of expected) {

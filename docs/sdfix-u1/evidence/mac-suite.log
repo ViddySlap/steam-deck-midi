@@ -11,8 +11,8 @@ INFO action=BTN_B state=down seq=2
 INFO released note mapping for BTN_A
 INFO released CC mapping for BTN_B
 .INFO listening on udp://127.0.0.1:0
-INFO listening for MIDI feedback: name=<Mock name='mock.port_name' id='4345175824'> index=<Mock name='mock.port_index' id='4345175920'>
-INFO listening for MIDI clock: name=<Mock name='mock.port_name' id='4344631168'> index=<Mock name='mock.port_index' id='4342727264'>
+INFO listening for MIDI feedback: name=<Mock name='mock.port_name' id='4417151696'> index=<Mock name='mock.port_index' id='4414264896'>
+INFO listening for MIDI clock: name=<Mock name='mock.port_name' id='4407138240'> index=<Mock name='mock.port_index' id='4416995936'>
 ...WARNING bridge exited unexpectedly; stopping tray
 .INFO Bumper Blast: engage at amount=0.394
 .INFO Bumper Blast: engage at amount=0.394
@@ -171,8 +171,8 @@ ResourceWarning: Enable tracemalloc to get the object allocation traceback
 .INFO auto-merging factory default for engine type 'osc_sync' (not in engines/)
 INFO loaded engine Audio Engine (type=audio_opacity)
 INFO loaded engine OSC Sync (type=osc_sync)
-.INFO migrated legacy engine stanza 'audio_opacity' -> /tmp/sdfix-u1/tmp1tbr4x3s/engines/audio_opacity.json
-INFO migrated legacy engine stanza 'osc_sync' -> /tmp/sdfix-u1/tmp1tbr4x3s/engines/osc_sync.json
+.INFO migrated legacy engine stanza 'audio_opacity' -> /tmp/sdfix-u1/tmpj97mai9p/engines/audio_opacity.json
+INFO migrated legacy engine stanza 'osc_sync' -> /tmp/sdfix-u1/tmpj97mai9p/engines/osc_sync.json
 INFO archived engines.json -> engines.json.migrated (migrated=2, skipped=0)
 INFO loaded engine My Audio (type=audio_opacity)
 INFO loaded engine OSC Sync (type=osc_sync)
@@ -180,20 +180,20 @@ INFO loaded engine OSC Sync (type=osc_sync)
 INFO auto-merging factory default for engine type 'osc_sync' (not in engines/)
 INFO loaded engine Audio Engine (type=audio_opacity)
 INFO loaded engine OSC Sync (type=osc_sync)
-.INFO migrated legacy engine stanza 'audio_opacity' -> /tmp/sdfix-u1/tmpxrg_tzma/engines/audio_opacity.json
+.INFO migrated legacy engine stanza 'audio_opacity' -> /tmp/sdfix-u1/tmpe61t6co9/engines/audio_opacity.json
 INFO archived engines.json -> engines.json.migrated (migrated=1, skipped=0)
 INFO loaded engine Audio Engine (type=audio_opacity)
 .INFO legacy stanza for type 'audio_opacity' already in engines/; skipping migration
 INFO archived engines.json -> engines.json.migrated (migrated=0, skipped=1)
 INFO loaded engine Recent Custom (type=audio_opacity)
-.INFO no engines config at /tmp/sdfix-u1/tmpve1lbr21/does-not-exist; engine registry is empty
+.INFO no engines config at /tmp/sdfix-u1/tmpyuepolse/does-not-exist; engine registry is empty
 .INFO loaded engine Audio Engine (type=audio_opacity)
 .WARNING duplicate engine type 'audio_opacity' in audio_opacity.json and z_audio_variant.json; keeping audio_opacity.json
 INFO loaded engine Alpha (type=audio_opacity)
 .INFO loaded engine Custom Audio (type=audio_opacity)
 .INFO loaded engine Audio Engine (type=audio_opacity)
 INFO engine OSC Sync is disabled in config; skipping
-.ERROR failed to parse OSC preset /tmp/sdfix-u1/tmpz76o8nd9.xml: not well-formed (invalid token): line 1, column 12
+.ERROR failed to parse OSC preset /tmp/sdfix-u1/tmpdqggy4ta.xml: not well-formed (invalid token): line 1, column 12
 ..INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
 .INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
 .INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
@@ -206,7 +206,7 @@ INFO engine OSC Sync is disabled in config; skipping
 INFO osc_sync: sync pass complete in 0.00s; 0 wiggled, 0 skipped
 .INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
 .INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
-.INFO osc_sync: parsed 1 wigglable targets from /tmp/sdfix-u1/tmphl2hullt.xml
+.INFO osc_sync: parsed 1 wigglable targets from /tmp/sdfix-u1/tmp9s2k81pf.xml
 .INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
 INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
 .INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
@@ -348,14 +348,14 @@ INFO NestDrop: x re-press within fade window; not advancing
 INFO NestDrop: x re-press within fade window; not advancing
 .INFO NestDrop: x advance (/Queue/Queue1 -> /Controls/Deck1/btSpace)
 ....WARNING osc_relay: duplicate destination 10.10.10.5:7002 ignored
-........INFO osc_relay: listening on udp://127.0.0.1:62441 -> 127.0.0.1:52636
+........INFO osc_relay: listening on udp://127.0.0.1:63018 -> 127.0.0.1:61048
 INFO osc_relay: first datagram received (1024 bytes); Resolume -> relay path is live
-.INFO osc_relay: listening on udp://127.0.0.1:59267 -> 127.0.0.1:51165, 127.0.0.1:53022
+.INFO osc_relay: listening on udp://127.0.0.1:55619 -> 127.0.0.1:62539, 127.0.0.1:60409
 INFO osc_relay: first datagram received (44 bytes); Resolume -> relay path is live
-..INFO osc_relay: listening on udp://127.0.0.1:60584 -> 127.0.0.1:62624, 127.0.0.1:60366
+..INFO osc_relay: listening on udp://127.0.0.1:54677 -> 127.0.0.1:64207, 127.0.0.1:58494
 INFO osc_relay: first datagram received (8 bytes); Resolume -> relay path is live
-.INFO osc_relay: listening on udp://127.0.0.1:51447 -> 127.0.0.1:56387
-.INFO osc_relay: listening on udp://127.0.0.1:58418 -> 127.0.0.1:57909
+.INFO osc_relay: listening on udp://127.0.0.1:60501 -> 127.0.0.1:50187
+.INFO osc_relay: listening on udp://127.0.0.1:60941 -> 127.0.0.1:62396
 INFO osc_relay: first datagram received (4 bytes); Resolume -> relay path is live
 .INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
 .INFO osc_sync: sync pass complete in 0.00s; 3 wiggled, 0 skipped
@@ -370,8 +370,8 @@ INFO osc_sync: sync pass complete in 0.00s; 0 wiggled, 0 skipped
 .WARNING osc_sync: no targets; sync pass is a no-op
 INFO osc_sync: sync pass complete in 0.00s; 0 wiggled, 0 skipped
 .INFO osc_sync: sync pass complete in 0.00s; 2 wiggled, 0 skipped
-.INFO preset watch changed: /tmp/sdfix-u1/tmpt8g0s8l6/presets/Show.json
-.INFO preset watch changed: /tmp/sdfix-u1/tmpmvf0bkp8/presets/Show.json
+.INFO preset watch changed: /tmp/sdfix-u1/tmpcjos1b58/presets/Show.json
+.INFO preset watch changed: /tmp/sdfix-u1/tmp3l3wklzq/presets/Show.json
 ERROR preset watch poll failed; retrying
 Traceback (most recent call last):
   File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/preset_watch.py", line 74, in run
@@ -416,19 +416,19 @@ Traceback (most recent call last):
   File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/mock.py", line 1202, in _execute_mock_call
     raise result
 RuntimeError: scan failed
-INFO preset watch changed: /tmp/sdfix-u1/tmpvhoyjte5/presets/Show.json
-.INFO preset watch changed: /tmp/sdfix-u1/tmpkby_p3cf/presets/Show.json
-INFO preset watch changed: /tmp/sdfix-u1/tmpkby_p3cf/presets/Show.json
-.INFO preset watch changed: /tmp/sdfix-u1/tmp5_1kodhh/presets/Show.json
-INFO preset watch changed: /tmp/sdfix-u1/tmp5_1kodhh/presets/Other.json
-INFO preset watch changed: /tmp/sdfix-u1/tmp5_1kodhh/presets/Other.json
-INFO preset watch changed: /tmp/sdfix-u1/tmp5_1kodhh/presets/.active
-INFO preset watch changed: /tmp/sdfix-u1/tmp5_1kodhh/bridge.local.json
+INFO preset watch changed: /tmp/sdfix-u1/tmp3lx1e46c/presets/Show.json
+.INFO preset watch changed: /tmp/sdfix-u1/tmpdg_hobk_/presets/Show.json
+INFO preset watch changed: /tmp/sdfix-u1/tmpdg_hobk_/presets/Show.json
+.INFO preset watch changed: /tmp/sdfix-u1/tmp3rxsdduf/presets/Show.json
+INFO preset watch changed: /tmp/sdfix-u1/tmp3rxsdduf/presets/Other.json
+INFO preset watch changed: /tmp/sdfix-u1/tmp3rxsdduf/presets/Other.json
+INFO preset watch changed: /tmp/sdfix-u1/tmp3rxsdduf/presets/.active
+INFO preset watch changed: /tmp/sdfix-u1/tmp3rxsdduf/bridge.local.json
 .INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
 INFO selected MIDI output port: name=dry-run index=n/a
 INFO mapping UI available at http://127.0.0.1:7723
-INFO preset watch changed: /tmp/sdfix-u1/tmpha4vqgt7/presets/.active
-INFO preset watch changed: /tmp/sdfix-u1/tmpha4vqgt7/presets/Other.json
+INFO preset watch changed: /tmp/sdfix-u1/tmpigi3i7wq/presets/.active
+INFO preset watch changed: /tmp/sdfix-u1/tmpigi3i7wq/presets/Other.json
 INFO listening on udp://0.0.0.0:45123
 INFO hot-reloaded mappings: 1 actions
 INFO action=BTN_A state=down seq=2
@@ -438,28 +438,28 @@ INFO shutdown requested
 .INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
 INFO selected MIDI output port: name=dry-run index=n/a
 INFO mapping UI available at http://127.0.0.1:7723
-INFO preset watch changed: /tmp/sdfix-u1/tmpn0b3w_pc/bridge.local.json
+INFO preset watch changed: /tmp/sdfix-u1/tmpw3j2mdcz/bridge.local.json
 INFO listening on udp://0.0.0.0:45123
 INFO hot-reloaded mappings: 1 actions
 INFO action=BTN_A state=down seq=2
 INFO released note mapping for BTN_A
 INFO action=BTN_A state=up seq=3
 INFO shutdown requested
-INFO preset watch changed: /tmp/sdfix-u1/tmpn0b3w_pc/bridge.local.json
+INFO preset watch changed: /tmp/sdfix-u1/tmpw3j2mdcz/bridge.local.json
 INFO listening on udp://0.0.0.0:45123
-ERROR hot-reload failed: cannot read bridge settings /tmp/sdfix-u1/tmpn0b3w_pc/bridge.local.json: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+ERROR hot-reload failed: cannot read bridge settings /tmp/sdfix-u1/tmpw3j2mdcz/bridge.local.json: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
 INFO action=BTN_A state=down seq=4
 INFO released note mapping for BTN_A
 INFO action=BTN_A state=up seq=5
 INFO shutdown requested
-INFO preset watch changed: /tmp/sdfix-u1/tmpn0b3w_pc/bridge.local.json
+INFO preset watch changed: /tmp/sdfix-u1/tmpw3j2mdcz/bridge.local.json
 INFO listening on udp://0.0.0.0:45123
 ERROR hot-reload failed: preset section 'missing' is not available; available sections: macbook, windows
 INFO action=BTN_A state=down seq=6
 INFO released note mapping for BTN_A
 INFO action=BTN_A state=up seq=7
 INFO shutdown requested
-INFO preset watch changed: /tmp/sdfix-u1/tmpn0b3w_pc/bridge.local.json
+INFO preset watch changed: /tmp/sdfix-u1/tmpw3j2mdcz/bridge.local.json
 INFO listening on udp://0.0.0.0:45123
 INFO hot-reloaded mappings: 1 actions
 INFO action=BTN_A state=down seq=8
@@ -478,14 +478,14 @@ INFO shutdown requested
 .INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
 INFO selected MIDI output port: name=dry-run index=n/a
 INFO mapping UI available at http://127.0.0.1:7723
-INFO preset watch changed: /tmp/sdfix-u1/tmp6g4bghs6/presets/default.json
+INFO preset watch changed: /tmp/sdfix-u1/tmpacud7z_1/presets/default.json
 INFO listening on udp://0.0.0.0:45123
-ERROR hot-reload failed: mapping file is not valid JSON: /tmp/sdfix-u1/tmp6g4bghs6/presets/default.json
+ERROR hot-reload failed: mapping file is not valid JSON: /tmp/sdfix-u1/tmpacud7z_1/presets/default.json
 INFO action=BTN_A state=down seq=2
 INFO released note mapping for BTN_A
 INFO action=BTN_A state=up seq=3
 INFO shutdown requested
-INFO preset watch changed: /tmp/sdfix-u1/tmp6g4bghs6/presets/default.json
+INFO preset watch changed: /tmp/sdfix-u1/tmpacud7z_1/presets/default.json
 INFO listening on udp://0.0.0.0:45123
 INFO hot-reloaded mappings: 1 actions
 INFO action=BTN_A state=down seq=4
@@ -494,7 +494,7 @@ INFO action=BTN_A state=up seq=5
 INFO shutdown requested
 .INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
 INFO selected MIDI output port: name=dry-run index=n/a
-INFO preset watch changed: /tmp/sdfix-u1/tmp6ev_lc4k/presets/default.json
+INFO preset watch changed: /tmp/sdfix-u1/tmphnx2oyvx/presets/default.json
 INFO listening on udp://0.0.0.0:45123
 INFO hot-reloaded mappings: 1 actions
 INFO action=BTN_A state=down seq=2
@@ -510,8 +510,8 @@ INFO action=BTN_A state=down seq=2
 INFO released note mapping for BTN_A
 INFO action=BTN_A state=up seq=3
 INFO shutdown requested
-INFO preset watch changed: /tmp/sdfix-u1/tmp2qxyz7f9/presets/default.json
-INFO preset watch changed: /tmp/sdfix-u1/tmp2qxyz7f9/presets/default.json
+INFO preset watch changed: /tmp/sdfix-u1/tmpk4r_jo46/presets/default.json
+INFO preset watch changed: /tmp/sdfix-u1/tmpk4r_jo46/presets/default.json
 INFO listening on udp://0.0.0.0:45123
 INFO hot-reloaded mappings: 1 actions
 INFO action=BTN_A state=down seq=4
@@ -530,14 +530,15 @@ INFO shutdown requested
 .INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
 INFO selected MIDI output port: name=dry-run index=n/a
 INFO mapping UI available at http://127.0.0.1:7723
-INFO preset watch changed: /tmp/sdfix-u1/tmp0fn_d2sx/presets/default.json
+INFO preset watch changed: /tmp/sdfix-u1/tmp0taoqcg7/presets/default.json
+INFO preset watch changed: /tmp/sdfix-u1/tmp0taoqcg7/presets/default.json
 INFO listening on udp://0.0.0.0:45123
 INFO hot-reloaded mappings: 1 actions
 INFO action=BTN_A state=down seq=2
 INFO released note mapping for BTN_A
 INFO action=BTN_A state=up seq=3
 INFO shutdown requested
-...........................................................WARNING ptz_visca: VISCA socket bind to 203.0.113.255 failed (camera NIC absent?); sender unbound — engine loads but sends nothing
+...........................................................WARNING ptz_visca: VISCA socket bind to 203.0.113.255 failed (camera NIC absent?); sender unbound \u2014 engine loads but sends nothing
 ........................................INFO action=R_STICK_RIGHT state=down seq=1
 INFO released note mapping for R_STICK_RIGHT
 INFO action=R_STICK_RIGHT state=up seq=2
@@ -856,7 +857,7 @@ Traceback (most recent call last):
   File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_ui_server.py", line 584, in refresh
     raise RuntimeError("simulated refresh failure")
 RuntimeError: simulated refresh failure
-.............................................INFO created bridge settings /tmp/sdfix-u1/tmpqmsxy65a/config/bridge.local.json with preset_section=macbook
+.............................................INFO created bridge settings /tmp/sdfix-u1/tmp1d8pd6n0/config/bridge.local.json with preset_section=macbook
 ..........INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
 INFO selected MIDI output port: name=resolved output index=2
 INFO action=BTN_A state=down seq=1
@@ -890,7 +891,7 @@ INFO selected MIDI output port: name=resolved output index=2
 INFO action=BTN_A state=down seq=1
 ..............................
 ----------------------------------------------------------------------
-Ran 866 tests in 13.348s
+Ran 866 tests in 13.297s
 
 OK (skipped=2)
 sent action=BTN_A state=down seq=17

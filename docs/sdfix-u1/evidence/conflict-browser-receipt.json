@@ -1,0 +1,40 @@
+{
+  "argv": [
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+    "-B",
+    "-u",
+    "-m",
+    "windows.win_recv",
+    "--listen",
+    "127.0.0.1:47841",
+    "--map",
+    "config/windows_midi_map.json",
+    "--preset-section",
+    "windows",
+    "--dry-run",
+    "--no-engines",
+    "--no-pulse",
+    "--no-osc-relay",
+    "--ui-port",
+    "17841"
+  ],
+  "pid": 99041,
+  "command": [
+    "node",
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdfix-u1/browser_conflicts.cjs",
+    "http://127.0.0.1:17841",
+    "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+    "/private/tmp/sdfix-u1/geometry-4ajwqjf_/tree",
+    "/tmp/sdfix-u1/conflict-browser"
+  ],
+  "settings": {
+    "feedback_port": null,
+    "listen": "127.0.0.1:47841",
+    "map_path": "/private/tmp/sdfix-u1/geometry-4ajwqjf_/tree/config/presets/EDM Show.json",
+    "midi_port": "DECK_IN",
+    "preset_section": "windows",
+    "pulse_port": null,
+    "ui_port": 17841
+  },
+  "pid_gone": true
+}

@@ -30,16 +30,16 @@ the card. The header's existing wrapping remains with sdauto (F4).
 Command G (exit 0):
 
 ```sh
-scripts/showready/ui_geometry.sh --chromium '/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell' --scratch /tmp/sdfix-u1 --single-process --mutations
+scripts/showready/ui_geometry.sh --chromium '/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell' --scratch /tmp/sdfix-u1/nearest --single-process --mutations
 ```
 
 The standalone tests/ui_controller_geometry.cjs boots nothing. G copies tracked
 working files plus verified fixtures to scratch, checks TCP/UDP ports free,
 boots a dry-run bridge with engines/pulse/OSC relay off, then terminates/waits
-and proves its PID absent. G used TCP 17841 / UDP 47841, bridge PID 78596;
+and proves its PID absent. G used TCP 17841 / UDP 47841, bridge PID 3876;
 os.kill(pid, 0) raised ProcessLookupError. Effective settings and every child
 command/exit are in evidence/geometry-receipt.json. Scratch:
-/tmp/sdfix-u1/geometry-4ajwqjf_. No run-root preset was served or written.
+/tmp/sdfix-u1/nearest/geometry-_wb64bna. No run-root preset was served or written.
 
 Default Chromium launch was tried first, one browser at a time. It failed:
 `FATAL:base/apple/mach_port_rendezvous_mac.cc:155 Check failed: kr == KERN_SUCCESS.
@@ -61,17 +61,17 @@ the two required closed-card sizes). Full measurements: evidence/pristine-geomet
 | 1024x768.open-nearest-gyro | 23 | 0 | 0 | 23/23 | 0 | 0 | PASS |
 | 1366x768.closed | 23 | 0 | 0 | 23/23 | 0 | 0 | PASS |
 | 1366x768.open-btn_a | 23 | 0 | 0 | 23/23 | 0 | 0 | PASS |
-| 1366x768.open-nearest-btn_a | 23 | 0 | 0 | 23/23 | 0 | 0 | PASS |
+| 1366x768.open-nearest-right_pad | 23 | 0 | 0 | 23/23 | 0 | 0 | PASS |
 | 1440x900.closed | 23 | 0 | 0 | 23/23 | 0 | 0 | PASS |
 | 1440x900.open-btn_a | 23 | 0 | 0 | 23/23 | 0 | 0 | PASS |
-| 1440x900.open-nearest-btn_a | 23 | 0 | 0 | 23/23 | 0 | 0 | PASS |
+| 1440x900.open-nearest-right_pad | 23 | 0 | 0 | 23/23 | 0 | 0 | PASS |
 | 1920x1080.closed | 23 | 0 | 0 | 23/23 | 0 | 0 | PASS |
 | 1920x1080.open-btn_a | 23 | 0 | 0 | 23/23 | 0 | 0 | PASS |
-| 1920x1080.open-nearest-btn_a | 23 | 0 | 0 | 23/23 | 0 | 0 | PASS |
+| 1920x1080.open-nearest-right_pad | 23 | 0 | 0 | 23/23 | 0 | 0 | PASS |
 
 G additionally clicks all 23 labels at each viewport and compares the title
 and all drill-in Action IDs to the owned map: 92/92 pass. Nearest-card controls
-are selected by computed rectangle distance, with an ID tie-break. PNGs from
+are selected by computed rectangle distance, with longest-label text width breaking ties (then ID). PNGs from
 this run are in screenshots/; all required output PNGs were opened and read.
 Prior gate front-door, geometry and drill-in PNGs were also opened before repair.
 
@@ -125,6 +125,55 @@ conflict-mutations.json and /tmp/sdfix-u1/conflict-mutations/.
 The existing skips cover the anticipated global-color channel-CC remap and
 PowerShell execution without pwsh. Test-induced error log lines exercise
 negative controls; the suite has no failures/errors. No new skip was added.
+
+## Additional executed controls
+
+The initial geometry run selected A again for the nearest-card test at wide
+sizes because every right-bank label ties in rectangle distance. The final
+G run above breaks ties by longest label text, then ID: Right trackpad at the
+three wide viewports and Gyro at 1024x768. It exercises a distinct second card.
+Every mutation and restored full matrix was repeated with this final checker.
+
+Before-repair control command (exit 1): G with --scratch /tmp/sdfix-u1,
+without --mutations, plus --revision d67a13439028cfc983b34636e82d3de7282eab2a.
+The same detector produced 363/1048 PASS. It found the named original label
+pairs at 1024, crossings, glyph intersections and covered labels at 1440.
+The old marker-based artwork also fails the new explicit-head inventory;
+that schema difference is recorded separately from the observed layout
+failures in evidence/base-regression.json. Bridge PID 91879 was proved gone.
+This control used the checker before the nearest-card tie-break refinement.
+
+The wrapper's default launch (same Chromium path, without --single-process,
+--scratch /tmp/sdfix-u1) repeated the Permission denied (1100) / SIGTRAP error,
+exit 1, browser PID 91703. Bridge PID 91670 was proved gone. Exact output and
+receipt: evidence/default-launch.log and default-launch-receipt.json.
+
+`TMPDIR=/tmp/sdfix-u1 .venv/bin/python -B docs/sdfix-u1/run_browser_conflicts.py /tmp/sdfix-u1/geometry-4ajwqjf_/tree`
+exited 0, seven real-browser assertions PASS. After Cancel the message is
+uncovered at its centre with contrast 9.5903:1, and the preset bytes are
+unchanged. SELECT remains marked on navigation; successful forced Save clears
+the marks and changes only START.cc from 78 to 79 on the scratch disk copy.
+Exact underlying browser command, arguments and PID proof are in
+evidence/conflict-browser-receipt.json; bridge PID 99041 gone. The PNG
+screenshots/conflict-after-cancel.png was opened and read.
+
+The first conflict-browser run had a RIG ERROR: it compared JSON key order
+instead of parsed values. The recursive parsed diff was exactly START.cc
+78 -> 79. Changed the check to isDeepStrictEqual, restored the scratch fixture
+bytes, and reran the entire proof. Initial log is retained as
+conflict-browser-RIGERROR.log (its bridge PID 97261 also gone).
+
+`tests/.gitattributes` pins the geometry check to LF for Windows checkouts.
+`git check-attr eol -- tests/ui_controller_geometry.cjs` returns lf.
+`.venv/bin/python -B docs/sdfix-u1/check_checkout_eol.py` creates disposable
+Git clones with core.autocrlf=true: pinned bytes GREEN; removing the rule gives
+154 CRLFs and a different digest (RED); restoring gives pinned bytes GREEN.
+Exact commands and hashes: evidence/eol-proof.json. No laptop was touched.
+
+The final Mac suite ran 866 tests in 13.297s, OK (skipped=2), exit 0, with the
+suite command above. evidence/mac-suite-source.json hashes the untouched
+scratch log; the committed log renders the pre-existing test warning's
+non-ASCII dash as an ASCII Unicode escape to meet the report's ASCII rule.
 
 ## Bar 1 and handoff
 

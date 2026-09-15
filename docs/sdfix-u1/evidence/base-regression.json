@@ -1,0 +1,1141 @@
+{
+  "revision": "d67a13439028cfc983b34636e82d3de7282eab2a",
+  "passed": 363,
+  "total": 1048,
+  "failure_classes": {
+    "missing_explicit_heads": [
+      {
+        "name": "1024x768.closed.23-arrowheads",
+        "pass": false,
+        "detail": []
+      },
+      {
+        "name": "1024x768.open-btn_a.23-arrowheads",
+        "pass": false,
+        "detail": []
+      },
+      {
+        "name": "1024x768.open-nearest-gyro.23-arrowheads",
+        "pass": false,
+        "detail": []
+      },
+      {
+        "name": "1366x768.closed.23-arrowheads",
+        "pass": false,
+        "detail": []
+      },
+      {
+        "name": "1366x768.open-btn_a.23-arrowheads",
+        "pass": false,
+        "detail": []
+      },
+      {
+        "name": "1366x768.open-nearest-btn_a.23-arrowheads",
+        "pass": false,
+        "detail": []
+      },
+      {
+        "name": "1440x900.closed.23-arrowheads",
+        "pass": false,
+        "detail": []
+      },
+      {
+        "name": "1440x900.open-btn_a.23-arrowheads",
+        "pass": false,
+        "detail": []
+      },
+      {
+        "name": "1440x900.open-nearest-btn_a.23-arrowheads",
+        "pass": false,
+        "detail": []
+      },
+      {
+        "name": "1920x1080.closed.23-arrowheads",
+        "pass": false,
+        "detail": []
+      },
+      {
+        "name": "1920x1080.open-btn_a.23-arrowheads",
+        "pass": false,
+        "detail": []
+      },
+      {
+        "name": "1920x1080.open-nearest-btn_a.23-arrowheads",
+        "pass": false,
+        "detail": []
+      }
+    ],
+    "named_layout_defects": [
+      {
+        "name": "1024x768.closed.label-overlaps",
+        "pass": false,
+        "detail": [
+          [
+            "dpad_right",
+            "left_pad"
+          ],
+          [
+            "right_stick",
+            "right_pad"
+          ]
+        ]
+      },
+      {
+        "name": "1024x768.closed.leader-intersections",
+        "pass": false,
+        "detail": [
+          [
+            "btn_b",
+            "btn_x"
+          ],
+          [
+            "dpad_down",
+            "dpad_right"
+          ]
+        ]
+      },
+      {
+        "name": "1024x768.closed.glyph-clear.btn_a",
+        "pass": false,
+        "detail": [
+          "A"
+        ]
+      },
+      {
+        "name": "1024x768.closed.glyph-clear.btn_b",
+        "pass": false,
+        "detail": [
+          "B"
+        ]
+      },
+      {
+        "name": "1024x768.closed.glyph-clear.btn_x",
+        "pass": false,
+        "detail": [
+          "B",
+          "X"
+        ]
+      },
+      {
+        "name": "1024x768.closed.glyph-clear.btn_y",
+        "pass": false,
+        "detail": [
+          "Y"
+        ]
+      },
+      {
+        "name": "1024x768.closed.glyph-clear.left_stick",
+        "pass": false,
+        "detail": [
+          "L3"
+        ]
+      },
+      {
+        "name": "1024x768.closed.glyph-clear.right_stick",
+        "pass": false,
+        "detail": [
+          "A",
+          "R3"
+        ]
+      },
+      {
+        "name": "1024x768.closed.glyph-clear.gyro",
+        "pass": false,
+        "detail": [
+          "GYRO"
+        ]
+      },
+      {
+        "name": "1024x768.open-btn_a.label-overlaps",
+        "pass": false,
+        "detail": [
+          [
+            "dpad_right",
+            "left_pad"
+          ],
+          [
+            "right_stick",
+            "right_pad"
+          ]
+        ]
+      },
+      {
+        "name": "1024x768.open-btn_a.leader-intersections",
+        "pass": false,
+        "detail": [
+          [
+            "btn_b",
+            "btn_x"
+          ],
+          [
+            "dpad_down",
+            "dpad_right"
+          ]
+        ]
+      },
+      {
+        "name": "1024x768.open-btn_a.glyph-clear.btn_a",
+        "pass": false,
+        "detail": [
+          "A"
+        ]
+      },
+      {
+        "name": "1024x768.open-btn_a.glyph-clear.btn_b",
+        "pass": false,
+        "detail": [
+          "B"
+        ]
+      },
+      {
+        "name": "1024x768.open-btn_a.glyph-clear.btn_x",
+        "pass": false,
+        "detail": [
+          "B",
+          "X"
+        ]
+      },
+      {
+        "name": "1024x768.open-btn_a.glyph-clear.btn_y",
+        "pass": false,
+        "detail": [
+          "Y"
+        ]
+      },
+      {
+        "name": "1024x768.open-btn_a.glyph-clear.left_stick",
+        "pass": false,
+        "detail": [
+          "L3"
+        ]
+      },
+      {
+        "name": "1024x768.open-btn_a.glyph-clear.right_stick",
+        "pass": false,
+        "detail": [
+          "A",
+          "R3"
+        ]
+      },
+      {
+        "name": "1024x768.open-btn_a.glyph-clear.gyro",
+        "pass": false,
+        "detail": [
+          "GYRO"
+        ]
+      },
+      {
+        "name": "1024x768.open-btn_a.labels-topmost",
+        "pass": false,
+        "detail": [
+          {
+            "id": "btn_b",
+            "by": "tabs"
+          },
+          {
+            "id": "btn_x",
+            "by": "hdr-actions"
+          },
+          {
+            "id": "btn_y",
+            "by": "sectionSelect"
+          },
+          {
+            "id": "dpad_up",
+            "by": "H1"
+          },
+          {
+            "id": "dpad_left",
+            "by": "tab active"
+          },
+          {
+            "id": "left_stick",
+            "by": "H1"
+          },
+          {
+            "id": "l1"
+          },
+          {
+            "id": "r1"
+          },
+          {
+            "id": "l2"
+          },
+          {
+            "id": "r2"
+          },
+          {
+            "id": "start"
+          },
+          {
+            "id": "select"
+          }
+        ]
+      },
+      {
+        "name": "1024x768.open-nearest-gyro.label-overlaps",
+        "pass": false,
+        "detail": [
+          [
+            "dpad_right",
+            "left_pad"
+          ],
+          [
+            "right_stick",
+            "right_pad"
+          ]
+        ]
+      },
+      {
+        "name": "1024x768.open-nearest-gyro.leader-intersections",
+        "pass": false,
+        "detail": [
+          [
+            "btn_b",
+            "btn_x"
+          ],
+          [
+            "dpad_down",
+            "dpad_right"
+          ]
+        ]
+      },
+      {
+        "name": "1024x768.open-nearest-gyro.glyph-clear.btn_a",
+        "pass": false,
+        "detail": [
+          "A"
+        ]
+      },
+      {
+        "name": "1024x768.open-nearest-gyro.glyph-clear.btn_b",
+        "pass": false,
+        "detail": [
+          "B"
+        ]
+      },
+      {
+        "name": "1024x768.open-nearest-gyro.glyph-clear.btn_x",
+        "pass": false,
+        "detail": [
+          "B",
+          "X"
+        ]
+      },
+      {
+        "name": "1024x768.open-nearest-gyro.glyph-clear.btn_y",
+        "pass": false,
+        "detail": [
+          "Y"
+        ]
+      },
+      {
+        "name": "1024x768.open-nearest-gyro.glyph-clear.left_stick",
+        "pass": false,
+        "detail": [
+          "L3"
+        ]
+      },
+      {
+        "name": "1024x768.open-nearest-gyro.glyph-clear.right_stick",
+        "pass": false,
+        "detail": [
+          "A",
+          "R3"
+        ]
+      },
+      {
+        "name": "1024x768.open-nearest-gyro.glyph-clear.gyro",
+        "pass": false,
+        "detail": [
+          "GYRO"
+        ]
+      },
+      {
+        "name": "1024x768.open-nearest-gyro.labels-topmost",
+        "pass": false,
+        "detail": [
+          {
+            "id": "btn_b",
+            "by": "tabs"
+          },
+          {
+            "id": "btn_x",
+            "by": "hdr-actions"
+          },
+          {
+            "id": "btn_y",
+            "by": "sectionSelect"
+          },
+          {
+            "id": "dpad_up",
+            "by": "H1"
+          },
+          {
+            "id": "dpad_left",
+            "by": "tab active"
+          },
+          {
+            "id": "left_stick",
+            "by": "H1"
+          },
+          {
+            "id": "l1"
+          },
+          {
+            "id": "r1"
+          },
+          {
+            "id": "l2"
+          },
+          {
+            "id": "r2"
+          },
+          {
+            "id": "start"
+          },
+          {
+            "id": "select"
+          }
+        ]
+      },
+      {
+        "name": "1366x768.closed.leader-intersections",
+        "pass": false,
+        "detail": [
+          [
+            "btn_b",
+            "btn_x"
+          ],
+          [
+            "dpad_down",
+            "dpad_right"
+          ]
+        ]
+      },
+      {
+        "name": "1366x768.closed.glyph-clear.btn_a",
+        "pass": false,
+        "detail": [
+          "A"
+        ]
+      },
+      {
+        "name": "1366x768.closed.glyph-clear.btn_b",
+        "pass": false,
+        "detail": [
+          "B"
+        ]
+      },
+      {
+        "name": "1366x768.closed.glyph-clear.btn_x",
+        "pass": false,
+        "detail": [
+          "B",
+          "X"
+        ]
+      },
+      {
+        "name": "1366x768.closed.glyph-clear.btn_y",
+        "pass": false,
+        "detail": [
+          "Y"
+        ]
+      },
+      {
+        "name": "1366x768.closed.glyph-clear.left_stick",
+        "pass": false,
+        "detail": [
+          "L3"
+        ]
+      },
+      {
+        "name": "1366x768.closed.glyph-clear.right_stick",
+        "pass": false,
+        "detail": [
+          "A",
+          "R3"
+        ]
+      },
+      {
+        "name": "1366x768.closed.glyph-clear.gyro",
+        "pass": false,
+        "detail": [
+          "GYRO"
+        ]
+      },
+      {
+        "name": "1366x768.closed.labels-topmost",
+        "pass": false,
+        "detail": [
+          {
+            "id": "l4"
+          },
+          {
+            "id": "l5"
+          },
+          {
+            "id": "r4"
+          },
+          {
+            "id": "r5"
+          },
+          {
+            "id": "gyro"
+          }
+        ]
+      },
+      {
+        "name": "1366x768.open-btn_a.label-overlaps",
+        "pass": false,
+        "detail": [
+          [
+            "dpad_right",
+            "left_pad"
+          ],
+          [
+            "right_stick",
+            "right_pad"
+          ]
+        ]
+      },
+      {
+        "name": "1366x768.open-btn_a.leader-intersections",
+        "pass": false,
+        "detail": [
+          [
+            "btn_b",
+            "btn_x"
+          ],
+          [
+            "dpad_down",
+            "dpad_right"
+          ]
+        ]
+      },
+      {
+        "name": "1366x768.open-btn_a.glyph-clear.btn_a",
+        "pass": false,
+        "detail": [
+          "A"
+        ]
+      },
+      {
+        "name": "1366x768.open-btn_a.glyph-clear.btn_b",
+        "pass": false,
+        "detail": [
+          "B"
+        ]
+      },
+      {
+        "name": "1366x768.open-btn_a.glyph-clear.btn_x",
+        "pass": false,
+        "detail": [
+          "B",
+          "X"
+        ]
+      },
+      {
+        "name": "1366x768.open-btn_a.glyph-clear.btn_y",
+        "pass": false,
+        "detail": [
+          "Y"
+        ]
+      },
+      {
+        "name": "1366x768.open-btn_a.glyph-clear.left_stick",
+        "pass": false,
+        "detail": [
+          "L3"
+        ]
+      },
+      {
+        "name": "1366x768.open-btn_a.glyph-clear.right_stick",
+        "pass": false,
+        "detail": [
+          "A",
+          "R3"
+        ]
+      },
+      {
+        "name": "1366x768.open-btn_a.glyph-clear.gyro",
+        "pass": false,
+        "detail": [
+          "GYRO"
+        ]
+      },
+      {
+        "name": "1366x768.open-nearest-btn_a.label-overlaps",
+        "pass": false,
+        "detail": [
+          [
+            "dpad_right",
+            "left_pad"
+          ],
+          [
+            "right_stick",
+            "right_pad"
+          ]
+        ]
+      },
+      {
+        "name": "1366x768.open-nearest-btn_a.leader-intersections",
+        "pass": false,
+        "detail": [
+          [
+            "btn_b",
+            "btn_x"
+          ],
+          [
+            "dpad_down",
+            "dpad_right"
+          ]
+        ]
+      },
+      {
+        "name": "1366x768.open-nearest-btn_a.glyph-clear.btn_a",
+        "pass": false,
+        "detail": [
+          "A"
+        ]
+      },
+      {
+        "name": "1366x768.open-nearest-btn_a.glyph-clear.btn_b",
+        "pass": false,
+        "detail": [
+          "B"
+        ]
+      },
+      {
+        "name": "1366x768.open-nearest-btn_a.glyph-clear.btn_x",
+        "pass": false,
+        "detail": [
+          "B",
+          "X"
+        ]
+      },
+      {
+        "name": "1366x768.open-nearest-btn_a.glyph-clear.btn_y",
+        "pass": false,
+        "detail": [
+          "Y"
+        ]
+      },
+      {
+        "name": "1366x768.open-nearest-btn_a.glyph-clear.left_stick",
+        "pass": false,
+        "detail": [
+          "L3"
+        ]
+      },
+      {
+        "name": "1366x768.open-nearest-btn_a.glyph-clear.right_stick",
+        "pass": false,
+        "detail": [
+          "A",
+          "R3"
+        ]
+      },
+      {
+        "name": "1366x768.open-nearest-btn_a.glyph-clear.gyro",
+        "pass": false,
+        "detail": [
+          "GYRO"
+        ]
+      },
+      {
+        "name": "1440x900.closed.leader-intersections",
+        "pass": false,
+        "detail": [
+          [
+            "btn_b",
+            "btn_x"
+          ],
+          [
+            "dpad_down",
+            "dpad_right"
+          ]
+        ]
+      },
+      {
+        "name": "1440x900.closed.glyph-clear.btn_a",
+        "pass": false,
+        "detail": [
+          "A"
+        ]
+      },
+      {
+        "name": "1440x900.closed.glyph-clear.btn_b",
+        "pass": false,
+        "detail": [
+          "B"
+        ]
+      },
+      {
+        "name": "1440x900.closed.glyph-clear.btn_x",
+        "pass": false,
+        "detail": [
+          "B",
+          "X"
+        ]
+      },
+      {
+        "name": "1440x900.closed.glyph-clear.btn_y",
+        "pass": false,
+        "detail": [
+          "Y"
+        ]
+      },
+      {
+        "name": "1440x900.closed.glyph-clear.left_stick",
+        "pass": false,
+        "detail": [
+          "L3"
+        ]
+      },
+      {
+        "name": "1440x900.closed.glyph-clear.right_stick",
+        "pass": false,
+        "detail": [
+          "A",
+          "R3"
+        ]
+      },
+      {
+        "name": "1440x900.closed.glyph-clear.gyro",
+        "pass": false,
+        "detail": [
+          "GYRO"
+        ]
+      },
+      {
+        "name": "1440x900.closed.labels-topmost",
+        "pass": false,
+        "detail": [
+          {
+            "id": "l5",
+            "by": "statusbar"
+          },
+          {
+            "id": "r5",
+            "by": "statusbar"
+          },
+          {
+            "id": "gyro",
+            "by": "statusbar"
+          }
+        ]
+      },
+      {
+        "name": "1440x900.open-btn_a.label-overlaps",
+        "pass": false,
+        "detail": [
+          [
+            "right_stick",
+            "right_pad"
+          ]
+        ]
+      },
+      {
+        "name": "1440x900.open-btn_a.leader-intersections",
+        "pass": false,
+        "detail": [
+          [
+            "btn_b",
+            "btn_x"
+          ],
+          [
+            "dpad_down",
+            "dpad_right"
+          ]
+        ]
+      },
+      {
+        "name": "1440x900.open-btn_a.glyph-clear.btn_a",
+        "pass": false,
+        "detail": [
+          "A"
+        ]
+      },
+      {
+        "name": "1440x900.open-btn_a.glyph-clear.btn_b",
+        "pass": false,
+        "detail": [
+          "B"
+        ]
+      },
+      {
+        "name": "1440x900.open-btn_a.glyph-clear.btn_x",
+        "pass": false,
+        "detail": [
+          "B",
+          "X"
+        ]
+      },
+      {
+        "name": "1440x900.open-btn_a.glyph-clear.btn_y",
+        "pass": false,
+        "detail": [
+          "Y"
+        ]
+      },
+      {
+        "name": "1440x900.open-btn_a.glyph-clear.left_stick",
+        "pass": false,
+        "detail": [
+          "L3"
+        ]
+      },
+      {
+        "name": "1440x900.open-btn_a.glyph-clear.right_stick",
+        "pass": false,
+        "detail": [
+          "A",
+          "R3"
+        ]
+      },
+      {
+        "name": "1440x900.open-btn_a.glyph-clear.gyro",
+        "pass": false,
+        "detail": [
+          "GYRO"
+        ]
+      },
+      {
+        "name": "1440x900.open-nearest-btn_a.label-overlaps",
+        "pass": false,
+        "detail": [
+          [
+            "right_stick",
+            "right_pad"
+          ]
+        ]
+      },
+      {
+        "name": "1440x900.open-nearest-btn_a.leader-intersections",
+        "pass": false,
+        "detail": [
+          [
+            "btn_b",
+            "btn_x"
+          ],
+          [
+            "dpad_down",
+            "dpad_right"
+          ]
+        ]
+      },
+      {
+        "name": "1440x900.open-nearest-btn_a.glyph-clear.btn_a",
+        "pass": false,
+        "detail": [
+          "A"
+        ]
+      },
+      {
+        "name": "1440x900.open-nearest-btn_a.glyph-clear.btn_b",
+        "pass": false,
+        "detail": [
+          "B"
+        ]
+      },
+      {
+        "name": "1440x900.open-nearest-btn_a.glyph-clear.btn_x",
+        "pass": false,
+        "detail": [
+          "B",
+          "X"
+        ]
+      },
+      {
+        "name": "1440x900.open-nearest-btn_a.glyph-clear.btn_y",
+        "pass": false,
+        "detail": [
+          "Y"
+        ]
+      },
+      {
+        "name": "1440x900.open-nearest-btn_a.glyph-clear.left_stick",
+        "pass": false,
+        "detail": [
+          "L3"
+        ]
+      },
+      {
+        "name": "1440x900.open-nearest-btn_a.glyph-clear.right_stick",
+        "pass": false,
+        "detail": [
+          "A",
+          "R3"
+        ]
+      },
+      {
+        "name": "1440x900.open-nearest-btn_a.glyph-clear.gyro",
+        "pass": false,
+        "detail": [
+          "GYRO"
+        ]
+      },
+      {
+        "name": "1920x1080.closed.leader-intersections",
+        "pass": false,
+        "detail": [
+          [
+            "btn_b",
+            "btn_x"
+          ],
+          [
+            "dpad_down",
+            "dpad_right"
+          ]
+        ]
+      },
+      {
+        "name": "1920x1080.closed.glyph-clear.btn_a",
+        "pass": false,
+        "detail": [
+          "A"
+        ]
+      },
+      {
+        "name": "1920x1080.closed.glyph-clear.btn_b",
+        "pass": false,
+        "detail": [
+          "B"
+        ]
+      },
+      {
+        "name": "1920x1080.closed.glyph-clear.btn_x",
+        "pass": false,
+        "detail": [
+          "B",
+          "X"
+        ]
+      },
+      {
+        "name": "1920x1080.closed.glyph-clear.btn_y",
+        "pass": false,
+        "detail": [
+          "Y"
+        ]
+      },
+      {
+        "name": "1920x1080.closed.glyph-clear.left_stick",
+        "pass": false,
+        "detail": [
+          "L3"
+        ]
+      },
+      {
+        "name": "1920x1080.closed.glyph-clear.right_stick",
+        "pass": false,
+        "detail": [
+          "A",
+          "R3"
+        ]
+      },
+      {
+        "name": "1920x1080.closed.glyph-clear.gyro",
+        "pass": false,
+        "detail": [
+          "GYRO"
+        ]
+      },
+      {
+        "name": "1920x1080.closed.labels-topmost",
+        "pass": false,
+        "detail": [
+          {
+            "id": "l5"
+          },
+          {
+            "id": "r5"
+          },
+          {
+            "id": "gyro"
+          }
+        ]
+      },
+      {
+        "name": "1920x1080.open-btn_a.leader-intersections",
+        "pass": false,
+        "detail": [
+          [
+            "btn_b",
+            "btn_x"
+          ],
+          [
+            "dpad_down",
+            "dpad_right"
+          ]
+        ]
+      },
+      {
+        "name": "1920x1080.open-btn_a.glyph-clear.btn_a",
+        "pass": false,
+        "detail": [
+          "A"
+        ]
+      },
+      {
+        "name": "1920x1080.open-btn_a.glyph-clear.btn_b",
+        "pass": false,
+        "detail": [
+          "B"
+        ]
+      },
+      {
+        "name": "1920x1080.open-btn_a.glyph-clear.btn_x",
+        "pass": false,
+        "detail": [
+          "B",
+          "X"
+        ]
+      },
+      {
+        "name": "1920x1080.open-btn_a.glyph-clear.btn_y",
+        "pass": false,
+        "detail": [
+          "Y"
+        ]
+      },
+      {
+        "name": "1920x1080.open-btn_a.glyph-clear.left_stick",
+        "pass": false,
+        "detail": [
+          "L3"
+        ]
+      },
+      {
+        "name": "1920x1080.open-btn_a.glyph-clear.right_stick",
+        "pass": false,
+        "detail": [
+          "A",
+          "R3"
+        ]
+      },
+      {
+        "name": "1920x1080.open-btn_a.glyph-clear.gyro",
+        "pass": false,
+        "detail": [
+          "GYRO"
+        ]
+      },
+      {
+        "name": "1920x1080.open-nearest-btn_a.leader-intersections",
+        "pass": false,
+        "detail": [
+          [
+            "btn_b",
+            "btn_x"
+          ],
+          [
+            "dpad_down",
+            "dpad_right"
+          ]
+        ]
+      },
+      {
+        "name": "1920x1080.open-nearest-btn_a.glyph-clear.btn_a",
+        "pass": false,
+        "detail": [
+          "A"
+        ]
+      },
+      {
+        "name": "1920x1080.open-nearest-btn_a.glyph-clear.btn_b",
+        "pass": false,
+        "detail": [
+          "B"
+        ]
+      },
+      {
+        "name": "1920x1080.open-nearest-btn_a.glyph-clear.btn_x",
+        "pass": false,
+        "detail": [
+          "B",
+          "X"
+        ]
+      },
+      {
+        "name": "1920x1080.open-nearest-btn_a.glyph-clear.btn_y",
+        "pass": false,
+        "detail": [
+          "Y"
+        ]
+      },
+      {
+        "name": "1920x1080.open-nearest-btn_a.glyph-clear.left_stick",
+        "pass": false,
+        "detail": [
+          "L3"
+        ]
+      },
+      {
+        "name": "1920x1080.open-nearest-btn_a.glyph-clear.right_stick",
+        "pass": false,
+        "detail": [
+          "A",
+          "R3"
+        ]
+      },
+      {
+        "name": "1920x1080.open-nearest-btn_a.glyph-clear.gyro",
+        "pass": false,
+        "detail": [
+          "GYRO"
+        ]
+      }
+    ]
+  },
+  "receipt": {
+    "work": "/private/tmp/sdfix-u1/geometry-ylqkks1f",
+    "bridge_argv": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "-u",
+      "-m",
+      "windows.win_recv",
+      "--listen",
+      "127.0.0.1:47841",
+      "--map",
+      "config/windows_midi_map.json",
+      "--preset-section",
+      "windows",
+      "--dry-run",
+      "--no-engines",
+      "--no-pulse",
+      "--no-osc-relay",
+      "--ui-port",
+      "17841"
+    ],
+    "checks": [
+      {
+        "name": "pristine",
+        "command": [
+          "node",
+          "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_geometry.cjs",
+          "http://127.0.0.1:17841",
+          "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+          "--single-process",
+          "--out",
+          "/private/tmp/sdfix-u1/geometry-ylqkks1f/pristine"
+        ],
+        "exit": 1,
+        "log": "/private/tmp/sdfix-u1/geometry-ylqkks1f/pristine.log"
+      }
+    ],
+    "bridge_pid": 91879,
+    "settings": {
+      "feedback_port": null,
+      "listen": "127.0.0.1:47841",
+      "map_path": "/private/tmp/sdfix-u1/geometry-ylqkks1f/tree/config/presets/EDM Show.json",
+      "midi_port": "DECK_IN",
+      "preset_section": "windows",
+      "pulse_port": null,
+      "ui_port": 17841
+    },
+    "bridge_pid_gone": true,
+    "exit": 1
+  }
+}

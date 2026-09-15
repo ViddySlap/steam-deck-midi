@@ -1,0 +1,7 @@
+PASS modal-names-actions "Ch3 CC79: START, SELECT"
+PASS cancel-marks-visible {"marked":true,"message":"MIDI CC conflict","topmost":true,"modalClosed":true,"contrast":9.590319167305314}
+PASS message-contrast 9.590319167305314
+PASS cancel-preset-identical null
+PASS other-control-still-marked null
+PASS successful-save-clears-mark null
+PASS save-only-intended-edit null

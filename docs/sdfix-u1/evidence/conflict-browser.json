@@ -1,0 +1,43 @@
+[
+  {
+    "name": "modal-names-actions",
+    "pass": true,
+    "detail": "Ch3 CC79: START, SELECT"
+  },
+  {
+    "name": "cancel-marks-visible",
+    "pass": true,
+    "detail": {
+      "marked": true,
+      "message": "MIDI CC conflict",
+      "topmost": true,
+      "modalClosed": true,
+      "contrast": 9.590319167305314
+    }
+  },
+  {
+    "name": "message-contrast",
+    "pass": true,
+    "detail": 9.590319167305314
+  },
+  {
+    "name": "cancel-preset-identical",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "name": "other-control-still-marked",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "name": "successful-save-clears-mark",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "name": "save-only-intended-edit",
+    "pass": true,
+    "detail": null
+  }
+]

@@ -1,5 +1,5 @@
 {
-  "work": "/private/tmp/sdfix-u1/geometry-4ajwqjf_",
+  "work": "/private/tmp/sdfix-u1/nearest/geometry-_wb64bna",
   "bridge_argv": [
     "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
     "-B",
@@ -29,10 +29,10 @@
         "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
         "--single-process",
         "--out",
-        "/private/tmp/sdfix-u1/geometry-4ajwqjf_/pristine"
+        "/private/tmp/sdfix-u1/nearest/geometry-_wb64bna/pristine"
       ],
       "exit": 0,
-      "log": "/private/tmp/sdfix-u1/geometry-4ajwqjf_/pristine.log"
+      "log": "/private/tmp/sdfix-u1/nearest/geometry-_wb64bna/pristine.log"
     },
     {
       "name": "m1",
@@ -43,12 +43,12 @@
         "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
         "--single-process",
         "--out",
-        "/private/tmp/sdfix-u1/geometry-4ajwqjf_/m1",
+        "/private/tmp/sdfix-u1/nearest/geometry-_wb64bna/m1",
         "--mutation",
         "m1"
       ],
       "exit": 1,
-      "log": "/private/tmp/sdfix-u1/geometry-4ajwqjf_/m1.log"
+      "log": "/private/tmp/sdfix-u1/nearest/geometry-_wb64bna/m1.log"
     },
     {
       "name": "m1-restored",
@@ -59,10 +59,10 @@
         "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
         "--single-process",
         "--out",
-        "/private/tmp/sdfix-u1/geometry-4ajwqjf_/m1-restored"
+        "/private/tmp/sdfix-u1/nearest/geometry-_wb64bna/m1-restored"
       ],
       "exit": 0,
-      "log": "/private/tmp/sdfix-u1/geometry-4ajwqjf_/m1-restored.log"
+      "log": "/private/tmp/sdfix-u1/nearest/geometry-_wb64bna/m1-restored.log"
     },
     {
       "name": "m2",
@@ -73,12 +73,12 @@
         "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
         "--single-process",
         "--out",
-        "/private/tmp/sdfix-u1/geometry-4ajwqjf_/m2",
+        "/private/tmp/sdfix-u1/nearest/geometry-_wb64bna/m2",
         "--mutation",
         "m2"
       ],
       "exit": 1,
-      "log": "/private/tmp/sdfix-u1/geometry-4ajwqjf_/m2.log"
+      "log": "/private/tmp/sdfix-u1/nearest/geometry-_wb64bna/m2.log"
     },
     {
       "name": "m2-restored",
@@ -89,10 +89,10 @@
         "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
         "--single-process",
         "--out",
-        "/private/tmp/sdfix-u1/geometry-4ajwqjf_/m2-restored"
+        "/private/tmp/sdfix-u1/nearest/geometry-_wb64bna/m2-restored"
       ],
       "exit": 0,
-      "log": "/private/tmp/sdfix-u1/geometry-4ajwqjf_/m2-restored.log"
+      "log": "/private/tmp/sdfix-u1/nearest/geometry-_wb64bna/m2-restored.log"
     },
     {
       "name": "m3",
@@ -103,12 +103,12 @@
         "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
         "--single-process",
         "--out",
-        "/private/tmp/sdfix-u1/geometry-4ajwqjf_/m3",
+        "/private/tmp/sdfix-u1/nearest/geometry-_wb64bna/m3",
         "--mutation",
         "m3"
       ],
       "exit": 1,
-      "log": "/private/tmp/sdfix-u1/geometry-4ajwqjf_/m3.log"
+      "log": "/private/tmp/sdfix-u1/nearest/geometry-_wb64bna/m3.log"
     },
     {
       "name": "m3-restored",
@@ -119,17 +119,17 @@
         "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
         "--single-process",
         "--out",
-        "/private/tmp/sdfix-u1/geometry-4ajwqjf_/m3-restored"
+        "/private/tmp/sdfix-u1/nearest/geometry-_wb64bna/m3-restored"
       ],
       "exit": 0,
-      "log": "/private/tmp/sdfix-u1/geometry-4ajwqjf_/m3-restored.log"
+      "log": "/private/tmp/sdfix-u1/nearest/geometry-_wb64bna/m3-restored.log"
     }
   ],
-  "bridge_pid": 78596,
+  "bridge_pid": 3876,
   "settings": {
     "feedback_port": null,
     "listen": "127.0.0.1:47841",
-    "map_path": "/private/tmp/sdfix-u1/geometry-4ajwqjf_/tree/config/presets/EDM Show.json",
+    "map_path": "/private/tmp/sdfix-u1/nearest/geometry-_wb64bna/tree/config/presets/EDM Show.json",
     "midi_port": "DECK_IN",
     "preset_section": "windows",
     "pulse_port": null,

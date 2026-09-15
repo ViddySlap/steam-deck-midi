@@ -1,0 +1,10 @@
+PASS modal-names-actions "Ch3 CC79: START, SELECT"
+PASS cancel-marks-visible {"marked":true,"message":"MIDI CC conflict","topmost":true,"modalClosed":true,"contrast":9.590319167305314}
+PASS message-contrast 9.590319167305314
+PASS cancel-preset-identical null
+PASS other-control-still-marked null
+PASS successful-save-clears-mark null
+FAIL save-only-intended-edit null
+AssertionError [ERR_ASSERTION]: save-only-intended-edit
+    at check (/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdfix-u1/browser_conflicts.cjs:7:156)
+    at /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdfix-u1/browser_conflicts.cjs:44:5

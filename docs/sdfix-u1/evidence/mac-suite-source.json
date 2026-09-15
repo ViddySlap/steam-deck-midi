@@ -1,0 +1,6 @@
+{
+  "command": "TMPDIR=/tmp/sdfix-u1 PYSTRAY_BACKEND=dummy BROWSER=/usr/bin/true .venv/bin/python -m unittest discover -s tests -p 'test_*.py'",
+  "raw_path": "/tmp/sdfix-u1/mac-suite-final3.log",
+  "raw_sha256": "432affb1b441e2783bcb07913ca5fbd5e65f495d00286e5a7688dbf6629e8b38",
+  "encoding": "UTF-8 source; committed log escapes pre-existing non-ASCII test output as ASCII Unicode escapes"
+}
