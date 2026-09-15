@@ -284,6 +284,99 @@ class DeckControlAPITests(unittest.TestCase):
                 finally:
                     conn.close()
 
+    def test_error_replies_consume_declared_body_before_close(self):
+        from deck.control_api import _Handler
+        completed = threading.Event()
+        consumed = []
+
+        class Reader:
+            def __init__(inner, stream):
+                inner.stream = stream
+                inner.body = b""
+            def __getattr__(inner, name):
+                return getattr(inner.stream, name)
+            def read(inner, size=-1):
+                body = inner.stream.read(size)
+                inner.body += body
+                return body
+
+        class Handler(_Handler):
+            def setup(inner):
+                super().setup()
+                inner.rfile = Reader(inner.rfile)
+            def finish(inner):
+                try:
+                    super().finish()
+                finally:
+                    consumed.append(inner.rfile.body)
+                    completed.set()
+
+        self.server.RequestHandlerClass = Handler
+        before = self.path.read_bytes()
+        cases = [
+            ("POST", "/api/settings", b"{", 405, "method not allowed"),
+            ("POST", "/api/settings", b"null", 405, "method not allowed"),
+            ("PATCH", "/api/settings", b"{}", 405, "method not allowed"),
+            ("BOGUS", "/api/settings", b"{}", 405, "Unsupported method ('BOGUS')"),
+            ("POST", "/missing", b"{}", 404, "route not found"),
+            ("PUT", "/api/settings", b"{", 400,
+             "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"),
+            ("PUT", "/api/settings", b"null", 400, "body must be a JSON object"),
+        ]
+        for method, path, body, code, error in cases:
+            with self.subTest(method=method, path=path, body=body):
+                completed.clear()
+                conn = http.client.HTTPConnection("127.0.0.1", self.server.server_address[1], timeout=3)
+                try:
+                    conn.request(method, path, body, {"Content-Type": "application/json"})
+                    response = conn.getresponse()
+                    self.assertEqual(response.status, code)
+                    self.assertEqual(json.loads(response.read()), {"error": error})
+                    self.assertTrue(completed.wait(1), "request must finish without reading the body twice")
+                    self.assertEqual(consumed[-1], body, "all declared body bytes must be read before close")
+                    self.assertEqual(self.path.read_bytes(), before)
+                finally:
+                    conn.close()
+
+        self.server.token_required = True
+        self.controller.settings = replace(self.controller.settings, api_token="test-secret")
+        completed.clear()
+        self.assertEqual(self.request("PUT", "/api/settings", {"device_id": "9"}),
+                         (401, {"error": "X-Deck-Token required"}))
+        self.assertTrue(completed.wait(1))
+        self.assertEqual(consumed[-1], b'{"device_id": "9"}')
+        self.assertEqual(self.path.read_bytes(), before)
+
+    def test_invalid_body_framing_keeps_json_error_and_bounded_close(self):
+        from deck.control_api import _Handler
+        completed = threading.Event()
+
+        class Handler(_Handler):
+            def finish(inner):
+                try:
+                    super().finish()
+                finally:
+                    completed.set()
+
+        self.server.RequestHandlerClass = Handler
+        for headers, error in [
+            ({"Content-Length": "invalid"}, "invalid literal for int() with base 10: 'invalid'"),
+            ({"Content-Length": "-1"}, "body must be at most 1 MiB"),
+            ({"Content-Length": "1048577"}, "body must be at most 1 MiB"),
+            ({"Transfer-Encoding": "chunked", "Content-Length": "2"}, "Transfer-Encoding is not supported"),
+        ]:
+            with self.subTest(headers=headers):
+                completed.clear()
+                conn = http.client.HTTPConnection("127.0.0.1", self.server.server_address[1], timeout=3)
+                try:
+                    conn.request("PUT", "/api/settings", headers=headers)
+                    response = conn.getresponse()
+                    self.assertEqual(response.status, 400)
+                    self.assertEqual(json.loads(response.read()), {"error": error})
+                    self.assertTrue(completed.wait(1), "invalid framing must not wait for a body")
+                finally:
+                    conn.close()
+
     def test_deckctl_uses_real_http_routes(self):
         from deck.deckctl import main
         url = f"http://127.0.0.1:{self.server.server_address[1]}"

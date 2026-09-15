@@ -1,0 +1,2 @@
+CONTRACT tests=23 responses=120 errors=0 failures=0
+CONTRACT IDENTICAL: all captured HTTP statuses, JSON bodies and content types

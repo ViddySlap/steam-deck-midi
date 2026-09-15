@@ -344,6 +344,23 @@ class _Handler(BaseHTTPRequestHandler):
     def log_message(self, *args):
         pass
 
+    def finish(self):
+        try:
+            # Early 401/404/405 replies bypass the JSON reader. Consume a
+            # bounded, declared body before closing so Windows does not reset
+            # the connection while the client is still sending that body.
+            headers = getattr(self, "headers", {})
+            if not getattr(self, "_body_read", False) and not headers.get("Transfer-Encoding"):
+                try:
+                    size = int(headers.get("Content-Length", "0"))
+                except ValueError:
+                    size = 0
+                if 0 < size <= 1024 * 1024:
+                    self.connection.settimeout(3)
+                    self.rfile.read(size)
+        finally:
+            super().finish()
+
     def _json(self, code, result):
         payload = json.dumps(result, ensure_ascii=True).encode("utf-8")
         self.send_response(code)
@@ -376,6 +393,7 @@ class _Handler(BaseHTTPRequestHandler):
                 size = int(self.headers.get("Content-Length", "0"))
                 if not 0 <= size <= 1024 * 1024:
                     raise ValueError("body must be at most 1 MiB")
+                self._body_read = True
                 body = json.loads(self.rfile.read(size)) if size else {}
                 if not isinstance(body, dict):
                     raise ValueError("body must be a JSON object")

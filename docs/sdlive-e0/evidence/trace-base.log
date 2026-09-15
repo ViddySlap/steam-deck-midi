@@ -1,0 +1,12 @@
+COMMAND C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe -B C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-e0\trace_close.py C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-e0\base C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-e0\trace-base.json
+CWD C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-e0\base
+LAUNCHER_PID 278204
+OBSERVED {"ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine": 2}
+RESPONSE method=POST declared=1 body_read=0 code=405 count=30
+RESPONSE method=POST declared=4 body_read=0 code=405 count=30
+RESPONSE method=PATCH declared=2 body_read=0 code=405 count=30
+RESPONSE method=BOGUS declared=2 body_read=0 code=405 count=30
+PID 278204 gone=True
+PID 281692 gone=True
+PYTHON_UNDER_CLONE_OR_WORK 0
+EXIT 0

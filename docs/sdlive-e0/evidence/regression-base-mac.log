@@ -1,0 +1,5 @@
+RUNS 1 RUNS_WITH_ERROR 1
+KIND 3 AssertionError: b'' != b'{}' : all declared body bytes must be read before close
+KIND 1 AssertionError: b'' != b'{' : all declared body bytes must be read before close
+KIND 1 AssertionError: b'' != b'null' : all declared body bytes must be read before close
+KIND 1 AssertionError: b'' != b'{"device_id": "9"}'

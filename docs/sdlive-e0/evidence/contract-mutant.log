@@ -1,0 +1,3 @@
+CONTRACT tests=23 responses=120 errors=0 failures=0
+DIFF 59 {'body': {'error': "Unsupported method ('BOGUS')"}, 'content_type': 'application/json', 'request': ['BOGUS', '/api/settings'], 'status': 405, 'test': 'test_malformed_json_and_unsupported_method_are_json'} {'test': 'test_malformed_json_and_unsupported_method_are_json', 'request': ['BOGUS', '/api/settings'], 'status': 405, 'content_type': 'application/json', 'body': {'error': 'planted E0 contract fault'}}
+CONTRACT DIFFERENT

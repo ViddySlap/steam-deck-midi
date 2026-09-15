@@ -1,0 +1,2409 @@
+[
+  {
+    "body": {
+      "active_targets": [],
+      "presets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        },
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        }
+      ]
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/active"
+    ],
+    "status": 200,
+    "test": "test_active_clear_stops_legacy_single_selection_and_rename_follows_it"
+  },
+  {
+    "body": {
+      "active_targets": [],
+      "presets": [
+        {
+          "host": "pc.local",
+          "name": "Stage",
+          "port": 45123
+        },
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        }
+      ]
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/rename"
+    ],
+    "status": 200,
+    "test": "test_active_clear_stops_legacy_single_selection_and_rename_follows_it"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "pc.local",
+          "name": "Stage",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": null,
+      "heartbeat_age": 0.0,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": true,
+      "running_targets": [
+        {
+          "host": "pc.local",
+          "name": "Stage",
+          "port": 45123
+        }
+      ],
+      "seq": 8
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/status"
+    ],
+    "status": 200,
+    "test": "test_active_clear_stops_legacy_single_selection_and_rename_follows_it"
+  },
+  {
+    "body": {
+      "active_targets": [],
+      "presets": [
+        {
+          "host": "pc.local",
+          "name": "Stage",
+          "port": 45123
+        },
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        }
+      ]
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/active"
+    ],
+    "status": 200,
+    "test": "test_active_clear_stops_legacy_single_selection_and_rename_follows_it"
+  },
+  {
+    "body": {
+      "error": "select active targets first"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/sender/start"
+    ],
+    "status": 400,
+    "test": "test_active_clear_stops_legacy_single_selection_and_rename_follows_it"
+  },
+  {
+    "body": {
+      "bindings": {
+        "14": "BTN_A"
+      },
+      "profile_name": "learned"
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/bindings"
+    ],
+    "status": 200,
+    "test": "test_bindings_snapshot_and_reload"
+  },
+  {
+    "body": {
+      "bindings": {
+        "14": "BTN_A"
+      },
+      "profile_name": "learned"
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/bindings"
+    ],
+    "status": 200,
+    "test": "test_bindings_snapshot_and_reload"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": null,
+      "heartbeat_age": 0.0,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": true,
+      "running_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "seq": 8
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/sender/start"
+    ],
+    "status": 200,
+    "test": "test_bindings_snapshot_and_reload"
+  },
+  {
+    "body": {
+      "bindings": {
+        "18": "BTN_B"
+      },
+      "profile_name": "new"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/bindings/reload"
+    ],
+    "status": 200,
+    "test": "test_bindings_snapshot_and_reload"
+  },
+  {
+    "body": {
+      "error": "bindings file must contain an object at 'bindings'"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/bindings/reload"
+    ],
+    "status": 400,
+    "test": "test_bindings_snapshot_and_reload"
+  },
+  {
+    "body": {
+      "bindings": {
+        "18": "BTN_B"
+      },
+      "profile_name": "new"
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/bindings"
+    ],
+    "status": 200,
+    "test": "test_bindings_snapshot_and_reload"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": null,
+      "heartbeat_age": null,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": false,
+      "running_targets": [],
+      "seq": 0
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/status"
+    ],
+    "status": 200,
+    "test": "test_deckctl_uses_real_http_routes"
+  },
+  {
+    "body": {
+      "active_targets": [
+        "PC"
+      ],
+      "presets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        },
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        }
+      ]
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/targets"
+    ],
+    "status": 200,
+    "test": "test_deckctl_uses_real_http_routes"
+  },
+  {
+    "body": {
+      "active_targets": [
+        "Mac",
+        "PC"
+      ],
+      "presets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        },
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        }
+      ]
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/active"
+    ],
+    "status": 200,
+    "test": "test_deckctl_uses_real_http_routes"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        },
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": null,
+      "heartbeat_age": 0.0,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": true,
+      "running_targets": [
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        },
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "seq": 8
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/sender/start"
+    ],
+    "status": 200,
+    "test": "test_deckctl_uses_real_http_routes"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        },
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": null,
+      "heartbeat_age": 0.0,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": true,
+      "running_targets": [
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        },
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "seq": 8
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/sender/restart"
+    ],
+    "status": 200,
+    "test": "test_deckctl_uses_real_http_routes"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        },
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": 0,
+      "heartbeat_age": 0.0,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": false,
+      "running_targets": [],
+      "seq": 8
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/sender/stop"
+    ],
+    "status": 200,
+    "test": "test_deckctl_uses_real_http_routes"
+  },
+  {
+    "body": {
+      "error": "active_targets has an unknown or ambiguous preset name: missing"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/active"
+    ],
+    "status": 400,
+    "test": "test_deckctl_uses_real_http_routes"
+  },
+  {
+    "body": {
+      "error": "invalid literal for int() with base 10: 'invalid'"
+    },
+    "content_type": "application/json",
+    "request": [
+      "PUT",
+      "/api/settings"
+    ],
+    "status": 400,
+    "test": "test_invalid_body_framing_keeps_json_error_and_bounded_close"
+  },
+  {
+    "body": {
+      "error": "body must be at most 1 MiB"
+    },
+    "content_type": "application/json",
+    "request": [
+      "PUT",
+      "/api/settings"
+    ],
+    "status": 400,
+    "test": "test_invalid_body_framing_keeps_json_error_and_bounded_close"
+  },
+  {
+    "body": {
+      "error": "body must be at most 1 MiB"
+    },
+    "content_type": "application/json",
+    "request": [
+      "PUT",
+      "/api/settings"
+    ],
+    "status": 400,
+    "test": "test_invalid_body_framing_keeps_json_error_and_bounded_close"
+  },
+  {
+    "body": {
+      "error": "Transfer-Encoding is not supported"
+    },
+    "content_type": "application/json",
+    "request": [
+      "PUT",
+      "/api/settings"
+    ],
+    "status": 400,
+    "test": "test_invalid_body_framing_keeps_json_error_and_bounded_close"
+  },
+  {
+    "body": {
+      "error": "route not found"
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/missing"
+    ],
+    "status": 404,
+    "test": "test_invalid_requests_are_json_4xx_and_do_not_write"
+  },
+  {
+    "body": {
+      "error": "method not allowed"
+    },
+    "content_type": "application/json",
+    "request": [
+      "DELETE",
+      "/api/targets"
+    ],
+    "status": 405,
+    "test": "test_invalid_requests_are_json_4xx_and_do_not_write"
+  },
+  {
+    "body": {
+      "error": "body must be a JSON object"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets"
+    ],
+    "status": 400,
+    "test": "test_invalid_requests_are_json_4xx_and_do_not_write"
+  },
+  {
+    "body": {
+      "error": "preset names must be unique"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets"
+    ],
+    "status": 400,
+    "test": "test_invalid_requests_are_json_4xx_and_do_not_write"
+  },
+  {
+    "body": {
+      "error": "preset names must be unique"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/add"
+    ],
+    "status": 400,
+    "test": "test_invalid_requests_are_json_4xx_and_do_not_write"
+  },
+  {
+    "body": {
+      "error": "invalid IPv4 address or hostname: bad/host"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/add"
+    ],
+    "status": 400,
+    "test": "test_invalid_requests_are_json_4xx_and_do_not_write"
+  },
+  {
+    "body": {
+      "error": "preset port must be an integer between 1 and 65535"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/add"
+    ],
+    "status": 400,
+    "test": "test_invalid_requests_are_json_4xx_and_do_not_write"
+  },
+  {
+    "body": {
+      "error": "active_targets has an unknown or ambiguous preset name: Missing"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/active"
+    ],
+    "status": 400,
+    "test": "test_invalid_requests_are_json_4xx_and_do_not_write"
+  },
+  {
+    "body": {
+      "error": "active_targets must not repeat a preset name"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/active"
+    ],
+    "status": 400,
+    "test": "test_invalid_requests_are_json_4xx_and_do_not_write"
+  },
+  {
+    "body": {
+      "error": "unknown or ambiguous target name"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/delete"
+    ],
+    "status": 400,
+    "test": "test_invalid_requests_are_json_4xx_and_do_not_write"
+  },
+  {
+    "body": {
+      "error": "preset name already exists: Mac"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/rename"
+    ],
+    "status": 400,
+    "test": "test_invalid_requests_are_json_4xx_and_do_not_write"
+  },
+  {
+    "body": {
+      "error": "api_token is required for an off-loopback api_bind"
+    },
+    "content_type": "application/json",
+    "request": [
+      "PUT",
+      "/api/settings"
+    ],
+    "status": 400,
+    "test": "test_invalid_requests_are_json_4xx_and_do_not_write"
+  },
+  {
+    "body": {
+      "error": "device_id must be a string or integer"
+    },
+    "content_type": "application/json",
+    "request": [
+      "PUT",
+      "/api/settings"
+    ],
+    "status": 400,
+    "test": "test_invalid_requests_are_json_4xx_and_do_not_write"
+  },
+  {
+    "body": {
+      "error": "unknown settings fields; use target routes for presets/active_targets"
+    },
+    "content_type": "application/json",
+    "request": [
+      "PUT",
+      "/api/settings"
+    ],
+    "status": 400,
+    "test": "test_invalid_requests_are_json_4xx_and_do_not_write"
+  },
+  {
+    "body": {
+      "actions": [
+        "BTN_A",
+        "BTN_B"
+      ]
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/actions"
+    ],
+    "status": 200,
+    "test": "test_learn_full_capture_confirm_duplicate_skip_and_save"
+  },
+  {
+    "body": {
+      "active": false
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/learn"
+    ],
+    "status": 200,
+    "test": "test_learn_full_capture_confirm_duplicate_skip_and_save"
+  },
+  {
+    "body": {
+      "action": "BTN_A",
+      "active": true,
+      "bindings": {},
+      "candidate": null,
+      "error": null,
+      "saved": false
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/learn/start"
+    ],
+    "status": 200,
+    "test": "test_learn_full_capture_confirm_duplicate_skip_and_save"
+  },
+  {
+    "body": {
+      "error": "no captured candidate"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/learn/confirm"
+    ],
+    "status": 400,
+    "test": "test_learn_full_capture_confirm_duplicate_skip_and_save"
+  },
+  {
+    "body": {
+      "error": "cancel or finish learning before starting the sender"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/sender/start"
+    ],
+    "status": 400,
+    "test": "test_learn_full_capture_confirm_duplicate_skip_and_save"
+  },
+  {
+    "body": {
+      "error": "cancel or finish learning before changing settings"
+    },
+    "content_type": "application/json",
+    "request": [
+      "PUT",
+      "/api/settings"
+    ],
+    "status": 400,
+    "test": "test_learn_full_capture_confirm_duplicate_skip_and_save"
+  },
+  {
+    "body": {
+      "action": "BTN_A",
+      "active": true,
+      "bindings": {},
+      "candidate": "18",
+      "error": null,
+      "saved": false
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/learn"
+    ],
+    "status": 200,
+    "test": "test_learn_full_capture_confirm_duplicate_skip_and_save"
+  },
+  {
+    "body": {
+      "action": "BTN_B",
+      "active": true,
+      "bindings": {
+        "BTN_A": "18"
+      },
+      "candidate": null,
+      "error": null,
+      "saved": false
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/learn/confirm"
+    ],
+    "status": 200,
+    "test": "test_learn_full_capture_confirm_duplicate_skip_and_save"
+  },
+  {
+    "body": {
+      "action": "BTN_B",
+      "active": true,
+      "bindings": {
+        "BTN_A": "18"
+      },
+      "candidate": "18",
+      "error": null,
+      "saved": false
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/learn"
+    ],
+    "status": 200,
+    "test": "test_learn_full_capture_confirm_duplicate_skip_and_save"
+  },
+  {
+    "body": {
+      "error": "candidate is already assigned to another action"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/learn/confirm"
+    ],
+    "status": 400,
+    "test": "test_learn_full_capture_confirm_duplicate_skip_and_save"
+  },
+  {
+    "body": {
+      "action": null,
+      "active": false,
+      "bindings": {
+        "BTN_A": "18"
+      },
+      "candidate": null,
+      "error": null,
+      "saved": true
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/learn/skip"
+    ],
+    "status": 200,
+    "test": "test_learn_full_capture_confirm_duplicate_skip_and_save"
+  },
+  {
+    "body": {
+      "bindings": {
+        "18": "BTN_A"
+      },
+      "profile_name": "default"
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/bindings"
+    ],
+    "status": 200,
+    "test": "test_learn_full_capture_confirm_duplicate_skip_and_save"
+  },
+  {
+    "body": {
+      "action": "BTN_B",
+      "active": true,
+      "bindings": {
+        "BTN_A": "14"
+      },
+      "candidate": null,
+      "error": null,
+      "saved": false
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/learn/start"
+    ],
+    "status": 200,
+    "test": "test_learn_single_action_preserves_siblings_and_cancel_does_not_write"
+  },
+  {
+    "body": {
+      "action": "BTN_B",
+      "active": true,
+      "bindings": {
+        "BTN_A": "14"
+      },
+      "candidate": "19",
+      "error": null,
+      "saved": false
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/learn"
+    ],
+    "status": 200,
+    "test": "test_learn_single_action_preserves_siblings_and_cancel_does_not_write"
+  },
+  {
+    "body": {
+      "action": null,
+      "active": false,
+      "bindings": {
+        "BTN_A": "14",
+        "BTN_B": "19"
+      },
+      "candidate": null,
+      "error": null,
+      "saved": true
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/learn/confirm"
+    ],
+    "status": 200,
+    "test": "test_learn_single_action_preserves_siblings_and_cancel_does_not_write"
+  },
+  {
+    "body": {
+      "action": "BTN_A",
+      "active": true,
+      "bindings": {},
+      "candidate": null,
+      "error": null,
+      "saved": false
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/learn/start"
+    ],
+    "status": 200,
+    "test": "test_learn_single_action_preserves_siblings_and_cancel_does_not_write"
+  },
+  {
+    "body": {
+      "action": "BTN_A",
+      "active": false,
+      "bindings": {},
+      "candidate": null,
+      "error": null,
+      "saved": false
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/learn/cancel"
+    ],
+    "status": 200,
+    "test": "test_learn_single_action_preserves_siblings_and_cancel_does_not_write"
+  },
+  {
+    "body": {
+      "error": "unknown action"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/learn/start"
+    ],
+    "status": 400,
+    "test": "test_learn_single_skip_cancels_and_invalid_action_is_rejected"
+  },
+  {
+    "body": {
+      "action": "BTN_A",
+      "active": true,
+      "bindings": {
+        "BTN_A": "14"
+      },
+      "candidate": null,
+      "error": null,
+      "saved": false
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/learn/start"
+    ],
+    "status": 200,
+    "test": "test_learn_single_skip_cancels_and_invalid_action_is_rejected"
+  },
+  {
+    "body": {
+      "action": "BTN_A",
+      "active": false,
+      "bindings": {
+        "BTN_A": "14"
+      },
+      "candidate": null,
+      "error": null,
+      "saved": false
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/learn/skip"
+    ],
+    "status": 200,
+    "test": "test_learn_single_skip_cancels_and_invalid_action_is_rejected"
+  },
+  {
+    "body": {
+      "error": "method not allowed"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/settings"
+    ],
+    "status": 405,
+    "test": "test_malformed_json_and_unsupported_method_are_json"
+  },
+  {
+    "body": {
+      "error": "method not allowed"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/settings"
+    ],
+    "status": 405,
+    "test": "test_malformed_json_and_unsupported_method_are_json"
+  },
+  {
+    "body": {
+      "error": "method not allowed"
+    },
+    "content_type": "application/json",
+    "request": [
+      "PATCH",
+      "/api/settings"
+    ],
+    "status": 405,
+    "test": "test_malformed_json_and_unsupported_method_are_json"
+  },
+  {
+    "body": {
+      "error": "Unsupported method ('BOGUS')"
+    },
+    "content_type": "application/json",
+    "request": [
+      "BOGUS",
+      "/api/settings"
+    ],
+    "status": 405,
+    "test": "test_malformed_json_and_unsupported_method_are_json"
+  },
+  {
+    "body": {
+      "actions_path": "<fixture>/actions.yaml",
+      "active_targets": [
+        "PC"
+      ],
+      "api_bind": "127.0.0.1",
+      "api_port": 7724,
+      "api_token_configured": false,
+      "bindings_path": "<fixture>/bindings.json",
+      "default_port": 45123,
+      "device_id": "11",
+      "presets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        },
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        }
+      ],
+      "profile_hash": null,
+      "profile_name": null
+    },
+    "content_type": "application/json",
+    "request": [
+      "PUT",
+      "/api/settings"
+    ],
+    "status": 200,
+    "test": "test_menu_and_api_share_live_state_and_reject_stale_edits"
+  },
+  {
+    "body": {
+      "active_targets": [
+        "PC"
+      ],
+      "presets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        },
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        },
+        {
+          "host": "third",
+          "name": "Third",
+          "port": 45123
+        }
+      ]
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/add"
+    ],
+    "status": 200,
+    "test": "test_menu_and_api_share_live_state_and_reject_stale_edits"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": null,
+      "heartbeat_age": 0.0,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": true,
+      "running_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "seq": 8
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/sender/start"
+    ],
+    "status": 200,
+    "test": "test_menu_server_is_available_before_first_prompt_and_uses_same_event"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": 0,
+      "heartbeat_age": 0.0,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": false,
+      "running_targets": [],
+      "seq": 8
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/status"
+    ],
+    "status": 200,
+    "test": "test_menu_server_is_available_before_first_prompt_and_uses_same_event"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/status"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/sender/start"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/learn/skip"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/delete"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/targets"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/learn/confirm"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/bindings"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/learn/start"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/add"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/bindings/reload"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/rename"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/learn/cancel"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "PUT",
+      "/api/settings"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/sender/stop"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/shutdown"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/settings"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/learn"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/actions"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/active"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/sender/restart"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/status"
+    ],
+    "status": 401,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": null,
+      "heartbeat_age": null,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": false,
+      "running_targets": [],
+      "seq": 0
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/status"
+    ],
+    "status": 200,
+    "test": "test_off_loopback_requires_token_on_every_route"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": null,
+      "heartbeat_age": 0.0,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": true,
+      "running_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "seq": 8
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/sender/start"
+    ],
+    "status": 200,
+    "test": "test_settings_change_restarts_with_new_identity_and_bindings"
+  },
+  {
+    "body": {
+      "actions_path": "<fixture>/actions.yaml",
+      "active_targets": [
+        "PC"
+      ],
+      "api_bind": "127.0.0.1",
+      "api_port": 7724,
+      "api_token_configured": false,
+      "bindings_path": "<fixture>/bindings.json",
+      "default_port": 45123,
+      "device_id": "9",
+      "presets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        },
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        }
+      ],
+      "profile_hash": "hash",
+      "profile_name": "new"
+    },
+    "content_type": "application/json",
+    "request": [
+      "PUT",
+      "/api/settings"
+    ],
+    "status": 200,
+    "test": "test_settings_change_restarts_with_new_identity_and_bindings"
+  },
+  {
+    "body": {
+      "actions_path": "<fixture>/actions.yaml",
+      "active_targets": [
+        "PC"
+      ],
+      "api_bind": "127.0.0.1",
+      "api_port": 9999,
+      "api_token_configured": false,
+      "bindings_path": "<fixture>/bindings.json",
+      "default_port": 45123,
+      "device_id": "9",
+      "presets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        },
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        }
+      ],
+      "profile_hash": "hash",
+      "profile_name": "new"
+    },
+    "content_type": "application/json",
+    "request": [
+      "PUT",
+      "/api/settings"
+    ],
+    "status": 200,
+    "test": "test_settings_change_restarts_with_new_identity_and_bindings"
+  },
+  {
+    "body": {
+      "actions_path": "<fixture>/actions.yaml",
+      "active_targets": [
+        "PC"
+      ],
+      "api_bind": "127.0.0.1",
+      "api_port": 7724,
+      "api_token_configured": false,
+      "bindings_path": "<fixture>/bindings.json",
+      "default_port": 45123,
+      "device_id": "8",
+      "presets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        },
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        }
+      ],
+      "profile_hash": null,
+      "profile_name": null
+    },
+    "content_type": "application/json",
+    "request": [
+      "PUT",
+      "/api/settings"
+    ],
+    "status": 200,
+    "test": "test_settings_replace_is_atomic_before_memory_publish"
+  },
+  {
+    "body": {
+      "actions_path": "<fixture>/actions.yaml",
+      "active_targets": [
+        "PC"
+      ],
+      "api_bind": "127.0.0.1",
+      "api_port": 7724,
+      "api_token_configured": false,
+      "bindings_path": "<fixture>/bindings.json",
+      "default_port": 45123,
+      "device_id": "5",
+      "presets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        },
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        }
+      ],
+      "profile_hash": null,
+      "profile_name": null
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/settings"
+    ],
+    "status": 200,
+    "test": "test_settings_roundtrip"
+  },
+  {
+    "body": {
+      "actions_path": "<fixture>/actions.yaml",
+      "active_targets": [
+        "PC"
+      ],
+      "api_bind": "0.0.0.0",
+      "api_port": 7724,
+      "api_token_configured": true,
+      "bindings_path": "<fixture>/bindings.json",
+      "default_port": 9,
+      "device_id": "7",
+      "presets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        },
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        }
+      ],
+      "profile_hash": "abc",
+      "profile_name": "show"
+    },
+    "content_type": "application/json",
+    "request": [
+      "PUT",
+      "/api/settings"
+    ],
+    "status": 200,
+    "test": "test_settings_roundtrip"
+  },
+  {
+    "body": {
+      "actions_path": "<fixture>/actions.yaml",
+      "active_targets": [
+        "PC"
+      ],
+      "api_bind": "0.0.0.0",
+      "api_port": 7724,
+      "api_token_configured": true,
+      "bindings_path": "<fixture>/bindings.json",
+      "default_port": 9,
+      "device_id": "7",
+      "presets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        },
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        }
+      ],
+      "profile_hash": "abc",
+      "profile_name": "show"
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/settings"
+    ],
+    "status": 200,
+    "test": "test_settings_roundtrip"
+  },
+  {
+    "body": {
+      "active_targets": [
+        "PC"
+      ],
+      "presets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        },
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        },
+        {
+          "host": "third",
+          "name": "Third",
+          "port": 9
+        }
+      ]
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/add"
+    ],
+    "status": 200,
+    "test": "test_settings_roundtrip"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": null,
+      "heartbeat_age": 0.0,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": true,
+      "running_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "seq": 8
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/sender/start"
+    ],
+    "status": 200,
+    "test": "test_settings_write_failure_preserves_memory_file_and_worker"
+  },
+  {
+    "body": {
+      "error": "disk refused"
+    },
+    "content_type": "application/json",
+    "request": [
+      "PUT",
+      "/api/settings"
+    ],
+    "status": 400,
+    "test": "test_settings_write_failure_preserves_memory_file_and_worker"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": null,
+      "heartbeat_age": 0.0,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": true,
+      "running_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "seq": 8
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/sender/start"
+    ],
+    "status": 200,
+    "test": "test_shutdown_stops_sender_and_closes_api_after_json_reply"
+  },
+  {
+    "body": {
+      "ok": true
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/shutdown"
+    ],
+    "status": 200,
+    "test": "test_shutdown_stops_sender_and_closes_api_after_json_reply"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": null,
+      "heartbeat_age": null,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": false,
+      "running_targets": [],
+      "seq": 0
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/status"
+    ],
+    "status": 200,
+    "test": "test_status_and_sender_lifecycle"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": null,
+      "heartbeat_age": 0.0,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": true,
+      "running_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "seq": 8
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/sender/start"
+    ],
+    "status": 200,
+    "test": "test_status_and_sender_lifecycle"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": null,
+      "heartbeat_age": 0.0,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": true,
+      "running_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "seq": 8
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/status"
+    ],
+    "status": 200,
+    "test": "test_status_and_sender_lifecycle"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": null,
+      "heartbeat_age": 0.0,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": true,
+      "running_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "seq": 8
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/sender/start"
+    ],
+    "status": 200,
+    "test": "test_status_and_sender_lifecycle"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": null,
+      "heartbeat_age": 0.0,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": true,
+      "running_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "seq": 8
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/sender/restart"
+    ],
+    "status": 200,
+    "test": "test_status_and_sender_lifecycle"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": 0,
+      "heartbeat_age": 0.0,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": false,
+      "running_targets": [],
+      "seq": 8
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/sender/stop"
+    ],
+    "status": 200,
+    "test": "test_status_and_sender_lifecycle"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": 0,
+      "heartbeat_age": 0.0,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": false,
+      "running_targets": [],
+      "seq": 8
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/status"
+    ],
+    "status": 200,
+    "test": "test_status_and_sender_lifecycle"
+  },
+  {
+    "body": {
+      "active_targets": [
+        "PC"
+      ],
+      "presets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        },
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        }
+      ]
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/targets"
+    ],
+    "status": 200,
+    "test": "test_target_routes_persist_and_update_running_destinations"
+  },
+  {
+    "body": {
+      "active_targets": [
+        "PC"
+      ],
+      "presets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        },
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        },
+        {
+          "host": "desk",
+          "name": "Desk",
+          "port": 9
+        }
+      ]
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/add"
+    ],
+    "status": 200,
+    "test": "test_target_routes_persist_and_update_running_destinations"
+  },
+  {
+    "body": {
+      "active_targets": [
+        "Mac",
+        "Desk"
+      ],
+      "presets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        },
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        },
+        {
+          "host": "desk",
+          "name": "Desk",
+          "port": 9
+        }
+      ]
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/active"
+    ],
+    "status": 200,
+    "test": "test_target_routes_persist_and_update_running_destinations"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        },
+        {
+          "host": "desk",
+          "name": "Desk",
+          "port": 9
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": null,
+      "heartbeat_age": 0.0,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": true,
+      "running_targets": [
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        },
+        {
+          "host": "desk",
+          "name": "Desk",
+          "port": 9
+        }
+      ],
+      "seq": 8
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/sender/start"
+    ],
+    "status": 200,
+    "test": "test_target_routes_persist_and_update_running_destinations"
+  },
+  {
+    "body": {
+      "active_targets": [
+        "Mac",
+        "Stage"
+      ],
+      "presets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        },
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        },
+        {
+          "host": "desk",
+          "name": "Stage",
+          "port": 9
+        }
+      ]
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/rename"
+    ],
+    "status": 200,
+    "test": "test_target_routes_persist_and_update_running_destinations"
+  },
+  {
+    "body": {
+      "active_targets": [
+        "Mac"
+      ],
+      "presets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        },
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        }
+      ]
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets/delete"
+    ],
+    "status": 200,
+    "test": "test_target_routes_persist_and_update_running_destinations"
+  },
+  {
+    "body": {
+      "active_targets": [],
+      "presets": [
+        {
+          "host": "host",
+          "name": "Only",
+          "port": 45123
+        }
+      ]
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/targets"
+    ],
+    "status": 200,
+    "test": "test_target_routes_persist_and_update_running_destinations"
+  },
+  {
+    "body": {
+      "active_targets": [],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": 0,
+      "heartbeat_age": 0.0,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": false,
+      "running_targets": [],
+      "seq": 8
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/status"
+    ],
+    "status": 200,
+    "test": "test_target_routes_persist_and_update_running_destinations"
+  },
+  {
+    "body": {
+      "actions_path": "<fixture>/actions.yaml",
+      "active_targets": [
+        "PC"
+      ],
+      "api_bind": "127.0.0.1",
+      "api_port": 7724,
+      "api_token_configured": true,
+      "bindings_path": "<fixture>/bindings.json",
+      "default_port": 45123,
+      "device_id": "5",
+      "presets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        },
+        {
+          "host": "192.0.2.2",
+          "name": "Mac",
+          "port": 45124
+        }
+      ],
+      "profile_hash": null,
+      "profile_name": null
+    },
+    "content_type": "application/json",
+    "request": [
+      "PUT",
+      "/api/settings"
+    ],
+    "status": 200,
+    "test": "test_token_rotation_is_live_and_listener_settings_wait_for_relaunch"
+  },
+  {
+    "body": {
+      "error": "X-Deck-Token required"
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/status"
+    ],
+    "status": 401,
+    "test": "test_token_rotation_is_live_and_listener_settings_wait_for_relaunch"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": null,
+      "heartbeat_age": null,
+      "last_error": null,
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": false,
+      "running_targets": [],
+      "seq": 0
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/status"
+    ],
+    "status": 200,
+    "test": "test_token_rotation_is_live_and_listener_settings_wait_for_relaunch"
+  },
+  {
+    "body": {
+      "error": "cannot remove api_token while serving off-loopback"
+    },
+    "content_type": "application/json",
+    "request": [
+      "PUT",
+      "/api/settings"
+    ],
+    "status": 400,
+    "test": "test_token_rotation_is_live_and_listener_settings_wait_for_relaunch"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": 2,
+      "heartbeat_age": null,
+      "last_error": "no capture device",
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": false,
+      "running_targets": [],
+      "seq": 0
+    },
+    "content_type": "application/json",
+    "request": [
+      "POST",
+      "/api/sender/start"
+    ],
+    "status": 200,
+    "test": "test_worker_failure_status_and_retry"
+  },
+  {
+    "body": {
+      "active_targets": [
+        {
+          "host": "pc.local",
+          "name": "PC",
+          "port": 45123
+        }
+      ],
+      "bindings_path": "<fixture>/bindings.json",
+      "device_id": "5",
+      "exit_code": 2,
+      "heartbeat_age": null,
+      "last_error": "no capture device",
+      "profile_hash": null,
+      "profile_name": "learned",
+      "running": false,
+      "running_targets": [],
+      "seq": 0
+    },
+    "content_type": "application/json",
+    "request": [
+      "GET",
+      "/api/status"
+    ],
+    "status": 200,
+    "test": "test_worker_failure_status_and_retry"
+  }
+]

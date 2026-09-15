@@ -1,0 +1,8 @@
+HEAD 14aa21824843dbe148dc3ac3d0bf58929ef34c3a
+LAUNCHER_PID 279004
+OUT RUNS 300 RUNS_WITH_ERROR 55
+OUT KIND 65 ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine
+PID 279004 gone=True
+PID 267200 gone=True
+PYTHON_PROCESSES_AFTER 0
+EXIT 0
