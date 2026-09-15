@@ -19,6 +19,31 @@ import ab_run as ab
 
 
 class InstrumentTests(unittest.TestCase):
+    def test_tracked_default_requires_candidate_blob_and_exact_path(self):
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory)
+            subprocess.run(['git', 'init', '-q', str(repo)], check=True)
+            preset = repo / 'config/presets/default.json'
+            preset.parent.mkdir(parents=True)
+            original = b'{"mappings": {}}\n'
+            preset.write_bytes(original)
+            subprocess.run(['git', '-C', str(repo), 'add', '.'], check=True)
+            tree = ab.git(repo, 'write-tree')
+            for payload in (original, original.replace(b'\n', b'\r\n')):
+                preset.write_bytes(payload)
+                verified = {}
+                ab.verify_preset(repo, tree, preset, verified)
+                self.assertEqual(verified[str(preset.resolve())], deck.sha(payload))
+            preset.write_bytes(b'{"mappings": {"BTN_A": {}}}\n')
+            with self.assertRaisesRegex(ValueError, 'candidate blob'):
+                ab.verify_preset(repo, tree, preset, {})
+            foreign = repo / 'other.json'
+            foreign.write_bytes(original)
+            with self.assertRaisesRegex(ValueError, 'verified fixture'):
+                ab.verify_preset(repo, tree, foreign, {})
+            preset.write_bytes(original)
+            ab.verify_preset(repo, tree, preset, {})
+
     def test_pacer_never_bursts_after_delay_and_detector_fires(self):
         now = [3_000_000_000]
         sleeps = []

@@ -127,6 +127,12 @@ checkout venv. Run from the Mac run root. The generator verifies BOTH W2
 fixture manifests before reading any presets; ab_run repeats that verification
 and refuses a preset that is absent from those manifests.
 
+The sole additional accepted path is the repository's tracked
+`config/presets/default.json`. Its content must equal the candidate Git blob
+(allowing LF/CRLF checkout conversion only); the result hashes the actual
+consumed bytes. Arbitrary unmanifested files and edited defaults are refused.
+W4 uses this path for its separate tracked-default replay on Windows.
+
 Generate ONE script, shared by every comparison (create scratch first):
 
 ```bash

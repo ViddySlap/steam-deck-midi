@@ -169,11 +169,25 @@ def write_result(path, result):
     return path
 
 
+def verify_preset(repo, candidate, preset, verified):
+    """Admit W2 fixtures or the candidate's unchanged tracked default only."""
+    preset = Path(preset).resolve()
+    if str(preset) in verified:
+        return
+    if preset != (Path(repo) / 'config/presets/default.json').resolve():
+        raise ValueError('Preset not present in verified fixture manifests')
+    payload = preset.read_bytes()
+    blob = git(repo, 'show', candidate + ':config/presets/default.json', binary=True)
+    # Git's Windows checkout may use CRLF. Record the actual consumed bytes.
+    if payload.replace(b'\r\n', b'\n') != blob.replace(b'\r\n', b'\n'):
+        raise ValueError('Tracked default differs from candidate blob')
+    verified[str(preset)] = sha(payload)
+
+
 def run(args):
     verified = verify_fixtures(args.fixtures)
     preset = args.preset.resolve()
-    if str(preset) not in verified:
-        raise ValueError('Preset not present in verified fixture manifests')
+    verify_preset(args.repo, args.candidate, preset, verified)
     raw = read_json(preset)
     if 'sections' in raw:
         if not args.section:
