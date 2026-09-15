@@ -50,6 +50,46 @@ INTENTIONAL_SAME_CHANNEL_CC: frozenset[tuple[int, int]] = frozenset(
 )
 INTENTIONAL_MULTI_CHANNEL_CC: frozenset[int] = frozenset({74, 78, 79})
 
+
+class _MappingConflict(Exception):
+    def __init__(self, conflicts: list[dict[str, Any]]) -> None:
+        self.conflicts = conflicts
+
+
+def _apply_macro_spec(macro: dict, current: dict | None) -> dict:
+    """Mirror index.html DEFAULTS and applyMacroToSelected after compatibility."""
+    defaults = {
+        "macro_cc": {"type": "macro_cc", "channel": 0, "cc": 22, "gesture": "click"},
+        "relative_cc": {"type": "relative_cc", "channel": 0, "cc": 47,
+                        "step_value": 1, "repeat_interval_ms": 40},
+        "staged_note_macro": {"type": "staged_note_macro", "note": 36, "velocity": 127,
+                              "modifier_channel": 0, "trigger_channel": 1, "refresh_actions": []},
+    }
+    kind = macro["type"]
+    base = copy.deepcopy(current if current is not None else defaults[kind])
+    required, optional = {
+        "macro_cc": (("gesture",), ("fade_duration_seconds",)),
+        "relative_cc": (("step_value", "repeat_interval_ms"), ()),
+        "staged_note_macro": (("modifier_channel", "trigger_channel"),
+                              ("macro_delay_ms", "modifier_hold_ms")),
+    }[kind]
+    for key in required:
+        # Missing staged channels become undefined in the page and are omitted
+        # by JSON.stringify, letting the mapping parser supply its defaults.
+        if key in macro:
+            base[key] = macro[key]
+        else:
+            base.pop(key, None)
+    for key in optional:
+        if macro.get(key) is not None:
+            base[key] = macro[key]
+        else:
+            base.pop(key, None)
+    if kind == "staged_note_macro":
+        base["refresh_actions"] = list(macro.get("refresh_actions") or [])
+    return base
+
+
 def _mapping_to_dict(m: MidiMapping) -> dict[str, Any]:
     if isinstance(m, NoteMapping):
         return {"type": "note", "channel": m.channel, "note": m.note, "velocity": m.velocity}
@@ -185,6 +225,7 @@ class MappingUIServer:
         self._http_server = None
         self._thread = None
         self.state_version_fn = state_version_fn or (lambda: 0)
+        self._mapping_revision = 0
         self.port = port
         self.engine_registry = engine_registry
         self.bridge_settings = bridge_settings or BridgeSettings.load(
@@ -222,7 +263,8 @@ class MappingUIServer:
         except (json.JSONDecodeError, OSError):
             return {}
 
-    def _write_preset(self, target: Path, content: str) -> None:
+    def _write_preset(self, target: Path, content: str,
+                      *, before_replace: Callable[[], None] | None = None) -> None:
         """Validate every section with the loader before an atomic replacement."""
         raw = json.loads(content)
         sections = list(raw.get("sections", {})) if isinstance(raw, dict) and "sections" in raw else [None]
@@ -236,6 +278,8 @@ class MappingUIServer:
                 tmp.write(content)
             for section in sections:
                 load_midi_map(tmp_path, section)
+            if before_replace is not None:
+                before_replace()
             os.replace(tmp_path, target)
         finally:
             if tmp_path is not None:
@@ -305,7 +349,7 @@ class MappingUIServer:
 
         @app.route("/api/state-version", methods=["GET"])
         def state_version() -> Response:
-            response = jsonify(self.state_version_fn())
+            response = jsonify(self.state_version_fn() + self._mapping_revision)
             response.headers["Cache-Control"] = "no-store"
             return response
 
@@ -376,6 +420,119 @@ class MappingUIServer:
         @app.route("/api/actions", methods=["GET"])
         def get_actions() -> Response:
             return jsonify({"actions": self._load_actions()})
+
+        # The controller relation and its anchor coordinates have one owner.
+        def controller_map() -> dict:
+            return json.loads((static_dir / "controller/controller_map.json").read_text(encoding="utf-8"))
+
+        @app.route("/api/controller-map", methods=["GET"])
+        def get_controller_map() -> Response:
+            return jsonify(controller_map())
+
+        @app.route("/api/controller-map/<control_id>", methods=["GET"])
+        def get_controller_control(control_id: str) -> Response:
+            control = next((c for c in controller_map()["controls"] if c["id"] == control_id), None)
+            if control is None:
+                return jsonify({"error": "control not found"}), 404
+            section = request.args.get("section", self.bridge_settings.preset_section)
+            try:
+                validate_preset_section(section)
+                active = self._get_active_preset_path()
+                raw = json.loads(active.read_text(encoding="utf-8"))
+                effective = select_preset_section(raw, section)
+                load_midi_map(active, section)
+                document = raw["sections"][section] if "sections" in raw else raw
+                groups = {}
+                for group, actions in control["groups"].items():
+                    groups[group] = [{
+                        "action_id": action,
+                        "mapping": effective["mappings"].get(action),
+                        "source": ("section" if "sections" in raw else "flat")
+                        if action in document["mappings"] else
+                        ("shared" if action in effective["mappings"] else None),
+                    } for action in actions]
+                return jsonify({**control, "groups": groups,
+                                **self._section_metadata(raw, active.name, section)})
+            except (ConfigError, ValueError) as exc:
+                return jsonify({"error": str(exc)}), 422
+            except OSError as exc:
+                return jsonify({"error": str(exc)}), 500
+
+        def edit_mapping(action_id: str, section: str | None, spec: Any = None,
+                         *, clear: bool = False, macro: dict | None = None) -> Response:
+            if action_id not in self._load_actions():
+                return jsonify({"error": "action not found"}), 404
+            with self._settings_lock:
+                try:
+                    validate_preset_section(section)
+                    active = self._get_active_preset_path()
+                    original = active.read_bytes().decode("utf-8")
+                    raw = json.loads(original)
+                    effective = select_preset_section(raw, section)
+                    document = copy.deepcopy(raw["sections"][section] if "sections" in raw else raw)
+                except (ConfigError, ValueError) as exc:
+                    return jsonify({"error": str(exc)}), 422
+                except OSError as exc:
+                    return jsonify({"error": str(exc)}), 500
+                if macro is not None:
+                    current = effective["mappings"].get(action_id)
+                    if current is not None and current.get("type") != macro["type"]:
+                        return jsonify({"error": "macro is incompatible with the current mapping type"}), 409
+                    spec = _apply_macro_spec(macro, current)
+                shared = raw.get("shared", {}).get("mappings", {}) if "sections" in raw else {}
+                if clear:
+                    document["mappings"].pop(action_id, None)
+                elif (action_id not in document["mappings"] and action_id in shared
+                      and json.dumps(spec, separators=(",", ":")) ==
+                      json.dumps(shared[action_id], separators=(",", ":"))):
+                    # doSave leaves unchanged inherited mappings shared.
+                    pass
+                else:
+                    document["mappings"][action_id] = spec
+                try:
+                    content = _section_content(original, section, document)
+                    resulting = select_preset_section(json.loads(content), section)
+
+                    def guard_conflicts() -> None:
+                        conflicts = _detect_conflicts(resulting["mappings"])
+                        if conflicts and request.args.get("force") != "1":
+                            raise _MappingConflict(conflicts)
+
+                    self._write_preset(active, content, before_replace=guard_conflicts)
+                except _MappingConflict as exc:
+                    return jsonify({"error": "mapping conflicts", "conflicts": exc.conflicts}), 409
+                except (ConfigError, ValueError, TypeError) as exc:
+                    return jsonify({"error": str(exc)}), 400
+                except OSError as exc:
+                    return jsonify({"error": str(exc)}), 500
+                self._mapping_revision += 1
+                self.reload_event.set()
+                return jsonify({"ok": True, "action_id": action_id, "section": section,
+                                "mapping": document["mappings"].get(action_id),
+                                "effective_mapping": resulting["mappings"].get(action_id),
+                                "saved_to": active.name})
+
+        @app.route("/api/mappings/<action_id>", methods=["PUT"])
+        def put_mapping(action_id: str) -> Response:
+            return edit_mapping(action_id, request.args.get("section", self.bridge_settings.preset_section),
+                                request.get_json(force=True, silent=True))
+
+        @app.route("/api/mappings/<action_id>", methods=["DELETE"])
+        def delete_mapping(action_id: str) -> Response:
+            return edit_mapping(action_id, request.args.get("section", self.bridge_settings.preset_section), clear=True)
+
+        @app.route("/api/macros/<macro_id>/apply", methods=["POST"])
+        def apply_macro(macro_id: str) -> Response:
+            body = request.get_json(force=True, silent=True)
+            if not isinstance(body, dict) or not isinstance(body.get("action_id"), str):
+                return jsonify({"error": "expected an object with action_id and optional section"}), 400
+            macro = next((m for m in self._load_macro_library() if m.get("id") == macro_id), None)
+            if macro is None:
+                return jsonify({"error": "macro not found"}), 404
+            error = _validate_macro_entry(macro)
+            if error:
+                return jsonify({"error": error}), 400
+            return edit_mapping(body["action_id"], body.get("section", self.bridge_settings.preset_section), macro=macro)
 
         @app.route("/api/conflicts", methods=["POST"])
         def check_conflicts() -> Response:

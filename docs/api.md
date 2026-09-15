@@ -2,20 +2,24 @@
 
 The bridge serves HTTP on `http://127.0.0.1:7723` by default. JSON write requests
 use `Content-Type: application/json`. This inventory is taken from
-`windows/ui_server.py`: 29 explicit method/path registrations after R2, plus
-Flask's static-file route. Flask also supplies HEAD for GET and automatic OPTIONS.
+`windows/ui_server.py`, plus Flask's static-file route. Flask also supplies HEAD for GET and automatic OPTIONS.
 Later links must extend this inventory with every new UI or control action.
 
 | Method | Path | Purpose |
 | --- | --- | --- |
 | GET | `/` | Serve the mapping editor HTML. |
 | GET | `/static/<path:filename>` | Serve the editor's static assets (Flask-generated route). |
-| GET | `/api/state-version` | Return the integer count of successfully applied reloads in this bridge process. |
+| GET | `/api/state-version` | Return an integer revision for applied reloads and successful per-action disk writes. |
 | POST | `/api/reload` | Request an immediate reload of the active preset and changed local settings. |
 | POST | `/api/shutdown` | Loopback only: request graceful bridge Quit; return 202 {"stopping": true}, including repeated calls while stopping. |
 | GET | `/api/settings` | Return live preset_section, listen, midi_port, feedback_port, pulse_port, ui_port, and map_path. |
 | PUT | `/api/settings` | Persist preset_section in bridge.local.json and request a live reload. |
 | GET | `/api/mappings` | Read selected section mappings, settings, and section/preset metadata; optional ?section=name defaults to this machine. |
+| GET | `/api/controller-map` | Read the owned physical control map JSON. |
+| GET | `/api/controller-map/<control_id>` | Read grouped Action IDs, current mappings and ownership; optional section. |
+| PUT | `/api/mappings/<action_id>` | Validate and atomically store one mapping; optional section and force=1 for conflicts. |
+| DELETE | `/api/mappings/<action_id>` | Clear one section mapping idempotently; optional section and force=1 for conflicts. |
+| POST | `/api/macros/<macro_id>/apply` | Apply a compatible library macro to {action_id, section}; optional force=1. |
 | GET | `/api/actions` | List action IDs from actions.yaml. |
 | POST | `/api/conflicts` | Check supplied mappings for unintentional MIDI CC conflicts. |
 | POST | `/api/save` | Validate and save {section, document} into one active-preset section, preserving sibling bytes, then reload. Legacy flat bodies still work. |
@@ -109,13 +113,59 @@ A loaded engine's checkbox in this machine's section also uses the existing live
 this bridge's engines; absent remote overrides display Default. Runtime resync
 controls operate on this bridge and are disabled while editing another section.
 
+## Controller view
+
+`windows/static/controller/controller_map.json` is the only owned physical
+control-to-Action-ID relation. `schema_version: 1` defines an ordered `controls`
+list with stable IDs, labels, kinds, anchors and grouped Action IDs. `view_box`
+is `[x, y, width, height]` for the original SVG. Anchor coordinates belong only
+to this file; V2 may adjust them while drawing the artwork. Control `notes`
+explain placement choices. GET `/api/controller-map` reads this file directly.
+
+GET `/api/controller-map/<control_id>?section=windows` keeps the control fields
+and replaces each group list with ordered `{action_id, mapping, source}` rows.
+`mapping` is the raw effective spec, preserving parser defaults as omissions,
+or null if unmapped. `source` is `section`, `shared`, `flat`, or null. Section
+metadata matches `/api/mappings`. Unknown controls return 404; invalid or absent
+sections return 422. Omitted section uses the bridge selection. Flat presets
+still apply universally, including with a safe named section.
+
+PUT `/api/mappings/<action_id>?section=windows` takes one mapping spec as its
+entire JSON body. DELETE on the same path removes the section's override; doing
+so twice returns 200 both times when there are no conflicts. An inherited shared
+mapping remains shared, and clearing an override reveals the shared default,
+just like the list editor's Clear then Save. Neither operation changes shared
+or sibling-section bytes, section settings, or machine-local identity. PUT of
+an unchanged inherited spec retains its shared ownership.
+
+POST `/api/macros/<macro_id>/apply` takes `{"action_id":"BTN_A","section":"windows"}`.
+The section may be omitted or null with the same meaning as `/api/save`.
+Unmapped actions accept any library macro type; a mapped action must match its
+type (409 otherwise). Existing MIDI target fields survive. An unmapped action
+uses the page's defaults. Macro CC applies gesture and optional fade; relative
+CC applies step and interval; staged notes apply channels, refresh actions and
+optional delays. Absent optional overrides are removed, exactly as in the page.
+
+All three writes validate every section through `load_midi_map` before the
+same `_write_preset` atomic replacement used by `/api/save`. A bad mapping or
+malformed JSON returns 400 with the parser's error and unchanged preset bytes.
+Unknown action or macro IDs return 404; invalid section selection returns 422;
+filesystem errors return 500. Conflicts in the resulting effective section
+return 409 with `conflicts` and no write. `?force=1` accepts those conflicts,
+including on DELETE or macro apply. It never bypasses parser validation.
+Successful writes return `{ok, action_id, section, mapping, effective_mapping,
+saved_to}`: `mapping` is the stored section spec (null after clear or for an
+unchanged inherited spec), while `effective_mapping` includes shared fallback.
+They request reload and immediately advance the polled state version.
+
 ## Reload and disk synchronization
 
 `GET /api/state-version` returns a JSON integer (initially `0`), with
-`Cache-Control: no-store`. It increases after every successful `reload_mappings`
+`Cache-Control: no-store`. It includes successful per-action disk writes and increases after every successful `reload_mappings`
 application, including reloads requested by `/api/save`, `/api/reload`, or the
 disk watcher. A rejected preset or settings file leaves the version and last
-good mappings unchanged. The counter belongs to one process and resets on
+good mappings unchanged. A per-action disk write advances the UI version before
+receiver application; that increment alone is not proof of a live reload. The counter belongs to one process and resets on
 restart; clients should compare for inequality, not just increases.
 
 `POST /api/reload` takes no body and returns `200 {"ok":true}` after setting the

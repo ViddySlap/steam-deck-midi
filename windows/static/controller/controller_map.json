@@ -1,0 +1,438 @@
+{
+  "schema_version": 1,
+  "view_box": [
+    0,
+    0,
+    1200,
+    600
+  ],
+  "controls": [
+    {
+      "id": "btn_a",
+      "label": "A",
+      "kind": "button",
+      "anchor": {
+        "x": 1000,
+        "y": 220
+      },
+      "groups": {
+        "tap": [
+          "BTN_A"
+        ],
+        "layer_2": [
+          "BTN_A_LAYER_2"
+        ]
+      }
+    },
+    {
+      "id": "btn_b",
+      "label": "B",
+      "kind": "button",
+      "anchor": {
+        "x": 1040,
+        "y": 180
+      },
+      "groups": {
+        "tap": [
+          "BTN_B"
+        ],
+        "layer_2": [
+          "BTN_B_LAYER_2"
+        ]
+      }
+    },
+    {
+      "id": "btn_x",
+      "label": "X",
+      "kind": "button",
+      "anchor": {
+        "x": 960,
+        "y": 180
+      },
+      "groups": {
+        "tap": [
+          "BTN_X"
+        ],
+        "layer_2": [
+          "BTN_X_LAYER_2"
+        ]
+      }
+    },
+    {
+      "id": "btn_y",
+      "label": "Y",
+      "kind": "button",
+      "anchor": {
+        "x": 1000,
+        "y": 140
+      },
+      "groups": {
+        "tap": [
+          "BTN_Y"
+        ],
+        "layer_2": [
+          "BTN_Y_LAYER_2"
+        ]
+      }
+    },
+    {
+      "id": "dpad_up",
+      "label": "D-pad Up",
+      "kind": "dpad",
+      "anchor": {
+        "x": 200,
+        "y": 240
+      },
+      "groups": {
+        "tap": [
+          "DPAD_UP"
+        ],
+        "long_press": [
+          "DPAD_UP_LONG_PRESS"
+        ]
+      }
+    },
+    {
+      "id": "dpad_down",
+      "label": "D-pad Down",
+      "kind": "dpad",
+      "anchor": {
+        "x": 200,
+        "y": 320
+      },
+      "groups": {
+        "tap": [
+          "DPAD_DOWN"
+        ],
+        "long_press": [
+          "DPAD_DOWN_LONG_PRESS"
+        ]
+      }
+    },
+    {
+      "id": "dpad_left",
+      "label": "D-pad Left",
+      "kind": "dpad",
+      "anchor": {
+        "x": 160,
+        "y": 280
+      },
+      "groups": {
+        "tap": [
+          "DPAD_LEFT"
+        ],
+        "long_press": [
+          "DPAD_LEFT_LONG_PRESS"
+        ]
+      }
+    },
+    {
+      "id": "dpad_right",
+      "label": "D-pad Right",
+      "kind": "dpad",
+      "anchor": {
+        "x": 240,
+        "y": 280
+      },
+      "groups": {
+        "tap": [
+          "DPAD_RIGHT"
+        ],
+        "long_press": [
+          "DPAD_RIGHT_LONG_PRESS"
+        ]
+      }
+    },
+    {
+      "id": "left_stick",
+      "label": "Left stick",
+      "kind": "stick",
+      "anchor": {
+        "x": 280,
+        "y": 175
+      },
+      "groups": {
+        "tap": [
+          "LEFT_STICK_CLICK_L3",
+          "L_STICK_UP",
+          "L_STICK_DOWN",
+          "L_STICK_LEFT",
+          "L_STICK_RIGHT"
+        ],
+        "analog": [
+          "L_STICK_X_AXIS",
+          "L_STICK_Y_AXIS"
+        ]
+      },
+      "notes": "The stick click and four digital directions share this physical stick. Digital directions are tap actions; continuous X/Y values are analog. L3/R3 are not separate arrows."
+    },
+    {
+      "id": "right_stick",
+      "label": "Right stick",
+      "kind": "stick",
+      "anchor": {
+        "x": 900,
+        "y": 175
+      },
+      "groups": {
+        "tap": [
+          "RIGHT_STICK_CLICK_R3",
+          "R_STICK_UP",
+          "R_STICK_DOWN",
+          "R_STICK_LEFT",
+          "R_STICK_RIGHT"
+        ],
+        "analog": [
+          "R_STICK_X_AXIS",
+          "R_STICK_Y_AXIS"
+        ]
+      },
+      "notes": "The stick click and four digital directions share this physical stick. Digital directions are tap actions; continuous X/Y values are analog. L3/R3 are not separate arrows."
+    },
+    {
+      "id": "l1",
+      "label": "L1",
+      "kind": "bumper",
+      "anchor": {
+        "x": 240,
+        "y": 90
+      },
+      "groups": {
+        "tap": [
+          "L1"
+        ],
+        "layer_2": [
+          "L1_LAYER_2"
+        ]
+      }
+    },
+    {
+      "id": "r1",
+      "label": "R1",
+      "kind": "bumper",
+      "anchor": {
+        "x": 960,
+        "y": 90
+      },
+      "groups": {
+        "tap": [
+          "R1"
+        ],
+        "layer_2": [
+          "R1_LAYER_2"
+        ]
+      }
+    },
+    {
+      "id": "l2",
+      "label": "L2",
+      "kind": "trigger",
+      "anchor": {
+        "x": 210,
+        "y": 50
+      },
+      "groups": {
+        "tap": [
+          "L2_SOFT",
+          "L2_FULL"
+        ],
+        "layer_2": [
+          "L2_SOFT_LAYER_2",
+          "L2_FULL_LAYER_2"
+        ],
+        "analog": [
+          "L_TRIGGER_PRESSURE"
+        ]
+      },
+      "notes": "SOFT and FULL are two digital stages of one trigger, both under tap. Their LAYER_2 variants stay on this trigger; continuous trigger pressure is analog."
+    },
+    {
+      "id": "r2",
+      "label": "R2",
+      "kind": "trigger",
+      "anchor": {
+        "x": 990,
+        "y": 50
+      },
+      "groups": {
+        "tap": [
+          "R2_SOFT",
+          "R2_FULL"
+        ],
+        "layer_2": [
+          "R2_SOFT_LAYER_2",
+          "R2_FULL_LAYER_2"
+        ],
+        "analog": [
+          "R_TRIGGER_PRESSURE"
+        ]
+      },
+      "notes": "SOFT and FULL are two digital stages of one trigger, both under tap. Their LAYER_2 variants stay on this trigger; continuous trigger pressure is analog."
+    },
+    {
+      "id": "l4",
+      "label": "L4",
+      "kind": "back_button",
+      "anchor": {
+        "x": 260,
+        "y": 445
+      },
+      "groups": {
+        "tap": [
+          "L4"
+        ]
+      },
+      "notes": "Rear grip button; anchor is in the rear-button inset below the front face."
+    },
+    {
+      "id": "l5",
+      "label": "L5",
+      "kind": "back_button",
+      "anchor": {
+        "x": 260,
+        "y": 515
+      },
+      "groups": {
+        "tap": [
+          "L5"
+        ]
+      },
+      "notes": "Rear grip button; anchor is in the rear-button inset below the front face."
+    },
+    {
+      "id": "r4",
+      "label": "R4",
+      "kind": "back_button",
+      "anchor": {
+        "x": 940,
+        "y": 445
+      },
+      "groups": {
+        "tap": [
+          "R4"
+        ]
+      },
+      "notes": "Rear grip button; anchor is in the rear-button inset below the front face."
+    },
+    {
+      "id": "r5",
+      "label": "R5",
+      "kind": "back_button",
+      "anchor": {
+        "x": 940,
+        "y": 515
+      },
+      "groups": {
+        "tap": [
+          "R5"
+        ]
+      },
+      "notes": "Rear grip button; anchor is in the rear-button inset below the front face."
+    },
+    {
+      "id": "start",
+      "label": "START",
+      "kind": "menu",
+      "anchor": {
+        "x": 925,
+        "y": 105
+      },
+      "groups": {
+        "tap": [
+          "START"
+        ]
+      }
+    },
+    {
+      "id": "select",
+      "label": "SELECT",
+      "kind": "menu",
+      "anchor": {
+        "x": 275,
+        "y": 105
+      },
+      "groups": {
+        "tap": [
+          "SELECT"
+        ]
+      }
+    },
+    {
+      "id": "left_pad",
+      "label": "Left trackpad",
+      "kind": "trackpad",
+      "anchor": {
+        "x": 310,
+        "y": 320
+      },
+      "groups": {
+        "tap": [
+          "L_PAD_UP",
+          "L_PAD_DOWN",
+          "L_PAD_LEFT",
+          "L_PAD_RIGHT"
+        ],
+        "long_press": [
+          "L_PAD_UP_LONG_PRESS",
+          "L_PAD_DOWN_LONG_PRESS",
+          "L_PAD_LEFT_LONG_PRESS",
+          "L_PAD_RIGHT_LONG_PRESS"
+        ],
+        "analog": [
+          "L_PAD_X_POS",
+          "L_PAD_Y_POS"
+        ]
+      },
+      "notes": "All four digital directions and their LONG_PRESS actions belong to this trackpad. X/Y_POS are continuous pad position, not stick axes. No separate pad click Action ID exists."
+    },
+    {
+      "id": "right_pad",
+      "label": "Right trackpad",
+      "kind": "trackpad",
+      "anchor": {
+        "x": 890,
+        "y": 320
+      },
+      "groups": {
+        "tap": [
+          "R_PAD_UP",
+          "R_PAD_DOWN",
+          "R_PAD_LEFT",
+          "R_PAD_RIGHT"
+        ],
+        "long_press": [
+          "R_PAD_UP_LONG_PRESS",
+          "R_PAD_DOWN_LONG_PRESS",
+          "R_PAD_LEFT_LONG_PRESS",
+          "R_PAD_RIGHT_LONG_PRESS"
+        ],
+        "analog": [
+          "R_PAD_X_POS",
+          "R_PAD_Y_POS"
+        ]
+      },
+      "notes": "All four digital directions and their LONG_PRESS actions belong to this trackpad. X/Y_POS are continuous pad position, not stick axes. No separate pad click Action ID exists."
+    },
+    {
+      "id": "gyro",
+      "label": "Gyro",
+      "kind": "gyro",
+      "anchor": {
+        "x": 600,
+        "y": 500
+      },
+      "groups": {
+        "tap": [
+          "GYRO_FORWARD",
+          "GYRO_BACKWARD"
+        ],
+        "analog": [
+          "GYRO_PITCH",
+          "GYRO_YAW",
+          "GYRO_ROLL"
+        ]
+      },
+      "notes": "FORWARD and BACKWARD name digital gyro actions, so they use tap. PITCH, YAW and ROLL carry continuous values under analog. The anchor marks a gyro tile, not a physical button."
+    }
+  ]
+}
