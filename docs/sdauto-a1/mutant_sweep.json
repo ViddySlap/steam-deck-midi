@@ -1,0 +1,215 @@
+[
+  {
+    "mutant": "M0_clean",
+    "exit": 0,
+    "summary": [
+      "Ran 25 tests in 0.216s",
+      "OK"
+    ],
+    "failed": []
+  },
+  {
+    "mutant": "M1_restore_call_commented",
+    "exit": 1,
+    "summary": [
+      "Ran 25 tests in 0.190s",
+      "FAILED (failures=5)"
+    ],
+    "failed": [
+      "test_channel_and_layer_removed_from_config_are_ignored",
+      "test_explicit_state_dir_restores_across_two_loads",
+      "test_five_fields_survive_restart_and_runtime_is_fresh",
+      "test_inactive_engine_sends_nothing_until_active",
+      "test_restored_enable_matches_a_live_enable_cc"
+    ]
+  },
+  {
+    "mutant": "M2_no_restore_replay_in_tick",
+    "exit": 1,
+    "summary": [
+      "Ran 25 tests in 0.192s",
+      "FAILED (failures=3)"
+    ],
+    "failed": [
+      "test_inactive_engine_sends_nothing_until_active",
+      "test_restore_is_replayed_once",
+      "test_restored_enable_matches_a_live_enable_cc"
+    ]
+  },
+  {
+    "mutant": "M3_replay_at_construction",
+    "exit": 1,
+    "summary": [
+      "Ran 25 tests in 0.198s",
+      "FAILED (failures=4)"
+    ],
+    "failed": [
+      "test_five_fields_survive_restart_and_runtime_is_fresh",
+      "test_inactive_engine_sends_nothing_until_active",
+      "test_restored_enable_matches_a_live_enable_cc"
+    ]
+  },
+  {
+    "mutant": "M4_shutdown_skips_writer_close",
+    "exit": 1,
+    "summary": [
+      "Ran 25 tests in 0.097s",
+      "FAILED (failures=5, errors=9)"
+    ],
+    "failed": [
+      "test_channel_and_layer_removed_from_config_are_ignored",
+      "test_default_state_dir_is_config_state_beside_engines",
+      "test_each_field_change_alone_is_persisted",
+      "test_file_on_disk_has_schema_names_and_no_runtime_fields",
+      "test_five_fields_survive_restart_and_runtime_is_fresh",
+      "test_inactive_engine_sends_nothing_until_active",
+      "test_last_change_before_teardown_is_on_disk_even_with_a_slow_disk",
+      "test_malformed_json",
+      "test_on_midi_in_never_touches_the_disk_on_the_calling_thread",
+      "test_restored_enable_matches_a_live_enable_cc"
+    ]
+  },
+  {
+    "mutant": "M5_transition_not_persisted",
+    "exit": 1,
+    "summary": [
+      "Ran 25 tests in 0.096s",
+      "FAILED (failures=2, errors=2)"
+    ],
+    "failed": [
+      "test_each_field_change_alone_is_persisted",
+      "test_five_fields_survive_restart_and_runtime_is_fresh",
+      "test_last_change_before_teardown_is_on_disk_even_with_a_slow_disk",
+      "test_restored_enable_matches_a_live_enable_cc"
+    ]
+  },
+  {
+    "mutant": "M6_runtime_field_on_disk",
+    "exit": 1,
+    "summary": [
+      "Ran 25 tests in 0.187s",
+      "FAILED (failures=1)"
+    ],
+    "failed": [
+      "test_file_on_disk_has_schema_names_and_no_runtime_fields"
+    ]
+  },
+  {
+    "mutant": "M7_registry_drops_state_dir",
+    "exit": 1,
+    "summary": [
+      "Ran 25 tests in 0.204s",
+      "FAILED (failures=1, errors=1)"
+    ],
+    "failed": [
+      "test_default_state_dir_is_config_state_beside_engines",
+      "test_explicit_state_dir_restores_across_two_loads"
+    ]
+  },
+  {
+    "mutant": "M8_state_dir_inside_engines_allowed",
+    "exit": 1,
+    "summary": [
+      "Ran 25 tests in 0.195s",
+      "FAILED (failures=1)"
+    ],
+    "failed": [
+      "test_state_dir_inside_engines_dir_is_refused"
+    ]
+  },
+  {
+    "mutant": "M9_write_on_calling_thread_unguarded",
+    "exit": 1,
+    "summary": [
+      "Ran 25 tests in 0.091s",
+      "FAILED (failures=3, errors=1)"
+    ],
+    "failed": [
+      "test_failure_log_is_rate_limited_to_one_per_60_seconds",
+      "test_on_midi_in_never_touches_the_disk_on_the_calling_thread",
+      "test_read_only_state_dir_never_raises",
+      "test_unwritable_state_dir_never_raises_into_on_midi_in"
+    ]
+  },
+  {
+    "mutant": "M10_failure_log_not_rate_limited",
+    "exit": 1,
+    "summary": [
+      "Ran 25 tests in 0.198s",
+      "FAILED (failures=1)"
+    ],
+    "failed": [
+      "test_failure_log_is_rate_limited_to_one_per_60_seconds"
+    ]
+  },
+  {
+    "mutant": "M11_invalid_file_rewritten_at_start",
+    "exit": 1,
+    "summary": [
+      "Ran 25 tests in 0.199s",
+      "FAILED (failures=4)"
+    ],
+    "failed": [
+      "test_future_schema",
+      "test_malformed_json",
+      "test_no_change_means_no_write",
+      "test_wrong_field_type"
+    ]
+  },
+  {
+    "mutant": "M12_clear_route_removed",
+    "exit": 1,
+    "summary": [
+      "Ran 25 tests in 0.194s",
+      "FAILED (failures=1, errors=1)"
+    ],
+    "failed": [
+      "test_clear_resets_to_defaults_and_persists",
+      "test_clear_without_state_dir_resets_but_reports_not_persisted"
+    ]
+  },
+  {
+    "mutant": "M13_unknown_layer_not_ignored",
+    "exit": 1,
+    "summary": [
+      "Ran 25 tests in 0.189s",
+      "FAILED (failures=1)"
+    ],
+    "failed": [
+      "test_channel_and_layer_removed_from_config_are_ignored"
+    ]
+  },
+  {
+    "mutant": "M14_future_schema_accepted",
+    "exit": 1,
+    "summary": [
+      "Ran 25 tests in 0.196s",
+      "FAILED (failures=1)"
+    ],
+    "failed": [
+      "test_future_schema"
+    ]
+  },
+  {
+    "mutant": "M15_mode_change_not_persisted",
+    "exit": 1,
+    "summary": [
+      "Ran 25 tests in 0.200s",
+      "FAILED (errors=1)"
+    ],
+    "failed": [
+      "test_each_field_change_alone_is_persisted"
+    ]
+  },
+  {
+    "mutant": "M16_clear_does_not_persist",
+    "exit": 1,
+    "summary": [
+      "Ran 25 tests in 0.188s",
+      "FAILED (failures=1)"
+    ],
+    "failed": [
+      "test_clear_resets_to_defaults_and_persists"
+    ]
+  }
+]
