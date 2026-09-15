@@ -1,0 +1,159 @@
+{
+  "command": [
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+    "docs/sdlive-e1/summarize_ab.py",
+    "/tmp/sdlive-e1",
+    "/tmp/sdlive-e1/ab-summary.json"
+  ],
+  "results": [
+    {
+      "preset": "edm",
+      "source": "/tmp/sdlive-e1/ab-edm.json.gz",
+      "source_sha256": "80926e644506d80e41eb913f1c4a804785ca6796fedd6f2eba5a6e0592651725",
+      "candidate": "91e1b01708aa6f9de184b7f79de8286f32d42485",
+      "script_sha256": "9256621abf62eb21e6c345ef286b6b7fcc087a2db87b8f682ce7fcf7703a993e",
+      "packet_stream_sha256": "c06cfa67469f551b9c28f600349a117bbfee7d3e692e3a54a02f8b18b63a6bc9",
+      "wall_speed": 1.0,
+      "clock": "script",
+      "steps": 732,
+      "packets_per_arm": 47039,
+      "comparisons": {
+        "B1": {
+          "mappings": 56,
+          "mappings_exercised": 56,
+          "messages_A": 1531,
+          "messages_B": 1531,
+          "steps": 732
+        },
+        "B2": {
+          "mappings": 56,
+          "mappings_exercised": 56,
+          "messages_A": 1531,
+          "messages_B": 1531,
+          "steps": 732
+        }
+      },
+      "raw_step_bytes_identical": true,
+      "mapping_coverage_complete": true,
+      "cleanup": {
+        "A": {
+          "pid": 72300,
+          "exit_code": -15,
+          "method": "terminate",
+          "pid_gone": true,
+          "proof": "Popen.wait plus kill(pid,0)"
+        },
+        "B1": {
+          "pid": 72310,
+          "exit_code": -15,
+          "method": "terminate",
+          "pid_gone": true,
+          "proof": "Popen.wait plus kill(pid,0)"
+        },
+        "B2": {
+          "pid": 72326,
+          "exit_code": -15,
+          "method": "terminate",
+          "pid_gone": true,
+          "proof": "Popen.wait plus kill(pid,0)"
+        }
+      },
+      "latency_credit": "NONE: CPU inventory unreadable; bar 1 byte/pacing evidence only"
+    },
+    {
+      "preset": "ptz",
+      "source": "/tmp/sdlive-e1/ab-ptz.json.gz",
+      "source_sha256": "5c4b2162e2844529baac64b43aa4f0573b1f89cb4dd932f959152a7cd463258e",
+      "candidate": "91e1b01708aa6f9de184b7f79de8286f32d42485",
+      "script_sha256": "9256621abf62eb21e6c345ef286b6b7fcc087a2db87b8f682ce7fcf7703a993e",
+      "packet_stream_sha256": "c06cfa67469f551b9c28f600349a117bbfee7d3e692e3a54a02f8b18b63a6bc9",
+      "wall_speed": 1.0,
+      "clock": "script",
+      "steps": 732,
+      "packets_per_arm": 47039,
+      "comparisons": {
+        "B1": {
+          "mappings": 52,
+          "mappings_exercised": 52,
+          "messages_A": 1395,
+          "messages_B": 1395,
+          "steps": 732
+        },
+        "B2": {
+          "mappings": 52,
+          "mappings_exercised": 52,
+          "messages_A": 1395,
+          "messages_B": 1395,
+          "steps": 732
+        }
+      },
+      "raw_step_bytes_identical": true,
+      "mapping_coverage_complete": true,
+      "cleanup": {
+        "A": {
+          "pid": 72323,
+          "exit_code": -15,
+          "method": "terminate",
+          "pid_gone": true,
+          "proof": "Popen.wait plus kill(pid,0)"
+        },
+        "B1": {
+          "pid": 72331,
+          "exit_code": -15,
+          "method": "terminate",
+          "pid_gone": true,
+          "proof": "Popen.wait plus kill(pid,0)"
+        },
+        "B2": {
+          "pid": 72336,
+          "exit_code": -15,
+          "method": "terminate",
+          "pid_gone": true,
+          "proof": "Popen.wait plus kill(pid,0)"
+        }
+      },
+      "latency_credit": "NONE: CPU inventory unreadable; bar 1 byte/pacing evidence only"
+    },
+    {
+      "preset": "default",
+      "source": "/tmp/sdlive-e1/ab-default.json.gz",
+      "source_sha256": "07d107cf1b42c31bc1f258bdb869e8dbdffbfbd1feda179924e3cc16077bb0ca",
+      "candidate": "91e1b01708aa6f9de184b7f79de8286f32d42485",
+      "script_sha256": "9256621abf62eb21e6c345ef286b6b7fcc087a2db87b8f682ce7fcf7703a993e",
+      "packet_stream_sha256": "c06cfa67469f551b9c28f600349a117bbfee7d3e692e3a54a02f8b18b63a6bc9",
+      "wall_speed": 1.0,
+      "clock": "script",
+      "steps": 732,
+      "packets_per_arm": 47039,
+      "comparisons": {
+        "B1": {
+          "mappings": 56,
+          "mappings_exercised": 56,
+          "messages_A": 1531,
+          "messages_B": 1531,
+          "steps": 732
+        }
+      },
+      "raw_step_bytes_identical": true,
+      "mapping_coverage_complete": true,
+      "cleanup": {
+        "A": {
+          "pid": 72340,
+          "exit_code": -15,
+          "method": "terminate",
+          "pid_gone": true,
+          "proof": "Popen.wait plus kill(pid,0)"
+        },
+        "B1": {
+          "pid": 72344,
+          "exit_code": -15,
+          "method": "terminate",
+          "pid_gone": true,
+          "proof": "Popen.wait plus kill(pid,0)"
+        }
+      },
+      "latency_credit": "NONE: CPU inventory unreadable; bar 1 byte/pacing evidence only"
+    }
+  ],
+  "status": "PASS"
+}

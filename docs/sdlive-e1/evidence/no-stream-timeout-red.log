@@ -1,0 +1,14 @@
+test_stalled_tcp_reader_cannot_hold_server_stop (tests.test_live_events.LiveRouteTests.test_stalled_tcp_reader_cannot_hold_server_stop) ... FAIL
+
+======================================================================
+FAIL: test_stalled_tcp_reader_cannot_hold_server_stop (tests.test_live_events.LiveRouteTests.test_stalled_tcp_reader_cannot_hold_server_stop)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/sdlive-e1/mutations-tvq4phe6/tests/test_live_events.py", line 427, in test_stalled_tcp_reader_cannot_hold_server_stop
+    self.assertTrue(stopped.wait(3), "stalled TCP write held server_close")
+AssertionError: False is not true : stalled TCP write held server_close
+
+----------------------------------------------------------------------
+Ran 1 test in 3.115s
+
+FAILED (failures=1)

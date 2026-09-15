@@ -399,6 +399,39 @@ class LiveRouteTests(unittest.TestCase):
                 proc.terminate()
                 proc.wait(timeout=3)
 
+    def test_stalled_tcp_reader_cannot_hold_server_stop(self):
+        self.server.run_in_thread()
+        conn = http.client.HTTPConnection("127.0.0.1", self.server.port, timeout=3)
+        conn.connect()
+        conn.sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1024)
+        conn.request("GET", "/api/live/events")
+        response = conn.getresponse()
+        self.addCleanup(conn.close)
+        self.addCleanup(response.close)
+        self.assertEqual(response.readline(), b": live events\n")
+        self.assertEqual(response.readline(), b"\n")
+        # A bounded journal whose encoded response is larger than the TCP
+        # receive window. The client stops reading before these frames exist.
+        action = "A" * 4000
+        for _ in range(1024):
+            self.p.publish({"kind": "input", "action": action, "state": "down"})
+        time.sleep(.1)
+        self.assertEqual(self.p.snapshot()["clients"], 1)
+        stopped = threading.Event()
+        def stop():
+            self.server.stop()
+            stopped.set()
+        worker = threading.Thread(target=stop, daemon=True)
+        worker.start()
+        try:
+            self.assertTrue(stopped.wait(3), "stalled TCP write held server_close")
+        finally:
+            response.close()
+            conn.close()
+            worker.join(2)
+        self.assertFalse(worker.is_alive())
+        self.assertEqual(self.p.snapshot()["clients"], 0)
+
     def test_post_shutdown_with_open_stream_stops_serve_and_http_within_three_seconds(self):
         receiver, backend = make_receiver(self.p)
         self.server.shutdown_fn = receiver.request_shutdown

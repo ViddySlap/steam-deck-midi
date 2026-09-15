@@ -1,0 +1,6 @@
+test_stalled_tcp_reader_cannot_hold_server_stop (tests.test_live_events.LiveRouteTests.test_stalled_tcp_reader_cannot_hold_server_stop) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.579s
+
+OK

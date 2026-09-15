@@ -1,0 +1,41 @@
+{
+  "command": [
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+    "docs/sdlive-e1/measure.py",
+    "/tmp/sdlive-e1/timing.json"
+  ],
+  "arms": [
+    {
+      "arm": "full-buffer-no-client",
+      "attempt": 1,
+      "before": {
+        "command": [
+          "pgrep",
+          "-f",
+          "while True: pass"
+        ],
+        "exit": 3,
+        "stdout": "",
+        "stderr": "sysmon request failed with error: sysmond service not found\npgrep: Cannot get process list\n",
+        "empty": false
+      },
+      "status": "UNVERIFIED-BY-EXECUTION: CPU inventory unavailable or occupied",
+      "after": {
+        "command": [
+          "pgrep",
+          "-f",
+          "while True: pass"
+        ],
+        "exit": 3,
+        "stdout": "",
+        "stderr": "sysmon request failed with error: sysmond service not found\npgrep: Cannot get process list\n",
+        "empty": false
+      }
+    }
+  ],
+  "bounds": {
+    "publish_seconds": 1,
+    "stalled_minus_closed_seconds": 0.05
+  },
+  "status": "OWED TO THE GATE: no qualified timing arms"
+}

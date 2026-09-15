@@ -1,0 +1,6 @@
+test_drop_count_resume_and_axis_latest_at_most_thirty_hz (tests.test_live_events.LiveEventsTests.test_drop_count_resume_and_axis_latest_at_most_thirty_hz) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK

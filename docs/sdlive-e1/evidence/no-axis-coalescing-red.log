@@ -1,0 +1,14 @@
+test_drop_count_resume_and_axis_latest_at_most_thirty_hz (tests.test_live_events.LiveEventsTests.test_drop_count_resume_and_axis_latest_at_most_thirty_hz) ... FAIL
+
+======================================================================
+FAIL: test_drop_count_resume_and_axis_latest_at_most_thirty_hz (tests.test_live_events.LiveEventsTests.test_drop_count_resume_and_axis_latest_at_most_thirty_hz)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/sdlive-e1/mutations-tvq4phe6/tests/test_live_events.py", line 218, in test_drop_count_resume_and_axis_latest_at_most_thirty_hz
+    self.assertEqual(len(rows), 1)
+AssertionError: 2 != 1
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (failures=1)

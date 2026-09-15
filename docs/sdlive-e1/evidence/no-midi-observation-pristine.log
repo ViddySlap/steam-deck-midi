@@ -1,0 +1,6 @@
+test_all_methods_forward_exact_arguments_before_publish_including_panic (tests.test_live_events.LiveMidiTests.test_all_methods_forward_exact_arguments_before_publish_including_panic) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK

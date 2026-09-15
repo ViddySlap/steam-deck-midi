@@ -1,0 +1,26 @@
+{
+  "work": "/private/tmp/sdlive-e1/geometry/geometry-p0mlgs_x",
+  "bridge_argv": [
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+    "-B",
+    "-u",
+    "-m",
+    "windows.win_recv",
+    "--listen",
+    "127.0.0.1:47841",
+    "--map",
+    "config/windows_midi_map.json",
+    "--preset-section",
+    "windows",
+    "--dry-run",
+    "--no-engines",
+    "--no-pulse",
+    "--no-osc-relay",
+    "--ui-port",
+    "17841"
+  ],
+  "checks": [],
+  "bridge_pid": 65351,
+  "bridge_pid_gone": true,
+  "exit": 1
+}

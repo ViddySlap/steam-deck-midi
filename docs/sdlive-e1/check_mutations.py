@@ -20,10 +20,12 @@ for name, before, after, selector in [
      "tests.test_live_events.LiveMidiTests.test_all_methods_forward_exact_arguments_before_publish_including_panic"),
     ("no-axis-coalescing", 'axes[row["action"]] = row', 'rows.append(row)',
      "tests.test_live_events.LiveEventsTests.test_drop_count_resume_and_axis_latest_at_most_thirty_hz"),
+    ("no-stream-timeout", 'self.connection.settimeout(0.5)', 'pass  # planted omission',
+     "tests.test_live_events.LiveRouteTests.test_stalled_tcp_reader_cannot_hold_server_stop"),
     ("no-stream-stop", 'self.live_events.close()', 'pass  # planted omission',
      "tests.test_live_events.LiveRouteTests.test_post_shutdown_with_open_stream_stops_serve_and_http_within_three_seconds"),
 ]:
-    target = work / "windows/ui_server.py" if name == "no-stream-stop" else source
+    target = work / "windows/ui_server.py" if name in ("no-stream-stop", "no-stream-timeout") else source
     original = target.read_text()
     assert original.count(before) == 1
     for arm in ("pristine", "red", "restored"):

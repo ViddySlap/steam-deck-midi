@@ -1,0 +1,19 @@
+test_post_shutdown_with_open_stream_stops_serve_and_http_within_three_seconds (tests.test_live_events.LiveRouteTests.test_post_shutdown_with_open_stream_stops_serve_and_http_within_three_seconds) ... FAIL
+
+======================================================================
+FAIL: test_post_shutdown_with_open_stream_stops_serve_and_http_within_three_seconds (tests.test_live_events.LiveRouteTests.test_post_shutdown_with_open_stream_stops_serve_and_http_within_three_seconds)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/sdlive-e1/mutations-tvq4phe6/tests/test_live_events.py", line 479, in test_post_shutdown_with_open_stream_stops_serve_and_http_within_three_seconds
+    self.assertFalse(worker.is_alive())
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 1 test in 3.161s
+
+FAILED (failures=1)
+Exception in thread Thread-1 (run):
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/threading.py", line 1075, in _bootstrap_inner
+    self.run()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/threading.py", line 1012, in run

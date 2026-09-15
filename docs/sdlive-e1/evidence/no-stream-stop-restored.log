@@ -1,0 +1,6 @@
+test_post_shutdown_with_open_stream_stops_serve_and_http_within_three_seconds (tests.test_live_events.LiveRouteTests.test_post_shutdown_with_open_stream_stops_serve_and_http_within_three_seconds) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.061s
+
+OK

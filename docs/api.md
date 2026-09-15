@@ -228,6 +228,53 @@ non-modal notice and Reload button; Reload uses `/api/reload` and the existing
 unsaved-change confirmation. Background reads also check for edits made while
 HTTP requests were in flight before replacing any draft.
 
+## Live events
+
+`GET /api/live/snapshot` returns `{pressed: [ActionID], axes: {ActionID: value},
+midi: [event], seq: integer, dropped: integer, clients: integer}`. MIDI retains
+the last 20 events, independent of stream history. Pressed/axis state survives
+history overflow. Values are the original wire integers, without scaling.
+
+`GET /api/live/events?since=123` returns `text/event-stream`. Omit `since` to
+start from now; `Last-Event-ID` is accepted when the query is absent. Invalid
+or negative cursors return 400; a cursor beyond the current bridge sequence
+starts from now (for example after a bridge restart). Each frame has `id:`,
+`event:`, and JSON `data:` lines followed by a blank line. Comment keepalives
+carry no event. All data events include `kind`, increasing `seq`, and
+`timestamp` (monotonic seconds, meaningful only within this bridge process):
+
+- `input`: `action`, `state` (`down` or `up`), after sequence and input guard
+  acceptance. Unmapped accepted controls are still visible. Heartbeats,
+  malformed packets, out-of-order packets and guard-rejected buttons emit none.
+- `axis`: `action`, `value`; the latest value per axis between reader polls.
+  Each client reads at most once per 1/30 second. Input and MIDI never coalesce.
+- `midi`: `bytes` (status/data integers), `action` (Action ID or null). The
+  backend is called first with unchanged arguments. Releases, relative repeats,
+  fades and staged notes retain their cause. Startup, panic and otherwise
+  unattributable output uses null. Panic observes actual backend CC calls;
+  dry-run panic prints a marker and emits no byte events.
+- `dropped`: `count` (history events this client missed), `dropped` (cumulative
+  overwritten history plus contended-publication count). Its ID is immediately before the next retained
+  event, so reconnects can resume normally. Axis coalescing is not a drop.
+
+The shared journal retains at most 1024 events. History overwrites increment
+snapshot `dropped` even without clients; an up-to-date client only receives a
+`dropped` frame if its own cursor fell behind. Snapshots retain up to 512 input
+IDs and 512 axis IDs, evicting the oldest distinct ID on overflow (the current
+controller uses fewer). At most 16 streams can connect; excess connections or
+connections while stopping receive 503. Slow clients hold at most one bounded
+batch. Publishers try a writer lock once and drop on contention; readers never hold
+that lock. No publisher waits for a reader, serializes JSON or writes a socket.
+Sequence/time and bounded latest-state bookkeeping run even with zero clients.
+
+Call snapshot first, then connect with `since=snapshot.seq` to cover the gap.
+After `dropped`, refresh snapshot and reconnect from its sequence to recover
+pressed/axis state. `clients` counts registered event streams, not snapshot
+requests. Closing a response removes it; disconnected idle sockets are detected
+by keepalives. Bridge shutdown ends streams, clears clients and bounds stalled
+stream socket writes to 0.5 seconds so HTTP teardown can finish.
+
+
 ## Deck sender
 
 The independent Deck service uses stdlib HTTP on `http://127.0.0.1:7724`.
@@ -287,49 +334,3 @@ Settings changes affecting the child apply on its next start/restart; changing
 the control port requires a host relaunch. Quit replies before stopping the
 bridge and terminating the host. The seven status-menu entries are generated
 from a model whose routes are checked against the same route table.
-
-## Live events
-
-`GET /api/live/snapshot` returns `{pressed: [ActionID], axes: {ActionID: value},
-midi: [event], seq: integer, dropped: integer, clients: integer}`. MIDI retains
-the last 20 events, independent of stream history. Pressed/axis state survives
-history overflow. Values are the original wire integers, without scaling.
-
-`GET /api/live/events?since=123` returns `text/event-stream`. Omit `since` to
-start from now; `Last-Event-ID` is accepted when the query is absent. Invalid
-or negative cursors return 400; a cursor beyond the current bridge sequence
-starts from now (for example after a bridge restart). Each frame has `id:`,
-`event:`, and JSON `data:` lines followed by a blank line. Comment keepalives
-carry no event. All data events include `kind`, increasing `seq`, and
-`timestamp` (monotonic seconds, meaningful only within this bridge process):
-
-- `input`: `action`, `state` (`down` or `up`), after sequence and input guard
-  acceptance. Unmapped accepted controls are still visible. Heartbeats,
-  malformed packets, out-of-order packets and guard-rejected buttons emit none.
-- `axis`: `action`, `value`; the latest value per axis between reader polls.
-  Each client reads at most once per 1/30 second. Input and MIDI never coalesce.
-- `midi`: `bytes` (status/data integers), `action` (Action ID or null). The
-  backend is called first with unchanged arguments. Releases, relative repeats,
-  fades and staged notes retain their cause. Startup, panic and otherwise
-  unattributable output uses null. Panic observes actual backend CC calls;
-  dry-run panic prints a marker and emits no byte events.
-- `dropped`: `count` (history events this client missed), `dropped` (cumulative
-  overwritten history plus contended-publication count). Its ID is immediately before the next retained
-  event, so reconnects can resume normally. Axis coalescing is not a drop.
-
-The shared journal retains at most 1024 events. History overwrites increment
-snapshot `dropped` even without clients; an up-to-date client only receives a
-`dropped` frame if its own cursor fell behind. Snapshots retain up to 512 input
-IDs and 512 axis IDs, evicting the oldest distinct ID on overflow (the current
-controller uses fewer). At most 16 streams can connect; excess connections or
-connections while stopping receive 503. Slow clients hold at most one bounded
-batch. Publishers try a writer lock once and drop on contention; readers never hold
-that lock. No publisher waits for a reader, serializes JSON or writes a socket.
-Sequence/time and bounded latest-state bookkeeping run even with zero clients.
-
-Call snapshot first, then connect with `since=snapshot.seq` to cover the gap.
-After `dropped`, refresh snapshot and reconnect from its sequence to recover
-pressed/axis state. `clients` counts registered event streams, not snapshot
-requests. Closing a response removes it; disconnected idle sockets are detected
-by keepalives. Bridge shutdown ends streams, clears clients and bounds stalled
-stream socket writes to 0.5 seconds so HTTP teardown can finish.

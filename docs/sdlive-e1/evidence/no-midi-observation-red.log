@@ -1,0 +1,24 @@
+test_all_methods_forward_exact_arguments_before_publish_including_panic (tests.test_live_events.LiveMidiTests.test_all_methods_forward_exact_arguments_before_publish_including_panic) ... FAIL
+
+======================================================================
+FAIL: test_all_methods_forward_exact_arguments_before_publish_including_panic (tests.test_live_events.LiveMidiTests.test_all_methods_forward_exact_arguments_before_publish_including_panic)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/sdlive-e1/mutations-tvq4phe6/tests/test_live_events.py", line 87, in test_all_methods_forward_exact_arguments_before_publish_including_panic
+    self.assertEqual(order, expected)
+AssertionError: Lists differ: [('no[42 chars]), ('note_off', (), {'channel': 2, 'note': 60}[677 chars] {})] != [('no[42 chars]), ('publish', {'kind': 'midi', 'bytes': [146,[2034 chars] {})]
+
+First differing element 1:
+('note_off', (), {'channel': 2, 'note': 60})
+('publish', {'kind': 'midi', 'bytes': [146, 60, 90], 'action': 'BTN_A'})
+
+Second list contains 19 additional elements.
+First extra element 21:
+('control_change', (7, 123, 0), {})
+
+Diff is 2252 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=1)
