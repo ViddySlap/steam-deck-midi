@@ -1,0 +1,173 @@
+{
+  "tag": "after",
+  "url": "http://127.0.0.1:49286",
+  "mode": "header",
+  "browser_version": "145.0.7632.6",
+  "controller": {
+    "items": [
+      {
+        "id": "logo",
+        "top": 9.5,
+        "bottom": 37.5,
+        "left": 16,
+        "right": 44
+      },
+      {
+        "id": "H1",
+        "top": 13,
+        "bottom": 34,
+        "left": 54,
+        "right": 553
+      },
+      {
+        "id": "btnReset",
+        "top": 10,
+        "bottom": 37,
+        "left": 563,
+        "right": 667
+      },
+      {
+        "id": "presetWrap",
+        "top": 10,
+        "bottom": 37,
+        "left": 673,
+        "right": 803
+      },
+      {
+        "id": "LABEL",
+        "top": 13.8,
+        "bottom": 33.3,
+        "left": 809,
+        "right": 855
+      },
+      {
+        "id": "sectionSelect",
+        "top": 10,
+        "bottom": 37,
+        "left": 861,
+        "right": 1021
+      },
+      {
+        "id": "btnSectionAdd",
+        "top": 13,
+        "bottom": 34,
+        "left": 1027,
+        "right": 1107
+      },
+      {
+        "id": "btnSectionRename",
+        "top": 13,
+        "bottom": 34,
+        "left": 1113,
+        "right": 1215
+      },
+      {
+        "id": "btnSectionDelete",
+        "top": 13,
+        "bottom": 34,
+        "left": 1221,
+        "right": 1314
+      },
+      {
+        "id": "btnSave",
+        "top": 10,
+        "bottom": 37,
+        "left": 1320,
+        "right": 1424
+      }
+    ],
+    "item_count": 10,
+    "max_top": 13.8,
+    "min_bottom": 33.3,
+    "one_row": true,
+    "header_height": 48,
+    "section_select_width": 160,
+    "version_text": "v0.5.0 (source)",
+    "controller_pressed": "true",
+    "list_pressed": "false"
+  },
+  "list": {
+    "items": [
+      {
+        "id": "logo",
+        "top": 9.5,
+        "bottom": 37.5,
+        "left": 16,
+        "right": 44
+      },
+      {
+        "id": "H1",
+        "top": 13,
+        "bottom": 34,
+        "left": 54,
+        "right": 553
+      },
+      {
+        "id": "btnReset",
+        "top": 10,
+        "bottom": 37,
+        "left": 563,
+        "right": 667
+      },
+      {
+        "id": "presetWrap",
+        "top": 10,
+        "bottom": 37,
+        "left": 673,
+        "right": 803
+      },
+      {
+        "id": "LABEL",
+        "top": 13.8,
+        "bottom": 33.3,
+        "left": 809,
+        "right": 855
+      },
+      {
+        "id": "sectionSelect",
+        "top": 10,
+        "bottom": 37,
+        "left": 861,
+        "right": 1021
+      },
+      {
+        "id": "btnSectionAdd",
+        "top": 13,
+        "bottom": 34,
+        "left": 1027,
+        "right": 1107
+      },
+      {
+        "id": "btnSectionRename",
+        "top": 13,
+        "bottom": 34,
+        "left": 1113,
+        "right": 1215
+      },
+      {
+        "id": "btnSectionDelete",
+        "top": 13,
+        "bottom": 34,
+        "left": 1221,
+        "right": 1314
+      },
+      {
+        "id": "btnSave",
+        "top": 10,
+        "bottom": 37,
+        "left": 1320,
+        "right": 1424
+      }
+    ],
+    "item_count": 10,
+    "max_top": 13.8,
+    "min_bottom": 33.3,
+    "one_row": true,
+    "header_height": 48,
+    "section_select_width": 160,
+    "version_text": "v0.5.0 (source)",
+    "controller_pressed": "false",
+    "list_pressed": "true"
+  },
+  "page_errors": []
+}

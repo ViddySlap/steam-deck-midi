@@ -1,0 +1,43 @@
+START 14:27:39
+HEAD a8fec2ad635e141b0634dc9a51c5442dad9fd966
+DECK_SCRIPT EXIT 0 PID 326856
+DECK_SCRIPT_OUT {"script_sha256": "f6611e7e191ff59376cc81a9bf299d13f9cce9479bb3a0ec06159a366a99cd5f", "file_sha256": "e68912e8656fc61bf4093944f1fddbd91736c4efd9e99f2e15eb12e140684291", "steps": 732, "packets": 47039, "seconds": 469.716666743}
+PID 326856 gone=True
+COMMAND win-edm C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe -B scripts/showready/ab_run.py --candidate a8fec2ad635e141b0634dc9a51c5442dad9fd966 --preset "C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\windows-installed\presets\EDM Show.json" --script "C:\Users\Ben\AppData\Local\Temp\sdwin\sdauto-gate\deck-script.json" --fixtures "C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures" --scratch "C:\Users\Ben\AppData\Local\Temp\sdwin\sdauto-gate\ab-win-edm" --out "C:\Users\Ben\AppData\Local\Temp\sdwin\sdauto-gate\ab-win-edm.json"
+COMMAND win-ptz C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe -B scripts/showready/ab_run.py --candidate a8fec2ad635e141b0634dc9a51c5442dad9fd966 --preset "C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\windows-installed\presets\PTZ.json" --script "C:\Users\Ben\AppData\Local\Temp\sdwin\sdauto-gate\deck-script.json" --fixtures "C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures" --scratch "C:\Users\Ben\AppData\Local\Temp\sdwin\sdauto-gate\ab-win-ptz" --out "C:\Users\Ben\AppData\Local\Temp\sdwin\sdauto-gate\ab-win-ptz.json"
+COMMAND win-default C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe -B scripts/showready/ab_run.py --candidate a8fec2ad635e141b0634dc9a51c5442dad9fd966 --preset "C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\windows-installed\presets\default.json" --script "C:\Users\Ben\AppData\Local\Temp\sdwin\sdauto-gate\deck-script.json" --fixtures "C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures" --scratch "C:\Users\Ben\AppData\Local\Temp\sdwin\sdauto-gate\ab-win-default" --out "C:\Users\Ben\AppData\Local\Temp\sdwin\sdauto-gate\ab-win-default.json"
+EXIT win-edm 0 PID 316660
+OUT win-edm {"result": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\sdauto-gate\\ab-win-edm.json.gz", "passed": true, "error": null, "comparisons": {"B1": {"totals": {"steps": 732, "mappings": 56, "mappings_exercised": 56, "messages_A": 1531, "messages_B": 1531}, "different_mappings": [], "unexercised_mappings": []}}}
+EXIT win-ptz 0 PID 327756
+OUT win-ptz {"result": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\sdauto-gate\\ab-win-ptz.json.gz", "passed": true, "error": null, "comparisons": {"B1": {"totals": {"steps": 732, "mappings": 52, "mappings_exercised": 52, "messages_A": 1395, "messages_B": 1395}, "different_mappings": [], "unexercised_mappings": []}}}
+EXIT win-default 0 PID 328036
+OUT win-default {"result": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\sdauto-gate\\ab-win-default.json.gz", "passed": true, "error": null, "comparisons": {"B1": {"totals": {"steps": 732, "mappings": 56, "mappings_exercised": 56, "messages_A": 1531, "messages_B": 1531}, "different_mappings": [], "unexercised_mappings": []}}}
+COMMAND eab-win-edm C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe -B scripts/showready/engine_ab.py --candidate a8fec2ad635e141b0634dc9a51c5442dad9fd966 --preset "C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\windows-installed\presets\EDM Show.json" --fixtures "C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures" --scratch "C:\Users\Ben\AppData\Local\Temp\sdwin\sdauto-gate\eab-win-edm" --out "C:\Users\Ben\AppData\Local\Temp\sdwin\sdauto-gate\eab-win-edm.json"
+EXIT eab-win-edm 1 PID 312932
+OUT eab-win-edm }
+COMMAND eab-win-ptz C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe -B scripts/showready/engine_ab.py --candidate a8fec2ad635e141b0634dc9a51c5442dad9fd966 --preset "C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\windows-installed\presets\PTZ.json" --fixtures "C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures" --scratch "C:\Users\Ben\AppData\Local\Temp\sdwin\sdauto-gate\eab-win-ptz" --out "C:\Users\Ben\AppData\Local\Temp\sdwin\sdauto-gate\eab-win-ptz.json"
+EXIT eab-win-ptz 1 PID 312552
+OUT eab-win-ptz }
+PID 316660 gone=True
+PID 327756 gone=True
+PID 328036 gone=True
+PID 312932 gone=True
+PID 312552 gone=True
+PID 326200 gone=True
+PID 311844 gone=True
+PID 319564 gone=True
+PID 325704 gone=True
+PID 330212 gone=True
+PID 324664 gone=True
+PID 327696 gone=True
+PID 318628 gone=True
+PID 328504 gone=True
+PID 330020 gone=True
+PID 328756 gone=True
+PID 325832 gone=True
+PID 329176 gone=True
+PID 321204 gone=True
+PID 329972 gone=True
+PID 327196 gone=True
+PID 328008 gone=True
+RAIL_EXIT 2 14:35:44

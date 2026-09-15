@@ -1,0 +1,2 @@
+GUARD GREEN: compare; protected state observed; pythonProcesses=0
+RAIL_EXIT 0

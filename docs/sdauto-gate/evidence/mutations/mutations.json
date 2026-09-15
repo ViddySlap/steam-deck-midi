@@ -1,0 +1,212 @@
+[
+  {
+    "mutant": "a",
+    "change": "skip the restore overlay",
+    "file": "windows/engines/autopilot.py",
+    "tests": [
+      "tests.test_autopilot_state"
+    ],
+    "red": {
+      "exit": 1,
+      "summary": [
+        "Ran 25 tests in 0.220s",
+        "FAILED (failures=5)"
+      ],
+      "failing": [
+        "test_channel_and_layer_removed_from_config_are_ignored",
+        "test_explicit_state_dir_restores_across_two_loads",
+        "test_inactive_engine_sends_nothing_until_active",
+        "test_restored_enable_matches_a_live_enable_cc",
+        "test_five_fields_survive_restart_and_runtime_is_fresh"
+      ]
+    },
+    "restored_sha_equals_head": true,
+    "green": {
+      "exit": 0,
+      "summary": [
+        "Ran 25 tests in 0.201s",
+        "OK"
+      ],
+      "failing": []
+    },
+    "ok": true
+  },
+  {
+    "mutant": "b",
+    "change": "persist crossfade_start_time",
+    "file": "windows/engines/autopilot.py",
+    "tests": [
+      "tests.test_autopilot_state"
+    ],
+    "red": {
+      "exit": 1,
+      "summary": [
+        "Ran 25 tests in 0.215s",
+        "FAILED (failures=1)"
+      ],
+      "failing": [
+        "test_file_on_disk_has_schema_names_and_no_runtime_fields"
+      ]
+    },
+    "restored_sha_equals_head": true,
+    "green": {
+      "exit": 0,
+      "summary": [
+        "Ran 25 tests in 0.205s",
+        "OK"
+      ],
+      "failing": []
+    },
+    "ok": true
+  },
+  {
+    "mutant": "c",
+    "change": "engine PUT skips filter removal and old.shutdown()",
+    "file": "windows/engines/registry.py",
+    "tests": [
+      "tests.test_engine_config_api"
+    ],
+    "red": {
+      "exit": 1,
+      "summary": [
+        "Ran 14 tests in 1.644s",
+        "FAILED (failures=2)"
+      ],
+      "failing": [
+        "test_replaced_autopilot_filter_is_gone",
+        "test_replace_removes_filters_shuts_down_keeps_slot_and_binds"
+      ]
+    },
+    "restored_sha_equals_head": true,
+    "green": {
+      "exit": 0,
+      "summary": [
+        "Ran 14 tests in 1.650s",
+        "OK"
+      ],
+      "failing": []
+    },
+    "ok": true
+  },
+  {
+    "mutant": "d",
+    "change": "platform function returns True on darwin",
+    "file": "windows/win_recv.py",
+    "tests": [
+      "tests.test_win_recv_tray_platform"
+    ],
+    "red": {
+      "exit": 1,
+      "summary": [
+        "Ran 9 tests in 0.031s",
+        "FAILED (failures=2)"
+      ],
+      "failing": [
+        "test_darwin_non_tray_never_constructs_or_stops_receiver_tray",
+        "test_platform_rule"
+      ]
+    },
+    "restored_sha_equals_head": true,
+    "green": {
+      "exit": 0,
+      "summary": [
+        "Ran 9 tests in 0.032s",
+        "OK"
+      ],
+      "failing": []
+    },
+    "ok": true
+  },
+  {
+    "mutant": "e",
+    "change": "VERSION 0.5.1 with APP_VERSION 0.5.0",
+    "file": "VERSION",
+    "tests": [
+      "tests.test_ui_server.VersionAgreementTests"
+    ],
+    "red": {
+      "exit": 1,
+      "summary": [
+        "Ran 3 tests in 0.002s",
+        "FAILED (failures=1)"
+      ],
+      "failing": [
+        "test_version_file_and_fingerprint_agree"
+      ]
+    },
+    "restored_sha_equals_head": true,
+    "green": {
+      "exit": 0,
+      "summary": [
+        "Ran 3 tests in 0.002s",
+        "OK"
+      ],
+      "failing": []
+    },
+    "ok": true
+  },
+  {
+    "mutant": "f",
+    "change": "one-byte column-note change (86 -> 96) in autopilot.py, engine_ab.py",
+    "diff_numstat": "1\t1\twindows/engines/autopilot.py",
+    "red": {
+      "candidate": "58e52034ecaa22f2d8284ba8f93688f975c90fa3",
+      "exit": 1,
+      "passed": false,
+      "error": null,
+      "different_sources": {
+        "A_vs_B_nostate": [
+          "autopilot",
+          "receiver"
+        ],
+        "A_vs_B_state": [
+          "autopilot",
+          "receiver"
+        ]
+      },
+      "first_difference": {
+        "A_vs_B_nostate": {
+          "a": {
+            "midi": "805200",
+            "src": "receiver",
+            "step": 346
+          },
+          "b": {
+            "midi": "90567f",
+            "src": "receiver",
+            "step": 344
+          },
+          "index": 203
+        },
+        "A_vs_B_state": {
+          "a": {
+            "midi": "805200",
+            "src": "receiver",
+            "step": 346
+          },
+          "b": {
+            "midi": "90567f",
+            "src": "receiver",
+            "step": 344
+          },
+          "index": 203
+        }
+      }
+    },
+    "green": {
+      "candidate": "a8fec2ad635e141b0634dc9a51c5442dad9fd966",
+      "exit": 0,
+      "passed": true,
+      "error": null,
+      "different_sources": {
+        "A_vs_B_nostate": [],
+        "A_vs_B_state": []
+      },
+      "first_difference": {
+        "A_vs_B_nostate": null,
+        "A_vs_B_state": null
+      }
+    },
+    "ok": true
+  }
+]

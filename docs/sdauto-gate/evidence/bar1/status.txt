@@ -1,0 +1,25 @@
+START mac-edm 14:25:37
+START mac-default 14:25:37
+START mac-ptz 14:25:37
+START dead-seam 14:25:37
+END dead-seam exit 1 14:33:29
+END mac-default exit 0 14:33:29
+END mac-ptz exit 0 14:33:30
+END mac-edm exit 0 14:33:30
+START seam-clean 14:33:30
+END seam-clean exit 0 14:34:44
+START seam-plant 14:34:44
+END seam-plant exit 1 14:35:58
+START eab-mac-edm 14:35:58
+END eab-mac-edm exit 0 14:36:00
+START eab-windows-edm 14:36:00
+END eab-windows-edm exit 0 14:36:02
+START eab-mac-ptz 14:36:02
+END eab-mac-ptz exit 0 14:36:03
+START eab-windows-ptz 14:36:03
+END eab-windows-ptz exit 0 14:36:05
+START eab-sens-autopilot 14:36:05
+END eab-sens-autopilot exit 1 14:36:07
+START eab-sens-lstick 14:36:07
+END eab-sens-lstick exit 1 14:36:09
+ALLDONE

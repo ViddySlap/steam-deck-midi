@@ -1,0 +1,182 @@
+{
+  "BASE": {
+    "argv": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "-u",
+      "-m",
+      "windows.win_recv",
+      "--preset-section",
+      "macbook",
+      "--listen",
+      "127.0.0.1:60137",
+      "--map",
+      "config/windows_midi_map.json",
+      "--midi-port",
+      "IAC Driver DECK_IN",
+      "--feedback-port",
+      "IAC Driver DECK_OUT",
+      "--pulse-port",
+      "IAC Driver PULSE_OUT",
+      "--timeout",
+      "2.0",
+      "--ui-port",
+      "65510",
+      "--dry-run",
+      "--no-engines",
+      "--no-pulse",
+      "--no-osc-relay"
+    ],
+    "pid": 14404,
+    "ui_port": 65510,
+    "udp_port": 60137,
+    "ui_up": true,
+    "pystray_backend_env": null,
+    "BROWSER": "/usr/bin/true",
+    "watch": [
+      {
+        "at_s": 1,
+        "pid_windows": 1,
+        "status_layer_25": 0,
+        "lines": [
+          "WINDOW pid=14404 owner=Python layer=0 bounds=[\"X\": 0, \"Height\": 0, \"Y\": 0, \"Width\": 0]",
+          "PID_WINDOWS 1 STATUS_LAYER_25 0 TOTAL_WINDOWS 140"
+        ]
+      },
+      {
+        "at_s": 3,
+        "pid_windows": 1,
+        "status_layer_25": 0,
+        "lines": [
+          "WINDOW pid=14404 owner=Python layer=0 bounds=[\"X\": 0, \"Height\": 0, \"Width\": 0, \"Y\": 0]",
+          "PID_WINDOWS 1 STATUS_LAYER_25 0 TOTAL_WINDOWS 140"
+        ]
+      },
+      {
+        "at_s": 6,
+        "pid_windows": 1,
+        "status_layer_25": 0,
+        "lines": [
+          "WINDOW pid=14404 owner=Python layer=0 bounds=[\"Y\": 0, \"Width\": 0, \"X\": 0, \"Height\": 0]",
+          "PID_WINDOWS 1 STATUS_LAYER_25 0 TOTAL_WINDOWS 140"
+        ]
+      },
+      {
+        "at_s": 10,
+        "pid_windows": 1,
+        "status_layer_25": 0,
+        "lines": [
+          "WINDOW pid=14404 owner=Python layer=0 bounds=[\"Y\": 0, \"Width\": 0, \"X\": 0, \"Height\": 0]",
+          "PID_WINDOWS 1 STATUS_LAYER_25 0 TOTAL_WINDOWS 140"
+        ]
+      },
+      {
+        "at_s": 15,
+        "pid_windows": 1,
+        "status_layer_25": 0,
+        "lines": [
+          "WINDOW pid=14404 owner=Python layer=0 bounds=[\"Width\": 0, \"Height\": 0, \"X\": 0, \"Y\": 0]",
+          "PID_WINDOWS 1 STATUS_LAYER_25 0 TOTAL_WINDOWS 140"
+        ]
+      },
+      {
+        "at_s": 20,
+        "pid_windows": 1,
+        "status_layer_25": 0,
+        "lines": [
+          "WINDOW pid=14404 owner=Python layer=0 bounds=[\"Width\": 0, \"X\": 0, \"Y\": 0, \"Height\": 0]",
+          "PID_WINDOWS 1 STATUS_LAYER_25 0 TOTAL_WINDOWS 140"
+        ]
+      }
+    ],
+    "final_returncode": -15,
+    "pid_gone": true
+  },
+  "HEAD": {
+    "argv": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "-u",
+      "-m",
+      "windows.win_recv",
+      "--preset-section",
+      "macbook",
+      "--listen",
+      "127.0.0.1:63095",
+      "--map",
+      "config/windows_midi_map.json",
+      "--midi-port",
+      "IAC Driver DECK_IN",
+      "--feedback-port",
+      "IAC Driver DECK_OUT",
+      "--pulse-port",
+      "IAC Driver PULSE_OUT",
+      "--timeout",
+      "2.0",
+      "--ui-port",
+      "65528",
+      "--dry-run",
+      "--no-engines",
+      "--no-pulse",
+      "--no-osc-relay"
+    ],
+    "pid": 15611,
+    "ui_port": 65528,
+    "udp_port": 63095,
+    "ui_up": true,
+    "pystray_backend_env": null,
+    "BROWSER": "/usr/bin/true",
+    "watch": [
+      {
+        "at_s": 1,
+        "pid_windows": 0,
+        "status_layer_25": 0,
+        "lines": [
+          "PID_WINDOWS 0 STATUS_LAYER_25 0 TOTAL_WINDOWS 139"
+        ]
+      },
+      {
+        "at_s": 3,
+        "pid_windows": 0,
+        "status_layer_25": 0,
+        "lines": [
+          "PID_WINDOWS 0 STATUS_LAYER_25 0 TOTAL_WINDOWS 139"
+        ]
+      },
+      {
+        "at_s": 6,
+        "pid_windows": 0,
+        "status_layer_25": 0,
+        "lines": [
+          "PID_WINDOWS 0 STATUS_LAYER_25 0 TOTAL_WINDOWS 139"
+        ]
+      },
+      {
+        "at_s": 10,
+        "pid_windows": 0,
+        "status_layer_25": 0,
+        "lines": [
+          "PID_WINDOWS 0 STATUS_LAYER_25 0 TOTAL_WINDOWS 139"
+        ]
+      },
+      {
+        "at_s": 15,
+        "pid_windows": 0,
+        "status_layer_25": 0,
+        "lines": [
+          "PID_WINDOWS 0 STATUS_LAYER_25 0 TOTAL_WINDOWS 139"
+        ]
+      },
+      {
+        "at_s": 20,
+        "pid_windows": 0,
+        "status_layer_25": 0,
+        "lines": [
+          "PID_WINDOWS 0 STATUS_LAYER_25 0 TOTAL_WINDOWS 139"
+        ]
+      }
+    ],
+    "final_returncode": -15,
+    "pid_gone": true
+  }
+}

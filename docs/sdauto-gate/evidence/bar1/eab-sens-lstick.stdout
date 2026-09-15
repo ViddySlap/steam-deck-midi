@@ -1,0 +1,125 @@
+{
+ "result": "/tmp/sdauto-gate/bar1/eab-sens-lstick.json",
+ "passed": false,
+ "control": "sensitivity-l_stick_layer",
+ "control_expected": true,
+ "error": null,
+ "problems": [],
+ "comparisons": {
+  "A_vs_B_nostate": {
+   "identical_events": false,
+   "identical_filter_decisions": true,
+   "different_sources": [
+    "l_stick_layer"
+   ]
+  },
+  "A_vs_B_state": {
+   "identical_events": false,
+   "identical_filter_decisions": true,
+   "different_sources": [
+    "l_stick_layer"
+   ]
+  }
+ },
+ "coverage": [
+  {
+   "engine": "audio_opacity",
+   "covered": true,
+   "arms": {
+    "A": {
+     "midi": 58,
+     "osc": 0
+    },
+    "B_nostate": {
+     "midi": 58,
+     "osc": 0
+    },
+    "B_state": {
+     "midi": 58,
+     "osc": 0
+    }
+   }
+  },
+  {
+   "engine": "autopilot",
+   "covered": true,
+   "arms": {
+    "A": {
+     "midi": 5,
+     "osc": 1474,
+     "filter_deferred_or_dropped": 6,
+     "column_notes_reemitted": 5,
+     "column_notes_dropped": 1
+    },
+    "B_nostate": {
+     "midi": 5,
+     "osc": 1474,
+     "filter_deferred_or_dropped": 6,
+     "column_notes_reemitted": 5,
+     "column_notes_dropped": 1
+    },
+    "B_state": {
+     "midi": 5,
+     "osc": 1474,
+     "filter_deferred_or_dropped": 6,
+     "column_notes_reemitted": 5,
+     "column_notes_dropped": 1
+    }
+   }
+  },
+  {
+   "engine": "global_color",
+   "covered": true,
+   "arms": {
+    "A": {
+     "midi": 3,
+     "osc": 424
+    },
+    "B_nostate": {
+     "midi": 3,
+     "osc": 424
+    },
+    "B_state": {
+     "midi": 3,
+     "osc": 424
+    }
+   }
+  },
+  {
+   "engine": "gyro_feedback",
+   "covered": true,
+   "arms": {
+    "A": {
+     "midi": 60,
+     "osc": 0
+    },
+    "B_nostate": {
+     "midi": 60,
+     "osc": 0
+    },
+    "B_state": {
+     "midi": 60,
+     "osc": 0
+    }
+   }
+  },
+  {
+   "engine": "l_stick_layer",
+   "covered": true,
+   "arms": {
+    "A": {
+     "midi": 55,
+     "osc": 0
+    },
+    "B_nostate": {
+     "midi": 55,
+     "osc": 0
+    },
+    "B_state": {
+     "midi": 55,
+     "osc": 0
+    }
+   }
+  }
+ ]
+}

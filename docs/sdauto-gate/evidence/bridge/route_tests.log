@@ -1,0 +1,23 @@
+test_non_loopback_remote_is_403_before_any_work (tests.test_agent_routes.LoopbackOnlyTests.test_non_loopback_remote_is_403_before_any_work) ... ok
+test_api_inventory_matches_registered_method_paths (unittest.loader._FailedTest.test_api_inventory_matches_registered_method_paths) ... ERROR
+test_external_static_api_detector_fires_and_restores (tests.test_ui_server.HtmlApiBarTests.test_external_static_api_detector_fires_and_restores) ... ok
+test_html_parses_and_all_api_paths_are_registered (tests.test_ui_server.HtmlApiBarTests.test_html_parses_and_all_api_paths_are_registered) ... ok
+test_explicit_value_is_used_verbatim (tests.test_resolume_home_defaults.HomeRelativeDefaultTests.test_explicit_value_is_used_verbatim) ... ok
+test_missing_key_resolves_under_the_running_users_home (tests.test_resolume_home_defaults.HomeRelativeDefaultTests.test_missing_key_resolves_under_the_running_users_home) ... ok
+test_placeholder_is_gone_from_both_defaults_and_the_factory_file (tests.test_resolume_home_defaults.HomeRelativeDefaultTests.test_placeholder_is_gone_from_both_defaults_and_the_factory_file) ... ok
+test_detector_fires_on_a_planted_path_and_not_on_a_clean_one (tests.test_resolume_home_defaults.RealUserHomeNotInShippedTreeTests.test_detector_fires_on_a_planted_path_and_not_on_a_clean_one) ... ok
+test_tracked_files_outside_docs_and_scripts_hold_no_real_user_home (tests.test_resolume_home_defaults.RealUserHomeNotInShippedTreeTests.test_tracked_files_outside_docs_and_scripts_hold_no_real_user_home) ... ok
+
+======================================================================
+ERROR: test_api_inventory_matches_registered_method_paths (unittest.loader._FailedTest.test_api_inventory_matches_registered_method_paths)
+----------------------------------------------------------------------
+AttributeError: type object 'MappingUIServerAPITests' has no attribute 'test_api_inventory_matches_registered_method_paths'
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.127s
+
+FAILED (errors=1)
+HTML API bar: 25 paths registered; HTML parsed; ids unique
+HTML API bar: 26 paths registered; HTML parsed; ids unique
+HTML API bar: 25 paths registered; HTML parsed; ids unique
+HTML API bar: 25 paths registered; HTML parsed; ids unique

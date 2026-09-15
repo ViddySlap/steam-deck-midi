@@ -1,0 +1,585 @@
+{
+  "BASE": {
+    "tag": "before",
+    "argv": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "-u",
+      "-m",
+      "windows.win_recv",
+      "--listen",
+      "127.0.0.1:54720",
+      "--ui-port",
+      "49264",
+      "--map",
+      "config/windows_midi_map.json",
+      "--preset-section",
+      "windows",
+      "--dry-run",
+      "--no-engines",
+      "--no-pulse",
+      "--no-osc-relay"
+    ],
+    "cwd": "/tmp/sdauto-gate/s5/tree-BASE",
+    "pid": 20700,
+    "api_version": [
+      404,
+      "text/html; charset=utf-8",
+      null
+    ],
+    "node_exit": 0,
+    "node_stderr": "",
+    "measure": {
+      "tag": "before",
+      "url": "http://127.0.0.1:49264",
+      "mode": "header",
+      "browser_version": "145.0.7632.6",
+      "controller": {
+        "items": [
+          {
+            "id": "logo",
+            "top": 38.5,
+            "bottom": 66.5,
+            "left": 16,
+            "right": 44
+          },
+          {
+            "id": "H1",
+            "top": 42,
+            "bottom": 63,
+            "left": 54,
+            "right": 553
+          },
+          {
+            "id": "btnReset",
+            "top": 6,
+            "bottom": 33,
+            "left": 563,
+            "right": 667
+          },
+          {
+            "id": "presetWrap",
+            "top": 6,
+            "bottom": 33,
+            "left": 673,
+            "right": 803
+          },
+          {
+            "id": "LABEL",
+            "top": 9.8,
+            "bottom": 29.3,
+            "left": 809,
+            "right": 855
+          },
+          {
+            "id": "sectionSelect",
+            "top": 39,
+            "bottom": 66,
+            "left": 563,
+            "right": 1424
+          },
+          {
+            "id": "btnSectionAdd",
+            "top": 75,
+            "bottom": 96,
+            "left": 563,
+            "right": 644
+          },
+          {
+            "id": "btnSectionRename",
+            "top": 75,
+            "bottom": 96,
+            "left": 650,
+            "right": 751
+          },
+          {
+            "id": "btnSectionDelete",
+            "top": 75,
+            "bottom": 96,
+            "left": 757,
+            "right": 851
+          },
+          {
+            "id": "btnSave",
+            "top": 72,
+            "bottom": 99,
+            "left": 857,
+            "right": 960
+          }
+        ],
+        "item_count": 10,
+        "max_top": 75,
+        "min_bottom": 29.3,
+        "one_row": false,
+        "header_height": 106,
+        "section_select_width": 861,
+        "version_text": null,
+        "controller_pressed": "true",
+        "list_pressed": "false"
+      },
+      "list": {
+        "items": [
+          {
+            "id": "logo",
+            "top": 38.5,
+            "bottom": 66.5,
+            "left": 16,
+            "right": 44
+          },
+          {
+            "id": "H1",
+            "top": 42,
+            "bottom": 63,
+            "left": 54,
+            "right": 553
+          },
+          {
+            "id": "btnReset",
+            "top": 6,
+            "bottom": 33,
+            "left": 563,
+            "right": 667
+          },
+          {
+            "id": "presetWrap",
+            "top": 6,
+            "bottom": 33,
+            "left": 673,
+            "right": 803
+          },
+          {
+            "id": "LABEL",
+            "top": 9.8,
+            "bottom": 29.3,
+            "left": 809,
+            "right": 855
+          },
+          {
+            "id": "sectionSelect",
+            "top": 39,
+            "bottom": 66,
+            "left": 563,
+            "right": 1424
+          },
+          {
+            "id": "btnSectionAdd",
+            "top": 75,
+            "bottom": 96,
+            "left": 563,
+            "right": 644
+          },
+          {
+            "id": "btnSectionRename",
+            "top": 75,
+            "bottom": 96,
+            "left": 650,
+            "right": 751
+          },
+          {
+            "id": "btnSectionDelete",
+            "top": 75,
+            "bottom": 96,
+            "left": 757,
+            "right": 851
+          },
+          {
+            "id": "btnSave",
+            "top": 72,
+            "bottom": 99,
+            "left": 857,
+            "right": 960
+          }
+        ],
+        "item_count": 10,
+        "max_top": 75,
+        "min_bottom": 29.3,
+        "one_row": false,
+        "header_height": 106,
+        "section_select_width": 861,
+        "version_text": null,
+        "controller_pressed": "false",
+        "list_pressed": "true"
+      },
+      "page_errors": []
+    },
+    "pid_gone": true
+  },
+  "HEAD": {
+    "tag": "after",
+    "argv": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "-u",
+      "-m",
+      "windows.win_recv",
+      "--listen",
+      "127.0.0.1:55086",
+      "--ui-port",
+      "49286",
+      "--map",
+      "config/windows_midi_map.json",
+      "--preset-section",
+      "windows",
+      "--dry-run",
+      "--no-engines",
+      "--no-pulse",
+      "--no-osc-relay",
+      "--no-browser"
+    ],
+    "cwd": "/tmp/sdauto-gate/s5/tree-HEAD",
+    "pid": 20721,
+    "api_version": [
+      200,
+      "application/json",
+      {
+        "build_time_utc": "source",
+        "frozen": false,
+        "git_commit": "source",
+        "version": "0.5.0"
+      }
+    ],
+    "node_exit": 0,
+    "node_stderr": "",
+    "measure": {
+      "tag": "after",
+      "url": "http://127.0.0.1:49286",
+      "mode": "header",
+      "browser_version": "145.0.7632.6",
+      "controller": {
+        "items": [
+          {
+            "id": "logo",
+            "top": 9.5,
+            "bottom": 37.5,
+            "left": 16,
+            "right": 44
+          },
+          {
+            "id": "H1",
+            "top": 13,
+            "bottom": 34,
+            "left": 54,
+            "right": 553
+          },
+          {
+            "id": "btnReset",
+            "top": 10,
+            "bottom": 37,
+            "left": 563,
+            "right": 667
+          },
+          {
+            "id": "presetWrap",
+            "top": 10,
+            "bottom": 37,
+            "left": 673,
+            "right": 803
+          },
+          {
+            "id": "LABEL",
+            "top": 13.8,
+            "bottom": 33.3,
+            "left": 809,
+            "right": 855
+          },
+          {
+            "id": "sectionSelect",
+            "top": 10,
+            "bottom": 37,
+            "left": 861,
+            "right": 1021
+          },
+          {
+            "id": "btnSectionAdd",
+            "top": 13,
+            "bottom": 34,
+            "left": 1027,
+            "right": 1107
+          },
+          {
+            "id": "btnSectionRename",
+            "top": 13,
+            "bottom": 34,
+            "left": 1113,
+            "right": 1215
+          },
+          {
+            "id": "btnSectionDelete",
+            "top": 13,
+            "bottom": 34,
+            "left": 1221,
+            "right": 1314
+          },
+          {
+            "id": "btnSave",
+            "top": 10,
+            "bottom": 37,
+            "left": 1320,
+            "right": 1424
+          }
+        ],
+        "item_count": 10,
+        "max_top": 13.8,
+        "min_bottom": 33.3,
+        "one_row": true,
+        "header_height": 48,
+        "section_select_width": 160,
+        "version_text": "v0.5.0 (source)",
+        "controller_pressed": "true",
+        "list_pressed": "false"
+      },
+      "list": {
+        "items": [
+          {
+            "id": "logo",
+            "top": 9.5,
+            "bottom": 37.5,
+            "left": 16,
+            "right": 44
+          },
+          {
+            "id": "H1",
+            "top": 13,
+            "bottom": 34,
+            "left": 54,
+            "right": 553
+          },
+          {
+            "id": "btnReset",
+            "top": 10,
+            "bottom": 37,
+            "left": 563,
+            "right": 667
+          },
+          {
+            "id": "presetWrap",
+            "top": 10,
+            "bottom": 37,
+            "left": 673,
+            "right": 803
+          },
+          {
+            "id": "LABEL",
+            "top": 13.8,
+            "bottom": 33.3,
+            "left": 809,
+            "right": 855
+          },
+          {
+            "id": "sectionSelect",
+            "top": 10,
+            "bottom": 37,
+            "left": 861,
+            "right": 1021
+          },
+          {
+            "id": "btnSectionAdd",
+            "top": 13,
+            "bottom": 34,
+            "left": 1027,
+            "right": 1107
+          },
+          {
+            "id": "btnSectionRename",
+            "top": 13,
+            "bottom": 34,
+            "left": 1113,
+            "right": 1215
+          },
+          {
+            "id": "btnSectionDelete",
+            "top": 13,
+            "bottom": 34,
+            "left": 1221,
+            "right": 1314
+          },
+          {
+            "id": "btnSave",
+            "top": 10,
+            "bottom": 37,
+            "left": 1320,
+            "right": 1424
+          }
+        ],
+        "item_count": 10,
+        "max_top": 13.8,
+        "min_bottom": 33.3,
+        "one_row": true,
+        "header_height": 48,
+        "section_select_width": 160,
+        "version_text": "v0.5.0 (source)",
+        "controller_pressed": "false",
+        "list_pressed": "true"
+      },
+      "page_errors": []
+    },
+    "pid_gone": true
+  },
+  "HEAD-engines": {
+    "tag": "after",
+    "argv": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "-u",
+      "-m",
+      "windows.win_recv",
+      "--listen",
+      "127.0.0.1:61908",
+      "--ui-port",
+      "49311",
+      "--map",
+      "/tmp/sdauto-gate/s5-engines-tree/config/windows_midi_map.json",
+      "--preset-section",
+      "windows",
+      "--dry-run",
+      "--no-pulse",
+      "--no-browser",
+      "--osc-relay-config",
+      "/tmp/sdauto-gate/s5-engines-tree/config/osc_relay.json"
+    ],
+    "cwd": "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi",
+    "pid": 20736,
+    "api_version": [
+      200,
+      "application/json",
+      {
+        "build_time_utc": "source",
+        "frozen": false,
+        "git_commit": "source",
+        "version": "0.5.0"
+      }
+    ],
+    "api_engines_autopilot": {
+      "active": true,
+      "bpm": null,
+      "channels": {
+        "fx": {
+          "beat_in_clip": 0,
+          "beats_per_clip": 32,
+          "clip_mode": "RANDOM",
+          "column_advance": false,
+          "cycle_index": 0,
+          "enabled": true,
+          "group": null,
+          "layer_enabled": {
+            "5": true
+          },
+          "target_layer": null,
+          "transition_seconds": 5.0,
+          "visible_layer": 5
+        },
+        "logo": {
+          "beat_in_clip": 0,
+          "beats_per_clip": 16,
+          "clip_mode": "NONE",
+          "column_advance": true,
+          "cycle_index": 0,
+          "enabled": false,
+          "group": 2,
+          "layer_enabled": {
+            "6": false,
+            "7": true
+          },
+          "target_layer": null,
+          "transition_seconds": 0.0,
+          "visible_layer": null
+        },
+        "video": {
+          "beat_in_clip": 0,
+          "beats_per_clip": 8,
+          "clip_mode": "LINEAR",
+          "column_advance": true,
+          "cycle_index": 0,
+          "enabled": true,
+          "group": 1,
+          "layer_enabled": {
+            "1": true,
+            "2": true,
+            "3": false,
+            "4": false
+          },
+          "target_layer": null,
+          "transition_seconds": 2.5196850393700787,
+          "visible_layer": 1
+        }
+      },
+      "clock_running": true,
+      "clock_source": "midi_clock",
+      "fallback_bpm": 128.0,
+      "fallback_enabled": true,
+      "name": "Autopilot",
+      "pending_column_note": null,
+      "tick_count": 0,
+      "type": "autopilot"
+    },
+    "node_exit": 0,
+    "node_stderr": "",
+    "measure": {
+      "tag": "after",
+      "url": "http://127.0.0.1:49311",
+      "mode": "engines",
+      "browser_version": "145.0.7632.6",
+      "engines_rows": [
+        {
+          "type": "audio_opacity",
+          "checked": true
+        },
+        {
+          "type": "autopilot",
+          "checked": true
+        },
+        {
+          "type": "global_color",
+          "checked": true
+        },
+        {
+          "type": "osc_sync",
+          "checked": true
+        },
+        {
+          "type": "autopilot_ptz",
+          "checked": true
+        },
+        {
+          "type": "bumper_blast",
+          "checked": true
+        },
+        {
+          "type": "chaser_stack_dispatcher",
+          "checked": true
+        },
+        {
+          "type": "flash_blast",
+          "checked": true
+        },
+        {
+          "type": "gyro_feedback",
+          "checked": true
+        },
+        {
+          "type": "l_stick_layer",
+          "checked": true
+        },
+        {
+          "type": "nestdrop",
+          "checked": true
+        },
+        {
+          "type": "ptz_visca",
+          "checked": false
+        },
+        {
+          "type": "stageflow_bridge",
+          "checked": true
+        },
+        {
+          "type": "steam_input_layer_tracker",
+          "checked": true
+        }
+      ],
+      "engines_text_has_channel_state": false,
+      "page_errors": []
+    },
+    "pid_gone": true
+  }
+}

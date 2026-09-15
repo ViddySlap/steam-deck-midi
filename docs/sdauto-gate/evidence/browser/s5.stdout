@@ -1,0 +1,2 @@
+HEAD one row controller/list: (True, True) version: v0.5.0 (source) api: (200, 'application/json', {'build_time_utc': 'source', 'frozen': False, 'git_commit': 'source', 'version': '0.5.0'}) | BASE one row (detector must fire, expect False): False | pids gone: {'BASE': True, 'HEAD': True, 'HEAD-engines': True}
+STEP5 PASS

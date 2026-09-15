@@ -1,0 +1,7 @@
+a skip the restore overlay RED ['Ran 25 tests in 0.220s', 'FAILED (failures=5)'] ['test_channel_and_layer_removed_from_config_are_ignored', 'test_explicit_state_dir_restores_across_two_loads', 'test_inactive_engine_sends_nothing_until_active', 'test_restored_enable_matches_a_live_enable_cc', 'test_five_fields_survive_restart_and_runtime_is_fresh'] | restored GREEN ['Ran 25 tests in 0.201s', 'OK']
+b persist crossfade_start_time RED ['Ran 25 tests in 0.215s', 'FAILED (failures=1)'] ['test_file_on_disk_has_schema_names_and_no_runtime_fields'] | restored GREEN ['Ran 25 tests in 0.205s', 'OK']
+c engine PUT skips filter removal and old.shutdown() RED ['Ran 14 tests in 1.644s', 'FAILED (failures=2)'] ['test_replaced_autopilot_filter_is_gone', 'test_replace_removes_filters_shuts_down_keeps_slot_and_binds'] | restored GREEN ['Ran 14 tests in 1.650s', 'OK']
+d platform function returns True on darwin RED ['Ran 9 tests in 0.031s', 'FAILED (failures=2)'] ['test_darwin_non_tray_never_constructs_or_stops_receiver_tray', 'test_platform_rule'] | restored GREEN ['Ran 9 tests in 0.032s', 'OK']
+e VERSION 0.5.1 with APP_VERSION 0.5.0 RED ['Ran 3 tests in 0.002s', 'FAILED (failures=1)'] ['test_version_file_and_fingerprint_agree'] | restored GREEN ['Ran 3 tests in 0.002s', 'OK']
+f one-byte column-note change (86 -> 96) in autopilot.py, engine_ab.py RED {'A_vs_B_nostate': ['autopilot', 'receiver'], 'A_vs_B_state': ['autopilot', 'receiver']} | restored GREEN
+MUTATIONS PASS

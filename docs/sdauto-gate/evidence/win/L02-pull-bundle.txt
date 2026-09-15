@@ -1,0 +1,15 @@
+BUNDLE_SHA256 fe5eed2d0119740204cef47dbd06c66abfc1a635fd8a846cd91c7b07297c007a
+VERIFY The bundle contains this ref:
+VERIFY a8fec2ad635e141b0634dc9a51c5442dad9fd966 refs/heads/chain/steamdeck-20260914
+VERIFY The bundle requires this ref:
+VERIFY 38de0a4c3dae84411fe2ba06a1ae4d117b13dfec 
+VERIFY The bundle uses this hash algorithm: sha1
+VERIFY C:/Users/Ben/AppData/Local/Temp/sdwin/sdauto-gate/sdpick.bundle is okay
+FETCH From C:\Users\Ben\AppData\Local\Temp\sdwin\sdauto-gate\sdpick.bundle
+FETCH  * branch            chain/steamdeck-20260914 -> FETCH_HEAD
+FETCH_HEAD a8fec2ad635e141b0634dc9a51c5442dad9fd966
+MERGE  create mode 100644 docs/sdauto-a4/scripts/mutants.py
+MERGE  create mode 100644 tests/ui_version_check.cjs
+PINNED_HEAD a8fec2ad635e141b0634dc9a51c5442dad9fd966
+PORCELAIN_LINES 0
+RAIL_EXIT 0

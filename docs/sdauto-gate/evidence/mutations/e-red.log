@@ -1,0 +1,18 @@
+..F
+======================================================================
+FAIL: test_version_file_and_fingerprint_agree (tests.test_ui_server.VersionAgreementTests.test_version_file_and_fingerprint_agree)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/sdauto-gate/s6/tree-e/tests/test_ui_server.py", line 199, in test_version_file_and_fingerprint_agree
+    self.assertEqual(names.get("APP_VERSION"), version)
+AssertionError: '0.5.0' != '0.5.1'
+- 0.5.0
+?     ^
++ 0.5.1
+?     ^
+
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.002s
+
+FAILED (failures=1)

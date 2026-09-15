@@ -1,0 +1,24 @@
+autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49461/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+/private/tmp/sdauto-gate/s6/tree-c/windows/engine_config_api.py:128: ResourceWarning: unclosed <socket.socket fd=6, family=2, type=2, proto=0, laddr=('0.0.0.0', 0)>
+  build_engine(spec, _SilentMidiOut(), state_dir=None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+..autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49464/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+.autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49466/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+.autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49468/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+.autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49472/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+.autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49474/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49474/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+.autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49477/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49477/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+.autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49480/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+.autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49482/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49482/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+.autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49485/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49485/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+...autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49488/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49488/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+.
+----------------------------------------------------------------------
+Ran 14 tests in 1.650s
+
+OK

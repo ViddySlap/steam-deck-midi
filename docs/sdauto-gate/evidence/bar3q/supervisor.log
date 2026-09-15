@@ -1,0 +1,10 @@
+15:39:14 supervisor pid 70428 deadline 17:09:14
+15:40:15 quiet: load1 < 4.0 for 60 s (now 2.94)
+15:40:15 START sens try1
+15:52:01 END sens try1 exit 1
+15:52:01 VALIDITY sens try1 exit 0 ARM_VALIDITY ALL VALID 9 arms
+15:53:01 quiet: load1 < 4.0 for 60 s (now 2.39)
+15:53:01 START clean try1
+16:12:36 END clean try1 exit 1
+16:12:36 VALIDITY clean try1 exit 0 ARM_VALIDITY ALL VALID 15 arms
+16:12:36 DONE

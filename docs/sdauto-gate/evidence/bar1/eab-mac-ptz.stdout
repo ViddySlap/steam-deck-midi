@@ -1,0 +1,112 @@
+{
+ "result": "/tmp/sdauto-gate/bar1/eab-mac-ptz.json",
+ "passed": true,
+ "control": null,
+ "control_expected": null,
+ "error": null,
+ "problems": [],
+ "comparisons": {
+  "A_vs_B_nostate": {
+   "identical_events": true,
+   "identical_filter_decisions": true,
+   "different_sources": []
+  },
+  "A_vs_B_state": {
+   "identical_events": true,
+   "identical_filter_decisions": true,
+   "different_sources": []
+  }
+ },
+ "coverage": [
+  {
+   "engine": "audio_opacity",
+   "covered": true,
+   "arms": {
+    "A": {
+     "midi": 0,
+     "osc": 0
+    },
+    "B_nostate": {
+     "midi": 0,
+     "osc": 0
+    },
+    "B_state": {
+     "midi": 0,
+     "osc": 0
+    }
+   }
+  },
+  {
+   "engine": "autopilot",
+   "covered": true,
+   "arms": {
+    "A": {
+     "midi": 0,
+     "osc": 0
+    },
+    "B_nostate": {
+     "midi": 0,
+     "osc": 0
+    },
+    "B_state": {
+     "midi": 0,
+     "osc": 0
+    }
+   }
+  },
+  {
+   "engine": "global_color",
+   "covered": true,
+   "arms": {
+    "A": {
+     "midi": 3,
+     "osc": 0
+    },
+    "B_nostate": {
+     "midi": 3,
+     "osc": 0
+    },
+    "B_state": {
+     "midi": 3,
+     "osc": 0
+    }
+   }
+  },
+  {
+   "engine": "gyro_feedback",
+   "covered": true,
+   "arms": {
+    "A": {
+     "midi": 60,
+     "osc": 0
+    },
+    "B_nostate": {
+     "midi": 60,
+     "osc": 0
+    },
+    "B_state": {
+     "midi": 60,
+     "osc": 0
+    }
+   }
+  },
+  {
+   "engine": "l_stick_layer",
+   "covered": true,
+   "arms": {
+    "A": {
+     "midi": 0,
+     "osc": 0
+    },
+    "B_nostate": {
+     "midi": 0,
+     "osc": 0
+    },
+    "B_state": {
+     "midi": 0,
+     "osc": 0
+    }
+   }
+  }
+ ]
+}

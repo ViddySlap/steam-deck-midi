@@ -1,0 +1,1888 @@
+== 15:19:03 load1=3.77
+ 25.8  1143 /System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XprotectService.xpc/Contents/MacOS/XprotectService
+ 25.0   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  7.4   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  6.8 70352 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakechat@claude-plugins-off
+  6.3   434 /usr/sbin/coreaudiod
+  4.5 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+   foreign_lines=0 pgrep=[10830 ]
+== 15:19:08 load1=3.79
+ 36.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 14.1   653 /usr/libexec/transparencyd
+ 11.5 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 10.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  9.3 70352 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakechat@claude-plugins-off
+  8.8 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+   foreign_lines=0 pgrep=[]
+== 15:19:13 load1=3.57
+ 34.9   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 12.1   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+ 10.1 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  9.9 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  8.1   434 /usr/sbin/coreaudiod
+  8.1 15632 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --model claude-opus-5 --effort high --settings /Users/viddyslap/.pi-harness/engine
+   foreign_lines=0 pgrep=[]
+== 15:19:18 load1=3.68
+ 39.0   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 12.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+ 10.3 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  9.1 15632 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --model claude-opus-5 --effort high --settings /Users/viddyslap/.pi-harness/engine
+  8.5   434 /usr/sbin/coreaudiod
+  6.7 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:19:23 load1=3.55
+ 29.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 29.3 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 17.7 70352 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakechat@claude-plugins-off
+ 16.9 47736 /Users/viddyslap/Library/Application Support/Claude/claude-code/2.1.270/claude.app/Contents/MacOS/claude --output-format stream-json --verbose --inp
+ 11.4 15632 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --model claude-opus-5 --effort high --settings /Users/viddyslap/.pi-harness/engine
+ 10.4 15719 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --model claude-opus-5 --effort high --settings /Users/viddyslap/.pi-harness/engine
+   foreign_lines=0 pgrep=[]
+== 15:19:29 load1=3.42
+ 30.9   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  9.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  9.2 70352 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakechat@claude-plugins-off
+  9.1  1480 /Applications/Utilities/Adobe Creative Cloud/ACC/Creative Cloud.app/Contents/MacOS/../Frameworks/Creative Cloud UI Helper.app/Contents/MacOS/Creativ
+  8.0   939 /Applications/Utilities/Adobe Creative Cloud/ACC/Creative Cloud.app/Contents/MacOS/Creative Cloud --showwindow=false --onOSstartup=true
+  7.8   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:19:34 load1=3.55
+ 30.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 21.3 15632 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --model claude-opus-5 --effort high --settings /Users/viddyslap/.pi-harness/engine
+ 10.5   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  8.1   434 /usr/sbin/coreaudiod
+  6.9 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  5.4 70352 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakechat@claude-plugins-off
+   foreign_lines=0 pgrep=[]
+== 15:19:39 load1=3.42
+ 20.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 12.8 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 10.3 12450 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/ops/harness-advance.mjs
+ 10.0 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  8.0 15631 /opt/homebrew/bin/tmux new-session -d -s ClaudeRC-lane-sd-m12 -c /Users/viddyslap/Documents/ViddyVault /usr/bin/env -i HOME=/Users/viddyslap PATH=/u
+  6.7 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+   foreign_lines=0 pgrep=[]
+== 15:19:44 load1=3.31
+ 32.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 11.4 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 11.4   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  8.3   434 /usr/sbin/coreaudiod
+  7.4 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  6.0 15632 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --model claude-opus-5 --effort high --settings /Users/viddyslap/.pi-harness/engine
+   foreign_lines=0 pgrep=[]
+== 15:19:49 load1=3.61
+ 53.8 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 42.9 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 28.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 12.1  4138 /Users/viddyslap/Library/Application Support/Claude/claude-code/2.1.270/claude.app/Contents/MacOS/claude --output-format stream-json --verbose --inp
+  8.3   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  7.5 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+   foreign_lines=0 pgrep=[]
+== 15:19:54 load1=3.48
+ 33.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 16.2 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 10.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+ 10.0 74570 /Users/viddyslap/Library/Application Support/Claude/claude-code/2.1.270/claude.app/Contents/MacOS/claude --output-format stream-json --verbose --inp
+  7.9   434 /usr/sbin/coreaudiod
+  6.0 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+   foreign_lines=0 pgrep=[]
+== 15:19:59 load1=3.52
+ 67.9 12359 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 50.4 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 26.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 14.0 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  8.3   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  5.7 18427 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.GPU.xpc/Contents/MacOS/com.apple.WebKit.GPU
+   foreign_lines=0 pgrep=[]
+== 15:20:04 load1=3.48
+100.3 12359 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 42.6 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 23.4 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 19.9   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  5.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.0   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:20:09 load1=3.36
+100.4 12359 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 32.5 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 28.3 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 19.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  5.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.0   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:20:14 load1=3.17
+100.4 12359 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 43.5 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 23.7 15164 node /Users/viddyslap/Documents/project-workspaces/local-LLM-deepseek/qwen-bench/../sandbox/broker.mjs prove-gate /Users/viddyslap/Documents/project
+ 20.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 11.5 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  6.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:20:20 load1=3.24
+122.8 15344 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/local-LLM --continuous
+100.5 12359 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 23.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.3   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  5.0 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  4.6   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:20:25 load1=3.38
+100.2 12359 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 34.9 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 29.3  1143 /System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XprotectService.xpc/Contents/MacOS/XprotectService
+ 21.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 18.6 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+ 17.8 15344 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/local-LLM --continuous
+   foreign_lines=0 pgrep=[]
+== 15:20:30 load1=3.19
+102.3 12359 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 24.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  9.2  4138 /Users/viddyslap/Library/Application Support/Claude/claude-code/2.1.270/claude.app/Contents/MacOS/claude --output-format stream-json --verbose --inp
+  8.2 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  7.0 15925 sshd-session: viddyslap [priv]  
+  6.7 15904 node test-language-authoring.js
+   foreign_lines=0 pgrep=[]
+== 15:20:35 load1=3.49
+101.1 12359 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 30.4  1143 /System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XprotectService.xpc/Contents/MacOS/XprotectService
+ 24.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.6 16019 node test-deploy-lifeos-language.js
+  5.4 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  5.2   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:20:40 load1=3.77
+100.8 12359 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 37.4 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 19.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 14.4 16248 node test-language-authoring.js
+ 11.4 70352 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakechat@claude-plugins-off
+  5.9 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+   foreign_lines=0 pgrep=[]
+== 15:20:45 load1=3.95
+ 99.1 12359 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 45.3  1143 /System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XprotectService.xpc/Contents/MacOS/XprotectService
+ 29.6 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+ 20.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  8.8 17471 node test-deploy-lifeos-language.js
+  6.1   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:20:50 load1=3.95
+ 30.7 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 28.9   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 13.8 17640 node test-language-authoring.js
+  8.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  7.9   434 /usr/sbin/coreaudiod
+  7.2 18427 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.GPU.xpc/Contents/MacOS/com.apple.WebKit.GPU
+   foreign_lines=0 pgrep=[]
+== 15:20:55 load1=3.96
+ 31.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 12.8 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 10.7   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  8.0   434 /usr/sbin/coreaudiod
+  7.6 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  7.3 17632 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+   foreign_lines=0 pgrep=[]
+== 15:21:00 load1=3.72
+ 31.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 15.7 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 12.2 17918 node test-language-app.js
+  9.0 23103 /Applications/RustDesk.app/Contents/MacOS/RustDesk
+  8.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  7.8   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:21:06 load1=3.74
+ 26.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  7.4   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  7.1   434 /usr/sbin/coreaudiod
+  5.8 18087 node test-language-app.js
+  5.6 18091 (node)
+  5.4 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+   foreign_lines=0 pgrep=[]
+== 15:21:11 load1=3.76
+ 29.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 10.1 18191 node test-language-scheduler.js
+ 10.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  8.9 18183 node test-language-authoring.js
+  8.0   434 /usr/sbin/coreaudiod
+  5.8 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+   foreign_lines=0 pgrep=[]
+== 15:21:16 load1=3.62
+101.7 17628 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 27.2  1143 /System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XprotectService.xpc/Contents/MacOS/XprotectService
+ 18.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 13.8 17632 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+ 12.0 19408 node test-deploy-lifeos-language.js
+ 10.3 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+   foreign_lines=0 pgrep=[]
+== 15:21:21 load1=3.89
+100.7 17628 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 18.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+  2.9 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+  2.0 24632 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:21:27 load1=3.82
+101.3 17628 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 17.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 12.4 17632 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  7.7 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  5.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.3   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:21:32 load1=3.83
+101.1 17628 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 17.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 11.1 17632 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  6.9   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  6.4 19855 node test-language-app.js
+  5.4 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:21:37 load1=3.77
+101.6 17628 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 18.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 14.2 19950 node test-language-progress.js
+ 12.6 17632 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+ 11.2 93155 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  6.2 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+   foreign_lines=0 pgrep=[]
+== 15:21:42 load1=4.11
+102.7 17628 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 20.5  1143 /System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XprotectService.xpc/Contents/MacOS/XprotectService
+ 18.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 13.5 17632 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  6.9 20142 node test-language-app.js
+  5.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:21:47 load1=4.02
+100.5 17628 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 18.0   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 10.2 20286 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/ops/harness-advance.mjs
+  9.4 20902 /Users/viddyslap/.codex/packages/standalone/current/bin/codex --version
+  6.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.9   524 /usr/libexec/syspolicyd
+   foreign_lines=0 pgrep=[]
+== 15:21:52 load1=3.63
+100.8 17628 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 27.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 17.8 21540 node test-language-lesson-player.js
+ 13.7 17632 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+ 11.4 17038 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/ViddyVault --continuous
+  9.0 21467 node test-language-authoring.js
+   foreign_lines=0 pgrep=[]
+== 15:21:58 load1=3.58
+104.9 17628 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 20.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 18.6 17632 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+ 12.7 21584 node test-language-scheduler.js
+  5.1   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.4   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:22:03 load1=3.29
+ 39.4 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 27.2 21757 node test-language-authoring.js
+ 25.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  8.2   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  6.8   434 /usr/sbin/coreaudiod
+  4.2 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:22:08 load1=3.43
+ 45.6 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 25.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 13.3 21892 node test-language-runtime.js
+  8.3   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  7.9 15632 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --model claude-opus-5 --effort high --settings /Users/viddyslap/.pi-harness/engine
+  6.7   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:22:13 load1=3.39
+ 39.5 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 32.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 10.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  8.7 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  7.3 21926 node test-atomic-files.js
+  7.2   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:22:18 load1=3.36
+ 63.8 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 38.1 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 33.7 22088 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/ops/harness-advance.mjs
+ 25.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 14.4 22087 node test-language-authoring.js
+  6.9   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:22:23 load1=3.33
+ 29.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 17.3  5345 /System/Library/PrivateFrameworks/IntelligencePlatformCompute.framework/Versions/A/XPCServices/IntelligencePlatformComputeService.xpc/Contents/MacOS
+ 12.1     1 /sbin/launchd
+  9.3   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  8.8 23416 node test-language-app.js
+  8.3 23492 node test-language-progress.js
+   foreign_lines=0 pgrep=[]
+== 15:22:28 load1=3.30
+100.6 21754 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 20.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 16.5 23547 node test-language-progress.js
+ 13.8 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  5.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.2   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:22:33 load1=3.36
+100.9 21754 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 18.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  8.7 23766 sshd-session: [accepted]  
+  5.6 23743 node test-language-app.js
+  5.2   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.8 15632 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --model claude-opus-5 --effort high --settings /Users/viddyslap/.pi-harness/engine
+   foreign_lines=0 pgrep=[]
+== 15:22:38 load1=3.25
+ 98.8 21754 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.4 23795 node test-language-authoring.js
+  4.1   434 /usr/sbin/coreaudiod
+  3.0 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:22:43 load1=3.47
+101.8 21754 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 18.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 10.0 23918 node test-language-scheduler.js
+  5.5   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.7 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  4.1   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:22:49 load1=3.51
+101.3 21754 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.2 24093 node test-language-authoring.js
+ 18.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  5.1   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+  2.9 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:22:54 load1=3.63
+100.7 21754 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 22.5 25351 node test-language-seed.js
+ 18.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 17.7 15344 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/local-LLM --continuous
+  5.7   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:22:59 load1=3.66
+101.0 21754 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 22.6 25660 node test-language-authoring.js
+ 18.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  5.7 25659 node test-language-app.js
+  5.1   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.2   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:23:04 load1=3.61
+ 99.2 21754 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 23.1 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 19.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.5   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+  3.3 74570 /Users/viddyslap/Library/Application Support/Claude/claude-code/2.1.270/claude.app/Contents/MacOS/claude --output-format stream-json --verbose --inp
+   foreign_lines=0 pgrep=[]
+== 15:23:10 load1=3.56
+101.7 21754 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 21.7 25813 node test-language-lesson-player.js
+ 17.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 15.7 25812 node test-language-runtime.js
+  5.2   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.5 15632 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --model claude-opus-5 --effort high --settings /Users/viddyslap/.pi-harness/engine
+   foreign_lines=0 pgrep=[]
+== 15:23:15 load1=3.91
+ 99.9 10863 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B scripts/showready
+ 39.5  1143 /System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XprotectService.xpc/Contents/MacOS/XprotectService
+ 18.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+  3.9   524 /usr/libexec/syspolicyd
+   foreign_lines=0 pgrep=[]
+== 15:23:20 load1=3.84
+ 96.5 26070 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/local-LLM --continuous
+ 29.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 10.2 26091 (node)
+  9.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  6.9   434 /usr/sbin/coreaudiod
+  4.6 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:23:25 load1=3.93
+113.2 26070 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/local-LLM --continuous
+ 35.4 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 23.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  5.1   434 /usr/sbin/coreaudiod
+  4.9 25518 node /Users/viddyslap/Documents/project-workspaces/local-LLM-deepseek/qwen-bench/../sandbox/broker.mjs prove-gate /Users/viddyslap/Documents/project
+   foreign_lines=0 pgrep=[]
+== 15:23:30 load1=3.78
+ 33.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 21.5 70352 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakechat@claude-plugins-off
+ 10.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  8.3   434 /usr/sbin/coreaudiod
+  7.1 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  5.6 15632 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --model claude-opus-5 --effort high --settings /Users/viddyslap/.pi-harness/engine
+   foreign_lines=0 pgrep=[]
+== 15:23:36 load1=3.64
+ 46.1  1143 /System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XprotectService.xpc/Contents/MacOS/XprotectService
+ 26.3 27644 node test-language-lesson-player.js
+ 18.9   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  5.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.7   434 /usr/sbin/coreaudiod
+  4.7 70352 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakechat@claude-plugins-off
+   foreign_lines=0 pgrep=[]
+== 15:23:41 load1=3.58
+ 93.5 26042 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 18.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 15.3 27833 node test-language-authoring.js
+  5.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.4   434 /usr/sbin/coreaudiod
+  3.1 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:23:46 load1=3.78
+101.0 26042 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 31.6 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 18.0   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  8.1 15632 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --model claude-opus-5 --effort high --settings /Users/viddyslap/.pi-harness/engine
+  5.4   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.3   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:23:51 load1=3.79
+100.6 26042 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+100.0 28117 (Python)
+ 18.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 14.2 28120 node test-language-authoring.js
+  5.4   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.8   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:23:56 load1=4.05
+100.5 26042 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 18.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  7.0 28215 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/ops/harness-advance.mjs
+  5.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+  2.9 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:24:01 load1=3.97
+100.5 26042 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 18.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 14.5 29421 node test-deploy-lifeos-language.js
+ 11.9 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  5.9   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:24:06 load1=3.97
+100.5 26042 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 13.1 29580 node test-language-authoring.js
+  5.7   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+  2.9 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:24:11 load1=3.73
+101.8 26042 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 18.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  5.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  3.9  1597 /Library/Application Support/Adobe/Adobe Desktop Common/ADS/Adobe Desktop Service.app/Contents/MacOS/Adobe Desktop Service --onOSstartup=true --show
+  3.9   434 /usr/sbin/coreaudiod
+  3.8 29749 node test-language-progress.js
+   foreign_lines=0 pgrep=[]
+== 15:24:16 load1=3.67
+100.8 26042 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 25.0   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  5.9   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  5.5 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  5.0 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  4.2   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:24:22 load1=3.86
+101.1 26042 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.1   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+  3.0 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+  2.2   401 /System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow console
+   foreign_lines=0 pgrep=[]
+== 15:24:27 load1=3.87
+ 99.2 26042 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 46.4 30005 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/ops/harness-advance.mjs
+ 24.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 21.2 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 10.9 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  6.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:24:32 load1=3.72
+ 30.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  9.7   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  9.0 31245 sshd-session: [accepted]  
+  8.5 31227 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  7.8   434 /usr/sbin/coreaudiod
+  6.2 15632 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --model claude-opus-5 --effort high --settings /Users/viddyslap/.pi-harness/engine
+   foreign_lines=0 pgrep=[]
+== 15:24:37 load1=3.50
+ 45.4 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 27.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 21.2 31227 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  8.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  7.5   434 /usr/sbin/coreaudiod
+  4.9 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+   foreign_lines=0 pgrep=[]
+== 15:24:42 load1=3.38
+ 36.7 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+ 35.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  9.4 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  9.1   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  7.8   434 /usr/sbin/coreaudiod
+  5.3 31227 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+   foreign_lines=0 pgrep=[]
+== 15:24:47 load1=3.35
+ 29.9   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  9.4   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  8.4 31227 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  8.3   434 /usr/sbin/coreaudiod
+  7.5 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  5.5 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+   foreign_lines=0 pgrep=[]
+== 15:24:52 load1=3.32
+ 90.6 17038 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/ViddyVault --continuous
+ 40.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 17.8 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 14.2 70352 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakechat@claude-plugins-off
+ 10.8 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+ 10.4   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:24:57 load1=3.27
+101.7 31217 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 91.5 17038 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/ViddyVault --continuous
+ 27.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 13.6 31227 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  6.4   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  5.6 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+   foreign_lines=0 pgrep=[]
+== 15:25:02 load1=4.53
+100.7 31217 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 24.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 16.7 32820 /System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared -s mdworker -c MDSImporterWorker 
+ 15.7 32797 /opt/homebrew/Cellar/node/26.0.0/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-deepseek/qwen-bench/gates/browser-probe.mjs /Users
+ 15.4 32825 /System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared -s mdworker -c MDSImporterWorker 
+ 15.3 32823 /System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared -s mdworker -c MDSImporterWorker 
+   foreign_lines=0 pgrep=[]
+== 15:25:07 load1=4.49
+100.6 31217 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 90.5 17038 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/ViddyVault --continuous
+ 27.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 15.6 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 14.5 31227 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  6.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:25:13 load1=4.61
+101.8 31217 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 90.3 17038 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/ViddyVault --continuous
+ 38.7 32952 /opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -
+ 22.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 12.3 31227 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  9.4 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+   foreign_lines=0 pgrep=[]
+== 15:25:18 load1=4.56
+100.7 31217 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 53.8 17038 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/ViddyVault --continuous
+ 23.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 15.0 31227 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+ 12.5 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  6.5   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:25:23 load1=4.52
+101.2 31217 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 28.9     1 /sbin/launchd
+ 19.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 13.5 31227 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  6.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.3   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:25:28 load1=4.39
+100.2 31217 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 18.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 15.1 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 13.4 31227 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  6.4   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  5.4   575 /System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/Versions/A/Support/mds_stores
+   foreign_lines=0 pgrep=[]
+== 15:25:33 load1=4.28
+101.2 31217 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 18.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 11.8 31227 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  6.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.2   434 /usr/sbin/coreaudiod
+  3.1 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:25:38 load1=4.18
+ 99.9 31217 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  7.4 31227 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  6.2 70352 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakechat@claude-plugins-off
+  6.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:25:43 load1=4.08
+ 82.2 10863 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B scripts/showready
+ 32.8   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+ 24.5 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 20.4 34451 /opt/homebrew/Cellar/node/26.0.0/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-deepseek/qwen-bench/gates/browser-probe.mjs /Users
+ 18.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 13.6   712 /System/Library/CoreServices/ReportCrash agent
+   foreign_lines=0 pgrep=[]
+== 15:25:48 load1=4.16
+ 36.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 11.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+ 10.4 15632 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --model claude-opus-5 --effort high --settings /Users/viddyslap/.pi-harness/engine
+  8.2   434 /usr/sbin/coreaudiod
+  7.5 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  6.2   964 /Applications/Ice.app/Contents/MacOS/Ice
+   foreign_lines=0 pgrep=[]
+== 15:25:53 load1=4.06
+ 27.9   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  9.1   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  8.3     1 /sbin/launchd
+  7.1  1143 /System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XprotectService.xpc/Contents/MacOS/XprotectService
+  7.0   434 /usr/sbin/coreaudiod
+  6.2 70352 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakechat@claude-plugins-off
+   foreign_lines=0 pgrep=[]
+== 15:25:58 load1=3.98
+ 35.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 11.3   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  9.5 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  9.5 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  8.0   434 /usr/sbin/coreaudiod
+  7.2   575 /System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/Versions/A/Support/mds_stores
+   foreign_lines=0 pgrep=[]
+== 15:26:03 load1=3.98
+ 17.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  9.7 34720 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/ops/harness-advance.mjs
+  7.0 15631 /opt/homebrew/bin/tmux new-session -d -s ClaudeRC-lane-sd-m12 -c /Users/viddyslap/Documents/ViddyVault /usr/bin/env -i HOME=/Users/viddyslap PATH=/u
+  5.3   524 /usr/libexec/syspolicyd
+  5.2   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+   foreign_lines=0 pgrep=[]
+== 15:26:09 load1=3.90
+ 34.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 11.2   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  8.4   434 /usr/sbin/coreaudiod
+  8.1 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  6.8 15632 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --model claude-opus-5 --effort high --settings /Users/viddyslap/.pi-harness/engine
+  5.9 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:26:14 load1=3.75
+101.3 34482 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 18.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  5.7   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.0   434 /usr/sbin/coreaudiod
+  3.0 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+  2.1 15632 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --model claude-opus-5 --effort high --settings /Users/viddyslap/.pi-harness/engine
+   foreign_lines=0 pgrep=[]
+== 15:26:19 load1=3.77
+ 99.4 34482 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.9   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  5.7   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.0   434 /usr/sbin/coreaudiod
+  3.8 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  3.0 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:26:24 load1=3.79
+101.7 34482 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 34.6 36109 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/local-LLM --continuous
+ 19.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.0   434 /usr/sbin/coreaudiod
+  3.4 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:26:29 load1=4.21
+100.4 34482 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 10.7  4138 /Users/viddyslap/Library/Application Support/Claude/claude-code/2.1.270/claude.app/Contents/MacOS/claude --output-format stream-json --verbose --inp
+  6.2   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+  3.0 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:26:34 load1=4.19
+100.9 34482 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 72.9 17038 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/ViddyVault --continuous
+ 31.8 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 22.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  7.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.6 36330 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/ops/harness-advance.mjs
+   foreign_lines=0 pgrep=[]
+== 15:26:39 load1=4.01
+100.5 34482 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 89.6 17038 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/ViddyVault --continuous
+ 23.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  7.3   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+  3.8 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:26:44 load1=4.09
+ 99.5 34482 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 90.1 17038 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/ViddyVault --continuous
+ 23.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  7.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.3   434 /usr/sbin/coreaudiod
+  3.8 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:26:49 load1=3.92
+100.2 34482 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 11.3 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  6.3   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.0   434 /usr/sbin/coreaudiod
+  3.0 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:26:54 load1=3.85
+100.5 34482 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.9   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.2   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1 36172 /Users/viddyslap/.cache/puppeteer/chrome-headless-shell/mac_arm-150.0.7871.24/chrome-headless-shell-mac-arm64/chrome-headless-shell --allow-pre-comm
+  4.0   434 /usr/sbin/coreaudiod
+  3.8 36176 /Users/viddyslap/.cache/puppeteer/chrome-headless-shell/mac_arm-150.0.7871.24/chrome-headless-shell-mac-arm64/chrome-headless-shell --type=renderer 
+   foreign_lines=0 pgrep=[]
+== 15:26:59 load1=3.70
+ 99.4 10863 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B scripts/showready
+ 18.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.1   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.2   434 /usr/sbin/coreaudiod
+  3.5   734 /System/Library/PrivateFrameworks/CoreDuetContext.framework/Resources/ContextStoreAgent
+  2.9 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:27:05 load1=3.65
+ 37.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 12.9   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+ 10.4 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  8.7 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  8.4   434 /usr/sbin/coreaudiod
+  6.9 70352 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakechat@claude-plugins-off
+   foreign_lines=0 pgrep=[]
+== 15:27:10 load1=3.43
+ 37.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 12.7   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+ 10.2 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  8.9   434 /usr/sbin/coreaudiod
+  6.5 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+  6.1 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+   foreign_lines=0 pgrep=[]
+== 15:27:15 load1=3.80
+ 37.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 12.4   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+ 10.3 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  8.5   434 /usr/sbin/coreaudiod
+  7.6 70352 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakechat@claude-plugins-off
+  6.7 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+   foreign_lines=0 pgrep=[]
+== 15:27:20 load1=3.57
+ 34.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 11.9   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+ 10.4 70352 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakechat@claude-plugins-off
+  9.6 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  8.4   434 /usr/sbin/coreaudiod
+  6.3 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:27:25 load1=3.37
+ 42.4 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 27.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  9.3   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  8.1 68152 /System/Applications/Weather.app/Contents/PlugIns/WeatherWidget.appex/Contents/MacOS/WeatherWidget
+  7.4   405 /usr/libexec/runningboardd
+  7.0   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:27:30 load1=3.26
+100.9 37725 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 17.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  5.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+  3.0 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+  2.8 70352 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakechat@claude-plugins-off
+   foreign_lines=0 pgrep=[]
+== 15:27:35 load1=3.24
+ 99.5 37725 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 17.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  5.9   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.0   434 /usr/sbin/coreaudiod
+  3.2 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+  2.4 70352 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakechat@claude-plugins-off
+   foreign_lines=0 pgrep=[]
+== 15:27:40 load1=3.38
+100.0 37725 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 17.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 11.8 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  6.1   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+  3.0 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:27:45 load1=3.27
+100.7 37725 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 17.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.3   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.0   434 /usr/sbin/coreaudiod
+  3.0 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+  1.9 70352 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakechat@claude-plugins-off
+   foreign_lines=0 pgrep=[]
+== 15:27:50 load1=3.09
+100.3 37725 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.0   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  5.9   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+  3.0 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+  2.1 24632 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:27:55 load1=2.92
+100.9 37725 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 24.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 11.0   575 /System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/Versions/A/Support/mds_stores
+  6.6 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  6.3 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  5.9   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:28:01 load1=2.92
+101.7 37725 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 33.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 14.5 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  7.7 18424 /Applications/HarnessControl.app/Contents/MacOS/HarnessControl
+  6.1   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  6.0 18427 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.GPU.xpc/Contents/MacOS/com.apple.WebKit.GPU
+   foreign_lines=0 pgrep=[]
+== 15:28:06 load1=3.17
+ 99.4 37725 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 22.9   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 15.3 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  8.4 40815 /System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared -s mdworker -c MDSImporterWorker 
+  6.5 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  6.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:28:11 load1=3.32
+ 99.2 37725 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 28.7   956 /usr/libexec/duetexpertd
+ 22.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 13.2 40857 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/ops/harness-advance.mjs
+ 12.5   524 /usr/libexec/syspolicyd
+ 12.4 47736 /Users/viddyslap/Library/Application Support/Claude/claude-code/2.1.270/claude.app/Contents/MacOS/claude --output-format stream-json --verbose --inp
+   foreign_lines=0 pgrep=[]
+== 15:28:16 load1=3.45
+100.0 41101 DropboxUpdater --server --service=update --enable-logging --vmodule=*/components/update_client/*=2,*/chrome/updater/*=2
+100.0 10863 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B scripts/showready
+ 23.6 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 19.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 13.6 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  6.9   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:28:21 load1=3.33
+ 99.1 41101 DropboxUpdater --server --service=update --enable-logging --vmodule=*/components/update_client/*=2,*/chrome/updater/*=2
+ 26.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 16.7 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+ 11.8 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 10.1 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  9.3 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+   foreign_lines=0 pgrep=[]
+== 15:28:26 load1=3.39
+147.2 42194 /var/folders/vb/6mgyw2_n36q__70ktdxq98kc0000gn/T/.org.chromium.Chromium.cyQcs6/.install /var/folders/vb/6mgyw2_n36q__70ktdxq98kc0000gn/T/.org.chromi
+ 57.7  1143 /System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XprotectService.xpc/Contents/MacOS/XprotectService
+ 23.6 42158 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+ 20.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 16.0   524 /usr/libexec/syspolicyd
+ 13.0 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+   foreign_lines=0 pgrep=[]
+== 15:28:31 load1=3.52
+ 31.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 22.0 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 15.7 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  9.8 42276 sshd-session: viddyslap [priv]  
+  9.8 42158 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  8.7   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:28:36 load1=3.72
+151.3   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+ 48.1 42320 /Applications/Dropbox.app/Contents/PlugIns/DropboxFileProvider.appex/Contents/MacOS/DropboxFileProvider
+ 27.9   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 27.6 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 19.1  1799 /System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/Versions/A/Support/mdworker -s mdworker-sizing -c MDSSizingWorker -m
+ 18.1 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+   foreign_lines=0 pgrep=[]
+== 15:28:41 load1=5.02
+145.7   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+ 30.8   771 /usr/libexec/siriknowledged
+ 27.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 24.3 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 18.6 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  9.8   367 /usr/libexec/opendirectoryd
+   foreign_lines=0 pgrep=[]
+== 15:28:46 load1=7.90
+186.2   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+101.3 42090 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 87.6 42499 /Applications/Dropbox.app/Contents/MacOS/Dropbox /firstrunupdate 954
+ 23.7 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 23.4 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 19.2   869 /System/Library/PrivateFrameworks/AXAssetLoader.framework/Support/axassetsd
+   foreign_lines=0 pgrep=[]
+== 15:28:52 load1=7.59
+149.3   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+119.4 42499 /Applications/Dropbox.app/Contents/MacOS/Dropbox /firstrunupdate 954
+100.7 42090 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 24.6 43847 /Applications/Dropbox.app/Contents/Frameworks/Dropbox Helper (Renderer).app/Contents/MacOS/Dropbox Helper (Renderer) --type=renderer --user-data-dir
+ 23.6 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 22.7 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+   foreign_lines=0 pgrep=[]
+== 15:28:57 load1=8.10
+139.8   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+100.0 42090 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 40.9 42499 /Applications/Dropbox.app/Contents/MacOS/Dropbox /firstrunupdate 954
+ 25.2 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 18.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 17.7 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+   foreign_lines=0 pgrep=[]
+== 15:29:02 load1=7.69
+161.3   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+100.7 42090 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 34.6 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 33.6 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 17.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 12.7 42158 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+   foreign_lines=0 pgrep=[]
+== 15:29:07 load1=7.64
+162.1   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+101.8 42090 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 58.2 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 38.1 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 17.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 12.7 42158 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+   foreign_lines=0 pgrep=[]
+== 15:29:12 load1=7.27
+169.8   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+102.0 42090 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 36.6 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 36.5 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 16.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 14.9 42158 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+   foreign_lines=0 pgrep=[]
+== 15:29:17 load1=6.92
+170.2   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+100.7 42090 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 36.7 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 35.8 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 30.9 44081 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/ops/harness-advance.mjs
+ 18.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+   foreign_lines=0 pgrep=[]
+== 15:29:22 load1=6.85
+164.4   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+100.9 42090 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 66.4 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 18.3 15632 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --model claude-opus-5 --effort high --settings /Users/viddyslap/.pi-harness/engine
+ 16.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 13.6 42158 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+   foreign_lines=0 pgrep=[]
+== 15:29:27 load1=7.02
+155.6   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+117.8 41698 /Applications/ChatGPT.app/Contents/MacOS/ChatGPT
+100.1 42090 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 47.6 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 33.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 10.8 44442 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/local-LLM --continuous
+   foreign_lines=0 pgrep=[]
+== 15:29:32 load1=6.94
+158.3   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+ 98.6 10863 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B scripts/showready
+ 50.4 44442 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/local-LLM --continuous
+ 47.7 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 23.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 10.2   367 /usr/libexec/opendirectoryd
+   foreign_lines=0 pgrep=[]
+== 15:29:37 load1=7.11
+148.2   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+ 45.1 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 37.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 17.8 17038 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/ViddyVault --continuous
+ 15.1   575 /System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/Versions/A/Support/mds_stores
+ 13.6   367 /usr/libexec/opendirectoryd
+   foreign_lines=0 pgrep=[]
+== 15:29:42 load1=7.18
+139.7   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+ 48.9 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+ 41.2 44442 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/local-LLM --continuous
+ 32.9   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 32.3 41698 /Applications/ChatGPT.app/Contents/MacOS/ChatGPT
+ 13.5   367 /usr/libexec/opendirectoryd
+   foreign_lines=0 pgrep=[]
+== 15:29:48 load1=7.00
+151.6   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+ 34.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 17.5 47736 /Users/viddyslap/Library/Application Support/Claude/claude-code/2.1.270/claude.app/Contents/MacOS/claude --output-format stream-json --verbose --inp
+ 12.1 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+ 11.5   367 /usr/libexec/opendirectoryd
+  9.4 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+   foreign_lines=0 pgrep=[]
+== 15:29:53 load1=6.68
+152.3   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+ 26.0     1 /sbin/launchd
+ 22.0   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  9.5   367 /usr/libexec/opendirectoryd
+  7.0 45681 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/ops/harness-advance.mjs
+  6.1 15631 /opt/homebrew/bin/tmux new-session -d -s ClaudeRC-lane-sd-m12 -c /Users/viddyslap/Documents/ViddyVault /usr/bin/env -i HOME=/Users/viddyslap PATH=/u
+   foreign_lines=0 pgrep=[]
+== 15:29:58 load1=6.31
+136.0   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+ 35.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 23.9 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 15.4   367 /usr/libexec/opendirectoryd
+ 11.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  9.8 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+   foreign_lines=0 pgrep=[]
+== 15:30:03 load1=6.28
+171.0   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+100.9 45522 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 17.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  9.6   367 /usr/libexec/opendirectoryd
+  5.8 42313 /System/Library/PrivateFrameworks/HelpData.framework/Versions/A/Resources/helpd
+  4.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:30:08 load1=6.26
+155.7   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+100.3 45522 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 29.3 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 20.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 13.3 42313 /System/Library/PrivateFrameworks/HelpData.framework/Versions/A/Resources/helpd
+ 11.1   367 /usr/libexec/opendirectoryd
+   foreign_lines=0 pgrep=[]
+== 15:30:13 load1=6.32
+154.4   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+101.7 45522 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 21.8 42313 /System/Library/PrivateFrameworks/HelpData.framework/Versions/A/Resources/helpd
+ 20.0 44442 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/local-LLM --continuous
+ 19.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 18.4 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+   foreign_lines=0 pgrep=[]
+== 15:30:18 load1=6.05
+153.1   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+100.6 45522 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 18.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  9.5   367 /usr/libexec/opendirectoryd
+  5.3   745 /System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/Versions/A/Support/corespotlightd
+  4.7   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:30:23 load1=5.97
+166.5   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+ 99.0 45522 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 17.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  9.3   367 /usr/libexec/opendirectoryd
+  5.5   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.7     1 /sbin/launchd
+   foreign_lines=0 pgrep=[]
+== 15:30:28 load1=6.05
+158.7   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+100.4 45522 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 21.0   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 10.7   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  9.2   367 /usr/libexec/opendirectoryd
+  7.8   624 /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+   foreign_lines=0 pgrep=[]
+== 15:30:33 load1=6.21
+173.7   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+100.3 45522 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 17.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  9.4   367 /usr/libexec/opendirectoryd
+  8.4 48258 sshd-session: viddyslap [priv]  
+  5.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:30:38 load1=6.19
+171.8   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+101.2 45522 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 17.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  9.0 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  7.3   367 /usr/libexec/opendirectoryd
+  4.7   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:30:44 load1=6.09
+156.9   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+101.6 45522 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 18.0   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 16.5   807 /usr/sbin/spindump
+ 10.9   367 /usr/libexec/opendirectoryd
+  5.2   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:30:49 load1=6.09
+160.5   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+ 96.1 10863 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B scripts/showready
+ 17.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 14.4 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  9.0   367 /usr/libexec/opendirectoryd
+  8.6 42499 /Applications/Dropbox.app/Contents/MacOS/Dropbox /firstrunupdate 954
+   foreign_lines=0 pgrep=[]
+== 15:30:54 load1=6.00
+169.3   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+ 51.5 48384 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 31.0 10863 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B scripts/showready
+ 16.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  7.4   367 /usr/libexec/opendirectoryd
+  4.3   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:30:59 load1=5.92
+148.1   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+ 31.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 23.4 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 13.0   367 /usr/libexec/opendirectoryd
+  9.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  8.9 15632 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --model claude-opus-5 --effort high --settings /Users/viddyslap/.pi-harness/engine
+   foreign_lines=0 pgrep=[]
+== 15:31:04 load1=5.85
+156.9   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+ 33.0 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 28.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 14.8   367 /usr/libexec/opendirectoryd
+  9.3   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  7.5 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+   foreign_lines=0 pgrep=[]
+== 15:31:09 load1=5.62
+155.6   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+ 31.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 19.9 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 13.8   367 /usr/libexec/opendirectoryd
+  9.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  7.6 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+   foreign_lines=0 pgrep=[]
+== 15:31:14 load1=5.41
+152.8   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+ 35.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 14.5   367 /usr/libexec/opendirectoryd
+ 10.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  8.1   434 /usr/sbin/coreaudiod
+  7.4 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+   foreign_lines=0 pgrep=[]
+== 15:31:19 load1=5.29
+164.4   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+ 99.3 48384 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 17.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 10.2   367 /usr/libexec/opendirectoryd
+  9.9 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  9.4 42514 /Applications/Dropbox.app/Contents/PlugIns/DropboxFileProvider.appex/Contents/MacOS/DropboxFileProvider
+   foreign_lines=0 pgrep=[]
+== 15:31:24 load1=5.27
+172.6   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+100.3 48384 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 17.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  8.7   367 /usr/libexec/opendirectoryd
+  4.4   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  3.8   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:31:29 load1=5.17
+170.9   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+101.4 48384 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 16.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  8.6   367 /usr/libexec/opendirectoryd
+  4.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  3.9   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:31:35 load1=5.16
+170.5   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+ 99.8 48384 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 16.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  7.5   367 /usr/libexec/opendirectoryd
+  7.1 49765 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/ops/harness-advance.mjs
+  4.7   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:31:40 load1=4.98
+161.0   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+ 99.7 48384 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 16.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 10.4   367 /usr/libexec/opendirectoryd
+  4.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  3.9   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:31:45 load1=5.06
+101.1 48384 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 11.2   332 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+  6.1   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.0   434 /usr/sbin/coreaudiod
+  2.8 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:31:50 load1=4.82
+101.0 48384 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.0   434 /usr/sbin/coreaudiod
+  3.0 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+  2.1 24632 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:31:55 load1=4.67
+101.5 48384 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 39.3 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 19.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.2   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.0   434 /usr/sbin/coreaudiod
+  3.0 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:32:00 load1=4.38
+101.0 48384 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  5.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.0   434 /usr/sbin/coreaudiod
+  2.9 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+  2.1 24632 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:32:05 load1=4.35
+ 24.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 13.3 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  8.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  6.5   434 /usr/sbin/coreaudiod
+  4.5 15719 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --model claude-opus-5 --effort high --settings /Users/viddyslap/.pi-harness/engine
+  4.2 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:32:10 load1=4.16
+100.0 10863 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B scripts/showready
+ 19.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 16.5 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  6.5   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+  3.3 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:32:15 load1=3.91
+ 36.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 19.2 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 14.5 52304 node /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/timing_browser.cjs http://127.0.0.1:56515 /private/tmp/sdauto-g
+ 11.2 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+ 10.3 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+ 10.2   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:32:20 load1=3.75
+113.6 52374 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/local-LLM --continuous
+ 50.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 11.3 52307 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  9.4   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  8.0 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  7.7   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:32:25 load1=4.33
+ 92.7 52374 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/local-LLM --continuous
+ 40.0   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 17.5 42499 /Applications/Dropbox.app/Contents/MacOS/Dropbox /firstrunupdate 954
+ 16.6 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 11.4   434 /usr/sbin/coreaudiod
+  9.6 52307 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+   foreign_lines=0 pgrep=[]
+== 15:32:31 load1=4.07
+ 41.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 11.9   434 /usr/sbin/coreaudiod
+ 10.7   912 /Users/viddyslap/Applications/ViddyDictate.app/Contents/MacOS/ViddyDictate
+ 10.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  9.0 52307 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  8.9 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+   foreign_lines=0 pgrep=[]
+== 15:32:36 load1=3.90
+ 39.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 17.7 35130 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python /Users/viddyslap/Lib
+ 13.6   912 /Users/viddyslap/Applications/ViddyDictate.app/Contents/MacOS/ViddyDictate
+  8.9   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  8.7 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  7.8 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+   foreign_lines=0 pgrep=[]
+== 15:32:41 load1=4.15
+150.5 41815 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/152.0.7977.83/Helpers/Codex (Renderer).app/Contents/MacOS/Codex (Re
+ 99.6 52303 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 20.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 14.3 52554 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/ops/harness-advance.mjs
+ 13.9 52307 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+ 12.2 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+   foreign_lines=0 pgrep=[]
+== 15:32:46 load1=4.62
+102.1 52303 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 23.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 19.4 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 13.6 52307 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+ 13.6 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  8.9 47736 /Users/viddyslap/Library/Application Support/Claude/claude-code/2.1.270/claude.app/Contents/MacOS/claude --output-format stream-json --verbose --inp
+   foreign_lines=0 pgrep=[]
+== 15:32:51 load1=4.73
+101.9 52303 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 13.2 52307 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  5.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+  2.9 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:32:56 load1=4.75
+101.4 52303 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 11.7 52307 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  6.2   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  6.0 52374 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/local-LLM --continuous
+  4.2   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:33:01 load1=4.53
+100.4 52303 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 23.4 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 20.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 12.3 52307 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  5.9   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  5.6 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+   foreign_lines=0 pgrep=[]
+== 15:33:06 load1=4.41
+100.9 52303 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 20.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 11.2 52307 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  6.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.9 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  4.3   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:33:11 load1=4.69
+100.6 52303 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 33.9 53943 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/ops/harness-advance.mjs
+ 18.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 14.8 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 13.2 52307 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  5.9   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:33:16 load1=4.72
+101.7 52303 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 20.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 12.3 52307 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  9.1 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  5.9   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.2   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:33:21 load1=4.58
+ 99.8 52303 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  8.7 52307 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  6.3   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+  3.0 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:33:26 load1=4.37
+ 99.3 10863 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B scripts/showready
+ 19.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.1   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.0   434 /usr/sbin/coreaudiod
+  3.1 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+  2.8 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+   foreign_lines=0 pgrep=[]
+== 15:33:32 load1=4.18
+ 99.5 10863 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B scripts/showready
+ 19.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.1   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+  2.9 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+  2.4 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+   foreign_lines=0 pgrep=[]
+== 15:33:37 load1=4.25
+ 36.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 11.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+ 10.3 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  8.4   434 /usr/sbin/coreaudiod
+  6.4 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  6.3 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:33:42 load1=3.99
+ 36.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 12.1   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+ 10.0 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  8.4   434 /usr/sbin/coreaudiod
+  7.8 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  6.5 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:33:47 load1=3.83
+ 35.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 11.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  9.7 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  8.4   434 /usr/sbin/coreaudiod
+  6.6 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  6.3 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:33:52 load1=4.32
+ 31.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 21.7 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 10.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  8.7 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  7.7   434 /usr/sbin/coreaudiod
+  6.3 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+   foreign_lines=0 pgrep=[]
+== 15:33:57 load1=4.06
+ 96.9 55254 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 20.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.3   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+  3.6 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  3.2 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:34:02 load1=3.81
+101.0 55254 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 20.0   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  5.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  3.9   434 /usr/sbin/coreaudiod
+  3.0 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+  2.2 24632 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:34:07 load1=3.67
+101.1 55254 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  7.9 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  6.4   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  5.9 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  4.0   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:34:12 load1=3.61
+100.6 55254 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 20.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.2   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.0   434 /usr/sbin/coreaudiod
+  3.1 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+  2.0 24632 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:34:17 load1=3.72
+101.2 55254 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  9.2 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  5.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.0   434 /usr/sbin/coreaudiod
+  3.9 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+   foreign_lines=0 pgrep=[]
+== 15:34:23 load1=3.75
+ 99.4 55254 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 30.0     1 /sbin/launchd
+ 19.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.0   434 /usr/sbin/coreaudiod
+  3.0 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:34:28 load1=3.56
+100.6 55254 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.9   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 14.5 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  6.1   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.2 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  4.0   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:34:33 load1=3.35
+100.3 55254 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  5.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  3.9   434 /usr/sbin/coreaudiod
+  3.8   367 /usr/libexec/opendirectoryd
+  3.6   399 /System/Library/PrivateFrameworks/TCC.framework/Support/tccd system
+   foreign_lines=0 pgrep=[]
+== 15:34:38 load1=3.80
+100.9 55254 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 53.2 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+ 19.5 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 19.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  7.4 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  6.4   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:34:43 load1=3.66
+ 56.3 55254 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 42.3 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 20.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.4   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.4   434 /usr/sbin/coreaudiod
+  3.4 74570 /Users/viddyslap/Library/Application Support/Claude/claude-code/2.1.270/claude.app/Contents/MacOS/claude --output-format stream-json --verbose --inp
+   foreign_lines=0 pgrep=[]
+== 15:34:48 load1=3.53
+ 99.0 10863 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B scripts/showready
+ 19.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 18.9 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 10.2 58080 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/ops/harness-advance.mjs
+  5.6   964 /Applications/Ice.app/Contents/MacOS/Ice
+  5.2   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:34:53 load1=3.40
+ 36.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 12.7     1 /sbin/launchd
+ 12.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  9.4 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  8.4   434 /usr/sbin/coreaudiod
+  8.2   996 /Applications/Utilities/Adobe Creative Cloud Experience/CCXProcess/CCXProcess.app/Contents/MacOS/Creative Cloud Content Manager.node /Applications/U
+   foreign_lines=0 pgrep=[]
+== 15:34:58 load1=3.53
+ 33.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 24.2 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  9.6 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  9.5   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  7.3   434 /usr/sbin/coreaudiod
+  6.5 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+   foreign_lines=0 pgrep=[]
+== 15:35:03 load1=3.25
+ 37.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 11.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  8.6 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  8.4   434 /usr/sbin/coreaudiod
+  7.3 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  6.1 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:35:08 load1=3.15
+ 35.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 19.8 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 11.5   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  9.6 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  9.4 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  8.2   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:35:13 load1=3.14
+ 46.9   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 12.5   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+ 12.2   434 /usr/sbin/coreaudiod
+ 10.8 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  8.6   912 /Users/viddyslap/Applications/ViddyDictate.app/Contents/MacOS/ViddyDictate
+  7.1 47736 /Users/viddyslap/Library/Application Support/Claude/claude-code/2.1.270/claude.app/Contents/MacOS/claude --output-format stream-json --verbose --inp
+   foreign_lines=0 pgrep=[]
+== 15:35:19 load1=3.12
+100.2 59263 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 22.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  9.2 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  6.6 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  5.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  5.2 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+   foreign_lines=0 pgrep=[]
+== 15:35:24 load1=3.11
+101.4 59263 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 33.4 91178 /Applications/Claude.app/Contents/MacOS/Claude
+ 22.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 22.0 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  6.2   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  5.8   745 /System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/Versions/A/Support/corespotlightd
+   foreign_lines=0 pgrep=[]
+== 15:35:29 load1=3.18
+101.6 59263 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  5.9   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  3.9   434 /usr/sbin/coreaudiod
+  3.0 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+  2.0 24632 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:35:34 load1=3.01
+100.3 59263 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 37.4 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 20.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 11.0  4138 /Users/viddyslap/Library/Application Support/Claude/claude-code/2.1.270/claude.app/Contents/MacOS/claude --output-format stream-json --verbose --inp
+  8.2 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  6.7   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:35:39 load1=2.93
+101.2 59263 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 20.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.4   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.0   434 /usr/sbin/coreaudiod
+  3.0 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+  2.1 24632 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:35:44 load1=3.01
+101.2 59263 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 20.0   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  5.5   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.0   434 /usr/sbin/coreaudiod
+  2.9 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+  2.0 24632 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:35:49 load1=3.41
+ 99.9 59263 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 20.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 13.5 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  5.7   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.0   434 /usr/sbin/coreaudiod
+  3.2 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:35:54 load1=3.54
+100.3 59263 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 24.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  5.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+  4.1 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  3.8 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+   foreign_lines=0 pgrep=[]
+== 15:35:59 load1=3.42
+ 99.7 59263 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.0   434 /usr/sbin/coreaudiod
+  2.8 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+  2.1 24632 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:36:04 load1=3.62
+ 99.4 10863 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B scripts/showready
+ 20.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  7.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  5.6 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  4.3   434 /usr/sbin/coreaudiod
+  3.4 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:36:09 load1=3.73
+ 98.5 10863 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B scripts/showready
+ 20.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.5   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1 15632 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --model claude-opus-5 --effort high --settings /Users/viddyslap/.pi-harness/engine
+  4.1   434 /usr/sbin/coreaudiod
+  3.2 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:36:15 load1=3.59
+ 31.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 10.3   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  9.0 62121 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  8.9 70352 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakechat@claude-plugins-off
+  8.2   434 /usr/sbin/coreaudiod
+  7.3 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+   foreign_lines=0 pgrep=[]
+== 15:36:20 load1=3.39
+ 30.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 22.9 62121 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  9.2   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  8.6   434 /usr/sbin/coreaudiod
+  7.2 70352 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakechat@claude-plugins-off
+  5.9 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+   foreign_lines=0 pgrep=[]
+== 15:36:25 load1=3.43
+ 22.1 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 19.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  9.0 62187 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/ops/harness-advance.mjs
+  8.2 62121 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  6.6 15631 /opt/homebrew/bin/tmux new-session -d -s ClaudeRC-lane-sd-m12 -c /Users/viddyslap/Documents/ViddyVault /usr/bin/env -i HOME=/Users/viddyslap PATH=/u
+  5.5   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:36:30 load1=3.56
+ 41.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 14.5 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+ 11.3 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+ 11.0 63371 sshd-session: viddyslap [priv]  
+  9.2   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  8.5   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:36:35 load1=3.67
+ 38.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 21.1 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+ 14.3 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+ 14.1 47736 /Users/viddyslap/Library/Application Support/Claude/claude-code/2.1.270/claude.app/Contents/MacOS/claude --output-format stream-json --verbose --inp
+  8.3   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  7.6   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:36:40 load1=3.54
+100.9 62117 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 20.0 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 19.0   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 12.2 62121 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  6.1   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:36:45 load1=3.42
+101.4 62117 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 11.6 62121 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  6.2   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.2   434 /usr/sbin/coreaudiod
+  2.9 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+   foreign_lines=0 pgrep=[]
+== 15:36:50 load1=3.46
+100.8 62117 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 20.9   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 12.3 62121 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  6.1   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+  3.1 59348 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper (Renderer)
+   foreign_lines=0 pgrep=[]
+== 15:36:55 load1=3.35
+101.3 62117 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 43.4 63567 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/ops/harness-advance.mjs
+ 25.1 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 19.9   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 15.4 62121 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  6.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:37:00 load1=3.16
+100.6 62117 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 21.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 13.0 62121 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  6.3 23103 /Applications/RustDesk.app/Contents/MacOS/RustDesk
+  5.5   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.3   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:37:05 load1=3.31
+101.0 62117 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 23.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 12.0 62121 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  6.4   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.8 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  4.3   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:37:11 load1=3.28
+101.9 62117 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 25.2   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 12.6 62121 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  7.0 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  6.1   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  5.7 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+   foreign_lines=0 pgrep=[]
+== 15:37:16 load1=3.50
+101.3 62117 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 22.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 15.4 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 12.7 62121 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+ 10.9 70352 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakechat@claude-plugins-off
+  6.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:37:21 load1=3.54
+100.3 62117 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 20.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  8.6 62121 /Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-tri
+  5.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  5.5 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  4.3   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:37:26 load1=3.57
+100.0 10863 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B scripts/showready
+ 59.2 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+ 23.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 16.3 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 12.7 52374 /opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/local-LLM --continuous
+  5.4   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:37:31 load1=3.61
+100.0 10863 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B scripts/showready
+ 41.6 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 20.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  6.1 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  4.3   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:37:36 load1=3.48
+ 31.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 22.0 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+ 16.2 47736 /Users/viddyslap/Library/Application Support/Claude/claude-code/2.1.270/claude.app/Contents/MacOS/claude --output-format stream-json --verbose --inp
+ 16.1 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 14.7 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  8.1   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:37:41 load1=3.76
+ 36.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 20.4 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+ 17.8 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+ 16.2 47736 /Users/viddyslap/Library/Application Support/Claude/claude-code/2.1.270/claude.app/Contents/MacOS/claude --output-format stream-json --verbose --inp
+  9.3   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  7.7   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:37:46 load1=3.78
+ 37.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 18.9 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+ 13.7 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 13.0 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+ 11.3 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 10.1   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:37:51 load1=3.72
+ 37.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 17.0 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+ 10.2   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+ 10.0 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  9.2 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  8.0   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:37:56 load1=3.66
+ 34.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 23.5 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 13.6 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+ 11.3 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+ 10.4   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  7.8 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+   foreign_lines=0 pgrep=[]
+== 15:38:01 load1=3.69
+100.7 66086 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 24.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 16.0 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  9.8 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  5.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.6 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+   foreign_lines=0 pgrep=[]
+== 15:38:07 load1=3.79
+101.3 66086 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 24.1   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 18.9 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  8.5 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  5.9   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.9 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+   foreign_lines=0 pgrep=[]
+== 15:38:12 load1=3.65
+100.8 66086 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 19.8   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 15.2 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 11.7 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  6.5   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:38:17 load1=3.68
+101.1 66086 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 26.4 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 23.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 13.8 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  6.9 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  5.6   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:38:22 load1=3.54
+100.2 66086 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 51.3 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 23.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 15.7 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  6.1 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  5.7   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]
+== 15:38:27 load1=3.42
+100.0 66086 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 38.9 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 21.9 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 21.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  6.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  5.8 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+   foreign_lines=0 pgrep=[]
+== 15:38:32 load1=3.46
+100.0 66086 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 25.5 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 23.0   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 20.4 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 13.8 67658 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/ops/harness-advance.mjs
+  8.5 68076 sshd-session: [accepted]  
+   foreign_lines=0 pgrep=[]
+== 15:38:37 load1=3.51
+100.0 66086 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 49.6 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+ 41.0 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 24.3   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+  5.1 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+  4.8 18427 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.GPU.xpc/Contents/MacOS/com.apple.WebKit.GPU
+   foreign_lines=0 pgrep=[]
+== 15:38:42 load1=3.31
+ 99.2 66086 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B /Users/viddyslap/
+ 48.7 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 19.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 16.3 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  5.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:38:47 load1=3.28
+100.0 10863 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B scripts/showready
+ 49.7 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 19.5   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 16.8 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  5.8   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.1   434 /usr/sbin/coreaudiod
+   foreign_lines=0 pgrep=[]
+== 15:38:52 load1=3.34
+ 98.8 10863 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B scripts/showready
+ 52.1 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 19.7   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 17.7 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
+  6.4   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.3 70352 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakechat@claude-plugins-off
+   foreign_lines=0 pgrep=[]
+== 15:38:57 load1=3.39
+100.0 10863 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B scripts/showready
+ 23.9   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 16.9 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+  6.0   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+  4.3   434 /usr/sbin/coreaudiod
+  3.9 91183 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper --type=gpu-process --user-data-dir=/Users/viddyslap/Libr
+   foreign_lines=0 pgrep=[]
+== 15:39:03 load1=3.44
+ 99.6 10863 /opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -B scripts/showready
+ 23.4   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 16.4 16550 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+ 12.5 47736 /Users/viddyslap/Library/Application Support/Claude/claude-code/2.1.270/claude.app/Contents/MacOS/claude --output-format stream-json --verbose --inp
+  6.7 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=renderer --user-data-dir=/U
+  6.4   861 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/152.0.7977.83/Helpers/Google Chrome Helper.app/Conten
+   foreign_lines=0 pgrep=[]

@@ -1,0 +1,66 @@
+{
+  "tag": "after",
+  "url": "http://127.0.0.1:49311",
+  "mode": "engines",
+  "browser_version": "145.0.7632.6",
+  "engines_rows": [
+    {
+      "type": "audio_opacity",
+      "checked": true
+    },
+    {
+      "type": "autopilot",
+      "checked": true
+    },
+    {
+      "type": "global_color",
+      "checked": true
+    },
+    {
+      "type": "osc_sync",
+      "checked": true
+    },
+    {
+      "type": "autopilot_ptz",
+      "checked": true
+    },
+    {
+      "type": "bumper_blast",
+      "checked": true
+    },
+    {
+      "type": "chaser_stack_dispatcher",
+      "checked": true
+    },
+    {
+      "type": "flash_blast",
+      "checked": true
+    },
+    {
+      "type": "gyro_feedback",
+      "checked": true
+    },
+    {
+      "type": "l_stick_layer",
+      "checked": true
+    },
+    {
+      "type": "nestdrop",
+      "checked": true
+    },
+    {
+      "type": "ptz_visca",
+      "checked": false
+    },
+    {
+      "type": "stageflow_bridge",
+      "checked": true
+    },
+    {
+      "type": "steam_input_layer_tracker",
+      "checked": true
+    }
+  ],
+  "engines_text_has_channel_state": false,
+  "page_errors": []
+}

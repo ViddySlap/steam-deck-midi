@@ -1,0 +1,16 @@
+{"repeat": 1, "arm": "CLOSED", "try": 1, "start": "15:53:03", "end": "15:54:14", "samples": 14, "max_load1": 3.53, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 1, "arm": "CLOSED-B", "try": 1, "start": "15:55:30", "end": "15:56:41", "samples": 15, "max_load1": 4.44, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 1, "arm": "OPEN", "try": 1, "start": "15:54:16", "end": "15:55:28", "samples": 14, "max_load1": 3.84, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 2, "arm": "CLOSED", "try": 1, "start": "15:56:44", "end": "15:57:55", "samples": 14, "max_load1": 4.49, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 2, "arm": "CLOSED-B", "try": 1, "start": "15:59:15", "end": "16:00:26", "samples": 15, "max_load1": 3.74, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 2, "arm": "OPEN", "try": 1, "start": "15:57:59", "end": "15:59:11", "samples": 15, "max_load1": 3.38, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 3, "arm": "CLOSED", "try": 1, "start": "16:00:31", "end": "16:01:42", "samples": 15, "max_load1": 3.52, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 3, "arm": "CLOSED-B", "try": 1, "start": "16:03:06", "end": "16:04:17", "samples": 15, "max_load1": 3.62, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 3, "arm": "OPEN", "try": 1, "start": "16:01:48", "end": "16:03:00", "samples": 14, "max_load1": 3.83, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 4, "arm": "CLOSED", "try": 1, "start": "16:04:23", "end": "16:05:34", "samples": 14, "max_load1": 3.86, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 4, "arm": "CLOSED-B", "try": 1, "start": "16:07:02", "end": "16:08:13", "samples": 14, "max_load1": 4.37, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 4, "arm": "OPEN", "try": 1, "start": "16:05:42", "end": "16:06:54", "samples": 14, "max_load1": 4.06, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 5, "arm": "CLOSED", "try": 1, "start": "16:08:21", "end": "16:09:33", "samples": 14, "max_load1": 4.14, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 5, "arm": "CLOSED-B", "try": 1, "start": "16:11:04", "end": "16:12:15", "samples": 14, "max_load1": 4.79, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 5, "arm": "OPEN", "try": 1, "start": "16:09:43", "end": "16:10:54", "samples": 14, "max_load1": 3.86, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+ARM_VALIDITY ALL VALID 15 arms

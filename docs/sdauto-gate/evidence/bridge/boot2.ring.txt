@@ -1,0 +1,42 @@
+2026-09-15 14:35:17,587 INFO root build fingerprint: version=0.5.0 commit=source built_utc=source
+2026-09-15 14:35:17,587 INFO root selected MIDI output port: name=IAC Driver DECK_IN index=n/a
+2026-09-15 14:35:17,587 INFO root selected MIDI input feedback port: name=IAC Driver DECK_OUT index=n/a
+2026-09-15 14:35:17,588 INFO windows.engines.registry auto-merging factory default for engine type 'autopilot' (not in engines/)
+2026-09-15 14:35:17,588 INFO windows.engines.registry auto-merging factory default for engine type 'autopilot_ptz' (not in engines/)
+2026-09-15 14:35:17,588 INFO windows.engines.registry auto-merging factory default for engine type 'bumper_blast' (not in engines/)
+2026-09-15 14:35:17,588 INFO windows.engines.registry auto-merging factory default for engine type 'chaser_stack_dispatcher' (not in engines/)
+2026-09-15 14:35:17,588 INFO windows.engines.registry auto-merging factory default for engine type 'flash_blast' (not in engines/)
+2026-09-15 14:35:17,588 INFO windows.engines.registry auto-merging factory default for engine type 'gyro_feedback' (not in engines/)
+2026-09-15 14:35:17,588 INFO windows.engines.registry auto-merging factory default for engine type 'l_stick_layer' (not in engines/)
+2026-09-15 14:35:17,588 INFO windows.engines.registry auto-merging factory default for engine type 'nestdrop' (not in engines/)
+2026-09-15 14:35:17,588 INFO windows.engines.registry auto-merging factory default for engine type 'ptz_visca' (not in engines/)
+2026-09-15 14:35:17,588 INFO windows.engines.registry auto-merging factory default for engine type 'stageflow_bridge' (not in engines/)
+2026-09-15 14:35:17,588 INFO windows.engines.registry auto-merging factory default for engine type 'steam_input_layer_tracker' (not in engines/)
+2026-09-15 14:35:17,588 INFO windows.engines.registry loaded engine Audio Engine (type=audio_opacity)
+2026-09-15 14:35:17,589 INFO windows.engines.registry loaded engine Global Color (type=global_color)
+2026-09-15 14:35:17,589 INFO windows.engines.registry loaded engine OSC Sync (type=osc_sync)
+2026-09-15 14:35:17,589 INFO windows.engines.autopilot Autopilot: restored autopilot intent for video, fx, logo from /tmp/sdauto-gate/s1/run/tree/config/state/autopilot_channels.local.json
+2026-09-15 14:35:17,589 INFO windows.engines.registry loaded engine Autopilot (type=autopilot)
+2026-09-15 14:35:17,589 INFO windows.engines.registry loaded engine Autopilot PTZ (type=autopilot_ptz)
+2026-09-15 14:35:17,589 INFO windows.engines.registry loaded engine Bumper Blast (type=bumper_blast)
+2026-09-15 14:35:17,589 INFO windows.engines.registry loaded engine Chaser Stack Dispatcher (type=chaser_stack_dispatcher)
+2026-09-15 14:35:17,589 INFO windows.engines.registry loaded engine Flash Blast (type=flash_blast)
+2026-09-15 14:35:17,589 INFO windows.engines.registry loaded engine Gyro Feedback (type=gyro_feedback)
+2026-09-15 14:35:17,589 INFO windows.engines.registry loaded engine Left Stick Layer (type=l_stick_layer)
+2026-09-15 14:35:17,589 INFO windows.engines.registry loaded engine NestDrop (type=nestdrop)
+2026-09-15 14:35:17,589 INFO windows.engines.registry loaded engine PTZ VISCA (type=ptz_visca)
+2026-09-15 14:35:17,589 INFO windows.engines.registry loaded engine StageFlow Bridge (type=stageflow_bridge)
+2026-09-15 14:35:17,589 INFO windows.engines.registry loaded engine SteamInput Layer Tracker (type=steam_input_layer_tracker)
+2026-09-15 14:35:17,598 INFO windows.engines.autopilot autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+2026-09-15 14:35:17,598 INFO windows.engines.bumper_blast Bumper Blast: bound to steam_input_layer_tracker (current=chaser)
+2026-09-15 14:35:17,598 INFO windows.engines.flash_blast Flash Blast: bound to steam_input_layer_tracker (current=chaser)
+2026-09-15 14:35:17,599 INFO root engine config: path=/tmp/sdauto-gate/s1/run/tree/config/engines count=14 active=13
+2026-09-15 14:35:17,599 INFO windows.engines.autopilot autopilot video: enabled=True
+2026-09-15 14:35:17,599 INFO windows.engines.autopilot autopilot fx: enabled=True
+2026-09-15 14:35:17,599 INFO windows.osc_relay osc_relay: listening on udp://127.0.0.1:59845 -> 127.0.0.1:52121
+2026-09-15 14:35:17,635 INFO root mapping UI available at http://127.0.0.1:64924
+2026-09-15 14:35:17,635 INFO root system tray not started on darwin; stop with POST /api/shutdown
+2026-09-15 14:35:17,635 INFO windows.receiver listening on udp://127.0.0.1:51914
+2026-09-15 14:35:17,635 INFO windows.receiver listening for MIDI feedback: name=IAC Driver DECK_OUT index=n/a
+2026-09-15 14:35:17,635 INFO windows.receiver engines loaded: Audio Engine(audio_opacity), Global Color(global_color), OSC Sync(osc_sync), Autopilot(autopilot), Autopilot PTZ(autopilot_ptz), Bumper Blast(bumper_blast), Chaser Stack Dispatcher(chaser_stack_dispatcher), Flash Blast(flash_blast), Gyro Feedback(gyro_feedback), Left Stick Layer(l_stick_layer), NestDrop(nestdrop), PTZ VISCA(ptz_visca), StageFlow Bridge(stageflow_bridge), SteamInput Layer Tracker(steam_input_layer_tracker)
+2026-09-15 14:35:19,654 INFO windows.engines.autopilot Autopilot: no MIDI clock for 2.0s; fallback clock running at 128.0 BPM

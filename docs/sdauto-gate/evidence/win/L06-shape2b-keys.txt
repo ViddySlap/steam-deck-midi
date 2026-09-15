@@ -1,0 +1,4 @@
+TOP_KEYS name,type,enabled,sample_size,update_hz,inputs,outputs,defaults
+outputs KEYS channel,cc_video_master,cc_logo_master
+type = audio_opacity
+RAIL_EXIT 0

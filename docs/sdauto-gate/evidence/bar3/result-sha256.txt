@@ -1,0 +1,5 @@
+40f6c3e60ad07a33a35e336e3a1382d2ce2ed3f4186fcbaaf2d3ea8b8ce0a9d3  /tmp/sdauto-gate/bar3/mac-mbridge-clean.json.gz
+a8f107a702e1d249bb2c2d52d2596473d245b6fc538a244180cb3be1fc1505bf  /tmp/sdauto-gate/bar3/mac-mbridge-clean2.json.gz
+878feca060a7611a6a10621ba90f45fc70bd87bd48ba33fdd1fa1690b229004f  /tmp/sdauto-gate/bar3/mac-mbridge-sensitivity.json.gz
+1a762af4b725b6ebde505cb81acb078298084412fdcab4a5aca6da21f8552b15  /tmp/sdauto-gate/bar3q/sens-try1.json.gz
+2203ad37ea5f8918a7b46a0dd01d755f53eb9c1b1c27aa7d195c775b7b6019ae  /tmp/sdauto-gate/bar3q/clean-try1.json.gz

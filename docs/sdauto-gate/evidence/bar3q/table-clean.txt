@@ -1,0 +1,1748 @@
+{
+ "result": "/tmp/sdauto-gate/bar3q/clean-try1.json.gz",
+ "result_sha256": "2203ad37ea5f8918a7b46a0dd01d755f53eb9c1b1c27aa7d195c775b7b6019ae",
+ "rule_flag": "m_bridge",
+ "control": null,
+ "repeats": 5,
+ "candidate": {
+  "archive_sha256": "5bfbdb76979ed36c7687f1281e1043fc7e3779106c5b593cbf5a4e1514cf2ee6",
+  "commit": "a8fec2ad635e141b0634dc9a51c5442dad9fd966",
+  "git_tree": "a75ae8d9caac84b60e949da11ccb7f9113d132ac"
+ },
+ "instrument_timing_ab_sha256": "b9b7994a9f599d3eb8960379c7b2e09f4d4164daf743b4d852bcfa2f7d2c7c78",
+ "client": [
+  "node",
+  "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/timing_browser.cjs",
+  "{url}",
+  "{stop}",
+  "{receipt}",
+  "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+  "--single-process"
+ ],
+ "error": null,
+ "passed": false,
+ "measurement_qualified": true,
+ "locked_rule_passed": false,
+ "m_bridge_rule_passed": false,
+ "sensitivity_timing_red": null,
+ "m_bridge_sensitivity_timing_red": null,
+ "sensitivity_valid": true,
+ "bar3_counts": false,
+ "byte_identical": true,
+ "wall_seconds": 1165.3656992920442,
+ "rederived_m_bridge_mismatches": 0,
+ "per_arm_stat_mismatches_vs_instrument": [],
+ "rows": [
+  {
+   "repeat": 1,
+   "arm": "CLOSED",
+   "attempts": 1,
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "error": null,
+   "first_packet_join": 9638,
+   "every_message": 9638,
+   "cause_first_packet": 9142,
+   "cause_later_packet": 496,
+   "midi_records": 9644,
+   "packets_sent_with_t1_pre": 20513,
+   "packets_sent_with_t1_post": 20513,
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "stream_data_events": null,
+   "client_counts_minmax": null,
+   "browser_pids_gone": null,
+   "bridge_pid_gone": true,
+   "pgrep_before": [
+    "empty"
+   ],
+   "pgrep_after": [
+    "empty"
+   ],
+   "foreign_before": [
+    0
+   ],
+   "foreign_after": [
+    0
+   ],
+   "foreign_matched": [
+    [
+     [],
+     []
+    ]
+   ],
+   "load1_before": 2.39,
+   "load1_after": 3.81,
+   "stats": {
+    "m_bridge_ms": {
+     "p50": 1.145875,
+     "p95": 1.64946245,
+     "p99": 1.8264724999999995,
+     "max": 9.493,
+     "n": 9638
+    },
+    "m_post_ms": {
+     "p50": 1.1382495000000001,
+     "p95": 1.6373642,
+     "p99": 1.8194692899999998,
+     "max": 9.49,
+     "n": 9638
+    },
+    "m_total_ms": {
+     "p50": 1.202396,
+     "p95": 119.57789564999884,
+     "p99": 1655.9389704999999,
+     "max": 2038.082458,
+     "n": 9638
+    }
+   },
+   "worst_stats": {
+    "m_bridge_ms": {
+     "p50": 1.1829999999999998,
+     "p95": 1.6558439999999999,
+     "p99": 1.8324311500000001,
+     "max": 9.493,
+     "n": 9016
+    },
+    "m_post_ms": {
+     "p50": 1.1774165,
+     "p95": 1.645375,
+     "p99": 1.8232919000000003,
+     "max": 9.49,
+     "n": 9016
+    },
+    "m_total_ms": {
+     "p50": 1.1830829999999999,
+     "p95": 1.65591675,
+     "p99": 1.8325080000000002,
+     "max": 9.493083,
+     "n": 9016
+    }
+   }
+  },
+  {
+   "repeat": 1,
+   "arm": "OPEN",
+   "attempts": 1,
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "error": null,
+   "first_packet_join": 9638,
+   "every_message": 9638,
+   "cause_first_packet": 9142,
+   "cause_later_packet": 496,
+   "midi_records": 9644,
+   "packets_sent_with_t1_pre": 20513,
+   "packets_sent_with_t1_post": 20513,
+   "publisher_dropped": 23990,
+   "stream_dropped": 0,
+   "stream_data_events": 15232,
+   "client_counts_minmax": [
+    1,
+    1
+   ],
+   "browser_pids_gone": true,
+   "bridge_pid_gone": true,
+   "pgrep_before": [
+    "empty"
+   ],
+   "pgrep_after": [
+    "empty"
+   ],
+   "foreign_before": [
+    0
+   ],
+   "foreign_after": [
+    0
+   ],
+   "foreign_matched": [
+    [
+     [],
+     []
+    ]
+   ],
+   "load1_before": 3.81,
+   "load1_after": 3.48,
+   "stats": {
+    "m_bridge_ms": {
+     "p50": 7.4038545,
+     "p95": 3131.216401799999,
+     "p99": 3434.2875999999997,
+     "max": 3542.49675,
+     "n": 9638
+    },
+    "m_post_ms": {
+     "p50": 7.389729,
+     "p95": 3131.213095449999,
+     "p99": 3434.2834869599997,
+     "max": 3542.492708,
+     "n": 9638
+    },
+    "m_total_ms": {
+     "p50": 8.7342085,
+     "p95": 3131.216449949999,
+     "p99": 3434.287683,
+     "max": 3542.496833,
+     "n": 9638
+    }
+   },
+   "worst_stats": {
+    "m_bridge_ms": {
+     "p50": 8.172708499999999,
+     "p95": 3155.717896,
+     "p99": 3436.5144812500002,
+     "max": 3542.49675,
+     "n": 9016
+    },
+    "m_post_ms": {
+     "p50": 8.1561665,
+     "p95": 3155.71464625,
+     "p99": 3436.51075,
+     "max": 3542.492708,
+     "n": 9016
+    },
+    "m_total_ms": {
+     "p50": 8.172791499999999,
+     "p95": 3155.7179482499996,
+     "p99": 3436.51452955,
+     "max": 3542.496833,
+     "n": 9016
+    }
+   }
+  },
+  {
+   "repeat": 1,
+   "arm": "CLOSED-B",
+   "attempts": 1,
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "error": null,
+   "first_packet_join": 9638,
+   "every_message": 9638,
+   "cause_first_packet": 9142,
+   "cause_later_packet": 496,
+   "midi_records": 9644,
+   "packets_sent_with_t1_pre": 20513,
+   "packets_sent_with_t1_post": 20513,
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "stream_data_events": null,
+   "client_counts_minmax": null,
+   "browser_pids_gone": null,
+   "bridge_pid_gone": true,
+   "pgrep_before": [
+    "empty"
+   ],
+   "pgrep_after": [
+    "empty"
+   ],
+   "foreign_before": [
+    0
+   ],
+   "foreign_after": [
+    0
+   ],
+   "foreign_matched": [
+    [
+     [],
+     []
+    ]
+   ],
+   "load1_before": 3.28,
+   "load1_after": 3.89,
+   "stats": {
+    "m_bridge_ms": {
+     "p50": 6.507270999999999,
+     "p95": 1867.9512418499999,
+     "p99": 3250.98247392,
+     "max": 3567.241458,
+     "n": 9638
+    },
+    "m_post_ms": {
+     "p50": 6.496896,
+     "p95": 1867.94792315,
+     "p99": 3250.9791625,
+     "max": 3567.238125,
+     "n": 9638
+    },
+    "m_total_ms": {
+     "p50": 7.477292,
+     "p95": 1958.3510686500001,
+     "p99": 3250.98251529,
+     "max": 3567.2415,
+     "n": 9638
+    }
+   },
+   "worst_stats": {
+    "m_bridge_ms": {
+     "p50": 7.0910415,
+     "p95": 1989.191886,
+     "p99": 3280.8286732,
+     "max": 3567.241458,
+     "n": 9016
+    },
+    "m_post_ms": {
+     "p50": 7.080666,
+     "p95": 1989.1882395,
+     "p99": 3280.8244419,
+     "max": 3567.238125,
+     "n": 9016
+    },
+    "m_total_ms": {
+     "p50": 7.091104,
+     "p95": 1989.1919585,
+     "p99": 3280.8287213500003,
+     "max": 3567.2415,
+     "n": 9016
+    }
+   }
+  },
+  {
+   "repeat": 2,
+   "arm": "CLOSED",
+   "attempts": 1,
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "error": null,
+   "first_packet_join": 9638,
+   "every_message": 9638,
+   "cause_first_packet": 9142,
+   "cause_later_packet": 496,
+   "midi_records": 9644,
+   "packets_sent_with_t1_pre": 20513,
+   "packets_sent_with_t1_post": 20513,
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "stream_data_events": null,
+   "client_counts_minmax": null,
+   "browser_pids_gone": null,
+   "bridge_pid_gone": true,
+   "pgrep_before": [
+    "empty"
+   ],
+   "pgrep_after": [
+    "empty"
+   ],
+   "foreign_before": [
+    0
+   ],
+   "foreign_after": [
+    0
+   ],
+   "foreign_matched": [
+    [
+     [],
+     []
+    ]
+   ],
+   "load1_before": 3.98,
+   "load1_after": 3.26,
+   "stats": {
+    "m_bridge_ms": {
+     "p50": 1.1925415,
+     "p95": 1.7394356,
+     "p99": 66.6461337499988,
+     "max": 314.634416,
+     "n": 9638
+    },
+    "m_post_ms": {
+     "p50": 1.1860415,
+     "p95": 1.7240749999999998,
+     "p99": 66.46393820999882,
+     "max": 314.385916,
+     "n": 9638
+    },
+    "m_total_ms": {
+     "p50": 1.2256255,
+     "p95": 208.08285614999997,
+     "p99": 1653.9313457499986,
+     "max": 2033.408791,
+     "n": 9638
+    }
+   },
+   "worst_stats": {
+    "m_bridge_ms": {
+     "p50": 1.2016665,
+     "p95": 1.6797602500000002,
+     "p99": 1.8791419500000002,
+     "max": 15.114916,
+     "n": 9016
+    },
+    "m_post_ms": {
+     "p50": 1.195854,
+     "p95": 1.66994775,
+     "p99": 1.8695412000000005,
+     "max": 15.109041,
+     "n": 9016
+    },
+    "m_total_ms": {
+     "p50": 1.20175,
+     "p95": 1.6798435,
+     "p99": 1.87921865,
+     "max": 15.115041,
+     "n": 9016
+    }
+   }
+  },
+  {
+   "repeat": 2,
+   "arm": "OPEN",
+   "attempts": 1,
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "error": null,
+   "first_packet_join": 9638,
+   "every_message": 9638,
+   "cause_first_packet": 9142,
+   "cause_later_packet": 496,
+   "midi_records": 9644,
+   "packets_sent_with_t1_pre": 20513,
+   "packets_sent_with_t1_post": 20513,
+   "publisher_dropped": 23990,
+   "stream_dropped": 32,
+   "stream_data_events": 15075,
+   "client_counts_minmax": [
+    1,
+    1
+   ],
+   "browser_pids_gone": true,
+   "bridge_pid_gone": true,
+   "pgrep_before": [
+    "empty"
+   ],
+   "pgrep_after": [
+    "empty"
+   ],
+   "foreign_before": [
+    0
+   ],
+   "foreign_after": [
+    0
+   ],
+   "foreign_matched": [
+    [
+     [],
+     []
+    ]
+   ],
+   "load1_before": 3.26,
+   "load1_after": 3.13,
+   "stats": {
+    "m_bridge_ms": {
+     "p50": 1.5503965000000002,
+     "p95": 1925.5283875,
+     "p99": 3391.70522271,
+     "max": 3759.490916,
+     "n": 9638
+    },
+    "m_post_ms": {
+     "p50": 1.533458,
+     "p95": 1925.52468755,
+     "p99": 3391.7010525,
+     "max": 3759.486416,
+     "n": 9638
+    },
+    "m_total_ms": {
+     "p50": 1.648958,
+     "p95": 1986.5359,
+     "p99": 3391.70527925,
+     "max": 3759.490958,
+     "n": 9638
+    }
+   },
+   "worst_stats": {
+    "m_bridge_ms": {
+     "p50": 1.6052085,
+     "p95": 2066.0702597500003,
+     "p99": 3422.14968565,
+     "max": 3759.490916,
+     "n": 9016
+    },
+    "m_post_ms": {
+     "p50": 1.5937285,
+     "p95": 2066.06448925,
+     "p99": 3422.14564815,
+     "max": 3759.486416,
+     "n": 9016
+    },
+    "m_total_ms": {
+     "p50": 1.6052710000000001,
+     "p95": 2066.0703745,
+     "p99": 3422.1497338,
+     "max": 3759.490958,
+     "n": 9016
+    }
+   }
+  },
+  {
+   "repeat": 2,
+   "arm": "CLOSED-B",
+   "attempts": 1,
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "error": null,
+   "first_packet_join": 9638,
+   "every_message": 9638,
+   "cause_first_packet": 9142,
+   "cause_later_packet": 496,
+   "midi_records": 9644,
+   "packets_sent_with_t1_pre": 20513,
+   "packets_sent_with_t1_post": 20513,
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "stream_data_events": null,
+   "client_counts_minmax": null,
+   "browser_pids_gone": null,
+   "bridge_pid_gone": true,
+   "pgrep_before": [
+    "empty"
+   ],
+   "pgrep_after": [
+    "empty"
+   ],
+   "foreign_before": [
+    0
+   ],
+   "foreign_after": [
+    0
+   ],
+   "foreign_matched": [
+    [
+     [],
+     []
+    ]
+   ],
+   "load1_before": 3.28,
+   "load1_after": 2.6,
+   "stats": {
+    "m_bridge_ms": {
+     "p50": 1.1576875,
+     "p95": 1.668667,
+     "p99": 1.812543539999999,
+     "max": 4.191625,
+     "n": 9638
+    },
+    "m_post_ms": {
+     "p50": 1.1515,
+     "p95": 1.6604419,
+     "p99": 1.8042137499999982,
+     "max": 4.188709,
+     "n": 9638
+    },
+    "m_total_ms": {
+     "p50": 1.224625,
+     "p95": 119.52339194999848,
+     "p99": 1655.4388012499987,
+     "max": 2032.57775,
+     "n": 9638
+    }
+   },
+   "worst_stats": {
+    "m_bridge_ms": {
+     "p50": 1.1995835000000001,
+     "p95": 1.6747602499999998,
+     "p99": 1.8172017,
+     "max": 4.191625,
+     "n": 9016
+    },
+    "m_post_ms": {
+     "p50": 1.193104,
+     "p95": 1.6666872499999998,
+     "p99": 1.8120339,
+     "max": 4.188709,
+     "n": 9016
+    },
+    "m_total_ms": {
+     "p50": 1.1996875,
+     "p95": 1.6748125,
+     "p99": 1.8172793999999999,
+     "max": 4.191667,
+     "n": 9016
+    }
+   }
+  },
+  {
+   "repeat": 3,
+   "arm": "CLOSED",
+   "attempts": 1,
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "error": null,
+   "first_packet_join": 9638,
+   "every_message": 9638,
+   "cause_first_packet": 9142,
+   "cause_later_packet": 496,
+   "midi_records": 9644,
+   "packets_sent_with_t1_pre": 20513,
+   "packets_sent_with_t1_post": 20513,
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "stream_data_events": null,
+   "client_counts_minmax": null,
+   "browser_pids_gone": null,
+   "bridge_pid_gone": true,
+   "pgrep_before": [
+    "empty"
+   ],
+   "pgrep_after": [
+    "empty"
+   ],
+   "foreign_before": [
+    0
+   ],
+   "foreign_after": [
+    0
+   ],
+   "foreign_matched": [
+    [
+     [],
+     []
+    ]
+   ],
+   "load1_before": 2.55,
+   "load1_after": 2.98,
+   "stats": {
+    "m_bridge_ms": {
+     "p50": 1.199979,
+     "p95": 1.75356075,
+     "p99": 1.987814669999994,
+     "max": 27.076125,
+     "n": 9638
+    },
+    "m_post_ms": {
+     "p50": 1.1923545,
+     "p95": 1.7391982,
+     "p99": 1.9614460399999996,
+     "max": 27.072208,
+     "n": 9638
+    },
+    "m_total_ms": {
+     "p50": 1.260354,
+     "p95": 118.67726884999858,
+     "p99": 1657.8485667899993,
+     "max": 2035.483917,
+     "n": 9638
+    }
+   },
+   "worst_stats": {
+    "m_bridge_ms": {
+     "p50": 1.2361665,
+     "p95": 1.7587185,
+     "p99": 2.0052732000000018,
+     "max": 27.076125,
+     "n": 9016
+    },
+    "m_post_ms": {
+     "p50": 1.228917,
+     "p95": 1.74665625,
+     "p99": 1.9707705000000013,
+     "max": 27.072208,
+     "n": 9016
+    },
+    "m_total_ms": {
+     "p50": 1.236229,
+     "p95": 1.75880225,
+     "p99": 2.0053562000000014,
+     "max": 27.076167,
+     "n": 9016
+    }
+   }
+  },
+  {
+   "repeat": 3,
+   "arm": "OPEN",
+   "attempts": 1,
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "error": null,
+   "first_packet_join": 9638,
+   "every_message": 9638,
+   "cause_first_packet": 9142,
+   "cause_later_packet": 496,
+   "midi_records": 9644,
+   "packets_sent_with_t1_pre": 20513,
+   "packets_sent_with_t1_post": 20513,
+   "publisher_dropped": 23990,
+   "stream_dropped": 0,
+   "stream_data_events": 16568,
+   "client_counts_minmax": [
+    1,
+    1
+   ],
+   "browser_pids_gone": true,
+   "bridge_pid_gone": true,
+   "pgrep_before": [
+    "empty"
+   ],
+   "pgrep_after": [
+    "empty"
+   ],
+   "foreign_before": [
+    0
+   ],
+   "foreign_after": [
+    0
+   ],
+   "foreign_matched": [
+    [
+     [],
+     []
+    ]
+   ],
+   "load1_before": 3.06,
+   "load1_after": 3.31,
+   "stats": {
+    "m_bridge_ms": {
+     "p50": 1.1968125,
+     "p95": 1.7229775999999999,
+     "p99": 1.93105229,
+     "max": 11.070958,
+     "n": 9638
+    },
+    "m_post_ms": {
+     "p50": 1.184438,
+     "p95": 1.7075767999999996,
+     "p99": 1.9120635799999999,
+     "max": 11.065875,
+     "n": 9638
+    },
+    "m_total_ms": {
+     "p50": 1.257062,
+     "p95": 116.05646439999707,
+     "p99": 1645.251044579998,
+     "max": 2023.898125,
+     "n": 9638
+    }
+   },
+   "worst_stats": {
+    "m_bridge_ms": {
+     "p50": 1.2319375,
+     "p95": 1.7313852500000002,
+     "p99": 1.9361813,
+     "max": 11.070958,
+     "n": 9016
+    },
+    "m_post_ms": {
+     "p50": 1.218958,
+     "p95": 1.71490675,
+     "p99": 1.91986255,
+     "max": 11.065875,
+     "n": 9016
+    },
+    "m_total_ms": {
+     "p50": 1.2320205,
+     "p95": 1.73145825,
+     "p99": 1.93626515,
+     "max": 11.071083,
+     "n": 9016
+    }
+   }
+  },
+  {
+   "repeat": 3,
+   "arm": "CLOSED-B",
+   "attempts": 1,
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "error": null,
+   "first_packet_join": 9638,
+   "every_message": 9638,
+   "cause_first_packet": 9142,
+   "cause_later_packet": 496,
+   "midi_records": 9644,
+   "packets_sent_with_t1_pre": 20513,
+   "packets_sent_with_t1_post": 20513,
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "stream_data_events": null,
+   "client_counts_minmax": null,
+   "browser_pids_gone": null,
+   "bridge_pid_gone": true,
+   "pgrep_before": [
+    "empty"
+   ],
+   "pgrep_after": [
+    "empty"
+   ],
+   "foreign_before": [
+    0
+   ],
+   "foreign_after": [
+    0
+   ],
+   "foreign_matched": [
+    [
+     [],
+     []
+    ]
+   ],
+   "load1_before": 3.37,
+   "load1_after": 3.41,
+   "stats": {
+    "m_bridge_ms": {
+     "p50": 1.2002705,
+     "p95": 1.7261723,
+     "p99": 1.921855829999997,
+     "max": 18.065125,
+     "n": 9638
+    },
+    "m_post_ms": {
+     "p50": 1.1928960000000002,
+     "p95": 1.7140126,
+     "p99": 1.9069757099999989,
+     "max": 18.0615,
+     "n": 9638
+    },
+    "m_total_ms": {
+     "p50": 1.2629584999999999,
+     "p95": 115.88131239999767,
+     "p99": 1645.6992978799983,
+     "max": 2024.325083,
+     "n": 9638
+    }
+   },
+   "worst_stats": {
+    "m_bridge_ms": {
+     "p50": 1.2396045,
+     "p95": 1.732885,
+     "p99": 1.9265589500000002,
+     "max": 18.065125,
+     "n": 9016
+    },
+    "m_post_ms": {
+     "p50": 1.2316875,
+     "p95": 1.720364,
+     "p99": 1.9088938500000006,
+     "max": 18.0615,
+     "n": 9016
+    },
+    "m_total_ms": {
+     "p50": 1.2396880000000001,
+     "p95": 1.73293725,
+     "p99": 1.92667765,
+     "max": 18.065209,
+     "n": 9016
+    }
+   }
+  },
+  {
+   "repeat": 4,
+   "arm": "CLOSED",
+   "attempts": 1,
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "error": null,
+   "first_packet_join": 9638,
+   "every_message": 9638,
+   "cause_first_packet": 9142,
+   "cause_later_packet": 496,
+   "midi_records": 9644,
+   "packets_sent_with_t1_pre": 20513,
+   "packets_sent_with_t1_post": 20513,
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "stream_data_events": null,
+   "client_counts_minmax": null,
+   "browser_pids_gone": null,
+   "bridge_pid_gone": true,
+   "pgrep_before": [
+    "empty"
+   ],
+   "pgrep_after": [
+    "empty"
+   ],
+   "foreign_before": [
+    0
+   ],
+   "foreign_after": [
+    0
+   ],
+   "foreign_matched": [
+    [
+     [],
+     []
+    ]
+   ],
+   "load1_before": 3.46,
+   "load1_after": 3.52,
+   "stats": {
+    "m_bridge_ms": {
+     "p50": 1.4569165,
+     "p95": 12.9108982,
+     "p99": 20.95564178999996,
+     "max": 130.735416,
+     "n": 9638
+    },
+    "m_post_ms": {
+     "p50": 1.4443335,
+     "p95": 12.90486885,
+     "p99": 20.95098803999996,
+     "max": 130.730416,
+     "n": 9638
+    },
+    "m_total_ms": {
+     "p50": 1.541979,
+     "p95": 129.3145687499999,
+     "p99": 1649.7519852099997,
+     "max": 2023.321333,
+     "n": 9638
+    }
+   },
+   "worst_stats": {
+    "m_bridge_ms": {
+     "p50": 1.5049795000000001,
+     "p95": 13.123927,
+     "p99": 30.348156300000092,
+     "max": 130.735416,
+     "n": 9016
+    },
+    "m_post_ms": {
+     "p50": 1.49275,
+     "p95": 13.101604250000001,
+     "p99": 30.342787500000092,
+     "max": 130.730416,
+     "n": 9016
+    },
+    "m_total_ms": {
+     "p50": 1.5053334999999999,
+     "p95": 13.1239795,
+     "p99": 30.348198150000094,
+     "max": 130.735458,
+     "n": 9016
+    }
+   }
+  },
+  {
+   "repeat": 4,
+   "arm": "OPEN",
+   "attempts": 1,
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "error": null,
+   "first_packet_join": 9638,
+   "every_message": 9638,
+   "cause_first_packet": 9142,
+   "cause_later_packet": 496,
+   "midi_records": 9644,
+   "packets_sent_with_t1_pre": 20513,
+   "packets_sent_with_t1_post": 20513,
+   "publisher_dropped": 23990,
+   "stream_dropped": 0,
+   "stream_data_events": 16548,
+   "client_counts_minmax": [
+    1,
+    1
+   ],
+   "browser_pids_gone": true,
+   "bridge_pid_gone": true,
+   "pgrep_before": [
+    "empty"
+   ],
+   "pgrep_after": [
+    "empty"
+   ],
+   "foreign_before": [
+    0
+   ],
+   "foreign_after": [
+    0
+   ],
+   "foreign_matched": [
+    [
+     [],
+     []
+    ]
+   ],
+   "load1_before": 3.56,
+   "load1_after": 4.05,
+   "stats": {
+    "m_bridge_ms": {
+     "p50": 1.3147085,
+     "p95": 10.869606199999998,
+     "p99": 16.438187709999934,
+     "max": 165.666583,
+     "n": 9638
+    },
+    "m_post_ms": {
+     "p50": 1.3044164999999999,
+     "p95": 10.86444995,
+     "p99": 16.434794079999932,
+     "max": 165.472833,
+     "n": 9638
+    },
+    "m_total_ms": {
+     "p50": 1.3784580000000002,
+     "p95": 126.42624819999364,
+     "p99": 1642.7937112499994,
+     "max": 2072.180958,
+     "n": 9638
+    }
+   },
+   "worst_stats": {
+    "m_bridge_ms": {
+     "p50": 1.3472295,
+     "p95": 11.00948975,
+     "p99": 16.259735700000004,
+     "max": 113.8545,
+     "n": 9016
+    },
+    "m_post_ms": {
+     "p50": 1.334396,
+     "p95": 10.99404125,
+     "p99": 16.195306200000015,
+     "max": 113.849333,
+     "n": 9016
+    },
+    "m_total_ms": {
+     "p50": 1.3473335,
+     "p95": 11.00957275,
+     "p99": 16.259812550000003,
+     "max": 113.854541,
+     "n": 9016
+    }
+   }
+  },
+  {
+   "repeat": 4,
+   "arm": "CLOSED-B",
+   "attempts": 1,
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "error": null,
+   "first_packet_join": 9638,
+   "every_message": 9638,
+   "cause_first_packet": 9142,
+   "cause_later_packet": 496,
+   "midi_records": 9644,
+   "packets_sent_with_t1_pre": 20513,
+   "packets_sent_with_t1_post": 20513,
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "stream_data_events": null,
+   "client_counts_minmax": null,
+   "browser_pids_gone": null,
+   "bridge_pid_gone": true,
+   "pgrep_before": [
+    "empty"
+   ],
+   "pgrep_after": [
+    "empty"
+   ],
+   "foreign_before": [
+    0
+   ],
+   "foreign_after": [
+    0
+   ],
+   "foreign_matched": [
+    [
+     [],
+     []
+    ]
+   ],
+   "load1_before": 4.29,
+   "load1_after": 3.7,
+   "stats": {
+    "m_bridge_ms": {
+     "p50": 1.1752915000000002,
+     "p95": 1.7135063,
+     "p99": 3.653575039999752,
+     "max": 154.051584,
+     "n": 9638
+    },
+    "m_post_ms": {
+     "p50": 1.1675,
+     "p95": 1.70704115,
+     "p99": 3.6445691699997447,
+     "max": 154.048334,
+     "n": 9638
+    },
+    "m_total_ms": {
+     "p50": 1.2829380000000001,
+     "p95": 139.8499401499984,
+     "p99": 1648.416596419999,
+     "max": 2023.546625,
+     "n": 9638
+    }
+   },
+   "worst_stats": {
+    "m_bridge_ms": {
+     "p50": 1.2476875,
+     "p95": 1.71755225,
+     "p99": 3.7217108000001127,
+     "max": 154.051584,
+     "n": 9016
+    },
+    "m_post_ms": {
+     "p50": 1.2387294999999998,
+     "p95": 1.71041675,
+     "p99": 3.714740150000116,
+     "max": 154.048334,
+     "n": 9016
+    },
+    "m_total_ms": {
+     "p50": 1.24775,
+     "p95": 1.71759425,
+     "p99": 3.7217938000001127,
+     "max": 154.051625,
+     "n": 9016
+    }
+   }
+  },
+  {
+   "repeat": 5,
+   "arm": "CLOSED",
+   "attempts": 1,
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "error": null,
+   "first_packet_join": 9638,
+   "every_message": 9638,
+   "cause_first_packet": 9142,
+   "cause_later_packet": 496,
+   "midi_records": 9644,
+   "packets_sent_with_t1_pre": 20513,
+   "packets_sent_with_t1_post": 20513,
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "stream_data_events": null,
+   "client_counts_minmax": null,
+   "browser_pids_gone": null,
+   "bridge_pid_gone": true,
+   "pgrep_before": [
+    "empty"
+   ],
+   "pgrep_after": [
+    "empty"
+   ],
+   "foreign_before": [
+    0
+   ],
+   "foreign_after": [
+    0
+   ],
+   "foreign_matched": [
+    [
+     [],
+     []
+    ]
+   ],
+   "load1_before": 3.6,
+   "load1_after": 3.88,
+   "stats": {
+    "m_bridge_ms": {
+     "p50": 1.644125,
+     "p95": 2162.05732495,
+     "p99": 3448.3485825399985,
+     "max": 3550.161625,
+     "n": 9638
+    },
+    "m_post_ms": {
+     "p50": 1.633208,
+     "p95": 2162.05368565,
+     "p99": 3448.3448208699983,
+     "max": 3550.157958,
+     "n": 9638
+    },
+    "m_total_ms": {
+     "p50": 1.6469585,
+     "p95": 2424.8688000999996,
+     "p99": 3448.3486655399984,
+     "max": 3550.161708,
+     "n": 9638
+    }
+   },
+   "worst_stats": {
+    "m_bridge_ms": {
+     "p50": 1.5998955000000001,
+     "p95": 2258.45365575,
+     "p99": 3458.663431200001,
+     "max": 3550.161625,
+     "n": 9016
+    },
+    "m_post_ms": {
+     "p50": 1.5893125,
+     "p95": 2258.44895775,
+     "p99": 3458.660433000001,
+     "max": 3550.157958,
+     "n": 9016
+    },
+    "m_total_ms": {
+     "p50": 1.5999375,
+     "p95": 2258.4537185,
+     "p99": 3458.6635080500014,
+     "max": 3550.161708,
+     "n": 9016
+    }
+   }
+  },
+  {
+   "repeat": 5,
+   "arm": "OPEN",
+   "attempts": 1,
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "error": null,
+   "first_packet_join": 9638,
+   "every_message": 9638,
+   "cause_first_packet": 9142,
+   "cause_later_packet": 496,
+   "midi_records": 9644,
+   "packets_sent_with_t1_pre": 20513,
+   "packets_sent_with_t1_post": 20513,
+   "publisher_dropped": 23990,
+   "stream_dropped": 0,
+   "stream_data_events": 16219,
+   "client_counts_minmax": [
+    1,
+    1
+   ],
+   "browser_pids_gone": true,
+   "bridge_pid_gone": true,
+   "pgrep_before": [
+    "empty"
+   ],
+   "pgrep_after": [
+    "empty"
+   ],
+   "foreign_before": [
+    0
+   ],
+   "foreign_after": [
+    0
+   ],
+   "foreign_matched": [
+    [
+     [],
+     []
+    ]
+   ],
+   "load1_before": 3.44,
+   "load1_after": 3.3,
+   "stats": {
+    "m_bridge_ms": {
+     "p50": 1.509167,
+     "p95": 2210.8027454999997,
+     "p99": 3416.5497498299997,
+     "max": 3530.795333,
+     "n": 9638
+    },
+    "m_post_ms": {
+     "p50": 1.487584,
+     "p95": 2210.79726875,
+     "p99": 3416.5448405399998,
+     "max": 3530.79175,
+     "n": 9638
+    },
+    "m_total_ms": {
+     "p50": 1.5946875,
+     "p95": 2210.80282235,
+     "p99": 3416.5498172899997,
+     "max": 3530.795416,
+     "n": 9638
+    }
+   },
+   "worst_stats": {
+    "m_bridge_ms": {
+     "p50": 1.5573125,
+     "p95": 2246.6716045,
+     "p99": 3422.60047505,
+     "max": 3530.795333,
+     "n": 9016
+    },
+    "m_post_ms": {
+     "p50": 1.541521,
+     "p95": 2246.66846875,
+     "p99": 3422.5959652,
+     "max": 3530.79175,
+     "n": 9016
+    },
+    "m_total_ms": {
+     "p50": 1.557375,
+     "p95": 2246.6716875,
+     "p99": 3422.6005589000006,
+     "max": 3530.795416,
+     "n": 9016
+    }
+   }
+  },
+  {
+   "repeat": 5,
+   "arm": "CLOSED-B",
+   "attempts": 1,
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "error": null,
+   "first_packet_join": 9638,
+   "every_message": 9638,
+   "cause_first_packet": 9142,
+   "cause_later_packet": 496,
+   "midi_records": 9644,
+   "packets_sent_with_t1_pre": 20513,
+   "packets_sent_with_t1_post": 20513,
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "stream_data_events": null,
+   "client_counts_minmax": null,
+   "browser_pids_gone": null,
+   "bridge_pid_gone": true,
+   "pgrep_before": [
+    "empty"
+   ],
+   "pgrep_after": [
+    "empty"
+   ],
+   "foreign_before": [
+    0
+   ],
+   "foreign_after": [
+    0
+   ],
+   "foreign_matched": [
+    [
+     [],
+     []
+    ]
+   ],
+   "load1_before": 3.76,
+   "load1_after": 4.14,
+   "stats": {
+    "m_bridge_ms": {
+     "p50": 1.4117505,
+     "p95": 12.23063935,
+     "p99": 19.426371079999946,
+     "max": 112.052209,
+     "n": 9638
+    },
+    "m_post_ms": {
+     "p50": 1.3979795,
+     "p95": 12.226241,
+     "p99": 19.41798303999995,
+     "max": 112.048792,
+     "n": 9638
+    },
+    "m_total_ms": {
+     "p50": 1.4954585,
+     "p95": 116.01439734999772,
+     "p99": 1648.1770928299986,
+     "max": 2023.891417,
+     "n": 9638
+    }
+   },
+   "worst_stats": {
+    "m_bridge_ms": {
+     "p50": 1.4652500000000002,
+     "p95": 12.39478125,
+     "p99": 19.924683050000024,
+     "max": 112.052209,
+     "n": 9016
+    },
+    "m_post_ms": {
+     "p50": 1.4554585,
+     "p95": 12.37443725,
+     "p99": 19.920820450000022,
+     "max": 112.048792,
+     "n": 9016
+    },
+    "m_total_ms": {
+     "p50": 1.4653125,
+     "p95": 12.394885500000001,
+     "p99": 19.924766050000024,
+     "max": 112.05225,
+     "n": 9016
+    }
+   }
+  }
+ ],
+ "pooled": {
+  "m_bridge_ms": {
+   "CLOSED": {
+    "p50": 1.28025,
+    "p95": 14.404483000000038,
+    "p99": 2162.04077163,
+    "max": 3550.161625,
+    "n": 48190
+   },
+   "OPEN": {
+    "p50": 1.4613125,
+    "p95": 1882.8735039500048,
+    "p99": 3359.30974325,
+    "max": 3759.490916,
+    "n": 48190
+   },
+   "CLOSED-B": {
+    "p50": 1.316542,
+    "p95": 12.500570650000023,
+    "p99": 1867.9414218900001,
+    "max": 3567.241458,
+    "n": 48190
+   }
+  },
+  "m_post_ms": {
+   "CLOSED": {
+    "p50": 1.272083,
+    "p95": 14.392129350000003,
+    "p99": 2162.0371140100006,
+    "max": 3550.157958,
+    "n": 48190
+   },
+   "OPEN": {
+    "p50": 1.4413960000000001,
+    "p95": 1882.8694414500048,
+    "p99": 3359.3054879899996,
+    "max": 3759.486416,
+    "n": 48190
+   },
+   "CLOSED-B": {
+    "p50": 1.3098125,
+    "p95": 12.478004050000004,
+    "p99": 1867.9381215100002,
+    "max": 3567.238125,
+    "n": 48190
+   }
+  },
+  "m_total_ms": {
+   "CLOSED": {
+    "p50": 1.3266665,
+    "p95": 987.8881022000008,
+    "p99": 2424.8202867400005,
+    "max": 3550.161708,
+    "n": 48190
+   },
+   "OPEN": {
+    "p50": 1.545,
+    "p95": 1952.3441481000004,
+    "p99": 3359.31227375,
+    "max": 3759.490958,
+    "n": 48190
+   },
+   "CLOSED-B": {
+    "p50": 1.383125,
+    "p95": 780.4956168500001,
+    "p99": 2005.9111538700004,
+    "max": 3567.2415,
+    "n": 48190
+   }
+  }
+ },
+ "rules": {
+  "m_bridge_ms": {
+   "noise_floor_ms": {
+    "p50": 0.03629199999999999,
+    "p95": 1.9039123500000148,
+    "p99": 294.09934974
+   },
+   "open_delta_ms": {
+    "p50": 0.1810624999999999,
+    "p95": 1868.4690209500047,
+    "p99": 1197.2689716199998
+   },
+   "within": {
+    "p50": true,
+    "p95": false,
+    "p99": false
+   },
+   "floor_can_resolve_2ms": true,
+   "valid_arms": true,
+   "within_all": false
+  },
+  "m_post_ms": {
+   "noise_floor_ms": {
+    "p50": 0.03772949999999997,
+    "p95": 1.9141252999999985,
+    "p99": 294.09899250000035
+   },
+   "open_delta_ms": {
+    "p50": 0.16931300000000005,
+    "p95": 1868.4773121000048,
+    "p99": 1197.268373979999
+   },
+   "within": {
+    "p50": true,
+    "p95": false,
+    "p99": false
+   },
+   "floor_can_resolve_2ms": true,
+   "valid_arms": true,
+   "within_all": false
+  },
+  "m_total_ms": {
+   "noise_floor_ms": {
+    "p50": 0.05645849999999997,
+    "p95": 207.3924853500007,
+    "p99": 418.9091328700001
+   },
+   "open_delta_ms": {
+    "p50": 0.21833349999999996,
+    "p95": 964.4560458999996,
+    "p99": 934.4919870099993
+   },
+   "within": {
+    "p50": true,
+    "p95": false,
+    "p99": false
+   },
+   "floor_can_resolve_2ms": true,
+   "valid_arms": true,
+   "within_all": false
+  }
+ },
+ "worst_case_segment": "simultaneous-sticks-triggers-60hz",
+ "worst_pooled": {
+  "m_bridge_ms": {
+   "CLOSED": {
+    "p50": 1.298583,
+    "p95": 12.353512200000031,
+    "p99": 2258.44343739,
+    "max": 3550.161625,
+    "n": 45080
+   },
+   "OPEN": {
+    "p50": 1.509833,
+    "p95": 1990.0040017500007,
+    "p99": 3371.74145004,
+    "max": 3759.490916,
+    "n": 45080
+   },
+   "CLOSED-B": {
+    "p50": 1.354646,
+    "p95": 12.827275,
+    "p99": 1989.1820176799997,
+    "max": 3567.241458,
+    "n": 45080
+   }
+  },
+  "m_post_ms": {
+   "CLOSED": {
+    "p50": 1.290583,
+    "p95": 12.348426450000002,
+    "p99": 2258.43873107,
+    "max": 3550.157958,
+    "n": 45080
+   },
+   "OPEN": {
+    "p50": 1.4917085,
+    "p95": 1990.0004440500006,
+    "p99": 3371.73774125,
+    "max": 3759.486416,
+    "n": 45080
+   },
+   "CLOSED-B": {
+    "p50": 1.346792,
+    "p95": 12.804302050000011,
+    "p99": 1989.1783811799999,
+    "max": 3567.238125,
+    "n": 45080
+   }
+  },
+  "m_total_ms": {
+   "CLOSED": {
+    "p50": 1.2986870000000001,
+    "p95": 12.353594050000032,
+    "p99": 2258.44349682,
+    "max": 3550.161708,
+    "n": 45080
+   },
+   "OPEN": {
+    "p50": 1.509875,
+    "p95": 1990.0040857500007,
+    "p99": 3371.74153304,
+    "max": 3759.490958,
+    "n": 45080
+   },
+   "CLOSED-B": {
+    "p50": 1.354708,
+    "p95": 12.827361050000002,
+    "p99": 1989.18209186,
+    "max": 3567.2415,
+    "n": 45080
+   }
+  }
+ },
+ "worst_rules": {
+  "m_bridge_ms": {
+   "noise_floor_ms": {
+    "p50": 0.056062999999999974,
+    "p95": 0.4737627999999692,
+    "p99": 269.26141971000015
+   },
+   "open_delta_ms": {
+    "p50": 0.21124999999999994,
+    "p95": 1977.6504895500007,
+    "p99": 1113.2980126500001
+   },
+   "within": {
+    "p50": true,
+    "p95": false,
+    "p99": false
+   },
+   "floor_can_resolve_2ms": true,
+   "valid_arms": true,
+   "within_all": false
+  },
+  "m_post_ms": {
+   "noise_floor_ms": {
+    "p50": 0.05620899999999995,
+    "p95": 0.4558756000000095,
+    "p99": 269.26034989000004
+   },
+   "open_delta_ms": {
+    "p50": 0.20112550000000007,
+    "p95": 1977.6520176000006,
+    "p99": 1113.29901018
+   },
+   "within": {
+    "p50": true,
+    "p95": false,
+    "p99": false
+   },
+   "floor_can_resolve_2ms": true,
+   "valid_arms": true,
+   "within_all": false
+  },
+  "m_total_ms": {
+   "noise_floor_ms": {
+    "p50": 0.056020999999999876,
+    "p95": 0.4737669999999703,
+    "p99": 269.26140495999994
+   },
+   "open_delta_ms": {
+    "p50": 0.21118799999999993,
+    "p95": 1977.6504917000007,
+    "p99": 1113.29803622
+   },
+   "within": {
+    "p50": true,
+    "p95": false,
+    "p99": false
+   },
+   "floor_can_resolve_2ms": true,
+   "valid_arms": true,
+   "within_all": false
+  }
+ },
+ "pooled_matches_instrument_m_bridge": true,
+ "locked_summary_pooled_matches": true,
+ "instrument_m_bridge_rule": {
+  "floor_can_resolve_2ms": true,
+  "noise_floor_ms": {
+   "p50": 0.03629199999999999,
+   "p95": 1.9039123500000148,
+   "p99": 294.09934974
+  },
+  "open_delta_ms": {
+   "p50": 0.1810624999999999,
+   "p95": 1868.4690209500047,
+   "p99": 1197.2689716199998
+  },
+  "passed": false,
+  "valid_arms": true,
+  "within": {
+   "p50": true,
+   "p95": false,
+   "p99": false
+  }
+ },
+ "instrument_locked_rule": {
+  "floor_can_resolve_2ms": true,
+  "noise_floor_ms": {
+   "p50": 0.05645849999999997,
+   "p95": 207.3924853500007,
+   "p99": 418.9091328700001
+  },
+  "open_delta_ms": {
+   "p50": 0.21833349999999996,
+   "p95": 964.4560458999996,
+   "p99": 934.4919870099993
+  },
+  "passed": false,
+  "valid_arms": true,
+  "within": {
+   "p50": true,
+   "p95": false,
+   "p99": false
+  }
+ },
+ "instrument_m_post_rule": {
+  "floor_can_resolve_2ms": true,
+  "noise_floor_ms": {
+   "p50": 0.03772949999999997,
+   "p95": 1.9141252999999985,
+   "p99": 294.09899250000035
+  },
+  "open_delta_ms": {
+   "p50": 0.16931300000000005,
+   "p95": 1868.4773121000048,
+   "p99": 1197.268373979999
+  },
+  "passed": false,
+  "valid_arms": true,
+  "within": {
+   "p50": true,
+   "p95": false,
+   "p99": false
+  }
+ },
+ "per_repeat_m_bridge": [
+  {
+   "repeat": 1,
+   "within": {
+    "p50": true,
+    "p95": false,
+    "p99": false
+   },
+   "passed": false
+  },
+  {
+   "repeat": 2,
+   "within": {
+    "p50": true,
+    "p95": false,
+    "p99": false
+   },
+   "passed": false
+  },
+  {
+   "repeat": 3,
+   "within": {
+    "p50": true,
+    "p95": true,
+    "p99": true
+   },
+   "passed": true
+  },
+  {
+   "repeat": 4,
+   "within": {
+    "p50": true,
+    "p95": true,
+    "p99": true
+   },
+   "passed": true
+  },
+  {
+   "repeat": 5,
+   "within": {
+    "p50": true,
+    "p95": true,
+    "p99": true
+   },
+   "passed": true
+  }
+ ]
+}

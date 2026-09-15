@@ -1,0 +1,5 @@
+equals_userprofile_join: true
+joined_exists: True
+tray_pid 5268 owner_is_rail_user: true
+tray_pid 23640 owner_is_rail_user: true
+RAIL_EXIT 0

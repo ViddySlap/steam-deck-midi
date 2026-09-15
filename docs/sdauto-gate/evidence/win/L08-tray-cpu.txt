@@ -1,0 +1,5 @@
+BEFORE 5268 STEAMDECK-MIDI-RECEIVER-2-Tray session=1 start=2026-08-16T00:29:37 cpu_s=1692.1875
+BEFORE 23640 STEAMDECK-MIDI-RECEIVER-2-Tray session=1 start=2026-08-16T00:29:37 cpu_s=24699.890625
+AFTER 5268 cpu_s=1692.25 delta_s=0.0625 pct_one_core=0.104 pct_all_cores=0.0033
+AFTER 23640 cpu_s=24700.546875 delta_s=0.6563 pct_one_core=1.094 pct_all_cores=0.0342
+TOTAL elapsed_s=60.006 logical_cores=32 delta_s=0.7188 pct_one_core=1.198 pct_all_cores=0.0374

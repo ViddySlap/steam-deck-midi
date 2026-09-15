@@ -1,0 +1,5 @@
+OSC_SYNC engines.factory\osc_sync.json present=true key=true home_form=True suffix equal: true depth=9 exists=True
+OSC_SYNC engines\osc_sync.json present=false
+AUDIO_OPACITY engines.factory\audio_opacity.json present=true protocol=outputs.osc
+AUDIO_OPACITY engines\audio_opacity.json present=true protocol=(absent)
+RAIL_EXIT 0

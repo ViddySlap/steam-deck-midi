@@ -1,0 +1,24 @@
+.....Autopilot: ignoring autopilot state file /tmp/sdauto-a1-test-y6x7c1f2/state/autopilot_channels.local.json (unsupported schema 2 (this build reads 1)); using config defaults
+Autopilot: ignoring autopilot state file /tmp/sdauto-a1-test-y6x7c1f2/state/autopilot_channels.local.json (unsupported schema 2 (this build reads 1)); using config defaults
+.Autopilot: ignoring autopilot state file /tmp/sdauto-a1-test-q4q571c3/state/autopilot_channels.local.json (not JSON: Expecting value: line 1 column 40 (char 39)); using config defaults
+Autopilot: ignoring autopilot state file /tmp/sdauto-a1-test-q4q571c3/state/autopilot_channels.local.json (not JSON: Expecting value: line 1 column 40 (char 39)); using config defaults
+.Autopilot: ignoring autopilot state file /tmp/sdauto-a1-test-6pg1hh7s/state/autopilot_channels.local.json (enabled must be a boolean); using config defaults
+Autopilot: ignoring autopilot state file /tmp/sdauto-a1-test-6pg1hh7s/state/autopilot_channels.local.json (enabled must be a boolean); using config defaults
+...state dir /tmp/sdauto-a1-test-v8wxmuss/config/engines/state is inside the engines dir /tmp/sdauto-a1-test-v8wxmuss/config/engines; engine state persistence disabled
+......F......autopilot state: write to /tmp/sdauto-a1-test-8wmcln_a/state/autopilot_channels.local.json failed: [Errno 13] Permission denied: '/tmp/sdauto-a1-test-8wmcln_a/state/.autopilot_channels.local.json.0qbc08sy.tmp'
+.Autopilot: ignoring autopilot state file /tmp/sdauto-a1-test-fjpo4_2r/not-a-dir/autopilot_channels.local.json (cannot read: [Errno 20] Not a directory: '/tmp/sdauto-a1-test-fjpo4_2r/not-a-dir/autopilot_channels.local.json'); using config defaults
+autopilot state: write to /tmp/sdauto-a1-test-fjpo4_2r/not-a-dir/autopilot_channels.local.json failed: [Errno 17] File exists: '/tmp/sdauto-a1-test-fjpo4_2r/not-a-dir'
+.
+======================================================================
+FAIL: test_file_on_disk_has_schema_names_and_no_runtime_fields (tests.test_autopilot_state.RoundTripTests.test_file_on_disk_has_schema_names_and_no_runtime_fields)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/sdauto-gate/s6/tree-b/tests/test_autopilot_state.py", line 153, in test_file_on_disk_has_schema_names_and_no_runtime_fields
+    self.assertEqual(set(fields), set(autopilot_state.INTENT_FIELDS))
+AssertionError: Items in the first set but not the second:
+'crossfade_start_time'
+
+----------------------------------------------------------------------
+Ran 25 tests in 0.215s
+
+FAILED (failures=1)

@@ -1,0 +1,10 @@
+{
+ "result": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\sdauto-gate\\eab-win-edm.json",
+ "passed": false,
+ "control": null,
+ "control_expected": null,
+ "error": "arm A failed (exit 1); see C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\sdauto-gate\\eab-win-edm\\engine-ab-rnuk3nm2\\A\\arm.log",
+ "problems": null,
+ "comparisons": {},
+ "coverage": []
+}

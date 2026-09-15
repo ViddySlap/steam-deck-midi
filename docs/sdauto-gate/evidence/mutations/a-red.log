@@ -1,0 +1,68 @@
+....F....Fstate dir /tmp/sdauto-a1-test-25remida/config/engines/state is inside the engines dir /tmp/sdauto-a1-test-25remida/config/engines; engine state persistence disabled
+..F.F..F.....autopilot state: write to /tmp/sdauto-a1-test-k1twzkw5/state/autopilot_channels.local.json failed: [Errno 13] Permission denied: '/tmp/sdauto-a1-test-k1twzkw5/state/.autopilot_channels.local.json.qgjgln_x.tmp'
+.autopilot state: write to /tmp/sdauto-a1-test-iy2yynqd/not-a-dir/autopilot_channels.local.json failed: [Errno 17] File exists: '/tmp/sdauto-a1-test-iy2yynqd/not-a-dir'
+.
+======================================================================
+FAIL: test_channel_and_layer_removed_from_config_are_ignored (tests.test_autopilot_state.InvalidFileTests.test_channel_and_layer_removed_from_config_are_ignored)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/sdauto-gate/s6/tree-a/tests/test_autopilot_state.py", line 275, in test_channel_and_layer_removed_from_config_are_ignored
+    with self.assertLogs("windows.engines.autopilot", level="WARNING") as logs:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/_log.py", line 84, in __exit__
+    self._raiseFailure(
+AssertionError: no logs of level WARNING or higher triggered on windows.engines.autopilot
+
+======================================================================
+FAIL: test_explicit_state_dir_restores_across_two_loads (tests.test_autopilot_state.RegistryPlumbingTests.test_explicit_state_dir_restores_across_two_loads)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/sdauto-gate/s6/tree-a/tests/test_autopilot_state.py", line 473, in test_explicit_state_dir_restores_across_two_loads
+    self.assertTrue(again.get_by_type("autopilot")._states["video"].enabled)
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_inactive_engine_sends_nothing_until_active (tests.test_autopilot_state.RestoreSideEffectTests.test_inactive_engine_sends_nothing_until_active)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/sdauto-gate/s6/tree-a/tests/test_autopilot_state.py", line 321, in test_inactive_engine_sends_nothing_until_active
+    self.assertIn(("/composition/layers/1/master", 1.0), restored.osc.sends)
+AssertionError: ('/composition/layers/1/master', 1.0) not found in []
+
+======================================================================
+FAIL: test_restored_enable_matches_a_live_enable_cc (tests.test_autopilot_state.RestoreSideEffectTests.test_restored_enable_matches_a_live_enable_cc)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/sdauto-gate/s6/tree-a/tests/test_autopilot_state.py", line 299, in test_restored_enable_matches_a_live_enable_cc
+    self.assertEqual(restored.osc.sends, live.osc.sends)
+AssertionError: Lists differ: [] != [('/composition/layers/1/transition/durati[514 chars]748)]
+
+Second list contains 10 additional elements.
+First extra element 0:
+('/composition/layers/1/transition/duration', 0.25196850393700787)
+
+- []
++ [('/composition/layers/1/transition/duration', 0.25196850393700787),
++  ('/composition/layers/3/transition/duration', 0.25196850393700787),
++  ('/composition/layers/1/master', 1.0),
++  ('/composition/layers/3/master', 0.0),
++  ('/composition/layers/1/transition/duration', 0.25196850393700787),
++  ('/composition/layers/3/transition/duration', 0.25196850393700787),
++  ('/composition/layers/5/transition/duration', 0.5),
++  ('/composition/layers/5/master', 1.0),
++  ('/composition/layers/5/transition/duration', 0.5),
++  ('/composition/layers/7/transition/duration', 0.03937007874015748)]
+
+======================================================================
+FAIL: test_five_fields_survive_restart_and_runtime_is_fresh (tests.test_autopilot_state.RoundTripTests.test_five_fields_survive_restart_and_runtime_is_fresh)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/sdauto-gate/s6/tree-a/tests/test_autopilot_state.py", line 132, in test_five_fields_survive_restart_and_runtime_is_fresh
+    self.assertEqual(_intent(second.engine), expected)
+AssertionError: {'video': (False, 16, 0.0, <ClipMode.NONE: 0>, {1: F[156 chars]se})} != {'video': (True, 8, 2.5196850393700787, <ClipMode.RA[184 chars]ue})}
+Diff is 793 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 25 tests in 0.220s
+
+FAILED (failures=5)

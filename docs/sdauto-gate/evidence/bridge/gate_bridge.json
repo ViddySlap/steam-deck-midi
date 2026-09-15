@@ -1,0 +1,1902 @@
+{
+  "tree": "/tmp/sdauto-gate/s1/run/tree/config",
+  "removed_keys": [
+    "engines/osc_sync.json/osc_preset_path"
+  ],
+  "foreign_addresses": {},
+  "osc_autopilot_port": 64657,
+  "osc_other_port": 52121,
+  "rest_port": 64923,
+  "ccs_sent_boot1": [
+    {
+      "channel": 14,
+      "cc": 64,
+      "value": 127,
+      "for": "video"
+    },
+    {
+      "channel": 14,
+      "cc": 65,
+      "value": 127,
+      "for": "video"
+    },
+    {
+      "channel": 14,
+      "cc": 61,
+      "value": 2,
+      "for": "video"
+    },
+    {
+      "channel": 14,
+      "cc": 62,
+      "value": 64,
+      "for": "video"
+    },
+    {
+      "channel": 14,
+      "cc": 63,
+      "value": 1,
+      "for": "video"
+    },
+    {
+      "channel": 14,
+      "cc": 60,
+      "value": 127,
+      "for": "video"
+    },
+    {
+      "channel": 14,
+      "cc": 74,
+      "value": 127,
+      "for": "fx"
+    },
+    {
+      "channel": 14,
+      "cc": 71,
+      "value": 4,
+      "for": "fx"
+    },
+    {
+      "channel": 14,
+      "cc": 72,
+      "value": 127,
+      "for": "fx"
+    },
+    {
+      "channel": 14,
+      "cc": 73,
+      "value": 2,
+      "for": "fx"
+    },
+    {
+      "channel": 14,
+      "cc": 70,
+      "value": 127,
+      "for": "fx"
+    },
+    {
+      "channel": 14,
+      "cc": 85,
+      "value": 127,
+      "for": "logo"
+    }
+  ],
+  "boot1": {
+    "cmd": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "-u",
+      "/private/tmp/sdauto-gate/s1/hook_launch.py",
+      "64242",
+      "--",
+      "--map",
+      "/tmp/sdauto-gate/s1/run/tree/config/windows_midi_map.json",
+      "--preset-section",
+      "windows",
+      "--dry-run",
+      "--no-pulse",
+      "--no-browser",
+      "--midi-port",
+      "IAC Driver DECK_IN",
+      "--feedback-port",
+      "IAC Driver DECK_OUT",
+      "--listen",
+      "127.0.0.1:51914",
+      "--ui-port",
+      "64924"
+    ],
+    "pid": 97786,
+    "t_spawn": 1789504515.721566,
+    "t_ui_up": 1789504515.8898282,
+    "engines_before": {
+      "engines": [
+        {
+          "active": true,
+          "attack_seconds": 0.0,
+          "audio_window_avg": 0.0,
+          "current_logo_master": 1.0,
+          "current_video_master": 1.0,
+          "duration_seconds": 1.0,
+          "enabled": false,
+          "goal": "off",
+          "goal_source": "engine",
+          "logo_always": false,
+          "logo_delay_seconds": 1.0,
+          "logo_stomp": false,
+          "name": "Audio Engine",
+          "pending_phases": 0,
+          "phase": "idle",
+          "release_seconds": 1.0,
+          "tipping_point": 0.65,
+          "type": "audio_opacity",
+          "video_always": false,
+          "video_delay_seconds": 0.0,
+          "video_stomp": false
+        },
+        {
+          "active": true,
+          "active_fades": 0,
+          "channel_cc_count": 0,
+          "channel_input_channel": 14,
+          "channels": {
+            "chaser": {
+              "active_index": 0,
+              "cc": 40,
+              "consumer_count": 6
+            },
+            "chaser_black": {
+              "active_index": 0,
+              "cc": 94,
+              "consumer_count": 1
+            },
+            "chaser_white": {
+              "active_index": 0,
+              "cc": 49,
+              "consumer_count": 1
+            },
+            "global": {
+              "active_index": null,
+              "cc": 45,
+              "consumer_count": 0
+            },
+            "gyro_highlight": {
+              "active_index": 0,
+              "cc": 96,
+              "consumer_count": 1
+            },
+            "gyro_shadow": {
+              "active_index": 0,
+              "cc": 97,
+              "consumer_count": 1
+            },
+            "gyro_white": {
+              "active_index": 0,
+              "cc": 98,
+              "consumer_count": 1
+            },
+            "logo_black": {
+              "active_index": 0,
+              "cc": 93,
+              "consumer_count": 1
+            },
+            "logo_highlight": {
+              "active_index": 0,
+              "cc": 43,
+              "consumer_count": 1
+            },
+            "logo_shadow": {
+              "active_index": 0,
+              "cc": 44,
+              "consumer_count": 1
+            },
+            "logo_white": {
+              "active_index": 0,
+              "cc": 48,
+              "consumer_count": 1
+            },
+            "video_black": {
+              "active_index": 0,
+              "cc": 92,
+              "consumer_count": 1
+            },
+            "video_highlight": {
+              "active_index": 0,
+              "cc": 41,
+              "consumer_count": 1
+            },
+            "video_shadow": {
+              "active_index": 0,
+              "cc": 42,
+              "consumer_count": 1
+            },
+            "video_white": {
+              "active_index": 0,
+              "cc": 47,
+              "consumer_count": 1
+            }
+          },
+          "consumer_write_count": 0,
+          "fade_cc": 46,
+          "fade_cc_count": 0,
+          "fade_seconds": 1.0,
+          "max_fade_seconds": 5.0,
+          "name": "Global Color",
+          "palette": [
+            "#ff0000ff",
+            "#ff5b00ff",
+            "#ffff00ff",
+            "#00ff00ff",
+            "#00ffffff",
+            "#0000ffff",
+            "#7f00ffff",
+            "#ff00ffff",
+            "#ffffffff",
+            "#000000ff"
+          ],
+          "palette_cc_base": 0,
+          "palette_cc_count": 0,
+          "palette_input_channel": 13,
+          "resync_cc": 99,
+          "resync_emit_count": 1,
+          "type": "global_color"
+        },
+        {
+          "active": true,
+          "last_pass_completed_at": null,
+          "last_pass_error": null,
+          "last_pass_skipped_count": 0,
+          "last_pass_skipped_paths": [],
+          "last_pass_started_at": null,
+          "last_pass_wiggle_count": 0,
+          "name": "OSC Sync",
+          "syncing": false,
+          "target_count": null,
+          "type": "osc_sync"
+        },
+        {
+          "active": true,
+          "bpm": null,
+          "channels": {
+            "fx": {
+              "beat_in_clip": 0,
+              "beats_per_clip": 16,
+              "clip_mode": "NONE",
+              "column_advance": false,
+              "cycle_index": 0,
+              "enabled": false,
+              "group": null,
+              "layer_enabled": {
+                "5": false
+              },
+              "target_layer": null,
+              "transition_seconds": 0.0,
+              "visible_layer": null
+            },
+            "logo": {
+              "beat_in_clip": 0,
+              "beats_per_clip": 16,
+              "clip_mode": "NONE",
+              "column_advance": true,
+              "cycle_index": 0,
+              "enabled": false,
+              "group": 2,
+              "layer_enabled": {
+                "6": false,
+                "7": false
+              },
+              "target_layer": null,
+              "transition_seconds": 0.0,
+              "visible_layer": null
+            },
+            "video": {
+              "beat_in_clip": 0,
+              "beats_per_clip": 16,
+              "clip_mode": "NONE",
+              "column_advance": true,
+              "cycle_index": 0,
+              "enabled": false,
+              "group": 1,
+              "layer_enabled": {
+                "1": false,
+                "2": false,
+                "3": false,
+                "4": false
+              },
+              "target_layer": null,
+              "transition_seconds": 0.0,
+              "visible_layer": null
+            }
+          },
+          "clock_running": true,
+          "clock_source": "midi_clock",
+          "fallback_bpm": 128.0,
+          "fallback_enabled": true,
+          "name": "Autopilot",
+          "pending_column_note": null,
+          "tick_count": 0,
+          "type": "autopilot"
+        },
+        {
+          "active": true,
+          "beat_in_clip": 0,
+          "beats_per_clip": 16,
+          "bpm": null,
+          "cam_enabled": {
+            "1": true,
+            "2": true,
+            "3": true
+          },
+          "clip_mode": "SEQUENTIAL",
+          "clock_running": true,
+          "cycle_index": 0,
+          "enabled": false,
+          "name": "Autopilot PTZ",
+          "selected_cam": null,
+          "tick_count": 0,
+          "type": "autopilot_ptz"
+        },
+        {
+          "active": true,
+          "blast_speed_writes": 0,
+          "current_layer": "chaser",
+          "curve_exp": 2.0,
+          "disengage_count": 0,
+          "engage_count": 0,
+          "engaged": false,
+          "last_amount": 0.0,
+          "last_blast_speed_sent": null,
+          "layer_tracker_bound": true,
+          "max_speed": 0.95,
+          "min_speed": 0.1,
+          "name": "Bumper Blast",
+          "refresh_count": 0,
+          "sustain_curve_exp": 2.0,
+          "type": "bumper_blast"
+        },
+        {
+          "active": true,
+          "current_layer": "chaser",
+          "current_step": 0.0,
+          "disengage_count": 0,
+          "engage_count": 0,
+          "engaged": false,
+          "feedback_max": 0.7,
+          "last_amount": 0.0,
+          "layer_tracker_bound": true,
+          "max_step": 0.5,
+          "min_step": 0.0,
+          "name": "Chaser Stack Dispatcher",
+          "refresh_count": 0,
+          "step_writes": 0,
+          "type": "chaser_stack_dispatcher"
+        },
+        {
+          "abort_count": 0,
+          "active": true,
+          "color_norm": 0.0,
+          "color_ramp": 0.0,
+          "color_state": "idle",
+          "current_layer": "chaser",
+          "engage_count": 0,
+          "name": "Flash Blast",
+          "release_count": 0,
+          "strobe_bypassed": true,
+          "strobe_opacity": 1.0,
+          "tap_count": 0,
+          "tap_peak_threshold": 0.5,
+          "tap_window_seconds": 0.05,
+          "tolerance": 0.1,
+          "type": "flash_blast",
+          "white_norm": 0.0,
+          "white_ramp": 0.0,
+          "white_state": "idle"
+        },
+        {
+          "active": true,
+          "axes": {
+            "pitch": "GYRO_PITCH",
+            "roll": "GYRO_ROLL",
+            "yaw": "GYRO_YAW"
+          },
+          "emit_count": 0,
+          "hold_enter_count": 0,
+          "hold_exit_count": 0,
+          "hold_mode_active": false,
+          "hold_set": {
+            "center": {
+              "pitch": 0.0,
+              "roll": 0.0,
+              "yaw": 0.0
+            },
+            "channel": 13,
+            "pitch": 122,
+            "roll": 124,
+            "yaw": 123
+          },
+          "ignored_legacy_count": 0,
+          "l4_cc": 74,
+          "l4_channel": 2,
+          "l4_down": false,
+          "midi_active": false,
+          "name": "Gyro Feedback",
+          "raw_now": {
+            "pitch": 0.0,
+            "roll": 0.0,
+            "yaw": 0.0
+          },
+          "recenter_on_activate": true,
+          "tap_count": 0,
+          "tap_threshold_ms": 200.0,
+          "toggle_set": {
+            "center": {
+              "pitch": 0.0,
+              "roll": 0.0,
+              "yaw": 0.0
+            },
+            "channel": 15,
+            "pitch": 122,
+            "roll": 124,
+            "yaw": 123
+          },
+          "type": "gyro_feedback",
+          "value_map": {
+            "axis_raw": {
+              "pitch": {
+                "raw_max": 550.0,
+                "raw_min": -550.0
+              },
+              "roll": {
+                "raw_max": 750.0,
+                "raw_min": -750.0
+              },
+              "yaw": {
+                "raw_max": 750.0,
+                "raw_min": -750.0
+              }
+            },
+            "deadzone": 100.0,
+            "out_max": 127,
+            "out_min": 0,
+            "raw_max": 750.0,
+            "raw_min": -750.0
+          }
+        },
+        {
+          "active": true,
+          "axis_directions": {
+            "L_STICK_X_AXIS": "zero",
+            "L_STICK_Y_AXIS": "zero"
+          },
+          "axis_events_total": 0,
+          "channel": 15,
+          "current_layer": "a",
+          "deadzone": 3500,
+          "input_max": 32767,
+          "last_toggle_at": null,
+          "name": "Left Stick Layer",
+          "set_a": {
+            "x_neg": 120,
+            "x_pos": 118,
+            "y_neg": 121,
+            "y_pos": 119
+          },
+          "set_b": {
+            "x_neg": 112,
+            "x_pos": 110,
+            "y_neg": 113,
+            "y_pos": 111
+          },
+          "toggle_count": 0,
+          "toggle_note": 72,
+          "toggle_note_channel": 0,
+          "type": "l_stick_layer"
+        },
+        {
+          "activate_delay_seconds": 0.1,
+          "active": true,
+          "buttons": [
+            {
+              "advance_count": 0,
+              "btspace_path": "/Controls/Deck1/btSpace",
+              "button": "x",
+              "fade_window_seconds": 1.25,
+              "notes": [
+                40,
+                41
+              ],
+              "press_count": 0,
+              "queue_path": "/Queue/Queue1",
+              "skip_count": 0,
+              "target_deck": 1
+            },
+            {
+              "advance_count": 0,
+              "btspace_path": "/Controls/Deck1/btSpace",
+              "button": "b",
+              "fade_window_seconds": 1.25,
+              "notes": [
+                38,
+                39
+              ],
+              "press_count": 0,
+              "queue_path": "/Queue/Queue2",
+              "skip_count": 0,
+              "target_deck": 1
+            },
+            {
+              "advance_count": 0,
+              "btspace_path": "/Controls/Deck2/btSpace",
+              "button": "lpad_up",
+              "fade_window_seconds": 0.0,
+              "notes": [
+                88
+              ],
+              "press_count": 0,
+              "queue_path": "/Queue/Queue3",
+              "skip_count": 0,
+              "target_deck": 2
+            },
+            {
+              "advance_count": 0,
+              "btspace_path": "/Controls/Deck2/btSpace",
+              "button": "lpad_down",
+              "fade_window_seconds": 0.0,
+              "notes": [
+                89
+              ],
+              "press_count": 0,
+              "queue_path": "/Queue/Queue4",
+              "skip_count": 0,
+              "target_deck": 2
+            }
+          ],
+          "fade_window_seconds": 1.25,
+          "last_press_button": null,
+          "name": "NestDrop",
+          "type": "nestdrop"
+        },
+        {
+          "active": false,
+          "camera_nic_ip": "127.0.0.1",
+          "effective_speed_max": {
+            "left": {
+              "pan": 24,
+              "tilt": 20,
+              "zoom": 7
+            },
+            "right": {
+              "pan": 24,
+              "tilt": 20,
+              "zoom": 7
+            }
+          },
+          "last_stop_reason": "toggle",
+          "moving": {
+            "left": {
+              "pantilt": false,
+              "zoom": false
+            },
+            "right": {
+              "pantilt": false,
+              "zoom": false
+            }
+          },
+          "name": "PTZ VISCA",
+          "pan_tilt_speed_scale": {
+            "left": 1.0,
+            "right": 1.0
+          },
+          "selected": {
+            "left": 1,
+            "right": 2
+          },
+          "sender": "bound",
+          "streaming": false,
+          "targets": {
+            "left": "127.0.0.1",
+            "right": "127.0.0.1"
+          },
+          "type": "ptz_visca",
+          "zoom_direction": {
+            "left": "in",
+            "right": "in"
+          },
+          "zoom_speed_scale": {
+            "left": 1.0,
+            "right": 1.0
+          }
+        },
+        {
+          "active": true,
+          "last_look_names": [],
+          "last_rescan_at": null,
+          "last_rescan_error": null,
+          "last_rescan_skipped": [],
+          "last_rescan_skipped_count": 0,
+          "last_rescan_writes": 0,
+          "layer_index": 1,
+          "look_count": 15,
+          "name": "StageFlow Bridge",
+          "param_ids_known": 0,
+          "rescan_count": 0,
+          "type": "stageflow_bridge",
+          "wire_effect_name": "STAGEFLOW BRIDGE"
+        },
+        {
+          "active": true,
+          "cc_events_total": 1,
+          "channel": null,
+          "chaser_ccs": [],
+          "chaser_notes": [
+            60,
+            62
+          ],
+          "current_layer": "chaser",
+          "flash_ccs": [],
+          "flash_notes": [
+            61,
+            63
+          ],
+          "last_change_at": null,
+          "layer_change_count": 0,
+          "name": "SteamInput Layer Tracker",
+          "note_events_total": 0,
+          "observer_count": 3,
+          "select_cc": 79,
+          "select_cc_channel": 2,
+          "select_note": null,
+          "type": "steam_input_layer_tracker"
+        }
+      ]
+    },
+    "probe": {
+      "injected_cc": 12,
+      "autopilot_ids": [
+        4364008240
+      ],
+      "autopilot_active": [
+        true
+      ],
+      "mido_opens": []
+    },
+    "autopilot_status": {
+      "active": true,
+      "bpm": null,
+      "channels": {
+        "fx": {
+          "beat_in_clip": 0,
+          "beats_per_clip": 32,
+          "clip_mode": "RANDOM",
+          "column_advance": false,
+          "cycle_index": 0,
+          "enabled": true,
+          "group": null,
+          "layer_enabled": {
+            "5": true
+          },
+          "target_layer": null,
+          "transition_seconds": 5.0,
+          "visible_layer": 5
+        },
+        "logo": {
+          "beat_in_clip": 0,
+          "beats_per_clip": 16,
+          "clip_mode": "NONE",
+          "column_advance": true,
+          "cycle_index": 0,
+          "enabled": false,
+          "group": 2,
+          "layer_enabled": {
+            "6": false,
+            "7": true
+          },
+          "target_layer": null,
+          "transition_seconds": 0.0,
+          "visible_layer": null
+        },
+        "video": {
+          "beat_in_clip": 0,
+          "beats_per_clip": 8,
+          "clip_mode": "LINEAR",
+          "column_advance": true,
+          "cycle_index": 0,
+          "enabled": true,
+          "group": 1,
+          "layer_enabled": {
+            "1": true,
+            "2": true,
+            "3": false,
+            "4": false
+          },
+          "target_layer": null,
+          "transition_seconds": 2.5196850393700787,
+          "visible_layer": 1
+        }
+      },
+      "clock_running": true,
+      "clock_source": "midi_clock",
+      "fallback_bpm": 128.0,
+      "fallback_enabled": true,
+      "name": "Autopilot",
+      "pending_column_note": null,
+      "tick_count": 0,
+      "type": "autopilot"
+    },
+    "five_fields": {
+      "video": {
+        "enabled": true,
+        "beats_per_clip": 8,
+        "transition_seconds": 2.5196850393700787,
+        "clip_mode": "LINEAR",
+        "layer_enabled": {
+          "1": true,
+          "2": true,
+          "3": false,
+          "4": false
+        }
+      },
+      "fx": {
+        "enabled": true,
+        "beats_per_clip": 32,
+        "transition_seconds": 5.0,
+        "clip_mode": "RANDOM",
+        "layer_enabled": {
+          "5": true
+        }
+      },
+      "logo": {
+        "enabled": false,
+        "beats_per_clip": 16,
+        "transition_seconds": 0.0,
+        "clip_mode": "NONE",
+        "layer_enabled": {
+          "6": false,
+          "7": true
+        }
+      }
+    }
+  },
+  "state_after_boot1": {
+    "engines": {
+      "Autopilot": {
+        "channels": {
+          "fx": {
+            "beats_per_clip": 32,
+            "clip_mode": "RANDOM",
+            "enabled": true,
+            "layer_enabled": {
+              "5": true
+            },
+            "transition_seconds": 5.0
+          },
+          "logo": {
+            "beats_per_clip": 16,
+            "clip_mode": "NONE",
+            "enabled": false,
+            "layer_enabled": {
+              "6": false,
+              "7": true
+            },
+            "transition_seconds": 0.0
+          },
+          "video": {
+            "beats_per_clip": 8,
+            "clip_mode": "LINEAR",
+            "enabled": true,
+            "layer_enabled": {
+              "1": true,
+              "2": true,
+              "3": false,
+              "4": false
+            },
+            "transition_seconds": 2.5196850393700787
+          }
+        }
+      }
+    },
+    "schema": 1
+  },
+  "state_after_boot1_sha256": "51692e7665a4009d94926c97ab2711012a812440eda8154a3f169bc66d6bb3f2",
+  "boot2": {
+    "cmd": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "-u",
+      "/private/tmp/sdauto-gate/s1/hook_launch.py",
+      "64242",
+      "--",
+      "--map",
+      "/tmp/sdauto-gate/s1/run/tree/config/windows_midi_map.json",
+      "--preset-section",
+      "windows",
+      "--dry-run",
+      "--no-pulse",
+      "--no-browser",
+      "--midi-port",
+      "IAC Driver DECK_IN",
+      "--feedback-port",
+      "IAC Driver DECK_OUT",
+      "--listen",
+      "127.0.0.1:51914",
+      "--ui-port",
+      "64924"
+    ],
+    "pid": 98972,
+    "t_spawn": 1789504517.52001,
+    "t_ui_up": 1789504517.6833448,
+    "autopilot_status_first_get": {
+      "t": 1789504517.684096,
+      "status": {
+        "active": true,
+        "bpm": null,
+        "channels": {
+          "fx": {
+            "beat_in_clip": 0,
+            "beats_per_clip": 32,
+            "clip_mode": "RANDOM",
+            "column_advance": false,
+            "cycle_index": 0,
+            "enabled": true,
+            "group": null,
+            "layer_enabled": {
+              "5": true
+            },
+            "target_layer": null,
+            "transition_seconds": 5.0,
+            "visible_layer": 5
+          },
+          "logo": {
+            "beat_in_clip": 0,
+            "beats_per_clip": 16,
+            "clip_mode": "NONE",
+            "column_advance": true,
+            "cycle_index": 0,
+            "enabled": false,
+            "group": 2,
+            "layer_enabled": {
+              "6": false,
+              "7": true
+            },
+            "target_layer": null,
+            "transition_seconds": 0.0,
+            "visible_layer": null
+          },
+          "video": {
+            "beat_in_clip": 0,
+            "beats_per_clip": 8,
+            "clip_mode": "LINEAR",
+            "column_advance": true,
+            "cycle_index": 0,
+            "enabled": true,
+            "group": 1,
+            "layer_enabled": {
+              "1": true,
+              "2": true,
+              "3": false,
+              "4": false
+            },
+            "target_layer": null,
+            "transition_seconds": 2.5196850393700787,
+            "visible_layer": 1
+          }
+        },
+        "clock_running": true,
+        "clock_source": "midi_clock",
+        "fallback_bpm": 128.0,
+        "fallback_enabled": true,
+        "name": "Autopilot",
+        "pending_column_note": null,
+        "tick_count": 0,
+        "type": "autopilot"
+      }
+    },
+    "runtime_first_get": {
+      "fx": {
+        "visible_layer": 5,
+        "target_layer": null,
+        "beat_in_clip": 0,
+        "cycle_index": 0
+      },
+      "logo": {
+        "visible_layer": null,
+        "target_layer": null,
+        "beat_in_clip": 0,
+        "cycle_index": 0
+      },
+      "video": {
+        "visible_layer": 1,
+        "target_layer": null,
+        "beat_in_clip": 0,
+        "cycle_index": 0
+      }
+    },
+    "no_input_evidence": {
+      "hook_injected_cc": 0,
+      "udp_packets_sent_by_gate": 0,
+      "filter_calls": 0
+    },
+    "engines_loaded_line": "2026-09-15 14:35:17,635 INFO windows.receiver engines loaded: Audio Engine(audio_opacity), Global Color(global_color), OSC Sync(osc_sync), Autopilot(autopilot), Autopilot PTZ(autopilot_ptz), Bumper Blast(bumper_blast), Chaser Stack Dispatcher(chaser_stack_dispatcher), Flash Blast(flash_blast), Gyro Feedback(gyro_feedback), Left Stick Layer(l_stick_layer), NestDrop(nestdrop), PTZ VISCA(ptz_visca), StageFlow Bridge(stageflow_bridge), SteamInput Layer Tracker(steam_input_layer_tracker)",
+    "restored_line": "2026-09-15 14:35:17,589 INFO windows.engines.autopilot Autopilot: restored autopilot intent for video, fx, logo from /tmp/sdauto-gate/s1/run/tree/config/state/autopilot_channels.local.json",
+    "first_transition_push": {
+      "t": 1789504517.5991628,
+      "address": "/composition/layers/1/transition/duration",
+      "value": 0.25196850299835205,
+      "len": 52,
+      "raw_hex": "2f636f6d706f736974696f6e2f6c61796572732f312f7472616e736974696f6e2f6475726174696f6e0000002c6600003e810204"
+    },
+    "first_autopilot_datagram": {
+      "t": 1789504517.5991628,
+      "address": "/composition/layers/1/transition/duration",
+      "value": 0.25196850299835205,
+      "len": 52,
+      "raw_hex": "2f636f6d706f736974696f6e2f6c61796572732f312f7472616e736974696f6e2f6475726174696f6e0000002c6600003e810204"
+    },
+    "autopilot_datagrams_first_20": [
+      {
+        "t": 1789504517.5991628,
+        "address": "/composition/layers/1/transition/duration",
+        "value": 0.25196850299835205,
+        "len": 52,
+        "raw_hex": "2f636f6d706f736974696f6e2f6c61796572732f312f7472616e736974696f6e2f6475726174696f6e0000002c6600003e810204"
+      },
+      {
+        "t": 1789504517.599169,
+        "address": "/composition/layers/2/transition/duration",
+        "value": 0.25196850299835205,
+        "len": 52,
+        "raw_hex": "2f636f6d706f736974696f6e2f6c61796572732f322f7472616e736974696f6e2f6475726174696f6e0000002c6600003e810204"
+      },
+      {
+        "t": 1789504517.59919,
+        "address": "/composition/layers/1/master",
+        "value": 1.0,
+        "len": 40,
+        "raw_hex": "2f636f6d706f736974696f6e2f6c61796572732f312f6d6173746572000000002c6600003f800000"
+      },
+      {
+        "t": 1789504517.599194,
+        "address": "/composition/layers/2/master",
+        "value": 0.0,
+        "len": 40,
+        "raw_hex": "2f636f6d706f736974696f6e2f6c61796572732f322f6d6173746572000000002c66000000000000"
+      },
+      {
+        "t": 1789504517.5992,
+        "address": "/composition/layers/1/transition/duration",
+        "value": 0.25196850299835205,
+        "len": 52,
+        "raw_hex": "2f636f6d706f736974696f6e2f6c61796572732f312f7472616e736974696f6e2f6475726174696f6e0000002c6600003e810204"
+      },
+      {
+        "t": 1789504517.599203,
+        "address": "/composition/layers/2/transition/duration",
+        "value": 0.25196850299835205,
+        "len": 52,
+        "raw_hex": "2f636f6d706f736974696f6e2f6c61796572732f322f7472616e736974696f6e2f6475726174696f6e0000002c6600003e810204"
+      },
+      {
+        "t": 1789504517.599206,
+        "address": "/composition/layers/5/transition/duration",
+        "value": 0.5,
+        "len": 52,
+        "raw_hex": "2f636f6d706f736974696f6e2f6c61796572732f352f7472616e736974696f6e2f6475726174696f6e0000002c6600003f000000"
+      },
+      {
+        "t": 1789504517.5992372,
+        "address": "/composition/layers/5/master",
+        "value": 1.0,
+        "len": 40,
+        "raw_hex": "2f636f6d706f736974696f6e2f6c61796572732f352f6d6173746572000000002c6600003f800000"
+      },
+      {
+        "t": 1789504517.599241,
+        "address": "/composition/layers/5/transition/duration",
+        "value": 0.5,
+        "len": 52,
+        "raw_hex": "2f636f6d706f736974696f6e2f6c61796572732f352f7472616e736974696f6e2f6475726174696f6e0000002c6600003f000000"
+      },
+      {
+        "t": 1789504517.599244,
+        "address": "/composition/layers/7/transition/duration",
+        "value": 0.0,
+        "len": 52,
+        "raw_hex": "2f636f6d706f736974696f6e2f6c61796572732f372f7472616e736974696f6e2f6475726174696f6e0000002c66000000000000"
+      }
+    ],
+    "delay_ms_engines_loaded_to_first_transition_push": -35.83717346191406,
+    "tick_interval_ms": 33.333333333333336,
+    "clock_note": "ring asctime (record.created, time.time, ms resolution) vs listener time.time() on the same Mac: offset 0",
+    "delay_ms_restored_line_to_first_push": 10.162830352783203,
+    "delay_ms_spawn_to_first_push": 79.15282249450684,
+    "pushes_before_engines_loaded_line": 10
+  },
+  "routes": {
+    "GET autopilot config": {
+      "status": 200,
+      "source": "factory",
+      "live_swappable": true
+    },
+    "filter control before PUT": {
+      "old_id": 4389604000,
+      "call_ids": [
+        4389604000
+      ],
+      "calls": [
+        {
+          "id": 4389604000,
+          "channel": 0,
+          "note": 82,
+          "velocity": 127,
+          "result": false,
+          "t": 1789504520.192787
+        }
+      ]
+    },
+    "PUT autopilot good": {
+      "status": 200,
+      "file_equals_body": true,
+      "autopilot_ids": [
+        4397134144
+      ],
+      "update_hz": [
+        20.0
+      ],
+      "filter_owner_ids": [
+        4397134144
+      ],
+      "filter_owner_types": [
+        "AutopilotEngine"
+      ]
+    },
+    "filter after PUT": {
+      "new_id": 4397134144,
+      "call_ids": [
+        4397134144
+      ],
+      "calls": [
+        {
+          "id": 4397134144,
+          "channel": 0,
+          "note": 82,
+          "velocity": 127,
+          "result": false,
+          "t": 1789504520.81994
+        }
+      ]
+    },
+    "PUT autopilot bad": {
+      "status": 400,
+      "body": {
+        "error": "invalid autopilot config: could not convert string to float: 'fast'"
+      },
+      "sha_before": "7723428372b0f8127ef807b2f18c601fcca689742f47e718ed8fa8d2ccd8456f",
+      "sha_after": "7723428372b0f8127ef807b2f18c601fcca689742f47e718ed8fa8d2ccd8456f",
+      "ids": [
+        4397134144
+      ]
+    },
+    "PUT osc_sync": {
+      "get_status": 200,
+      "status": 409,
+      "body": {
+        "error": "restart_required",
+        "reason": "shutdown joins an in-flight sync pass for up to 5 s, which would stall MIDI on the receiver thread while the pass holds composition master at 0",
+        "type": "osc_sync"
+      },
+      "sha_before": "405fa7383490a4680ccdfa054d881979aba107a1392fb0eb738a4434738ff707",
+      "sha_after": "405fa7383490a4680ccdfa054d881979aba107a1392fb0eb738a4434738ff707",
+      "engines_dir_before": [
+        "audio_opacity.json",
+        "autopilot.json",
+        "global_color.json",
+        "osc_sync.json"
+      ],
+      "engines_dir_after": [
+        "audio_opacity.json",
+        "autopilot.json",
+        "global_color.json",
+        "osc_sync.json"
+      ]
+    },
+    "GET osc-relay": {
+      "status": 200,
+      "body": {
+        "config": {
+          "destinations": [
+            "127.0.0.1:52121"
+          ],
+          "enabled": true,
+          "listen": "127.0.0.1:59845"
+        },
+        "load_error": null,
+        "path": "/tmp/sdauto-gate/s1/run/tree/config/osc_relay.json",
+        "running": true,
+        "stats": {
+          "destinations": [
+            "127.0.0.1:52121"
+          ],
+          "listen": "127.0.0.1:59845",
+          "packets_in": 0,
+          "packets_out": 0,
+          "running": true,
+          "send_errors": 0
+        }
+      }
+    },
+    "PUT osc-relay two destinations": {
+      "status": 200,
+      "file_equals_body": true,
+      "d1": 1,
+      "d2": 1
+    },
+    "PUT osc-relay dest == listen": {
+      "status": 400,
+      "body": {
+        "error": "osc_relay destination '127.0.0.1:59845' is the relay's own listen address; that would loop"
+      },
+      "sha_unchanged": true
+    },
+    "GET midi ports": {
+      "status": 200,
+      "body": {
+        "error": null,
+        "inputs": [
+          "IAC Driver DECK_IN",
+          "IAC Driver DECK_OUT",
+          "IAC Driver PULSE_OUT",
+          "ipMIDI Port 1"
+        ],
+        "outputs": [
+          "IAC Driver DECK_IN",
+          "IAC Driver DECK_OUT",
+          "IAC Driver PULSE_OUT",
+          "ipMIDI Port 1"
+        ],
+        "selected": {
+          "feedback": {
+            "requested": "IAC Driver DECK_OUT",
+            "resolved": "IAC Driver DECK_OUT"
+          },
+          "output": {
+            "requested": "IAC Driver DECK_IN",
+            "resolved": "IAC Driver DECK_IN"
+          },
+          "pulse": {
+            "requested": null,
+            "resolved": null
+          }
+        }
+      },
+      "python_rtmidi": {
+        "inputs": [
+          "IAC Driver DECK_IN",
+          "IAC Driver DECK_OUT",
+          "IAC Driver PULSE_OUT",
+          "ipMIDI Port 1"
+        ],
+        "outputs": [
+          "IAC Driver DECK_IN",
+          "IAC Driver DECK_OUT",
+          "IAC Driver PULSE_OUT",
+          "ipMIDI Port 1"
+        ]
+      },
+      "mido_open_calls": []
+    },
+    "GET logs tail": {
+      "status": 200,
+      "count": 50,
+      "stamped": 50,
+      "first": "2026-09-15 14:35:17,588 INFO windows.engines.registry auto-merging factory default for engine type 'flash_blast' (not in engines/)",
+      "boot_line_in_50": false,
+      "status_1000": 200,
+      "boot_line": [
+        "2026-09-15 14:35:17,587 INFO root build fingerprint: version=0.5.0 commit=source built_utc=source"
+      ]
+    }
+  },
+  "step2b": {
+    "resync_status": 200,
+    "resync_body": {
+      "ok": true,
+      "target_count": 2
+    },
+    "parsed_log": [
+      "2026-09-15 14:35:23,210 INFO windows.engines.osc_sync osc_sync: parsed 2 wigglable targets from /tmp/sdauto-gate/s1/run/home/OneDrive/Documents/Resolume Arena/Shortcuts/OSC/STEAMDECK V2.xml"
+    ],
+    "osc_sync_preset_path": [
+      "/tmp/sdauto-gate/s1/run/home/OneDrive/Documents/Resolume Arena/Shortcuts/OSC/STEAMDECK V2.xml"
+    ],
+    "stageflow_comp_path": [
+      "/tmp/sdauto-gate/s1/run/home/OneDrive/Documents/Resolume Arena/Compositions/5-5-26 STEAMDECK V2.avc"
+    ],
+    "expected_xml": "/tmp/sdauto-gate/s1/run/home/OneDrive/Documents/Resolume Arena/Shortcuts/OSC/STEAMDECK V2.xml",
+    "expected_comp": "/tmp/sdauto-gate/s1/run/home/OneDrive/Documents/Resolume Arena/Compositions/5-5-26 STEAMDECK V2.avc"
+  },
+  "clear": {
+    "status": 200,
+    "persisted": true,
+    "get": {
+      "fx": {
+        "enabled": false,
+        "beats_per_clip": 16,
+        "transition_seconds": 0.0,
+        "clip_mode": "NONE",
+        "layer_enabled": {
+          "5": false
+        }
+      },
+      "logo": {
+        "enabled": false,
+        "beats_per_clip": 16,
+        "transition_seconds": 0.0,
+        "clip_mode": "NONE",
+        "layer_enabled": {
+          "6": false,
+          "7": false
+        }
+      },
+      "video": {
+        "enabled": false,
+        "beats_per_clip": 16,
+        "transition_seconds": 0.0,
+        "clip_mode": "NONE",
+        "layer_enabled": {
+          "1": false,
+          "2": false,
+          "3": false,
+          "4": false
+        }
+      }
+    },
+    "file": {
+      "fx": {
+        "beats_per_clip": 16,
+        "clip_mode": "NONE",
+        "enabled": false,
+        "layer_enabled": {
+          "5": false
+        },
+        "transition_seconds": 0.0
+      },
+      "logo": {
+        "beats_per_clip": 16,
+        "clip_mode": "NONE",
+        "enabled": false,
+        "layer_enabled": {
+          "6": false,
+          "7": false
+        },
+        "transition_seconds": 0.0
+      },
+      "video": {
+        "beats_per_clip": 16,
+        "clip_mode": "NONE",
+        "enabled": false,
+        "layer_enabled": {
+          "1": false,
+          "2": false,
+          "3": false,
+          "4": false
+        },
+        "transition_seconds": 0.0
+      }
+    }
+  },
+  "boot3": {
+    "cmd": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "-u",
+      "/private/tmp/sdauto-gate/s1/hook_launch.py",
+      "64242",
+      "--",
+      "--map",
+      "/tmp/sdauto-gate/s1/run/tree/config/windows_midi_map.json",
+      "--preset-section",
+      "windows",
+      "--dry-run",
+      "--no-pulse",
+      "--no-browser",
+      "--midi-port",
+      "IAC Driver DECK_IN",
+      "--feedback-port",
+      "IAC Driver DECK_OUT",
+      "--listen",
+      "127.0.0.1:51914",
+      "--ui-port",
+      "64924"
+    ],
+    "pid": 98989,
+    "t_spawn": 1789504523.288938,
+    "t_ui_up": 1789504523.447892,
+    "get": {
+      "fx": {
+        "enabled": false,
+        "beats_per_clip": 16,
+        "transition_seconds": 0.0,
+        "clip_mode": "NONE",
+        "layer_enabled": {
+          "5": false
+        }
+      },
+      "logo": {
+        "enabled": false,
+        "beats_per_clip": 16,
+        "transition_seconds": 0.0,
+        "clip_mode": "NONE",
+        "layer_enabled": {
+          "6": false,
+          "7": false
+        }
+      },
+      "video": {
+        "enabled": false,
+        "beats_per_clip": 16,
+        "transition_seconds": 0.0,
+        "clip_mode": "NONE",
+        "layer_enabled": {
+          "1": false,
+          "2": false,
+          "3": false,
+          "4": false
+        }
+      }
+    },
+    "warning": [
+      "2026-09-15 14:35:23,355 WARNING windows.engines.autopilot Autopilot: ignoring autopilot state file /tmp/sdauto-gate/s1/run/tree/config/state/autopilot_channels.local.json (not JSON: Expecting value: line 1 column 75 (char 74)); using config defaults"
+    ],
+    "hook_injected_cc": 0
+  },
+  "rest_requests": [
+    {
+      "t": 1789504517.597965,
+      "method": "GET",
+      "path": "/api/v1/composition"
+    },
+    {
+      "t": 1789504517.5984159,
+      "method": "GET",
+      "path": "/api/v1/composition"
+    },
+    {
+      "t": 1789504517.598711,
+      "method": "GET",
+      "path": "/api/v1/composition"
+    },
+    {
+      "t": 1789504520.81863,
+      "method": "GET",
+      "path": "/api/v1/composition"
+    },
+    {
+      "t": 1789504523.3645089,
+      "method": "GET",
+      "path": "/api/v1/composition"
+    },
+    {
+      "t": 1789504523.365023,
+      "method": "GET",
+      "path": "/api/v1/composition"
+    },
+    {
+      "t": 1789504523.365355,
+      "method": "GET",
+      "path": "/api/v1/composition"
+    }
+  ],
+  "checks": [
+    {
+      "name": "scratch engine configs name zero non-loopback addresses",
+      "ok": true,
+      "foreign": {}
+    },
+    {
+      "name": "boot1: UI up",
+      "ok": true
+    },
+    {
+      "name": "boot1: no state file before any CC",
+      "ok": true
+    },
+    {
+      "name": "boot1: hook delivered every CC through the feedback path",
+      "ok": true,
+      "injected": 12
+    },
+    {
+      "name": "boot1: GET /api/engines shows the CC-set five fields",
+      "ok": true,
+      "got": {
+        "video": {
+          "enabled": true,
+          "beats_per_clip": 8,
+          "transition_seconds": 2.5196850393700787,
+          "clip_mode": "LINEAR",
+          "layer_enabled": {
+            "1": true,
+            "2": true,
+            "3": false,
+            "4": false
+          }
+        },
+        "fx": {
+          "enabled": true,
+          "beats_per_clip": 32,
+          "transition_seconds": 5.0,
+          "clip_mode": "RANDOM",
+          "layer_enabled": {
+            "5": true
+          }
+        },
+        "logo": {
+          "enabled": false,
+          "beats_per_clip": 16,
+          "transition_seconds": 0.0,
+          "clip_mode": "NONE",
+          "layer_enabled": {
+            "6": false,
+            "7": true
+          }
+        }
+      },
+      "want": {
+        "video": {
+          "enabled": true,
+          "beats_per_clip": 8,
+          "transition_seconds": 2.5196850393700787,
+          "clip_mode": "LINEAR",
+          "layer_enabled": {
+            "1": true,
+            "2": true,
+            "3": false,
+            "4": false
+          }
+        },
+        "fx": {
+          "enabled": true,
+          "beats_per_clip": 32,
+          "transition_seconds": 5.0,
+          "clip_mode": "RANDOM",
+          "layer_enabled": {
+            "5": true
+          }
+        },
+        "logo": {
+          "enabled": false,
+          "beats_per_clip": 16,
+          "transition_seconds": 0.0,
+          "clip_mode": "NONE",
+          "layer_enabled": {
+            "6": false,
+            "7": true
+          }
+        }
+      }
+    },
+    {
+      "name": "boot1: POST /api/shutdown 202 and exit 0, pid gone",
+      "ok": true,
+      "status": 202,
+      "exit": 0,
+      "ps_exit": 1
+    },
+    {
+      "name": "state file holds exactly the five fields per channel, equal to GET, and no runtime field",
+      "ok": true,
+      "doc": {
+        "engines": {
+          "Autopilot": {
+            "channels": {
+              "fx": {
+                "beats_per_clip": 32,
+                "clip_mode": "RANDOM",
+                "enabled": true,
+                "layer_enabled": {
+                  "5": true
+                },
+                "transition_seconds": 5.0
+              },
+              "logo": {
+                "beats_per_clip": 16,
+                "clip_mode": "NONE",
+                "enabled": false,
+                "layer_enabled": {
+                  "6": false,
+                  "7": true
+                },
+                "transition_seconds": 0.0
+              },
+              "video": {
+                "beats_per_clip": 8,
+                "clip_mode": "LINEAR",
+                "enabled": true,
+                "layer_enabled": {
+                  "1": true,
+                  "2": true,
+                  "3": false,
+                  "4": false
+                },
+                "transition_seconds": 2.5196850393700787
+              }
+            }
+          }
+        },
+        "schema": 1
+      }
+    },
+    {
+      "name": "boot2: GET /api/engines five fields equal boot1 (no input sent)",
+      "ok": true,
+      "got": {
+        "fx": {
+          "enabled": true,
+          "beats_per_clip": 32,
+          "transition_seconds": 5.0,
+          "clip_mode": "RANDOM",
+          "layer_enabled": {
+            "5": true
+          }
+        },
+        "logo": {
+          "enabled": false,
+          "beats_per_clip": 16,
+          "transition_seconds": 0.0,
+          "clip_mode": "NONE",
+          "layer_enabled": {
+            "6": false,
+            "7": true
+          }
+        },
+        "video": {
+          "enabled": true,
+          "beats_per_clip": 8,
+          "transition_seconds": 2.5196850393700787,
+          "clip_mode": "LINEAR",
+          "layer_enabled": {
+            "1": true,
+            "2": true,
+            "3": false,
+            "4": false
+          }
+        }
+      }
+    },
+    {
+      "name": "boot2: no MIDI injected and no Deck UDP sent",
+      "ok": true
+    },
+    {
+      "name": "boot2: restored transition push arrived WITHOUT input within 1 s of engines loaded",
+      "ok": true,
+      "delay_ms": -35.83717346191406,
+      "first": {
+        "t": 1789504517.5991628,
+        "address": "/composition/layers/1/transition/duration",
+        "value": 0.25196850299835205,
+        "len": 52,
+        "raw_hex": "2f636f6d706f736974696f6e2f6c61796572732f312f7472616e736974696f6e2f6475726174696f6e0000002c6600003e810204"
+      },
+      "engines_loaded": [
+        "2026-09-15 14:35:17,635 INFO windows.receiver engines loaded: Audio Engine(audio_opacity), Global Color(global_color), OSC Sync(osc_sync), Autopilot(autopilot), Autopilot PTZ(autopilot_ptz), Bumper Blast(bumper_blast), Chaser Stack Dispatcher(chaser_stack_dispatcher), Flash Blast(flash_blast), Gyro Feedback(gyro_feedback), Left Stick Layer(l_stick_layer), NestDrop(nestdrop), PTZ VISCA(ptz_visca), StageFlow Bridge(stageflow_bridge), SteamInput Layer Tracker(steam_input_layer_tracker)"
+      ]
+    },
+    {
+      "name": "boot2: restored pushes carry the restored transition per selected layer",
+      "ok": true,
+      "pushes": {
+        "/composition/layers/1/transition/duration": 0.251969,
+        "/composition/layers/2/transition/duration": 0.251969,
+        "/composition/layers/5/transition/duration": 0.5,
+        "/composition/layers/7/transition/duration": 0.0
+      },
+      "want": {
+        "/composition/layers/1/transition/duration": 0.251969,
+        "/composition/layers/2/transition/duration": 0.251969,
+        "/composition/layers/5/transition/duration": 0.5,
+        "/composition/layers/7/transition/duration": 0.0
+      }
+    },
+    {
+      "name": "route: GET /api/engines/autopilot/config 200 factory live_swappable",
+      "ok": true,
+      "status": 200,
+      "source": "factory",
+      "live_swappable": true
+    },
+    {
+      "name": "control: before PUT, the Deck L_PAD_LEFT note consults the OLD autopilot filter",
+      "ok": true,
+      "calls": 1
+    },
+    {
+      "name": "route: PUT autopilot config 200, file written, live instance replaced (new id, update_hz 20)",
+      "ok": true,
+      "status": 200,
+      "file_equals_body": true,
+      "autopilot_ids": [
+        4397134144
+      ],
+      "update_hz": [
+        20.0
+      ],
+      "filter_owner_ids": [
+        4397134144
+      ],
+      "filter_owner_types": [
+        "AutopilotEngine"
+      ]
+    },
+    {
+      "name": "route: after PUT the registry holds exactly the NEW autopilot filter",
+      "ok": true,
+      "filters": [
+        4397134144
+      ]
+    },
+    {
+      "name": "route: after PUT only the NEW instance's note-emit filter is consulted",
+      "ok": true,
+      "calls": 1
+    },
+    {
+      "name": "route: PUT bad spec 400, file sha256 unchanged, instance unchanged",
+      "ok": true,
+      "status": 400,
+      "body": {
+        "error": "invalid autopilot config: could not convert string to float: 'fast'"
+      },
+      "sha_before": "7723428372b0f8127ef807b2f18c601fcca689742f47e718ed8fa8d2ccd8456f",
+      "sha_after": "7723428372b0f8127ef807b2f18c601fcca689742f47e718ed8fa8d2ccd8456f",
+      "ids": [
+        4397134144
+      ]
+    },
+    {
+      "name": "route: PUT restart_required type (osc_sync) 409, nothing written",
+      "ok": true,
+      "get_status": 200,
+      "status": 409,
+      "body": {
+        "error": "restart_required",
+        "reason": "shutdown joins an in-flight sync pass for up to 5 s, which would stall MIDI on the receiver thread while the pass holds composition master at 0",
+        "type": "osc_sync"
+      },
+      "sha_before": "405fa7383490a4680ccdfa054d881979aba107a1392fb0eb738a4434738ff707",
+      "sha_after": "405fa7383490a4680ccdfa054d881979aba107a1392fb0eb738a4434738ff707",
+      "engines_dir_before": [
+        "audio_opacity.json",
+        "autopilot.json",
+        "global_color.json",
+        "osc_sync.json"
+      ],
+      "engines_dir_after": [
+        "audio_opacity.json",
+        "autopilot.json",
+        "global_color.json",
+        "osc_sync.json"
+      ]
+    },
+    {
+      "name": "route: GET /api/osc-relay 200 running",
+      "ok": true,
+      "status": 200
+    },
+    {
+      "name": "route: PUT osc-relay 200; one datagram to listen arrives at BOTH new destinations",
+      "ok": true,
+      "status": 200,
+      "file_equals_body": true,
+      "d1": 1,
+      "d2": 1
+    },
+    {
+      "name": "route: PUT osc-relay destination == listen 400, file unchanged",
+      "ok": true,
+      "status": 400,
+      "body": {
+        "error": "osc_relay destination '127.0.0.1:59845' is the relay's own listen address; that would loop"
+      },
+      "sha_unchanged": true
+    },
+    {
+      "name": "route: GET /api/midi/ports lists the python-rtmidi names (IAC present) and opened nothing",
+      "ok": true,
+      "inputs": [
+        "IAC Driver DECK_IN",
+        "IAC Driver DECK_OUT",
+        "IAC Driver PULSE_OUT",
+        "ipMIDI Port 1"
+      ],
+      "outputs": [
+        "IAC Driver DECK_IN",
+        "IAC Driver DECK_OUT",
+        "IAC Driver PULSE_OUT",
+        "ipMIDI Port 1"
+      ],
+      "rtmidi": {
+        "inputs": [
+          "IAC Driver DECK_IN",
+          "IAC Driver DECK_OUT",
+          "IAC Driver PULSE_OUT",
+          "ipMIDI Port 1"
+        ],
+        "outputs": [
+          "IAC Driver DECK_IN",
+          "IAC Driver DECK_OUT",
+          "IAC Driver PULSE_OUT",
+          "ipMIDI Port 1"
+        ]
+      },
+      "opens": []
+    },
+    {
+      "name": "route: GET /api/logs/tail?lines=50 returns <=50 timestamped records; boot line present in the ring",
+      "ok": true,
+      "status": 200,
+      "count": 50,
+      "stamped": 50,
+      "first": "2026-09-15 14:35:17,588 INFO windows.engines.registry auto-merging factory default for engine type 'flash_blast' (not in engines/)",
+      "boot_line_in_50": false,
+      "status_1000": 200,
+      "boot_line": [
+        "2026-09-15 14:35:17,587 INFO root build fingerprint: version=0.5.0 commit=source built_utc=source"
+      ]
+    },
+    {
+      "name": "2b: osc_sync loads the home-relative preset (resync parsed its targets from HOME)",
+      "ok": true,
+      "parsed": [
+        "2026-09-15 14:35:23,210 INFO windows.engines.osc_sync osc_sync: parsed 2 wigglable targets from /tmp/sdauto-gate/s1/run/home/OneDrive/Documents/Resolume Arena/Shortcuts/OSC/STEAMDECK V2.xml"
+      ],
+      "body": {
+        "ok": true,
+        "target_count": 2
+      }
+    },
+    {
+      "name": "2b: stageflow_bridge resolves comp_path under HOME (attribute read; see report: no runtime read site)",
+      "ok": true,
+      "comp": [
+        "/tmp/sdauto-gate/s1/run/home/OneDrive/Documents/Resolume Arena/Compositions/5-5-26 STEAMDECK V2.avc"
+      ]
+    },
+    {
+      "name": "clear: POST .../state/clear 200 persisted, GET and file both defaults",
+      "ok": true,
+      "status": 200,
+      "persisted": true,
+      "get": {
+        "fx": {
+          "enabled": false,
+          "beats_per_clip": 16,
+          "transition_seconds": 0.0,
+          "clip_mode": "NONE",
+          "layer_enabled": {
+            "5": false
+          }
+        },
+        "logo": {
+          "enabled": false,
+          "beats_per_clip": 16,
+          "transition_seconds": 0.0,
+          "clip_mode": "NONE",
+          "layer_enabled": {
+            "6": false,
+            "7": false
+          }
+        },
+        "video": {
+          "enabled": false,
+          "beats_per_clip": 16,
+          "transition_seconds": 0.0,
+          "clip_mode": "NONE",
+          "layer_enabled": {
+            "1": false,
+            "2": false,
+            "3": false,
+            "4": false
+          }
+        }
+      },
+      "file": {
+        "fx": {
+          "beats_per_clip": 16,
+          "clip_mode": "NONE",
+          "enabled": false,
+          "layer_enabled": {
+            "5": false
+          },
+          "transition_seconds": 0.0
+        },
+        "logo": {
+          "beats_per_clip": 16,
+          "clip_mode": "NONE",
+          "enabled": false,
+          "layer_enabled": {
+            "6": false,
+            "7": false
+          },
+          "transition_seconds": 0.0
+        },
+        "video": {
+          "beats_per_clip": 16,
+          "clip_mode": "NONE",
+          "enabled": false,
+          "layer_enabled": {
+            "1": false,
+            "2": false,
+            "3": false,
+            "4": false
+          },
+          "transition_seconds": 0.0
+        }
+      }
+    },
+    {
+      "name": "boot2: POST /api/shutdown 202 and exit 0, pid gone",
+      "ok": true,
+      "status": 202,
+      "exit": 0,
+      "ps_exit": 1
+    },
+    {
+      "name": "after boot2 shutdown the file still holds defaults",
+      "ok": true
+    },
+    {
+      "name": "boot3: corrupt file -> GET shows config defaults and one warning",
+      "ok": true,
+      "got": {
+        "fx": {
+          "enabled": false,
+          "beats_per_clip": 16,
+          "transition_seconds": 0.0,
+          "clip_mode": "NONE",
+          "layer_enabled": {
+            "5": false
+          }
+        },
+        "logo": {
+          "enabled": false,
+          "beats_per_clip": 16,
+          "transition_seconds": 0.0,
+          "clip_mode": "NONE",
+          "layer_enabled": {
+            "6": false,
+            "7": false
+          }
+        },
+        "video": {
+          "enabled": false,
+          "beats_per_clip": 16,
+          "transition_seconds": 0.0,
+          "clip_mode": "NONE",
+          "layer_enabled": {
+            "1": false,
+            "2": false,
+            "3": false,
+            "4": false
+          }
+        }
+      },
+      "warn": [
+        "2026-09-15 14:35:23,355 WARNING windows.engines.autopilot Autopilot: ignoring autopilot state file /tmp/sdauto-gate/s1/run/tree/config/state/autopilot_channels.local.json (not JSON: Expecting value: line 1 column 75 (char 74)); using config defaults"
+      ]
+    },
+    {
+      "name": "boot3: POST /api/shutdown 202 and exit 0, pid gone",
+      "ok": true,
+      "status": 202,
+      "exit": 0,
+      "ps_exit": 1
+    },
+    {
+      "name": "boot3: corrupt file byte-identical after boot and shutdown",
+      "ok": true,
+      "sha_before": "c6051eb4eeb3d4719d0e4a101780fa3cd2c1558556763a79a4967884ea3cccc1",
+      "sha_after": "c6051eb4eeb3d4719d0e4a101780fa3cd2c1558556763a79a4967884ea3cccc1"
+    }
+  ],
+  "passed": true
+}

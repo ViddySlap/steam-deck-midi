@@ -1,0 +1,82 @@
+autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49431/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+/private/tmp/sdauto-gate/s6/tree-c/windows/engine_config_api.py:128: ResourceWarning: unclosed <socket.socket fd=6, family=2, type=2, proto=0, laddr=('0.0.0.0', 0)>
+  build_engine(spec, _SilentMidiOut(), state_dir=None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+..autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49434/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+.autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49436/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+.autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49438/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+.autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49440/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+.autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49442/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49442/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+.autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49445/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+/private/tmp/sdauto-gate/s6/tree-c/windows/engine_config_api.py:128: ResourceWarning: unclosed <socket.socket fd=7, family=2, type=2, proto=0, laddr=('0.0.0.0', 0)>
+  build_engine(spec, _SilentMidiOut(), state_dir=None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49445/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+Fautopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49448/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+.autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49450/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/lib/python3.12/site-packages/werkzeug/routing/rules.py:836: ResourceWarning: unclosed <socket.socket fd=4, family=2, type=2, proto=0, laddr=('0.0.0.0', 0)>
+  code = compile(module, "<werkzeug routing>", "exec")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/lib/python3.12/site-packages/werkzeug/routing/rules.py:836: ResourceWarning: unclosed <socket.socket fd=5, family=2, type=2, proto=0, laddr=('0.0.0.0', 0)>
+  code = compile(module, "<werkzeug routing>", "exec")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/private/tmp/sdauto-gate/s6/tree-c/windows/engine_config_api.py:128: ResourceWarning: unclosed <socket.socket fd=4, family=2, type=2, proto=0, laddr=('0.0.0.0', 0)>
+  build_engine(spec, _SilentMidiOut(), state_dir=None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49450/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+.autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49453/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49453/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+..Fautopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49456/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+autopilot: clip-cache prime failed (REST): GET http://127.0.0.1:49456/api/v1/composition failed: <urlopen error [Errno 61] Connection refused>
+/private/tmp/sdauto-gate/s6/tree-c/windows/engine_config_api.py:128: ResourceWarning: unclosed <socket.socket fd=8, family=2, type=2, proto=0, laddr=('0.0.0.0', 0)>
+  build_engine(spec, _SilentMidiOut(), state_dir=None)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.
+======================================================================
+FAIL: test_replaced_autopilot_filter_is_gone (tests.test_engine_config_api.EngineConfigRouteTests.test_replaced_autopilot_filter_is_gone)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/sdauto-gate/s6/tree-c/tests/test_engine_config_api.py", line 246, in test_replaced_autopilot_filter_is_gone
+    self.assertEqual(consulted, [new])
+AssertionError: Lists differ: [<win[48 chars] 0x109b78110>, <windows.engines.autopilot.Auto[30 chars]6b0>] != [<win[48 chars] 0x108e736b0>]
+
+First differing element 0:
+<windows.engines.autopilot.AutopilotEngine object at 0x109b78110>
+<windows.engines.autopilot.AutopilotEngine object at 0x108e736b0>
+
+First list contains 1 additional elements.
+First extra element 1:
+<windows.engines.autopilot.AutopilotEngine object at 0x108e736b0>
+
+- [<windows.engines.autopilot.AutopilotEngine object at 0x109b78110>,
+-  <windows.engines.autopilot.AutopilotEngine object at 0x108e736b0>]
+? ^
+
++ [<windows.engines.autopilot.AutopilotEngine object at 0x108e736b0>]
+? ^
+
+
+======================================================================
+FAIL: test_replace_removes_filters_shuts_down_keeps_slot_and_binds (tests.test_engine_config_api.RegistryReplaceTests.test_replace_removes_filters_shuts_down_keeps_slot_and_binds)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/sdauto-gate/s6/tree-c/tests/test_engine_config_api.py", line 157, in test_replace_removes_filters_shuts_down_keeps_slot_and_binds
+    self.assertEqual(events, [("shutdown", "old", False), ("bind", "new")])
+AssertionError: Lists differ: [('bind', 'new')] != [('shutdown', 'old', False), ('bind', 'new')]
+
+First differing element 0:
+('bind', 'new')
+('shutdown', 'old', False)
+
+Second list contains 1 additional elements.
+First extra element 1:
+('bind', 'new')
+
+- [('bind', 'new')]
++ [('shutdown', 'old', False), ('bind', 'new')]
+
+----------------------------------------------------------------------
+Ran 14 tests in 1.644s
+
+FAILED (failures=2)

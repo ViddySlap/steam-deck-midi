@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdauto-gate\eab-win-edm\engine-ab-rnuk3nm2\engine_ab_runner.py", line 791, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdauto-gate\eab-win-edm\engine-ab-rnuk3nm2\engine_ab_runner.py", line 755, in main
+    default_scratch = (Path(os.environ["LOCALAPPDATA"]) / "Temp/sdwin/engine-ab") if os.name == "nt" else Path("/tmp/sdauto-engine-ab")
+                            ~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "<frozen os>", line 714, in __getitem__
+KeyError: 'LOCALAPPDATA'

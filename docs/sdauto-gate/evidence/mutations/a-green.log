@@ -1,0 +1,15 @@
+.....Autopilot: ignoring autopilot state file /tmp/sdauto-a1-test-rfcv93ae/state/autopilot_channels.local.json (unsupported schema 2 (this build reads 1)); using config defaults
+Autopilot: ignoring autopilot state file /tmp/sdauto-a1-test-rfcv93ae/state/autopilot_channels.local.json (unsupported schema 2 (this build reads 1)); using config defaults
+.Autopilot: ignoring autopilot state file /tmp/sdauto-a1-test-ecl6mn4a/state/autopilot_channels.local.json (not JSON: Expecting value: line 1 column 40 (char 39)); using config defaults
+Autopilot: ignoring autopilot state file /tmp/sdauto-a1-test-ecl6mn4a/state/autopilot_channels.local.json (not JSON: Expecting value: line 1 column 40 (char 39)); using config defaults
+.Autopilot: ignoring autopilot state file /tmp/sdauto-a1-test-00uf3zl8/state/autopilot_channels.local.json (enabled must be a boolean); using config defaults
+Autopilot: ignoring autopilot state file /tmp/sdauto-a1-test-00uf3zl8/state/autopilot_channels.local.json (enabled must be a boolean); using config defaults
+...state dir /tmp/sdauto-a1-test-wmmeqrsp/config/engines/state is inside the engines dir /tmp/sdauto-a1-test-wmmeqrsp/config/engines; engine state persistence disabled
+.............autopilot state: write to /tmp/sdauto-a1-test-v9zc9g92/state/autopilot_channels.local.json failed: [Errno 13] Permission denied: '/tmp/sdauto-a1-test-v9zc9g92/state/.autopilot_channels.local.json.xvttlipx.tmp'
+.Autopilot: ignoring autopilot state file /tmp/sdauto-a1-test-p8yeau3a/not-a-dir/autopilot_channels.local.json (cannot read: [Errno 20] Not a directory: '/tmp/sdauto-a1-test-p8yeau3a/not-a-dir/autopilot_channels.local.json'); using config defaults
+autopilot state: write to /tmp/sdauto-a1-test-p8yeau3a/not-a-dir/autopilot_channels.local.json failed: [Errno 17] File exists: '/tmp/sdauto-a1-test-p8yeau3a/not-a-dir'
+.
+----------------------------------------------------------------------
+Ran 25 tests in 0.201s
+
+OK
