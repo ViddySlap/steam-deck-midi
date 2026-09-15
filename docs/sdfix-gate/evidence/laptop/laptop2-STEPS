@@ -1,0 +1,15 @@
+== 0-guard-snapshot 23:08:13 :: scripts/showready/win_rail.sh run ug2 scripts/showready/win_guard.ps1 -Mode snapshot -Out C:\Users\Ben\AppData\Local\Temp\sdwin\ug2\before.json
+0-guard-snapshot exit=0 23:08:15
+== 1-get-suite1-stderr 23:08:15 :: scripts/showready/win_rail.sh get C:\Users\Ben\AppData\Local\Temp\sdwin\ug\suite.stderr.log /tmp/sdfix-gate/laptop2/suite1.stderr.log
+1-get-suite1-stderr exit=0 23:08:15
+== 2-get-suite1-stdout 23:08:15 :: scripts/showready/win_rail.sh get C:\Users\Ben\AppData\Local\Temp\sdwin\ug\suite.stdout.log /tmp/sdfix-gate/laptop2/suite1.stdout.log
+2-get-suite1-stdout exit=0 23:08:15
+== 3-suite2 23:08:15 :: scripts/showready/win_rail.sh run ug2 /tmp/sdfix-gate/ps/suite.ps1 -Label suite2
+3-suite2 exit=0 23:08:42
+== 4-get-suite2-stderr 23:08:42 :: scripts/showready/win_rail.sh get C:\Users\Ben\AppData\Local\Temp\sdwin\ug2\suite2.stderr.log /tmp/sdfix-gate/laptop2/suite2.stderr.log
+4-get-suite2-stderr exit=0 23:08:42
+== 5-inventory-post 23:08:42 :: scripts/showready/win_rail.sh run ug2 /tmp/sdfix-gate/ps/inventory.ps1
+5-inventory-post exit=0 23:08:44
+== 9-guard-compare 23:08:44 :: scripts/showready/win_rail.sh run ug2 scripts/showready/win_guard.ps1 -Mode compare -Baseline C:\Users\Ben\AppData\Local\Temp\sdwin\ug2\before.json -Out C:\Users\Ben\AppData\Local\Temp\sdwin\ug2\after.json
+9-guard-compare exit=0 23:08:47
+ALLDONE

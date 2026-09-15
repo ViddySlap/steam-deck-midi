@@ -1,0 +1,11 @@
+MATCH pid=284972 ppid=289920 name=cmd.exe exe=c:\windows\system32\cmd.exe cmd="c:\windows\system32\cmd.exe" /c "powershell -NoProfile -ExecutionPolicy Bypass -File "C:/Users/Ben/AppData/Local/Temp/sdwin/ug3/inventory.ps1""
+SELF 287376 MATCHING 1 PYTHON_MACHINE_WIDE 0
+RESULT win-default.json.gz 318352
+RESULT win-default.stderr 0
+RESULT win-default.stdout 311
+RESULT win-edm.json.gz 318441
+RESULT win-edm.stderr 0
+RESULT win-edm.stdout 307
+RESULT win-ptz.json.gz 312780
+RESULT win-ptz.stderr 0
+RESULT win-ptz.stdout 307

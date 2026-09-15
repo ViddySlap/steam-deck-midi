@@ -1,0 +1,108 @@
+PASS 1024x768.closed.23-labels ["btn_a","btn_b","btn_x","btn_y","dpad_down","dpad_left","dpad_right","dpad_up","gyro","l1","l2","l4","l5","left_pad","left_stick","r1","r2","r4","r5","right_pad","right_stick","select","start"]
+PASS 1024x768.closed.23-leaders ["btn_a","btn_b","btn_x","btn_y","dpad_down","dpad_left","dpad_right","dpad_up","gyro","l1","l2","l4","l5","left_pad","left_stick","r1","r2","r4","r5","right_pad","right_stick","select","start"]
+PASS 1024x768.closed.23-shapes ["btn_a","btn_b","btn_x","btn_y","dpad_down","dpad_left","dpad_right","dpad_up","gyro","l1","l2","l4","l5","left_pad","left_stick","r1","r2","r4","r5","right_pad","right_stick","select","start"]
+PASS 1024x768.closed.23-arrowheads ["btn_a","btn_b","btn_x","btn_y","dpad_down","dpad_left","dpad_right","dpad_up","gyro","l1","l2","l4","l5","left_pad","left_stick","r1","r2","r4","r5","right_pad","right_stick","select","start"]
+PASS 1024x768.closed.label-overlaps []
+PASS 1024x768.closed.leader-intersections []
+PASS 1024x768.closed.own-edge.btn_a {"distance":0.000026174252525379416,"insideOther":[],"end":{"x":746.42031426019,"y":419.98015851653025}}
+PASS 1024x768.closed.glyph-clear.btn_a []
+PASS 1024x768.closed.leader-visible.btn_a {"points":[{"x":862.6713483146068,"y":436.25529535700764},{"x":746.42031426019,"y":419.98015851653025}]}
+PASS 1024x768.closed.own-edge.btn_b {"distance":0.000012515635944509995,"insideOther":[],"end":{"x":768.799303890614,"y":396.7832861196682}}
+PASS 1024x768.closed.glyph-clear.btn_b []
+PASS 1024x768.closed.leader-visible.btn_b {"points":[{"x":862.6713483146068,"y":402.7031377728066},{"x":768.799303890614,"y":396.7832861196682}]}
+PASS 1024x768.closed.own-edge.btn_x {"distance":0.00001971641279396863,"insideOther":[],"end":{"x":713.4112115638534,"y":406.74296124061846}}
+PASS 1024x768.closed.glyph-clear.btn_x []
+PASS 1024x768.closed.leader-visible.btn_x {"points":[{"x":865.5845726098908,"y":470.643065063248},{"x":713.4112115638534,"y":438.07359855451836},{"x":713.4112115638534,"y":406.74296124061846}]}
+PASS 1024x768.closed.own-edge.btn_y {"distance":0.000026174252525379416,"insideOther":[],"end":{"x":746.42031426019,"y":373.436255380009}}
+PASS 1024x768.closed.glyph-clear.btn_y []
+PASS 1024x768.closed.leader-visible.btn_y {"points":[{"x":862.6713483146068,"y":370.18121886521243},{"x":746.42031426019,"y":373.436255380009}]}
+PASS 1024x768.closed.own-edge.dpad_up {"distance":0.000012315614412727882,"insideOther":[],"end":{"x":279.25813587774496,"y":428.70394663149943}}
+PASS 1024x768.closed.glyph-clear.dpad_up []
+PASS 1024x768.closed.leader-visible.dpad_up {"points":[{"x":161.32865168539328,"y":415.8260470186726},{"x":279.25813587774496,"y":428.70394663149943}]}
+PASS 1024x768.closed.own-edge.dpad_down {"distance":0.000012315614412727882,"insideOther":[],"end":{"x":279.25813587774496,"y":475.01601138454254}}
+PASS 1024x768.closed.glyph-clear.dpad_down []
+PASS 1024x768.closed.leader-visible.dpad_down {"points":[{"x":161.32865168539328,"y":482.61066973968394},{"x":279.25813587774496,"y":475.01601138454254}]}
+PASS 1024x768.closed.own-edge.dpad_left {"distance":0.000005614891506411368,"insideOther":[],"end":{"x":257.4385737301259,"y":451.8487895436948}}
+PASS 1024x768.closed.glyph-clear.dpad_left []
+PASS 1024x768.closed.leader-visible.dpad_left {"points":[{"x":161.32865168539328,"y":449.42439544334843},{"x":257.4385737301259,"y":451.8487895436948}]}
+PASS 1024x768.closed.own-edge.dpad_right {"distance":0.000008343757315287803,"insideOther":[],"end":{"x":310.5887579471431,"y":461.0121071347583}}
+PASS 1024x768.closed.glyph-clear.dpad_right []
+PASS 1024x768.closed.leader-visible.dpad_right {"points":[{"x":161.32865168539328,"y":522.6228526540464},{"x":310.5887579471431,"y":513.6028028909634},{"x":310.5887579471431,"y":461.0121071347583}]}
+PASS 1024x768.closed.own-edge.left_stick {"distance":0.000001057256952208263,"insideOther":[],"end":{"x":308.9103382982118,"y":390.8390432636389}}
+PASS 1024x768.closed.glyph-clear.left_stick []
+PASS 1024x768.closed.leader-visible.left_stick {"points":[{"x":161.32865168539328,"y":375.64681485351105},{"x":308.9103382982118,"y":390.8390432636389}]}
+PASS 1024x768.closed.own-edge.right_stick {"distance":0.000012244178151377128,"insideOther":[],"end":{"x":679.8426966292135,"y":417.3729980840219}}
+PASS 1024x768.closed.glyph-clear.right_stick []
+PASS 1024x768.closed.leader-visible.right_stick {"points":[{"x":894.5577239418745,"y":509.8063731389992},{"x":713.4112115638534,"y":443.66834596212436},{"x":679.8426966292135,"y":440.87097988057224},{"x":679.8426966292135,"y":417.3729980840219}]}
+PASS 1024x768.closed.own-edge.l1 {"distance":0.0000215451815392953,"insideOther":[],"end":{"x":307.70367500219453,"y":337.9274507444003}}
+PASS 1024x768.closed.glyph-clear.l1 []
+PASS 1024x768.closed.leader-visible.l1 {"points":[{"x":267.7540250342437,"y":229.46910112359552},{"x":307.70367500219453,"y":337.9274507444003}]}
+PASS 1024x768.closed.own-edge.r1 {"distance":0.0000215451815392953,"insideOther":[],"end":{"x":716.2963249978055,"y":337.9274507444003}}
+PASS 1024x768.closed.glyph-clear.r1 []
+PASS 1024x768.closed.leader-visible.r1 {"points":[{"x":756.2460054547599,"y":229.46910112359552},{"x":716.2963249978055,"y":337.9274507444003}]}
+PASS 1024x768.closed.own-edge.l2 {"distance":0.000006157807206363941,"insideOther":[],"end":{"x":275.486554663726,"y":313.3105225152291}}
+PASS 1024x768.closed.glyph-clear.l2 []
+PASS 1024x768.closed.leader-visible.l2 {"points":[{"x":122.98232695047328,"y":229.46910112359552},{"x":275.486554663726,"y":313.3105225152291}]}
+PASS 1024x768.closed.own-edge.r2 {"distance":0.000006157807206363941,"insideOther":[],"end":{"x":748.5134453362741,"y":313.3105225152291}}
+PASS 1024x768.closed.glyph-clear.r2 []
+PASS 1024x768.closed.leader-visible.r2 {"points":[{"x":901.0176730495268,"y":229.46910112359552},{"x":748.5134453362741,"y":313.3105225152291}]}
+PASS 1024x768.closed.own-edge.l4 {"distance":0.00004483340831029636,"insideOther":[],"end":{"x":313.3921303624071,"y":551.0876913177833}}
+PASS 1024x768.closed.glyph-clear.l4 []
+PASS 1024x768.closed.leader-visible.l4 {"points":[{"x":131.0935757383425,"y":697.0308988764045},{"x":313.3921303624071,"y":551.0876913177833}]}
+PASS 1024x768.closed.own-edge.l5 {"distance":0.000007657969035790302,"insideOther":[],"end":{"x":321.2771050099576,"y":590.250968904531}}
+PASS 1024x768.closed.glyph-clear.l5 []
+PASS 1024x768.closed.leader-visible.l5 {"points":[{"x":313.3059684381949,"y":697.0308988764045},{"x":321.2771050099576,"y":590.250968904531}]}
+PASS 1024x768.closed.own-edge.r4 {"distance":0.00004483340831029636,"insideOther":[],"end":{"x":710.607869637593,"y":551.0876913177833}}
+PASS 1024x768.closed.glyph-clear.r4 []
+PASS 1024x768.closed.leader-visible.r4 {"points":[{"x":892.9064395061594,"y":697.0308988764045},{"x":710.607869637593,"y":551.0876913177833}]}
+PASS 1024x768.closed.own-edge.r5 {"distance":0.000007657969035790302,"insideOther":[],"end":{"x":702.722925479046,"y":590.250968904531}}
+PASS 1024x768.closed.glyph-clear.r5 []
+PASS 1024x768.closed.leader-visible.r5 {"points":[{"x":710.6940315618051,"y":697.0308988764045},{"x":702.722925479046,"y":590.250968904531}]}
+PASS 1024x768.closed.own-edge.start {"distance":0.0000035575266679188644,"insideOther":[],"end":{"x":689.0912309853773,"y":347.4385411551829}}
+PASS 1024x768.closed.glyph-clear.start []
+PASS 1024x768.closed.leader-visible.start {"points":[{"x":605.8319208952372,"y":229.46910112359552},{"x":689.0912309853773,"y":347.4385411551829}]}
+PASS 1024x768.closed.own-edge.select {"distance":0.0000035575266679188644,"insideOther":[],"end":{"x":334.9087385256192,"y":347.4385411551829}}
+PASS 1024x768.closed.glyph-clear.select []
+PASS 1024x768.closed.leader-visible.select {"points":[{"x":418.16804861575923,"y":229.46910112359552},{"x":334.9087385256192,"y":347.4385411551829}]}
+PASS 1024x768.closed.own-edge.left_pad {"distance":0.000005743476776842726,"insideOther":[],"end":{"x":349.7520660228943,"y":499.6159115051955}}
+PASS 1024x768.closed.glyph-clear.left_pad []
+PASS 1024x768.closed.leader-visible.left_pad {"points":[{"x":149.60014177529553,"y":551.7670472963026},{"x":282.6149751756075,"y":519.1975655430712},{"x":349.7520660228943,"y":519.1975655430712},{"x":349.7520660228943,"y":499.6159115051955}]}
+PASS 1024x768.closed.own-edge.right_pad {"distance":0.000005743476776842726,"insideOther":[],"end":{"x":674.2479644661094,"y":499.6159115051955}}
+PASS 1024x768.closed.glyph-clear.right_pad []
+PASS 1024x768.closed.leader-visible.right_pad {"points":[{"x":870.5746468533291,"y":548.9696507257469},{"x":741.3849943353889,"y":519.1975655430712},{"x":674.2479644661094,"y":519.1975655430712},{"x":674.2479644661094,"y":499.6159115051955}]}
+PASS 1024x768.closed.own-edge.gyro {"distance":0.0000048290924041793915,"insideOther":[],"end":{"x":512,"y":599.2025708545013}}
+PASS 1024x768.closed.glyph-clear.gyro []
+PASS 1024x768.closed.leader-visible.gyro {"points":[{"x":512,"y":697.0308988764045},{"x":512,"y":599.2025708545013}]}
+FAIL 1024x768.closed.inside-visible-pane ["btn_a"]
+FAIL 1024x768.closed.labels-topmost [{"id":"btn_a","by":"statusbar"}]
+PASS 1024x768.closed.labels-unwrapped []
+PASS 1024x768.closed.no-page-or-pane-scroll [{"id":"HTML","width":1024,"height":768,"clientWidth":1024,"clientHeight":768,"top":0,"left":0},{"id":"BODY","width":1024,"height":768,"clientWidth":1024,"clientHeight":768,"top":0,"left":0},{"id":"tab-editor","width":1024,"height":595,"clientWidth":1024,"clientHeight":595,"top":0,"left":0},{"id":"controller-picture-scroll","width":1000,"height":534,"clientWidth":1000,"clientHeight":534,"top":0,"left":0}]
+page.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('.controller-label[data-control="btn_a"]')
+    - locator resolved to <button data-control="btn_a" aria-expanded="false" class="controller-label" aria-label="A: 2 of 2 mapped" aria-controls="controllerCard">\u2026</button>
+  - attempting click action
+    2 \u00d7 waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div class="statusbar">\u2026</div> intercepts pointer events
+    - retrying click action
+    - waiting 20ms
+    2 \u00d7 waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div class="statusbar">\u2026</div> intercepts pointer events
+    - retrying click action
+      - waiting 100ms
+    58 \u00d7 waiting for element to be visible, enabled and stable
+       - element is visible, enabled and stable
+       - scrolling into view if needed
+       - done scrolling
+       - <div class="statusbar">\u2026</div> intercepts pointer events
+     - retrying click action
+       - waiting 500ms
+
+    at open (/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_geometry.cjs:115:38)
+    at /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_geometry.cjs:136:13

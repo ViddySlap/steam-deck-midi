@@ -1,0 +1,11 @@
+== 0-guard-snapshot 23:09:51 :: scripts/showready/win_rail.sh run ug3 scripts/showready/win_guard.ps1 -Mode snapshot -Out C:\Users\Ben\AppData\Local\Temp\sdwin\ug3\before.json
+0-guard-snapshot exit=0 23:09:53
+== 1-put-py 23:09:53 :: scripts/showready/win_rail.sh put ug3 /tmp/sdfix-gate/ps/flake_rate.py
+1-put-py exit=0 23:09:53
+== 2-flake 23:09:53 :: scripts/showready/win_rail.sh run ug3 /tmp/sdfix-gate/ps/flake.ps1 -N 300
+2-flake exit=0 23:10:31
+== 5-inventory-post 23:10:31 :: scripts/showready/win_rail.sh run ug3 /tmp/sdfix-gate/ps/inventory.ps1
+5-inventory-post exit=0 23:10:33
+== 9-guard-compare 23:10:33 :: scripts/showready/win_rail.sh run ug3 scripts/showready/win_guard.ps1 -Mode compare -Baseline C:\Users\Ben\AppData\Local\Temp\sdwin\ug3\before.json -Out C:\Users\Ben\AppData\Local\Temp\sdwin\ug3\after.json
+9-guard-compare exit=0 23:10:36
+ALLDONE

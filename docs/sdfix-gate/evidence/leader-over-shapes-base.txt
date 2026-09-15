@@ -1,0 +1,7 @@
+1440x900 closed leader-over-other-shape=[('btn_x', 'btn_b'), ('dpad_right', 'dpad_down'), ('l1', 'l2'), ('r1', 'r2'), ('right_stick', 'btn_a'), ('select', 'l1'), ('start', 'r1')] line-within-2px-of-other-head=[]
+1440x900 open-btn_a leader-over-other-shape=[('btn_x', 'btn_b'), ('dpad_right', 'dpad_down'), ('l1', 'l2'), ('r1', 'r2'), ('right_stick', 'btn_a'), ('select', 'l1'), ('start', 'r1')] line-within-2px-of-other-head=[]
+1440x900 open-nearest-btn_b leader-over-other-shape=[('btn_x', 'btn_b'), ('dpad_right', 'dpad_down'), ('l1', 'l2'), ('r1', 'r2'), ('right_stick', 'btn_a'), ('select', 'l1'), ('start', 'r1')] line-within-2px-of-other-head=[]
+1024x768 closed leader-over-other-shape=[('btn_x', 'btn_b'), ('dpad_right', 'dpad_down'), ('l1', 'l2'), ('r1', 'r2'), ('right_stick', 'btn_a'), ('select', 'l1'), ('start', 'r1')] line-within-2px-of-other-head=[]
+1024x768 open-btn_a leader-over-other-shape=[('btn_x', 'btn_b'), ('dpad_right', 'dpad_down'), ('l1', 'l2'), ('r1', 'r2'), ('right_stick', 'btn_a'), ('select', 'l1'), ('start', 'r1')] line-within-2px-of-other-head=[]
+1024x768 open-nearest-l5 leader-over-other-shape=[('btn_x', 'btn_b'), ('dpad_right', 'dpad_down'), ('l1', 'l2'), ('r1', 'r2'), ('right_stick', 'btn_a'), ('select', 'l1'), ('start', 'r1')] line-within-2px-of-other-head=[]
+TOTAL 42

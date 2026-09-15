@@ -1,0 +1,261 @@
+clone_head_before=b38ffb23c3d9bfb78f8fc2337abe61cb00336907
+clone_porcelain_before_lines=0
+pull: From https://github.com/ViddySlap/steam-deck-midi
+pull:    b38ffb2..19cd48e  chain/steamdeck-20260914 -> origin/chain/steamdeck-20260914
+pull: Updating b38ffb2..19cd48e
+pull: Fast-forward
+pull:  docs/sdfix-u1/REPORT.md                            |   248 +
+pull:  docs/sdfix-u1/browser_conflicts.cjs                |    46 +
+pull:  docs/sdfix-u1/check_checkout_eol.py                |    25 +
+pull:  docs/sdfix-u1/check_conflict_mutations.py          |    33 +
+pull:  docs/sdfix-u1/conflict-mutations.json              |    41 +
+pull:  docs/sdfix-u1/evidence/ab-final.log                |     1 +
+pull:  docs/sdfix-u1/evidence/ab.log                      |     1 +
+pull:  docs/sdfix-u1/evidence/base-regression.json        |  1141 +
+pull:  .../evidence/conflict-browser-RIGERROR.log         |    10 +
+pull:  .../evidence/conflict-browser-receipt.json         |    40 +
+pull:  docs/sdfix-u1/evidence/conflict-browser.json       |    43 +
+pull:  docs/sdfix-u1/evidence/conflict-browser.log        |     7 +
+pull:  docs/sdfix-u1/evidence/deck-script.log             |     1 +
+pull:  docs/sdfix-u1/evidence/default-launch-receipt.json |    49 +
+pull:  docs/sdfix-u1/evidence/default-launch.log          |    34 +
+pull:  docs/sdfix-u1/evidence/eol-proof.json              |   167 +
+pull:  docs/sdfix-u1/evidence/geometry-receipt.json       |   140 +
+pull:  docs/sdfix-u1/evidence/m1-geometry.json            |  2978 ++
+pull:  docs/sdfix-u1/evidence/m1-restored-summary.json    |    13 +
+pull:  docs/sdfix-u1/evidence/m1.log                      |    80 +
+pull:  docs/sdfix-u1/evidence/m2-geometry.json            |  2984 ++
+pull:  docs/sdfix-u1/evidence/m2-restored-summary.json    |    13 +
+pull:  docs/sdfix-u1/evidence/m2.log                      |    80 +
+pull:  docs/sdfix-u1/evidence/m3-geometry.json            |  2981 ++
+pull:  docs/sdfix-u1/evidence/m3-restored-summary.json    |    13 +
+pull:  docs/sdfix-u1/evidence/m3.log                      |    80 +
+pull:  docs/sdfix-u1/evidence/mac-suite-source.json       |     6 +
+pull:  docs/sdfix-u1/evidence/mac-suite.log               |   941 +
+pull:  docs/sdfix-u1/evidence/midi-verdict.json           |  3410 ++
+pull:  docs/sdfix-u1/evidence/pristine-geometry.json      | 36962 +++++++++++++++++++
+pull:  docs/sdfix-u1/evidence/pristine.log                |  1049 +
+pull:  docs/sdfix-u1/evidence/process-cleanup.json        |    98 +
+pull:  docs/sdfix-u1/evidence/scope.json                  |    76 +
+pull:  docs/sdfix-u1/evidence/ui_controller_check.cjs.log |     2 +
+pull:  .../evidence/ui_controller_macro_check.cjs.log     |     1 +
+pull:  docs/sdfix-u1/evidence/ui_reload_check.cjs.log     |     1 +
+pull:  docs/sdfix-u1/evidence/ui_sections_check.cjs.log   |     1 +
+pull:  docs/sdfix-u1/finish_midi_evidence.py              |    36 +
+pull:  docs/sdfix-u1/run_browser_conflicts.py             |    43 +
+pull:  docs/sdfix-u1/screenshots/1024x768-closed.png      |   Bin 0 -> 116749 bytes
+pull:  docs/sdfix-u1/screenshots/1024x768-open-btn_a.png  |   Bin 0 -> 116971 bytes
+pull:  docs/sdfix-u1/screenshots/1440x900-closed.png      |   Bin 0 -> 144510 bytes
+pull:  docs/sdfix-u1/screenshots/1440x900-open-btn_a.png  |   Bin 0 -> 151355 bytes
+pull:  .../sdfix-u1/screenshots/conflict-after-cancel.png |   Bin 0 -> 162913 bytes
+pull:  docs/sdfix-u1/verify_scope.py                      |    28 +
+pull:  docs/sdview-gate/REPORT.md                         |   268 +
+pull:  .../evidence/api-bar-comparator-control.txt        |     1 +
+pull:  docs/sdview-gate/evidence/api-bar.json             |   278 +
+pull:  docs/sdview-gate/evidence/api.argv                 |     1 +
+pull:  docs/sdview-gate/evidence/bar1-mac-table.jsonl     |     5 +
+pull:  docs/sdview-gate/evidence/bar1-windows-table.jsonl |     3 +
+pull:  docs/sdview-gate/evidence/base.argv                |     1 +
+pull:  docs/sdview-gate/evidence/head.argv                |     1 +
+pull:  .../evidence/laptop-0-guard-snapshot.txt           |     1 +
+pull:  .../evidence/laptop-1-inventory-pre.txt            |     2 +
+pull:  docs/sdview-gate/evidence/laptop-2-pins.txt        |    84 +
+pull:  docs/sdview-gate/evidence/laptop-3-winmatrix.txt   |    78 +
+pull:  docs/sdview-gate/evidence/laptop-4-suite.txt       |    12 +
+pull:  .../evidence/laptop-5-inventory-post.txt           |    11 +
+pull:  .../evidence/laptop-9-guard-compare.txt            |     1 +
+pull:  docs/sdview-gate/evidence/laptop-STEPS.txt         |   Bin 0 -> 1902 bytes
+pull:  docs/sdview-gate/evidence/mac-suite.log            |   940 +
+pull:  docs/sdview-gate/evidence/mutations.json           |    92 +
+pull:  docs/sdview-gate/evidence/ps/inventory.ps1         |    17 +
+pull:  docs/sdview-gate/evidence/ps/laptop.sh             |    17 +
+pull:  docs/sdview-gate/evidence/ps/mac-matrix.sh         |    12 +
+pull:  docs/sdview-gate/evidence/ps/pins.ps1              |    29 +
+pull:  docs/sdview-gate/evidence/ps/suite.ps1             |    34 +
+pull:  docs/sdview-gate/evidence/ps/winmatrix.ps1         |    64 +
+pull:  docs/sdview-gate/evidence/ui-drill-1024x768.json   |   581 +
+pull:  docs/sdview-gate/evidence/ui-drill-1440x900.json   |   581 +
+pull:  .../sdview-gate/evidence/ui-gate-run1-RIGERROR.log |    97 +
+pull:  docs/sdview-gate/evidence/ui-gate.log              |   100 +
+pull:  .../evidence/ui-occlusion-geometry.json            |   112 +
+pull:  docs/sdview-gate/evidence/ui-results.json          |   643 +
+pull:  docs/sdview-gate/evidence/ui-steps.json            |   601 +
+pull:  .../sdview-gate/screenshots/after-advanced-tab.png |   Bin 0 -> 158101 bytes
+pull:  .../after-conflict-modal-marked-rows.png           |   Bin 0 -> 183847 bytes
+pull:  .../after-controller-front-door-1024.png           |   Bin 0 -> 116585 bytes
+pull:  .../screenshots/after-controller-front-door.png    |   Bin 0 -> 149671 bytes
+pull:  .../sdview-gate/screenshots/after-draft-notice.png |   Bin 0 -> 160034 bytes
+pull:  .../sdview-gate/screenshots/after-drill-a-card.png |   Bin 0 -> 25116 bytes
+pull:  docs/sdview-gate/screenshots/after-drill-a.png     |   Bin 0 -> 151093 bytes
+pull:  .../screenshots/after-drill-gyro-card.png          |   Bin 0 -> 46316 bytes
+pull:  docs/sdview-gate/screenshots/after-drill-gyro.png  |   Bin 0 -> 162188 bytes
+pull:  .../screenshots/after-drill-l2-card.png            |   Bin 0 -> 47620 bytes
+pull:  docs/sdview-gate/screenshots/after-drill-l2.png    |   Bin 0 -> 162730 bytes
+pull:  .../screenshots/after-drill-left-stick-card.png    |   Bin 0 -> 61348 bytes
+pull:  .../screenshots/after-drill-left-stick.png         |   Bin 0 -> 164748 bytes
+pull:  .../screenshots/after-drill-left-trackpad-card.png |   Bin 0 -> 88937 bytes
+pull:  .../screenshots/after-drill-left-trackpad.png      |   Bin 0 -> 165673 bytes
+pull:  .../after-geometry-1024x768-card-closed.png        |   Bin 0 -> 115757 bytes
+pull:  .../after-geometry-1024x768-card-open-btn_a.png    |   Bin 0 -> 117037 bytes
+pull:  .../after-geometry-1440x900-card-closed.png        |   Bin 0 -> 149184 bytes
+pull:  .../after-geometry-1440x900-card-open-btn_a.png    |   Bin 0 -> 150687 bytes
+pull:  docs/sdview-gate/screenshots/after-list-view.png   |   Bin 0 -> 122653 bytes
+pull:  .../screenshots/after-row-open-in-edit.png         |   Bin 0 -> 158885 bytes
+pull:  docs/sdview-gate/screenshots/before-mappings.png   |   Bin 0 -> 97947 bytes
+pull:  docs/sdview-gate/scripts/api_bar.py                |    93 +
+pull:  docs/sdview-gate/scripts/mutate.py                 |    95 +
+pull:  docs/sdview-gate/scripts/ui_gate.cjs               |   529 +
+pull:  scripts/showready/README.md                        |    35 +-
+pull:  scripts/showready/SHA256SUMS                       |     5 +-
+pull:  scripts/showready/ui_geometry.py                   |   104 +
+pull:  scripts/showready/ui_geometry.sh                   |     4 +
+pull:  tests/.gitattributes                               |     1 +
+pull:  tests/test_showready_rail.py                       |    10 +
+pull:  tests/ui_controller_check.cjs                      |    20 +-
+pull:  tests/ui_controller_geometry.cjs                   |   154 +
+pull:  windows/static/controller/controller_map.json      |    58 +-
+pull:  windows/static/controller/controller_view.css      |    28 +-
+pull:  windows/static/controller/controller_view.js       |   102 +-
+pull:  windows/static/index.html                          |     2 +-
+pull:  113 files changed, 59772 insertions(+), 38 deletions(-)
+pull:  create mode 100644 docs/sdfix-u1/REPORT.md
+pull:  create mode 100644 docs/sdfix-u1/browser_conflicts.cjs
+pull:  create mode 100644 docs/sdfix-u1/check_checkout_eol.py
+pull:  create mode 100644 docs/sdfix-u1/check_conflict_mutations.py
+pull:  create mode 100644 docs/sdfix-u1/conflict-mutations.json
+pull:  create mode 100644 docs/sdfix-u1/evidence/ab-final.log
+pull:  create mode 100644 docs/sdfix-u1/evidence/ab.log
+pull:  create mode 100644 docs/sdfix-u1/evidence/base-regression.json
+pull:  create mode 100644 docs/sdfix-u1/evidence/conflict-browser-RIGERROR.log
+pull:  create mode 100644 docs/sdfix-u1/evidence/conflict-browser-receipt.json
+pull:  create mode 100644 docs/sdfix-u1/evidence/conflict-browser.json
+pull:  create mode 100644 docs/sdfix-u1/evidence/conflict-browser.log
+pull:  create mode 100644 docs/sdfix-u1/evidence/deck-script.log
+pull:  create mode 100644 docs/sdfix-u1/evidence/default-launch-receipt.json
+pull:  create mode 100644 docs/sdfix-u1/evidence/default-launch.log
+pull:  create mode 100644 docs/sdfix-u1/evidence/eol-proof.json
+pull:  create mode 100644 docs/sdfix-u1/evidence/geometry-receipt.json
+pull:  create mode 100644 docs/sdfix-u1/evidence/m1-geometry.json
+pull:  create mode 100644 docs/sdfix-u1/evidence/m1-restored-summary.json
+pull:  create mode 100644 docs/sdfix-u1/evidence/m1.log
+pull:  create mode 100644 docs/sdfix-u1/evidence/m2-geometry.json
+pull:  create mode 100644 docs/sdfix-u1/evidence/m2-restored-summary.json
+pull:  create mode 100644 docs/sdfix-u1/evidence/m2.log
+pull:  create mode 100644 docs/sdfix-u1/evidence/m3-geometry.json
+pull:  create mode 100644 docs/sdfix-u1/evidence/m3-restored-summary.json
+pull:  create mode 100644 docs/sdfix-u1/evidence/m3.log
+pull:  create mode 100644 docs/sdfix-u1/evidence/mac-suite-source.json
+pull:  create mode 100644 docs/sdfix-u1/evidence/mac-suite.log
+pull:  create mode 100644 docs/sdfix-u1/evidence/midi-verdict.json
+pull:  create mode 100644 docs/sdfix-u1/evidence/pristine-geometry.json
+pull:  create mode 100644 docs/sdfix-u1/evidence/pristine.log
+pull:  create mode 100644 docs/sdfix-u1/evidence/process-cleanup.json
+pull:  create mode 100644 docs/sdfix-u1/evidence/scope.json
+pull:  create mode 100644 docs/sdfix-u1/evidence/ui_controller_check.cjs.log
+pull:  create mode 100644 docs/sdfix-u1/evidence/ui_controller_macro_check.cjs.log
+pull:  create mode 100644 docs/sdfix-u1/evidence/ui_reload_check.cjs.log
+pull:  create mode 100644 docs/sdfix-u1/evidence/ui_sections_check.cjs.log
+pull:  create mode 100644 docs/sdfix-u1/finish_midi_evidence.py
+pull:  create mode 100644 docs/sdfix-u1/run_browser_conflicts.py
+pull:  create mode 100644 docs/sdfix-u1/screenshots/1024x768-closed.png
+pull:  create mode 100644 docs/sdfix-u1/screenshots/1024x768-open-btn_a.png
+pull:  create mode 100644 docs/sdfix-u1/screenshots/1440x900-closed.png
+pull:  create mode 100644 docs/sdfix-u1/screenshots/1440x900-open-btn_a.png
+pull:  create mode 100644 docs/sdfix-u1/screenshots/conflict-after-cancel.png
+pull:  create mode 100644 docs/sdfix-u1/verify_scope.py
+pull:  create mode 100644 docs/sdview-gate/REPORT.md
+pull:  create mode 100644 docs/sdview-gate/evidence/api-bar-comparator-control.txt
+pull:  create mode 100644 docs/sdview-gate/evidence/api-bar.json
+pull:  create mode 100644 docs/sdview-gate/evidence/api.argv
+pull:  create mode 100644 docs/sdview-gate/evidence/bar1-mac-table.jsonl
+pull:  create mode 100644 docs/sdview-gate/evidence/bar1-windows-table.jsonl
+pull:  create mode 100644 docs/sdview-gate/evidence/base.argv
+pull:  create mode 100644 docs/sdview-gate/evidence/head.argv
+pull:  create mode 100644 docs/sdview-gate/evidence/laptop-0-guard-snapshot.txt
+pull:  create mode 100644 docs/sdview-gate/evidence/laptop-1-inventory-pre.txt
+pull:  create mode 100644 docs/sdview-gate/evidence/laptop-2-pins.txt
+pull:  create mode 100644 docs/sdview-gate/evidence/laptop-3-winmatrix.txt
+pull:  create mode 100644 docs/sdview-gate/evidence/laptop-4-suite.txt
+pull:  create mode 100644 docs/sdview-gate/evidence/laptop-5-inventory-post.txt
+pull:  create mode 100644 docs/sdview-gate/evidence/laptop-9-guard-compare.txt
+pull:  create mode 100644 docs/sdview-gate/evidence/laptop-STEPS.txt
+pull:  create mode 100644 docs/sdview-gate/evidence/mac-suite.log
+pull:  create mode 100644 docs/sdview-gate/evidence/mutations.json
+pull:  create mode 100644 docs/sdview-gate/evidence/ps/inventory.ps1
+pull:  create mode 100755 docs/sdview-gate/evidence/ps/laptop.sh
+pull:  create mode 100755 docs/sdview-gate/evidence/ps/mac-matrix.sh
+pull:  create mode 100644 docs/sdview-gate/evidence/ps/pins.ps1
+pull:  create mode 100644 docs/sdview-gate/evidence/ps/suite.ps1
+pull:  create mode 100644 docs/sdview-gate/evidence/ps/winmatrix.ps1
+pull:  create mode 100644 docs/sdview-gate/evidence/ui-drill-1024x768.json
+pull:  create mode 100644 docs/sdview-gate/evidence/ui-drill-1440x900.json
+pull:  create mode 100644 docs/sdview-gate/evidence/ui-gate-run1-RIGERROR.log
+pull:  create mode 100644 docs/sdview-gate/evidence/ui-gate.log
+pull:  create mode 100644 docs/sdview-gate/evidence/ui-occlusion-geometry.json
+pull:  create mode 100644 docs/sdview-gate/evidence/ui-results.json
+pull:  create mode 100644 docs/sdview-gate/evidence/ui-steps.json
+pull:  create mode 100644 docs/sdview-gate/screenshots/after-advanced-tab.png
+pull:  create mode 100644 docs/sdview-gate/screenshots/after-conflict-modal-marked-rows.png
+pull:  create mode 100644 docs/sdview-gate/screenshots/after-controller-front-door-1024.png
+pull:  create mode 100644 docs/sdview-gate/screenshots/after-controller-front-door.png
+pull:  create mode 100644 docs/sdview-gate/screenshots/after-draft-notice.png
+pull:  create mode 100644 docs/sdview-gate/screenshots/after-drill-a-card.png
+pull:  create mode 100644 docs/sdview-gate/screenshots/after-drill-a.png
+pull:  create mode 100644 docs/sdview-gate/screenshots/after-drill-gyro-card.png
+pull:  create mode 100644 docs/sdview-gate/screenshots/after-drill-gyro.png
+pull:  create mode 100644 docs/sdview-gate/screenshots/after-drill-l2-card.png
+pull:  create mode 100644 docs/sdview-gate/screenshots/after-drill-l2.png
+pull:  create mode 100644 docs/sdview-gate/screenshots/after-drill-left-stick-card.png
+pull:  create mode 100644 docs/sdview-gate/screenshots/after-drill-left-stick.png
+pull:  create mode 100644 docs/sdview-gate/screenshots/after-drill-left-trackpad-card.png
+pull:  create mode 100644 docs/sdview-gate/screenshots/after-drill-left-trackpad.png
+pull:  create mode 100644 docs/sdview-gate/screenshots/after-geometry-1024x768-card-closed.png
+pull:  create mode 100644 docs/sdview-gate/screenshots/after-geometry-1024x768-card-open-btn_a.png
+pull:  create mode 100644 docs/sdview-gate/screenshots/after-geometry-1440x900-card-closed.png
+pull:  create mode 100644 docs/sdview-gate/screenshots/after-geometry-1440x900-card-open-btn_a.png
+pull:  create mode 100644 docs/sdview-gate/screenshots/after-list-view.png
+pull:  create mode 100644 docs/sdview-gate/screenshots/after-row-open-in-edit.png
+pull:  create mode 100644 docs/sdview-gate/screenshots/before-mappings.png
+pull:  create mode 100644 docs/sdview-gate/scripts/api_bar.py
+pull:  create mode 100644 docs/sdview-gate/scripts/mutate.py
+pull:  create mode 100644 docs/sdview-gate/scripts/ui_gate.cjs
+pull:  create mode 100644 scripts/showready/ui_geometry.py
+pull:  create mode 100755 scripts/showready/ui_geometry.sh
+pull:  create mode 100644 tests/.gitattributes
+pull:  create mode 100644 tests/ui_controller_geometry.cjs
+pull_exit=0
+clone_head=19cd48e0dd6e8d36126812c5e687504928e4fcbd
+v049_peeled=e66ff44b36eadb6d43db01680c65279df82cd63c
+clone_porcelain_lines=0
+pin OK  015a326e7761025fd7c0b838bd9bb10af3dd1982378cf30fca3f71ff8488feee scripts/showready/ab_run.py
+pin OK  046dd157b4ed7335d435561025288862b5b399a72912c4985bbc291dd2584656 scripts/showready/ui_geometry.sh
+pin OK  39a5ddab2c9e8478f445e9f17e76d8318f6a402da9d942ddda05923b14f17bf4 scripts/showready/ui_geometry.py
+pin OK  a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9 scripts/showready/.gitattributes
+pin OK  ad539052e86b9af6e73ba3020ba7b7dd73145496533f30bd1eed08ce3c5e0fb0 scripts/showready/capture_runner.py
+pin OK  ae0032500ecd3dc87ffafd6aaf10b4839306ceb81fdde2d5d9d9b20afff8b93a scripts/showready/win_guard.ps1
+pin OK  b49c9d1641ea3c72cec3a934b940ec1a493fcf55e4aae6356dac9dfa4650299f tests/ui_controller_geometry.cjs
+pin OK  c0661d3331140f0571e593b87f72bfb6b1ac2b632b96cb97208f941fbd2a8f72 scripts/showready/deck_script.py
+pin OK  d5c55d50a4d407ae4922b7684be303c43551327d80e23e5283f18bbb149dda2d scripts/showready/README.md
+pin OK  e9dc0ead29e91be11f1a4a2d57a4cbe272d1e5e2c791a8055834f5768277c1e8 scripts/showready/win_rail.sh
+pins_bad=0
+manifest_file mac sha256=0c1b3014f6fba58f76b54f1e0c8f843788f0fbbb2993d20e0415841bc2200524
+fixture OK  mac 58e47bfde76e 18919 presets/EDM Show.json
+fixture OK  mac 11b37cd675fa 16725 presets/PTZ.json
+fixture OK  mac 3b2ef2e5702e 7815 presets/EDM Show.json.v049.bak
+fixture OK  mac 3d5b996a843a 6906 presets/PTZ.json.v049.bak
+fixture OK  mac 5ebcf1e85dc3 7388 presets/default.json
+manifest mac entries=5
+manifest_file windows-installed sha256=7c6dad5b30ab05f1d005d1d722964ec847e6db19726bf0eb500d8bbcf10e331d
+fixture OK  windows-installed 434f71efe730 818 macro_library.json
+fixture OK  windows-installed cc768739b3a6 13 presets/.active
+fixture OK  windows-installed 1c30b50423ea 15 presets/.active.bak-20260529-pre-v047-sync
+fixture OK  windows-installed e89c76db1d0b 7722 presets/default.json
+fixture OK  windows-installed 6239567bde4f 8035 presets/default.json.bak-20260529-pre-v047-sync
+fixture OK  windows-installed 90b2d19e0757 8219 presets/EDM Show.json
+fixture OK  windows-installed 450f2edf992b 7263 presets/PTZ.json
+fixture OK  windows-installed b3e26772a2b8 8581 presets/test 1.json
+fixture OK  windows-installed d1fd3f3acd70 8800 presets/v1 Default.json
+fixture OK  windows-installed f55c05091354 7936 windows_midi_map.json
+fixture OK  windows-installed c9dac6cbeb8d 219 windows_receiver_settings.local.json
+manifest windows-installed entries=11
+total_bad=0

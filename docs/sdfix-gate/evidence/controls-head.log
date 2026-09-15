@@ -1,0 +1,34 @@
+PASS labels.23-and-match-map ["btn_a","btn_b","btn_x","btn_y","dpad_up","dpad_down","dpad_left","dpad_right","left_stick","right_stick","l1","r1","l2","r2","l4","l5","r4","r5","start","select","left_pad","right_pad","gyro"]
+PASS drill.btn_a {"title":"A","n":2,"ids":["BTN_A","BTN_A_LAYER_2"]}
+PASS drill.btn_b {"title":"B","n":2,"ids":["BTN_B","BTN_B_LAYER_2"]}
+PASS drill.btn_x {"title":"X","n":2,"ids":["BTN_X","BTN_X_LAYER_2"]}
+PASS drill.btn_y {"title":"Y","n":2,"ids":["BTN_Y","BTN_Y_LAYER_2"]}
+PASS drill.dpad_up {"title":"D-pad Up","n":2,"ids":["DPAD_UP","DPAD_UP_LONG_PRESS"]}
+PASS drill.dpad_down {"title":"D-pad Down","n":2,"ids":["DPAD_DOWN","DPAD_DOWN_LONG_PRESS"]}
+PASS drill.dpad_left {"title":"D-pad Left","n":2,"ids":["DPAD_LEFT","DPAD_LEFT_LONG_PRESS"]}
+PASS drill.dpad_right {"title":"D-pad Right","n":2,"ids":["DPAD_RIGHT","DPAD_RIGHT_LONG_PRESS"]}
+PASS drill.left_stick {"title":"Left stick","n":7,"ids":["LEFT_STICK_CLICK_L3","L_STICK_UP","L_STICK_DOWN","L_STICK_LEFT","L_STICK_RIGHT","L_STICK_X_AXIS","L_STICK_Y_AXIS"]}
+PASS drill.right_stick {"title":"Right stick","n":7,"ids":["RIGHT_STICK_CLICK_R3","R_STICK_UP","R_STICK_DOWN","R_STICK_LEFT","R_STICK_RIGHT","R_STICK_X_AXIS","R_STICK_Y_AXIS"]}
+PASS drill.l1 {"title":"L1","n":2,"ids":["L1","L1_LAYER_2"]}
+PASS drill.r1 {"title":"R1","n":2,"ids":["R1","R1_LAYER_2"]}
+PASS drill.l2 {"title":"L2","n":5,"ids":["L2_SOFT","L2_FULL","L2_SOFT_LAYER_2","L2_FULL_LAYER_2","L_TRIGGER_PRESSURE"]}
+PASS drill.r2 {"title":"R2","n":5,"ids":["R2_SOFT","R2_FULL","R2_SOFT_LAYER_2","R2_FULL_LAYER_2","R_TRIGGER_PRESSURE"]}
+PASS drill.l4 {"title":"L4","n":1,"ids":["L4"]}
+PASS drill.l5 {"title":"L5","n":1,"ids":["L5"]}
+PASS drill.r4 {"title":"R4","n":1,"ids":["R4"]}
+PASS drill.r5 {"title":"R5","n":1,"ids":["R5"]}
+PASS drill.start {"title":"START","n":1,"ids":["START"]}
+PASS drill.select {"title":"SELECT","n":1,"ids":["SELECT"]}
+PASS drill.left_pad {"title":"Left trackpad","n":10,"ids":["L_PAD_UP","L_PAD_DOWN","L_PAD_LEFT","L_PAD_RIGHT","L_PAD_UP_LONG_PRESS","L_PAD_DOWN_LONG_PRESS","L_PAD_LEFT_LONG_PRESS","L_PAD_RIGHT_LONG_PRESS","L_PAD_X_POS","L_PAD_Y_POS"]}
+PASS drill.right_pad {"title":"Right trackpad","n":10,"ids":["R_PAD_UP","R_PAD_DOWN","R_PAD_LEFT","R_PAD_RIGHT","R_PAD_UP_LONG_PRESS","R_PAD_DOWN_LONG_PRESS","R_PAD_LEFT_LONG_PRESS","R_PAD_RIGHT_LONG_PRESS","R_PAD_X_POS","R_PAD_Y_POS"]}
+PASS drill.gyro {"title":"Gyro","n":5,"ids":["GYRO_FORWARD","GYRO_BACKWARD","GYRO_PITCH","GYRO_YAW","GYRO_ROLL"]}
+PASS drill.all-23 "23/23"
+PASS edit.btn_a-note-36-to-50-exact-disk-diff [{"path":"sections.windows.mappings.BTN_A.note","before":36,"after":50}]
+PASS conflict.modal-open-with-marks {"rows":["START"],"details":"Ch3 CC79: START, SELECT"}
+PASS conflict.start-marked-and-visible-after-modal-closed {"row":true,"marked":true,"msg":true,"text":"MIDI CC conflict","uncovered":true,"hit":"controller-conflict-message","overlayOpen":false,"overlayDisplay":"none","inViewport":true,"bodyFilter":"none"}
+PASS conflict.cancel-writes-nothing "b5ca30b284e0a889956b713ac5be3ae2718c9f3d54b8779ea2b8f9d515205292"
+PASS conflict.select-marked-on-navigation {"row":true,"marked":true,"msg":true,"text":"MIDI CC conflict","uncovered":true,"hit":"controller-conflict-message","overlayOpen":false,"overlayDisplay":"none","inViewport":true,"bodyFilter":"none"}
+PASS conflict.start-still-marked-after-navigation {"row":true,"marked":true,"msg":true,"text":"MIDI CC conflict","uncovered":true,"hit":"controller-conflict-message","overlayOpen":false,"overlayDisplay":"none","inViewport":true,"bodyFilter":"none"}
+PASS conflict.save-anyway-exact-disk-diff [{"path":"sections.windows.mappings.START.cc","before":78,"after":79}]
+PASS conflict.marks-clear-after-successful-save {"start":{"rows":0,"msgs":0},"select":{"rows":0,"msgs":0}}
+CONTROLS 33/33 PASS

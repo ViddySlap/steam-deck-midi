@@ -1,0 +1,22 @@
+u1-wrapper-default-launch-bridge pid=6988 gone=True
+u1-wrapper-readme-bridge pid=7747 gone=True
+gate-head-bridge pid=75061 gone=True
+gate-base-geom-bridge pid=76268 gone=True
+gate-base-controls-bridge pid=94517 gone=True
+m1-broad pid=77919 gone=True
+m1-broad-restored pid=78099 gone=True
+m1-surgical pid=83667 gone=True
+m1-surgical-restored pid=84016 gone=True
+m2 pid=79217 gone=True
+m2-restored pid=80652 gone=True
+m3 pid=80724 gone=True
+m3-restored pid=82137 gone=True
+ab-edm-A pid=2999 gone=True
+ab-edm-B1 pid=3414 gone=True
+ab-edm-B2 pid=3781 gone=True
+ab-ptz-A pid=3000 gone=True
+ab-ptz-B1 pid=3413 gone=True
+ab-ptz-B2 pid=3774 gone=True
+ab-default-A pid=2998 gone=True
+ab-default-B1 pid=3415 gone=True
+PIDS 21 ALIVE 0

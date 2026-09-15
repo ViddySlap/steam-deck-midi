@@ -1,0 +1,25 @@
+m1 bridge-start exit=0
+m1 U1-check exit=1 SUMMARY 1012/1048 PASS
+FAIL 1024x768.closed.leader-intersections [["btn_a","btn_b"]]
+FAIL 1024x768.closed.own-edge.btn_a {"distance":24.022372622019414,"insideOther":["btn_b"],"end":{"x":768.799303890614,"y":399.1295521482547}}
+FAIL 1024x768.closed.own-edge.btn_b {"distance":11.209665802158788,"insideOther":[],"end":{"x":746.42031426019,"y":417.89666196558807}}
+FAIL 1024x768.open-btn_a.leader-intersections [["btn_a","btn_b"]]
+FAIL 1024x768.open-btn_a.own-edge.btn_a {"distance":18.565172619247665,"insideOther":[],"end":{"x":706.0355484094998,"y":323.7352190718139}}
+FAIL 1024x768.open-btn_a.own-edge.btn_b {"distance":8.446276319698589,"insideOther":[],"end":{"x":689.12611596059,"y":338.95756177309545}}
+FAIL 1024x768.open-nearest-gyro.leader-intersections [["btn_a","btn_b"]]
+FAIL 1024x768.open-nearest-gyro.own-edge.btn_a {"distance":18.565172619247665,"insideOther":[],"end":{"x":706.0355484094998,"y":323.7352190718139}}
+FAIL 1024x768.open-nearest-gyro.own-edge.btn_b {"distance":8.446276319698589,"insideOther":[],"end":{"x":689.12611596059,"y":338.95756177309545}}
+FAIL 1366x768.closed.leader-intersections [["btn_a","btn_b"]]
+FAIL 1366x768.closed.own-edge.btn_a {"distance":29.6488196182189,"insideOther":["btn_b"],"end":{"x":996.3425243901271,"y":388.1162782108082}}
+FAIL 1366x768.closed.own-edge.btn_b {"distance":13.838314980197987,"insideOther":["btn_a"],"end":{"x":969.0359477922028,"y":412.07178853352866}}
+m1 gate-geom exit=1
+1440x900 closed labels=23 overlaps=0 crossings=1 endpoints=21/23 (max 37.944px) glyphHits=0 hidden=0 scrolled=false
+  crossings [["btn_a","btn_b"]]
+  endpointFails [{"id":"btn_a","dist":37.944262893995415,"insideOther":[]},{"id":"btn_b","dist":17.69934657405985,"insideOther":[]}]
+GATE-GEOMETRY states=1 bad=1
+m1 stop exit=0 STOP pid=83667 gone=True (os.kill(pid,0) ProcessLookupError)
+m1 restored-bytes-equal-HEAD=1
+m1 bridge-restart exit=0
+m1 restored U1-check exit=0 SUMMARY 1048/1048 PASS
+m1 restored gate-geom exit=0 GATE-GEOMETRY states=1 bad=0
+m1 stop2 exit=0 STOP pid=84016 gone=True (os.kill(pid,0) ProcessLookupError)

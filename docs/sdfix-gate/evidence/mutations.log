@@ -1,0 +1,54 @@
+m1 bridge-start exit=0
+m1 U1-check exit=1 SUMMARY 985/1048 PASS
+FAIL 1024x768.closed.leader-intersections [["btn_a","btn_b"],["btn_b","btn_x"],["dpad_down","dpad_right"]]
+FAIL 1024x768.closed.own-edge.btn_a {"distance":24.022372622019414,"insideOther":["btn_b"],"end":{"x":768.799303890614,"y":399.1295521482547}}
+FAIL 1024x768.closed.own-edge.btn_b {"distance":11.209665802158788,"insideOther":[],"end":{"x":746.42031426019,"y":417.89666196558807}}
+FAIL 1024x768.closed.own-edge.dpad_right {"distance":0.000001628747156701138,"insideOther":["dpad_down"],"end":{"x":293.2450272635128,"y":457.9124425823769}}
+FAIL 1024x768.closed.own-edge.right_stick {"distance":0.00002040220113030955,"insideOther":["btn_x"],"end":{"x":703.9001668865761,"y":405.6825841839394}}
+FAIL 1024x768.closed.glyph-clear.right_stick ["A"]
+FAIL 1024x768.open-btn_a.leader-intersections [["btn_a","btn_b"],["btn_b","btn_x"],["btn_b","right_stick"],["dpad_down","dpad_right"]]
+FAIL 1024x768.open-btn_a.own-edge.btn_a {"distance":18.565172619247665,"insideOther":[],"end":{"x":706.0355484094998,"y":323.7352190718139}}
+FAIL 1024x768.open-btn_a.own-edge.btn_b {"distance":8.446276319698589,"insideOther":[],"end":{"x":689.12611596059,"y":338.95756177309545}}
+FAIL 1024x768.open-btn_a.own-edge.right_stick {"distance":0.000011293227998976363,"insideOther":["btn_x"],"end":{"x":656.9982186872408,"y":326.8977457251252}}
+FAIL 1024x768.open-btn_a.glyph-clear.right_stick ["A","X"]
+FAIL 1024x768.open-nearest-gyro.leader-intersections [["btn_a","btn_b"],["btn_b","btn_x"],["btn_b","right_stick"],["dpad_down","dpad_right"]]
+m1 gate-geom exit=1
+1440x900 closed labels=23 overlaps=0 crossings=3 endpoints=20/23 (max 37.944px) glyphHits=0 hidden=0 scrolled=false
+  crossings [["btn_a","btn_b"],["btn_b","btn_x"],["dpad_down","dpad_right"]]
+  endpointFails [{"id":"btn_a","dist":37.944262893995415,"insideOther":[]},{"id":"btn_b","dist":17.69934657405985,"insideOther":[]},{"id":"dpad_right","dist":0.0000032425322160634096,"insideOther":["dpad_down"]}]
+GATE-GEOMETRY states=1 bad=1
+m1 stop exit=0 STOP pid=77919 gone=True (os.kill(pid,0) ProcessLookupError)
+m1 restored-bytes-equal-HEAD=1
+m1 bridge-restart exit=0
+m1 restored U1-check exit=0 SUMMARY 1048/1048 PASS
+m1 restored gate-geom exit=0 GATE-GEOMETRY states=1 bad=0
+m1 stop2 exit=0 STOP pid=78099 gone=True (os.kill(pid,0) ProcessLookupError)
+m2 bridge-start exit=0
+m2 U1-check exit=1 
+FAIL 1024x768.closed.label-overlaps [["btn_a","btn_b"],["btn_b","btn_x"]]
+FAIL 1024x768.closed.labels-topmost [{"id":"btn_a","by":"controller-label"}]
+m2 gate-geom exit=1
+1440x900 closed labels=23 overlaps=1 crossings=0 endpoints=23/23 (max 0.000px) glyphHits=0 hidden=1 scrolled=false
+  overlaps [["btn_a","btn_b"]]
+  hidden [{"id":"btn_a","why":"centre hit controller-label"}]
+GATE-GEOMETRY states=1 bad=1
+m2 stop exit=0 STOP pid=79217 gone=True (os.kill(pid,0) ProcessLookupError)
+m2 restored-bytes-equal-HEAD=1
+m2 bridge-restart exit=0
+m2 restored U1-check exit=0 SUMMARY 1048/1048 PASS
+m2 restored gate-geom exit=0 GATE-GEOMETRY states=1 bad=0
+m2 stop2 exit=0 STOP pid=80652 gone=True (os.kill(pid,0) ProcessLookupError)
+m3 bridge-start exit=0
+m3 U1-check exit=1 
+FAIL 1024x768.closed.inside-visible-pane ["btn_a"]
+FAIL 1024x768.closed.labels-topmost [{"id":"btn_a","by":"statusbar"}]
+m3 gate-geom exit=1
+1440x900 closed labels=23 overlaps=0 crossings=0 endpoints=23/23 (max 0.000px) glyphHits=0 hidden=3 scrolled=false
+  hidden [{"id":"btn_a","why":"outside pane/viewport"},{"id":"btn_a","why":"centre hit statusbar"},{"id":"btn_a","why":"overlaps status bar"}]
+GATE-GEOMETRY states=1 bad=1
+m3 stop exit=0 STOP pid=80724 gone=True (os.kill(pid,0) ProcessLookupError)
+m3 restored-bytes-equal-HEAD=1
+m3 bridge-restart exit=0
+m3 restored U1-check exit=0 SUMMARY 1048/1048 PASS
+m3 restored gate-geom exit=0 GATE-GEOMETRY states=1 bad=0
+m3 stop2 exit=0 STOP pid=82137 gone=True (os.kill(pid,0) ProcessLookupError)

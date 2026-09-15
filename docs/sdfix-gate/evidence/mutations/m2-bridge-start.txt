@@ -1,0 +1,3 @@
+MUTATED m2 in /tmp/sdfix-gate/mut/tree-m2/windows/static/controller
+PORTS free tcp 18862 udp 48862
+READY pid=79217 url=http://127.0.0.1:18862

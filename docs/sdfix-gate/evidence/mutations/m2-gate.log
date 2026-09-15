@@ -1,0 +1,4 @@
+1440x900 closed labels=23 overlaps=1 crossings=0 endpoints=23/23 (max 0.000px) glyphHits=0 hidden=1 scrolled=false
+  overlaps [["btn_a","btn_b"]]
+  hidden [{"id":"btn_a","why":"centre hit controller-label"}]
+GATE-GEOMETRY states=1 bad=1

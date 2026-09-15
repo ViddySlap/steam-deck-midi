@@ -1,0 +1,4 @@
+1440x900 closed labels=23 overlaps=0 crossings=1 endpoints=21/23 (max 37.944px) glyphHits=0 hidden=0 scrolled=false
+  crossings [["btn_a","btn_b"]]
+  endpointFails [{"id":"btn_a","dist":37.944262893995415,"insideOther":[]},{"id":"btn_b","dist":17.69934657405985,"insideOther":[]}]
+GATE-GEOMETRY states=1 bad=1

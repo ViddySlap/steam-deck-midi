@@ -1,0 +1,21 @@
+1440x900 closed labels=23 overlaps=0 crossings=0 endpoints=23/23 (max 0.000px) glyphHits=0 hidden=0 scrolled=false
+1440x900 open-btn_a labels=23 overlaps=0 crossings=0 endpoints=23/23 (max 0.000px) glyphHits=0 hidden=0 scrolled=false
+  nearest-to-card gap=19.00 ties=["btn_a","btn_b","btn_x","btn_y","right_stick","right_pad"] opening btn_b
+1440x900 open-nearest-btn_b labels=23 overlaps=0 crossings=0 endpoints=23/23 (max 0.000px) glyphHits=0 hidden=0 scrolled=false
+1440x900 open-right_pad labels=23 overlaps=0 crossings=0 endpoints=23/23 (max 0.000px) glyphHits=0 hidden=0 scrolled=false
+1024x768 closed labels=23 overlaps=0 crossings=0 endpoints=23/23 (max 0.000px) glyphHits=0 hidden=0 scrolled=false
+1024x768 open-btn_a labels=23 overlaps=0 crossings=0 endpoints=23/23 (max 0.000px) glyphHits=0 hidden=0 scrolled=false
+  nearest-to-card gap=12.50 ties=["l4","l5","r4","r5","gyro"] opening l4
+1024x768 open-nearest-l4 labels=23 overlaps=0 crossings=0 endpoints=23/23 (max 0.000px) glyphHits=0 hidden=0 scrolled=false
+1024x768 open-gyro labels=23 overlaps=0 crossings=0 endpoints=23/23 (max 0.000px) glyphHits=0 hidden=0 scrolled=false
+1366x768 closed labels=23 overlaps=0 crossings=0 endpoints=23/23 (max 0.000px) glyphHits=0 hidden=0 scrolled=false
+1366x768 open-btn_a labels=23 overlaps=0 crossings=0 endpoints=23/23 (max 0.000px) glyphHits=0 hidden=0 scrolled=false
+  nearest-to-card gap=19.00 ties=["btn_a","btn_b","btn_x","btn_y","right_stick","right_pad"] opening btn_b
+1366x768 open-nearest-btn_b labels=23 overlaps=0 crossings=0 endpoints=23/23 (max 0.000px) glyphHits=0 hidden=0 scrolled=false
+1366x768 open-right_pad labels=23 overlaps=0 crossings=0 endpoints=23/23 (max 0.000px) glyphHits=0 hidden=0 scrolled=false
+1920x1080 closed labels=23 overlaps=0 crossings=0 endpoints=23/23 (max 0.000px) glyphHits=0 hidden=0 scrolled=false
+1920x1080 open-btn_a labels=23 overlaps=0 crossings=0 endpoints=23/23 (max 0.000px) glyphHits=0 hidden=0 scrolled=false
+  nearest-to-card gap=19.00 ties=["btn_a","btn_b","btn_x","btn_y","right_stick","right_pad"] opening btn_b
+1920x1080 open-nearest-btn_b labels=23 overlaps=0 crossings=0 endpoints=23/23 (max 0.000px) glyphHits=0 hidden=0 scrolled=false
+1920x1080 open-right_pad labels=23 overlaps=0 crossings=0 endpoints=23/23 (max 0.000px) glyphHits=0 hidden=0 scrolled=false
+GATE-GEOMETRY states=16 bad=0

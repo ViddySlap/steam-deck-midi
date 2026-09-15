@@ -1,0 +1,359 @@
+[
+ {
+  "control": "btn_a",
+  "title": "A",
+  "ui": [
+   "BTN_A",
+   "BTN_A_LAYER_2"
+  ],
+  "api": [
+   "BTN_A",
+   "BTN_A_LAYER_2"
+  ],
+  "pass": true
+ },
+ {
+  "control": "btn_b",
+  "title": "B",
+  "ui": [
+   "BTN_B",
+   "BTN_B_LAYER_2"
+  ],
+  "api": [
+   "BTN_B",
+   "BTN_B_LAYER_2"
+  ],
+  "pass": true
+ },
+ {
+  "control": "btn_x",
+  "title": "X",
+  "ui": [
+   "BTN_X",
+   "BTN_X_LAYER_2"
+  ],
+  "api": [
+   "BTN_X",
+   "BTN_X_LAYER_2"
+  ],
+  "pass": true
+ },
+ {
+  "control": "btn_y",
+  "title": "Y",
+  "ui": [
+   "BTN_Y",
+   "BTN_Y_LAYER_2"
+  ],
+  "api": [
+   "BTN_Y",
+   "BTN_Y_LAYER_2"
+  ],
+  "pass": true
+ },
+ {
+  "control": "dpad_up",
+  "title": "D-pad Up",
+  "ui": [
+   "DPAD_UP",
+   "DPAD_UP_LONG_PRESS"
+  ],
+  "api": [
+   "DPAD_UP",
+   "DPAD_UP_LONG_PRESS"
+  ],
+  "pass": true
+ },
+ {
+  "control": "dpad_down",
+  "title": "D-pad Down",
+  "ui": [
+   "DPAD_DOWN",
+   "DPAD_DOWN_LONG_PRESS"
+  ],
+  "api": [
+   "DPAD_DOWN",
+   "DPAD_DOWN_LONG_PRESS"
+  ],
+  "pass": true
+ },
+ {
+  "control": "dpad_left",
+  "title": "D-pad Left",
+  "ui": [
+   "DPAD_LEFT",
+   "DPAD_LEFT_LONG_PRESS"
+  ],
+  "api": [
+   "DPAD_LEFT",
+   "DPAD_LEFT_LONG_PRESS"
+  ],
+  "pass": true
+ },
+ {
+  "control": "dpad_right",
+  "title": "D-pad Right",
+  "ui": [
+   "DPAD_RIGHT",
+   "DPAD_RIGHT_LONG_PRESS"
+  ],
+  "api": [
+   "DPAD_RIGHT",
+   "DPAD_RIGHT_LONG_PRESS"
+  ],
+  "pass": true
+ },
+ {
+  "control": "left_stick",
+  "title": "Left stick",
+  "ui": [
+   "LEFT_STICK_CLICK_L3",
+   "L_STICK_UP",
+   "L_STICK_DOWN",
+   "L_STICK_LEFT",
+   "L_STICK_RIGHT",
+   "L_STICK_X_AXIS",
+   "L_STICK_Y_AXIS"
+  ],
+  "api": [
+   "LEFT_STICK_CLICK_L3",
+   "L_STICK_UP",
+   "L_STICK_DOWN",
+   "L_STICK_LEFT",
+   "L_STICK_RIGHT",
+   "L_STICK_X_AXIS",
+   "L_STICK_Y_AXIS"
+  ],
+  "pass": true
+ },
+ {
+  "control": "right_stick",
+  "title": "Right stick",
+  "ui": [
+   "RIGHT_STICK_CLICK_R3",
+   "R_STICK_UP",
+   "R_STICK_DOWN",
+   "R_STICK_LEFT",
+   "R_STICK_RIGHT",
+   "R_STICK_X_AXIS",
+   "R_STICK_Y_AXIS"
+  ],
+  "api": [
+   "RIGHT_STICK_CLICK_R3",
+   "R_STICK_UP",
+   "R_STICK_DOWN",
+   "R_STICK_LEFT",
+   "R_STICK_RIGHT",
+   "R_STICK_X_AXIS",
+   "R_STICK_Y_AXIS"
+  ],
+  "pass": true
+ },
+ {
+  "control": "l1",
+  "title": "L1",
+  "ui": [
+   "L1",
+   "L1_LAYER_2"
+  ],
+  "api": [
+   "L1",
+   "L1_LAYER_2"
+  ],
+  "pass": true
+ },
+ {
+  "control": "r1",
+  "title": "R1",
+  "ui": [
+   "R1",
+   "R1_LAYER_2"
+  ],
+  "api": [
+   "R1",
+   "R1_LAYER_2"
+  ],
+  "pass": true
+ },
+ {
+  "control": "l2",
+  "title": "L2",
+  "ui": [
+   "L2_SOFT",
+   "L2_FULL",
+   "L2_SOFT_LAYER_2",
+   "L2_FULL_LAYER_2",
+   "L_TRIGGER_PRESSURE"
+  ],
+  "api": [
+   "L2_SOFT",
+   "L2_FULL",
+   "L2_SOFT_LAYER_2",
+   "L2_FULL_LAYER_2",
+   "L_TRIGGER_PRESSURE"
+  ],
+  "pass": true
+ },
+ {
+  "control": "r2",
+  "title": "R2",
+  "ui": [
+   "R2_SOFT",
+   "R2_FULL",
+   "R2_SOFT_LAYER_2",
+   "R2_FULL_LAYER_2",
+   "R_TRIGGER_PRESSURE"
+  ],
+  "api": [
+   "R2_SOFT",
+   "R2_FULL",
+   "R2_SOFT_LAYER_2",
+   "R2_FULL_LAYER_2",
+   "R_TRIGGER_PRESSURE"
+  ],
+  "pass": true
+ },
+ {
+  "control": "l4",
+  "title": "L4",
+  "ui": [
+   "L4"
+  ],
+  "api": [
+   "L4"
+  ],
+  "pass": true
+ },
+ {
+  "control": "l5",
+  "title": "L5",
+  "ui": [
+   "L5"
+  ],
+  "api": [
+   "L5"
+  ],
+  "pass": true
+ },
+ {
+  "control": "r4",
+  "title": "R4",
+  "ui": [
+   "R4"
+  ],
+  "api": [
+   "R4"
+  ],
+  "pass": true
+ },
+ {
+  "control": "r5",
+  "title": "R5",
+  "ui": [
+   "R5"
+  ],
+  "api": [
+   "R5"
+  ],
+  "pass": true
+ },
+ {
+  "control": "start",
+  "title": "START",
+  "ui": [
+   "START"
+  ],
+  "api": [
+   "START"
+  ],
+  "pass": true
+ },
+ {
+  "control": "select",
+  "title": "SELECT",
+  "ui": [
+   "SELECT"
+  ],
+  "api": [
+   "SELECT"
+  ],
+  "pass": true
+ },
+ {
+  "control": "left_pad",
+  "title": "Left trackpad",
+  "ui": [
+   "L_PAD_UP",
+   "L_PAD_DOWN",
+   "L_PAD_LEFT",
+   "L_PAD_RIGHT",
+   "L_PAD_UP_LONG_PRESS",
+   "L_PAD_DOWN_LONG_PRESS",
+   "L_PAD_LEFT_LONG_PRESS",
+   "L_PAD_RIGHT_LONG_PRESS",
+   "L_PAD_X_POS",
+   "L_PAD_Y_POS"
+  ],
+  "api": [
+   "L_PAD_UP",
+   "L_PAD_DOWN",
+   "L_PAD_LEFT",
+   "L_PAD_RIGHT",
+   "L_PAD_UP_LONG_PRESS",
+   "L_PAD_DOWN_LONG_PRESS",
+   "L_PAD_LEFT_LONG_PRESS",
+   "L_PAD_RIGHT_LONG_PRESS",
+   "L_PAD_X_POS",
+   "L_PAD_Y_POS"
+  ],
+  "pass": true
+ },
+ {
+  "control": "right_pad",
+  "title": "Right trackpad",
+  "ui": [
+   "R_PAD_UP",
+   "R_PAD_DOWN",
+   "R_PAD_LEFT",
+   "R_PAD_RIGHT",
+   "R_PAD_UP_LONG_PRESS",
+   "R_PAD_DOWN_LONG_PRESS",
+   "R_PAD_LEFT_LONG_PRESS",
+   "R_PAD_RIGHT_LONG_PRESS",
+   "R_PAD_X_POS",
+   "R_PAD_Y_POS"
+  ],
+  "api": [
+   "R_PAD_UP",
+   "R_PAD_DOWN",
+   "R_PAD_LEFT",
+   "R_PAD_RIGHT",
+   "R_PAD_UP_LONG_PRESS",
+   "R_PAD_DOWN_LONG_PRESS",
+   "R_PAD_LEFT_LONG_PRESS",
+   "R_PAD_RIGHT_LONG_PRESS",
+   "R_PAD_X_POS",
+   "R_PAD_Y_POS"
+  ],
+  "pass": true
+ },
+ {
+  "control": "gyro",
+  "title": "Gyro",
+  "ui": [
+   "GYRO_FORWARD",
+   "GYRO_BACKWARD",
+   "GYRO_PITCH",
+   "GYRO_YAW",
+   "GYRO_ROLL"
+  ],
+  "api": [
+   "GYRO_FORWARD",
+   "GYRO_BACKWARD",
+   "GYRO_PITCH",
+   "GYRO_YAW",
+   "GYRO_ROLL"
+  ],
+  "pass": true
+ }
+]

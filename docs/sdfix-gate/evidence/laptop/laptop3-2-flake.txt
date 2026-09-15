@@ -1,0 +1,9 @@
+HEAD 19cd48e0dd6e8d36126812c5e687504928e4fcbd
+LAUNCHER_PID 246032
+OUT RUNS 300 RUNS_WITH_ERROR 80
+OUT KIND 95 ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine
+OUT KIND 3 ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+PID 246032 gone=True
+PID 283632 gone=True
+PYTHON_PROCESSES_AFTER 0
+EXIT 0

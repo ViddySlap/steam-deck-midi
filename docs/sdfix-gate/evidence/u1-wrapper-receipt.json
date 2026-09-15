@@ -1,0 +1,140 @@
+{
+  "work": "/private/tmp/sdfix-gate/geometry/geometry-qk78wqrx",
+  "bridge_argv": [
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+    "-B",
+    "-u",
+    "-m",
+    "windows.win_recv",
+    "--listen",
+    "127.0.0.1:47841",
+    "--map",
+    "config/windows_midi_map.json",
+    "--preset-section",
+    "windows",
+    "--dry-run",
+    "--no-engines",
+    "--no-pulse",
+    "--no-osc-relay",
+    "--ui-port",
+    "17841"
+  ],
+  "checks": [
+    {
+      "name": "pristine",
+      "command": [
+        "node",
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_geometry.cjs",
+        "http://127.0.0.1:17841",
+        "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+        "--single-process",
+        "--out",
+        "/private/tmp/sdfix-gate/geometry/geometry-qk78wqrx/pristine"
+      ],
+      "exit": 0,
+      "log": "/private/tmp/sdfix-gate/geometry/geometry-qk78wqrx/pristine.log"
+    },
+    {
+      "name": "m1",
+      "command": [
+        "node",
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_geometry.cjs",
+        "http://127.0.0.1:17841",
+        "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+        "--single-process",
+        "--out",
+        "/private/tmp/sdfix-gate/geometry/geometry-qk78wqrx/m1",
+        "--mutation",
+        "m1"
+      ],
+      "exit": 1,
+      "log": "/private/tmp/sdfix-gate/geometry/geometry-qk78wqrx/m1.log"
+    },
+    {
+      "name": "m1-restored",
+      "command": [
+        "node",
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_geometry.cjs",
+        "http://127.0.0.1:17841",
+        "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+        "--single-process",
+        "--out",
+        "/private/tmp/sdfix-gate/geometry/geometry-qk78wqrx/m1-restored"
+      ],
+      "exit": 0,
+      "log": "/private/tmp/sdfix-gate/geometry/geometry-qk78wqrx/m1-restored.log"
+    },
+    {
+      "name": "m2",
+      "command": [
+        "node",
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_geometry.cjs",
+        "http://127.0.0.1:17841",
+        "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+        "--single-process",
+        "--out",
+        "/private/tmp/sdfix-gate/geometry/geometry-qk78wqrx/m2",
+        "--mutation",
+        "m2"
+      ],
+      "exit": 1,
+      "log": "/private/tmp/sdfix-gate/geometry/geometry-qk78wqrx/m2.log"
+    },
+    {
+      "name": "m2-restored",
+      "command": [
+        "node",
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_geometry.cjs",
+        "http://127.0.0.1:17841",
+        "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+        "--single-process",
+        "--out",
+        "/private/tmp/sdfix-gate/geometry/geometry-qk78wqrx/m2-restored"
+      ],
+      "exit": 0,
+      "log": "/private/tmp/sdfix-gate/geometry/geometry-qk78wqrx/m2-restored.log"
+    },
+    {
+      "name": "m3",
+      "command": [
+        "node",
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_geometry.cjs",
+        "http://127.0.0.1:17841",
+        "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+        "--single-process",
+        "--out",
+        "/private/tmp/sdfix-gate/geometry/geometry-qk78wqrx/m3",
+        "--mutation",
+        "m3"
+      ],
+      "exit": 1,
+      "log": "/private/tmp/sdfix-gate/geometry/geometry-qk78wqrx/m3.log"
+    },
+    {
+      "name": "m3-restored",
+      "command": [
+        "node",
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_geometry.cjs",
+        "http://127.0.0.1:17841",
+        "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+        "--single-process",
+        "--out",
+        "/private/tmp/sdfix-gate/geometry/geometry-qk78wqrx/m3-restored"
+      ],
+      "exit": 0,
+      "log": "/private/tmp/sdfix-gate/geometry/geometry-qk78wqrx/m3-restored.log"
+    }
+  ],
+  "bridge_pid": 7747,
+  "settings": {
+    "feedback_port": null,
+    "listen": "127.0.0.1:47841",
+    "map_path": "/private/tmp/sdfix-gate/geometry/geometry-qk78wqrx/tree/config/presets/EDM Show.json",
+    "midi_port": "DECK_IN",
+    "preset_section": "windows",
+    "pulse_port": null,
+    "ui_port": 17841
+  },
+  "bridge_pid_gone": true,
+  "exit": 0
+}

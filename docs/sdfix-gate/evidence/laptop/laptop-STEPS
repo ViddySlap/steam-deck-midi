@@ -1,0 +1,23 @@
+== 0-guard-snapshot 22:52:10 :: scripts/showready/win_rail.sh run ug scripts/showready/win_guard.ps1 -Mode snapshot -Out C:\0sers\Ben\AppData\Local\Temp\sdwin\0g\x08efore.json
+0-guard-snapshot exit=0 22:52:12
+== 1-inventory-pre 22:52:12 :: scripts/showready/win_rail.sh run ug /tmp/sdfix-gate/ps/inventory.ps1
+1-inventory-pre exit=0 22:52:14
+== 2-pins 22:52:14 :: scripts/showready/win_rail.sh run ug /tmp/sdfix-gate/ps/pins.ps1
+2-pins exit=0 22:52:18
+== 3-winmatrix 22:52:18 :: scripts/showready/win_rail.sh run ug /tmp/sdfix-gate/ps/winmatrix.ps1
+3-winmatrix exit=0 23:00:20
+== 4-suite 23:00:20 :: scripts/showready/win_rail.sh run ug /tmp/sdfix-gate/ps/suite.ps1 -Label suite
+4-suite exit=1 23:00:47
+== 5-inventory-post 23:00:47 :: scripts/showready/win_rail.sh run ug /tmp/sdfix-gate/ps/inventory.ps1
+5-inventory-post exit=0 23:00:49
+== 6-get-win-edm.gz 23:00:49 :: scripts/showready/win_rail.sh get C:\0sers\Ben\AppData\Local\Temp\sdwin\0g\x0desults\win-edm.json.gz /tmp/sdfix-gate/laptop/win-edm.json.gz
+6-get-win-edm.gz exit=0 23:00:49
+== 6-get-win-ptz.gz 23:00:49 :: scripts/showready/win_rail.sh get C:\0sers\Ben\AppData\Local\Temp\sdwin\0g\x0desults\win-ptz.json.gz /tmp/sdfix-gate/laptop/win-ptz.json.gz
+6-get-win-ptz.gz exit=0 23:00:50
+== 6-get-win-default.gz 23:00:50 :: scripts/showready/win_rail.sh get C:\0sers\Ben\AppData\Local\Temp\sdwin\0g\x0desults\win-default.json.gz /tmp/sdfix-gate/laptop/win-default.json.gz
+6-get-win-default.gz exit=0 23:00:50
+== 7-get-before 23:00:50 :: scripts/showready/win_rail.sh get C:\0sers\Ben\AppData\Local\Temp\sdwin\0g\x08efore.json /tmp/sdfix-gate/laptop/before.json
+7-get-before exit=0 23:00:51
+== 9-guard-compare 23:00:51 :: scripts/showready/win_rail.sh run ug scripts/showready/win_guard.ps1 -Mode compare -Baseline C:\0sers\Ben\AppData\Local\Temp\sdwin\0g\x08efore.json -Out C:\0sers\Ben\AppData\Local\Temp\sdwin\0g\x07fter.json
+9-guard-compare exit=0 23:00:54
+ALLDONE

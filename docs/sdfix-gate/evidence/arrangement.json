@@ -1,0 +1,136 @@
+{
+ "count_before": 23,
+ "count_after": 23,
+ "same_ids": true,
+ "art_before": [
+  830.728515625,
+  421.62139892578125
+ ],
+ "art_after": [
+  911.0481567382812,
+  462.38623046875
+ ],
+ "scale_x": 1.0966857879590814,
+ "scale_y": 1.0966858694715935,
+ "uniform_scale": true,
+ "max_edge_deviation_px_in_before_units": 0.00014954905062580792,
+ "getBBox_user_units_equal_all": true,
+ "rows": [
+  [
+   "btn_a",
+   0.0001,
+   true
+  ],
+  [
+   "btn_b",
+   0.0001,
+   true
+  ],
+  [
+   "btn_x",
+   0.0001,
+   true
+  ],
+  [
+   "btn_y",
+   0.0001,
+   true
+  ],
+  [
+   "dpad_down",
+   0.0001,
+   true
+  ],
+  [
+   "dpad_left",
+   0.0,
+   true
+  ],
+  [
+   "dpad_right",
+   0.0,
+   true
+  ],
+  [
+   "dpad_up",
+   0.0,
+   true
+  ],
+  [
+   "gyro",
+   0.0001,
+   true
+  ],
+  [
+   "l1",
+   0.0,
+   true
+  ],
+  [
+   "l2",
+   0.0,
+   true
+  ],
+  [
+   "l4",
+   0.0001,
+   true
+  ],
+  [
+   "l5",
+   0.0,
+   true
+  ],
+  [
+   "left_pad",
+   0.0001,
+   true
+  ],
+  [
+   "left_stick",
+   0.0,
+   true
+  ],
+  [
+   "r1",
+   0.0,
+   true
+  ],
+  [
+   "r2",
+   0.0001,
+   true
+  ],
+  [
+   "r4",
+   0.0001,
+   true
+  ],
+  [
+   "r5",
+   0.0001,
+   true
+  ],
+  [
+   "right_pad",
+   0.0001,
+   true
+  ],
+  [
+   "right_stick",
+   0.0001,
+   true
+  ],
+  [
+   "select",
+   0.0,
+   true
+  ],
+  [
+   "start",
+   0.0001,
+   true
+  ]
+ ]
+}
+ARRANGEMENT UNCHANGED

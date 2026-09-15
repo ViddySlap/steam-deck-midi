@@ -1,0 +1,3 @@
+MUTATED m3 in /tmp/sdfix-gate/mut/tree-m3/windows/static/controller
+PORTS free tcp 18863 udp 48863
+READY pid=80724 url=http://127.0.0.1:18863

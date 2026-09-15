@@ -1,0 +1,10 @@
+scripts/showready/ab_run.py: OK
+scripts/showready/ui_geometry.sh: OK
+scripts/showready/ui_geometry.py: OK
+scripts/showready/.gitattributes: OK
+scripts/showready/capture_runner.py: OK
+scripts/showready/win_guard.ps1: OK
+tests/ui_controller_geometry.cjs: OK
+scripts/showready/deck_script.py: OK
+scripts/showready/README.md: OK
+scripts/showready/win_rail.sh: OK
