@@ -1,0 +1,1664 @@
+{
+  "candidate": "HEAD",
+  "clock": "script",
+  "control": null,
+  "fixture_sha256": {
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/mac/MANIFEST.sha256": "0c1b3014f6fba58f76b54f1e0c8f843788f0fbbb2993d20e0415841bc2200524",
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/mac/presets/EDM Show.json": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/mac/presets/EDM Show.json.v049.bak": "3b2ef2e5702e014ef897517618ef79b588d6d29bfba48e10d0270b135d78567b",
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/mac/presets/PTZ.json": "11b37cd675fab1a32df5070d11d4219399b6a46a0d6ff6728d10c6eac89752c6",
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/mac/presets/PTZ.json.v049.bak": "3d5b996a843a541a5d2606fd2b2c4078e0287c9d31f009598f11ae4344abbf8d",
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/mac/presets/default.json": "5ebcf1e85dc3881d59e1658103ec17a0a3add438571679b3fca4f30b0f9a52a1",
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/windows-installed/MANIFEST.sha256": "7c6dad5b30ab05f1d005d1d722964ec847e6db19726bf0eb500d8bbcf10e331d",
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/windows-installed/macro_library.json": "434f71efe7304937210500c6b44f46611fa54ab7b2849ad1ae737e19efcc9d2a",
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/windows-installed/presets/.active": "cc768739b3a6e51fbebb2608a19c38964c37cf6f6f4adde02667afae9a812f4d",
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/windows-installed/presets/.active.bak-20260529-pre-v047-sync": "1c30b50423eae7d4f859d9d6bd748a0c024affae6cd63a1028d00e431d26492f",
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/windows-installed/presets/EDM Show.json": "90b2d19e07578d53775036eeeb05ad30f2feafc6c51fee1c8a76461447a8f4be",
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/windows-installed/presets/PTZ.json": "450f2edf992ba2435acf47f69ca80710d3e24eae00e205d869da062911308398",
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/windows-installed/presets/default.json": "e89c76db1d0bcf390631545c43d54b02662613ea27db98176a40177c27f14eeb",
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/windows-installed/presets/default.json.bak-20260529-pre-v047-sync": "6239567bde4f161578f1d8b594531fd007efe6cfd8f21e576b0616b938418585",
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/windows-installed/presets/test 1.json": "b3e26772a2b8bf1b344ba25328e156459343b929e5d93db8d574ae9baee02447",
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/windows-installed/presets/v1 Default.json": "d1fd3f3acd70ca2cb873ae86e29779574af3b6a8be80c5bf44175a4549a50f2d",
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/windows-installed/windows_midi_map.json": "f55c050913548c4bb48d013a9de4cd553b5c15e09657f36e4846bc5e2219a303",
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/windows-installed/windows_receiver_settings.local.json": "c9dac6cbeb8dfd2f67fa5d5a2df56d3b33a995b64f05e84b099716a448b85000"
+  },
+  "instrument_sha256": {
+    "ab_run.py": "015a326e7761025fd7c0b838bd9bb10af3dd1982378cf30fca3f71ff8488feee",
+    "capture_runner.py": "ad539052e86b9af6e73ba3020ba7b7dd73145496533f30bd1eed08ce3c5e0fb0",
+    "deck_script.py": "c0661d3331140f0571e593b87f72bfb6b1ac2b632b96cb97208f941fbd2a8f72"
+  },
+  "pacing": {
+    "A": {
+      "axis-10hz": {
+        "count": 229,
+        "max_ns": 100052458,
+        "median_ns": 100016333,
+        "min_ns": 100010875,
+        "no_overspeed": true
+      },
+      "axis-60hz": {
+        "count": 229,
+        "max_ns": 16810875,
+        "median_ns": 16681958,
+        "min_ns": 16677375,
+        "no_overspeed": true
+      }
+    },
+    "B1": {
+      "axis-10hz": {
+        "count": 229,
+        "max_ns": 100056458,
+        "median_ns": 100016250,
+        "min_ns": 100010917,
+        "no_overspeed": true
+      },
+      "axis-60hz": {
+        "count": 229,
+        "max_ns": 16801250,
+        "median_ns": 16681917,
+        "min_ns": 16677875,
+        "no_overspeed": true
+      }
+    },
+    "B2": {
+      "axis-10hz": {
+        "count": 229,
+        "max_ns": 100058750,
+        "median_ns": 100015709,
+        "min_ns": 100010542,
+        "no_overspeed": true
+      },
+      "axis-60hz": {
+        "count": 229,
+        "max_ns": 16815042,
+        "median_ns": 16681458,
+        "min_ns": 16677541,
+        "no_overspeed": true
+      }
+    }
+  },
+  "packet_stream_sha256": "c06cfa67469f551b9c28f600349a117bbfee7d3e692e3a54a02f8b18b63a6bc9",
+  "passed": true,
+  "preset": "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/mac/presets/EDM Show.json",
+  "quiescent": true,
+  "replay_wall_seconds": 476.380940792,
+  "schema": "sdwin-ab/1",
+  "script_file_sha256": "b642eee8ea7afeb5e965b3bb5e62c03cc130c8efaa611dcdb96d112d6942edba",
+  "script_parameters": {
+    "axis_divisions": 8,
+    "delay_sources": [
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/EDM Show.json:windows/mappings/DPAD_DOWN_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/EDM Show.json:windows/mappings/DPAD_LEFT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/EDM Show.json:windows/mappings/DPAD_RIGHT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/EDM Show.json:windows/mappings/DPAD_UP_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 0.08,
+        "source": "mac/presets/EDM Show.json:windows/mappings/L_PAD_LEFT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/EDM Show.json:windows/mappings/L_PAD_LEFT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 0.08,
+        "source": "mac/presets/EDM Show.json:windows/mappings/L_PAD_RIGHT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/EDM Show.json:windows/mappings/L_PAD_RIGHT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/EDM Show.json:macbook/mappings/DPAD_DOWN_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/EDM Show.json:macbook/mappings/DPAD_LEFT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/EDM Show.json:macbook/mappings/DPAD_RIGHT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/EDM Show.json:macbook/mappings/DPAD_UP_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 0.08,
+        "source": "mac/presets/EDM Show.json:macbook/mappings/L_PAD_LEFT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/EDM Show.json:macbook/mappings/L_PAD_LEFT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 0.08,
+        "source": "mac/presets/EDM Show.json:macbook/mappings/L_PAD_RIGHT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/EDM Show.json:macbook/mappings/L_PAD_RIGHT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/EDM Show.json.v049.bak:flat/mappings/DPAD_DOWN_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/EDM Show.json.v049.bak:flat/mappings/DPAD_LEFT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/EDM Show.json.v049.bak:flat/mappings/DPAD_RIGHT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/EDM Show.json.v049.bak:flat/mappings/DPAD_UP_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 0.08,
+        "source": "mac/presets/EDM Show.json.v049.bak:flat/mappings/L_PAD_LEFT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/EDM Show.json.v049.bak:flat/mappings/L_PAD_LEFT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 0.08,
+        "source": "mac/presets/EDM Show.json.v049.bak:flat/mappings/L_PAD_RIGHT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/EDM Show.json.v049.bak:flat/mappings/L_PAD_RIGHT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 2,
+        "source": "mac/presets/PTZ.json:windows/mappings/DPAD_UP_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2,
+        "source": "mac/presets/PTZ.json:windows/mappings/DPAD_DOWN_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2,
+        "source": "mac/presets/PTZ.json:windows/mappings/DPAD_LEFT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2,
+        "source": "mac/presets/PTZ.json:windows/mappings/DPAD_RIGHT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 0.08,
+        "source": "mac/presets/PTZ.json:windows/mappings/L_PAD_LEFT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/PTZ.json:windows/mappings/L_PAD_LEFT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 0.08,
+        "source": "mac/presets/PTZ.json:windows/mappings/L_PAD_RIGHT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/PTZ.json:windows/mappings/L_PAD_RIGHT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 2,
+        "source": "mac/presets/PTZ.json:macbook/mappings/DPAD_UP_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2,
+        "source": "mac/presets/PTZ.json:macbook/mappings/DPAD_DOWN_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2,
+        "source": "mac/presets/PTZ.json:macbook/mappings/DPAD_LEFT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2,
+        "source": "mac/presets/PTZ.json:macbook/mappings/DPAD_RIGHT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 0.08,
+        "source": "mac/presets/PTZ.json:macbook/mappings/L_PAD_LEFT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/PTZ.json:macbook/mappings/L_PAD_LEFT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 0.08,
+        "source": "mac/presets/PTZ.json:macbook/mappings/L_PAD_RIGHT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/PTZ.json:macbook/mappings/L_PAD_RIGHT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 2,
+        "source": "mac/presets/PTZ.json.v049.bak:flat/mappings/DPAD_UP_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2,
+        "source": "mac/presets/PTZ.json.v049.bak:flat/mappings/DPAD_DOWN_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2,
+        "source": "mac/presets/PTZ.json.v049.bak:flat/mappings/DPAD_LEFT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2,
+        "source": "mac/presets/PTZ.json.v049.bak:flat/mappings/DPAD_RIGHT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 0.08,
+        "source": "mac/presets/PTZ.json.v049.bak:flat/mappings/L_PAD_LEFT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/PTZ.json.v049.bak:flat/mappings/L_PAD_LEFT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 0.08,
+        "source": "mac/presets/PTZ.json.v049.bak:flat/mappings/L_PAD_RIGHT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/PTZ.json.v049.bak:flat/mappings/L_PAD_RIGHT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/default.json:flat/mappings/DPAD_DOWN_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/default.json:flat/mappings/DPAD_LEFT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/default.json:flat/mappings/DPAD_RIGHT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/default.json:flat/mappings/DPAD_UP_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 0.08,
+        "source": "mac/presets/default.json:flat/mappings/L_PAD_LEFT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/default.json:flat/mappings/L_PAD_LEFT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 0.08,
+        "source": "mac/presets/default.json:flat/mappings/L_PAD_RIGHT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "mac/presets/default.json:flat/mappings/L_PAD_RIGHT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/EDM Show.json:flat/mappings/DPAD_DOWN_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/EDM Show.json:flat/mappings/DPAD_LEFT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/EDM Show.json:flat/mappings/DPAD_RIGHT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/EDM Show.json:flat/mappings/DPAD_UP_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 0.08,
+        "source": "windows-installed/presets/EDM Show.json:flat/mappings/L_PAD_LEFT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/EDM Show.json:flat/mappings/L_PAD_LEFT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 0.08,
+        "source": "windows-installed/presets/EDM Show.json:flat/mappings/L_PAD_RIGHT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/EDM Show.json:flat/mappings/L_PAD_RIGHT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 2,
+        "source": "windows-installed/presets/PTZ.json:flat/mappings/DPAD_UP_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2,
+        "source": "windows-installed/presets/PTZ.json:flat/mappings/DPAD_DOWN_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2,
+        "source": "windows-installed/presets/PTZ.json:flat/mappings/DPAD_LEFT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2,
+        "source": "windows-installed/presets/PTZ.json:flat/mappings/DPAD_RIGHT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 0.08,
+        "source": "windows-installed/presets/PTZ.json:flat/mappings/L_PAD_LEFT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/PTZ.json:flat/mappings/L_PAD_LEFT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 0.08,
+        "source": "windows-installed/presets/PTZ.json:flat/mappings/L_PAD_RIGHT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/PTZ.json:flat/mappings/L_PAD_RIGHT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/default.json:flat/mappings/DPAD_DOWN_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/default.json:flat/mappings/DPAD_LEFT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/default.json:flat/mappings/DPAD_RIGHT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/default.json:flat/mappings/DPAD_UP_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 0.08,
+        "source": "windows-installed/presets/default.json:flat/mappings/L_PAD_LEFT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/default.json:flat/mappings/L_PAD_LEFT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 0.08,
+        "source": "windows-installed/presets/default.json:flat/mappings/L_PAD_RIGHT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/default.json:flat/mappings/L_PAD_RIGHT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 2,
+        "source": "windows-installed/presets/test 1.json:flat/mappings/DPAD_UP_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2,
+        "source": "windows-installed/presets/test 1.json:flat/mappings/DPAD_DOWN_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2,
+        "source": "windows-installed/presets/test 1.json:flat/mappings/DPAD_LEFT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2,
+        "source": "windows-installed/presets/test 1.json:flat/mappings/DPAD_RIGHT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 0.08,
+        "source": "windows-installed/presets/test 1.json:flat/mappings/L_PAD_LEFT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/test 1.json:flat/mappings/L_PAD_LEFT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 0.08,
+        "source": "windows-installed/presets/test 1.json:flat/mappings/L_PAD_RIGHT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/test 1.json:flat/mappings/L_PAD_RIGHT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/v1 Default.json:flat/mappings/DPAD_DOWN_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/v1 Default.json:flat/mappings/DPAD_LEFT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/v1 Default.json:flat/mappings/DPAD_RIGHT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/v1 Default.json:flat/mappings/DPAD_UP_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 0.08,
+        "source": "windows-installed/presets/v1 Default.json:flat/mappings/L_PAD_LEFT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/v1 Default.json:flat/mappings/L_PAD_LEFT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 0.08,
+        "source": "windows-installed/presets/v1 Default.json:flat/mappings/L_PAD_RIGHT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/presets/v1 Default.json:flat/mappings/L_PAD_RIGHT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/windows_midi_map.json:flat/mappings/DPAD_UP_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/windows_midi_map.json:flat/mappings/DPAD_DOWN_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/windows_midi_map.json:flat/mappings/DPAD_LEFT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/windows_midi_map.json:flat/mappings/DPAD_RIGHT_LONG_PRESS/fade_duration_seconds"
+      },
+      {
+        "seconds": 0.08,
+        "source": "windows-installed/windows_midi_map.json:flat/mappings/L_PAD_LEFT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/windows_midi_map.json:flat/mappings/L_PAD_LEFT_LONG_PRESS/modifier_hold_ms"
+      },
+      {
+        "seconds": 0.08,
+        "source": "windows-installed/windows_midi_map.json:flat/mappings/L_PAD_RIGHT_LONG_PRESS/macro_delay_ms"
+      },
+      {
+        "seconds": 2.0,
+        "source": "windows-installed/windows_midi_map.json:flat/mappings/L_PAD_RIGHT_LONG_PRESS/modifier_hold_ms"
+      }
+    ],
+    "fast_axis_interval_ns": 16666667,
+    "gap_seconds": 2.25,
+    "hold_seconds": 1.6,
+    "longest_delay_seconds": 2.0,
+    "range_note": "Sender representable HID ranges; physical calibration not measured. Zero probes include sender-suppressed centers.",
+    "slow_axis_interval_ns": 100000000,
+    "tap_seconds": 0.1,
+    "timer_tick_ns": 10000000
+  },
+  "script_sha256": "9256621abf62eb21e6c345ef286b6b7fcc087a2db87b8f682ce7fcf7703a993e",
+  "section": "windows",
+  "sent_packet_stream_sha256": "c06cfa67469f551b9c28f600349a117bbfee7d3e692e3a54a02f8b18b63a6bc9",
+  "timestamp_clock": {
+    "adjustable": false,
+    "implementation": "mach_absolute_time()",
+    "monotonic": true,
+    "name": "perf_counter",
+    "resolution": 4.166666666666667e-08
+  },
+  "wall_speed": 1.0,
+  "work": "/private/tmp/sdview-v1/ab/ab-qoxw2r8u",
+  "command": "TMPDIR=/tmp/sdview-v1 .venv/bin/python -B scripts/showready/ab_run.py --candidate HEAD --preset '.showready/fixtures/mac/presets/EDM Show.json' --section windows --script /tmp/sdview-v1/deck-script.json --scratch /tmp/sdview-v1/ab --out /tmp/sdview-v1/mac-edm.json",
+  "raw_result": "/tmp/sdview-v1/mac-edm.json.gz",
+  "raw_result_sha256": "98bd9120035e4d2aa9e99711460383895df6ed782e7237786e4b9a80f9712f87",
+  "verdict_line": "{\"result\": \"/tmp/sdview-v1/mac-edm.json.gz\", \"passed\": true, \"error\": null, \"comparisons\": {\"B1\": {\"totals\": {\"steps\": 732, \"mappings\": 56, \"mappings_exercised\": 56, \"messages_A\": 1531, \"messages_B\": 1531}, \"different_mappings\": [], \"unexercised_mappings\": []}, \"B2\": {\"totals\": {\"steps\": 732, \"mappings\": 56, \"mappings_exercised\": 56, \"messages_A\": 1531, \"messages_B\": 1531}, \"different_mappings\": [], \"unexercised_mappings\": []}}}",
+  "arms": {
+    "A": {
+      "archive_sha256": "3eda61f2c50f7ecb565182c2fcf0165e657549b9a63ce5c82f55ff8cec3067c5",
+      "argv": [
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+        "-B",
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/capture_runner.py",
+        "/private/tmp/sdview-v1/ab/ab-qoxw2r8u/A",
+        "/private/tmp/sdview-v1/ab/ab-qoxw2r8u/A/config",
+        "/private/tmp/sdview-v1/ab/ab-qoxw2r8u/A.jsonl",
+        "--script",
+        "/private/tmp/sdview-v1/ab/ab-qoxw2r8u/script.json",
+        "--clock",
+        "script",
+        "--",
+        "--map",
+        "/private/tmp/sdview-v1/ab/ab-qoxw2r8u/A/config/windows_midi_map.json",
+        "--listen",
+        "127.0.0.1:57476",
+        "--ui-port",
+        "55613",
+        "--no-engines",
+        "--no-pulse",
+        "--no-osc-relay",
+        "--no-ui"
+      ],
+      "capture_sha256": "eaefaee8ceb0dbfaeaaa2201c5a709886362abe5aaea28d1e28348ebd0b44de5",
+      "cleanup": {
+        "exit_code": -15,
+        "method": "terminate",
+        "pid_gone": true,
+        "proof": "Popen.wait plus kill(pid,0)"
+      },
+      "commit": "e66ff44b36eadb6d43db01680c65279df82cd63c",
+      "git_tree": "e2fc57e4da26a62085719a89cf7579362c1f0174",
+      "pid": 22247,
+      "preset_sha256": "3b2ef2e5702e014ef897517618ef79b588d6d29bfba48e10d0270b135d78567b",
+      "ready": {
+        "argv": [
+          "--map",
+          "/private/tmp/sdview-v1/ab/ab-qoxw2r8u/A/config/windows_midi_map.json",
+          "--listen",
+          "127.0.0.1:57476",
+          "--ui-port",
+          "55613",
+          "--no-engines",
+          "--no-pulse",
+          "--no-osc-relay",
+          "--no-ui"
+        ],
+        "bound": [
+          "127.0.0.1",
+          57476
+        ],
+        "bridge_file": "/private/tmp/sdview-v1/ab/ab-qoxw2r8u/A/windows/win_recv.py",
+        "clock": "script",
+        "pid": 22247
+      },
+      "received": {
+        "packet_stream_sha256": "c06cfa67469f551b9c28f600349a117bbfee7d3e692e3a54a02f8b18b63a6bc9",
+        "packets_received": 47039,
+        "pid": 22247
+      },
+      "udp_port": 57476,
+      "ui_port": 55613
+    },
+    "B1": {
+      "archive_sha256": "6f62d58d620049b3e3e7378a23735e521c8c2bfb3c6a65bf7fd9f985f95ca24b",
+      "argv": [
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+        "-B",
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/capture_runner.py",
+        "/private/tmp/sdview-v1/ab/ab-qoxw2r8u/B1",
+        "/private/tmp/sdview-v1/ab/ab-qoxw2r8u/B1/config",
+        "/private/tmp/sdview-v1/ab/ab-qoxw2r8u/B1.jsonl",
+        "--script",
+        "/private/tmp/sdview-v1/ab/ab-qoxw2r8u/script.json",
+        "--clock",
+        "script",
+        "--",
+        "--map",
+        "/private/tmp/sdview-v1/ab/ab-qoxw2r8u/B1/config/windows_midi_map.json",
+        "--listen",
+        "127.0.0.1:61640",
+        "--ui-port",
+        "55615",
+        "--no-engines",
+        "--no-pulse",
+        "--no-osc-relay",
+        "--no-ui"
+      ],
+      "capture_sha256": "836f2db8273bc39c7799582fe2ffffa46a91c63d206ef5274a44bb500d84d8bb",
+      "cleanup": {
+        "exit_code": -15,
+        "method": "terminate",
+        "pid_gone": true,
+        "proof": "Popen.wait plus kill(pid,0)"
+      },
+      "commit": "ad94d3a53b003f43609f54401f0e7b6ed6379a05",
+      "git_tree": "2bf6a9978a5e377d7764d8fa5604e93d9fd2bfed",
+      "pid": 22256,
+      "preset_sha256": "3b2ef2e5702e014ef897517618ef79b588d6d29bfba48e10d0270b135d78567b",
+      "ready": {
+        "argv": [
+          "--map",
+          "/private/tmp/sdview-v1/ab/ab-qoxw2r8u/B1/config/windows_midi_map.json",
+          "--listen",
+          "127.0.0.1:61640",
+          "--ui-port",
+          "55615",
+          "--no-engines",
+          "--no-pulse",
+          "--no-osc-relay",
+          "--no-ui"
+        ],
+        "bound": [
+          "127.0.0.1",
+          61640
+        ],
+        "bridge_file": "/private/tmp/sdview-v1/ab/ab-qoxw2r8u/B1/windows/win_recv.py",
+        "clock": "script",
+        "pid": 22256
+      },
+      "received": {
+        "packet_stream_sha256": "c06cfa67469f551b9c28f600349a117bbfee7d3e692e3a54a02f8b18b63a6bc9",
+        "packets_received": 47039,
+        "pid": 22256
+      },
+      "udp_port": 61640,
+      "ui_port": 55615
+    },
+    "B2": {
+      "archive_sha256": "6f62d58d620049b3e3e7378a23735e521c8c2bfb3c6a65bf7fd9f985f95ca24b",
+      "argv": [
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+        "-B",
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/capture_runner.py",
+        "/private/tmp/sdview-v1/ab/ab-qoxw2r8u/B2",
+        "/private/tmp/sdview-v1/ab/ab-qoxw2r8u/B2/config",
+        "/private/tmp/sdview-v1/ab/ab-qoxw2r8u/B2.jsonl",
+        "--script",
+        "/private/tmp/sdview-v1/ab/ab-qoxw2r8u/script.json",
+        "--clock",
+        "script",
+        "--",
+        "--map",
+        "/private/tmp/sdview-v1/ab/ab-qoxw2r8u/B2/config/windows_midi_map.json",
+        "--listen",
+        "127.0.0.1:61321",
+        "--ui-port",
+        "55617",
+        "--no-engines",
+        "--no-pulse",
+        "--no-osc-relay",
+        "--no-ui",
+        "--preset-section",
+        "windows"
+      ],
+      "capture_sha256": "29b6339d16f8eadc56c90214ba43f3822f62ae6b20d267e8257f1ef5b5bec6da",
+      "cleanup": {
+        "exit_code": -15,
+        "method": "terminate",
+        "pid_gone": true,
+        "proof": "Popen.wait plus kill(pid,0)"
+      },
+      "commit": "ad94d3a53b003f43609f54401f0e7b6ed6379a05",
+      "git_tree": "2bf6a9978a5e377d7764d8fa5604e93d9fd2bfed",
+      "pid": 22272,
+      "preset_sha256": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "ready": {
+        "argv": [
+          "--map",
+          "/private/tmp/sdview-v1/ab/ab-qoxw2r8u/B2/config/windows_midi_map.json",
+          "--listen",
+          "127.0.0.1:61321",
+          "--ui-port",
+          "55617",
+          "--no-engines",
+          "--no-pulse",
+          "--no-osc-relay",
+          "--no-ui",
+          "--preset-section",
+          "windows"
+        ],
+        "bound": [
+          "127.0.0.1",
+          61321
+        ],
+        "bridge_file": "/private/tmp/sdview-v1/ab/ab-qoxw2r8u/B2/windows/win_recv.py",
+        "clock": "script",
+        "pid": 22272
+      },
+      "received": {
+        "packet_stream_sha256": "c06cfa67469f551b9c28f600349a117bbfee7d3e692e3a54a02f8b18b63a6bc9",
+        "packets_received": 47039,
+        "pid": 22272
+      },
+      "udp_port": 61321,
+      "ui_port": 55617
+    }
+  },
+  "comparisons": {
+    "B1": {
+      "different_mappings": [],
+      "identical": true,
+      "mappings": [
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "BTN_A",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "BTN_A_LAYER_2",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "BTN_B",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "BTN_B_LAYER_2",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "BTN_X",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "BTN_X_LAYER_2",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "BTN_Y",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "BTN_Y_LAYER_2",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "DPAD_DOWN",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "DPAD_DOWN_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "DPAD_LEFT",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "DPAD_LEFT_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "DPAD_RIGHT",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "DPAD_RIGHT_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "DPAD_UP",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "DPAD_UP_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L1",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L1_LAYER_2",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L2_FULL",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L2_FULL_LAYER_2",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L2_SOFT",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L2_SOFT_LAYER_2",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L4",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L5",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "LEFT_STICK_CLICK_L3",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L_PAD_DOWN",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L_PAD_DOWN_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L_PAD_LEFT",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L_PAD_LEFT_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L_PAD_RIGHT",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L_PAD_RIGHT_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L_PAD_UP",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L_PAD_UP_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L_TRIGGER_PRESSURE",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R1",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R1_LAYER_2",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R2_FULL",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R2_FULL_LAYER_2",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R2_SOFT",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R2_SOFT_LAYER_2",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R4",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R5",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "RIGHT_STICK_CLICK_R3",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_PAD_DOWN",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_PAD_DOWN_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_PAD_LEFT",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_PAD_LEFT_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_PAD_RIGHT",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_PAD_RIGHT_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_PAD_UP",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_PAD_UP_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_STICK_X_AXIS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_STICK_Y_AXIS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_TRIGGER_PRESSURE",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "SELECT",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "START",
+          "reason": null
+        }
+      ],
+      "not_covered": [],
+      "passed": true,
+      "totals": {
+        "mappings": 56,
+        "mappings_exercised": 56,
+        "messages_A": 1531,
+        "messages_B": 1531,
+        "steps": 732
+      },
+      "unexercised_mappings": []
+    },
+    "B2": {
+      "different_mappings": [],
+      "identical": true,
+      "mappings": [
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "BTN_A",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "BTN_A_LAYER_2",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "BTN_B",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "BTN_B_LAYER_2",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "BTN_X",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "BTN_X_LAYER_2",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "BTN_Y",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "BTN_Y_LAYER_2",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "DPAD_DOWN",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "DPAD_DOWN_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "DPAD_LEFT",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "DPAD_LEFT_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "DPAD_RIGHT",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "DPAD_RIGHT_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "DPAD_UP",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "DPAD_UP_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L1",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L1_LAYER_2",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L2_FULL",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L2_FULL_LAYER_2",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L2_SOFT",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L2_SOFT_LAYER_2",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L4",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L5",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "LEFT_STICK_CLICK_L3",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L_PAD_DOWN",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L_PAD_DOWN_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L_PAD_LEFT",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L_PAD_LEFT_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L_PAD_RIGHT",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L_PAD_RIGHT_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L_PAD_UP",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L_PAD_UP_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "L_TRIGGER_PRESSURE",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R1",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R1_LAYER_2",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R2_FULL",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R2_FULL_LAYER_2",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R2_SOFT",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R2_SOFT_LAYER_2",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R4",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R5",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "RIGHT_STICK_CLICK_R3",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_PAD_DOWN",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_PAD_DOWN_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_PAD_LEFT",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_PAD_LEFT_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_PAD_RIGHT",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_PAD_RIGHT_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_PAD_UP",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_PAD_UP_LONG_PRESS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_STICK_X_AXIS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_STICK_Y_AXIS",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "R_TRIGGER_PRESSURE",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "SELECT",
+          "reason": null
+        },
+        {
+          "exercised": true,
+          "exercised_A": true,
+          "exercised_B": true,
+          "identical": true,
+          "mapping": "START",
+          "reason": null
+        }
+      ],
+      "not_covered": [],
+      "passed": true,
+      "totals": {
+        "mappings": 56,
+        "mappings_exercised": 56,
+        "messages_A": 1531,
+        "messages_B": 1531,
+        "steps": 732
+      },
+      "unexercised_mappings": []
+    }
+  },
+  "independent_pid_absence": "os.kill(pid, 0) raised ProcessLookupError for every replay PID after driver completion"
+}

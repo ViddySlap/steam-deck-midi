@@ -178,8 +178,34 @@ The script command is:
 It produced script_sha256
 9256621abf62eb21e6c345ef286b6b7fcc087a2db87b8f682ce7fcf7703a993e,
 732 steps, 47039 packets, scripted duration 469.716666743 seconds.
-Replay verdict and archived implementation commit will be appended after the
-run. The final evidence-only commit will not change implementation bytes.
+Replay command (exit 0):
+
+```
+TMPDIR=/tmp/sdview-v1 .venv/bin/python -B scripts/showready/ab_run.py --candidate HEAD --preset '.showready/fixtures/mac/presets/EDM Show.json' --section windows --script /tmp/sdview-v1/deck-script.json --scratch /tmp/sdview-v1/ab --out /tmp/sdview-v1/mac-edm.json
+```
+
+Verbatim instrument verdict line:
+
+```json
+{"result": "/tmp/sdview-v1/mac-edm.json.gz", "passed": true, "error": null, "comparisons": {"B1": {"totals": {"steps": 732, "mappings": 56, "mappings_exercised": 56, "messages_A": 1531, "messages_B": 1531}, "different_mappings": [], "unexercised_mappings": []}, "B2": {"totals": {"steps": 732, "mappings": 56, "mappings_exercised": 56, "messages_A": 1531, "messages_B": 1531}, "different_mappings": [], "unexercised_mappings": []}}}
+```
+
+Both candidate arms archive implementation commit
+`ad94d3a53b003f43609f54401f0e7b6ed6379a05`; A archives v0.4.9.
+The final evidence-only commit changes this report and adds midi-verdict.json,
+with no implementation changes. Machine-readable coverage, hashes, pacing,
+non-default ports, process IDs and cleanup proof are in
+`docs/sdview-v1/midi-verdict.json`. Full timestamped captures and script:
+`/tmp/sdview-v1/mac-edm.json.gz` (SHA256
+98bd9120035e4d2aa9e99711460383895df6ed782e7237786e4b9a80f9712f87).
+
+The driver's cleanup reports pid_gone=true for A, B1 and B2 after wait and
+kill(pid,0). `/tmp/sdview-v1/finish_evidence.py` independently repeated kill(pid,0)
+after completion and observed ProcessLookupError for every recorded PID.
+This is the pinned synthetic-input, controlled-clock byte-regression instrument
+with real loopback UDP and stub MIDI. It is not Windows or real-hardware show
+readiness. The full show-ready bar remains owed to the gate/judge.
+
 
 ## Handoff to V2/V3 and the gate
 
