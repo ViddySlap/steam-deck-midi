@@ -1,0 +1,98 @@
+[
+  {
+    "pid": 91670,
+    "source": "/tmp/sdfix-u1/geometry-8h_6vdom/receipt.json",
+    "gone": true,
+    "proof": "os.kill(pid, 0) raised ProcessLookupError"
+  },
+  {
+    "pid": 78596,
+    "source": "/tmp/sdfix-u1/geometry-4ajwqjf_/receipt.json",
+    "gone": true,
+    "proof": "os.kill(pid, 0) raised ProcessLookupError"
+  },
+  {
+    "pid": 91879,
+    "source": "/tmp/sdfix-u1/geometry-ylqkks1f/receipt.json",
+    "gone": true,
+    "proof": "os.kill(pid, 0) raised ProcessLookupError"
+  },
+  {
+    "pid": 75145,
+    "source": "/tmp/sdfix-u1/geometry-qzmvpgpr/receipt.json",
+    "gone": true,
+    "proof": "os.kill(pid, 0) raised ProcessLookupError"
+  },
+  {
+    "pid": 71683,
+    "source": "/tmp/sdfix-u1/geometry-js5fiww6/receipt.json",
+    "gone": true,
+    "proof": "os.kill(pid, 0) raised ProcessLookupError"
+  },
+  {
+    "pid": 3876,
+    "source": "/tmp/sdfix-u1/nearest/geometry-_wb64bna/receipt.json",
+    "gone": true,
+    "proof": "os.kill(pid, 0) raised ProcessLookupError"
+  },
+  {
+    "pid": 58718,
+    "source": "first default Chromium launch SIGTRAP",
+    "gone": true,
+    "proof": "os.kill(pid, 0) raised ProcessLookupError"
+  },
+  {
+    "pid": 91703,
+    "source": "recorded default Chromium launch SIGTRAP",
+    "gone": true,
+    "proof": "os.kill(pid, 0) raised ProcessLookupError"
+  },
+  {
+    "pid": 97261,
+    "source": "first conflict browser bridge",
+    "gone": true,
+    "proof": "os.kill(pid, 0) raised ProcessLookupError"
+  },
+  {
+    "pid": 99041,
+    "source": "final conflict browser bridge",
+    "gone": true,
+    "proof": "os.kill(pid, 0) raised ProcessLookupError"
+  },
+  {
+    "pid": 90426,
+    "source": "mac-edm/A",
+    "gone": true,
+    "proof": "os.kill(pid, 0) raised ProcessLookupError"
+  },
+  {
+    "pid": 90430,
+    "source": "mac-edm/B1",
+    "gone": true,
+    "proof": "os.kill(pid, 0) raised ProcessLookupError"
+  },
+  {
+    "pid": 90443,
+    "source": "mac-edm/B2",
+    "gone": true,
+    "proof": "os.kill(pid, 0) raised ProcessLookupError"
+  },
+  {
+    "pid": 69932,
+    "source": "mac-edm-final/A",
+    "gone": true,
+    "proof": "os.kill(pid, 0) raised ProcessLookupError"
+  },
+  {
+    "pid": 69942,
+    "source": "mac-edm-final/B1",
+    "gone": true,
+    "proof": "os.kill(pid, 0) raised ProcessLookupError"
+  },
+  {
+    "pid": 69946,
+    "source": "mac-edm-final/B2",
+    "gone": true,
+    "proof": "os.kill(pid, 0) raised ProcessLookupError"
+  }
+]

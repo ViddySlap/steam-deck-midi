@@ -177,8 +177,45 @@ non-ASCII dash as an ASCII Unicode escape to meet the report's ASCII rule.
 
 ## Bar 1 and handoff
 
-MIDI A/B replay will run at this implementation commit. The verified result
-will be appended in a docs-only evidence commit before U1 completes.
+Bar 1 PASS at candidate a5e310456971a92af0b30b50d7cf396bccc29060. Both
+candidate arm identities equal the branch HEAD at replay start. The final
+commit adds only docs/evidence; all product and test code remains at this SHA.
+
+Exact commands (both exit 0):
+
+```sh
+.venv/bin/python -B scripts/showready/deck_script.py --out /tmp/sdfix-u1/deck-script.json
+TMPDIR=/tmp/sdfix-u1 .venv/bin/python -B scripts/showready/ab_run.py --candidate HEAD --preset '.showready/fixtures/mac/presets/EDM Show.json' --section windows --script /tmp/sdfix-u1/deck-script.json --scratch /tmp/sdfix-u1/ab-final --out /tmp/sdfix-u1/mac-edm-final.json
+```
+
+The generator produced 732 steps, 47039 packets and 469.716666743 scripted
+seconds (deck-script.py stdout in evidence/deck-script.log). The replay used
+the README defaults --speed 1 and --clock script, with the normal safety flags
+and raw-byte MIDI stub. No real MIDI port, engine or UI was opened by these arms.
+
+`.venv/bin/python -B docs/sdfix-u1/finish_midi_evidence.py` exited 0. It reread the compressed raw capture, required both candidate
+identities, compared the full nonempty (step, MIDI bytes) sequences including
+startup, and independently required os.kill(pid, 0) to raise ProcessLookupError
+for all arms. Its machine-readable result is evidence/midi-verdict.json.
+
+| Arm pair | Steps | Mappings exercised | MIDI messages A/B | Raw bytes | PID absence |
+| --- | ---: | ---: | ---: | --- | --- |
+| A v0.4.9 / B1 | 732 | 56/56 | 1531/1531 | identical | PASS |
+| A v0.4.9 / B2 | 732 | 56/56 | 1531/1531 | identical | PASS |
+
+No different or unexercised mappings. Replay wall time: 476.789s
+(from ab_run.py's monotonic clock). Both 10 Hz and 60 Hz pacing checks have
+no_overspeed=true for A/B1/B2. Raw result: /tmp/sdfix-u1/mac-edm-final.json.gz;
+SHA256 and all per-arm captures/commands/ports/cleanup are in midi-verdict.json.
+This is synthetic Deck input with controlled receiver time and real loopback
+UDP. It proves this byte-regression schedule; it does not certify hardware,
+engine-dependent behavior or Windows show readiness.
+
+The earlier replay at a09b80d also passed with identical raw bytes. It is kept
+as earlier evidence in the same JSON; the second replay above pays the exact
+HEAD after the nearest-card tie-break and LF pin changes. All six arm PIDs
+from the two replays were independently proved absent.
+
 The Windows full suite and Windows bar 1 remain OWED TO THE GATE under the
 unchanged showready instruments/guard. Windows behavior is
 UNVERIFIED-BY-EXECUTION in U1. This is no deployment or show-ready verdict.
@@ -187,3 +224,25 @@ For sdlive: shape data-control identities, SVG source coordinates and map
 anchors are unchanged. Rendered scene coordinates now fit the pane; use the
 artwork's transform when projecting live dots/bars. Leaders are polylines;
 arrowheads are explicit data-control-head polygons. layout() owns positioning.
+
+
+## Final scope and process proof
+
+`.venv/bin/python -B docs/sdfix-u1/verify_scope.py` exited 0: all committed
+changes are in the allowed roots; original map groups/anchors and SVG bytes
+are unchanged; all named receiver/config/MIDI/engine files and pre-existing
+showready instruments are unchanged. evidence/scope.json records the exact
+paths, base/candidate identity and static tree. Product static bytes are equal
+to the first implementation commit a09b80d. New text is ASCII; preset minus-sign
+data is untouched.
+
+`python3 /tmp/sdfix-u1/finalize_report.py` independently checked every recorded
+UI bridge PID, both failed-launch Chromium PIDs and all replay arm PIDs for
+absence; evidence/process-cleanup.json records the results. The expected dummy
+pystray thread NotImplementedError occurred while real HTTP settings and UI
+continued serving; it is a dummy-backend limitation, not a lost bridge.
+
+The implementation and final test/pin commits were pushed and ls-remote matched
+a09b80d and then a5e3104, using the required SSH overrides. The final docs-only
+commit is pushed and checked by the same command before the terminal envelope.
+No laptop act, installed-tray act, merge, deployment or next-link launch occurred.
