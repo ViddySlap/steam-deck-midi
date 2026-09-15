@@ -86,6 +86,14 @@ class Engine:
     def shutdown(self) -> None:
         """Called when the receiver is shutting down."""
 
+    def flush_state(self) -> None:
+        """Wait until any persisted runtime state is on disk.
+
+        Called on the receiver thread before a replacement instance of this
+        engine is constructed (PUT /api/engines/<type>/config), so the new
+        instance reads what this one last wrote. Default no-op.
+        """
+
     def refresh(self) -> None:
         """Re-pull any one-shot init-time state (e.g. REST tunables).
 

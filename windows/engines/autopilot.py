@@ -425,6 +425,10 @@ class AutopilotEngine(Engine):
                 state.target_layer = None
                 state.crossfade_start_time = None
 
+    def flush_state(self) -> None:
+        if self._state_writer is not None:
+            self._state_writer.flush()
+
     def shutdown(self) -> None:
         if self._state_writer is not None:
             # Waits for the last change to reach disk; never raises.

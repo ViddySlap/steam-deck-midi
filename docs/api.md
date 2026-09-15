@@ -45,6 +45,12 @@ Later links must extend this inventory with every new UI or control action.
 | POST | `/api/engines/gyro-feedback/resync` | Invert gyro-feedback polarity and refresh its outputs. |
 | POST | `/api/engines/autopilot/state/clear` | Reset autopilot channel intent (enabled, beats, transition, mode, layers) to config defaults and persist it; return {persisted, channels}. |
 | POST | `/api/engines/refresh` | Invoke every loaded engine's refresh hook and return results. |
+| GET | `/api/engines/<type_name>/config` | Loopback only: return one engine type's effective stanza, its source (user or factory) and path, and whether it is loaded and live-swappable. |
+| PUT | `/api/engines/<type_name>/config` | Loopback only: validate a stanza by building the engine in isolation, write config/engines/<type>.json atomically and swap the live instance on the receiver thread; 409 restart_required for types that cannot swap live. |
+| GET | `/api/osc-relay` | Loopback only: return the OSC relay config, file path, running flag and packet stats. |
+| PUT | `/api/osc-relay` | Loopback only: validate relay config, restart the relay on it and write osc_relay.json atomically; a bind failure restores the previous relay and file. |
+| GET | `/api/midi/ports` | Loopback only: list MIDI input and output port names and the bridge's requested and resolved output, feedback and pulse ports. Never opens a port. |
+| GET | `/api/logs/tail` | Loopback only: return the newest ?lines=N (1..1000, default 200) log records from the in-memory ring, plus the tray log file path in tray mode. |
 
 `GET /api/settings` reports resolved live MIDI port names; unavailable/disabled
 input ports are `null`. `map_path` is the absolute, resolved active preset path,
@@ -58,6 +64,59 @@ UDP, and closes HTTP after in-flight replies finish. The process then exits 0.
 Non-loopback remote addresses receive 403, regardless of the bind address or
 forwarded headers. A standalone UI server with no bridge shutdown callback
 returns 503. No request body is required.
+
+## Agent configuration routes
+
+Every route in this section refuses a non-loopback TCP peer with 403 before
+reading the body, regardless of forwarded headers, like `POST /api/shutdown`.
+
+| Route | Success | Refusals |
+| --- | --- | --- |
+| GET `/api/engines/<type_name>/config` | 200 {type, source, path, user_files, spec, loaded, live_swappable, restart_required_reason} | 404 no engine registry (--no-engines), unknown type, or no stanza anywhere |
+| PUT `/api/engines/<type_name>/config` | 200 {ok, type, source: "user", path, spec, active} | 400 body not an object, `type` mismatch, or the engine class raised while being built from the stanza; 404 as GET; 409 `restart_required` (type below, `enabled: false`, or type not loaded); 409 `config_file_conflict` when a user file other than `<type>.json` declares the type; 503 no receiver loop; 500 write or build failure. Every refusal writes nothing. |
+| GET `/api/osc-relay` | 200 {path, config, load_error, running, stats} | 404 when started with --no-osc-relay |
+| PUT `/api/osc-relay` | 200 {ok, path, config, load_error, running, stats} | 400 invalid config (same rules as startup, including destination == listen); 404 --no-osc-relay; 500 bind or write failure, with the previous relay running again and the file unchanged |
+| GET `/api/midi/ports` | 200 {inputs, outputs, error, selected: {output, feedback, pulse: {requested, resolved}}} | a missing MIDI backend returns 200 with null lists and `error` |
+| GET `/api/logs/tail?lines=N` | 200 {lines, count, log_file} | 400 N not an integer in 1..1000; 503 no ring installed |
+
+Engine config PUT body: a complete stanza as it would appear in
+`config/engines/<type>.json` (`type` may be omitted). The engine is built once
+from it with a MidiOut that sends nothing and no registry or state dir; any
+exception is the 400 message. The change then runs as one task on the receiver
+(serve_forever) thread, between two datagrams: the old instance's
+`flush_state()`, the atomic file replace, construction of the new instance
+(on failure the file is restored and the old instance kept), then
+`EngineRegistry.replace` removes the old instance's note-emit filters, runs
+its `shutdown()`, puts the new instance in the same dispatch slot and binds
+it, and the old instance's runtime active flag is applied to the new one. The
+new instance behaves as it does after a restart: its bind runs (autopilot
+reads the clip layout over REST, global_color sends its resync CC) and runtime
+state such as an autopilot cycle position starts fresh. MIDI dispatch waits
+for that task, so a PUT delays pending datagrams by the time bind takes.
+The factory folder is never written.
+
+Live-swappable types: `audio_opacity`, `autopilot`, `autopilot_ptz`,
+`global_color`, `gyro_feedback`, `l_stick_layer`, `ptz_visca`.
+Types that return 409 `restart_required` (edit the file and restart instead):
+
+| Type | Why a live swap is not safe |
+| --- | --- |
+| `steam_input_layer_tracker` | bumper_blast, chaser_stack_dispatcher and flash_blast hold the tracker instance; its observer list has no unregister |
+| `bumper_blast`, `chaser_stack_dispatcher`, `flash_blast` | each registers an observer on the tracker that cannot be unregistered |
+| `nestdrop` | shutdown does not join in-flight press threads that share a process-wide lock |
+| `osc_sync` | shutdown joins a running sync pass for up to 5 s on the receiver thread while the pass holds composition master at 0 |
+| `stageflow_bridge` | shutdown is a no-op; its OSC socket and rescan thread would outlive the swap |
+
+OSC relay PUT body: the `osc_relay.json` object (`enabled`, `listen`,
+`destinations`). The old relay is shut down, a new one binds the requested
+listen address, and only then is the file replaced. `enabled: false` or no
+destinations stops the relay and writes the file.
+
+`/api/midi/ports` reads names only (`get_port_snapshot`); `resolved` is the
+name the bridge opened, null for an input it did not open. The log ring keeps
+the newest 1,000 records formatted `asctime levelname logger message`, in
+every mode, and creates no file; `log_file` is the rotating tray log path in
+tray mode and null otherwise.
 
 ## Section editing
 

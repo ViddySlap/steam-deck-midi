@@ -1007,6 +1007,7 @@ def serve_forever(
     reload_event: threading.Event | None = None,
     reload_config_fn: Callable[[], tuple[dict[str, MidiMapping], MacroSettings]] | None = None,
     engine_registry=None,
+    receiver_tasks=None,
 ) -> None:
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind((listen_host, listen_port))
@@ -1043,6 +1044,10 @@ def serve_forever(
                         receiver.reload_mappings(new_mappings, new_macro_settings)
                     except Exception as exc:
                         LOGGER.error("hot-reload failed: %s", exc)
+            if receiver_tasks is not None:
+                # Live engine/config changes queued by the HTTP API run here,
+                # between datagrams, exactly like the reload above.
+                receiver_tasks.drain()
             try:
                 fade_poll = receiver.fade_poll_interval_seconds
                 timeout = poll_interval if fade_poll is None else min(poll_interval, fade_poll)

@@ -22,6 +22,7 @@ from windows.config import (
 )
 from windows.engines import load_engines
 from windows.live_events import LiveEvents, LiveMidiOut
+from windows.log_ring import install_ring_handler
 from windows.midi import (
     MidiError,
     get_output_port_names,
@@ -30,8 +31,9 @@ from windows.midi import (
     resolve_available_input_port_name,
     resolve_available_output_port_name,
 )
-from windows.osc_relay import OscRelay, OscRelayError, load_osc_relay_config
+from windows.osc_relay import OscRelay, OscRelayController, OscRelayError, load_osc_relay_config
 from windows.receiver import ActionReceiver, serve_forever
+from windows.receiver_tasks import ReceiverTaskQueue
 from windows.preset_watch import PresetWatcher, file_signature
 
 
@@ -202,6 +204,9 @@ def main(argv: list[str] | None = None) -> int:
         level=logging.DEBUG if args.verbose else logging.INFO,
         format="%(levelname)s %(message)s",
     )
+    # After basicConfig (which only adds its console handler to a root logger
+    # with none), in every mode: GET /api/logs/tail reads this ring.
+    log_ring = install_ring_handler()
     logging.info(
         "build fingerprint: version=%s commit=%s built_utc=%s",
         build_fingerprint.APP_VERSION,
@@ -216,6 +221,7 @@ def main(argv: list[str] | None = None) -> int:
     # bootloader with WinError 10048 on UDP 45123. Acquired BEFORE any port
     # binding so we never compete for sockets with the running instance.
     _instance_lock_handle = None
+    tray_log_path = None
     if getattr(args, "tray", False):
         # Install the rotating-file log tee BEFORE anything else logs.
         # In windowed PyInstaller builds sys.stderr is None and the default
@@ -226,7 +232,7 @@ def main(argv: list[str] | None = None) -> int:
         try:
             from windows.tray import setup_log_tee
 
-            setup_log_tee()
+            tray_log_path = setup_log_tee()
         except Exception:
             logging.exception("tray-mode: setup_log_tee failed")
 
@@ -378,17 +384,21 @@ def main(argv: list[str] | None = None) -> int:
     # has no per-preset toggle, because an off toggle here would kill OSC
     # feedback to every control surface at once with no visible symptom.
     osc_relay = None
+    osc_relay_controller = None
     if not args.no_osc_relay:
         if args.osc_relay_config_path:
             osc_relay_path = Path(args.osc_relay_config_path)
         else:
             osc_relay_path = base_map_path.parent / "osc_relay.json"
+        osc_relay_config = None
+        osc_relay_load_error = None
         try:
             osc_relay_config = load_osc_relay_config(osc_relay_path)
         except OscRelayError as exc:
             # Bad relay config must not stop the bridge; MIDI is the
             # show-critical path and it does not depend on the relay.
             logging.warning("osc_relay config invalid (%s); relay disabled", exc)
+            osc_relay_load_error = str(exc)
         else:
             if osc_relay_config.active:
                 osc_relay = OscRelay(osc_relay_config)
@@ -396,6 +406,12 @@ def main(argv: list[str] | None = None) -> int:
                     osc_relay = None
             else:
                 logging.debug("osc_relay: not configured at %s", osc_relay_path)
+        # PUT /api/osc-relay replaces the running relay through this owner.
+        osc_relay_controller = OscRelayController(
+            osc_relay_path, osc_relay, osc_relay_config, load_error=osc_relay_load_error,
+        )
+
+    receiver_tasks = ReceiverTaskQueue()
 
     tray = None
     ui_server = None
@@ -417,6 +433,15 @@ def main(argv: list[str] | None = None) -> int:
             midi_port=midi_out.port_name,
             feedback_port=midi_in.port_name if midi_in is not None else None,
             pulse_port=pulse_in.port_name if pulse_in is not None else None,
+            receiver_tasks=receiver_tasks,
+            osc_relay_controller=osc_relay_controller,
+            requested_ports={
+                "output": args.midi_port,
+                "feedback": args.feedback_port,
+                "pulse": None if args.no_pulse else args.pulse_port,
+            },
+            log_ring=log_ring,
+            log_file_path=tray_log_path,
         )
         ui_server.run_in_thread()
         logging.info("mapping UI available at %s", ui_server.url)
@@ -442,6 +467,7 @@ def main(argv: list[str] | None = None) -> int:
             reload_event=reload_event,
             reload_config_fn=reload_config_fn,
             engine_registry=engine_registry,
+            receiver_tasks=receiver_tasks,
         )
 
     if args.tray:
@@ -462,8 +488,8 @@ def main(argv: list[str] | None = None) -> int:
             preset_watcher.stop()
             preset_watcher.join()
             midi_out.close()
-            if osc_relay is not None:
-                osc_relay.shutdown()
+            if osc_relay_controller is not None:
+                osc_relay_controller.shutdown()
             if ui_server is not None:
                 ui_server.stop()
         return 0
@@ -474,8 +500,8 @@ def main(argv: list[str] | None = None) -> int:
         preset_watcher.stop()
         preset_watcher.join()
         midi_out.close()
-        if osc_relay is not None:
-            osc_relay.shutdown()
+        if osc_relay_controller is not None:
+            osc_relay_controller.shutdown()
         if ui_server is not None:
             ui_server.stop()
         if tray is not None:

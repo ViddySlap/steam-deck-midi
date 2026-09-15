@@ -40,6 +40,7 @@ from __future__ import annotations
 import logging
 import threading
 import time
+from pathlib import Path
 from typing import Any, Callable
 
 from windows.engines.base import Engine
@@ -58,6 +59,16 @@ LOGGER = logging.getLogger(__name__)
 
 
 COMP_MASTER_PATH = "/composition/master"
+
+# Where Resolume keeps the STEAMDECK OSC shortcut preset, relative to the
+# running user's home: the location the old placeholder default named.
+OSC_PRESET_HOME_SUFFIX = "OneDrive/Documents/Resolume Arena/Shortcuts/OSC/STEAMDECK V2.xml"
+
+
+def default_osc_preset_path() -> Path:
+    """The running user's preset path (Path.home() honours USERPROFILE on Windows)."""
+    return Path.home().joinpath(*OSC_PRESET_HOME_SUFFIX.split("/"))
+
 
 # Paths that, when wiggled as a bool flip, visibly toggle the audio engine
 # on/off rather than just nudging a parameter back to its original value.
@@ -95,11 +106,10 @@ class OscSyncEngine(Engine):
         self._input_channel = int(inputs.get("channel", 14))
         self._cc_sync = int(inputs.get("cc_sync", 90))
 
+        preset_path = config.get("osc_preset_path")
         self._osc_preset_path = str(
-            config.get(
-                "osc_preset_path",
-                "C:/Users/USERNAME/OneDrive/Documents/Resolume Arena/Shortcuts/OSC/STEAMDECK V2.xml",
-            )
+            preset_path if preset_path is not None
+            else default_osc_preset_path()
         )
         self._epsilon_float = float(config.get("epsilon_float", 0.001))
         self._inter_message_delay_seconds = (

@@ -15,7 +15,9 @@ from typing import Any, Callable
 from flask import Flask, Response, jsonify, request, send_from_directory
 from werkzeug.serving import WSGIRequestHandler, make_server
 
+from windows import engine_config_api
 from windows.live_events import LiveEvents
+from windows.osc_relay import OscRelayError, OscRelayUpdateError
 from windows.bridge_settings import BridgeSettings
 from windows.config import (
     _SAFE_FILENAME_RE,
@@ -159,6 +161,18 @@ def _detect_conflicts(mappings: dict[str, Any]) -> list[dict[str, Any]]:
     return conflicts
 
 
+def _remote_is_loopback() -> bool:
+    """True only when the TCP peer is a loopback address; headers are ignored."""
+    try:
+        return ipaddress.ip_address(request.remote_addr or "").is_loopback
+    except ValueError:
+        return False
+
+
+def _loopback_refusal() -> tuple[Response, int]:
+    return jsonify({"error": "this route requires a loopback remote address"}), 403
+
+
 def _safe_preset_name(name: str) -> str | None:
     """Return sanitised filename (without .json) or None if invalid."""
     name = name.strip()
@@ -215,6 +229,11 @@ class MappingUIServer:
         state_version_fn: Callable[[], int] | None = None,
         shutdown_fn: Callable[[], None] | None = None,
         live_events: LiveEvents | None = None,
+        receiver_tasks: Any = None,
+        osc_relay_controller: Any = None,
+        requested_ports: dict[str, str | None] | None = None,
+        log_ring: Any = None,
+        log_file_path: Path | None = None,
     ) -> None:
         self.base_map_path = base_map_path
         self.presets_dir = presets_dir
@@ -238,6 +257,11 @@ class MappingUIServer:
         self.midi_port = midi_port
         self.feedback_port = feedback_port
         self.pulse_port = pulse_port
+        self.receiver_tasks = receiver_tasks
+        self.osc_relay_controller = osc_relay_controller
+        self.requested_ports = requested_ports or {}
+        self.log_ring = log_ring
+        self.log_file_path = log_file_path
         self._settings_lock = threading.Lock()
         self._app = self._build_app()
 
@@ -386,11 +410,7 @@ class MappingUIServer:
 
         @app.route("/api/shutdown", methods=["POST"])
         def shutdown() -> Response:
-            try:
-                loopback = ipaddress.ip_address(request.remote_addr or "").is_loopback
-            except ValueError:
-                loopback = False
-            if not loopback:
+            if not _remote_is_loopback():
                 return jsonify({"error": "shutdown requires a loopback remote address"}), 403
             with self._shutdown_lock:
                 if self.shutdown_fn is None:
@@ -909,6 +929,78 @@ class MappingUIServer:
             except Exception as exc:  # noqa: BLE001 - surface to UI
                 return jsonify({"error": str(exc)}), 500
             return jsonify({"ok": True, **result})
+
+        @app.route("/api/engines/<type_name>/config", methods=["GET"])
+        def get_engine_config(type_name: str) -> Response:
+            if not _remote_is_loopback():
+                return _loopback_refusal()
+            status, payload = engine_config_api.get_engine_config(self.engine_registry, type_name)
+            return jsonify(payload), status
+
+        @app.route("/api/engines/<type_name>/config", methods=["PUT"])
+        def put_engine_config(type_name: str) -> Response:
+            if not _remote_is_loopback():
+                return _loopback_refusal()
+            body = request.get_json(force=True, silent=True)
+            status, payload = engine_config_api.put_engine_config(
+                self.engine_registry, self.receiver_tasks, type_name, body)
+            return jsonify(payload), status
+
+        # ── OSC relay, MIDI ports, log tail ───────────────────────
+        @app.route("/api/osc-relay", methods=["GET"])
+        def get_osc_relay() -> Response:
+            if not _remote_is_loopback():
+                return _loopback_refusal()
+            if self.osc_relay_controller is None:
+                return jsonify({"error": "osc relay is disabled (--no-osc-relay)"}), 404
+            return jsonify(self.osc_relay_controller.snapshot())
+
+        @app.route("/api/osc-relay", methods=["PUT"])
+        def put_osc_relay() -> Response:
+            if not _remote_is_loopback():
+                return _loopback_refusal()
+            if self.osc_relay_controller is None:
+                return jsonify({"error": "osc relay is disabled (--no-osc-relay)"}), 404
+            body = request.get_json(force=True, silent=True)
+            try:
+                return jsonify({"ok": True, **self.osc_relay_controller.apply(body)})
+            except OscRelayError as exc:
+                return jsonify({"error": str(exc)}), 400
+            except (OscRelayUpdateError, OSError) as exc:
+                return jsonify({"error": str(exc)}), 500
+
+        @app.route("/api/midi/ports", methods=["GET"])
+        def get_midi_ports() -> Response:
+            if not _remote_is_loopback():
+                return _loopback_refusal()
+            from windows.midi import MidiError, get_port_snapshot
+            payload: dict[str, Any] = {"inputs": None, "outputs": None, "error": None}
+            try:
+                snapshot = get_port_snapshot()
+                payload["inputs"] = snapshot.input_names
+                payload["outputs"] = snapshot.output_names
+            except MidiError as exc:
+                payload["error"] = str(exc)
+            payload["selected"] = {
+                role: {"requested": self.requested_ports.get(role), "resolved": resolved}
+                for role, resolved in (("output", self.midi_port),
+                                       ("feedback", self.feedback_port),
+                                       ("pulse", self.pulse_port))
+            }
+            return jsonify(payload)
+
+        @app.route("/api/logs/tail", methods=["GET"])
+        def get_log_tail() -> Response:
+            if not _remote_is_loopback():
+                return _loopback_refusal()
+            raw = request.args.get("lines", "200")
+            if not (raw.isascii() and raw.isdigit() and len(raw) <= 4 and 1 <= int(raw) <= 1000):
+                return jsonify({"error": "lines must be an integer from 1 to 1000"}), 400
+            if self.log_ring is None:
+                return jsonify({"error": "log ring is not installed"}), 503
+            lines = self.log_ring.tail(int(raw))
+            return jsonify({"lines": lines, "count": len(lines),
+                            "log_file": str(self.log_file_path) if self.log_file_path else None})
 
         @app.route("/api/engines/refresh", methods=["POST"])
         def refresh_engines() -> Response:

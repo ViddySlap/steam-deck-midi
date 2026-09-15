@@ -27,7 +27,9 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import socket
+import tempfile
 import threading
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -172,6 +174,8 @@ class OscRelay:
         self.packets_out = 0
         self.send_errors = 0
         self._logged_first_packet = False
+        # Why the last start() returned False on a bind failure, else None.
+        self.last_error: str | None = None
 
     @property
     def config(self) -> OscRelayConfig:
@@ -199,6 +203,7 @@ class OscRelay:
             recv_sock.bind((self._config.listen_host, self._config.listen_port))
             recv_sock.settimeout(_RECV_TIMEOUT_SECONDS)
         except OSError as exc:
+            self.last_error = f"could not bind {self._config.listen_host}:{self._config.listen_port}: {exc}"
             LOGGER.warning(
                 "osc_relay: could not bind %s:%s (%s); OSC feedback to the "
                 "control surfaces is DISABLED. Is another process holding "
@@ -294,3 +299,118 @@ class OscRelay:
                     pass
         self._recv_sock = None
         self._send_sock = None
+
+
+def config_to_spec(config: OscRelayConfig) -> dict[str, object]:
+    """The JSON shape parse_osc_relay_config reads, for GET and for the file."""
+    return {
+        "enabled": config.enabled,
+        "listen": f"{config.listen_host}:{config.listen_port}",
+        "destinations": [f"{h}:{p}" for h, p in config.destinations],
+    }
+
+
+class OscRelayUpdateError(RuntimeError):
+    """A PUT could not be applied; the previous relay and file are in place."""
+
+
+class OscRelayController:
+    """Owns the running relay so the HTTP API can read and replace it.
+
+    `apply` never leaves a half state: on any failure the previous relay is
+    running again (if there was one) and the config file is unchanged.
+    """
+
+    def __init__(
+        self,
+        config_path: str | Path,
+        relay: OscRelay | None,
+        config: OscRelayConfig | None,
+        *,
+        load_error: str | None = None,
+        relay_factory=None,
+    ) -> None:
+        self.config_path = Path(config_path)
+        self._relay = relay
+        self._config = config
+        self._load_error = load_error
+        self._factory = relay_factory or OscRelay
+        self._lock = threading.Lock()
+
+    @property
+    def relay(self) -> OscRelay | None:
+        return self._relay
+
+    def snapshot(self) -> dict[str, object]:
+        with self._lock:
+            relay = self._relay
+            return {
+                "path": str(self.config_path),
+                "config": config_to_spec(self._config) if self._config is not None else None,
+                "load_error": self._load_error,
+                "running": relay is not None and relay.running,
+                "stats": relay.stats() if relay is not None else None,
+            }
+
+    def apply(self, spec: object) -> dict[str, object]:
+        """Validate, restart the relay on the new config, then write the file.
+
+        Raises OscRelayError (invalid spec, nothing changed) or
+        OscRelayUpdateError (bind or write failed, previous state restored).
+        """
+        config = parse_osc_relay_config(spec)
+        text = json.dumps(config_to_spec(config), indent=2) + "\n"
+        with self._lock:
+            self.config_path.parent.mkdir(parents=True, exist_ok=True)
+            with tempfile.NamedTemporaryFile(
+                "w", encoding="utf-8", dir=self.config_path.parent, prefix=".osc_relay-",
+                suffix=".tmp", delete=False, newline="",
+            ) as tmp:
+                tmp_path = Path(tmp.name)
+                tmp.write(text)
+                tmp.flush()
+                os.fsync(tmp.fileno())
+            try:
+                previous = self._relay
+                if previous is not None:
+                    previous.shutdown()
+                new_relay = None
+                if config.active:
+                    new_relay = self._factory(config)
+                    if not new_relay.start():
+                        self._restore(previous)
+                        raise OscRelayUpdateError(
+                            (new_relay.last_error or "relay did not start")
+                            + "; previous relay restored, file unchanged"
+                        )
+                try:
+                    os.replace(tmp_path, self.config_path)
+                except OSError as exc:
+                    if new_relay is not None:
+                        new_relay.shutdown()
+                    self._restore(previous)
+                    raise OscRelayUpdateError(
+                        f"could not write {self.config_path}: {exc}; previous relay restored"
+                    ) from exc
+                self._relay = new_relay
+                self._config = config
+                self._load_error = None
+            finally:
+                tmp_path.unlink(missing_ok=True)
+        return self.snapshot()
+
+    def _restore(self, previous: OscRelay | None) -> None:
+        if previous is None:
+            self._relay = None
+            return
+        restored = self._factory(previous.config)
+        if restored.start():
+            self._relay = restored
+        else:
+            LOGGER.error("osc_relay: previous relay could not be restored: %s", restored.last_error)
+            self._relay = None
+
+    def shutdown(self) -> None:
+        with self._lock:
+            if self._relay is not None:
+                self._relay.shutdown()

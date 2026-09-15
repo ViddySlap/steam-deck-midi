@@ -73,6 +73,12 @@ class EngineRegistry:
     def __init__(self, engines: Iterable[Engine] = ()) -> None:
         self._engines: list[Engine] = list(engines)
         self._note_emit_filters: list[NoteEmitFilter] = []
+        # Set by load_engines: where this registry's stanzas and state live,
+        # and the MidiOut its engines were built with. The HTTP engine-config
+        # routes read these to write a stanza and build a replacement.
+        self.user_dir: Path | None = None
+        self.state_dir: Path | None = None
+        self.midi_out: MidiOut | None = None
 
     @property
     def engines(self) -> list[Engine]:
@@ -84,6 +90,38 @@ class EngineRegistry:
     def add_note_emit_filter(self, callback: NoteEmitFilter) -> None:
         """Register a pre-emit filter for outbound note_on messages."""
         self._note_emit_filters.append(callback)
+
+    def remove_note_emit_filter(self, callback: NoteEmitFilter) -> bool:
+        """Unregister a filter added with add_note_emit_filter. True if it was present."""
+        try:
+            self._note_emit_filters.remove(callback)
+        except ValueError:
+            return False
+        return True
+
+    def replace(self, old: Engine, new: Engine) -> None:
+        """Swap a loaded engine instance for a new one. Receiver thread only.
+
+        In order: every note-emit filter owned by `old` is removed, `old` is
+        shut down, `new` takes `old`'s slot (so dispatch order is unchanged),
+        and `new` is bound. Nothing else touches the engine list in between,
+        because the caller runs this on the thread that dispatches MIDI.
+        """
+        index = next((i for i, engine in enumerate(self._engines) if engine is old), None)
+        if index is None:
+            raise ValueError(f"engine {old.name} is not in this registry")
+        for callback in [cb for cb in self._note_emit_filters
+                         if getattr(cb, "__self__", None) is old]:
+            self.remove_note_emit_filter(callback)
+        try:
+            old.shutdown()
+        except Exception:
+            LOGGER.exception("engine %s shutdown failed during replace", old.name)
+        self._engines[index] = new
+        try:
+            new.bind_registry(self)
+        except Exception:
+            LOGGER.exception("engine %s bind_registry failed", new.name)
 
     def should_emit_note(
         self, channel: int, note: int, velocity: int, now: float
@@ -305,6 +343,9 @@ def load_engines(
             state_dir = None
 
     registry = EngineRegistry()
+    registry.user_dir = user_dir
+    registry.state_dir = Path(state_dir) if state_dir is not None else None
+    registry.midi_out = midi_out
 
     # Pass 1: instantiate + register every engine. Inter-engine references
     # (e.g. bumper_blast looking up the SteamInput layer tracker) must NOT
@@ -320,11 +361,8 @@ def load_engines(
             LOGGER.warning("unknown engine type %r; skipping", engine_type)
             continue
         name = spec.get("name", engine_type)
-        kwargs = {}
-        if state_dir is not None and getattr(cls, "accepts_state_dir", False):
-            kwargs["state_dir"] = Path(state_dir)
         try:
-            engine = cls(name=name, config=spec, midi_out=midi_out, **kwargs)
+            engine = build_engine(spec, midi_out, state_dir=state_dir)
             registry.add(engine)
             LOGGER.info("loaded engine %s (type=%s)", name, engine_type)
         except Exception:
@@ -339,6 +377,61 @@ def load_engines(
             LOGGER.exception("engine %s bind_registry failed", engine.name)
 
     return registry
+
+
+def engine_class(type_name: str) -> type[Engine] | None:
+    """Return the registered class for an engine type, or None if unknown."""
+    return _ENGINE_TYPES.get(type_name)
+
+
+def engine_type_names() -> list[str]:
+    return sorted(_ENGINE_TYPES)
+
+
+def build_engine(spec: dict, midi_out: MidiOut, *, state_dir: str | Path | None) -> Engine:
+    """Construct one engine from a stanza exactly as load_engines does."""
+    engine_type = spec.get("type")
+    cls = _ENGINE_TYPES.get(engine_type)
+    if cls is None:
+        raise ValueError(f"unknown engine type {engine_type!r}")
+    kwargs = {}
+    if state_dir is not None and getattr(cls, "accepts_state_dir", False):
+        kwargs["state_dir"] = Path(state_dir)
+    return cls(name=spec.get("name", engine_type), config=spec, midi_out=midi_out, **kwargs)
+
+
+def effective_engine_spec(user_dir: Path, type_name: str) -> dict | None:
+    """Find the stanza load_engines would use for `type_name`.
+
+    Returns {"source": "user"|"factory", "path": Path, "spec": dict,
+    "user_files": [names of every user file declaring this type]} or None.
+    Same precedence as the loader: the alphabetically-first user file for the
+    type wins, else the alphabetically-first factory file.
+    """
+    user_files: list[tuple[Path, dict]] = []
+    for json_path in sorted(user_dir.glob("*.json")):
+        spec = _read_stanza(json_path)
+        if spec is not None and spec.get("type") == type_name:
+            user_files.append((json_path, spec))
+    names = [path.name for path, _ in user_files]
+    if user_files:
+        path, spec = user_files[0]
+        return {"source": "user", "path": path, "spec": spec, "user_files": names}
+    factory_dir = user_dir.parent / _FACTORY_DIR_NAME
+    if factory_dir.is_dir():
+        for json_path in sorted(factory_dir.glob("*.json")):
+            spec = _read_stanza(json_path)
+            if spec is not None and spec.get("type") == type_name:
+                return {"source": "factory", "path": json_path, "spec": spec, "user_files": names}
+    return None
+
+
+def _read_stanza(json_path: Path) -> dict | None:
+    try:
+        spec = json.loads(json_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    return spec if isinstance(spec, dict) else None
 
 
 def _resolve_user_dir(path: Path) -> Path | None:

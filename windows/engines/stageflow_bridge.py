@@ -59,6 +59,15 @@ DEFAULT_STEP_DELAY_MS = 120
 DEFAULT_PRE_WAKE_DELAY_MS = 50
 DEFAULT_FALLBACK_LABEL = "-"
 
+# The legacy .avc composition, relative to the running user's home. Same
+# location the old placeholder default named.
+COMP_PATH_HOME_SUFFIX = "OneDrive/Documents/Resolume Arena/Compositions/5-5-26 STEAMDECK V2.avc"
+
+
+def default_comp_path() -> Path:
+    """The running user's composition path (Path.home() honours USERPROFILE on Windows)."""
+    return Path.home().joinpath(*COMP_PATH_HOME_SUFFIX.split("/"))
+
 
 class StageFlowBridgeEngine(Engine):
     type_name = "stageflow_bridge"
@@ -140,14 +149,9 @@ class StageFlowBridgeEngine(Engine):
         # parser is still exported as `parse_stageflow_altnames` for
         # tests that exercise the standalone function, but the engine
         # itself no longer reads .avc on rescan.
-        self._comp_path = Path(
-            str(
-                config.get(
-                    "comp_path",
-                    "C:/Users/USERNAME/OneDrive/Documents/Resolume Arena/"
-                    "Compositions/5-5-26 STEAMDECK V2.avc",
-                )
-            )
+        comp_path = config.get("comp_path")
+        self._comp_path = (
+            Path(str(comp_path)) if comp_path is not None else default_comp_path()
         )
 
         # Stats / status.
