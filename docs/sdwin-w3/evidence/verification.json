@@ -1,0 +1,269 @@
+{
+  "command": ".venv/bin/python -B /tmp/sdwin-w3/verify-final.py",
+  "checks": "Current pins and manifests; actual packets; raw bytes vs step captions; nonzero and per-mapping coverage; measured pacing; A/A cross-run equality; every child cleanup; expected faults",
+  "result": "GREEN",
+  "results": [
+    {
+      "file": "aa-real-1.json.gz",
+      "comparison": "B1",
+      "passed": true,
+      "totals": {
+        "mappings": 56,
+        "mappings_exercised": 56,
+        "messages_A": 1531,
+        "messages_B": 1531,
+        "steps": 732
+      },
+      "different_mappings": [],
+      "not_covered": []
+    },
+    {
+      "file": "aa-real-2.json.gz",
+      "comparison": "B1",
+      "passed": true,
+      "totals": {
+        "mappings": 56,
+        "mappings_exercised": 56,
+        "messages_A": 1531,
+        "messages_B": 1531,
+        "steps": 732
+      },
+      "different_mappings": [],
+      "not_covered": []
+    },
+    {
+      "file": "aa-wall-noise.json.gz",
+      "comparison": "B1",
+      "passed": false,
+      "totals": {
+        "mappings": 56,
+        "mappings_exercised": 56,
+        "messages_A": 1079,
+        "messages_B": 1070,
+        "steps": 732
+      },
+      "different_mappings": [
+        "DPAD_DOWN_LONG_PRESS",
+        "DPAD_LEFT_LONG_PRESS",
+        "DPAD_RIGHT_LONG_PRESS",
+        "DPAD_UP_LONG_PRESS"
+      ],
+      "not_covered": []
+    },
+    {
+      "file": "coverage.json.gz",
+      "comparison": "B1",
+      "passed": false,
+      "totals": {
+        "mappings": 56,
+        "mappings_exercised": 55,
+        "messages_A": 1527,
+        "messages_B": 1527,
+        "steps": 728
+      },
+      "different_mappings": [
+        "BTN_A"
+      ],
+      "not_covered": []
+    },
+    {
+      "file": "dead-seam.json.gz",
+      "comparison": "B1",
+      "passed": false,
+      "totals": {
+        "mappings": 56,
+        "mappings_exercised": 0,
+        "messages_A": 0,
+        "messages_B": 0,
+        "steps": 732
+      },
+      "different_mappings": [],
+      "not_covered": []
+    },
+    {
+      "file": "determinism-1.json.gz",
+      "comparison": "B1",
+      "passed": true,
+      "totals": {
+        "mappings": 56,
+        "mappings_exercised": 56,
+        "messages_A": 1531,
+        "messages_B": 1531,
+        "steps": 732
+      },
+      "different_mappings": [],
+      "not_covered": []
+    },
+    {
+      "file": "determinism-2.json.gz",
+      "comparison": "B1",
+      "passed": true,
+      "totals": {
+        "mappings": 56,
+        "mappings_exercised": 56,
+        "messages_A": 1531,
+        "messages_B": 1531,
+        "steps": 732
+      },
+      "different_mappings": [],
+      "not_covered": []
+    },
+    {
+      "file": "mac-default.json.gz",
+      "comparison": "B1",
+      "passed": true,
+      "totals": {
+        "mappings": 56,
+        "mappings_exercised": 56,
+        "messages_A": 1531,
+        "messages_B": 1531,
+        "steps": 732
+      },
+      "different_mappings": [],
+      "not_covered": []
+    },
+    {
+      "file": "mac-edm-show.json.gz",
+      "comparison": "B1",
+      "passed": true,
+      "totals": {
+        "mappings": 56,
+        "mappings_exercised": 56,
+        "messages_A": 1531,
+        "messages_B": 1531,
+        "steps": 732
+      },
+      "different_mappings": [],
+      "not_covered": []
+    },
+    {
+      "file": "mac-edm-show.json.gz",
+      "comparison": "B2",
+      "passed": true,
+      "totals": {
+        "mappings": 56,
+        "mappings_exercised": 56,
+        "messages_A": 1531,
+        "messages_B": 1531,
+        "steps": 732
+      },
+      "different_mappings": [],
+      "not_covered": []
+    },
+    {
+      "file": "mac-ptz.json.gz",
+      "comparison": "B1",
+      "passed": true,
+      "totals": {
+        "mappings": 52,
+        "mappings_exercised": 52,
+        "messages_A": 1395,
+        "messages_B": 1395,
+        "steps": 732
+      },
+      "different_mappings": [],
+      "not_covered": []
+    },
+    {
+      "file": "mac-ptz.json.gz",
+      "comparison": "B2",
+      "passed": true,
+      "totals": {
+        "mappings": 52,
+        "mappings_exercised": 52,
+        "messages_A": 1395,
+        "messages_B": 1395,
+        "steps": 732
+      },
+      "different_mappings": [],
+      "not_covered": []
+    },
+    {
+      "file": "sensitivity.json.gz",
+      "comparison": "B1",
+      "passed": false,
+      "totals": {
+        "mappings": 56,
+        "mappings_exercised": 56,
+        "messages_A": 1531,
+        "messages_B": 1531,
+        "steps": 732
+      },
+      "different_mappings": [
+        "BTN_A"
+      ],
+      "not_covered": []
+    },
+    {
+      "file": "windows-installed-default.json.gz",
+      "comparison": "B1",
+      "passed": true,
+      "totals": {
+        "mappings": 56,
+        "mappings_exercised": 56,
+        "messages_A": 1531,
+        "messages_B": 1531,
+        "steps": 732
+      },
+      "different_mappings": [],
+      "not_covered": []
+    },
+    {
+      "file": "windows-installed-edm-show.json.gz",
+      "comparison": "B1",
+      "passed": true,
+      "totals": {
+        "mappings": 56,
+        "mappings_exercised": 56,
+        "messages_A": 1531,
+        "messages_B": 1531,
+        "steps": 732
+      },
+      "different_mappings": [],
+      "not_covered": []
+    },
+    {
+      "file": "windows-installed-ptz.json.gz",
+      "comparison": "B1",
+      "passed": true,
+      "totals": {
+        "mappings": 52,
+        "mappings_exercised": 52,
+        "messages_A": 1395,
+        "messages_B": 1395,
+        "steps": 732
+      },
+      "different_mappings": [],
+      "not_covered": []
+    },
+    {
+      "file": "windows-installed-test-1.json.gz",
+      "comparison": "B1",
+      "passed": true,
+      "totals": {
+        "mappings": 63,
+        "mappings_exercised": 63,
+        "messages_A": 1615,
+        "messages_B": 1615,
+        "steps": 732
+      },
+      "different_mappings": [],
+      "not_covered": []
+    },
+    {
+      "file": "windows-installed-v1-default.json.gz",
+      "comparison": "B1",
+      "passed": true,
+      "totals": {
+        "mappings": 61,
+        "mappings_exercised": 61,
+        "messages_A": 1711,
+        "messages_B": 1711,
+        "steps": 732
+      },
+      "different_mappings": [],
+      "not_covered": []
+    }
+  ],
+  "script": "import gzip,hashlib,json,pathlib,sys,statistics\nsys.dont_write_bytecode=True\nroot=pathlib.Path.cwd();sys.path.insert(0,str(root/'scripts/showready'))\nimport deck_script\nverified=deck_script.verify_fixtures(root/'.showready/fixtures')\nkit_hash={n:hashlib.sha256((root/'scripts/showready'/n).read_bytes()).hexdigest() for n in ['deck_script.py','capture_runner.py','ab_run.py']}\nrows=[];results={}\nfor p in sorted((root/'docs/sdwin-w3/results').glob('*.json.gz')):\n d=json.loads(gzip.decompress(p.read_bytes()));results[p.name]=d\n assert d['instrument_sha256']==kit_hash,(p,'stale instrument')\n assert d['fixture_sha256']==verified,(p,'fixture drift')\n assert not d.get('error'),(p,d.get('error'))\n deck_script.validate(d['script'])\n assert d['packet_stream_sha256']==d['script']['packet_stream_sha256']==d['sent_packet_stream_sha256']\n assert pathlib.Path(d['work']).is_relative_to('/private/tmp/sdwin-w3'),d['work']\n assert d['quiescent']\n for name,arm in d['arms'].items():\n  assert arm['cleanup']['pid_gone'] and arm['cleanup']['method']=='terminate',(p,name,'cleanup')\n  assert arm['received']['packet_stream_sha256']==d['packet_stream_sha256']\n  assert arm['received']['packets_received']==len(d['script']['packets'])\n  assert arm['ready']['bound']==['127.0.0.1',arm['udp_port']]\n  assert arm['udp_port'] not in [45123,7723] and arm['ui_port'] not in [45123,7723]\n  assert '--tray' not in arm['argv']\n  assert {'--no-ui','--no-engines','--no-pulse','--no-osc-relay'} <= set(arm['argv'])\n  assert all(r.get('record')!='forbidden_midi_open' for r in arm['records'])\n  midi=[r for r in arm['records'] if r['record']=='midi']\n  assert all(r['monotonic_ns']>0 and len(r['bytes'])==3 for r in midi)\n  assert all(a['monotonic_ns']<=b['monotonic_ns'] for a,b in zip(midi,midi[1:]))\n for name,c in d['comparisons'].items():\n  for row in c['steps']:\n   for key,arm_name in [('A','A'),('B',name)]:\n    observed=[r['bytes'] for r in d['arms'][arm_name]['records'] if r['record']=='midi' and r['step']==row['id']]\n    assert row[key]==observed,(p,name,row['id'],'caption vs actual bytes')\n   assert row['identical']==(row['A']==row['B'])\n  for phase,minimum in [('axis-60hz',16666667),('axis-10hz',100000000)]:\n   for arm in ['A',name]:\n    ds=[]\n    for a,b in zip(c['steps'],c['steps'][1:]):\n     if a.get('phase')==b.get('phase')==phase and a['event']['action']==b['event']['action']:\n      ds.append(b['send_monotonic_ns'][arm]-a['send_monotonic_ns'][arm])\n    assert len(ds)==229 and min(ds)>=round(minimum/d['wall_speed']),(p,arm,phase,min(ds))\n    declared=d['pacing'][arm][phase]\n    assert declared['no_overspeed'] and declared['count']==len(ds)\n    assert declared['min_ns']==min(ds) and declared['median_ns']==statistics.median(ds) and declared['max_ns']==max(ds)\n  if not d['control'] and d['clock']=='script':\n   assert d['passed'] and c['passed'] and c['identical'] and c['totals']['messages_A']>0 and c['totals']['messages_B']>0\n   assert c['totals']['mappings_exercised']==c['totals']['mappings'] and not c['not_covered']\n  rows.append({'file':p.name,'comparison':name,'passed':c['passed'],'totals':c['totals'],'different_mappings':c['different_mappings'],'not_covered':c['not_covered']})\nassert len(results)==16,len(results)\nfor name in ['determinism-1','determinism-2','aa-real-1','aa-real-2']:\n assert results[name+'.json.gz']['passed']\nexpected=None\nfor name in ['determinism-1','determinism-2','aa-real-1','aa-real-2']:\n for arm in ['A','B1']:\n  seq=[r['bytes'] for r in results[name+'.json.gz']['arms'][arm]['records'] if r['record']=='midi']\n  if expected is None:expected=seq\n  assert seq==expected and seq,(name,arm)\nfor name in ['sensitivity','coverage','dead-seam']:\n assert not results[name+'.json.gz']['passed']\nassert results['sensitivity.json.gz']['comparisons']['B1']['different_mappings']==['BTN_A']\nassert results['coverage.json.gz']['comparisons']['B1']['unexercised_mappings']==['BTN_A']\nassert results['dead-seam.json.gz']['comparisons']['B1']['totals']['messages_A']==results['dead-seam.json.gz']['comparisons']['B1']['totals']['messages_B']==0\nreport={'command':'.venv/bin/python -B /tmp/sdwin-w3/verify-final.py','checks':'Current pins and manifests; actual packets; raw bytes vs step captions; nonzero and per-mapping coverage; measured pacing; A/A cross-run equality; every child cleanup; expected faults','result':'GREEN','results':rows,'script':pathlib.Path(__file__).read_text()}\n(root/'docs/sdwin-w3/evidence/verification.json').write_text(json.dumps(report,indent=2)+'\\n')\nprint(json.dumps({'result':'GREEN','result_files':len(results),'comparisons':len(rows),'cross_run_aa_messages':len(expected)}))\n"
+}

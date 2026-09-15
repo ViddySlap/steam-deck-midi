@@ -9,7 +9,7 @@ if ($branch -ne 'chain/steamdeck-20260914') { throw 'Wrong clone branch' }
 git -C $clone pull --ff-only
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 $head = git -C $clone rev-parse HEAD
-if ($LASTEXITCODE -ne 0 -or $head -ne 'e5293b40d7806819dbd970b04dd5c1a774426286') { throw "Clone HEAD mismatch: $head" }
+if ($LASTEXITCODE -ne 0 -or $head -ne 'e8a64f4efe526ba3210731083355c95472915e2e') { throw "Clone HEAD mismatch: $head" }
 Write-Output "VERIFIED_CLONE_HEAD $head"
 Set-Location -LiteralPath $clone
 $env:PYSTRAY_BACKEND = 'dummy'

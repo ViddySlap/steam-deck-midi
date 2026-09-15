@@ -1,0 +1,237 @@
+[
+  {
+    "name": "windows-installed-default",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/ab_run.py",
+      "--candidate",
+      "HEAD",
+      "--preset",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/windows-installed/presets/default.json",
+      "--script",
+      "/tmp/sdwin-w3/deck-script.json",
+      "--clock",
+      "script",
+      "--out",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/windows-installed-default.json"
+    ],
+    "exit": 0,
+    "stdout": "{\"result\": \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/windows-installed-default.json.gz\", \"passed\": true, \"error\": null, \"comparisons\": {\"B1\": {\"totals\": {\"steps\": 732, \"mappings\": 56, \"mappings_exercised\": 56, \"messages_A\": 1531, \"messages_B\": 1531}, \"different_mappings\": [], \"unexercised_mappings\": []}}}\n",
+    "stderr": ""
+  },
+  {
+    "name": "mac-default",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/ab_run.py",
+      "--candidate",
+      "HEAD",
+      "--preset",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/mac/presets/default.json",
+      "--script",
+      "/tmp/sdwin-w3/deck-script.json",
+      "--clock",
+      "script",
+      "--out",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/mac-default.json"
+    ],
+    "exit": 0,
+    "stdout": "{\"result\": \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/mac-default.json.gz\", \"passed\": true, \"error\": null, \"comparisons\": {\"B1\": {\"totals\": {\"steps\": 732, \"mappings\": 56, \"mappings_exercised\": 56, \"messages_A\": 1531, \"messages_B\": 1531}, \"different_mappings\": [], \"unexercised_mappings\": []}}}\n",
+    "stderr": ""
+  },
+  {
+    "name": "windows-installed-edm-show",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/ab_run.py",
+      "--candidate",
+      "HEAD",
+      "--preset",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/windows-installed/presets/EDM Show.json",
+      "--script",
+      "/tmp/sdwin-w3/deck-script.json",
+      "--clock",
+      "script",
+      "--out",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/windows-installed-edm-show.json"
+    ],
+    "exit": 0,
+    "stdout": "{\"result\": \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/windows-installed-edm-show.json.gz\", \"passed\": true, \"error\": null, \"comparisons\": {\"B1\": {\"totals\": {\"steps\": 732, \"mappings\": 56, \"mappings_exercised\": 56, \"messages_A\": 1531, \"messages_B\": 1531}, \"different_mappings\": [], \"unexercised_mappings\": []}}}\n",
+    "stderr": ""
+  },
+  {
+    "name": "windows-installed-ptz",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/ab_run.py",
+      "--candidate",
+      "HEAD",
+      "--preset",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/windows-installed/presets/PTZ.json",
+      "--script",
+      "/tmp/sdwin-w3/deck-script.json",
+      "--clock",
+      "script",
+      "--out",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/windows-installed-ptz.json"
+    ],
+    "exit": 0,
+    "stdout": "{\"result\": \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/windows-installed-ptz.json.gz\", \"passed\": true, \"error\": null, \"comparisons\": {\"B1\": {\"totals\": {\"steps\": 732, \"mappings\": 52, \"mappings_exercised\": 52, \"messages_A\": 1395, \"messages_B\": 1395}, \"different_mappings\": [], \"unexercised_mappings\": []}}}\n",
+    "stderr": ""
+  },
+  {
+    "name": "mac-ptz",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/ab_run.py",
+      "--candidate",
+      "HEAD",
+      "--preset",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/mac/presets/PTZ.json",
+      "--script",
+      "/tmp/sdwin-w3/deck-script.json",
+      "--clock",
+      "script",
+      "--out",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/mac-ptz.json",
+      "--section",
+      "windows"
+    ],
+    "exit": 0,
+    "stdout": "{\"result\": \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/mac-ptz.json.gz\", \"passed\": true, \"error\": null, \"comparisons\": {\"B1\": {\"totals\": {\"steps\": 732, \"mappings\": 52, \"mappings_exercised\": 52, \"messages_A\": 1395, \"messages_B\": 1395}, \"different_mappings\": [], \"unexercised_mappings\": []}, \"B2\": {\"totals\": {\"steps\": 732, \"mappings\": 52, \"mappings_exercised\": 52, \"messages_A\": 1395, \"messages_B\": 1395}, \"different_mappings\": [], \"unexercised_mappings\": []}}}\n",
+    "stderr": ""
+  },
+  {
+    "name": "mac-edm-show",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/ab_run.py",
+      "--candidate",
+      "HEAD",
+      "--preset",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/mac/presets/EDM Show.json",
+      "--script",
+      "/tmp/sdwin-w3/deck-script.json",
+      "--clock",
+      "script",
+      "--out",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/mac-edm-show.json",
+      "--section",
+      "windows"
+    ],
+    "exit": 0,
+    "stdout": "{\"result\": \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/mac-edm-show.json.gz\", \"passed\": true, \"error\": null, \"comparisons\": {\"B1\": {\"totals\": {\"steps\": 732, \"mappings\": 56, \"mappings_exercised\": 56, \"messages_A\": 1531, \"messages_B\": 1531}, \"different_mappings\": [], \"unexercised_mappings\": []}, \"B2\": {\"totals\": {\"steps\": 732, \"mappings\": 56, \"mappings_exercised\": 56, \"messages_A\": 1531, \"messages_B\": 1531}, \"different_mappings\": [], \"unexercised_mappings\": []}}}\n",
+    "stderr": ""
+  },
+  {
+    "name": "windows-installed-v1-default",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/ab_run.py",
+      "--candidate",
+      "HEAD",
+      "--preset",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/windows-installed/presets/v1 Default.json",
+      "--script",
+      "/tmp/sdwin-w3/deck-script.json",
+      "--clock",
+      "script",
+      "--out",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/windows-installed-v1-default.json"
+    ],
+    "exit": 0,
+    "stdout": "{\"result\": \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/windows-installed-v1-default.json.gz\", \"passed\": true, \"error\": null, \"comparisons\": {\"B1\": {\"totals\": {\"steps\": 732, \"mappings\": 61, \"mappings_exercised\": 61, \"messages_A\": 1711, \"messages_B\": 1711}, \"different_mappings\": [], \"unexercised_mappings\": []}}}\n",
+    "stderr": ""
+  },
+  {
+    "name": "aa-real-1",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/ab_run.py",
+      "--candidate",
+      "v0.4.9",
+      "--preset",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/mac/presets/default.json",
+      "--script",
+      "/tmp/sdwin-w3/deck-script.json",
+      "--clock",
+      "script",
+      "--out",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/aa-real-1.json"
+    ],
+    "exit": 0,
+    "stdout": "{\"result\": \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/aa-real-1.json.gz\", \"passed\": true, \"error\": null, \"comparisons\": {\"B1\": {\"totals\": {\"steps\": 732, \"mappings\": 56, \"mappings_exercised\": 56, \"messages_A\": 1531, \"messages_B\": 1531}, \"different_mappings\": [], \"unexercised_mappings\": []}}}\n",
+    "stderr": ""
+  },
+  {
+    "name": "aa-wall-noise",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/ab_run.py",
+      "--candidate",
+      "v0.4.9",
+      "--preset",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/mac/presets/default.json",
+      "--script",
+      "/tmp/sdwin-w3/deck-script.json",
+      "--clock",
+      "wall",
+      "--out",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/aa-wall-noise.json"
+    ],
+    "exit": 1,
+    "stdout": "{\"result\": \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/aa-wall-noise.json.gz\", \"passed\": false, \"error\": null, \"comparisons\": {\"B1\": {\"totals\": {\"steps\": 732, \"mappings\": 56, \"mappings_exercised\": 56, \"messages_A\": 1079, \"messages_B\": 1070}, \"different_mappings\": [\"DPAD_DOWN_LONG_PRESS\", \"DPAD_LEFT_LONG_PRESS\", \"DPAD_RIGHT_LONG_PRESS\", \"DPAD_UP_LONG_PRESS\"], \"unexercised_mappings\": []}}}\n",
+    "stderr": ""
+  },
+  {
+    "name": "windows-installed-test-1",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/ab_run.py",
+      "--candidate",
+      "HEAD",
+      "--preset",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/windows-installed/presets/test 1.json",
+      "--script",
+      "/tmp/sdwin-w3/deck-script.json",
+      "--clock",
+      "script",
+      "--out",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/windows-installed-test-1.json"
+    ],
+    "exit": 0,
+    "stdout": "{\"result\": \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/windows-installed-test-1.json.gz\", \"passed\": true, \"error\": null, \"comparisons\": {\"B1\": {\"totals\": {\"steps\": 732, \"mappings\": 63, \"mappings_exercised\": 63, \"messages_A\": 1615, \"messages_B\": 1615}, \"different_mappings\": [], \"unexercised_mappings\": []}}}\n",
+    "stderr": ""
+  },
+  {
+    "name": "aa-real-2",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/ab_run.py",
+      "--candidate",
+      "v0.4.9",
+      "--preset",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.showready/fixtures/mac/presets/default.json",
+      "--script",
+      "/tmp/sdwin-w3/deck-script.json",
+      "--clock",
+      "script",
+      "--out",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/aa-real-2.json"
+    ],
+    "exit": 0,
+    "stdout": "{\"result\": \"/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdwin-w3/results/aa-real-2.json.gz\", \"passed\": true, \"error\": null, \"comparisons\": {\"B1\": {\"totals\": {\"steps\": 732, \"mappings\": 56, \"mappings_exercised\": 56, \"messages_A\": 1531, \"messages_B\": 1531}, \"different_mappings\": [], \"unexercised_mappings\": []}}}\n",
+    "stderr": ""
+  }
+]

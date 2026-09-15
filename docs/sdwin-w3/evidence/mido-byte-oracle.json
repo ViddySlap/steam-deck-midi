@@ -1,0 +1,1878 @@
+{
+  "command": "venv Python: compare capture_runner.midi_bytes against mido.Message(...).bytes(), 16 channels x 3 types x 3 data pairs; no port API called",
+  "result": "GREEN",
+  "cases": [
+    {
+      "type": "note_on",
+      "channel": 0,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        144,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 0,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        144,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 0,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        144,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 0,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        128,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 0,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        128,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 0,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        128,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 0,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        176,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 0,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        176,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 0,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        176,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 1,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        145,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 1,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        145,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 1,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        145,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 1,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        129,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 1,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        129,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 1,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        129,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 1,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        177,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 1,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        177,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 1,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        177,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 2,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        146,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 2,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        146,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 2,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        146,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 2,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        130,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 2,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        130,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 2,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        130,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 2,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        178,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 2,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        178,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 2,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        178,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 3,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        147,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 3,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        147,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 3,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        147,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 3,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        131,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 3,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        131,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 3,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        131,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 3,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        179,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 3,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        179,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 3,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        179,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 4,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        148,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 4,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        148,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 4,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        148,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 4,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        132,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 4,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        132,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 4,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        132,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 4,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        180,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 4,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        180,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 4,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        180,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 5,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        149,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 5,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        149,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 5,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        149,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 5,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        133,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 5,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        133,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 5,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        133,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 5,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        181,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 5,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        181,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 5,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        181,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 6,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        150,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 6,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        150,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 6,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        150,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 6,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        134,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 6,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        134,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 6,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        134,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 6,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        182,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 6,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        182,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 6,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        182,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 7,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        151,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 7,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        151,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 7,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        151,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 7,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        135,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 7,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        135,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 7,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        135,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 7,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        183,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 7,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        183,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 7,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        183,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 8,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        152,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 8,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        152,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 8,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        152,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 8,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        136,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 8,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        136,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 8,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        136,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 8,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        184,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 8,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        184,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 8,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        184,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 9,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        153,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 9,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        153,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 9,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        153,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 9,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        137,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 9,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        137,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 9,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        137,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 9,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        185,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 9,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        185,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 9,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        185,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 10,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        154,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 10,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        154,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 10,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        154,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 10,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        138,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 10,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        138,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 10,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        138,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 10,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        186,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 10,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        186,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 10,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        186,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 11,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        155,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 11,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        155,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 11,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        155,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 11,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        139,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 11,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        139,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 11,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        139,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 11,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        187,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 11,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        187,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 11,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        187,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 12,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        156,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 12,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        156,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 12,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        156,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 12,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        140,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 12,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        140,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 12,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        140,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 12,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        188,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 12,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        188,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 12,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        188,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 13,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        157,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 13,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        157,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 13,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        157,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 13,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        141,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 13,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        141,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 13,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        141,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 13,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        189,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 13,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        189,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 13,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        189,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 14,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        158,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 14,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        158,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 14,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        158,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 14,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        142,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 14,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        142,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 14,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        142,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 14,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        190,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 14,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        190,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 14,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        190,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 15,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        159,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 15,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        159,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_on",
+      "channel": 15,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        159,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 15,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        143,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 15,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        143,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "note_off",
+      "channel": 15,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        143,
+        127,
+        1
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 15,
+      "data": [
+        0,
+        0
+      ],
+      "bytes": [
+        191,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 15,
+      "data": [
+        60,
+        127
+      ],
+      "bytes": [
+        191,
+        60,
+        127
+      ]
+    },
+    {
+      "type": "control_change",
+      "channel": 15,
+      "data": [
+        127,
+        1
+      ],
+      "bytes": [
+        191,
+        127,
+        1
+      ]
+    }
+  ]
+}
