@@ -1,0 +1,4 @@
+LIVE coverage arm PID=277280 UDP=60219
+LIVE coverage arm PID=263280 UDP=60220
+{"result": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w4\\coverage.json.gz", "passed": false, "error": null, "comparisons": {"B1": {"totals": {"steps": 728, "mappings": 56, "mappings_exercised": 55, "messages_A": 1527, "messages_B": 1527}, "different_mappings": ["BTN_A"], "unexercised_mappings": ["BTN_A"]}}}
+RESULT coverage EXIT=1 CLEANUP=True

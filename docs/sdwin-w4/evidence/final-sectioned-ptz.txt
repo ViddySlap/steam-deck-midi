@@ -1,0 +1,3 @@
+LIVE sectioned-ptz arm PID=274184 UDP=53932
+LIVE sectioned-ptz arm PID=278016 UDP=56827
+LIVE sectioned-ptz arm PID=262056 UDP=56830

@@ -1,0 +1,1626 @@
+{
+  "head": "c4ba229eb8c5d88578821da6c5f2f001c0445768",
+  "tag": "e66ff44b36eadb6d43db01680c65279df82cd63c",
+  "pins": [
+    {
+      "path": "scripts/showready/capture_runner.py",
+      "expected": "3a64c52c4cc0f97068ffc8f69d18b174a66ed9d642e78356bf3f1845830a9aca",
+      "actual": "3a64c52c4cc0f97068ffc8f69d18b174a66ed9d642e78356bf3f1845830a9aca"
+    },
+    {
+      "path": "scripts/showready/ab_run.py",
+      "expected": "a3fedcf3dce170fd9bc3a4025ab624f8cf58e3a1b87d5d9f9eda9bc5e3b32c56",
+      "actual": "a3fedcf3dce170fd9bc3a4025ab624f8cf58e3a1b87d5d9f9eda9bc5e3b32c56"
+    },
+    {
+      "path": "scripts/showready/.gitattributes",
+      "expected": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9",
+      "actual": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9"
+    },
+    {
+      "path": "scripts/showready/win_guard.ps1",
+      "expected": "ae0032500ecd3dc87ffafd6aaf10b4839306ceb81fdde2d5d9d9b20afff8b93a",
+      "actual": "ae0032500ecd3dc87ffafd6aaf10b4839306ceb81fdde2d5d9d9b20afff8b93a"
+    },
+    {
+      "path": "scripts/showready/deck_script.py",
+      "expected": "c0661d3331140f0571e593b87f72bfb6b1ac2b632b96cb97208f941fbd2a8f72",
+      "actual": "c0661d3331140f0571e593b87f72bfb6b1ac2b632b96cb97208f941fbd2a8f72"
+    },
+    {
+      "path": "scripts/showready/README.md",
+      "expected": "c896eb68767970ea6d3cf0d4a42ce754174e32e7f6d68ac08af5068647f50d4a",
+      "actual": "c896eb68767970ea6d3cf0d4a42ce754174e32e7f6d68ac08af5068647f50d4a"
+    },
+    {
+      "path": "scripts/showready/win_rail.sh",
+      "expected": "e9dc0ead29e91be11f1a4a2d57a4cbe272d1e5e2c791a8055834f5768277c1e8",
+      "actual": "e9dc0ead29e91be11f1a4a2d57a4cbe272d1e5e2c791a8055834f5768277c1e8"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "macro_library.json",
+      "sha256": "434f71efe7304937210500c6b44f46611fa54ab7b2849ad1ae737e19efcc9d2a",
+      "bytes": 818
+    },
+    {
+      "path": "presets/.active",
+      "sha256": "cc768739b3a6e51fbebb2608a19c38964c37cf6f6f4adde02667afae9a812f4d",
+      "bytes": 13
+    },
+    {
+      "path": "presets/.active.bak-20260529-pre-v047-sync",
+      "sha256": "1c30b50423eae7d4f859d9d6bd748a0c024affae6cd63a1028d00e431d26492f",
+      "bytes": 15
+    },
+    {
+      "path": "presets/default.json",
+      "sha256": "e89c76db1d0bcf390631545c43d54b02662613ea27db98176a40177c27f14eeb",
+      "bytes": 7722
+    },
+    {
+      "path": "presets/default.json.bak-20260529-pre-v047-sync",
+      "sha256": "6239567bde4f161578f1d8b594531fd007efe6cfd8f21e576b0616b938418585",
+      "bytes": 8035
+    },
+    {
+      "path": "presets/EDM Show.json",
+      "sha256": "90b2d19e07578d53775036eeeb05ad30f2feafc6c51fee1c8a76461447a8f4be",
+      "bytes": 8219
+    },
+    {
+      "path": "presets/PTZ.json",
+      "sha256": "450f2edf992ba2435acf47f69ca80710d3e24eae00e205d869da062911308398",
+      "bytes": 7263
+    },
+    {
+      "path": "presets/test 1.json",
+      "sha256": "b3e26772a2b8bf1b344ba25328e156459343b929e5d93db8d574ae9baee02447",
+      "bytes": 8581
+    },
+    {
+      "path": "presets/v1 Default.json",
+      "sha256": "d1fd3f3acd70ca2cb873ae86e29779574af3b6a8be80c5bf44175a4549a50f2d",
+      "bytes": 8800
+    },
+    {
+      "path": "windows_midi_map.json",
+      "sha256": "f55c050913548c4bb48d013a9de4cd553b5c15e09657f36e4846bc5e2219a303",
+      "bytes": 7936
+    },
+    {
+      "path": "windows_receiver_settings.local.json",
+      "sha256": "c9dac6cbeb8dfd2f67fa5d5a2df56d3b33a995b64f05e84b099716a448b85000",
+      "bytes": 219
+    }
+  ],
+  "manifest_sha256": "7c6dad5b30ab05f1d005d1d722964ec847e6db19726bf0eb500d8bbcf10e331d",
+  "orphan_head": "d1367870b93921b115b4c0972c13393792ea5307",
+  "orphan_dirty": [],
+  "installed_tree": [
+    "100644 blob 1937821a760dcf2713cb3fa03fc88163225b2c12\tconfig/README.md",
+    "100644 blob 85b65b36d35cf44b95410c770cd3989d1745adf7\tconfig/actions.yaml",
+    "100644 blob 07e8346d20e040b59c352dd74f6229f89539c8a7\tconfig/deck_bindings.json",
+    "100644 blob 39df88e00b44f90e81b89cde7a9d36fc9b3f7082\tconfig/deck_runtime_settings.example.json",
+    "100644 blob a68eae26bac66e47f164fdd9d659036c2929bf2f\tconfig/engines.factory/audio_opacity.json",
+    "100644 blob 2becda8e9da7ac388f43d8df968cd0c5c01347dd\tconfig/engines.factory/autopilot.json",
+    "100644 blob 9cd5777d79412a0df0539f26bb6d8cd6d84985bb\tconfig/engines.factory/autopilot_ptz.json",
+    "100644 blob f13c5f34c2ae3e9645aa5a988d7b79574d8389c2\tconfig/engines.factory/bumper_blast.json",
+    "100644 blob c93a14615a35e6c6d9338d8894dd46670611d704\tconfig/engines.factory/chaser_stack_dispatcher.json",
+    "100644 blob 803e7e0f592ac734fdde41f2cd599f86c3668d94\tconfig/engines.factory/flash_blast.json",
+    "100644 blob 1ee99f9c269d61b425146ccbfe2cf4239dfa9c95\tconfig/engines.factory/global_color.json",
+    "100644 blob 0fa869923dc74a2d23d9221b589fc8e3d7ef6f72\tconfig/engines.factory/gyro_feedback.json",
+    "100644 blob 50b64636b08031e686d61ed538c2932e6b1581c0\tconfig/engines.factory/l_stick_layer.json",
+    "100644 blob 5f6915fca3b082de25b99fa455de755fc9dc7ef0\tconfig/engines.factory/nestdrop.json",
+    "100644 blob 7d2d5ea85d9c36468e23a19c21ff22d17eefcc61\tconfig/engines.factory/osc_sync.json",
+    "100644 blob 981d7a2168a72898d7f61f7f5eb67985b39a27e5\tconfig/engines.factory/ptz_visca.json",
+    "100644 blob 88eb89adf785410634699dbb06455ad2b54c3dae\tconfig/engines.factory/stageflow_bridge.json",
+    "100644 blob e281e70e5e85ed83b175fd3c3bb66c2b7061a16e\tconfig/engines.factory/steam_input_layer_tracker.json",
+    "100644 blob f7408c0b228a033e8a542e269f450276c80c2edf\tconfig/engines/README.md",
+    "100644 blob 32371fe07d06a0984d3a8d8f125ad43717e78cb2\tconfig/engines/global_color.json",
+    "100644 blob 46fb40ba2b298f17b86c48b936ad8a805f620899\tconfig/macro_library.json",
+    "100644 blob 6e3c7a13c9e91235a52e083a0d513b7fd448389c\tconfig/osc_relay.json",
+    "100644 blob 64f0153574db3fe808b3d6eb38d7b655dac0865c\tconfig/presets/default.json",
+    "100644 blob 5685c1d219838ae3d48f7aa21cb60bbb731a1136\tconfig/windows_midi_map.json",
+    "100644 blob 9a3ec5aa40e77ae7b0e9879e9fe5c30b0783e7d9\tconfig/windows_midi_map_test_analog.json",
+    "100644 blob 4f1d028224d0ce1507693ff65f6b4b15780dac8c\tconfig/windows_receiver_settings.example.json",
+    "100644 blob 13ac9bb2dea665a466e7dc133c069164afb6e93d\tdeck/README.md",
+    "100644 blob 3ba7cf78f04323e22222c1be9f8054a13f356a17\tdeck/__init__.py",
+    "100644 blob 90d7bbb7026458a37cf49048ae2b3ac54763c6f3\tdeck/launch_learn.py",
+    "100644 blob 243544a446b02070a5c6433a6f92e774dbdda724\tdeck/launch_send.py",
+    "100644 blob ff6052a1183a12855338c491a3d3a6606777118a\tdeck/learn_wizard.py",
+    "100644 blob ab37eb3c9d6f40216de265bdc2fb7929cb4d2fb3\tdeck/local_config.py",
+    "100644 blob 3cebe983bb57250772af8c14f0f0dc71fa81c21e\tdeck/xinput_send.py",
+    "100644 blob 231a1e9e24aaf922ffee3e38923dbf53aa24f346\tprotocol/README.md",
+    "100644 blob ef0ff886a573f237813c3e9189cc91fbdc237196\tprotocol/__init__.py",
+    "100644 blob cc5130509d7ff1adf07f084e49104330d107b8ef\tprotocol/messages.py",
+    "100644 blob 6343eaf98a7122d1d374153a1220f8b3de5b65a5\tprotocol/send_test.py",
+    "100644 blob 693f76520d8fe03553fd6d086fc1ffaa0d73d4db\twindows/README.md",
+    "100644 blob 22896c93695322498041a3744500bee7b13d65e0\twindows/__init__.py",
+    "100644 blob 8e4464a67f88dbb79cc04717136e784e8211f377\twindows/assets/tray.ico",
+    "100644 blob c3ebacf6b0d55f8eeb924228666dd958cea1dc16\twindows/build_fingerprint.py",
+    "100644 blob 024523e4f2aa2522dfa77d8181f01ecd4642d945\twindows/config.py",
+    "100644 blob 55ab222c82c1830fa7ab3b0de12ff62368d1900c\twindows/engines/__init__.py",
+    "100644 blob f1164fb33c0c0ae46518bf6dcbd4f316cb832000\twindows/engines/_nestdrop_coordinator.py",
+    "100644 blob 41e713e2efcb71891271613277d8ca2b8e83cd5a\twindows/engines/_nestdrop_listener.py",
+    "100644 blob 3c7414dbf9f9b2ba4764798853d6ae250d309243\twindows/engines/_resolume_lookup.py",
+    "100644 blob f67414619ea887704d5e3b7c10ab4aff78b72df9\twindows/engines/audio_opacity.py",
+    "100644 blob e11eed557ea96733de7db047b510d45faecf5380\twindows/engines/autopilot.py",
+    "100644 blob 39185a7e66ba8b174ef1305af26efd13720f64b4\twindows/engines/autopilot_ptz.py",
+    "100644 blob c034eac222600e9542afc8bec0c0fde2e62c27a6\twindows/engines/base.py",
+    "100644 blob 965d764ddaf005e81067cbafce839049c403fcc2\twindows/engines/bumper_blast.py",
+    "100644 blob a5b45148fdc370b24af89c4171a40e12906708ba\twindows/engines/chaser_stack_dispatcher.py",
+    "100644 blob a892404357311e02e1df9064858b3dc5dbf5d3d5\twindows/engines/flash_blast.py",
+    "100644 blob 2db59ccc17a4fa7e5e37e404e46470d927d93818\twindows/engines/global_color.py",
+    "100644 blob b00da2fc1f84d5cc95e1dfbb3700fb78f414afb0\twindows/engines/gyro_feedback.py",
+    "100644 blob ad788f80ccedc9e51703f12cb2de24fc92f42539\twindows/engines/l_stick_layer.py",
+    "100644 blob 59344a322a0815f2025e2d56ff864a7d1d146a63\twindows/engines/nestdrop_engine.py",
+    "100644 blob 91c6e83f78eae364283ec7afa4b83ac98daa1ab2\twindows/engines/osc_client.py",
+    "100644 blob 645457be9566f6937e4ec6f0d4df325d2a0909d6\twindows/engines/osc_preset.py",
+    "100644 blob a4d4a4a13fa0b8b94a83f6d681c0579267fb6fab\twindows/engines/osc_sync.py",
+    "100644 blob abba52872b465671366272bfffa1411c6a277c5f\twindows/engines/ptz_visca.py",
+    "100644 blob 6137015cd612263e1d3f51fe6f64c2e494793bd7\twindows/engines/registry.py",
+    "100644 blob 6925b4ce62cc0520aae33d35dbb5592c26ab0ebe\twindows/engines/resolume_rest.py",
+    "100644 blob 2c49e061e0af201c03ffeda88593fc44c3710ae1\twindows/engines/stageflow_bridge.py",
+    "100644 blob 115a77a6ebab05d9400a2deeb11e6132de78b318\twindows/engines/steam_input_layer_tracker.py",
+    "100644 blob 6a51c1a1ae7c143fe4a39dbb5c074ea9a4629e75\twindows/engines/visca_sender.py",
+    "100644 blob e8a761a0c479ab3907edb28b83501a38cd07ba00\twindows/list_midi_ports.py",
+    "100644 blob 18dade90204b5a8515b2b0e2a16afb9b42527955\twindows/midi.py",
+    "100644 blob 8db0139f940011bc761b0ec138c75cda12f6167b\twindows/osc_relay.py",
+    "100644 blob 87aa0def5d4b8e86b2640acd76598e679f2cf913\twindows/receiver.py",
+    "100644 blob 78e48514b4f9ef493707834edfb29de235849b5a\twindows/static/index.html",
+    "100644 blob b6ac11153e48e23a087c464189719cbe2a05e7b9\twindows/tray.py",
+    "100644 blob c9c1afcc0527d8d77828d54a83cd94b2e63dac38\twindows/ui_server.py",
+    "100644 blob 7b6fcc5ce25ef07db71ebc36c020c4d6dc792d56\twindows/win_recv.py"
+  ],
+  "tag_tree": [
+    "100644 blob 1937821a760dcf2713cb3fa03fc88163225b2c12\tconfig/README.md",
+    "100644 blob 85b65b36d35cf44b95410c770cd3989d1745adf7\tconfig/actions.yaml",
+    "100644 blob 07e8346d20e040b59c352dd74f6229f89539c8a7\tconfig/deck_bindings.json",
+    "100644 blob 39df88e00b44f90e81b89cde7a9d36fc9b3f7082\tconfig/deck_runtime_settings.example.json",
+    "100644 blob a68eae26bac66e47f164fdd9d659036c2929bf2f\tconfig/engines.factory/audio_opacity.json",
+    "100644 blob 2becda8e9da7ac388f43d8df968cd0c5c01347dd\tconfig/engines.factory/autopilot.json",
+    "100644 blob 9cd5777d79412a0df0539f26bb6d8cd6d84985bb\tconfig/engines.factory/autopilot_ptz.json",
+    "100644 blob f13c5f34c2ae3e9645aa5a988d7b79574d8389c2\tconfig/engines.factory/bumper_blast.json",
+    "100644 blob c93a14615a35e6c6d9338d8894dd46670611d704\tconfig/engines.factory/chaser_stack_dispatcher.json",
+    "100644 blob 803e7e0f592ac734fdde41f2cd599f86c3668d94\tconfig/engines.factory/flash_blast.json",
+    "100644 blob 1ee99f9c269d61b425146ccbfe2cf4239dfa9c95\tconfig/engines.factory/global_color.json",
+    "100644 blob 0fa869923dc74a2d23d9221b589fc8e3d7ef6f72\tconfig/engines.factory/gyro_feedback.json",
+    "100644 blob 50b64636b08031e686d61ed538c2932e6b1581c0\tconfig/engines.factory/l_stick_layer.json",
+    "100644 blob 5f6915fca3b082de25b99fa455de755fc9dc7ef0\tconfig/engines.factory/nestdrop.json",
+    "100644 blob 9d167d53309fdf5a51adeab570697948c0452a08\tconfig/engines.factory/osc_sync.json",
+    "100644 blob 981d7a2168a72898d7f61f7f5eb67985b39a27e5\tconfig/engines.factory/ptz_visca.json",
+    "100644 blob 88eb89adf785410634699dbb06455ad2b54c3dae\tconfig/engines.factory/stageflow_bridge.json",
+    "100644 blob e281e70e5e85ed83b175fd3c3bb66c2b7061a16e\tconfig/engines.factory/steam_input_layer_tracker.json",
+    "100644 blob f7408c0b228a033e8a542e269f450276c80c2edf\tconfig/engines/README.md",
+    "100644 blob 32371fe07d06a0984d3a8d8f125ad43717e78cb2\tconfig/engines/global_color.json",
+    "100644 blob 46fb40ba2b298f17b86c48b936ad8a805f620899\tconfig/macro_library.json",
+    "100644 blob 6e3c7a13c9e91235a52e083a0d513b7fd448389c\tconfig/osc_relay.json",
+    "100644 blob 64f0153574db3fe808b3d6eb38d7b655dac0865c\tconfig/presets/default.json",
+    "100644 blob 5685c1d219838ae3d48f7aa21cb60bbb731a1136\tconfig/windows_midi_map.json",
+    "100644 blob 9a3ec5aa40e77ae7b0e9879e9fe5c30b0783e7d9\tconfig/windows_midi_map_test_analog.json",
+    "100644 blob 4f1d028224d0ce1507693ff65f6b4b15780dac8c\tconfig/windows_receiver_settings.example.json",
+    "100644 blob 13ac9bb2dea665a466e7dc133c069164afb6e93d\tdeck/README.md",
+    "100644 blob 3ba7cf78f04323e22222c1be9f8054a13f356a17\tdeck/__init__.py",
+    "100644 blob 90d7bbb7026458a37cf49048ae2b3ac54763c6f3\tdeck/launch_learn.py",
+    "100644 blob 243544a446b02070a5c6433a6f92e774dbdda724\tdeck/launch_send.py",
+    "100644 blob ff6052a1183a12855338c491a3d3a6606777118a\tdeck/learn_wizard.py",
+    "100644 blob ab37eb3c9d6f40216de265bdc2fb7929cb4d2fb3\tdeck/local_config.py",
+    "100644 blob 3cebe983bb57250772af8c14f0f0dc71fa81c21e\tdeck/xinput_send.py",
+    "100644 blob 231a1e9e24aaf922ffee3e38923dbf53aa24f346\tprotocol/README.md",
+    "100644 blob ef0ff886a573f237813c3e9189cc91fbdc237196\tprotocol/__init__.py",
+    "100644 blob cc5130509d7ff1adf07f084e49104330d107b8ef\tprotocol/messages.py",
+    "100644 blob 6343eaf98a7122d1d374153a1220f8b3de5b65a5\tprotocol/send_test.py",
+    "100644 blob 693f76520d8fe03553fd6d086fc1ffaa0d73d4db\twindows/README.md",
+    "100644 blob 22896c93695322498041a3744500bee7b13d65e0\twindows/__init__.py",
+    "100644 blob 8e4464a67f88dbb79cc04717136e784e8211f377\twindows/assets/tray.ico",
+    "100644 blob c3ebacf6b0d55f8eeb924228666dd958cea1dc16\twindows/build_fingerprint.py",
+    "100644 blob 024523e4f2aa2522dfa77d8181f01ecd4642d945\twindows/config.py",
+    "100644 blob 55ab222c82c1830fa7ab3b0de12ff62368d1900c\twindows/engines/__init__.py",
+    "100644 blob f1164fb33c0c0ae46518bf6dcbd4f316cb832000\twindows/engines/_nestdrop_coordinator.py",
+    "100644 blob 41e713e2efcb71891271613277d8ca2b8e83cd5a\twindows/engines/_nestdrop_listener.py",
+    "100644 blob 3c7414dbf9f9b2ba4764798853d6ae250d309243\twindows/engines/_resolume_lookup.py",
+    "100644 blob f67414619ea887704d5e3b7c10ab4aff78b72df9\twindows/engines/audio_opacity.py",
+    "100644 blob e11eed557ea96733de7db047b510d45faecf5380\twindows/engines/autopilot.py",
+    "100644 blob 39185a7e66ba8b174ef1305af26efd13720f64b4\twindows/engines/autopilot_ptz.py",
+    "100644 blob c034eac222600e9542afc8bec0c0fde2e62c27a6\twindows/engines/base.py",
+    "100644 blob 965d764ddaf005e81067cbafce839049c403fcc2\twindows/engines/bumper_blast.py",
+    "100644 blob a5b45148fdc370b24af89c4171a40e12906708ba\twindows/engines/chaser_stack_dispatcher.py",
+    "100644 blob a892404357311e02e1df9064858b3dc5dbf5d3d5\twindows/engines/flash_blast.py",
+    "100644 blob 2db59ccc17a4fa7e5e37e404e46470d927d93818\twindows/engines/global_color.py",
+    "100644 blob b00da2fc1f84d5cc95e1dfbb3700fb78f414afb0\twindows/engines/gyro_feedback.py",
+    "100644 blob ad788f80ccedc9e51703f12cb2de24fc92f42539\twindows/engines/l_stick_layer.py",
+    "100644 blob 59344a322a0815f2025e2d56ff864a7d1d146a63\twindows/engines/nestdrop_engine.py",
+    "100644 blob 91c6e83f78eae364283ec7afa4b83ac98daa1ab2\twindows/engines/osc_client.py",
+    "100644 blob 645457be9566f6937e4ec6f0d4df325d2a0909d6\twindows/engines/osc_preset.py",
+    "100644 blob 0abd30abee0e532c854afa8e876dd539f4640478\twindows/engines/osc_sync.py",
+    "100644 blob abba52872b465671366272bfffa1411c6a277c5f\twindows/engines/ptz_visca.py",
+    "100644 blob 6137015cd612263e1d3f51fe6f64c2e494793bd7\twindows/engines/registry.py",
+    "100644 blob 6925b4ce62cc0520aae33d35dbb5592c26ab0ebe\twindows/engines/resolume_rest.py",
+    "100644 blob 059f3312e34c0244536368f3481a1c731aa159c3\twindows/engines/stageflow_bridge.py",
+    "100644 blob 115a77a6ebab05d9400a2deeb11e6132de78b318\twindows/engines/steam_input_layer_tracker.py",
+    "100644 blob 6a51c1a1ae7c143fe4a39dbb5c074ea9a4629e75\twindows/engines/visca_sender.py",
+    "100644 blob e8a761a0c479ab3907edb28b83501a38cd07ba00\twindows/list_midi_ports.py",
+    "100644 blob 18dade90204b5a8515b2b0e2a16afb9b42527955\twindows/midi.py",
+    "100644 blob 8db0139f940011bc761b0ec138c75cda12f6167b\twindows/osc_relay.py",
+    "100644 blob 87aa0def5d4b8e86b2640acd76598e679f2cf913\twindows/receiver.py",
+    "100644 blob 78e48514b4f9ef493707834edfb29de235849b5a\twindows/static/index.html",
+    "100644 blob b6ac11153e48e23a087c464189719cbe2a05e7b9\twindows/tray.py",
+    "100644 blob c9c1afcc0527d8d77828d54a83cd94b2e63dac38\twindows/ui_server.py",
+    "100644 blob 7b6fcc5ce25ef07db71ebc36c020c4d6dc792d56\twindows/win_recv.py"
+  ],
+  "tree_difference": [
+    {
+      "InputObject": "100644 blob 9d167d53309fdf5a51adeab570697948c0452a08\tconfig/engines.factory/osc_sync.json",
+      "SideIndicator": "=>"
+    },
+    {
+      "InputObject": "100644 blob 0abd30abee0e532c854afa8e876dd539f4640478\twindows/engines/osc_sync.py",
+      "SideIndicator": "=>"
+    },
+    {
+      "InputObject": "100644 blob 059f3312e34c0244536368f3481a1c731aa159c3\twindows/engines/stageflow_bridge.py",
+      "SideIndicator": "=>"
+    },
+    {
+      "InputObject": "100644 blob 7d2d5ea85d9c36468e23a19c21ff22d17eefcc61\tconfig/engines.factory/osc_sync.json",
+      "SideIndicator": "<="
+    },
+    {
+      "InputObject": "100644 blob a4d4a4a13fa0b8b94a83f6d681c0579267fb6fab\twindows/engines/osc_sync.py",
+      "SideIndicator": "<="
+    },
+    {
+      "InputObject": "100644 blob 2c49e061e0af201c03ffeda88593fc44c3710ae1\twindows/engines/stageflow_bridge.py",
+      "SideIndicator": "<="
+    }
+  ],
+  "udp": [
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 53,
+      "OwningProcess": 8684
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 123,
+      "OwningProcess": 2976
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 123,
+      "OwningProcess": 2976
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 137,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "169.254.83.107",
+      "LocalPort": 137,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "172.23.48.1",
+      "LocalPort": 137,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 138,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "169.254.83.107",
+      "LocalPort": 138,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "172.23.48.1",
+      "LocalPort": 138,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 500,
+      "OwningProcess": 5420
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 500,
+      "OwningProcess": 5420
+    },
+    {
+      "LocalAddress": "fe80::4629:b1aa:705d:90ad%45",
+      "LocalPort": 1900,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "::1",
+      "LocalPort": 1900,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "169.254.83.107",
+      "LocalPort": 1900,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 1900,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "fe80::55ac:bb67:d9ce:f7db%4",
+      "LocalPort": 1900,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "172.23.48.1",
+      "LocalPort": 1900,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 1900,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "fe80::fa1d:ffeb:3115:a0d6%6",
+      "LocalPort": 1900,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 3702,
+      "OwningProcess": 9340
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 3702,
+      "OwningProcess": 9340
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 4500,
+      "OwningProcess": 5420
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 4500,
+      "OwningProcess": 5420
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 5050,
+      "OwningProcess": 13340
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 5353,
+      "OwningProcess": 3288
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 5353,
+      "OwningProcess": 3288
+    },
+    {
+      "LocalAddress": "172.23.48.1",
+      "LocalPort": 5353,
+      "OwningProcess": 5476
+    },
+    {
+      "LocalAddress": "169.254.83.107",
+      "LocalPort": 5353,
+      "OwningProcess": 5476
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 5353,
+      "OwningProcess": 5476
+    },
+    {
+      "LocalAddress": "fe80::55ac:bb67:d9ce:f7db%4",
+      "LocalPort": 5353,
+      "OwningProcess": 5476
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 5355,
+      "OwningProcess": 3288
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 5355,
+      "OwningProcess": 3288
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 7010,
+      "OwningProcess": 23640
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 17500,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 41641,
+      "OwningProcess": 64044
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 41641,
+      "OwningProcess": 64044
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 45123,
+      "OwningProcess": 23640
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49664,
+      "OwningProcess": 5476
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 49665,
+      "OwningProcess": 5476
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49666,
+      "OwningProcess": 5692
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 54429,
+      "OwningProcess": 9340
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 54430,
+      "OwningProcess": 9340
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 54622,
+      "OwningProcess": 6108
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 58832,
+      "OwningProcess": 23640
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 58833,
+      "OwningProcess": 23640
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 58834,
+      "OwningProcess": 23640
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 59558,
+      "OwningProcess": 8684
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 59559,
+      "OwningProcess": 8684
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 59560,
+      "OwningProcess": 8684
+    },
+    {
+      "LocalAddress": "fe80::55ac:bb67:d9ce:f7db%4",
+      "LocalPort": 59561,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "fe80::fa1d:ffeb:3115:a0d6%6",
+      "LocalPort": 59562,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "::1",
+      "LocalPort": 59563,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "fe80::4629:b1aa:705d:90ad%45",
+      "LocalPort": 59564,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "169.254.83.107",
+      "LocalPort": 59565,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 59566,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 59567,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "172.23.48.1",
+      "LocalPort": 59568,
+      "OwningProcess": 5556
+    }
+  ],
+  "tcp": [
+    {
+      "LocalAddress": "fe80::fa1d:ffeb:3115:a0d6%6",
+      "LocalPort": 22,
+      "RemoteAddress": "fe80::cb4:7fc9:2c17:8607%6",
+      "RemotePort": 53376,
+      "State": 5,
+      "OwningProcess": 5712
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 22,
+      "RemoteAddress": "::",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 5712
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 22,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 5712
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 135,
+      "RemoteAddress": "::",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 1280
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 135,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 1280
+    },
+    {
+      "LocalAddress": "172.23.48.1",
+      "LocalPort": 139,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 139,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "169.254.83.107",
+      "LocalPort": 139,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 445,
+      "RemoteAddress": "::",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 843,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 5040,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 13340
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 5354,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 5476
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 5357,
+      "RemoteAddress": "::",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 7680,
+      "RemoteAddress": "::",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 6980
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 7723,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 23640
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 9090,
+      "RemoteAddress": "::",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 6108
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 15292,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 25984
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 15393,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 25984
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 16494,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 25984
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 17500,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 17600,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 19000,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 6108
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 24801,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 5608
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 27731,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 28868
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49664,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 1892
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 49664,
+      "RemoteAddress": "::",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 1892
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49665,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 1792
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 49665,
+      "RemoteAddress": "::",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 1792
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49668,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 3312
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 49668,
+      "RemoteAddress": "::",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 3312
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 49669,
+      "RemoteAddress": "::",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 3808
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49669,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 3808
+    },
+    {
+      "LocalAddress": "::1",
+      "LocalPort": 49672,
+      "RemoteAddress": "::",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 5752
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49673,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 63896,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49673,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 63927,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49673,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 63918,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49673,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 5468
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 49682,
+      "RemoteAddress": "::",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 5772
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 49687,
+      "RemoteAddress": "::",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 5456
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49687,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 5456
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 49691,
+      "RemoteAddress": "::",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 1864
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49691,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 1864
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49732,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49733,
+      "State": 5,
+      "OwningProcess": 1268
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49733,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 100,
+      "OwningProcess": 1268
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49733,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49732,
+      "State": 5,
+      "OwningProcess": 1268
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49735,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49736,
+      "State": 5,
+      "OwningProcess": 3120
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49736,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49735,
+      "State": 5,
+      "OwningProcess": 3120
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49736,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 100,
+      "OwningProcess": 3120
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49737,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49738,
+      "State": 5,
+      "OwningProcess": 5560
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49738,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 100,
+      "OwningProcess": 5560
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49738,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49737,
+      "State": 5,
+      "OwningProcess": 5560
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49740,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49741,
+      "State": 5,
+      "OwningProcess": 2104
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49741,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49740,
+      "State": 5,
+      "OwningProcess": 2104
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49741,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 100,
+      "OwningProcess": 2104
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 54399,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 5488
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 59960,
+      "RemoteAddress": "20.59.87.225",
+      "RemotePort": 443,
+      "State": 5,
+      "OwningProcess": 5856
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 59960,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 100,
+      "OwningProcess": 5856
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 61873,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 16000
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 61874,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 16000
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 61874,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 61876,
+      "State": 5,
+      "OwningProcess": 16000
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 61876,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 100,
+      "OwningProcess": 12780
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 61876,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 61874,
+      "State": 5,
+      "OwningProcess": 12780
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 61880,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 61881,
+      "State": 5,
+      "OwningProcess": 16000
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 61881,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 100,
+      "OwningProcess": 16000
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 61881,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 61880,
+      "State": 5,
+      "OwningProcess": 16000
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 62441,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 62442,
+      "State": 5,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 62442,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 62441,
+      "State": 5,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 62442,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 100,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 62443,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 62444,
+      "State": 5,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 62444,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 62443,
+      "State": 5,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 62444,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 100,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 62969,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 100,
+      "OwningProcess": 28320
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 63103,
+      "RemoteAddress": "199.165.136.101",
+      "RemotePort": 443,
+      "State": 5,
+      "OwningProcess": 40040
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 63103,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 100,
+      "OwningProcess": 40040
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 63629,
+      "RemoteAddress": "162.125.40.1",
+      "RemotePort": 443,
+      "State": 5,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 63629,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 100,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 63718,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 100,
+      "OwningProcess": 26188
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 63718,
+      "RemoteAddress": "44.209.32.89",
+      "RemotePort": 443,
+      "State": 5,
+      "OwningProcess": 26188
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 63730,
+      "RemoteAddress": "162.125.40.2",
+      "RemotePort": 443,
+      "State": 5,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 63730,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 100,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 63741,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 100,
+      "OwningProcess": 64044
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 63741,
+      "RemoteAddress": "192.200.0.106",
+      "RemotePort": 80,
+      "State": 5,
+      "OwningProcess": 64044
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 63763,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 100,
+      "OwningProcess": 63340
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 63763,
+      "RemoteAddress": "47.114.106.204",
+      "RemotePort": 80,
+      "State": 5,
+      "OwningProcess": 63340
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63887,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63888,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63889,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 61873,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63890,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63895,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63896,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63897,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63898,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63899,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63900,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63901,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 63902,
+      "RemoteAddress": "4.247.188.224",
+      "RemotePort": 443,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63903,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 63905,
+      "RemoteAddress": "74.178.76.128",
+      "RemotePort": 443,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 63906,
+      "RemoteAddress": "4.247.188.224",
+      "RemotePort": 443,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63907,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 61873,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63908,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 63909,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 100,
+      "OwningProcess": 254100
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 63909,
+      "RemoteAddress": "20.190.151.133",
+      "RemotePort": 443,
+      "State": 5,
+      "OwningProcess": 254100
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 63910,
+      "RemoteAddress": "172.170.180.133",
+      "RemotePort": 443,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63911,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63912,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63913,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63914,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63915,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63916,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63917,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63919,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 61873,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63920,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63921,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 63922,
+      "RemoteAddress": "3.219.243.226",
+      "RemotePort": 443,
+      "State": 5,
+      "OwningProcess": 27020
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 63922,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 100,
+      "OwningProcess": 27020
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63923,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63924,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63925,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63926,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63928,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63929,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63930,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 61873,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63931,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63933,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63934,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63935,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63936,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63937,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 63941,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 64950,
+      "RemoteAddress": "::",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 59304
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 64950,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0,
+      "State": 2,
+      "OwningProcess": 59304
+    }
+  ],
+  "mac_fixtures_present": true,
+  "tracked_default_sha256": "76d146069bc47b3188fad8cffd48a09eca91cf1a55a9baefedbfcbec7f3a0519"
+}

@@ -1,0 +1,2 @@
+LIVE windows-ptz arm PID=278440 UDP=53920
+LIVE windows-ptz arm PID=250436 UDP=53924

@@ -1,0 +1,32 @@
+{
+  "rows": [
+    {
+      "path": "config/engines.factory/osc_sync.json",
+      "installed_blob": "7d2d5ea85d9c36468e23a19c21ff22d17eefcc61",
+      "tag_blob": "9d167d53309fdf5a51adeab570697948c0452a08",
+      "archive_sha256": "9ba0f91b04200a2194d6d8c8d9a08062d57a8433547d536377c232af73d634a4",
+      "archive_CRLF_normalized_for_blob_check": true,
+      "diff": "--- d136787/config/engines.factory/osc_sync.json\n+++ e66ff44/config/engines.factory/osc_sync.json\n@@ -2,7 +2,7 @@\n   \"name\": \"OSC Sync\",\n   \"type\": \"osc_sync\",\n   \"enabled\": true,\n-  \"osc_preset_path\": \"C:/Users/Ben/OneDrive/Documents/Resolume Arena/Shortcuts/OSC/STEAMDECK V2.xml\",\n+  \"osc_preset_path\": \"C:/Users/USERNAME/OneDrive/Documents/Resolume Arena/Shortcuts/OSC/STEAMDECK V2.xml\",\n   \"epsilon_float\": 0.001,\n   \"inter_message_delay_ms\": 50,\n   \"mask_with_master\": true,\n"
+    },
+    {
+      "path": "windows/engines/osc_sync.py",
+      "installed_blob": "a4d4a4a13fa0b8b94a83f6d681c0579267fb6fab",
+      "tag_blob": "0abd30abee0e532c854afa8e876dd539f4640478",
+      "archive_sha256": "21b1f128f7f63db90cfc027ec9e7d6a0eb7b7ca94f17df5cc67fa83048e30f8c",
+      "archive_CRLF_normalized_for_blob_check": true,
+      "diff": "--- d136787/windows/engines/osc_sync.py\n+++ e66ff44/windows/engines/osc_sync.py\n@@ -98,7 +98,7 @@\n         self._osc_preset_path = str(\n             config.get(\n                 \"osc_preset_path\",\n-                \"C:/Users/Ben/OneDrive/Documents/Resolume Arena/Shortcuts/OSC/STEAMDECK V2.xml\",\n+                \"C:/Users/USERNAME/OneDrive/Documents/Resolume Arena/Shortcuts/OSC/STEAMDECK V2.xml\",\n             )\n         )\n         self._epsilon_float = float(config.get(\"epsilon_float\", 0.001))\n"
+    },
+    {
+      "path": "windows/engines/stageflow_bridge.py",
+      "installed_blob": "2c49e061e0af201c03ffeda88593fc44c3710ae1",
+      "tag_blob": "059f3312e34c0244536368f3481a1c731aa159c3",
+      "archive_sha256": "a0ceaaef73beb9013124f1bad683984e5c07aece5e4474be0f3be2fa9f63649e",
+      "archive_CRLF_normalized_for_blob_check": true,
+      "diff": "--- d136787/windows/engines/stageflow_bridge.py\n+++ e66ff44/windows/engines/stageflow_bridge.py\n@@ -144,7 +144,7 @@\n             str(\n                 config.get(\n                     \"comp_path\",\n-                    \"C:/Users/Ben/OneDrive/Documents/Resolume Arena/\"\n+                    \"C:/Users/USERNAME/OneDrive/Documents/Resolume Arena/\"\n                     \"Compositions/5-5-26 STEAMDECK V2.avc\",\n                 )\n             )\n"
+    }
+  ],
+  "dirty": [],
+  "installed_paths": 74,
+  "tag_paths": 74,
+  "orphan_head": "d1367870b93921b115b4c0972c13393792ea5307"
+}

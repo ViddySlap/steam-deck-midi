@@ -1,0 +1,13 @@
+....F.......
+======================================================================
+FAIL: test_pacing_and_capture_use_the_high_resolution_monotonic_clock (test_showready_instrument.InstrumentTests.test_pacing_and_capture_use_the_high_resolution_monotonic_clock)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_showready_instrument.py", line 26, in test_pacing_and_capture_use_the_high_resolution_monotonic_clock
+    self.assertEqual(ab.wait_gap(100, 20), 120)
+AssertionError: 285881554127458 != 120
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.491s
+
+FAILED (failures=1)

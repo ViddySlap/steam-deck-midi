@@ -1,0 +1,14 @@
+..........E
+======================================================================
+ERROR: test_tracked_default_requires_candidate_blob_and_exact_path (test_showready_instrument.InstrumentTests.test_tracked_default_requires_candidate_blob_and_exact_path)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_showready_instrument.py", line 35, in test_tracked_default_requires_candidate_blob_and_exact_path
+    ab.verify_preset(repo, tree, preset, verified)
+    ^^^^^^^^^^^^^^^^
+AttributeError: module 'ab_run' has no attribute 'verify_preset'
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.462s
+
+FAILED (errors=1)

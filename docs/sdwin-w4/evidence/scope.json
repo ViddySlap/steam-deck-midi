@@ -1,0 +1,78 @@
+{
+  "entry_to_code": {
+    "command": [
+      "git",
+      "diff",
+      "88c1a0b",
+      "c4ba229",
+      "--",
+      "windows",
+      "config",
+      "deck",
+      "protocol",
+      "mac"
+    ],
+    "exit": 0,
+    "empty": true,
+    "diff": ""
+  },
+  "w3_candidate_to_w4": {
+    "command": [
+      "git",
+      "diff",
+      "e8a64f4",
+      "c4ba229",
+      "--",
+      "windows",
+      "config",
+      "deck",
+      "protocol",
+      "mac"
+    ],
+    "exit": 0,
+    "empty": true,
+    "diff": ""
+  },
+  "tracked_default": {
+    "v0.4.9": {
+      "bytes": 7388,
+      "sha256": "5ebcf1e85dc3881d59e1658103ec17a0a3add438571679b3fca4f30b0f9a52a1"
+    },
+    "c4ba229": {
+      "bytes": 7388,
+      "sha256": "5ebcf1e85dc3881d59e1658103ec17a0a3add438571679b3fca4f30b0f9a52a1"
+    }
+  },
+  "w3_candidate_to_final_w4": {
+    "command": [
+      "git",
+      "diff",
+      "e8a64f4",
+      "b3b2861",
+      "--",
+      "windows",
+      "config",
+      "deck",
+      "protocol",
+      "mac"
+    ],
+    "exit": 0,
+    "empty": true
+  },
+  "entry_to_final_w4": {
+    "command": [
+      "git",
+      "diff",
+      "88c1a0b",
+      "b3b2861",
+      "--",
+      "windows",
+      "config",
+      "deck",
+      "protocol",
+      "mac"
+    ],
+    "exit": 0,
+    "empty": true
+  }
+}

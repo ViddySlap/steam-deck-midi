@@ -1,0 +1,9 @@
+ZipArchiveHelper : The process cannot access the file
+'C:\Users\Ben\AppData\Local\Temp\sdwin\w4\sectioned-edm.stderr.txt' because it is being used by another process.
+At
+C:\Windows\system32\WindowsPowerShell\v1.0\Modules\Microsoft.PowerShell.Archive\Microsoft.PowerShell.Archive.psm1:632
+char:30
++ ... sArchived = ZipArchiveHelper $sourceFilePaths $destinationPath $compr ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Users\Ben\Ap...-edm.stderr.txt:String) [Write-Error], IOException
+    + FullyQualifiedErrorId : CompressArchiveUnauthorizedAccessError,ZipArchiveHelper

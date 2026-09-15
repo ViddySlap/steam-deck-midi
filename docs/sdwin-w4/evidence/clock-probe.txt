@@ -1,0 +1,4 @@
+GONE clock PID 276640
+GONE clock PID 272396
+{"implementation":"GetTickCount64()","monotonic":true,"adjustable":false,"resolution":0.015625}
+{"implementation":"QueryPerformanceCounter()","monotonic":true,"adjustable":false,"resolution":1E-07}

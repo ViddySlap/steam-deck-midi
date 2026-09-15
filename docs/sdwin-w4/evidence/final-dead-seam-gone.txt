@@ -1,0 +1,1 @@
+ssh_dispatch_run_fatal: Connection to fe80::fa1d:ffeb:3115:a0d6%en0 port 22: No route to host

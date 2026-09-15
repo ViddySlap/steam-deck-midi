@@ -1,0 +1,57 @@
+From https://github.com/ViddySlap/steam-deck-midi
+   e8a64f4..88c1a0b  chain/steamdeck-20260914 -> origin/chain/steamdeck-20260914
+Updating e8a64f4..88c1a0b
+Fast-forward
+ docs/sdwin-w3/REPORT.md                            |  335 ++++
+ docs/sdwin-w3/evidence/cleanup.ps1                 |    4 +-
+ docs/sdwin-w3/evidence/guard-event-before.txt      |    1 +
+ docs/sdwin-w3/evidence/guard-event-final.txt       |    1 +
+ docs/sdwin-w3/evidence/mac-suite-event-paced.log   |  937 ++++++++++
+ docs/sdwin-w3/evidence/matrix.json                 |  237 +++
+ docs/sdwin-w3/evidence/mido-byte-oracle.json       | 1878 ++++++++++++++++++++
+ docs/sdwin-w3/evidence/suite.ps1                   |    2 +-
+ docs/sdwin-w3/evidence/verification.json           |  269 +++
+ .../evidence/windows-cleanup-event-final.txt       |    7 +
+ .../evidence/windows-suite-event-paced.txt         | 1004 +++++++++++
+ docs/sdwin-w3/results/aa-real-1.json.gz            |  Bin 0 -> 319276 bytes
+ docs/sdwin-w3/results/aa-real-2.json.gz            |  Bin 0 -> 319308 bytes
+ docs/sdwin-w3/results/aa-wall-noise.json.gz        |  Bin 0 -> 308024 bytes
+ docs/sdwin-w3/results/mac-default.json.gz          |  Bin 0 -> 319143 bytes
+ docs/sdwin-w3/results/mac-edm-show.json.gz         |  Bin 0 -> 369489 bytes
+ docs/sdwin-w3/results/mac-ptz.json.gz              |  Bin 0 -> 359969 bytes
+ .../results/windows-installed-default.json.gz      |  Bin 0 -> 319165 bytes
+ .../results/windows-installed-edm-show.json.gz     |  Bin 0 -> 319210 bytes
+ .../sdwin-w3/results/windows-installed-ptz.json.gz |  Bin 0 -> 313271 bytes
+ .../results/windows-installed-test-1.json.gz       |  Bin 0 -> 320910 bytes
+ .../results/windows-installed-v1-default.json.gz   |  Bin 0 -> 326873 bytes
+ 22 files changed, 4672 insertions(+), 3 deletions(-)
+ create mode 100644 docs/sdwin-w3/REPORT.md
+ create mode 100644 docs/sdwin-w3/evidence/guard-event-before.txt
+ create mode 100644 docs/sdwin-w3/evidence/guard-event-final.txt
+ create mode 100644 docs/sdwin-w3/evidence/mac-suite-event-paced.log
+ create mode 100644 docs/sdwin-w3/evidence/matrix.json
+ create mode 100644 docs/sdwin-w3/evidence/mido-byte-oracle.json
+ create mode 100644 docs/sdwin-w3/evidence/verification.json
+ create mode 100644 docs/sdwin-w3/evidence/windows-cleanup-event-final.txt
+ create mode 100644 docs/sdwin-w3/evidence/windows-suite-event-paced.txt
+ create mode 100644 docs/sdwin-w3/results/aa-real-1.json.gz
+ create mode 100644 docs/sdwin-w3/results/aa-real-2.json.gz
+ create mode 100644 docs/sdwin-w3/results/aa-wall-noise.json.gz
+ create mode 100644 docs/sdwin-w3/results/mac-default.json.gz
+ create mode 100644 docs/sdwin-w3/results/mac-edm-show.json.gz
+ create mode 100644 docs/sdwin-w3/results/mac-ptz.json.gz
+ create mode 100644 docs/sdwin-w3/results/windows-installed-default.json.gz
+ create mode 100644 docs/sdwin-w3/results/windows-installed-edm-show.json.gz
+ create mode 100644 docs/sdwin-w3/results/windows-installed-ptz.json.gz
+ create mode 100644 docs/sdwin-w3/results/windows-installed-test-1.json.gz
+ create mode 100644 docs/sdwin-w3/results/windows-installed-v1-default.json.gz
+PREFLIGHT GREEN HEAD=88c1a0b5e1834b44b0993b81c4161c0e82da7625 TAG=e66ff44b36eadb6d43db01680c65279df82cd63c pins=7 fixtures=11 orphan=d1367870b93921b115b4c0972c13393792ea5307 dirty=0 differences=6 mac_fixtures_present=False
+
+InputObject                                                                               SideIndicator
+-----------                                                                               -------------
+100644 blob 9d167d53309fdf5a51adeab570697948c0452a08	config/engines.factory/osc_sync.json =>
+100644 blob 0abd30abee0e532c854afa8e876dd539f4640478	windows/engines/osc_sync.py          =>
+100644 blob 059f3312e34c0244536368f3481a1c731aa159c3	windows/engines/stageflow_bridge.py  =>
+100644 blob 7d2d5ea85d9c36468e23a19c21ff22d17eefcc61	config/engines.factory/osc_sync.json <=
+100644 blob a4d4a4a13fa0b8b94a83f6d681c0579267fb6fab	windows/engines/osc_sync.py          <=
+100644 blob 2c49e061e0af201c03ffeda88593fc44c3710ae1	windows/engines/stageflow_bridge.py  <=

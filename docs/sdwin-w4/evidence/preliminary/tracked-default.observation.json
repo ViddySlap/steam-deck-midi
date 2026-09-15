@@ -1,0 +1,1412 @@
+{
+  "label": "tracked-default",
+  "command": [
+    "C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv\\Scripts\\python.exe",
+    "-B",
+    "C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\scripts\\showready\\ab_run.py",
+    "--candidate",
+    "c4ba229eb8c5d88578821da6c5f2f001c0445768",
+    "--preset",
+    "C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\config\\presets\\default.json",
+    "--script",
+    "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w4\\deck-script.json",
+    "--fixtures",
+    "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\fixtures",
+    "--scratch",
+    "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w4\\tracked-default",
+    "--speed",
+    "1",
+    "--out",
+    "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w4\\tracked-default.json"
+  ],
+  "udp_before": [
+    {
+      "LocalAddress": "fe80::4629:b1aa:705d:90ad%45",
+      "LocalPort": 59564,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "::1",
+      "LocalPort": 59563,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "fe80::fa1d:ffeb:3115:a0d6%6",
+      "LocalPort": 59562,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "fe80::55ac:bb67:d9ce:f7db%4",
+      "LocalPort": 59561,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 59560,
+      "OwningProcess": 8684
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 54622,
+      "OwningProcess": 6108
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 54430,
+      "OwningProcess": 9340
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 49665,
+      "OwningProcess": 5476
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 41641,
+      "OwningProcess": 64044
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 5355,
+      "OwningProcess": 3288
+    },
+    {
+      "LocalAddress": "fe80::55ac:bb67:d9ce:f7db%4",
+      "LocalPort": 5353,
+      "OwningProcess": 5476
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 5353,
+      "OwningProcess": 3288
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 4500,
+      "OwningProcess": 5420
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 3702,
+      "OwningProcess": 9340
+    },
+    {
+      "LocalAddress": "fe80::fa1d:ffeb:3115:a0d6%6",
+      "LocalPort": 1900,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "fe80::55ac:bb67:d9ce:f7db%4",
+      "LocalPort": 1900,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "fe80::4629:b1aa:705d:90ad%45",
+      "LocalPort": 1900,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "::1",
+      "LocalPort": 1900,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 500,
+      "OwningProcess": 5420
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 123,
+      "OwningProcess": 2976
+    },
+    {
+      "LocalAddress": "172.23.48.1",
+      "LocalPort": 59568,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 59567,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 59566,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "169.254.83.107",
+      "LocalPort": 59565,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 59559,
+      "OwningProcess": 8684
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 59558,
+      "OwningProcess": 8684
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 58834,
+      "OwningProcess": 23640
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 58833,
+      "OwningProcess": 23640
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 58832,
+      "OwningProcess": 23640
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 57728,
+      "OwningProcess": 252772
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 57727,
+      "OwningProcess": 276460
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 57726,
+      "OwningProcess": 273948
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 57725,
+      "OwningProcess": 273740
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 54429,
+      "OwningProcess": 9340
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 52363,
+      "OwningProcess": 275328
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 52362,
+      "OwningProcess": 270532
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 52361,
+      "OwningProcess": 264836
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 52360,
+      "OwningProcess": 273500
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 52359,
+      "OwningProcess": 272376
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49666,
+      "OwningProcess": 5692
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49664,
+      "OwningProcess": 5476
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 45123,
+      "OwningProcess": 23640
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 41641,
+      "OwningProcess": 64044
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 17500,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 7010,
+      "OwningProcess": 23640
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 5355,
+      "OwningProcess": 3288
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 5353,
+      "OwningProcess": 5476
+    },
+    {
+      "LocalAddress": "172.23.48.1",
+      "LocalPort": 5353,
+      "OwningProcess": 5476
+    },
+    {
+      "LocalAddress": "169.254.83.107",
+      "LocalPort": 5353,
+      "OwningProcess": 5476
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 5353,
+      "OwningProcess": 3288
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 5050,
+      "OwningProcess": 13340
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 4500,
+      "OwningProcess": 5420
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 3702,
+      "OwningProcess": 63340
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 1900,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "172.23.48.1",
+      "LocalPort": 1900,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "169.254.83.107",
+      "LocalPort": 1900,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 1900,
+      "OwningProcess": 5556
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 500,
+      "OwningProcess": 5420
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 138,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "172.23.48.1",
+      "LocalPort": 138,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "169.254.83.107",
+      "LocalPort": 138,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 137,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "172.23.48.1",
+      "LocalPort": 137,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "169.254.83.107",
+      "LocalPort": 137,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 123,
+      "OwningProcess": 2976
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 53,
+      "OwningProcess": 8684
+    }
+  ],
+  "tcp_before": [
+    {
+      "LocalAddress": "::",
+      "LocalPort": 64950,
+      "State": 2,
+      "OwningProcess": 59304
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 49691,
+      "State": 2,
+      "OwningProcess": 1864
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 49687,
+      "State": 2,
+      "OwningProcess": 5456
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 49682,
+      "State": 2,
+      "OwningProcess": 5772
+    },
+    {
+      "LocalAddress": "::1",
+      "LocalPort": 49672,
+      "State": 2,
+      "OwningProcess": 5752
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 49669,
+      "State": 2,
+      "OwningProcess": 3808
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 49668,
+      "State": 2,
+      "OwningProcess": 3312
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 49665,
+      "State": 2,
+      "OwningProcess": 1792
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 49664,
+      "State": 2,
+      "OwningProcess": 1892
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 9090,
+      "State": 2,
+      "OwningProcess": 6108
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 7680,
+      "State": 2,
+      "OwningProcess": 6980
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 5357,
+      "State": 2,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 445,
+      "State": 2,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 135,
+      "State": 2,
+      "OwningProcess": 1280
+    },
+    {
+      "LocalAddress": "fe80::fa1d:ffeb:3115:a0d6%6",
+      "LocalPort": 22,
+      "State": 5,
+      "OwningProcess": 5712
+    },
+    {
+      "LocalAddress": "fe80::fa1d:ffeb:3115:a0d6%6",
+      "LocalPort": 22,
+      "State": 5,
+      "OwningProcess": 5712
+    },
+    {
+      "LocalAddress": "fe80::fa1d:ffeb:3115:a0d6%6",
+      "LocalPort": 22,
+      "State": 5,
+      "OwningProcess": 5712
+    },
+    {
+      "LocalAddress": "fe80::fa1d:ffeb:3115:a0d6%6",
+      "LocalPort": 22,
+      "State": 5,
+      "OwningProcess": 5712
+    },
+    {
+      "LocalAddress": "fe80::fa1d:ffeb:3115:a0d6%6",
+      "LocalPort": 22,
+      "State": 5,
+      "OwningProcess": 5712
+    },
+    {
+      "LocalAddress": "::",
+      "LocalPort": 22,
+      "State": 2,
+      "OwningProcess": 5712
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 64186,
+      "State": 100,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 63763,
+      "State": 100,
+      "OwningProcess": 63340
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 63741,
+      "State": 100,
+      "OwningProcess": 64044
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 63730,
+      "State": 100,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 63718,
+      "State": 100,
+      "OwningProcess": 26188
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 63103,
+      "State": 100,
+      "OwningProcess": 40040
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 62969,
+      "State": 100,
+      "OwningProcess": 28320
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 62444,
+      "State": 100,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 62442,
+      "State": 100,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 61881,
+      "State": 100,
+      "OwningProcess": 16000
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 61876,
+      "State": 100,
+      "OwningProcess": 12780
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 59960,
+      "State": 100,
+      "OwningProcess": 5856
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49741,
+      "State": 100,
+      "OwningProcess": 2104
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49738,
+      "State": 100,
+      "OwningProcess": 5560
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49736,
+      "State": 100,
+      "OwningProcess": 3120
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49733,
+      "State": 100,
+      "OwningProcess": 1268
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 64950,
+      "State": 2,
+      "OwningProcess": 59304
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64278,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64277,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64275,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64274,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64273,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64272,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64271,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64270,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64269,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64268,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64267,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64266,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64265,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64264,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64263,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64262,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64261,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64260,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64259,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64258,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64257,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64256,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64255,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64254,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64249,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64248,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64247,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64246,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64245,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64244,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64243,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64242,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64241,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64240,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64238,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64237,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64236,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64235,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 64234,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 64219,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 64197,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 64186,
+      "State": 5,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 64179,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 64174,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 64172,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 64159,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 63763,
+      "State": 5,
+      "OwningProcess": 63340
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 63741,
+      "State": 5,
+      "OwningProcess": 64044
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 63730,
+      "State": 5,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 63718,
+      "State": 5,
+      "OwningProcess": 26188
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 63103,
+      "State": 5,
+      "OwningProcess": 40040
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 62444,
+      "State": 5,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 62443,
+      "State": 5,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 62442,
+      "State": 5,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 62441,
+      "State": 5,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 61881,
+      "State": 5,
+      "OwningProcess": 16000
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 61880,
+      "State": 5,
+      "OwningProcess": 16000
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 61876,
+      "State": 5,
+      "OwningProcess": 12780
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 61874,
+      "State": 5,
+      "OwningProcess": 16000
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 61874,
+      "State": 2,
+      "OwningProcess": 16000
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 61873,
+      "State": 2,
+      "OwningProcess": 16000
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 59960,
+      "State": 5,
+      "OwningProcess": 5856
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 54399,
+      "State": 2,
+      "OwningProcess": 5488
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49741,
+      "State": 5,
+      "OwningProcess": 2104
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49740,
+      "State": 5,
+      "OwningProcess": 2104
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49738,
+      "State": 5,
+      "OwningProcess": 5560
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49737,
+      "State": 5,
+      "OwningProcess": 5560
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49736,
+      "State": 5,
+      "OwningProcess": 3120
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49735,
+      "State": 5,
+      "OwningProcess": 3120
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49733,
+      "State": 5,
+      "OwningProcess": 1268
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49732,
+      "State": 5,
+      "OwningProcess": 1268
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49691,
+      "State": 2,
+      "OwningProcess": 1864
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49687,
+      "State": 2,
+      "OwningProcess": 5456
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49673,
+      "State": 11,
+      "OwningProcess": 0
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 49673,
+      "State": 2,
+      "OwningProcess": 5468
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49669,
+      "State": 2,
+      "OwningProcess": 3808
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49668,
+      "State": 2,
+      "OwningProcess": 3312
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49665,
+      "State": 2,
+      "OwningProcess": 1792
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 49664,
+      "State": 2,
+      "OwningProcess": 1892
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 27731,
+      "State": 2,
+      "OwningProcess": 28868
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 24801,
+      "State": 2,
+      "OwningProcess": 5608
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 19000,
+      "State": 2,
+      "OwningProcess": 6108
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 17600,
+      "State": 2,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 17500,
+      "State": 2,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 16494,
+      "State": 2,
+      "OwningProcess": 25984
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 15393,
+      "State": 2,
+      "OwningProcess": 25984
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 15292,
+      "State": 2,
+      "OwningProcess": 25984
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 7723,
+      "State": 2,
+      "OwningProcess": 23640
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 5354,
+      "State": 2,
+      "OwningProcess": 5476
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 5040,
+      "State": 2,
+      "OwningProcess": 13340
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 843,
+      "State": 2,
+      "OwningProcess": 62448
+    },
+    {
+      "LocalAddress": "192.168.1.126",
+      "LocalPort": 139,
+      "State": 2,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "172.23.48.1",
+      "LocalPort": 139,
+      "State": 2,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "169.254.83.107",
+      "LocalPort": 139,
+      "State": 2,
+      "OwningProcess": 4
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 135,
+      "State": 2,
+      "OwningProcess": 1280
+    },
+    {
+      "LocalAddress": "0.0.0.0",
+      "LocalPort": 22,
+      "State": 2,
+      "OwningProcess": 5712
+    }
+  ],
+  "ready": [
+    {
+      "argv": [
+        "--map",
+        "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w4\\tracked-default\\ab-k134jxc3\\A\\config\\windows_midi_map.json",
+        "--listen",
+        "127.0.0.1:49707",
+        "--ui-port",
+        "64280",
+        "--no-engines",
+        "--no-pulse",
+        "--no-osc-relay",
+        "--no-ui"
+      ],
+      "bound": [
+        "127.0.0.1",
+        49707
+      ],
+      "bridge_file": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w4\\tracked-default\\ab-k134jxc3\\A\\windows\\win_recv.py",
+      "clock": "script",
+      "pid": 275576
+    },
+    {
+      "argv": [
+        "--map",
+        "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w4\\tracked-default\\ab-k134jxc3\\B1\\config\\windows_midi_map.json",
+        "--listen",
+        "127.0.0.1:49709",
+        "--ui-port",
+        "64282",
+        "--no-engines",
+        "--no-pulse",
+        "--no-osc-relay",
+        "--no-ui"
+      ],
+      "bound": [
+        "127.0.0.1",
+        49709
+      ],
+      "bridge_file": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w4\\tracked-default\\ab-k134jxc3\\B1\\windows\\win_recv.py",
+      "clock": "script",
+      "pid": 268064
+    }
+  ],
+  "live": [
+    {
+      "ready": {
+        "argv": [
+          "--map",
+          "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w4\\tracked-default\\ab-k134jxc3\\A\\config\\windows_midi_map.json",
+          "--listen",
+          "127.0.0.1:49707",
+          "--ui-port",
+          "64280",
+          "--no-engines",
+          "--no-pulse",
+          "--no-osc-relay",
+          "--no-ui"
+        ],
+        "bound": [
+          "127.0.0.1",
+          49707
+        ],
+        "bridge_file": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w4\\tracked-default\\ab-k134jxc3\\A\\windows\\win_recv.py",
+        "clock": "script",
+        "pid": 275576
+      },
+      "udp": [
+        {
+          "LocalAddress": "127.0.0.1",
+          "LocalPort": 49707,
+          "OwningProcess": 275576
+        },
+        {
+          "LocalAddress": "0.0.0.0",
+          "LocalPort": 45123,
+          "OwningProcess": 23640
+        }
+      ],
+      "tcp": [
+        {
+          "LocalAddress": "127.0.0.1",
+          "LocalPort": 7723,
+          "State": 2,
+          "OwningProcess": 23640
+        }
+      ],
+      "process": [
+        {
+          "Id": 275576,
+          "ProcessName": "python",
+          "Path": "C:\\Users\\Ben\\AppData\\Local\\Python\\pythoncore-3.12-64\\python.exe"
+        }
+      ]
+    },
+    {
+      "ready": {
+        "argv": [
+          "--map",
+          "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w4\\tracked-default\\ab-k134jxc3\\B1\\config\\windows_midi_map.json",
+          "--listen",
+          "127.0.0.1:49709",
+          "--ui-port",
+          "64282",
+          "--no-engines",
+          "--no-pulse",
+          "--no-osc-relay",
+          "--no-ui"
+        ],
+        "bound": [
+          "127.0.0.1",
+          49709
+        ],
+        "bridge_file": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w4\\tracked-default\\ab-k134jxc3\\B1\\windows\\win_recv.py",
+        "clock": "script",
+        "pid": 268064
+      },
+      "udp": [
+        {
+          "LocalAddress": "127.0.0.1",
+          "LocalPort": 49709,
+          "OwningProcess": 268064
+        },
+        {
+          "LocalAddress": "0.0.0.0",
+          "LocalPort": 45123,
+          "OwningProcess": 23640
+        }
+      ],
+      "tcp": [
+        {
+          "LocalAddress": "127.0.0.1",
+          "LocalPort": 7723,
+          "State": 2,
+          "OwningProcess": 23640
+        }
+      ],
+      "process": [
+        {
+          "Id": 268064,
+          "ProcessName": "python",
+          "Path": "C:\\Users\\Ben\\AppData\\Local\\Python\\pythoncore-3.12-64\\python.exe"
+        }
+      ]
+    }
+  ],
+  "python_pids": [
+    267108,
+    269276,
+    271524,
+    275576,
+    275852,
+    268064,
+    267108,
+    269276,
+    271524,
+    275576,
+    275852,
+    268064
+  ],
+  "cleanup": [
+    {
+      "pid": 267108,
+      "gone": true,
+      "forced_cleanup": false
+    },
+    {
+      "pid": 267108,
+      "gone": true,
+      "forced_cleanup": false
+    },
+    {
+      "pid": 269276,
+      "gone": true,
+      "forced_cleanup": false
+    },
+    {
+      "pid": 271524,
+      "gone": true,
+      "forced_cleanup": false
+    },
+    {
+      "pid": 275576,
+      "gone": true,
+      "forced_cleanup": false
+    },
+    {
+      "pid": 275852,
+      "gone": true,
+      "forced_cleanup": false
+    },
+    {
+      "pid": 268064,
+      "gone": true,
+      "forced_cleanup": false
+    },
+    {
+      "pid": 267108,
+      "gone": true,
+      "forced_cleanup": false
+    },
+    {
+      "pid": 269276,
+      "gone": true,
+      "forced_cleanup": false
+    },
+    {
+      "pid": 271524,
+      "gone": true,
+      "forced_cleanup": false
+    },
+    {
+      "pid": 275576,
+      "gone": true,
+      "forced_cleanup": false
+    },
+    {
+      "pid": 275852,
+      "gone": true,
+      "forced_cleanup": false
+    },
+    {
+      "pid": 268064,
+      "gone": true,
+      "forced_cleanup": false
+    },
+    {
+      "pid": 275576,
+      "gone": true,
+      "forced_cleanup": false
+    },
+    {
+      "pid": 268064,
+      "gone": true,
+      "forced_cleanup": false
+    }
+  ],
+  "exit": 0,
+  "cleanup_passed": true,
+  "driver_pid": 267108
+}

@@ -1,0 +1,56 @@
+{
+  "matrix": [
+    {
+      "label": "windows-edm",
+      "ssh_transport_exit": 255,
+      "remote_process_exit": "UNKNOWN",
+      "remote_cleanup": "UNKNOWN",
+      "stdout": "final-windows-edm.txt"
+    },
+    {
+      "label": "windows-ptz",
+      "ssh_transport_exit": 255,
+      "remote_process_exit": "UNKNOWN",
+      "remote_cleanup": "UNKNOWN",
+      "stdout": "final-windows-ptz.txt"
+    },
+    {
+      "label": "windows-default",
+      "ssh_transport_exit": 255,
+      "remote_process_exit": "UNKNOWN",
+      "remote_cleanup": "UNKNOWN",
+      "stdout": "final-windows-default.txt"
+    },
+    {
+      "label": "tracked-default",
+      "ssh_transport_exit": 255,
+      "remote_process_exit": "UNKNOWN",
+      "remote_cleanup": "UNKNOWN",
+      "stdout": "final-tracked-default.txt"
+    },
+    {
+      "label": "sectioned-edm",
+      "ssh_transport_exit": 255,
+      "remote_process_exit": "UNKNOWN",
+      "remote_cleanup": "UNKNOWN",
+      "stdout": "final-sectioned-edm.txt"
+    },
+    {
+      "label": "sectioned-ptz",
+      "ssh_transport_exit": 255,
+      "remote_process_exit": "UNKNOWN",
+      "remote_cleanup": "UNKNOWN",
+      "stdout": "final-sectioned-ptz.txt"
+    }
+  ],
+  "dead_seam_cleanup": {
+    "ssh_transport_exit": 255,
+    "error": "No route to host",
+    "remote_cleanup": "UNKNOWN"
+  },
+  "new_status_connection": {
+    "ssh_transport_exit": 255,
+    "error": "Could not resolve hostname viddyslaptop.local"
+  },
+  "alternate_route_attempted": false
+}

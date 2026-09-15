@@ -1,0 +1,4 @@
+LIVE determinism-2 arm PID=272452 UDP=63567
+LIVE determinism-2 arm PID=275596 UDP=63568
+{"result": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w4\\determinism-2.json.gz", "passed": true, "error": null, "comparisons": {"B1": {"totals": {"steps": 732, "mappings": 56, "mappings_exercised": 56, "messages_A": 1531, "messages_B": 1531}, "different_mappings": [], "unexercised_mappings": []}}}
+RESULT determinism-2 EXIT=0 CLEANUP=True

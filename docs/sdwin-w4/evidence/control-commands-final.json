@@ -1,0 +1,103 @@
+[
+  {
+    "label": "determinism-1",
+    "command": [
+      "scripts/showready/win_rail.sh",
+      "run",
+      "w4",
+      "/tmp/sdwin-w4/run.ps1",
+      "-Label",
+      "determinism-1",
+      "-Preset",
+      "mac\\presets\\default.json",
+      "-Candidate",
+      "v0.4.9",
+      "-Speed",
+      "50"
+    ],
+    "exit": 0,
+    "expected": 0
+  },
+  {
+    "label": "determinism-2",
+    "command": [
+      "scripts/showready/win_rail.sh",
+      "run",
+      "w4",
+      "/tmp/sdwin-w4/run.ps1",
+      "-Label",
+      "determinism-2",
+      "-Preset",
+      "mac\\presets\\default.json",
+      "-Candidate",
+      "v0.4.9",
+      "-Speed",
+      "50"
+    ],
+    "exit": 0,
+    "expected": 0
+  },
+  {
+    "label": "sensitivity",
+    "command": [
+      "scripts/showready/win_rail.sh",
+      "run",
+      "w4",
+      "/tmp/sdwin-w4/run.ps1",
+      "-Label",
+      "sensitivity",
+      "-Preset",
+      "mac\\presets\\default.json",
+      "-Candidate",
+      "v0.4.9",
+      "-Speed",
+      "50",
+      "-Control",
+      "sensitivity"
+    ],
+    "exit": 1,
+    "expected": 1
+  },
+  {
+    "label": "coverage",
+    "command": [
+      "scripts/showready/win_rail.sh",
+      "run",
+      "w4",
+      "/tmp/sdwin-w4/run.ps1",
+      "-Label",
+      "coverage",
+      "-Preset",
+      "mac\\presets\\default.json",
+      "-Candidate",
+      "v0.4.9",
+      "-Speed",
+      "50",
+      "-Control",
+      "coverage"
+    ],
+    "exit": 1,
+    "expected": 1
+  },
+  {
+    "label": "dead-seam",
+    "command": [
+      "scripts/showready/win_rail.sh",
+      "run",
+      "w4",
+      "/tmp/sdwin-w4/run.ps1",
+      "-Label",
+      "dead-seam",
+      "-Preset",
+      "mac\\presets\\default.json",
+      "-Candidate",
+      "v0.4.9",
+      "-Speed",
+      "50",
+      "-Control",
+      "dead-seam"
+    ],
+    "exit": 1,
+    "expected": 1
+  }
+]

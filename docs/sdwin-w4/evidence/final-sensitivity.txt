@@ -1,0 +1,4 @@
+LIVE sensitivity arm PID=262472 UDP=57437
+LIVE sensitivity arm PID=273808 UDP=57438
+{"result": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\w4\\sensitivity.json.gz", "passed": false, "error": null, "comparisons": {"B1": {"totals": {"steps": 732, "mappings": 56, "mappings_exercised": 56, "messages_A": 1531, "messages_B": 1531}, "different_mappings": ["BTN_A"], "unexercised_mappings": []}}}
+RESULT sensitivity EXIT=1 CLEANUP=True

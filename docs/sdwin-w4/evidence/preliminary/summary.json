@@ -1,0 +1,485 @@
+[
+  {
+    "label": "windows-edm",
+    "passed": true,
+    "wall_speed": 1.0,
+    "pacing": {
+      "A": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 110000000,
+          "median_ns": 109000000,
+          "min_ns": 109000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 32000000,
+          "median_ns": 31000000,
+          "min_ns": 31000000,
+          "no_overspeed": true
+        }
+      },
+      "B1": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 110000000,
+          "median_ns": 109000000,
+          "min_ns": 109000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 32000000,
+          "median_ns": 31000000,
+          "min_ns": 31000000,
+          "no_overspeed": true
+        }
+      }
+    },
+    "replay_wall_seconds": 476.375,
+    "candidate": "c4ba229eb8c5d88578821da6c5f2f001c0445768"
+  },
+  {
+    "label": "windows-ptz",
+    "passed": true,
+    "wall_speed": 1.0,
+    "pacing": {
+      "A": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 110000000,
+          "median_ns": 109000000,
+          "min_ns": 109000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 32000000,
+          "median_ns": 31000000,
+          "min_ns": 31000000,
+          "no_overspeed": true
+        }
+      },
+      "B1": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 110000000,
+          "median_ns": 109000000,
+          "min_ns": 109000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 32000000,
+          "median_ns": 31000000,
+          "min_ns": 31000000,
+          "no_overspeed": true
+        }
+      }
+    },
+    "replay_wall_seconds": 476.375,
+    "candidate": "c4ba229eb8c5d88578821da6c5f2f001c0445768"
+  },
+  {
+    "label": "windows-default",
+    "passed": true,
+    "wall_speed": 1.0,
+    "pacing": {
+      "A": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 110000000,
+          "median_ns": 109000000,
+          "min_ns": 109000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 32000000,
+          "median_ns": 31000000,
+          "min_ns": 31000000,
+          "no_overspeed": true
+        }
+      },
+      "B1": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 110000000,
+          "median_ns": 109000000,
+          "min_ns": 109000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 32000000,
+          "median_ns": 31000000,
+          "min_ns": 31000000,
+          "no_overspeed": true
+        }
+      }
+    },
+    "replay_wall_seconds": 476.375,
+    "candidate": "c4ba229eb8c5d88578821da6c5f2f001c0445768"
+  },
+  {
+    "label": "tracked-default",
+    "passed": true,
+    "wall_speed": 1.0,
+    "pacing": {
+      "A": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 125000000,
+          "median_ns": 109000000,
+          "min_ns": 109000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 46000000,
+          "median_ns": 31000000,
+          "min_ns": 31000000,
+          "no_overspeed": true
+        }
+      },
+      "B1": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 125000000,
+          "median_ns": 109000000,
+          "min_ns": 109000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 46000000,
+          "median_ns": 31000000,
+          "min_ns": 31000000,
+          "no_overspeed": true
+        }
+      }
+    },
+    "replay_wall_seconds": 476.438,
+    "candidate": "c4ba229eb8c5d88578821da6c5f2f001c0445768"
+  },
+  {
+    "label": "sectioned-edm",
+    "passed": true,
+    "wall_speed": 1.0,
+    "pacing": {
+      "A": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 125000000,
+          "median_ns": 109000000,
+          "min_ns": 109000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 47000000,
+          "median_ns": 31000000,
+          "min_ns": 31000000,
+          "no_overspeed": true
+        }
+      },
+      "B1": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 125000000,
+          "median_ns": 109000000,
+          "min_ns": 109000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 62000000,
+          "median_ns": 31000000,
+          "min_ns": 31000000,
+          "no_overspeed": true
+        }
+      },
+      "B2": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 125000000,
+          "median_ns": 109000000,
+          "min_ns": 109000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 62000000,
+          "median_ns": 31000000,
+          "min_ns": 31000000,
+          "no_overspeed": true
+        }
+      }
+    },
+    "replay_wall_seconds": 476.437,
+    "candidate": "c4ba229eb8c5d88578821da6c5f2f001c0445768"
+  },
+  {
+    "label": "sectioned-ptz",
+    "passed": true,
+    "wall_speed": 1.0,
+    "pacing": {
+      "A": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 110000000,
+          "median_ns": 109000000,
+          "min_ns": 109000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 32000000,
+          "median_ns": 31000000,
+          "min_ns": 31000000,
+          "no_overspeed": true
+        }
+      },
+      "B1": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 110000000,
+          "median_ns": 109000000,
+          "min_ns": 109000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 32000000,
+          "median_ns": 31000000,
+          "min_ns": 31000000,
+          "no_overspeed": true
+        }
+      },
+      "B2": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 110000000,
+          "median_ns": 109000000,
+          "min_ns": 109000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 32000000,
+          "median_ns": 31000000,
+          "min_ns": 31000000,
+          "no_overspeed": true
+        }
+      }
+    },
+    "replay_wall_seconds": 476.391,
+    "candidate": "c4ba229eb8c5d88578821da6c5f2f001c0445768"
+  },
+  {
+    "label": "determinism-1",
+    "passed": true,
+    "wall_speed": 50.0,
+    "pacing": {
+      "A": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 31000000,
+          "median_ns": 16000000,
+          "min_ns": 15000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 32000000,
+          "median_ns": 16000000,
+          "min_ns": 15000000,
+          "no_overspeed": true
+        }
+      },
+      "B1": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 31000000,
+          "median_ns": 16000000,
+          "min_ns": 15000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 32000000,
+          "median_ns": 16000000,
+          "min_ns": 15000000,
+          "no_overspeed": true
+        }
+      }
+    },
+    "replay_wall_seconds": 17.907,
+    "candidate": "v0.4.9"
+  },
+  {
+    "label": "determinism-2",
+    "passed": true,
+    "wall_speed": 50.0,
+    "pacing": {
+      "A": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 32000000,
+          "median_ns": 16000000,
+          "min_ns": 15000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 31000000,
+          "median_ns": 16000000,
+          "min_ns": 15000000,
+          "no_overspeed": true
+        }
+      },
+      "B1": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 32000000,
+          "median_ns": 16000000,
+          "min_ns": 15000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 31000000,
+          "median_ns": 16000000,
+          "min_ns": 15000000,
+          "no_overspeed": true
+        }
+      }
+    },
+    "replay_wall_seconds": 18.0,
+    "candidate": "v0.4.9"
+  },
+  {
+    "label": "sensitivity",
+    "passed": false,
+    "wall_speed": 50.0,
+    "pacing": {
+      "A": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 31000000,
+          "median_ns": 16000000,
+          "min_ns": 15000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 16000000,
+          "median_ns": 16000000,
+          "min_ns": 15000000,
+          "no_overspeed": true
+        }
+      },
+      "B1": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 31000000,
+          "median_ns": 16000000,
+          "min_ns": 15000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 16000000,
+          "median_ns": 16000000,
+          "min_ns": 15000000,
+          "no_overspeed": true
+        }
+      }
+    },
+    "replay_wall_seconds": 18.016,
+    "candidate": "v0.4.9"
+  },
+  {
+    "label": "coverage",
+    "passed": false,
+    "wall_speed": 50.0,
+    "pacing": {
+      "A": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 16000000,
+          "median_ns": 16000000,
+          "min_ns": 15000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 16000000,
+          "median_ns": 16000000,
+          "min_ns": 15000000,
+          "no_overspeed": true
+        }
+      },
+      "B1": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 16000000,
+          "median_ns": 16000000,
+          "min_ns": 15000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 16000000,
+          "median_ns": 16000000,
+          "min_ns": 15000000,
+          "no_overspeed": true
+        }
+      }
+    },
+    "replay_wall_seconds": 17.907,
+    "candidate": "v0.4.9"
+  },
+  {
+    "label": "dead-seam",
+    "passed": false,
+    "wall_speed": 50.0,
+    "pacing": {
+      "A": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 31000000,
+          "median_ns": 16000000,
+          "min_ns": 15000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 16000000,
+          "median_ns": 16000000,
+          "min_ns": 15000000,
+          "no_overspeed": true
+        }
+      },
+      "B1": {
+        "axis-10hz": {
+          "count": 229,
+          "max_ns": 31000000,
+          "median_ns": 16000000,
+          "min_ns": 15000000,
+          "no_overspeed": true
+        },
+        "axis-60hz": {
+          "count": 229,
+          "max_ns": 16000000,
+          "median_ns": 16000000,
+          "min_ns": 15000000,
+          "no_overspeed": true
+        }
+      }
+    },
+    "replay_wall_seconds": 17.875,
+    "candidate": "v0.4.9"
+  }
+]

@@ -1,0 +1,19 @@
+From https://github.com/ViddySlap/steam-deck-midi
+   88c1a0b..c4ba229  chain/steamdeck-20260914 -> origin/chain/steamdeck-20260914
+Updating 88c1a0b..c4ba229
+Fast-forward
+ scripts/showready/README.md        |  6 ++++++
+ scripts/showready/SHA256SUMS       |  8 ++++----
+ scripts/showready/ab_run.py        | 18 ++++++++++++++++--
+ tests/test_showready_instrument.py | 25 +++++++++++++++++++++++++
+ 4 files changed, 51 insertions(+), 6 deletions(-)
+PREFLIGHT GREEN HEAD=c4ba229eb8c5d88578821da6c5f2f001c0445768 TAG=e66ff44b36eadb6d43db01680c65279df82cd63c pins=7 fixtures=11 orphan=d1367870b93921b115b4c0972c13393792ea5307 dirty=0 differences=6 mac_fixtures_present=True
+
+InputObject                                                                               SideIndicator
+-----------                                                                               -------------
+100644 blob 9d167d53309fdf5a51adeab570697948c0452a08	config/engines.factory/osc_sync.json =>
+100644 blob 0abd30abee0e532c854afa8e876dd539f4640478	windows/engines/osc_sync.py          =>
+100644 blob 059f3312e34c0244536368f3481a1c731aa159c3	windows/engines/stageflow_bridge.py  =>
+100644 blob 7d2d5ea85d9c36468e23a19c21ff22d17eefcc61	config/engines.factory/osc_sync.json <=
+100644 blob a4d4a4a13fa0b8b94a83f6d681c0579267fb6fab	windows/engines/osc_sync.py          <=
+100644 blob 2c49e061e0af201c03ffeda88593fc44c3710ae1	windows/engines/stageflow_bridge.py  <=
