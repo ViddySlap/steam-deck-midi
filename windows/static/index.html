@@ -361,6 +361,8 @@
     transition: border-color var(--transition), background var(--transition);
     appearance: none;
   }
+  /* F4: header controls size to their content so the header stays one row. */
+  header select { width: auto; }
   input:focus, select:focus, textarea:focus {
     outline: none; border-color: var(--accent); background: var(--surface3);
   }
@@ -648,6 +650,7 @@
   <span id="statusText" class="status-text status-ok">Ready</span>
   <span id="sectionStatus" class="status-text"></span>
   <span style="flex:1"></span>
+  <span id="appVersion" class="status-text"></span>
   <span id="mappingCount">—</span>
   <span>·</span>
   <span>Signal output → terminal</span>
@@ -901,6 +904,17 @@ async function apiFetch(path, opts = {}) {
   const data = await r.json().catch(() => ({}));
   if (!r.ok) throw Object.assign(new Error(data.error || `HTTP ${r.status}`), { data, httpStatus: r.status });
   return data;
+}
+
+async function loadVersion() {
+  const el = document.getElementById('appVersion');
+  try {
+    const info = await apiFetch('/api/version');
+    el.textContent = `v${info.version}${info.frozen ? '' : ' (source)'}`;
+    el.title = `commit ${info.git_commit}, built ${info.build_time_utc}`;
+  } catch (e) {
+    el.textContent = '';
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -2142,6 +2156,7 @@ document.addEventListener('keydown', e => {
 // ─────────────────────────────────────────────────────────────────
 if (typeof ControllerView !== 'undefined') ControllerView.init();
 setInterval(pollStateVersion, 2000);
+loadVersion();
 loadAll();
 </script>
 </body>

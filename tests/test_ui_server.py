@@ -137,6 +137,94 @@ class BridgeSettingsApiTests(unittest.TestCase):
         self.assertEqual(documented, registered)
 
 
+class VersionApiTests(unittest.TestCase):
+    def setUp(self):
+        import shutil
+        self.server, _, tmpdir, *_ = _make_server()
+        self.addCleanup(shutil.rmtree, tmpdir)
+        self.client = self.server._app.test_client()
+
+    def _patched_fingerprint(self):
+        from unittest.mock import patch
+        from windows import build_fingerprint
+        return patch.multiple(build_fingerprint, APP_VERSION="9.8.7", GIT_COMMIT="f00dfacef00dface",
+                              GIT_COMMIT_SHORT="f00dface", BUILD_TIME_UTC="2031-01-02T03:04:05Z")
+
+    def test_version_route_reports_the_fingerprint_and_unfrozen_source(self):
+        import sys
+        self.assertFalse(getattr(sys, "frozen", False), "the suite never runs frozen")
+        with self._patched_fingerprint():
+            response = self.client.get("/api/version")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.get_json(), {"version": "9.8.7", "git_commit": "f00dfacef00dface",
+                                               "build_time_utc": "2031-01-02T03:04:05Z", "frozen": False})
+
+    def test_version_route_reports_frozen_true_in_a_packaged_exe(self):
+        import sys
+        from unittest.mock import patch
+        with self._patched_fingerprint(), patch.object(sys, "frozen", True, create=True):
+            body = self.client.get("/api/version").get_json()
+        self.assertIs(body["frozen"], True)
+        self.assertEqual(body["version"], "9.8.7")
+
+    def test_version_route_serves_the_checked_in_fingerprint(self):
+        from windows import build_fingerprint
+        body = self.client.get("/api/version").get_json()
+        self.assertEqual(body, {"version": build_fingerprint.APP_VERSION, "git_commit": build_fingerprint.GIT_COMMIT,
+                                "build_time_utc": build_fingerprint.BUILD_TIME_UTC, "frozen": False})
+
+    def test_version_route_is_get_only(self):
+        rules = [r for r in self.server._app.url_map.iter_rules() if r.rule == "/api/version"]
+        self.assertEqual(len(rules), 1)
+        self.assertEqual(rules[0].methods - {"OPTIONS", "HEAD"}, {"GET"})
+        self.assertEqual(self.client.post("/api/version").status_code, 405)
+
+
+def _version_pair(root):
+    """Read VERSION and the fingerprint module's APP_VERSION from files on disk."""
+    import ast
+    version = (Path(root) / "VERSION").read_text(encoding="utf-8").strip()
+    tree = ast.parse((Path(root) / "windows/build_fingerprint.py").read_text(encoding="utf-8"))
+    names = {node.targets[0].id: node.value.value for node in tree.body
+             if isinstance(node, ast.Assign) and isinstance(node.value, ast.Constant)}
+    return version, names
+
+
+class VersionAgreementTests(unittest.TestCase):
+    ROOT = Path(__file__).resolve().parents[1]
+
+    def test_version_file_and_fingerprint_agree(self):
+        version, names = _version_pair(self.ROOT)
+        self.assertRegex(version, r"^\d+\.\d+\.\d+$")
+        self.assertEqual(names.get("APP_VERSION"), version)
+
+    def test_agreement_detector_fires_on_a_diverged_copy(self):
+        import shutil
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp) / "windows").mkdir()
+            shutil.copyfile(self.ROOT / "windows/build_fingerprint.py", Path(tmp) / "windows/build_fingerprint.py")
+            (Path(tmp) / "VERSION").write_text("0.4.9\n", encoding="utf-8")
+            version, names = _version_pair(tmp)
+            self.assertEqual(version, "0.4.9")
+            self.assertNotEqual(names.get("APP_VERSION"), version)
+
+    def test_build_exe_v2_regenerates_every_fingerprint_name_from_version_and_git(self):
+        import re
+        script = (self.ROOT / "scripts/windows/build_exe_v2.ps1").read_text(encoding="utf-8").replace("\r\n", "\n")
+        self.assertIn('$versionPath = Join-Path $RepoRoot "VERSION"', script)
+        self.assertIn("$appVersion = (Get-Content $versionPath -Raw).Trim()", script)
+        self.assertIn("git -C $RepoRoot rev-parse HEAD", script)
+        self.assertIn('$fingerprintModulePath = Join-Path $RepoRoot "windows\\build_fingerprint.py"', script)
+        template = re.search(r'\$fingerprintModule = @"\n(.*?)\n"@', script, re.S)
+        self.assertIsNotNone(template)
+        written = dict(re.findall(r'^([A-Z_]+) = "(\$\w+)"$', template.group(1), re.M))
+        self.assertEqual(written, {"APP_VERSION": "$appVersion", "GIT_COMMIT": "$gitCommit",
+                                   "GIT_COMMIT_SHORT": "$gitCommitShort", "BUILD_TIME_UTC": "$buildTimestampUtc"})
+        _, names = _version_pair(self.ROOT)
+        self.assertEqual(set(names), set(written))
+        self.assertIn("Set-Content -Path $fingerprintModulePath -Value $fingerprintModule", script)
+
+
 class BridgeShutdownApiTests(unittest.TestCase):
     def setUp(self):
         import shutil

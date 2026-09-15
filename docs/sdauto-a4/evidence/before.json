@@ -1,0 +1,549 @@
+{
+  "tag": "before",
+  "url": "http://127.0.0.1:17941",
+  "viewports": {
+    "1440x900": {
+      "header": {
+        "top": 0,
+        "bottom": 106,
+        "left": 0,
+        "right": 1440,
+        "width": 1440,
+        "height": 106
+      },
+      "items": [
+        {
+          "id": "logo",
+          "text": "🎮",
+          "top": 39,
+          "bottom": 67,
+          "left": 16,
+          "right": 44,
+          "width": 28,
+          "height": 28
+        },
+        {
+          "id": "H1",
+          "text": "Steam Deck MIDI Mapping Editor",
+          "top": 42,
+          "bottom": 63,
+          "left": 54,
+          "right": 553,
+          "width": 499,
+          "height": 21
+        },
+        {
+          "id": "btnReset",
+          "text": "Factory Reset",
+          "top": 6,
+          "bottom": 33,
+          "left": 563,
+          "right": 667,
+          "width": 104,
+          "height": 27
+        },
+        {
+          "id": "presetWrap",
+          "text": "EDM Show\n        \n          \n ",
+          "top": 6,
+          "bottom": 33,
+          "left": 673,
+          "right": 803,
+          "width": 130,
+          "height": 27
+        },
+        {
+          "id": "LABEL",
+          "text": "Section",
+          "top": 10,
+          "bottom": 29,
+          "left": 809,
+          "right": 855,
+          "width": 46,
+          "height": 20
+        },
+        {
+          "id": "sectionSelect",
+          "text": "windows (this machine)macbook",
+          "top": 39,
+          "bottom": 66,
+          "left": 563,
+          "right": 1424,
+          "width": 861,
+          "height": 27
+        },
+        {
+          "id": "btnSectionAdd",
+          "text": "Add section",
+          "top": 75,
+          "bottom": 96,
+          "left": 563,
+          "right": 644,
+          "width": 80,
+          "height": 21
+        },
+        {
+          "id": "btnSectionRename",
+          "text": "Rename section",
+          "top": 75,
+          "bottom": 96,
+          "left": 650,
+          "right": 751,
+          "width": 102,
+          "height": 21
+        },
+        {
+          "id": "btnSectionDelete",
+          "text": "Delete section",
+          "top": 75,
+          "bottom": 96,
+          "left": 757,
+          "right": 851,
+          "width": 93,
+          "height": 21
+        },
+        {
+          "id": "btnSave",
+          "text": "Save & Apply",
+          "top": 72,
+          "bottom": 99,
+          "left": 857,
+          "right": 960,
+          "width": 104,
+          "height": 27
+        }
+      ],
+      "center_spread_px": 66,
+      "section_select": {
+        "computed_width": "860.594px",
+        "top": 39,
+        "bottom": 66,
+        "left": 563,
+        "right": 1424,
+        "width": 861,
+        "height": 27,
+        "options": [
+          "windows (this machine)",
+          "macbook"
+        ]
+      },
+      "scroll_width": 1440,
+      "version_label": null,
+      "controls": [
+        {
+          "key": "searchInput",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "ms_fade_duration_seconds",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "ms_update_hz",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "ms_min_value",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "ms_max_value",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "ms_macro_delay_ms",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "ms_modifier_hold_ms",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "ms_layer_refresh_ms",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "as_update_hz",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "as_deadzone",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "as_curve",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#11",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#12",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#13",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#14",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#15",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#16",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#17",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#18",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#19",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#20",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#21",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#22",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#23",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "saveAsInput",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "renameInput",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "macroEditorName",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "macroEditorType",
+          "computed_width": "100%",
+          "box_width": 0
+        }
+      ],
+      "one_row": false
+    },
+    "1024x768": {
+      "header": {
+        "top": 0,
+        "bottom": 106,
+        "left": 0,
+        "right": 1024,
+        "width": 1024,
+        "height": 106
+      },
+      "items": [
+        {
+          "id": "logo",
+          "text": "🎮",
+          "top": 39,
+          "bottom": 67,
+          "left": 16,
+          "right": 44,
+          "width": 28,
+          "height": 28
+        },
+        {
+          "id": "H1",
+          "text": "Steam Deck MIDI Mapping Editor",
+          "top": 11,
+          "bottom": 95,
+          "left": 54,
+          "right": 137,
+          "width": 83,
+          "height": 84
+        },
+        {
+          "id": "btnReset",
+          "text": "Factory Reset",
+          "top": 6,
+          "bottom": 33,
+          "left": 147,
+          "right": 251,
+          "width": 104,
+          "height": 27
+        },
+        {
+          "id": "presetWrap",
+          "text": "EDM Show\n        \n          \n ",
+          "top": 6,
+          "bottom": 33,
+          "left": 257,
+          "right": 387,
+          "width": 130,
+          "height": 27
+        },
+        {
+          "id": "LABEL",
+          "text": "Section",
+          "top": 10,
+          "bottom": 29,
+          "left": 393,
+          "right": 439,
+          "width": 46,
+          "height": 20
+        },
+        {
+          "id": "sectionSelect",
+          "text": "windows (this machine)macbook",
+          "top": 39,
+          "bottom": 66,
+          "left": 147,
+          "right": 1008,
+          "width": 861,
+          "height": 27
+        },
+        {
+          "id": "btnSectionAdd",
+          "text": "Add section",
+          "top": 75,
+          "bottom": 96,
+          "left": 147,
+          "right": 228,
+          "width": 80,
+          "height": 21
+        },
+        {
+          "id": "btnSectionRename",
+          "text": "Rename section",
+          "top": 75,
+          "bottom": 96,
+          "left": 234,
+          "right": 335,
+          "width": 102,
+          "height": 21
+        },
+        {
+          "id": "btnSectionDelete",
+          "text": "Delete section",
+          "top": 75,
+          "bottom": 96,
+          "left": 341,
+          "right": 435,
+          "width": 93,
+          "height": 21
+        },
+        {
+          "id": "btnSave",
+          "text": "Save & Apply",
+          "top": 72,
+          "bottom": 99,
+          "left": 441,
+          "right": 544,
+          "width": 104,
+          "height": 27
+        }
+      ],
+      "center_spread_px": 66,
+      "section_select": {
+        "computed_width": "860.594px",
+        "top": 39,
+        "bottom": 66,
+        "left": 147,
+        "right": 1008,
+        "width": 861,
+        "height": 27,
+        "options": [
+          "windows (this machine)",
+          "macbook"
+        ]
+      },
+      "scroll_width": 1024,
+      "version_label": null,
+      "controls": [
+        {
+          "key": "searchInput",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "ms_fade_duration_seconds",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "ms_update_hz",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "ms_min_value",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "ms_max_value",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "ms_macro_delay_ms",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "ms_modifier_hold_ms",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "ms_layer_refresh_ms",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "as_update_hz",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "as_deadzone",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "as_curve",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#11",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#12",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#13",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#14",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#15",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#16",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#17",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#18",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#19",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#20",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#21",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#22",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "INPUT#23",
+          "computed_width": "auto",
+          "box_width": 0
+        },
+        {
+          "key": "saveAsInput",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "renameInput",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "macroEditorName",
+          "computed_width": "100%",
+          "box_width": 0
+        },
+        {
+          "key": "macroEditorType",
+          "computed_width": "100%",
+          "box_width": 0
+        }
+      ],
+      "one_row": false
+    }
+  },
+  "page_errors": []
+}

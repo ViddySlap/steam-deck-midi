@@ -6,6 +6,7 @@ import copy
 import ipaddress
 import json
 import os
+import sys
 import tempfile
 import threading
 import uuid
@@ -15,7 +16,7 @@ from typing import Any, Callable
 from flask import Flask, Response, jsonify, request, send_from_directory
 from werkzeug.serving import WSGIRequestHandler, make_server
 
-from windows import engine_config_api
+from windows import build_fingerprint, engine_config_api
 from windows.live_events import LiveEvents
 from windows.osc_relay import OscRelayError, OscRelayUpdateError
 from windows.bridge_settings import BridgeSettings
@@ -419,6 +420,15 @@ class MappingUIServer:
                     self.shutdown_fn()
                     self._stopping = True
             return jsonify({"stopping": True}), 202
+
+        @app.route("/api/version", methods=["GET"])
+        def get_version() -> Response:
+            return jsonify({
+                "version": build_fingerprint.APP_VERSION,
+                "git_commit": build_fingerprint.GIT_COMMIT,
+                "build_time_utc": build_fingerprint.BUILD_TIME_UTC,
+                "frozen": bool(getattr(sys, "frozen", False)),
+            })
 
         @app.route("/api/settings", methods=["GET"])
         def get_settings() -> Response:

@@ -1,0 +1,33 @@
+{
+  "tag": "before",
+  "revision": "HEAD",
+  "work": "/tmp/sdauto-a4/browser/before-try63vgm",
+  "bridge_argv": [
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+    "-B",
+    "-u",
+    "-m",
+    "windows.win_recv",
+    "--listen",
+    "127.0.0.1:47941",
+    "--map",
+    "config/windows_midi_map.json",
+    "--preset-section",
+    "windows",
+    "--dry-run",
+    "--no-engines",
+    "--no-pulse",
+    "--no-osc-relay",
+    "--no-browser",
+    "--ui-port",
+    "17941"
+  ],
+  "bridge_pid": 52469,
+  "api_version": {
+    "status": 404,
+    "content_type": "text/html; charset=utf-8"
+  },
+  "measure_exit": 0,
+  "bridge_pid_gone": true,
+  "exit": 0
+}

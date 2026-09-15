@@ -9,7 +9,11 @@ The control contract is stable Action IDs:
 - Deck sender maps button tokens to Action IDs and sends UDP JSON events.
 - Windows receiver maps Action IDs to MIDI note/CC output for Resolume.
 
-## Current status (v0.4.9)
+## Current status (0.5.0 candidate)
+
+Version 0.5.0 is a candidate on branch `chain/steamdeck-20260914`, NOT released. The latest
+release is v0.4.9. The running bridge reports its version at `GET /api/version` and in the
+editor status bar.
 
 Core bridge:
 

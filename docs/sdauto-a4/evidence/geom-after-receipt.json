@@ -1,0 +1,49 @@
+{
+  "tag": "geom-after",
+  "revision": "WORKTREE",
+  "work": "/tmp/sdauto-a4/browser/geom-after-klk003kn",
+  "bridge_argv": [
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+    "-B",
+    "-u",
+    "-m",
+    "windows.win_recv",
+    "--listen",
+    "127.0.0.1:47946",
+    "--map",
+    "config/windows_midi_map.json",
+    "--preset-section",
+    "windows",
+    "--dry-run",
+    "--no-engines",
+    "--no-pulse",
+    "--no-osc-relay",
+    "--no-browser",
+    "--ui-port",
+    "17946"
+  ],
+  "bridge_pid": 56567,
+  "api_version": {
+    "status": 200,
+    "content_type": "application/json",
+    "body": {
+      "build_time_utc": "source",
+      "frozen": false,
+      "git_commit": "source",
+      "version": "0.5.0"
+    }
+  },
+  "measure_exit": 0,
+  "geometry": {
+    "command": [
+      "node",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdlive-gate/scripts/geom_live.cjs",
+      "http://127.0.0.1:17946",
+      "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+      "/tmp/sdauto-a4/browser/geom-after-geometry"
+    ],
+    "exit": 0
+  },
+  "bridge_pid_gone": true,
+  "exit": 0
+}

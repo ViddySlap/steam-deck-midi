@@ -14,6 +14,7 @@ Later links must extend this inventory with every new UI or control action.
 | GET | `/api/state-version` | Return an integer revision for applied reloads and successful per-action disk writes. |
 | POST | `/api/reload` | Request an immediate reload of the active preset and changed local settings. |
 | POST | `/api/shutdown` | Loopback only: request graceful bridge Quit; return 202 {"stopping": true}, including repeated calls while stopping. |
+| GET | `/api/version` | Return {version, git_commit, build_time_utc, frozen} from windows/build_fingerprint.py; git_commit and build_time_utc read `source` until build_exe_v2.ps1 regenerates it, and frozen is true only in the packaged EXE. |
 | GET | `/api/settings` | Return live preset_section, listen, midi_port, feedback_port, pulse_port, ui_port, and map_path. |
 | PUT | `/api/settings` | Persist preset_section in bridge.local.json and request a live reload. |
 | GET | `/api/mappings` | Read selected section mappings, settings, and section/preset metadata; optional ?section=name defaults to this machine. |

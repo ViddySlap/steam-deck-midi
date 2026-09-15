@@ -1,7 +1,8 @@
 # TODO - Steam Deck MIDI
 
 > **Status: historical.** The release checklist below targets **v0.2.0**, which shipped long ago.
-> The project is on **v0.4.9**; see [README.md](README.md) for current status and
+> The latest release is **v0.4.9**; **0.5.0** is a candidate on branch `chain/steamdeck-20260914`,
+> NOT released. See [README.md](README.md) for current status and
 > [docs/](docs/) for current documentation. This file is kept for its architecture notes at the
 > bottom, which are still accurate, and as a record of how a release was cut. Do not treat the
 > steps below as outstanding work.

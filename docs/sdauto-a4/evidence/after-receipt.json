@@ -1,0 +1,39 @@
+{
+  "tag": "after",
+  "revision": "WORKTREE",
+  "work": "/tmp/sdauto-a4/browser/after-kuncq7u7",
+  "bridge_argv": [
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+    "-B",
+    "-u",
+    "-m",
+    "windows.win_recv",
+    "--listen",
+    "127.0.0.1:47942",
+    "--map",
+    "config/windows_midi_map.json",
+    "--preset-section",
+    "windows",
+    "--dry-run",
+    "--no-engines",
+    "--no-pulse",
+    "--no-osc-relay",
+    "--no-browser",
+    "--ui-port",
+    "17942"
+  ],
+  "bridge_pid": 52487,
+  "api_version": {
+    "status": 200,
+    "content_type": "application/json",
+    "body": {
+      "build_time_utc": "source",
+      "frozen": false,
+      "git_commit": "source",
+      "version": "0.5.0"
+    }
+  },
+  "measure_exit": 0,
+  "bridge_pid_gone": true,
+  "exit": 0
+}

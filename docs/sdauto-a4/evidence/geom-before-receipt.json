@@ -1,0 +1,43 @@
+{
+  "tag": "geom-before",
+  "revision": "HEAD",
+  "work": "/tmp/sdauto-a4/browser/geom-before-t4dq0pn1",
+  "bridge_argv": [
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+    "-B",
+    "-u",
+    "-m",
+    "windows.win_recv",
+    "--listen",
+    "127.0.0.1:47945",
+    "--map",
+    "config/windows_midi_map.json",
+    "--preset-section",
+    "windows",
+    "--dry-run",
+    "--no-engines",
+    "--no-pulse",
+    "--no-osc-relay",
+    "--no-browser",
+    "--ui-port",
+    "17945"
+  ],
+  "bridge_pid": 56530,
+  "api_version": {
+    "status": 404,
+    "content_type": "text/html; charset=utf-8"
+  },
+  "measure_exit": 0,
+  "geometry": {
+    "command": [
+      "node",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdlive-gate/scripts/geom_live.cjs",
+      "http://127.0.0.1:17945",
+      "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+      "/tmp/sdauto-a4/browser/geom-before-geometry"
+    ],
+    "exit": 0
+  },
+  "bridge_pid_gone": true,
+  "exit": 0
+}
