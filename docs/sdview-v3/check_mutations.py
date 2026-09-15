@@ -44,6 +44,8 @@ mutations = [
      '      draft.dirty = false;', 'typed inline field participates in draft listener'),
     ('foreign-json', "          if (!ids.includes(id)) throw new Error(id + ' does not belong to this control.');",
      '', 'bad Advanced input commits nothing'),
+    ('shape-preflight', "            renderFields(spec.type, spec, document.createElement('div'), 'controller_check_', document.createElement('div'));",
+     '', 'Advanced shape errors are inline before any commit'),
     ('conflict-mark', "        row.classList.toggle('controller-conflict', conflicting.has(action));",
      '', 'open control conflicting row marked'),
     ('macro-apply', '        applyMacroToAction(macro, action);', '', 'inline macro merge matches List'),

@@ -158,6 +158,12 @@ const ControllerView = (() => {
           if (spec !== null && (!spec || typeof spec !== 'object' || Array.isArray(spec) || !Object.hasOwn(DEFAULTS, spec.type))) {
             throw new Error(id + ': expected a mapping object with a supported type, or null.');
           }
+          if (spec) {
+            // A malformed field (for example a string refresh_actions) must
+            // not throw halfway through committing the control's other IDs.
+            mappingDesc(spec);
+            renderFields(spec.type, spec, document.createElement('div'), 'controller_check_', document.createElement('div'));
+          }
         }
       } catch (e) { errorText(error, 'JSON error: ' + e.message); return; }
       // Validate the entire object before any per-id commit, as in List applyJson.

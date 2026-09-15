@@ -3,169 +3,195 @@
     "name": "pristine",
     "command": [
       "/opt/homebrew/bin/node",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/static/index.html"
     ],
-    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw",
     "exit": 0,
     "expected": "GREEN",
     "assertion": "",
-    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/pristine.log"
+    "log": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/pristine.log"
   },
   {
     "name": "field-apply",
     "command": [
       "/opt/homebrew/bin/node",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/static/index.html"
     ],
-    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw",
     "exit": 1,
     "expected": "RED",
     "assertion": "note form commits its own fields",
-    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/field-apply.log"
+    "log": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/field-apply.log"
   },
   {
     "name": "field-apply-restored",
     "command": [
       "/opt/homebrew/bin/node",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/static/index.html"
     ],
-    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw",
     "exit": 0,
     "expected": "GREEN",
     "assertion": "",
-    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/field-apply-restored.log"
+    "log": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/field-apply-restored.log"
   },
   {
     "name": "draft-tracking",
     "command": [
       "/opt/homebrew/bin/node",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/static/index.html"
     ],
-    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw",
     "exit": 1,
     "expected": "RED",
     "assertion": "typed inline field participates in draft listener",
-    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/draft-tracking.log"
+    "log": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/draft-tracking.log"
   },
   {
     "name": "draft-tracking-restored",
     "command": [
       "/opt/homebrew/bin/node",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/static/index.html"
     ],
-    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw",
     "exit": 0,
     "expected": "GREEN",
     "assertion": "",
-    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/draft-tracking-restored.log"
+    "log": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/draft-tracking-restored.log"
   },
   {
     "name": "foreign-json",
     "command": [
       "/opt/homebrew/bin/node",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/static/index.html"
     ],
-    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw",
     "exit": 1,
     "expected": "RED",
     "assertion": "bad Advanced input commits nothing",
-    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/foreign-json.log"
+    "log": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/foreign-json.log"
   },
   {
     "name": "foreign-json-restored",
     "command": [
       "/opt/homebrew/bin/node",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/static/index.html"
     ],
-    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw",
     "exit": 0,
     "expected": "GREEN",
     "assertion": "",
-    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/foreign-json-restored.log"
+    "log": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/foreign-json-restored.log"
+  },
+  {
+    "name": "shape-preflight",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw",
+    "exit": 1,
+    "expected": "RED",
+    "assertion": "Advanced shape errors are inline before any commit",
+    "log": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/shape-preflight.log"
+  },
+  {
+    "name": "shape-preflight-restored",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw",
+    "exit": 0,
+    "expected": "GREEN",
+    "assertion": "",
+    "log": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/shape-preflight-restored.log"
   },
   {
     "name": "conflict-mark",
     "command": [
       "/opt/homebrew/bin/node",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/static/index.html"
     ],
-    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw",
     "exit": 1,
     "expected": "RED",
     "assertion": "open control conflicting row marked",
-    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/conflict-mark.log"
+    "log": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/conflict-mark.log"
   },
   {
     "name": "conflict-mark-restored",
     "command": [
       "/opt/homebrew/bin/node",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/static/index.html"
     ],
-    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw",
     "exit": 0,
     "expected": "GREEN",
     "assertion": "",
-    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/conflict-mark-restored.log"
+    "log": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/conflict-mark-restored.log"
   },
   {
     "name": "macro-apply",
     "command": [
       "/opt/homebrew/bin/node",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/static/index.html"
     ],
-    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw",
     "exit": 1,
     "expected": "RED",
     "assertion": "inline macro merge matches List",
-    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/macro-apply.log"
+    "log": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/macro-apply.log"
   },
   {
     "name": "macro-apply-restored",
     "command": [
       "/opt/homebrew/bin/node",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/static/index.html"
     ],
-    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw",
     "exit": 0,
     "expected": "GREEN",
     "assertion": "",
-    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/macro-apply-restored.log"
+    "log": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/macro-apply-restored.log"
   },
   {
     "name": "sibling-draft",
     "command": [
       "/opt/homebrew/bin/node",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/static/index.html"
     ],
-    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw",
     "exit": 1,
     "expected": "RED",
     "assertion": "sibling commit preserves typed fields",
-    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/sibling-draft.log"
+    "log": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/sibling-draft.log"
   },
   {
     "name": "sibling-draft-restored",
     "command": [
       "/opt/homebrew/bin/node",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
-      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/static/index.html"
     ],
-    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw",
     "exit": 0,
     "expected": "GREEN",
     "assertion": "",
-    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/sibling-draft-restored.log"
+    "log": "/private/tmp/sdview-v3/mutations/proof-y9hd09sw/sibling-draft-restored.log"
   }
 ]

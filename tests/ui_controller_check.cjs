@@ -367,9 +367,11 @@ async function checkEditing() {
     ['{"L2_SOFT":', /JSON error/],
     [JSON.stringify({L2_SOFT:{type:'note',note:11},BTN_A:{type:'note',note:12}}), /does not belong/],
     [JSON.stringify({L2_SOFT:{type:'note',note:11},L2_FULL:[]}), /expected a mapping object/],
+    [JSON.stringify({L2_SOFT:{type:'note',note:11},L2_FULL:{type:'staged_note_macro',refresh_actions:'L_PAD_LEFT'}}), /JSON error/],
     ['[]',/Expected an object/], ['null',/Expected an object/],
   ]) {
-    raw().value=value; await raw().fire('input'); await apply();
+    raw().value=value; await raw().fire('input');
+    await assert.doesNotReject(apply(), 'Advanced shape errors are inline before any commit');
     assert.equal(stateJson(),beforeJson,'bad Advanced input commits nothing');
     assert.match(id('controllerAdvanced').querySelector('.json-err').textContent,pattern);
   }

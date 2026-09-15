@@ -58,7 +58,9 @@ only after its existing revision/preserveEdits guards have accepted the response
 
 Advanced validates the whole parsed object before calling commit per owned ID,
 the same state path List applyJson uses. Syntax, top-level shape, foreign keys,
-and non-mapping values/unsupported types refuse atomically. Full parser rules
+and non-mapping values/unsupported types refuse atomically. A detached render
+of every supplied mapping catches malformed field shapes before any commit
+(for example, refresh_actions supplied as a string). Full parser rules
 still validate on Save, as in List; they were not changed. Numeric form range
 errors appear inline and leave state unchanged. Clear/shared fallback semantics
 are unchanged from V1. Global Reset and Reload remain the existing handlers.
@@ -78,7 +80,7 @@ ui_sections_check.cjs are unchanged; controller check additions are new assertio
 | M | TMPDIR=/tmp/sdview-v3 /opt/homebrew/bin/node tests/ui_controller_macro_check.cjs | Exit 0; 48 real scratch disk writes match page Save, 72 incompatible writes refuse without byte changes |
 | R | TMPDIR=/tmp/sdview-v3 /opt/homebrew/bin/node tests/ui_reload_check.cjs | Exit 0; timer, clean editor/engines, dirty notice, explicit reload, in-flight edits, retry |
 | S | TMPDIR=/tmp/sdview-v3 /opt/homebrew/bin/node tests/ui_sections_check.cjs | Exit 0; selection, dirty guard, engine refresh, remote save, shared inheritance, CRUD |
-| Mutations | TMPDIR=/tmp/sdview-v3 .venv/bin/python docs/sdview-v3/check_mutations.py /tmp/sdview-v3/mutations | Exit 0; pristine GREEN, six planted faults RED (exit 1), six restored GREEN (exit 0) |
+| Mutations | TMPDIR=/tmp/sdview-v3 .venv/bin/python docs/sdview-v3/check_mutations.py /tmp/sdview-v3/mutations | Exit 0; pristine GREEN, seven planted faults RED (exit 1), seven restored GREEN (exit 0) |
 | Whitespace | git diff --check | Exit 0 |
 
 | Source mutation in scratch | Named assertion that goes RED |
@@ -86,6 +88,7 @@ ui_sections_check.cjs are unchanged; controller check additions are new assertio
 | Apply uses DEFAULTS instead of readFields | note form commits its own fields |
 | Remove draft dirty/revision tracking | typed inline field participates in draft listener |
 | Remove foreign Action ID refusal | bad Advanced input commits nothing |
+| Remove detached form preflight | Advanced shape errors are inline before any commit |
 | Remove conflict row class | open control conflicting row marked |
 | Remove inline macro application | inline macro merge matches List |
 | Clear all editor caches on refresh | sibling commit preserves typed fields |
@@ -94,11 +97,14 @@ Reproducible runner: docs/sdview-v3/check_mutations.py. Exact per-run commands,
 exit codes, named assertions and logs: mutation-results.json. The first scratch
 proof for cache removal raised TypeError on the missing field. The new sibling
 assertion now safely reads an absent node and emits its named AssertionError;
-the full matrix was rerun. No product source was mutated by these proofs.
+the full matrix was rerun. No product source was mutated by these proofs. A new malformed refresh_actions
+check first reproduced a partial-commit TypeError (exit 1,
+/tmp/sdview-v3/nested-shape-red.log). Detached shared-form preflight fixes it;
+removing that preflight now fails the named inline-error assertion.
 
 ## Full Mac suite
 
-Ran 865 tests in 13.491s; OK (skipped=2); exit 0.
+Ran 865 tests in 12.635s; OK (skipped=2); exit 0.
 Command: `TMPDIR=/tmp/sdview-v3 .venv/bin/python -m unittest discover -s tests -p 'test_*.py'`.
 Log: /tmp/sdview-v3/mac-suite.log. Existing skips are the anticipated global-color
 channel-CC remap and PowerShell guard execution without powershell/pwsh.
