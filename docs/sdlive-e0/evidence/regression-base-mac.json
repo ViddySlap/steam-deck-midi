@@ -1,0 +1,21 @@
+{
+  "root": "/private/tmp/sdlive-e0/base",
+  "runs": 1,
+  "runs_with_error": 1,
+  "kinds": {
+    "AssertionError: b'' != b'{' : all declared body bytes must be read before close": 1,
+    "AssertionError: b'' != b'null' : all declared body bytes must be read before close": 1,
+    "AssertionError: b'' != b'{}' : all declared body bytes must be read before close": 3,
+    "AssertionError: b'' != b'{\"device_id\": \"9\"}'": 1
+  },
+  "cases": {
+    "test_error_replies_consume_declared_body_before_close (test_deck_control_api.DeckControlAPITests.test_error_replies_consume_declared_body_before_close) (method='POST', path='/api/settings', body=b'{')": 1,
+    "test_error_replies_consume_declared_body_before_close (test_deck_control_api.DeckControlAPITests.test_error_replies_consume_declared_body_before_close) (method='POST', path='/api/settings', body=b'null')": 1,
+    "test_error_replies_consume_declared_body_before_close (test_deck_control_api.DeckControlAPITests.test_error_replies_consume_declared_body_before_close) (method='PATCH', path='/api/settings', body=b'{}')": 1,
+    "test_error_replies_consume_declared_body_before_close (test_deck_control_api.DeckControlAPITests.test_error_replies_consume_declared_body_before_close) (method='BOGUS', path='/api/settings', body=b'{}')": 1,
+    "test_error_replies_consume_declared_body_before_close (test_deck_control_api.DeckControlAPITests.test_error_replies_consume_declared_body_before_close) (method='POST', path='/missing', body=b'{}')": 1,
+    "test_error_replies_consume_declared_body_before_close (test_deck_control_api.DeckControlAPITests.test_error_replies_consume_declared_body_before_close)": 1
+  },
+  "test": "test_error_replies_consume_declared_body_before_close",
+  "expected": "red"
+}

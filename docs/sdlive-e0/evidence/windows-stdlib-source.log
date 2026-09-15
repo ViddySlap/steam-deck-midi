@@ -1,0 +1,131 @@
+COMMAND C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe -B C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-e0\stdlib-source.py
+CWD C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc
+LAUNCHER_PID 285460
+PYTHON_PID 289652
+C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\socketserver.py TCPServer.shutdown_request line 513
+513:     def shutdown_request(self, request):
+514:         """Called to shutdown and close an individual request."""
+515:         try:
+516:             #explicitly shutdown.  socket.close() merely releases
+517:             #the socket and waits for GC to perform the actual close.
+518:             request.shutdown(socket.SHUT_WR)
+519:         except OSError:
+520:             pass #some platforms may raise ENOTCONN here
+521:         self.close_request(request)
+C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\socketserver.py StreamRequestHandler.finish line 822
+822:     def finish(self):
+823:         if not self.wfile.closed:
+824:             try:
+825:                 self.wfile.flush()
+826:             except socket.error:
+827:                 # A final socket error may have occurred here, such as
+828:                 # the local error ECONNABORTED.
+829:                 pass
+830:         self.wfile.close()
+831:         self.rfile.close()
+C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\http\client.py HTTPConnection.getresponse line 1386
+1386:     def getresponse(self):
+1387:         """Get the response from the server.
+1388:
+1389:         If the HTTPConnection is in the correct state, returns an
+1390:         instance of HTTPResponse or of whatever object is returned by
+1391:         the response_class variable.
+1392:
+1393:         If a request has not been sent or if a previous response has
+1394:         not be handled, ResponseNotReady is raised.  If the HTTP
+1395:         response indicates that the connection should be closed, then
+1396:         it will be closed before the response is returned.  When the
+1397:         connection is closed, the underlying socket is closed.
+1398:         """
+1399:
+1400:         # if a prior response has been completed, then forget about it.
+1401:         if self.__response and self.__response.isclosed():
+1402:             self.__response = None
+1403:
+1404:         # if a prior response exists, then it must be completed (otherwise, we
+1405:         # cannot read this response's header to determine the connection-close
+1406:         # behavior)
+1407:         #
+1408:         # note: if a prior response existed, but was connection-close, then the
+1409:         # socket and response were made independent of this HTTPConnection
+1410:         # object since a new request requires that we open a whole new
+1411:         # connection
+1412:         #
+1413:         # this means the prior response had one of two states:
+1414:         #   1) will_close: this connection was reset and the prior socket and
+1415:         #                  response operate independently
+1416:         #   2) persistent: the response was retained and we await its
+1417:         #                  isclosed() status to become true.
+1418:         #
+1419:         if self.__state != _CS_REQ_SENT or self.__response:
+1420:             raise ResponseNotReady(self.__state)
+1421:
+1422:         if self.debuglevel > 0:
+1423:             response = self.response_class(self.sock, self.debuglevel,
+1424:                                            method=self._method)
+1425:         else:
+1426:             response = self.response_class(self.sock, method=self._method)
+1427:
+1428:         try:
+1429:             try:
+1430:                 response.begin()
+1431:             except ConnectionError:
+1432:                 self.close()
+1433:                 raise
+1434:             assert response.will_close != _UNKNOWN
+1435:             self.__state = _CS_IDLE
+1436:
+1437:             if response.will_close:
+1438:                 # this effectively passes the connection to the response
+1439:                 self.close()
+1440:             else:
+1441:                 # remember this, so we can tell when it is complete
+1442:                 self.__response = response
+1443:
+1444:             return response
+1445:         except:
+1446:             response.close()
+1447:             raise
+C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\http\client.py HTTPResponse.read line 463
+463:     def read(self, amt=None):
+464:         """Read and return the response body, or up to the next amt bytes."""
+465:         if self.fp is None:
+466:             return b""
+467:
+468:         if self._method == "HEAD":
+469:             self._close_conn()
+470:             return b""
+471:
+472:         if self.chunked:
+473:             return self._read_chunked(amt)
+474:
+475:         if amt is not None and amt >= 0:
+476:             if self.length is not None and amt > self.length:
+477:                 # clip the read to the "end of response"
+478:                 amt = self.length
+479:             s = self.fp.read(amt)
+480:             if not s and amt:
+481:                 # Ideally, we would raise IncompleteRead if the content-length
+482:                 # wasn't satisfied, but it might break compatibility.
+483:                 self._close_conn()
+484:             elif self.length is not None:
+485:                 self.length -= len(s)
+486:                 if not self.length:
+487:                     self._close_conn()
+488:             return s
+489:         else:
+490:             # Amount is not given (unbounded read) so we must check self.length
+491:             if self.length is None:
+492:                 s = self.fp.read()
+493:             else:
+494:                 try:
+495:                     s = self._safe_read(self.length)
+496:                 except IncompleteRead:
+497:                     self._close_conn()
+498:                     raise
+499:                 self.length = 0
+500:             self._close_conn()        # we read everything
+501:             return s
+PID 285460 gone=True
+PYTHON_UNDER_CLONE_OR_WORK 0
+EXIT 0

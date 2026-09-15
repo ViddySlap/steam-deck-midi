@@ -1,0 +1,214 @@
+From https://github.com/ViddySlap/steam-deck-midi
+   19cd48e..14aa218  chain/steamdeck-20260914 -> origin/chain/steamdeck-20260914
+Updating 19cd48e..14aa218
+Fast-forward
+ docs/sdfix-gate/REPORT.md                          |   237 +
+ docs/sdfix-gate/evidence/arrangement.json          |   136 +
+ docs/sdfix-gate/evidence/bar1-mac-table.jsonl      |     5 +
+ docs/sdfix-gate/evidence/bar1-windows-table.jsonl  |     3 +
+ docs/sdfix-gate/evidence/controls-base-control.log |    34 +
+ docs/sdfix-gate/evidence/controls-head.log         |    34 +
+ .../evidence/controls/controls-results.json        |   440 +
+ .../evidence/controls/drill-1440x900.json          |   359 +
+ docs/sdfix-gate/evidence/gate-geometry-base.json   | 11098 +++++++
+ docs/sdfix-gate/evidence/gate-geometry-head.json   | 30322 +++++++++++++++++++
+ docs/sdfix-gate/evidence/geom-default-launch.log   |  1053 +
+ docs/sdfix-gate/evidence/geom-gate-base.log        |    39 +
+ docs/sdfix-gate/evidence/geom-gate-head.log        |    21 +
+ docs/sdfix-gate/evidence/geom-readme.log           |  4443 +++
+ docs/sdfix-gate/evidence/head-at-step1.txt         |     1 +
+ .../evidence/laptop/laptop-0-guard-snapshot.txt    |     1 +
+ .../evidence/laptop/laptop-1-inventory-pre.txt     |     2 +
+ docs/sdfix-gate/evidence/laptop/laptop-2-pins.txt  |   261 +
+ .../evidence/laptop/laptop-3-winmatrix.txt         |    78 +
+ docs/sdfix-gate/evidence/laptop/laptop-4-suite.txt |    12 +
+ .../evidence/laptop/laptop-5-inventory-post.txt    |    11 +
+ .../evidence/laptop/laptop-9-guard-compare.txt     |     1 +
+ docs/sdfix-gate/evidence/laptop/laptop-STEPS       |    23 +
+ .../evidence/laptop/laptop2-0-guard-snapshot.txt   |     1 +
+ .../laptop/laptop2-1-get-suite1-stderr.txt         |     0
+ .../laptop/laptop2-2-get-suite1-stdout.txt         |     0
+ .../evidence/laptop/laptop2-3-suite2.txt           |    12 +
+ .../laptop/laptop2-4-get-suite2-stderr.txt         |     0
+ .../evidence/laptop/laptop2-5-inventory-post.txt   |    11 +
+ .../evidence/laptop/laptop2-9-guard-compare.txt    |     1 +
+ docs/sdfix-gate/evidence/laptop/laptop2-STEPS      |    15 +
+ .../evidence/laptop/laptop3-0-guard-snapshot.txt   |     1 +
+ .../evidence/laptop/laptop3-1-put-py.txt           |     0
+ .../sdfix-gate/evidence/laptop/laptop3-2-flake.txt |     9 +
+ .../evidence/laptop/laptop3-5-inventory-post.txt   |    11 +
+ .../evidence/laptop/laptop3-9-guard-compare.txt    |     1 +
+ docs/sdfix-gate/evidence/laptop/laptop3-STEPS      |    11 +
+ .../evidence/laptop/windows-suite-run1.stderr.log  |   922 +
+ .../evidence/laptop/windows-suite-run2.stderr.log  |   908 +
+ docs/sdfix-gate/evidence/leader-clearance.txt      |    16 +
+ .../evidence/leader-over-shapes-base.txt           |     7 +
+ .../evidence/leader-over-shapes-head.txt           |    17 +
+ docs/sdfix-gate/evidence/mac-pids-gone.txt         |    22 +
+ docs/sdfix-gate/evidence/mac-suite.log             |   941 +
+ docs/sdfix-gate/evidence/mutations-m1-surgical.log |    25 +
+ docs/sdfix-gate/evidence/mutations.log             |    54 +
+ .../evidence/mutations/m1-bridge-restart.txt       |     2 +
+ .../evidence/mutations/m1-bridge-start.txt         |     3 +
+ .../evidence/mutations/m1-bridge-stop1.txt         |     1 +
+ .../evidence/mutations/m1-bridge-stop2.txt         |     1 +
+ docs/sdfix-gate/evidence/mutations/m1-broad-u1.log |  1049 +
+ docs/sdfix-gate/evidence/mutations/m1-gate.log     |     4 +
+ .../evidence/mutations/m1-restored-gate.log        |     2 +
+ .../evidence/mutations/m1-restored-u1.log          |  1049 +
+ docs/sdfix-gate/evidence/mutations/m1-u1.log       |  1049 +
+ .../evidence/mutations/m2-bridge-restart.txt       |     2 +
+ .../evidence/mutations/m2-bridge-start.txt         |     3 +
+ .../evidence/mutations/m2-bridge-stop1.txt         |     1 +
+ .../evidence/mutations/m2-bridge-stop2.txt         |     1 +
+ docs/sdfix-gate/evidence/mutations/m2-gate.log     |     4 +
+ .../evidence/mutations/m2-restored-gate.log        |     2 +
+ .../evidence/mutations/m2-restored-u1.log          |  1049 +
+ docs/sdfix-gate/evidence/mutations/m2-u1.log       |   108 +
+ .../evidence/mutations/m3-bridge-restart.txt       |     2 +
+ .../evidence/mutations/m3-bridge-start.txt         |     3 +
+ .../evidence/mutations/m3-bridge-stop1.txt         |     1 +
+ .../evidence/mutations/m3-bridge-stop2.txt         |     1 +
+ docs/sdfix-gate/evidence/mutations/m3-gate.log     |     3 +
+ .../evidence/mutations/m3-restored-gate.log        |     2 +
+ .../evidence/mutations/m3-restored-u1.log          |  1049 +
+ docs/sdfix-gate/evidence/mutations/m3-u1.log       |   108 +
+ docs/sdfix-gate/evidence/ps/inventory.ps1          |    17 +
+ docs/sdfix-gate/evidence/ps/laptop.sh              |    17 +
+ docs/sdfix-gate/evidence/ps/mac-matrix.sh          |    12 +
+ docs/sdfix-gate/evidence/ps/mutations.sh           |    20 +
+ docs/sdfix-gate/evidence/ps/pins.ps1               |    29 +
+ docs/sdfix-gate/evidence/ps/suite.ps1              |    34 +
+ docs/sdfix-gate/evidence/ps/winmatrix.ps1          |    64 +
+ docs/sdfix-gate/evidence/shasums.log               |    10 +
+ .../u1-wrapper-default-launch-receipt.json         |    49 +
+ docs/sdfix-gate/evidence/u1-wrapper-receipt.json   |   140 +
+ .../evidence/ui_controller_check.cjs.log           |     2 +
+ .../evidence/ui_controller_macro_check.cjs.log     |     1 +
+ docs/sdfix-gate/evidence/ui_reload_check.cjs.log   |     1 +
+ docs/sdfix-gate/evidence/ui_sections_check.cjs.log |     1 +
+ .../screenshots/after-1024x768-card-closed.png     |   Bin 0 -> 116757 bytes
+ .../screenshots/after-1024x768-card-open.png       |   Bin 0 -> 117050 bytes
+ .../screenshots/after-1366x768-card-closed.png     |   Bin 0 -> 131349 bytes
+ .../screenshots/after-1366x768-card-open.png       |   Bin 0 -> 145661 bytes
+ .../screenshots/after-1440x900-card-closed.png     |   Bin 0 -> 144509 bytes
+ .../screenshots/after-1440x900-card-open.png       |   Bin 0 -> 151355 bytes
+ .../screenshots/after-1920x1080-card-closed.png    |   Bin 0 -> 183778 bytes
+ .../screenshots/after-1920x1080-card-open.png      |   Bin 0 -> 194368 bytes
+ .../screenshots/before-1440x900-card-closed.png    |   Bin 0 -> 149671 bytes
+ .../screenshots/conflict-after-cancel-1440x900.png |   Bin 0 -> 163011 bytes
+ .../screenshots/conflict-after-save-1440x900.png   |   Bin 0 -> 148724 bytes
+ docs/sdfix-gate/scripts/arrangement.py             |    24 +
+ docs/sdfix-gate/scripts/bar1_table.py              |    25 +
+ docs/sdfix-gate/scripts/bridge.py                  |    90 +
+ docs/sdfix-gate/scripts/controls_gate.cjs          |   136 +
+ docs/sdfix-gate/scripts/geom_gate.cjs              |   202 +
+ docs/sdfix-gate/scripts/leader_clearance.py        |    20 +
+ docs/sdfix-gate/scripts/leader_over_shapes.py      |    36 +
+ docs/sdfix-gate/scripts/mutate.py                  |    43 +
+ 104 files changed, 58071 insertions(+)
+ create mode 100644 docs/sdfix-gate/REPORT.md
+ create mode 100644 docs/sdfix-gate/evidence/arrangement.json
+ create mode 100644 docs/sdfix-gate/evidence/bar1-mac-table.jsonl
+ create mode 100644 docs/sdfix-gate/evidence/bar1-windows-table.jsonl
+ create mode 100644 docs/sdfix-gate/evidence/controls-base-control.log
+ create mode 100644 docs/sdfix-gate/evidence/controls-head.log
+ create mode 100644 docs/sdfix-gate/evidence/controls/controls-results.json
+ create mode 100644 docs/sdfix-gate/evidence/controls/drill-1440x900.json
+ create mode 100644 docs/sdfix-gate/evidence/gate-geometry-base.json
+ create mode 100644 docs/sdfix-gate/evidence/gate-geometry-head.json
+ create mode 100644 docs/sdfix-gate/evidence/geom-default-launch.log
+ create mode 100644 docs/sdfix-gate/evidence/geom-gate-base.log
+ create mode 100644 docs/sdfix-gate/evidence/geom-gate-head.log
+ create mode 100644 docs/sdfix-gate/evidence/geom-readme.log
+ create mode 100644 docs/sdfix-gate/evidence/head-at-step1.txt
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop-0-guard-snapshot.txt
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop-1-inventory-pre.txt
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop-2-pins.txt
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop-3-winmatrix.txt
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop-4-suite.txt
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop-5-inventory-post.txt
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop-9-guard-compare.txt
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop-STEPS
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop2-0-guard-snapshot.txt
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop2-1-get-suite1-stderr.txt
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop2-2-get-suite1-stdout.txt
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop2-3-suite2.txt
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop2-4-get-suite2-stderr.txt
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop2-5-inventory-post.txt
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop2-9-guard-compare.txt
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop2-STEPS
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop3-0-guard-snapshot.txt
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop3-1-put-py.txt
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop3-2-flake.txt
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop3-5-inventory-post.txt
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop3-9-guard-compare.txt
+ create mode 100644 docs/sdfix-gate/evidence/laptop/laptop3-STEPS
+ create mode 100644 docs/sdfix-gate/evidence/laptop/windows-suite-run1.stderr.log
+ create mode 100644 docs/sdfix-gate/evidence/laptop/windows-suite-run2.stderr.log
+ create mode 100644 docs/sdfix-gate/evidence/leader-clearance.txt
+ create mode 100644 docs/sdfix-gate/evidence/leader-over-shapes-base.txt
+ create mode 100644 docs/sdfix-gate/evidence/leader-over-shapes-head.txt
+ create mode 100644 docs/sdfix-gate/evidence/mac-pids-gone.txt
+ create mode 100644 docs/sdfix-gate/evidence/mac-suite.log
+ create mode 100644 docs/sdfix-gate/evidence/mutations-m1-surgical.log
+ create mode 100644 docs/sdfix-gate/evidence/mutations.log
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m1-bridge-restart.txt
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m1-bridge-start.txt
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m1-bridge-stop1.txt
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m1-bridge-stop2.txt
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m1-broad-u1.log
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m1-gate.log
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m1-restored-gate.log
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m1-restored-u1.log
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m1-u1.log
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m2-bridge-restart.txt
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m2-bridge-start.txt
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m2-bridge-stop1.txt
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m2-bridge-stop2.txt
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m2-gate.log
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m2-restored-gate.log
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m2-restored-u1.log
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m2-u1.log
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m3-bridge-restart.txt
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m3-bridge-start.txt
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m3-bridge-stop1.txt
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m3-bridge-stop2.txt
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m3-gate.log
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m3-restored-gate.log
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m3-restored-u1.log
+ create mode 100644 docs/sdfix-gate/evidence/mutations/m3-u1.log
+ create mode 100644 docs/sdfix-gate/evidence/ps/inventory.ps1
+ create mode 100755 docs/sdfix-gate/evidence/ps/laptop.sh
+ create mode 100755 docs/sdfix-gate/evidence/ps/mac-matrix.sh
+ create mode 100755 docs/sdfix-gate/evidence/ps/mutations.sh
+ create mode 100644 docs/sdfix-gate/evidence/ps/pins.ps1
+ create mode 100644 docs/sdfix-gate/evidence/ps/suite.ps1
+ create mode 100644 docs/sdfix-gate/evidence/ps/winmatrix.ps1
+ create mode 100644 docs/sdfix-gate/evidence/shasums.log
+ create mode 100644 docs/sdfix-gate/evidence/u1-wrapper-default-launch-receipt.json
+ create mode 100644 docs/sdfix-gate/evidence/u1-wrapper-receipt.json
+ create mode 100644 docs/sdfix-gate/evidence/ui_controller_check.cjs.log
+ create mode 100644 docs/sdfix-gate/evidence/ui_controller_macro_check.cjs.log
+ create mode 100644 docs/sdfix-gate/evidence/ui_reload_check.cjs.log
+ create mode 100644 docs/sdfix-gate/evidence/ui_sections_check.cjs.log
+ create mode 100644 docs/sdfix-gate/screenshots/after-1024x768-card-closed.png
+ create mode 100644 docs/sdfix-gate/screenshots/after-1024x768-card-open.png
+ create mode 100644 docs/sdfix-gate/screenshots/after-1366x768-card-closed.png
+ create mode 100644 docs/sdfix-gate/screenshots/after-1366x768-card-open.png
+ create mode 100644 docs/sdfix-gate/screenshots/after-1440x900-card-closed.png
+ create mode 100644 docs/sdfix-gate/screenshots/after-1440x900-card-open.png
+ create mode 100644 docs/sdfix-gate/screenshots/after-1920x1080-card-closed.png
+ create mode 100644 docs/sdfix-gate/screenshots/after-1920x1080-card-open.png
+ create mode 100644 docs/sdfix-gate/screenshots/before-1440x900-card-closed.png
+ create mode 100644 docs/sdfix-gate/screenshots/conflict-after-cancel-1440x900.png
+ create mode 100644 docs/sdfix-gate/screenshots/conflict-after-save-1440x900.png
+ create mode 100644 docs/sdfix-gate/scripts/arrangement.py
+ create mode 100644 docs/sdfix-gate/scripts/bar1_table.py
+ create mode 100644 docs/sdfix-gate/scripts/bridge.py
+ create mode 100644 docs/sdfix-gate/scripts/controls_gate.cjs
+ create mode 100644 docs/sdfix-gate/scripts/geom_gate.cjs
+ create mode 100644 docs/sdfix-gate/scripts/leader_clearance.py
+ create mode 100644 docs/sdfix-gate/scripts/leader_over_shapes.py
+ create mode 100644 docs/sdfix-gate/scripts/mutate.py
+BASE 14aa21824843dbe148dc3ac3d0bf58929ef34c3a

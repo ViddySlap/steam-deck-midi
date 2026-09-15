@@ -1,0 +1,9 @@
+{
+  "root": "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi",
+  "runs": 1,
+  "runs_with_error": 0,
+  "kinds": {},
+  "cases": {},
+  "test": "test_error_replies_consume_declared_body_before_close",
+  "expected": "green"
+}

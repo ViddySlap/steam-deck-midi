@@ -1,0 +1,9 @@
+{
+  "root": "C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc",
+  "runs": 300,
+  "runs_with_error": 0,
+  "kinds": {},
+  "cases": {},
+  "test": "test_malformed_json_and_unsupported_method_are_json",
+  "expected": "green"
+}

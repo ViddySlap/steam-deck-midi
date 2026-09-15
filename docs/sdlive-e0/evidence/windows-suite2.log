@@ -1,0 +1,12 @@
+HEAD 9fc224a7d1232042ab32575b02c61be510747fa2
+SUITE C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe -m unittest discover -s tests -p "test_*.py"
+LAUNCHER_PID 278252
+SUMMARY Ran 868 tests in 24.764s
+SUMMARY OK (skipped=5)
+TAIL Ran 868 tests in 24.764s
+TAIL
+TAIL OK (skipped=5)
+PID 278252 launcher gone=True
+PID 287460 child C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\python.exe gone=True
+PYTHON_PROCESSES_AFTER 0
+EXIT 0

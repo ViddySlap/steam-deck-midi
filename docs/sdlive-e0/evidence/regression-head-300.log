@@ -1,0 +1,8 @@
+COMMAND C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe -B C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-e0\repeat.py C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc 300 test_error_replies_consume_declared_body_before_close green C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-e0\regression-head-300.json
+CWD C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc
+LAUNCHER_PID 286616
+RUNS 300 RUNS_WITH_ERROR 0
+PID 286616 gone=True
+PID 275184 gone=True
+PYTHON_UNDER_CLONE_OR_WORK 0
+EXIT 0

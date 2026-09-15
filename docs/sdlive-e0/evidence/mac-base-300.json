@@ -1,0 +1,9 @@
+{
+  "root": "/private/tmp/sdlive-e0/base",
+  "runs": 300,
+  "runs_with_error": 0,
+  "kinds": {},
+  "cases": {},
+  "test": "test_malformed_json_and_unsupported_method_are_json",
+  "expected": "green"
+}

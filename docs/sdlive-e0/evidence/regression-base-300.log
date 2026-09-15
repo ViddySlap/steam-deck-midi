@@ -1,0 +1,14 @@
+COMMAND C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe -B C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-e0\repeat.py C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-e0\base 300 test_error_replies_consume_declared_body_before_close red C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-e0\regression-base-300.json
+CWD C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-e0\base
+LAUNCHER_PID 287576
+RUNS 300 RUNS_WITH_ERROR 300
+KIND 857 AssertionError: b'' != b'{}' : all declared body bytes must be read before close
+KIND 287 AssertionError: b'' != b'{"device_id": "9"}'
+KIND 283 AssertionError: b'' != b'null' : all declared body bytes must be read before close
+KIND 276 AssertionError: b'' != b'{' : all declared body bytes must be read before close
+KIND 95 ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine
+KIND 2 ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+PID 287576 gone=True
+PID 274612 gone=True
+PYTHON_UNDER_CLONE_OR_WORK 0
+EXIT 0

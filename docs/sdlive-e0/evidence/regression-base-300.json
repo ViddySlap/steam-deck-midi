@@ -1,0 +1,23 @@
+{
+  "root": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\sdlive-e0\\base",
+  "runs": 300,
+  "runs_with_error": 300,
+  "kinds": {
+    "AssertionError: b'' != b'{' : all declared body bytes must be read before close": 276,
+    "AssertionError: b'' != b'null' : all declared body bytes must be read before close": 283,
+    "AssertionError: b'' != b'{}' : all declared body bytes must be read before close": 857,
+    "AssertionError: b'' != b'{\"device_id\": \"9\"}'": 287,
+    "ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine": 95,
+    "ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host": 2
+  },
+  "cases": {
+    "test_error_replies_consume_declared_body_before_close (test_deck_control_api.DeckControlAPITests.test_error_replies_consume_declared_body_before_close) (method='POST', path='/api/settings', body=b'{')": 300,
+    "test_error_replies_consume_declared_body_before_close (test_deck_control_api.DeckControlAPITests.test_error_replies_consume_declared_body_before_close) (method='POST', path='/api/settings', body=b'null')": 300,
+    "test_error_replies_consume_declared_body_before_close (test_deck_control_api.DeckControlAPITests.test_error_replies_consume_declared_body_before_close) (method='PATCH', path='/api/settings', body=b'{}')": 300,
+    "test_error_replies_consume_declared_body_before_close (test_deck_control_api.DeckControlAPITests.test_error_replies_consume_declared_body_before_close) (method='BOGUS', path='/api/settings', body=b'{}')": 300,
+    "test_error_replies_consume_declared_body_before_close (test_deck_control_api.DeckControlAPITests.test_error_replies_consume_declared_body_before_close) (method='POST', path='/missing', body=b'{}')": 300,
+    "test_error_replies_consume_declared_body_before_close (test_deck_control_api.DeckControlAPITests.test_error_replies_consume_declared_body_before_close)": 300
+  },
+  "test": "test_error_replies_consume_declared_body_before_close",
+  "expected": "red"
+}

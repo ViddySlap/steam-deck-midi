@@ -1,0 +1,16 @@
+{
+  "root": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\sdlive-e0\\base",
+  "runs": 300,
+  "runs_with_error": 66,
+  "kinds": {
+    "ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine": 70
+  },
+  "cases": {
+    "test_malformed_json_and_unsupported_method_are_json (test_deck_control_api.DeckControlAPITests.test_malformed_json_and_unsupported_method_are_json) (method='POST', body='null')": 22,
+    "test_malformed_json_and_unsupported_method_are_json (test_deck_control_api.DeckControlAPITests.test_malformed_json_and_unsupported_method_are_json) (method='BOGUS', body='{}')": 17,
+    "test_malformed_json_and_unsupported_method_are_json (test_deck_control_api.DeckControlAPITests.test_malformed_json_and_unsupported_method_are_json) (method='POST', body='{')": 23,
+    "test_malformed_json_and_unsupported_method_are_json (test_deck_control_api.DeckControlAPITests.test_malformed_json_and_unsupported_method_are_json) (method='PATCH', body='{}')": 8
+  },
+  "test": "test_malformed_json_and_unsupported_method_are_json",
+  "expected": "red"
+}
