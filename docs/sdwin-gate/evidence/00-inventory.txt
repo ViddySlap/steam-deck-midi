@@ -1,0 +1,39 @@
+SELF PID 278340
+== MATCHING (sdwin/clone/W4 pid) processes: 1
+{
+    "pid":  274508,
+    "ppid":  274036,
+    "name":  "cmd.exe",
+    "exe":  "c:\\windows\\system32\\cmd.exe",
+    "created":  "09/14/2026 19:23:04",
+    "cmd":  "\"c:\\windows\\system32\\cmd.exe\" /c \"powershell -NoProfile -ExecutionPolicy Bypass -File \"C:/Users/Ben/AppData/Local/Temp/sdwin/wg/inventory.ps1\"\""
+}
+== ALL python/pythonw: 0
+== W4 recorded PIDs
+266512 alive=False 
+262176 alive=False 
+278440 alive=False 
+250436 alive=False 
+277756 alive=False 
+267656 alive=False 
+233432 alive=False 
+272232 alive=False 
+274080 alive=False 
+251680 alive=False 
+275832 alive=False 
+274184 alive=False 
+278016 alive=False 
+262056 alive=False 
+254412 alive=False 
+== W4 work top-level
+2026-09-15T00:42:50.8695899Z  304  determinism-2.stdout.txt
+2026-09-15T00:42:51.5333014Z  93924  determinism-2.observation.json
+2026-09-15T00:42:53.3253661Z  548  determinism-2.gone.json
+2026-09-15T00:42:55.4099582Z  0  sensitivity.stderr.txt
+ForEach-Object : The property 'Length' cannot be found on this object. Verify that the property exists.
+At C:\Users\Ben\AppData\Local\Temp\sdwin\wg\inventory.ps1:25 char:97
++ ...  -Last 40 | ForEach-Object { "{0}  {1}  {2}" -f $_.LastWriteTimeUtc.T ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [ForEach-Object], PropertyNotFoundException
+    + FullyQualifiedErrorId : PropertyNotFoundStrict,Microsoft.PowerShell.Commands.ForEachObjectCommand
+ 

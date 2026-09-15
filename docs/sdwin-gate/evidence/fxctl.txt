@@ -1,0 +1,6 @@
+OK   58e47bfde76e 18919 fxctl presets/EDM Show.json
+BAD  458c4a48f3ef 16726 fxctl presets/PTZ.json
+OK   3b2ef2e5702e 7815 fxctl presets/EDM Show.json.v049.bak
+OK   3d5b996a843a 6906 fxctl presets/PTZ.json.v049.bak
+OK   5ebcf1e85dc3 7388 fxctl presets/default.json
+entries 5 bad 1

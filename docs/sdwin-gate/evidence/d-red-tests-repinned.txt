@@ -1,0 +1,14 @@
+s...F.
+======================================================================
+FAIL: test_remote_status_stderr_arguments_and_scp_failure (tests.test_showready_rail.ShowreadyTransportTests.test_remote_status_stderr_arguments_and_scp_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/sdwin-gate/mut/repo-d/tests/test_showready_rail.py", line 89, in test_remote_status_stderr_arguments_and_scp_failure
+    self.assertEqual(result.returncode, code, result.stderr)
+AssertionError: 0 != 7 : stderr fixture
+
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.221s
+
+FAILED (failures=1, skipped=1)

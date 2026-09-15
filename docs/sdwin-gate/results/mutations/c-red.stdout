@@ -1,0 +1,1 @@
+{"result": "/tmp/sdwin-gate/mutations/c-red.json.gz", "passed": false, "error": null, "comparisons": {"B1": {"totals": {"steps": 728, "mappings": 56, "mappings_exercised": 55, "messages_A": 1527, "messages_B": 1527}, "different_mappings": ["BTN_X"], "unexercised_mappings": ["BTN_X"]}}}

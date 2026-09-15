@@ -1,0 +1,18 @@
+orphan_head=d1367870b93921b115b4c0972c13393792ea5307 exit=0
+orphan_scoped_porcelain_lines=0 exit=0
+orphan_lstree_exit=0 n=74
+tag_lstree_exit=0 n=74
+cfg engines\osc_sync.json FILE ABSENT
+cfg engines\stageflow_bridge.json FILE ABSENT
+cfg engines.factory\osc_sync.json key osc_preset_path PRESENT at $.osc_preset_path [VALUE REDACTED BY GATE]; shape prefix=<other> names_USERNAME_placeholder=False ext= length=0
+Split-Path : Cannot bind argument to parameter 'Path' because it is null.
+At C:\Users\Ben\AppData\Local\Temp\sdwin\wg\join.ps1:24 char:34
++         $leaf = Split-Path -Leaf $v
++                                  ~~
+    + CategoryInfo          : InvalidData: (:) [Split-Path], ParameterBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationErrorNullNotAllowed,Microsoft.PowerShell.Commands.SplitPathCo 
+   mmand
+ 
+cfg engines.factory\osc_sync.json key comp_path ABSENT
+cfg engines.factory\stageflow_bridge.json key osc_preset_path ABSENT
+cfg engines.factory\stageflow_bridge.json key comp_path ABSENT

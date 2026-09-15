@@ -1,0 +1,17 @@
+  saved_preset_section=windows
+  argv=["--check-midi-port","--midi-port","SDWIN_ARGV_ONLY_NO_MIDI"]
+  argv=["--listen","127.0.0.1:45282","--map","C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\wg\\gate-backfill\\HEAD-start_installed_receiver_v2-missing-key\\config\\windows_midi_map.json","--midi-port","SDWIN_ARGV_ONLY_NO_MIDI","--timeout","2.0","--preset-section","windows","--verbose","--no-ui","--ui-port","7782"]
+  stderr_head=
+HEAD start_installed_receiver_v2.ps1 missing-key exit=0 calls=2 before=5e5989f680d216769f43de6cf0921753a569848144d6feeef975c3605e3f5366 after=34837d235dcc2c366f22abe9fa348f012e52494a3d5e9f46fedd69cad38afe46
+  stderr_head=At C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\windows\start_receiver.ps1:35 char:9 |     + FullyQualifiedErrorId : PropertyNotFoundStrict
+HEAD start_receiver.ps1 absent-file exit=1 calls=0 before=ABSENT after=ABSENT
+  stderr_head=At C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\windows\start_installed_receiver.ps1:35 char:9 |     + FullyQualifiedErrorId : PropertyNotFoundStrict
+HEAD start_installed_receiver.ps1 absent-file exit=1 calls=0 before=ABSENT after=ABSENT
+  stderr_head=At C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\windows\start_installed_receiver_v2.ps1:35  |     + FullyQualifiedErrorId : PropertyNotFoundStrict
+HEAD start_installed_receiver_v2.ps1 absent-file exit=1 calls=0 before=ABSENT after=ABSENT
+  stderr_head=At C:\Users\Ben\AppData\Local\Temp\sdwin\wg\v049_start_receiver.ps1:35 char:9 |     + FullyQualifiedErrorId : PropertyNotFoundStrict
+v049 start_receiver.ps1 absent-file exit=1 calls=0 before=ABSENT after=ABSENT
+  stderr_head=At C:\Users\Ben\AppData\Local\Temp\sdwin\wg\v049_start_installed_receiver.ps1:35 char:9 |     + FullyQualifiedErrorId : PropertyNotFoundStrict
+v049 start_installed_receiver.ps1 absent-file exit=1 calls=0 before=ABSENT after=ABSENT
+  stderr_head=At C:\Users\Ben\AppData\Local\Temp\sdwin\wg\v049_start_installed_receiver_v2.ps1:35 char:9 |     + FullyQualifiedErrorId : PropertyNotFoundStrict
+v049 start_installed_receiver_v2.ps1 absent-file exit=1 calls=0 before=ABSENT after=ABSENT

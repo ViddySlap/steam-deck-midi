@@ -1,0 +1,77 @@
+HEAD 27e3ad0d48be2c93c6842952338b4d57359252f7
+START mac-default pid=275036 args=-B scripts\showready\ab_run.py --candidate HEAD --preset "C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\mac\presets\default.json" --script "C:\Users\Ben\AppData\Local\Temp\sdwin\wg\deck-script.json" --fixtures "C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures" --scratch "C:\Users\Ben\AppData\Local\Temp\sdwin\wg\ab" --out "C:\Users\Ben\AppData\Local\Temp\sdwin\wg\results\mac-default.json"
+START win-default pid=277328 args=-B scripts\showready\ab_run.py --candidate HEAD --preset "C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\windows-installed\presets\default.json" --script "C:\Users\Ben\AppData\Local\Temp\sdwin\wg\deck-script.json" --fixtures "C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures" --scratch "C:\Users\Ben\AppData\Local\Temp\sdwin\wg\ab" --out "C:\Users\Ben\AppData\Local\Temp\sdwin\wg\results\win-default.json"
+START tracked-default pid=267692 args=-B scripts\showready\ab_run.py --candidate HEAD --preset "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\config\presets\default.json" --script "C:\Users\Ben\AppData\Local\Temp\sdwin\wg\deck-script.json" --fixtures "C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures" --scratch "C:\Users\Ben\AppData\Local\Temp\sdwin\wg\ab" --out "C:\Users\Ben\AppData\Local\Temp\sdwin\wg\results\tracked-default.json"
+TICK t=1s alive=3 tree=6
+TICK t=22s alive=3 tree=18
+TICK t=43s alive=3 tree=18
+TICK t=63s alive=3 tree=18
+PORTS snapshot 1 at t=63s
+  UDP 0.0.0.0:45123 pid=23640 STEAMDECK-MIDI-RECEIVER-2-Tray
+  UDP 127.0.0.1:55239 pid=268316 python
+  UDP 127.0.0.1:55240 pid=277692 python
+  UDP 127.0.0.1:55241 pid=278568 python
+  UDP 127.0.0.1:55242 pid=278352 python
+  UDP 127.0.0.1:55243 pid=264552 python
+  UDP 127.0.0.1:55244 pid=273180 python
+  UDP 0.0.0.0:55245 pid=279128 python
+  UDP 0.0.0.0:55246 pid=272028 python
+  UDP 0.0.0.0:55247 pid=278216 python
+  TCP 127.0.0.1:7723 pid=23640 STEAMDECK-MIDI-RECEIVER-2-Tray
+TICK t=86s alive=3 tree=18
+TICK t=107s alive=3 tree=18
+TICK t=127s alive=3 tree=18
+TICK t=148s alive=3 tree=18
+TICK t=169s alive=3 tree=18
+TICK t=189s alive=3 tree=18
+TICK t=210s alive=3 tree=18
+TICK t=230s alive=3 tree=18
+TICK t=251s alive=3 tree=18
+TICK t=272s alive=3 tree=18
+TICK t=292s alive=3 tree=18
+TICK t=313s alive=3 tree=18
+PORTS snapshot 2 at t=313s
+  UDP 0.0.0.0:45123 pid=23640 STEAMDECK-MIDI-RECEIVER-2-Tray
+  UDP 127.0.0.1:55239 pid=268316 python
+  UDP 127.0.0.1:55240 pid=277692 python
+  UDP 127.0.0.1:55241 pid=278568 python
+  UDP 127.0.0.1:55242 pid=278352 python
+  UDP 127.0.0.1:55243 pid=264552 python
+  UDP 127.0.0.1:55244 pid=273180 python
+  UDP 0.0.0.0:55245 pid=279128 python
+  UDP 0.0.0.0:55246 pid=272028 python
+  UDP 0.0.0.0:55247 pid=278216 python
+  TCP 127.0.0.1:7723 pid=23640 STEAMDECK-MIDI-RECEIVER-2-Tray
+TICK t=335s alive=3 tree=18
+TICK t=355s alive=3 tree=18
+TICK t=376s alive=3 tree=18
+TICK t=397s alive=3 tree=18
+TICK t=417s alive=3 tree=18
+TICK t=438s alive=3 tree=18
+TICK t=458s alive=3 tree=18
+EXIT mac-default code=0
+  OUT {"result": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\wg\\results\\mac-default.json.gz", "passed": true, "error": null, "comparisons": {"B1": {"totals": {"steps": 732, "mappings": 56, "mappings_exercised": 56, "messages_A": 1531, "messages_B": 1531}, "different_mappings": [], "unexercised_mappings": []}}}
+EXIT win-default code=0
+  OUT {"result": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\wg\\results\\win-default.json.gz", "passed": true, "error": null, "comparisons": {"B1": {"totals": {"steps": 732, "mappings": 56, "mappings_exercised": 56, "messages_A": 1531, "messages_B": 1531}, "different_mappings": [], "unexercised_mappings": []}}}
+EXIT tracked-default code=0
+  OUT {"result": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\wg\\results\\tracked-default.json.gz", "passed": true, "error": null, "comparisons": {"B1": {"totals": {"steps": 732, "mappings": 56, "mappings_exercised": 56, "messages_A": 1531, "messages_B": 1531}, "different_mappings": [], "unexercised_mappings": []}}}
+GONE pid=244864 gone=True :: python.exe C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe -B C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc
+GONE pid=264552 gone=True :: python.exe "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\python.exe" -B C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\showready\c
+GONE pid=267128 gone=True :: python.exe C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe -B C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc
+GONE pid=267692 gone=True :: python.exe "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe" -B scripts\showready\ab_run.py --candidate HEAD --preset "C:\
+GONE pid=268316 gone=True :: python.exe "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\python.exe" -B C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\showready\c
+GONE pid=272028 gone=True :: python.exe "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\python.exe" -B scripts\showready\ab_run.py --candidate HEAD --preset "C:\Users\Ben\Documents\pr
+GONE pid=273180 gone=True :: python.exe "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\python.exe" -B C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\showready\c
+GONE pid=275036 gone=True :: python.exe "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe" -B scripts\showready\ab_run.py --candidate HEAD --preset "C:\
+GONE pid=275960 gone=True :: python.exe C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe -B C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc
+GONE pid=276500 gone=True :: python.exe C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe -B C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc
+GONE pid=277328 gone=True :: python.exe "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe" -B scripts\showready\ab_run.py --candidate HEAD --preset "C:\
+GONE pid=277692 gone=True :: python.exe "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\python.exe" -B C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\showready\c
+GONE pid=278216 gone=True :: python.exe "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\python.exe" -B scripts\showready\ab_run.py --candidate HEAD --preset "C:\Users\Ben\AppData\Loca
+GONE pid=278352 gone=True :: python.exe "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\python.exe" -B C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\showready\c
+GONE pid=278428 gone=True :: python.exe C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe -B C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc
+GONE pid=278568 gone=True :: python.exe "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\python.exe" -B C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\showready\c
+GONE pid=279128 gone=True :: python.exe "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\python.exe" -B scripts\showready\ab_run.py --candidate HEAD --preset "C:\Users\Ben\AppData\Loca
+GONE pid=279448 gone=True :: python.exe C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe -B C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc
+PYTHON_LEFT 0
+SEEN_PIDS 18 ALIVE_AFTER 0

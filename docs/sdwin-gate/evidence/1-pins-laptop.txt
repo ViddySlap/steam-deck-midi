@@ -1,0 +1,36 @@
+clone_head_before=27e3ad0d48be2c93c6842952338b4d57359252f7
+clone_porcelain_before_lines=0
+pull: Already up to date.
+pull_exit=0
+clone_head=27e3ad0d48be2c93c6842952338b4d57359252f7
+v049_peeled=e66ff44b36eadb6d43db01680c65279df82cd63c
+clone_porcelain_lines=0
+pin OK  015a326e7761025fd7c0b838bd9bb10af3dd1982378cf30fca3f71ff8488feee scripts/showready/ab_run.py
+pin OK  6f71e91922b663013de0e9dcacb65073cc682f17c7e481d445fd3d00906944b8 scripts/showready/README.md
+pin OK  a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9 scripts/showready/.gitattributes
+pin OK  ad539052e86b9af6e73ba3020ba7b7dd73145496533f30bd1eed08ce3c5e0fb0 scripts/showready/capture_runner.py
+pin OK  ae0032500ecd3dc87ffafd6aaf10b4839306ceb81fdde2d5d9d9b20afff8b93a scripts/showready/win_guard.ps1
+pin OK  c0661d3331140f0571e593b87f72bfb6b1ac2b632b96cb97208f941fbd2a8f72 scripts/showready/deck_script.py
+pin OK  e9dc0ead29e91be11f1a4a2d57a4cbe272d1e5e2c791a8055834f5768277c1e8 scripts/showready/win_rail.sh
+pins_bad=0
+manifest_file mac sha256=0c1b3014f6fba58f76b54f1e0c8f843788f0fbbb2993d20e0415841bc2200524
+fixture OK  mac 58e47bfde76e 18919 presets/EDM Show.json
+fixture OK  mac 11b37cd675fa 16725 presets/PTZ.json
+fixture OK  mac 3b2ef2e5702e 7815 presets/EDM Show.json.v049.bak
+fixture OK  mac 3d5b996a843a 6906 presets/PTZ.json.v049.bak
+fixture OK  mac 5ebcf1e85dc3 7388 presets/default.json
+manifest mac entries=5
+manifest_file windows-installed sha256=7c6dad5b30ab05f1d005d1d722964ec847e6db19726bf0eb500d8bbcf10e331d
+fixture OK  windows-installed 434f71efe730 818 macro_library.json
+fixture OK  windows-installed cc768739b3a6 13 presets/.active
+fixture OK  windows-installed 1c30b50423ea 15 presets/.active.bak-20260529-pre-v047-sync
+fixture OK  windows-installed e89c76db1d0b 7722 presets/default.json
+fixture OK  windows-installed 6239567bde4f 8035 presets/default.json.bak-20260529-pre-v047-sync
+fixture OK  windows-installed 90b2d19e0757 8219 presets/EDM Show.json
+fixture OK  windows-installed 450f2edf992b 7263 presets/PTZ.json
+fixture OK  windows-installed b3e26772a2b8 8581 presets/test 1.json
+fixture OK  windows-installed d1fd3f3acd70 8800 presets/v1 Default.json
+fixture OK  windows-installed f55c05091354 7936 windows_midi_map.json
+fixture OK  windows-installed c9dac6cbeb8d 219 windows_receiver_settings.local.json
+manifest windows-installed entries=11
+total_bad=0

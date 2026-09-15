@@ -1,0 +1,34 @@
+s.FFF.
+======================================================================
+FAIL: test_pins_match_exact_file_set_and_bytes (tests.test_showready_rail.ShowreadyPinTests.test_pins_match_exact_file_set_and_bytes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/sdwin-gate/mut/repo-d/tests/test_showready_rail.py", line 35, in test_pins_match_exact_file_set_and_bytes
+    verify_pins(ROOT)
+  File "/private/tmp/sdwin-gate/mut/repo-d/tests/test_showready_rail.py", line 29, in verify_pins
+    raise AssertionError('SHA256SUMS mismatch: ' + repr(sorted(set(pins) ^ set(actual)))
+AssertionError: SHA256SUMS mismatch: [] changed=['scripts/showready/win_rail.sh']
+
+======================================================================
+FAIL: test_unpinned_edit_and_extra_file_are_red (tests.test_showready_rail.ShowreadyPinTests.test_unpinned_edit_and_extra_file_are_red)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/sdwin-gate/mut/repo-d/tests/test_showready_rail.py", line 41, in test_unpinned_edit_and_extra_file_are_red
+    verify_pins(root)
+  File "/private/tmp/sdwin-gate/mut/repo-d/tests/test_showready_rail.py", line 29, in verify_pins
+    raise AssertionError('SHA256SUMS mismatch: ' + repr(sorted(set(pins) ^ set(actual)))
+AssertionError: SHA256SUMS mismatch: [] changed=['scripts/showready/win_rail.sh']
+
+======================================================================
+FAIL: test_remote_status_stderr_arguments_and_scp_failure (tests.test_showready_rail.ShowreadyTransportTests.test_remote_status_stderr_arguments_and_scp_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/sdwin-gate/mut/repo-d/tests/test_showready_rail.py", line 89, in test_remote_status_stderr_arguments_and_scp_failure
+    self.assertEqual(result.returncode, code, result.stderr)
+AssertionError: 0 != 7 : stderr fixture
+
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.217s
+
+FAILED (failures=3, skipped=1)

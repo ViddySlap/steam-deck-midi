@@ -1,0 +1,29 @@
+SELF PID 264544
+== MATCHING (sdwin/clone/W4 pid) processes: 1
+{
+    "pid":  259996,
+    "ppid":  276444,
+    "name":  "cmd.exe",
+    "exe":  "c:\\windows\\system32\\cmd.exe",
+    "created":  "09/14/2026 19:47:12",
+    "cmd":  "\"c:\\windows\\system32\\cmd.exe\" /c \"powershell -NoProfile -ExecutionPolicy Bypass -File \"C:/Users/Ben/AppData/Local/Temp/sdwin/wg/inventory.ps1\"\""
+}
+== ALL python/pythonw: 0
+== W4 recorded PIDs
+266512 alive=False 
+262176 alive=False 
+278440 alive=False 
+250436 alive=False 
+277756 alive=False 
+267656 alive=False 
+233432 alive=False 
+272232 alive=False 
+274080 alive=False 
+251680 alive=False 
+275832 alive=False 
+274184 alive=False 
+278016 alive=False 
+262056 alive=False 
+254412 alive=False 
+== W4 work top-level
+listing skipped

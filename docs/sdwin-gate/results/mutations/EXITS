@@ -1,0 +1,16 @@
+gen-clean exit=0
+a-red exit=1
+a-green exit=0
+a2-sensitivity-red exit=1
+b-applied=1
+b-red exit=1
+b-restored
+b-green exit=0
+c-applied=2
+gen-c exit=0
+c-red exit=1
+gen-c-restored exit=0
+c-green exit=0
+f-red exit=1
+f-green exit=0
+ALLDONE

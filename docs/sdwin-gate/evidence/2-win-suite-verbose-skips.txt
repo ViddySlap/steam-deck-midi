@@ -1,0 +1,12 @@
+LAUNCHER_PID 272984
+SUMMARY Ran 840 tests in 20.574s
+SUMMARY OK (skipped=5)
+SKIP test_cc_base_override_remaps_channel_ccs (test_global_color.CcBaseOffsetTests.test_cc_base_override_remaps_channel_ccs) ... skipped 'cc_base remap is anticipated for the channel-CC move from 40-45 back to 50-55 after Pass 3 Part A V-C-B slim-down. Channels are hardcoded in CHANNEL_CC currently; cc_base only affects palette CCs. Wire up when the slim-down lands.'
+SKIP test_local_section_is_passed_as_one_argument_and_missing_file_still_works (test_section_launchers.MacSectionLauncherTests.test_local_section_is_passed_as_one_argument_and_missing_file_still_works) ... skipped 'Mac launcher execution requires POSIX bash and executable shebangs'
+SKIP test_remote_status_stderr_arguments_and_scp_failure (test_showready_rail.ShowreadyTransportTests.test_remote_status_stderr_arguments_and_scp_failure) ... skipped 'Mac rail execution requires POSIX bash'
+SKIP test_unsafe_arguments_are_refused_before_transport (test_showready_rail.ShowreadyTransportTests.test_unsafe_arguments_are_refused_before_transport) ... skipped 'Mac rail execution requires POSIX bash'
+SKIP test_section_snippet_creates_missing_file_and_preserves_existing_bytes (test_upgrade_boot.MacLauncherSnippetTests.test_section_snippet_creates_missing_file_and_preserves_existing_bytes) ... skipped 'Mac launcher execution requires POSIX bash and paths'
+PID 272984 launcher gone=True
+PID 268880 child C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\python.exe gone=True
+PYTHON_PROCESSES_AFTER 0
+EXIT 0

@@ -1,0 +1,8 @@
+win-default exit=0
+tracked-default exit=0
+mac-default exit=0
+win-ptz exit=0
+win-edm exit=0
+mac-ptz exit=0
+mac-edm exit=0
+ALLDONE

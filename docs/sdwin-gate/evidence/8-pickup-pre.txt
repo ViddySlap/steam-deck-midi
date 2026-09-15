@@ -1,0 +1,18 @@
+== porcelain
+porcelain lines=       0
+== mac/ diff stat
+mac diff lines=       0
+== send path diff
+send path diff lines=       0
+== excluded/showready committed
+excluded grep exit=1 (1 = none)
+233
+== Ben files
+58e47bfd config/presets/EDM Show.json
+11b37cd6 config/presets/PTZ.json
+3b2ef2e5 config/presets/EDM Show.json.v049.bak
+3d5b996a config/presets/PTZ.json.v049.bak
+7476c269 config/bridge.local.json
+41e28828 config/windows_receiver_settings.local.json
+== ignored check
+.gitignore:65:.showready/	.showready/fixtures/mac/MANIFEST.sha256
