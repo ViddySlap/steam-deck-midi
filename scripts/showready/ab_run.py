@@ -35,8 +35,9 @@ def validate_scratch(path):
         raise ValueError('Scratch must be under ' + str(allowed))
 
 
-def wait_gap(last_send_ns, interval_ns, clock=time.monotonic_ns, sleep=time.sleep):
+def wait_gap(last_send_ns, interval_ns, clock=None, sleep=time.sleep):
     """No catch-up: preserve the gap even after a delayed wake or send."""
+    clock = clock or time.perf_counter_ns
     due = last_send_ns + interval_ns
     while True:
         now = clock()
@@ -213,6 +214,7 @@ def run(args):
         seal(script)
     result = {'schema': 'sdwin-ab/1', 'candidate': args.candidate, 'preset': str(preset), 'section': args.section,
               'clock': args.clock, 'wall_speed': args.speed, 'control': args.control,
+              'timestamp_clock': {'name': 'perf_counter', **vars(time.get_clock_info('perf_counter'))},
               'fixture_sha256': verified, 'script_sha256': script['sha256'],
               'script_file_sha256': sha(args.script.read_bytes()), 'packet_stream_sha256': script['packet_stream_sha256'],
               'script_parameters': script['parameters'],
@@ -278,7 +280,7 @@ def run(args):
         wire_digest = __import__('hashlib').sha256()
         step_events = {s['id']: s for s in script['steps']}
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sender:
-            start = time.monotonic_ns()
+            start = time.perf_counter_ns()
             last_event_send, previous_event_at, step_start = start, 0, start
             for row in script['packets']:
                 step = step_events[row['step']]
@@ -297,16 +299,16 @@ def run(args):
                 for name in names:
                     if processes[name].poll() is not None:
                         raise RuntimeError('Arm died during replay: ' + name)
-                    sent_at = time.monotonic_ns()
+                    sent_at = time.perf_counter_ns()
                     sent = sender.sendto(payload, ('127.0.0.1', result['arms'][name]['udp_port']))
                     if sent != len(payload):
                         raise RuntimeError('Partial UDP send')
                     if is_event:
                         sends[name][row['step']] = sent_at
                 if is_event:
-                    last_event_send = step_start = time.monotonic_ns()
+                    last_event_send = step_start = time.perf_counter_ns()
                     previous_event_at = row['at_ns']
-            result['replay_wall_seconds'] = (time.monotonic_ns() - start) / 1e9
+            result['replay_wall_seconds'] = (time.perf_counter_ns() - start) / 1e9
         result['pacing'] = pacing_summary(script, sends, args.speed)
         result['sent_packet_stream_sha256'] = wire_digest.hexdigest()
         for name in names:

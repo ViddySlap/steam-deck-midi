@@ -164,7 +164,11 @@ No --tray. The config argument must be inside its disposable arm. Both the
 runner and driver check ports by binding before boot. The receiver's actual
 socket bind writes the ready file; logs are never used as readiness evidence.
 Every received packet is checked against the script, in order, and hashed.
-Every capture includes raw status/data bytes and time.monotonic_ns timestamps.
+Every capture includes raw status/data bytes and time.perf_counter_ns
+timestamps (stored in monotonic_ns fields). Sender and recorder use the same
+monotonic high-resolution clock. On Windows Python 3.12, time.monotonic_ns
+uses GetTickCount64 at 15.625 ms resolution; perf_counter uses
+QueryPerformanceCounter. Each result records its timestamp clock properties.
 
 The default --clock script injects the receiver's EXISTING clock argument,
 advancing it at each actual UDP receipt to the script timestamp. It does not

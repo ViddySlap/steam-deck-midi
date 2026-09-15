@@ -8,6 +8,7 @@ import sys
 import tempfile
 import types
 import unittest
+from unittest import mock
 
 sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parents[1]
@@ -19,6 +20,14 @@ import ab_run as ab
 
 
 class InstrumentTests(unittest.TestCase):
+    def test_pacing_and_capture_use_the_high_resolution_monotonic_clock(self):
+        with mock.patch.object(ab.time, 'perf_counter_ns', return_value=120), \
+                mock.patch.object(ab.time, 'monotonic_ns', return_value=1):
+            self.assertEqual(ab.wait_gap(100, 20), 120)
+            rows = []
+            capture.Recorder(rows.append, {'step': 0, 'logical_ns': 0}).note_on(0, 60, 127)
+            self.assertEqual(rows[0]['monotonic_ns'], 120)
+
     def test_tracked_default_requires_candidate_blob_and_exact_path(self):
         with tempfile.TemporaryDirectory() as directory:
             repo = Path(directory)

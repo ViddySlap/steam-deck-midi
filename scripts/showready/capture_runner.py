@@ -49,7 +49,7 @@ class Recorder:
     def send(self, kind, channel, data1, data2):
         raw = midi_bytes(kind, channel, data1, data2)
         if not self.dead:
-            self.emit({'record': 'midi', 'monotonic_ns': time.monotonic_ns(),
+            self.emit({'record': 'midi', 'monotonic_ns': time.perf_counter_ns(),
                        'step': self.context['step'], 'logical_ns': self.context['logical_ns'],
                        'bytes': list(raw)})
 
