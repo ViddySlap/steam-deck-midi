@@ -1,0 +1,2981 @@
+{
+  "results": [
+    {
+      "name": "1440x900.closed.23-labels",
+      "pass": true,
+      "detail": [
+        "btn_a",
+        "btn_b",
+        "btn_x",
+        "btn_y",
+        "dpad_down",
+        "dpad_left",
+        "dpad_right",
+        "dpad_up",
+        "gyro",
+        "l1",
+        "l2",
+        "l4",
+        "l5",
+        "left_pad",
+        "left_stick",
+        "r1",
+        "r2",
+        "r4",
+        "r5",
+        "right_pad",
+        "right_stick",
+        "select",
+        "start"
+      ]
+    },
+    {
+      "name": "1440x900.closed.23-leaders",
+      "pass": true,
+      "detail": [
+        "btn_a",
+        "btn_b",
+        "btn_x",
+        "btn_y",
+        "dpad_down",
+        "dpad_left",
+        "dpad_right",
+        "dpad_up",
+        "gyro",
+        "l1",
+        "l2",
+        "l4",
+        "l5",
+        "left_pad",
+        "left_stick",
+        "r1",
+        "r2",
+        "r4",
+        "r5",
+        "right_pad",
+        "right_stick",
+        "select",
+        "start"
+      ]
+    },
+    {
+      "name": "1440x900.closed.23-shapes",
+      "pass": true,
+      "detail": [
+        "btn_a",
+        "btn_b",
+        "btn_x",
+        "btn_y",
+        "dpad_down",
+        "dpad_left",
+        "dpad_right",
+        "dpad_up",
+        "gyro",
+        "l1",
+        "l2",
+        "l4",
+        "l5",
+        "left_pad",
+        "left_stick",
+        "r1",
+        "r2",
+        "r4",
+        "r5",
+        "right_pad",
+        "right_stick",
+        "select",
+        "start"
+      ]
+    },
+    {
+      "name": "1440x900.closed.23-arrowheads",
+      "pass": true,
+      "detail": [
+        "btn_a",
+        "btn_b",
+        "btn_x",
+        "btn_y",
+        "dpad_down",
+        "dpad_left",
+        "dpad_right",
+        "dpad_up",
+        "gyro",
+        "l1",
+        "l2",
+        "l4",
+        "l5",
+        "left_pad",
+        "left_stick",
+        "r1",
+        "r2",
+        "r4",
+        "r5",
+        "right_pad",
+        "right_stick",
+        "select",
+        "start"
+      ]
+    },
+    {
+      "name": "1440x900.closed.label-overlaps",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-intersections",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.own-edge.btn_a",
+      "pass": true,
+      "detail": {
+        "distance": 0.00001216900318468106,
+        "insideOther": [],
+        "end": {
+          "x": 1094.0151245497468,
+          "y": 464.6798184831566
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.btn_a",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.btn_a",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 1270.5708722741433,
+            "y": 494.25289890847847
+          },
+          {
+            "x": 1094.0151245497468,
+            "y": 464.6798184831566
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.btn_b",
+      "pass": true,
+      "detail": {
+        "distance": 0.00000988731517281849,
+        "insideOther": [],
+        "end": {
+          "x": 1129.7206932376848,
+          "y": 427.4456408135245
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.btn_b",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.btn_b",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 1270.5708722741433,
+            "y": 438.34283271385505
+          },
+          {
+            "x": 1129.7206932376848,
+            "y": 427.4456408135245
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.btn_x",
+      "pass": true,
+      "detail": {
+        "distance": 0.000003268042860327114,
+        "insideOther": [],
+        "end": {
+          "x": 1041.349508315232,
+          "y": 443.09360068015224
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.btn_x",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.btn_x",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 1283.8239702361393,
+            "y": 553.9671899433076
+          },
+          {
+            "x": 1041.349508315232,
+            "y": 493.08129621369073
+          },
+          {
+            "x": 1041.349508315232,
+            "y": 443.09360068015224
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.btn_y",
+      "pass": true,
+      "detail": {
+        "distance": 0.00001216900318468106,
+        "insideOther": [],
+        "end": {
+          "x": 1094.0151245497468,
+          "y": 389.8598237676413
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.btn_y",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.btn_y",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 1270.5708722741433,
+            "y": 383.94519853443376
+          },
+          {
+            "x": 1094.0151245497468,
+            "y": 389.8598237676413
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.dpad_up",
+      "pass": true,
+      "detail": {
+        "distance": 1.663730699874577e-7,
+        "insideOther": [],
+        "end": {
+          "x": 348.6627504105137,
+          "y": 477.82576119491245
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.dpad_up",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.dpad_up",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 169.42912772585666,
+            "y": 454.40889321680754
+          },
+          {
+            "x": 348.6627504105137,
+            "y": 477.82576119491245
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.dpad_down",
+      "pass": true,
+      "detail": {
+        "distance": 1.663730699874577e-7,
+        "insideOther": [],
+        "end": {
+          "x": 348.6627504105137,
+          "y": 552.203183991144
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.dpad_down",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.dpad_down",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 169.42912772585666,
+            "y": 566.0131599212361
+          },
+          {
+            "x": 348.6627504105137,
+            "y": 552.203183991144
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.dpad_left",
+      "pass": true,
+      "detail": {
+        "distance": 0.000003992954077602917,
+        "insideOther": [],
+        "end": {
+          "x": 313.8498880261572,
+          "y": 514.9828962522133
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.dpad_left",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.dpad_left",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 169.42912772585666,
+            "y": 510.5135099226812
+          },
+          {
+            "x": 313.8498880261572,
+            "y": 514.9828962522133
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.dpad_right",
+      "pass": true,
+      "detail": {
+        "distance": 0.000005870593327017559,
+        "insideOther": [],
+        "end": {
+          "x": 398.65046119095746,
+          "y": 529.6794492299683
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.dpad_right",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.dpad_right",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 169.42912772585666,
+            "y": 629.8390534065222
+          },
+          {
+            "x": 398.65046119095746,
+            "y": 613.587377078808
+          },
+          {
+            "x": 398.65046119095746,
+            "y": 529.6794492299683
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.left_stick",
+      "pass": true,
+      "detail": {
+        "distance": 0.000008960379318523337,
+        "insideOther": [],
+        "end": {
+          "x": 395.9725557368863,
+          "y": 417.10697354705906
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.left_stick",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.left_stick",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 169.42912772585666,
+            "y": 390.1736813126323
+          },
+          {
+            "x": 395.9725557368863,
+            "y": 417.10697354705906
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.right_stick",
+      "pass": true,
+      "detail": {
+        "distance": 0.000013523755455935316,
+        "insideOther": [],
+        "end": {
+          "x": 987.791277258567,
+          "y": 460.05372446125546
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.right_stick",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.right_stick",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 1308.523224922727,
+            "y": 616.4518131719572
+          },
+          {
+            "x": 1041.349508315232,
+            "y": 502.0076883856753
+          },
+          {
+            "x": 987.791277258567,
+            "y": 497.544492299683
+          },
+          {
+            "x": 987.791277258567,
+            "y": 460.05372446125546
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.l1",
+      "pass": true,
+      "detail": {
+        "distance": 0.000014587354826289811,
+        "insideOther": [],
+        "end": {
+          "x": 395.57497743505553,
+          "y": 333.2991797485827
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.l1",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.l1",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 373.96120847422753,
+            "y": 245.47429906542055
+          },
+          {
+            "x": 395.57497743505553,
+            "y": 333.2991797485827
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.r1",
+      "pass": true,
+      "detail": {
+        "distance": 0.000014587354826289811,
+        "insideOther": [],
+        "end": {
+          "x": 1044.4249920711338,
+          "y": 333.2991797485827
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.r1",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.r1",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 1066.0387610319617,
+            "y": 245.47429906542055
+          },
+          {
+            "x": 1044.4249920711338,
+            "y": 333.2991797485827
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.l2",
+      "pass": true,
+      "detail": {
+        "distance": 0.000005157565738045378,
+        "insideOther": [],
+        "end": {
+          "x": 331.70264187631574,
+          "y": 296.46926614874246
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.l2",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.l2",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 181.32082951625927,
+            "y": 245.47429906542055
+          },
+          {
+            "x": 331.70264187631574,
+            "y": 296.46926614874246
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.r2",
+      "pass": true,
+      "detail": {
+        "distance": 0.000035651376492751297,
+        "insideOther": [],
+        "end": {
+          "x": 1108.2973276298735,
+          "y": 296.46926614874246
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.r2",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.r2",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 1258.6791399899303,
+            "y": 245.47429906542055
+          },
+          {
+            "x": 1108.2973276298735,
+            "y": 296.46926614874246
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.l4",
+      "pass": true,
+      "detail": {
+        "distance": 0.000009150519872491714,
+        "insideOther": [],
+        "end": {
+          "x": 400.67863502383597,
+          "y": 673.3940948533864
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.l4",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.l4",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 182.57876018868794,
+            "y": 821.0257009345795
+          },
+          {
+            "x": 400.67863502383597,
+            "y": 673.3940948533864
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.l5",
+      "pass": true,
+      "detail": {
+        "distance": 0.000025431315066271054,
+        "insideOther": [],
+        "end": {
+          "x": 418.7948858908775,
+          "y": 735.8787485758463
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.l5",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.l5",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 437.0114309007876,
+            "y": 821.0257009345795
+          },
+          {
+            "x": 418.7948858908775,
+            "y": 735.8787485758463
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.r4",
+      "pass": true,
+      "detail": {
+        "distance": 0.000009150519872491714,
+        "insideOther": [],
+        "end": {
+          "x": 1039.321364976164,
+          "y": 673.3940948533864
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.r4",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.r4",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 1257.4212093175015,
+            "y": 821.0257009345795
+          },
+          {
+            "x": 1039.321364976164,
+            "y": 673.3940948533864
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.r5",
+      "pass": true,
+      "detail": {
+        "distance": 0.000025431315066271054,
+        "insideOther": [],
+        "end": {
+          "x": 1021.2051141091225,
+          "y": 735.8787485758463
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.r5",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.r5",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 1002.9885386054018,
+            "y": 821.0257009345795
+          },
+          {
+            "x": 1021.2051141091225,
+            "y": 735.8787485758463
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.start",
+      "pass": true,
+      "detail": {
+        "distance": 0.000006036966397005017,
+        "insideOther": [],
+        "end": {
+          "x": 999.3955748846226,
+          "y": 351.2413643216047
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.start",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.start",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 856.7852321161288,
+            "y": 245.47429906542055
+          },
+          {
+            "x": 999.3955748846226,
+            "y": 351.2413643216047
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.select",
+      "pass": true,
+      "detail": {
+        "distance": 0.000006036966453848436,
+        "insideOther": [],
+        "end": {
+          "x": 440.6044251153773,
+          "y": 351.2413643216047
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.select",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.select",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 583.2147678838712,
+            "y": 245.47429906542055
+          },
+          {
+            "x": 440.6044251153773,
+            "y": 351.2413643216047
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.left_pad",
+      "pass": true,
+      "detail": {
+        "distance": 0.000026738532142189797,
+        "insideOther": [],
+        "end": {
+          "x": 461.135084419607,
+          "y": 591.2714576364679
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.left_pad",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.left_pad",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 147.35940768637013,
+            "y": 683.3996324865989
+          },
+          {
+            "x": 354.01859181246647,
+            "y": 622.5137692507925
+          },
+          {
+            "x": 461.135084419607,
+            "y": 622.5137692507925
+          },
+          {
+            "x": 461.135084419607,
+            "y": 591.2714576364679
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.right_pad",
+      "pass": true,
+      "detail": {
+        "distance": 0.000026738532142189797,
+        "insideOther": [],
+        "end": {
+          "x": 978.8648850865824,
+          "y": 591.2714576364679
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.right_pad",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.right_pad",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 1289.4610560527099,
+            "y": 678.9364364006067
+          },
+          {
+            "x": 1085.9814691751544,
+            "y": 622.5137692507925
+          },
+          {
+            "x": 978.8648850865824,
+            "y": 622.5137692507925
+          },
+          {
+            "x": 978.8648850865824,
+            "y": 591.2714576364679
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.own-edge.gyro",
+      "pass": true,
+      "detail": {
+        "distance": 0.000001948941871887655,
+        "insideOther": [],
+        "end": {
+          "x": 720,
+          "y": 750.1609516559731
+        }
+      }
+    },
+    {
+      "name": "1440x900.closed.glyph-clear.gyro",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.leader-visible.gyro",
+      "pass": true,
+      "detail": {
+        "points": [
+          {
+            "x": 720,
+            "y": 821.0257009345795
+          },
+          {
+            "x": 720,
+            "y": 750.1609516559731
+          }
+        ]
+      }
+    },
+    {
+      "name": "1440x900.closed.inside-visible-pane",
+      "pass": false,
+      "detail": [
+        "btn_a"
+      ]
+    },
+    {
+      "name": "1440x900.closed.labels-topmost",
+      "pass": false,
+      "detail": [
+        {
+          "id": "btn_a",
+          "by": "SPAN"
+        }
+      ]
+    },
+    {
+      "name": "1440x900.closed.labels-unwrapped",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "1440x900.closed.no-page-or-pane-scroll",
+      "pass": false,
+      "detail": [
+        {
+          "id": "HTML",
+          "width": 1440,
+          "height": 900,
+          "clientWidth": 1440,
+          "clientHeight": 900,
+          "top": 0,
+          "left": 0
+        },
+        {
+          "id": "BODY",
+          "width": 1440,
+          "height": 900,
+          "clientWidth": 1440,
+          "clientHeight": 900,
+          "top": 0,
+          "left": 0
+        },
+        {
+          "id": "tab-editor",
+          "width": 1440,
+          "height": 755,
+          "clientWidth": 1440,
+          "clientHeight": 727,
+          "top": 0,
+          "left": 0
+        },
+        {
+          "id": "controller-picture-scroll",
+          "width": 1400,
+          "height": 690,
+          "clientWidth": 1400,
+          "clientHeight": 642,
+          "top": 0,
+          "left": 0
+        }
+      ]
+    }
+  ],
+  "samples": [
+    {
+      "tag": "1440x900.closed",
+      "expected": [
+        {
+          "anchor": {
+            "x": 1000,
+            "y": 220
+          },
+          "groups": {
+            "layer_2": [
+              "BTN_A_LAYER_2"
+            ],
+            "tap": [
+              "BTN_A"
+            ]
+          },
+          "id": "btn_a",
+          "kind": "button",
+          "label": "A",
+          "label_anchor": {
+            "x": 1330,
+            "y": 270
+          }
+        },
+        {
+          "anchor": {
+            "x": 1040,
+            "y": 180
+          },
+          "groups": {
+            "layer_2": [
+              "BTN_B_LAYER_2"
+            ],
+            "tap": [
+              "BTN_B"
+            ]
+          },
+          "id": "btn_b",
+          "kind": "button",
+          "label": "B",
+          "label_anchor": {
+            "x": 1330,
+            "y": 200
+          }
+        },
+        {
+          "anchor": {
+            "x": 960,
+            "y": 180
+          },
+          "groups": {
+            "layer_2": [
+              "BTN_X_LAYER_2"
+            ],
+            "tap": [
+              "BTN_X"
+            ]
+          },
+          "id": "btn_x",
+          "kind": "button",
+          "label": "X",
+          "label_anchor": {
+            "x": 1330,
+            "y": 340
+          },
+          "leader_via": [
+            [
+              960,
+              255
+            ]
+          ]
+        },
+        {
+          "anchor": {
+            "x": 1000,
+            "y": 140
+          },
+          "groups": {
+            "layer_2": [
+              "BTN_Y_LAYER_2"
+            ],
+            "tap": [
+              "BTN_Y"
+            ]
+          },
+          "id": "btn_y",
+          "kind": "button",
+          "label": "Y",
+          "label_anchor": {
+            "x": 1330,
+            "y": 130
+          }
+        },
+        {
+          "anchor": {
+            "x": 200,
+            "y": 240
+          },
+          "groups": {
+            "long_press": [
+              "DPAD_UP_LONG_PRESS"
+            ],
+            "tap": [
+              "DPAD_UP"
+            ]
+          },
+          "id": "dpad_up",
+          "kind": "dpad",
+          "label": "D-pad Up",
+          "label_anchor": {
+            "x": -130,
+            "y": 205
+          }
+        },
+        {
+          "anchor": {
+            "x": 200,
+            "y": 320
+          },
+          "groups": {
+            "long_press": [
+              "DPAD_DOWN_LONG_PRESS"
+            ],
+            "tap": [
+              "DPAD_DOWN"
+            ]
+          },
+          "id": "dpad_down",
+          "kind": "dpad",
+          "label": "D-pad Down",
+          "label_anchor": {
+            "x": -130,
+            "y": 345
+          }
+        },
+        {
+          "anchor": {
+            "x": 160,
+            "y": 280
+          },
+          "groups": {
+            "long_press": [
+              "DPAD_LEFT_LONG_PRESS"
+            ],
+            "tap": [
+              "DPAD_LEFT"
+            ]
+          },
+          "id": "dpad_left",
+          "kind": "dpad",
+          "label": "D-pad Left",
+          "label_anchor": {
+            "x": -130,
+            "y": 275
+          }
+        },
+        {
+          "anchor": {
+            "x": 240,
+            "y": 280
+          },
+          "groups": {
+            "long_press": [
+              "DPAD_RIGHT_LONG_PRESS"
+            ],
+            "tap": [
+              "DPAD_RIGHT"
+            ]
+          },
+          "id": "dpad_right",
+          "kind": "dpad",
+          "label": "D-pad Right",
+          "label_anchor": {
+            "x": -130,
+            "y": 415
+          },
+          "leader_via": [
+            [
+              240,
+              390
+            ]
+          ]
+        },
+        {
+          "anchor": {
+            "x": 280,
+            "y": 175
+          },
+          "groups": {
+            "analog": [
+              "L_STICK_X_AXIS",
+              "L_STICK_Y_AXIS"
+            ],
+            "tap": [
+              "LEFT_STICK_CLICK_L3",
+              "L_STICK_UP",
+              "L_STICK_DOWN",
+              "L_STICK_LEFT",
+              "L_STICK_RIGHT"
+            ]
+          },
+          "id": "left_stick",
+          "kind": "stick",
+          "label": "Left stick",
+          "label_anchor": {
+            "x": -130,
+            "y": 130
+          },
+          "notes": "The stick click and four digital directions share this physical stick. Digital directions are tap actions; continuous X/Y values are analog. L3/R3 are not separate arrows."
+        },
+        {
+          "anchor": {
+            "x": 900,
+            "y": 175
+          },
+          "groups": {
+            "analog": [
+              "R_STICK_X_AXIS",
+              "R_STICK_Y_AXIS"
+            ],
+            "tap": [
+              "RIGHT_STICK_CLICK_R3",
+              "R_STICK_UP",
+              "R_STICK_DOWN",
+              "R_STICK_LEFT",
+              "R_STICK_RIGHT"
+            ]
+          },
+          "id": "right_stick",
+          "kind": "stick",
+          "label": "Right stick",
+          "label_anchor": {
+            "x": 1330,
+            "y": 410
+          },
+          "leader_via": [
+            [
+              960,
+              265
+            ],
+            [
+              900,
+              260
+            ]
+          ],
+          "notes": "The stick click and four digital directions share this physical stick. Digital directions are tap actions; continuous X/Y values are analog. L3/R3 are not separate arrows."
+        },
+        {
+          "anchor": {
+            "x": 240,
+            "y": 90
+          },
+          "groups": {
+            "layer_2": [
+              "L1_LAYER_2"
+            ],
+            "tap": [
+              "L1"
+            ]
+          },
+          "id": "l1",
+          "kind": "bumper",
+          "label": "L1",
+          "label_anchor": {
+            "x": 180,
+            "y": -90
+          }
+        },
+        {
+          "anchor": {
+            "x": 960,
+            "y": 90
+          },
+          "groups": {
+            "layer_2": [
+              "R1_LAYER_2"
+            ],
+            "tap": [
+              "R1"
+            ]
+          },
+          "id": "r1",
+          "kind": "bumper",
+          "label": "R1",
+          "label_anchor": {
+            "x": 1020,
+            "y": -90
+          }
+        },
+        {
+          "anchor": {
+            "x": 210,
+            "y": 50
+          },
+          "groups": {
+            "analog": [
+              "L_TRIGGER_PRESSURE"
+            ],
+            "layer_2": [
+              "L2_SOFT_LAYER_2",
+              "L2_FULL_LAYER_2"
+            ],
+            "tap": [
+              "L2_SOFT",
+              "L2_FULL"
+            ]
+          },
+          "id": "l2",
+          "kind": "trigger",
+          "label": "L2",
+          "label_anchor": {
+            "x": -80,
+            "y": -90
+          },
+          "notes": "SOFT and FULL are two digital stages of one trigger, both under tap. Their LAYER_2 variants stay on this trigger; continuous trigger pressure is analog."
+        },
+        {
+          "anchor": {
+            "x": 990,
+            "y": 50
+          },
+          "groups": {
+            "analog": [
+              "R_TRIGGER_PRESSURE"
+            ],
+            "layer_2": [
+              "R2_SOFT_LAYER_2",
+              "R2_FULL_LAYER_2"
+            ],
+            "tap": [
+              "R2_SOFT",
+              "R2_FULL"
+            ]
+          },
+          "id": "r2",
+          "kind": "trigger",
+          "label": "R2",
+          "label_anchor": {
+            "x": 1280,
+            "y": -90
+          },
+          "notes": "SOFT and FULL are two digital stages of one trigger, both under tap. Their LAYER_2 variants stay on this trigger; continuous trigger pressure is analog."
+        },
+        {
+          "anchor": {
+            "x": 260,
+            "y": 445
+          },
+          "groups": {
+            "tap": [
+              "L4"
+            ]
+          },
+          "id": "l4",
+          "kind": "back_button",
+          "label": "L4",
+          "label_anchor": {
+            "x": 20,
+            "y": 600
+          },
+          "notes": "Rear grip button; anchor is in the rear-button inset below the front face."
+        },
+        {
+          "anchor": {
+            "x": 260,
+            "y": 515
+          },
+          "groups": {
+            "tap": [
+              "L5"
+            ]
+          },
+          "id": "l5",
+          "kind": "back_button",
+          "label": "L5",
+          "label_anchor": {
+            "x": 300,
+            "y": 665
+          },
+          "notes": "Rear grip button; anchor is in the rear-button inset below the front face."
+        },
+        {
+          "anchor": {
+            "x": 940,
+            "y": 445
+          },
+          "groups": {
+            "tap": [
+              "R4"
+            ]
+          },
+          "id": "r4",
+          "kind": "back_button",
+          "label": "R4",
+          "label_anchor": {
+            "x": 1180,
+            "y": 600
+          },
+          "notes": "Rear grip button; anchor is in the rear-button inset below the front face."
+        },
+        {
+          "anchor": {
+            "x": 940,
+            "y": 515
+          },
+          "groups": {
+            "tap": [
+              "R5"
+            ]
+          },
+          "id": "r5",
+          "kind": "back_button",
+          "label": "R5",
+          "label_anchor": {
+            "x": 900,
+            "y": 665
+          },
+          "notes": "Rear grip button; anchor is in the rear-button inset below the front face."
+        },
+        {
+          "anchor": {
+            "x": 925,
+            "y": 105
+          },
+          "groups": {
+            "tap": [
+              "START"
+            ]
+          },
+          "id": "start",
+          "kind": "menu",
+          "label": "START",
+          "label_anchor": {
+            "x": 760,
+            "y": -90
+          }
+        },
+        {
+          "anchor": {
+            "x": 275,
+            "y": 105
+          },
+          "groups": {
+            "tap": [
+              "SELECT"
+            ]
+          },
+          "id": "select",
+          "kind": "menu",
+          "label": "SELECT",
+          "label_anchor": {
+            "x": 440,
+            "y": -90
+          }
+        },
+        {
+          "anchor": {
+            "x": 310,
+            "y": 320
+          },
+          "groups": {
+            "analog": [
+              "L_PAD_X_POS",
+              "L_PAD_Y_POS"
+            ],
+            "long_press": [
+              "L_PAD_UP_LONG_PRESS",
+              "L_PAD_DOWN_LONG_PRESS",
+              "L_PAD_LEFT_LONG_PRESS",
+              "L_PAD_RIGHT_LONG_PRESS"
+            ],
+            "tap": [
+              "L_PAD_UP",
+              "L_PAD_DOWN",
+              "L_PAD_LEFT",
+              "L_PAD_RIGHT"
+            ]
+          },
+          "id": "left_pad",
+          "kind": "trackpad",
+          "label": "Left trackpad",
+          "label_anchor": {
+            "x": -130,
+            "y": 485
+          },
+          "leader_via": [
+            [
+              190,
+              400
+            ],
+            [
+              310,
+              400
+            ]
+          ],
+          "notes": "All four digital directions and their LONG_PRESS actions belong to this trackpad. X/Y_POS are continuous pad position, not stick axes. No separate pad click Action ID exists."
+        },
+        {
+          "anchor": {
+            "x": 890,
+            "y": 320
+          },
+          "groups": {
+            "analog": [
+              "R_PAD_X_POS",
+              "R_PAD_Y_POS"
+            ],
+            "long_press": [
+              "R_PAD_UP_LONG_PRESS",
+              "R_PAD_DOWN_LONG_PRESS",
+              "R_PAD_LEFT_LONG_PRESS",
+              "R_PAD_RIGHT_LONG_PRESS"
+            ],
+            "tap": [
+              "R_PAD_UP",
+              "R_PAD_DOWN",
+              "R_PAD_LEFT",
+              "R_PAD_RIGHT"
+            ]
+          },
+          "id": "right_pad",
+          "kind": "trackpad",
+          "label": "Right trackpad",
+          "label_anchor": {
+            "x": 1330,
+            "y": 480
+          },
+          "leader_via": [
+            [
+              1010,
+              400
+            ],
+            [
+              890,
+              400
+            ]
+          ],
+          "notes": "All four digital directions and their LONG_PRESS actions belong to this trackpad. X/Y_POS are continuous pad position, not stick axes. No separate pad click Action ID exists."
+        },
+        {
+          "anchor": {
+            "x": 600,
+            "y": 500
+          },
+          "groups": {
+            "analog": [
+              "GYRO_PITCH",
+              "GYRO_YAW",
+              "GYRO_ROLL"
+            ],
+            "tap": [
+              "GYRO_FORWARD",
+              "GYRO_BACKWARD"
+            ]
+          },
+          "id": "gyro",
+          "kind": "gyro",
+          "label": "Gyro",
+          "label_anchor": {
+            "x": 600,
+            "y": 665
+          },
+          "notes": "FORWARD and BACKWARD name digital gyro actions, so they use tap. PITCH, YAW and ROLL carry continuous values under analog. The anchor marks a gyro tile, not a physical button."
+        }
+      ],
+      "pane": {
+        "x": 0,
+        "y": 147.5,
+        "right": 1440,
+        "bottom": 874
+      },
+      "labels": [
+        {
+          "id": "btn_a",
+          "box": {
+            "x": 1271,
+            "y": 872,
+            "right": 1417,
+            "bottom": 902
+          },
+          "topmost": false,
+          "coveredBy": "SPAN",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "btn_b",
+          "box": {
+            "x": 1271,
+            "y": 429.15625,
+            "right": 1417,
+            "bottom": 459.15625
+          },
+          "topmost": true,
+          "coveredBy": "controller-label",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "btn_x",
+          "box": {
+            "x": 1271,
+            "y": 554.21875,
+            "right": 1417,
+            "bottom": 584.21875
+          },
+          "topmost": true,
+          "coveredBy": "controller-label",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "btn_y",
+          "box": {
+            "x": 1271,
+            "y": 366.625,
+            "right": 1417,
+            "bottom": 396.625
+          },
+          "topmost": true,
+          "coveredBy": "controller-label",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "dpad_up",
+          "box": {
+            "x": 23,
+            "y": 430.046875,
+            "right": 169,
+            "bottom": 460.046875
+          },
+          "topmost": true,
+          "coveredBy": "controller-label",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "dpad_down",
+          "box": {
+            "x": 23,
+            "y": 556.90625,
+            "right": 169,
+            "bottom": 586.90625
+          },
+          "topmost": true,
+          "coveredBy": "SPAN",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "dpad_left",
+          "box": {
+            "x": 23,
+            "y": 493.484375,
+            "right": 169,
+            "bottom": 523.484375
+          },
+          "topmost": true,
+          "coveredBy": "SPAN",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "dpad_right",
+          "box": {
+            "x": 23,
+            "y": 620.328125,
+            "right": 169,
+            "bottom": 650.328125
+          },
+          "topmost": true,
+          "coveredBy": "SPAN",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "left_stick",
+          "box": {
+            "x": 23,
+            "y": 366.625,
+            "right": 169,
+            "bottom": 396.625
+          },
+          "topmost": true,
+          "coveredBy": "controller-label",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "right_stick",
+          "box": {
+            "x": 1271,
+            "y": 616.765625,
+            "right": 1417,
+            "bottom": 646.765625
+          },
+          "topmost": true,
+          "coveredBy": "controller-label",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "l1",
+          "box": {
+            "x": 297,
+            "y": 215.5,
+            "right": 443,
+            "bottom": 245.5
+          },
+          "topmost": true,
+          "coveredBy": "controller-label",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "r1",
+          "box": {
+            "x": 997,
+            "y": 215.5,
+            "right": 1143,
+            "bottom": 245.5
+          },
+          "topmost": true,
+          "coveredBy": "controller-label",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "l2",
+          "box": {
+            "x": 63.65625,
+            "y": 215.5,
+            "right": 209.65625,
+            "bottom": 245.5
+          },
+          "topmost": true,
+          "coveredBy": "controller-label",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "r2",
+          "box": {
+            "x": 1230.328125,
+            "y": 215.5,
+            "right": 1376.328125,
+            "bottom": 245.5
+          },
+          "topmost": true,
+          "coveredBy": "controller-label",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "l4",
+          "box": {
+            "x": 87,
+            "y": 821.5,
+            "right": 233,
+            "bottom": 851.5
+          },
+          "topmost": true,
+          "coveredBy": "controller-label",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "l5",
+          "box": {
+            "x": 367,
+            "y": 821.5,
+            "right": 513,
+            "bottom": 851.5
+          },
+          "topmost": true,
+          "coveredBy": "controller-label",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "r4",
+          "box": {
+            "x": 1207,
+            "y": 821.5,
+            "right": 1353,
+            "bottom": 851.5
+          },
+          "topmost": true,
+          "coveredBy": "controller-label",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "r5",
+          "box": {
+            "x": 927,
+            "y": 821.5,
+            "right": 1073,
+            "bottom": 851.5
+          },
+          "topmost": true,
+          "coveredBy": "controller-label",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "start",
+          "box": {
+            "x": 763.65625,
+            "y": 215.5,
+            "right": 909.65625,
+            "bottom": 245.5
+          },
+          "topmost": true,
+          "coveredBy": "controller-label",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "select",
+          "box": {
+            "x": 530.328125,
+            "y": 215.5,
+            "right": 676.328125,
+            "bottom": 245.5
+          },
+          "topmost": true,
+          "coveredBy": "controller-label",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "left_pad",
+          "box": {
+            "x": 23,
+            "y": 683.765625,
+            "right": 169,
+            "bottom": 713.765625
+          },
+          "topmost": true,
+          "coveredBy": "SPAN",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "right_pad",
+          "box": {
+            "x": 1271,
+            "y": 679.296875,
+            "right": 1417,
+            "bottom": 709.296875
+          },
+          "topmost": true,
+          "coveredBy": "SPAN",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        },
+        {
+          "id": "gyro",
+          "box": {
+            "x": 647,
+            "y": 821.5,
+            "right": 793,
+            "bottom": 851.5
+          },
+          "topmost": true,
+          "coveredBy": "controller-label control-unmapped",
+          "scrollWidth": 144,
+          "clientWidth": 144,
+          "nameHeight": 19.5
+        }
+      ],
+      "shapes": [
+        {
+          "id": "l2",
+          "box": {
+            "x": 331.70263671875,
+            "y": 294.02313232421875,
+            "right": 412.0400085449219,
+            "bottom": 326.1580810546875
+          }
+        },
+        {
+          "id": "r2",
+          "box": {
+            "x": 1027.9599609375,
+            "y": 294.02313232421875,
+            "right": 1108.29736328125,
+            "bottom": 326.1580810546875
+          }
+        },
+        {
+          "id": "l1",
+          "box": {
+            "x": 362.9449462890625,
+            "y": 333.2991943359375,
+            "right": 434.35595703125,
+            "bottom": 358.29302978515625
+          }
+        },
+        {
+          "id": "r1",
+          "box": {
+            "x": 1005.6439819335938,
+            "y": 333.2991943359375,
+            "right": 1077.0550537109375,
+            "bottom": 358.29302978515625
+          }
+        },
+        {
+          "id": "select",
+          "box": {
+            "x": 419.1811218261719,
+            "y": 348.4739990234375,
+            "right": 440.60443115234375,
+            "bottom": 369.8973388671875
+          }
+        },
+        {
+          "id": "start",
+          "box": {
+            "x": 999.3955688476562,
+            "y": 348.4739990234375,
+            "right": 1020.8189086914062,
+            "bottom": 369.8973388671875
+          }
+        },
+        {
+          "id": "left_stick",
+          "box": {
+            "x": 395.9725646972656,
+            "y": 383.286865234375,
+            "right": 472.7393798828125,
+            "bottom": 460.0537109375
+          }
+        },
+        {
+          "id": "right_stick",
+          "box": {
+            "x": 949.4078369140625,
+            "y": 383.286865234375,
+            "right": 1026.1746826171875,
+            "bottom": 460.0537109375
+          }
+        },
+        {
+          "id": "btn_a",
+          "box": {
+            "x": 1060.0948486328125,
+            "y": 444.8788757324219,
+            "right": 1094.01513671875,
+            "bottom": 478.7991027832031
+          }
+        },
+        {
+          "id": "btn_b",
+          "box": {
+            "x": 1095.800537109375,
+            "y": 409.1733703613281,
+            "right": 1129.720703125,
+            "bottom": 443.0935974121094
+          }
+        },
+        {
+          "id": "btn_x",
+          "box": {
+            "x": 1024.389404296875,
+            "y": 409.1733703613281,
+            "right": 1058.3096923828125,
+            "bottom": 443.0935974121094
+          }
+        },
+        {
+          "id": "btn_y",
+          "box": {
+            "x": 1060.0948486328125,
+            "y": 373.4678955078125,
+            "right": 1094.01513671875,
+            "bottom": 407.3880920410156
+          }
+        },
+        {
+          "id": "dpad_up",
+          "box": {
+            "x": 348.6627502441406,
+            "y": 466.30218505859375,
+            "right": 377.2271423339844,
+            "bottom": 507.3634948730469
+          }
+        },
+        {
+          "id": "dpad_down",
+          "box": {
+            "x": 348.6627502441406,
+            "y": 523.4310302734375,
+            "right": 377.2271423339844,
+            "bottom": 564.4923095703125
+          }
+        },
+        {
+          "id": "dpad_left",
+          "box": {
+            "x": 313.8498840332031,
+            "y": 501.11505126953125,
+            "right": 354.9112243652344,
+            "bottom": 529.679443359375
+          }
+        },
+        {
+          "id": "dpad_right",
+          "box": {
+            "x": 370.97869873046875,
+            "y": 501.11505126953125,
+            "right": 412.0400085449219,
+            "bottom": 529.679443359375
+          }
+        },
+        {
+          "id": "left_pad",
+          "box": {
+            "x": 423.6443176269531,
+            "y": 510.9340515136719,
+            "right": 498.6258850097656,
+            "bottom": 591.271484375
+          }
+        },
+        {
+          "id": "right_pad",
+          "box": {
+            "x": 941.3741455078125,
+            "y": 510.9340515136719,
+            "right": 1016.355712890625,
+            "bottom": 591.271484375
+          }
+        },
+        {
+          "id": "l4",
+          "box": {
+            "x": 385.2608947753906,
+            "y": 651.9708251953125,
+            "right": 447.7455139160156,
+            "bottom": 673.3941040039062
+          }
+        },
+        {
+          "id": "l5",
+          "box": {
+            "x": 385.2608947753906,
+            "y": 714.4554443359375,
+            "right": 447.7455139160156,
+            "bottom": 735.8787231445312
+          }
+        },
+        {
+          "id": "r4",
+          "box": {
+            "x": 992.2544555664062,
+            "y": 651.9708251953125,
+            "right": 1054.7391357421875,
+            "bottom": 673.3941040039062
+          }
+        },
+        {
+          "id": "r5",
+          "box": {
+            "x": 992.2544555664062,
+            "y": 714.4554443359375,
+            "right": 1054.7391357421875,
+            "bottom": 735.8787231445312
+          }
+        },
+        {
+          "id": "gyro",
+          "box": {
+            "x": 666.4417724609375,
+            "y": 673.3941040039062,
+            "right": 773.5582275390625,
+            "bottom": 750.1609497070312
+          }
+        }
+      ],
+      "glyphs": [
+        {
+          "text": "CONTROLLER",
+          "box": {
+            "x": 634.2578735351562,
+            "y": 462.2622985839844,
+            "right": 805.7422485351562,
+            "bottom": 488.2622985839844
+          }
+        },
+        {
+          "text": "Select a control to inspect",
+          "box": {
+            "x": 626.625,
+            "y": 495.8266906738281,
+            "right": 813.3750610351562,
+            "bottom": 514.8267211914062
+          }
+        },
+        {
+          "text": "A",
+          "box": {
+            "x": 1071.8519287109375,
+            "y": 451.19482421875,
+            "right": 1082.2581787109375,
+            "bottom": 470.19482421875
+          }
+        },
+        {
+          "text": "B",
+          "box": {
+            "x": 1107.6982421875,
+            "y": 415.48931884765625,
+            "right": 1117.8231201171875,
+            "bottom": 434.48931884765625
+          }
+        },
+        {
+          "text": "X",
+          "box": {
+            "x": 1036.107421875,
+            "y": 415.48931884765625,
+            "right": 1046.591796875,
+            "bottom": 434.48931884765625
+          }
+        },
+        {
+          "text": "Y",
+          "box": {
+            "x": 1072.0003662109375,
+            "y": 379.7838134765625,
+            "right": 1082.1097412109375,
+            "bottom": 398.7838134765625
+          }
+        },
+        {
+          "text": "L3",
+          "box": {
+            "x": 425.1763000488281,
+            "y": 411.026123046875,
+            "right": 443.53570556640625,
+            "bottom": 430.026123046875
+          }
+        },
+        {
+          "text": "R3",
+          "box": {
+            "x": 977.9319458007812,
+            "y": 411.026123046875,
+            "right": 997.6506958007812,
+            "bottom": 430.026123046875
+          }
+        },
+        {
+          "text": "REAR",
+          "box": {
+            "x": 398.65948486328125,
+            "y": 686.1732177734375,
+            "right": 434.34698486328125,
+            "bottom": 703.1732177734375
+          }
+        },
+        {
+          "text": "REAR",
+          "box": {
+            "x": 1005.653076171875,
+            "y": 686.1732177734375,
+            "right": 1041.340576171875,
+            "bottom": 703.1732177734375
+          }
+        },
+        {
+          "text": "GYRO",
+          "box": {
+            "x": 698.2578735351562,
+            "y": 702.0260009765625,
+            "right": 741.7422485351562,
+            "bottom": 721.0260009765625
+          }
+        }
+      ],
+      "leaders": [
+        {
+          "id": "btn_a",
+          "points": [
+            {
+              "x": 1270.5708722741433,
+              "y": 494.25289890847847
+            },
+            {
+              "x": 1094.0151245497468,
+              "y": 464.6798184831566
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "btn_b",
+          "points": [
+            {
+              "x": 1270.5708722741433,
+              "y": 438.34283271385505
+            },
+            {
+              "x": 1129.7206932376848,
+              "y": 427.4456408135245
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "btn_x",
+          "points": [
+            {
+              "x": 1283.8239702361393,
+              "y": 553.9671899433076
+            },
+            {
+              "x": 1041.349508315232,
+              "y": 493.08129621369073
+            },
+            {
+              "x": 1041.349508315232,
+              "y": 443.09360068015224
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "btn_y",
+          "points": [
+            {
+              "x": 1270.5708722741433,
+              "y": 383.94519853443376
+            },
+            {
+              "x": 1094.0151245497468,
+              "y": 389.8598237676413
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "dpad_up",
+          "points": [
+            {
+              "x": 169.42912772585666,
+              "y": 454.40889321680754
+            },
+            {
+              "x": 348.6627504105137,
+              "y": 477.82576119491245
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "dpad_down",
+          "points": [
+            {
+              "x": 169.42912772585666,
+              "y": 566.0131599212361
+            },
+            {
+              "x": 348.6627504105137,
+              "y": 552.203183991144
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "dpad_left",
+          "points": [
+            {
+              "x": 169.42912772585666,
+              "y": 510.5135099226812
+            },
+            {
+              "x": 313.8498880261572,
+              "y": 514.9828962522133
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "dpad_right",
+          "points": [
+            {
+              "x": 169.42912772585666,
+              "y": 629.8390534065222
+            },
+            {
+              "x": 398.65046119095746,
+              "y": 613.587377078808
+            },
+            {
+              "x": 398.65046119095746,
+              "y": 529.6794492299683
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "left_stick",
+          "points": [
+            {
+              "x": 169.42912772585666,
+              "y": 390.1736813126323
+            },
+            {
+              "x": 395.9725557368863,
+              "y": 417.10697354705906
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "right_stick",
+          "points": [
+            {
+              "x": 1308.523224922727,
+              "y": 616.4518131719572
+            },
+            {
+              "x": 1041.349508315232,
+              "y": 502.0076883856753
+            },
+            {
+              "x": 987.791277258567,
+              "y": 497.544492299683
+            },
+            {
+              "x": 987.791277258567,
+              "y": 460.05372446125546
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "l1",
+          "points": [
+            {
+              "x": 373.96120847422753,
+              "y": 245.47429906542055
+            },
+            {
+              "x": 395.57497743505553,
+              "y": 333.2991797485827
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "r1",
+          "points": [
+            {
+              "x": 1066.0387610319617,
+              "y": 245.47429906542055
+            },
+            {
+              "x": 1044.4249920711338,
+              "y": 333.2991797485827
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "l2",
+          "points": [
+            {
+              "x": 181.32082951625927,
+              "y": 245.47429906542055
+            },
+            {
+              "x": 331.70264187631574,
+              "y": 296.46926614874246
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "r2",
+          "points": [
+            {
+              "x": 1258.6791399899303,
+              "y": 245.47429906542055
+            },
+            {
+              "x": 1108.2973276298735,
+              "y": 296.46926614874246
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "l4",
+          "points": [
+            {
+              "x": 182.57876018868794,
+              "y": 821.0257009345795
+            },
+            {
+              "x": 400.67863502383597,
+              "y": 673.3940948533864
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "l5",
+          "points": [
+            {
+              "x": 437.0114309007876,
+              "y": 821.0257009345795
+            },
+            {
+              "x": 418.7948858908775,
+              "y": 735.8787485758463
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "r4",
+          "points": [
+            {
+              "x": 1257.4212093175015,
+              "y": 821.0257009345795
+            },
+            {
+              "x": 1039.321364976164,
+              "y": 673.3940948533864
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "r5",
+          "points": [
+            {
+              "x": 1002.9885386054018,
+              "y": 821.0257009345795
+            },
+            {
+              "x": 1021.2051141091225,
+              "y": 735.8787485758463
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "start",
+          "points": [
+            {
+              "x": 856.7852321161288,
+              "y": 245.47429906542055
+            },
+            {
+              "x": 999.3955748846226,
+              "y": 351.2413643216047
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "select",
+          "points": [
+            {
+              "x": 583.2147678838712,
+              "y": 245.47429906542055
+            },
+            {
+              "x": 440.6044251153773,
+              "y": 351.2413643216047
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "left_pad",
+          "points": [
+            {
+              "x": 147.35940768637013,
+              "y": 683.3996324865989
+            },
+            {
+              "x": 354.01859181246647,
+              "y": 622.5137692507925
+            },
+            {
+              "x": 461.135084419607,
+              "y": 622.5137692507925
+            },
+            {
+              "x": 461.135084419607,
+              "y": 591.2714576364679
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "right_pad",
+          "points": [
+            {
+              "x": 1289.4610560527099,
+              "y": 678.9364364006067
+            },
+            {
+              "x": 1085.9814691751544,
+              "y": 622.5137692507925
+            },
+            {
+              "x": 978.8648850865824,
+              "y": 622.5137692507925
+            },
+            {
+              "x": 978.8648850865824,
+              "y": 591.2714576364679
+            }
+          ],
+          "stroke": 1.9984423676012462
+        },
+        {
+          "id": "gyro",
+          "points": [
+            {
+              "x": 720,
+              "y": 821.0257009345795
+            },
+            {
+              "x": 720,
+              "y": 750.1609516559731
+            }
+          ],
+          "stroke": 1.9984423676012462
+        }
+      ],
+      "heads": [
+        {
+          "id": "btn_a",
+          "points": [
+            {
+              "x": 1094.0151245497468,
+              "y": 464.6798184831566
+            },
+            {
+              "x": 1100.4233378472727,
+              "y": 462.71376054234963
+            },
+            {
+              "x": 1099.432898880908,
+              "y": 468.6266933690722
+            }
+          ]
+        },
+        {
+          "id": "btn_b",
+          "points": [
+            {
+              "x": 1129.7206932376848,
+              "y": 427.4456408135245
+            },
+            {
+              "x": 1135.929355039032,
+              "y": 424.9193658323674
+            },
+            {
+              "x": 1135.4669468959914,
+              "y": 430.89683880909956
+            }
+          ]
+        },
+        {
+          "id": "btn_x",
+          "points": [
+            {
+              "x": 1041.349508315232,
+              "y": 443.09360068015224
+            },
+            {
+              "x": 1044.3471718666337,
+              "y": 449.0889277829559
+            },
+            {
+              "x": 1038.35184476383,
+              "y": 449.0889277829559
+            }
+          ]
+        },
+        {
+          "id": "btn_y",
+          "points": [
+            {
+              "x": 1094.0151245497468,
+              "y": 389.8598237676413
+            },
+            {
+              "x": 1099.9067726967119,
+              "y": 386.6631118679344
+            },
+            {
+              "x": 1100.1074219700704,
+              "y": 392.6550694046733
+            }
+          ]
+        },
+        {
+          "id": "dpad_up",
+          "points": [
+            {
+              "x": 348.6627504105137,
+              "y": 477.82576119491245
+            },
+            {
+              "x": 342.32961287453907,
+              "y": 480.0214985167126
+            },
+            {
+              "x": 343.106290229013,
+              "y": 474.0766691641644
+            }
+          ]
+        },
+        {
+          "id": "dpad_down",
+          "points": [
+            {
+              "x": 348.6627504105137,
+              "y": 552.203183991144
+            },
+            {
+              "x": 342.91542946883817,
+              "y": 555.6525828518971
+            },
+            {
+              "x": 342.45485095443007,
+              "y": 549.6749726530177
+            }
+          ]
+        },
+        {
+          "id": "dpad_left",
+          "points": [
+            {
+              "x": 313.8498880261572,
+              "y": 514.9828962522133
+            },
+            {
+              "x": 307.7647261575003,
+              "y": 517.7936632388106
+            },
+            {
+              "x": 307.9501590193989,
+              "y": 511.8012025541977
+            }
+          ]
+        },
+        {
+          "id": "dpad_right",
+          "points": [
+            {
+              "x": 398.65046119095746,
+              "y": 529.6794492299683
+            },
+            {
+              "x": 401.64812474235936,
+              "y": 535.6747763327721
+            },
+            {
+              "x": 395.6527976395556,
+              "y": 535.6747763327721
+            }
+          ]
+        },
+        {
+          "id": "left_stick",
+          "points": [
+            {
+              "x": 395.9725557368863,
+              "y": 417.10697354705906
+            },
+            {
+              "x": 389.66524645843975,
+              "y": 419.37588076725183
+            },
+            {
+              "x": 390.3730382949021,
+              "y": 413.4224826539417
+            }
+          ]
+        },
+        {
+          "id": "right_stick",
+          "points": [
+            {
+              "x": 987.791277258567,
+              "y": 460.05372446125546
+            },
+            {
+              "x": 990.7889408099688,
+              "y": 466.04905156405914
+            },
+            {
+              "x": 984.793613707165,
+              "y": 466.04905156405914
+            }
+          ]
+        },
+        {
+          "id": "l1",
+          "points": [
+            {
+              "x": 395.57497743505553,
+              "y": 333.2991797485827
+            },
+            {
+              "x": 391.2314390616253,
+              "y": 328.19390598784355
+            },
+            {
+              "x": 397.0530734195887,
+              "y": 326.7612000403003
+            }
+          ]
+        },
+        {
+          "id": "r1",
+          "points": [
+            {
+              "x": 1044.4249920711338,
+              "y": 333.2991797485827
+            },
+            {
+              "x": 1042.9468960866006,
+              "y": 326.7612000403003
+            },
+            {
+              "x": 1048.768530444564,
+              "y": 328.19390598784355
+            }
+          ]
+        },
+        {
+          "id": "l2",
+          "points": [
+            {
+              "x": 331.70264187631574,
+              "y": 296.46926614874246
+            },
+            {
+              "x": 325.06221821152155,
+              "y": 297.3827997249235
+            },
+            {
+              "x": 326.98756691525654,
+              "y": 291.70503516509154
+            }
+          ]
+        },
+        {
+          "id": "r2",
+          "points": [
+            {
+              "x": 1108.2973276298735,
+              "y": 296.46926614874246
+            },
+            {
+              "x": 1113.0124025909327,
+              "y": 291.70503516509154
+            },
+            {
+              "x": 1114.9377817884783,
+              "y": 297.3827997249235
+            }
+          ]
+        },
+        {
+          "id": "l4",
+          "points": [
+            {
+              "x": 400.67863502383597,
+              "y": 673.3940948533864
+            },
+            {
+              "x": 397.39414669048745,
+              "y": 679.2372273477811
+            },
+            {
+              "x": 394.03342383078694,
+              "y": 674.2723775845823
+            }
+          ]
+        },
+        {
+          "id": "l5",
+          "points": [
+            {
+              "x": 418.7948858908775,
+              "y": 735.8787485758463
+            },
+            {
+              "x": 422.98049681951693,
+              "y": 741.1142309075947
+            },
+            {
+              "x": 417.11784828637616,
+              "y": 742.3685023227584
+            }
+          ]
+        },
+        {
+          "id": "r4",
+          "points": [
+            {
+              "x": 1039.321364976164,
+              "y": 673.3940948533864
+            },
+            {
+              "x": 1045.966515181592,
+              "y": 674.2723775845823
+            },
+            {
+              "x": 1042.6058533095124,
+              "y": 679.2372273477811
+            }
+          ]
+        },
+        {
+          "id": "r5",
+          "points": [
+            {
+              "x": 1021.2051141091225,
+              "y": 735.8787485758463
+            },
+            {
+              "x": 1022.8821517136238,
+              "y": 742.3685023227584
+            },
+            {
+              "x": 1017.0195336742936,
+              "y": 741.1142309075947
+            }
+          ]
+        },
+        {
+          "id": "start",
+          "points": [
+            {
+              "x": 999.3955748846226,
+              "y": 351.2413643216047
+            },
+            {
+              "x": 992.7943967539944,
+              "y": 350.0777052644629
+            },
+            {
+              "x": 996.3657708569108,
+              "y": 345.26221418529286
+            }
+          ]
+        },
+        {
+          "id": "select",
+          "points": [
+            {
+              "x": 440.6044251153773,
+              "y": 351.2413643216047
+            },
+            {
+              "x": 443.63422914308916,
+              "y": 345.26221418529286
+            },
+            {
+              "x": 447.20563373981605,
+              "y": 350.0777052644629
+            }
+          ]
+        },
+        {
+          "id": "left_pad",
+          "points": [
+            {
+              "x": 461.135084419607,
+              "y": 591.2714576364679
+            },
+            {
+              "x": 464.1327479710088,
+              "y": 597.2667847392715
+            },
+            {
+              "x": 458.1374208682051,
+              "y": 597.2667847392715
+            }
+          ]
+        },
+        {
+          "id": "right_pad",
+          "points": [
+            {
+              "x": 978.8648850865824,
+              "y": 591.2714576364679
+            },
+            {
+              "x": 981.8625486379843,
+              "y": 597.2667847392715
+            },
+            {
+              "x": 975.8672215351805,
+              "y": 597.2667847392715
+            }
+          ]
+        },
+        {
+          "id": "gyro",
+          "points": [
+            {
+              "x": 720,
+              "y": 750.1609516559731
+            },
+            {
+              "x": 722.9976635514018,
+              "y": 756.1562787587769
+            },
+            {
+              "x": 717.002336448598,
+              "y": 756.1562787587769
+            }
+          ]
+        }
+      ],
+      "card": null,
+      "scroll": [
+        {
+          "id": "HTML",
+          "width": 1440,
+          "height": 900,
+          "clientWidth": 1440,
+          "clientHeight": 900,
+          "top": 0,
+          "left": 0
+        },
+        {
+          "id": "BODY",
+          "width": 1440,
+          "height": 900,
+          "clientWidth": 1440,
+          "clientHeight": 900,
+          "top": 0,
+          "left": 0
+        },
+        {
+          "id": "tab-editor",
+          "width": 1440,
+          "height": 755,
+          "clientWidth": 1440,
+          "clientHeight": 727,
+          "top": 0,
+          "left": 0
+        },
+        {
+          "id": "controller-picture-scroll",
+          "width": 1400,
+          "height": 690,
+          "clientWidth": 1400,
+          "clientHeight": 642,
+          "top": 0,
+          "left": 0
+        }
+      ]
+    }
+  ]
+}

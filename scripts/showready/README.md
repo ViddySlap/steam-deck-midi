@@ -114,7 +114,7 @@ peeled commit with `git rev-parse 'v0.4.9^{commit}'` (e66ff44...).
 the rail transport contract. After an intentional reviewed kit change:
 
 ```bash
-find scripts/showready -type f ! -name SHA256SUMS -exec shasum -a 256 {} \; | LC_ALL=C sort > /tmp/sdwin-w1/SHA256SUMS
+{ find scripts/showready -type f ! -name SHA256SUMS -exec shasum -a 256 {} \;; shasum -a 256 tests/ui_controller_geometry.cjs; } | LC_ALL=C sort > /tmp/sdwin-w1/SHA256SUMS
 cp /tmp/sdwin-w1/SHA256SUMS scripts/showready/SHA256SUMS
 ```
 
@@ -223,3 +223,36 @@ Dead seam records no MIDI on either arm; expected exit 1 even if bytes match.
 The result retains process IDs, terminate/wait method and PID absence proof.
 Raw captures, arm stdout and copied trees remain in the unique reported scratch
 folder, with no running processes. The driver never calls an HTTP shutdown API.
+
+## Controller geometry (Mac, real Chromium)
+
+```bash
+scripts/showready/ui_geometry.sh --chromium '/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell' --scratch /tmp/sdfix-u1/geometry --single-process --mutations
+```
+
+The wrapper copies tracked working files and verified Mac fixtures into a unique
+scratch tree. It boots the UI with dummy tray, no-op browser, dry-run MIDI,
+engines/pulse/OSC relay off, and free loopback TCP 17841 / UDP 47841 (override
+with --ui-port / --listen-port). It terminates and waits for its bridge PID,
+then requires os.kill(pid, 0) to report absence. receipt.json records commands,
+exit codes, scratch paths, effective settings and teardown. No laptop acts.
+Use --revision <sha> for a before-repair control with the current detector.
+
+The standalone detector boots nothing:
+`node tests/ui_controller_geometry.cjs URL CHROMIUM --single-process --out DIR`.
+Set PLAYWRIGHT_CORE to an installed playwright-core module if the gate's Mac
+path differs. It measures 23 labels/shapes/leaders, all pairwise label overlaps
+and leader-segment intersections, each endpoint's own shape boundary (3 px),
+all SVG text against lines/arrowhead triangles, pane containment/scroll and
+label centre hit-testing at four viewport sizes, closed, A open, and the label
+nearest the open card. It also clicks every label and compares drill-in actions
+with the owned map. PNGs and raw page-coordinate geometry accompany assertions.
+The check is deliberately outside unittest discovery; unittest pins its bytes.
+
+--mutations requires pristine GREEN, then each planted DOM fault to exit 1 at
+its named real-geometry assertion, then restored GREEN in a fresh browser page:
+(m1) swap A/B leader targets, (m2) overlap A/B labels, (m3) put A under the status
+bar. All mutations live in browser DOMs served from the scratch fixture copy;
+no production file or preset is mutated. Each mutant's log retains its RED.
+A browser launch failure is a nonzero result, never geometry credit. Try default
+launch first, then --single-process (one browser at a time), and record errors.

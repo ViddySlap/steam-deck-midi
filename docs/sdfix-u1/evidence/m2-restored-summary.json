@@ -1,0 +1,13 @@
+{
+  "assertions": 1048,
+  "failures": [],
+  "command": [
+    "node",
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_geometry.cjs",
+    "http://127.0.0.1:17841",
+    "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+    "--single-process",
+    "--out",
+    "/private/tmp/sdfix-u1/geometry-4ajwqjf_/m2-restored"
+  ]
+}

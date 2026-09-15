@@ -1,0 +1,2 @@
+UI controller editing: PASS (all seven forms, isolation, validation, clear, macro parity, Advanced, conflict guard, drafts, sections, reset)
+UI controller behavior: PASS (23 arrows, map anchors/shapes, front door, storage, drill-in, List handoff, commit, sections, reload, Escape, unique IDs, asset failure)

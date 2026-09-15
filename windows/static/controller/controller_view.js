@@ -13,6 +13,9 @@ const ControllerView = (() => {
   const labels = new Map();
   const arrows = new Map();
   const shapes = new Map();
+  const heads = new Map();
+  const hits = new Map();
+  let layoutObserver = null;
   const el = id => document.getElementById(id);
   const svgElement = (tag, attrs = {}) => {
     const node = document.createElementNS('http://www.w3.org/2000/svg', tag);
@@ -26,6 +29,7 @@ const ControllerView = (() => {
   const advanced = new Map();
   let cardTab = 'mappings';
   let conflicting = new Set();
+  let conflictGroups = [];
   const button = (text, className, onClick) => {
     const node = document.createElement('button');
     node.className = 'btn btn-sm ' + className;
@@ -45,9 +49,10 @@ const ControllerView = (() => {
     });
   }
   function hasDrafts() { return [...editors.values(), ...advanced.values()].some(draft => draft.dirty); }
-  function resetDrafts() { editors.clear(); advanced.clear(); conflicting.clear(); }
+  function resetDrafts() { editors.clear(); advanced.clear(); conflicting.clear(); conflictGroups = []; }
   function markConflicts(conflicts) {
-    conflicting = new Set(conflicts.flatMap(conflict => conflict.actions));
+    conflictGroups = conflicts;
+    conflicting = new Set(conflictGroups.flatMap(conflict => conflict.actions));
     refresh();
   }
   function setCardTab(next) {
@@ -286,6 +291,16 @@ const ControllerView = (() => {
 
   function refresh(action = null) {
     if (!map) return;
+    if (action && conflicting.has(action)) {
+      // Only retire a reported warning after its channel/CC collision is resolved.
+      // This is presentation state; Save still uses the server's conflict guard.
+      conflictGroups = conflictGroups.filter(group => !group.actions.includes(action) || group.actions.filter(id => {
+        const spec = state[id];
+        return spec && (spec.channel || 0) === group.channel &&
+          (spec.type === 'axis_split_cc' ? [spec.cc_positive, spec.cc_negative] : [spec.cc]).includes(group.cc);
+      }).length > 1);
+      conflicting = new Set(conflictGroups.flatMap(group => group.actions));
+    }
     if (action && action === selected && view === 'controller') renderEditor(action);
     if (action && editors.has(action)) {
       const wasOpen = !editors.get(action).node.hidden;
@@ -299,7 +314,7 @@ const ControllerView = (() => {
       label.querySelector('small').textContent = `${mapped}/${ids.length}`;
       label.setAttribute('aria-label', `${control.label}: ${mapped} of ${ids.length} mapped`);
       label.setAttribute('aria-expanded', String(activeControl === control.id));
-      for (const node of [label, arrows.get(control.id), shapes.get(control.id)]) {
+      for (const node of [label, arrows.get(control.id), shapes.get(control.id), heads.get(control.id)]) {
         node.classList.toggle('control-unmapped', mapped === 0);
         node.classList.toggle('control-selected', activeControl === control.id);
       }
@@ -311,14 +326,8 @@ const ControllerView = (() => {
     const picture = el('controllerPicture');
     picture.replaceChildren();
     const [x, y, width, height] = map.scene_view_box;
-    picture.style.aspectRatio = `${width} / ${height}`;
+
     const scene = svgElement('svg', {viewBox: map.scene_view_box.join(' '), class: 'controller-scene'});
-    const defs = svgElement('defs');
-    const marker = svgElement('marker', {id: 'controllerArrowHead', viewBox: '0 0 10 10', refX: 9, refY: 5,
-      markerWidth: 7, markerHeight: 7, orient: 'auto-start-reverse'});
-    marker.appendChild(svgElement('path', {d: 'M0 0 L10 5 L0 10 Z', fill: 'var(--text-mid)'}));
-    defs.appendChild(marker);
-    scene.appendChild(defs);
     art.setAttribute('x', map.view_box[0]);
     art.setAttribute('y', map.view_box[1]);
     art.setAttribute('width', map.view_box[2]);
@@ -334,10 +343,14 @@ const ControllerView = (() => {
       const {x: ax, y: ay} = control.anchor;
       // The broad invisible stroke is a pointer target for the single visible arrow.
       const coords = {x1: lx, y1: ly, x2: ax, y2: ay};
-      const arrow = svgElement('line', {...coords, class: 'controller-arrow', 'data-control-arrow': control.id,
-        'marker-end': 'url(#controllerArrowHead)', 'pointer-events': 'none'});
-      const hit = svgElement('line', {...coords, class: 'controller-arrow-hit', 'data-control': control.id});
+      const arrow = svgElement('polyline', {...coords, class: 'controller-arrow', 'data-control-arrow': control.id,
+        'pointer-events': 'none'});
+      const hit = svgElement('polyline', {...coords, class: 'controller-arrow-hit', 'data-control': control.id});
       hit.addEventListener('click', () => openControl(control.id));
+      const head = svgElement('polygon', {class: 'controller-arrow-head', 'data-control-head': control.id});
+      heads.set(control.id, head);
+      hits.set(control.id, hit);
+      scene.appendChild(head);
       scene.appendChild(arrow);
       scene.appendChild(hit);
       arrows.set(control.id, arrow);
@@ -357,6 +370,69 @@ const ControllerView = (() => {
       labels.set(control.id, label);
     }
     refresh();
+    // Layout requires the real SVG geometry API. The VM behavior check deliberately
+    // has no layout engine; its initial anchor attributes still describe the map.
+    if (typeof ResizeObserver !== 'undefined') {
+      layoutObserver?.disconnect();
+      layoutObserver = new ResizeObserver(() => layout(picture, scene, art));
+      layoutObserver.observe(picture);
+    }
+  }
+
+  // All label placement and routing is here. Bank/order and optional bend anchors
+  // come from the owned map; the art and its control coordinates never move apart.
+  function layout(picture, scene, art) {
+    const width = picture.clientWidth, height = picture.clientHeight;
+    if (!width || !height) return;
+    scene.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    const labelWidth = Math.min(146, width / 6 - 10);
+    const scale = Math.min((width - 2 * (labelWidth + 18)) / map.view_box[2], (height - 100) / map.view_box[3]);
+    const ox = (width - map.view_box[2] * scale) / 2;
+    const oy = (height - map.view_box[3] * scale) / 2;
+    art.setAttribute('x', ox); art.setAttribute('y', oy);
+    art.setAttribute('width', map.view_box[2] * scale); art.setAttribute('height', map.view_box[3] * scale);
+    const project = (x, y) => ({x: ox + x * scale, y: oy + y * scale});
+    const banks = {top: [], bottom: [], left: [], right: []};
+    for (const c of map.controls) {
+      const p = c.label_anchor;
+      banks[p.y < 0 ? 'top' : p.y > map.view_box[3] - 50 ? 'bottom' : p.x < 0 ? 'left' : 'right'].push(c);
+    }
+    for (const [bank, controls] of Object.entries(banks)) {
+      const horizontal = bank === 'top' || bank === 'bottom';
+      controls.sort((a, b) => horizontal ? a.label_anchor.x - b.label_anchor.x : a.label_anchor.y - b.label_anchor.y);
+      const span = horizontal ? 0 : Math.max((controls.at(-1).label_anchor.y - controls[0].label_anchor.y) * scale, (controls.length - 1) * 34);
+      const middle = horizontal ? 0 : oy + (controls[0].label_anchor.y + controls.at(-1).label_anchor.y) / 2 * scale;
+      const first = Math.max(66, Math.min(height - 66 - span, middle - span / 2));
+      controls.forEach((c, i) => {
+        const center = horizontal ? {x: width * (i + .5) / controls.length, y: bank === 'top' ? 18 : height - 18} :
+          {x: bank === 'left' ? labelWidth / 2 + 3 : width - labelWidth / 2 - 3, y: first + i * span / (controls.length - 1)};
+        const label = labels.get(c.id);
+        label.style.width = `${labelWidth}px`;
+        label.style.left = `${center.x}px`; label.style.top = `${center.y}px`;
+        const target = project(c.anchor.x, c.anchor.y);
+        const bends = (c.leader_via || []).map(([x, y]) => project(x, y));
+        const toward = bends[0] || target;
+        // Intersect a ray from an interior anchor with a rectangle's boundary.
+        const edge = (from, to, box) => {
+          const dx = to.x - from.x, dy = to.y - from.y;
+          const t = Math.min(dx > 0 ? (box.x + box.width - from.x) / dx : dx < 0 ? (box.x - from.x) / dx : Infinity,
+            dy > 0 ? (box.y + box.height - from.y) / dy : dy < 0 ? (box.y - from.y) / dy : Infinity);
+          return {x: from.x + dx * t, y: from.y + dy * t};
+        };
+        const start = edge(center, toward, {x: center.x - labelWidth / 2, y: center.y - 15, width: labelWidth, height: 30});
+        const b = shapes.get(c.id).getBBox();
+        const box = {x: ox + b.x * scale, y: oy + b.y * scale, width: b.width * scale, height: b.height * scale};
+        const end = edge(target, bends.at(-1) || start, box);
+        const points = [start, ...bends, end];
+        const encoded = points.map(p => `${p.x},${p.y}`).join(' ');
+        const arrow = arrows.get(c.id);
+        arrow.setAttribute('points', encoded); hits.get(c.id).setAttribute('points', encoded);
+        arrow.setAttribute('x2', end.x); arrow.setAttribute('y2', end.y);
+        const last = points.at(-2), length = Math.hypot(end.x - last.x, end.y - last.y);
+        const ux = (end.x - last.x) / length, uy = (end.y - last.y) / length;
+        heads.get(c.id).setAttribute('points', `${end.x},${end.y} ${end.x - ux * 6 - uy * 3},${end.y - uy * 6 + ux * 3} ${end.x - ux * 6 + uy * 3},${end.y - uy * 6 - ux * 3}`);
+      });
+    }
   }
 
   async function init() {

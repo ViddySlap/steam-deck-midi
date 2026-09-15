@@ -1974,6 +1974,7 @@ async function doSave() {
       method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({section: selectedSection, document: body}),
     });
     sectionDocument = body;
+    if (typeof ControllerView !== 'undefined') ControllerView.markConflicts([]);
     setDirty(false);
     status('Saved & applied', 'ok');
     toast(`Saved to ${r.saved_to || 'preset'} ✓`, 'ok');
@@ -2001,7 +2002,6 @@ function showConflictModal(conflicts, onForce) {
   if (typeof ControllerView !== 'undefined') ControllerView.markConflicts(conflicts);
   const cleanup = () => {
     ov.classList.remove('open');
-    if (typeof ControllerView !== 'undefined') ControllerView.markConflicts([]);
   };
   document.getElementById('btnConflictCancel').onclick = cleanup;
   document.getElementById('btnConflictForce').onclick = () => { cleanup(); onForce(); };

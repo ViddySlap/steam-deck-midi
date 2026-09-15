@@ -4,10 +4,14 @@
 .mapping-views { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; }
 .mapping-views span { color: var(--text-mid); margin-left: 8px; }
 .mapping-views [aria-pressed="true"] { color: var(--accent); border-color: var(--accent); background: var(--accent-glow); }
-.controller-layout { display: grid; grid-template-columns: minmax(0, 1fr) 350px; gap: 20px; align-items: start; }
+/* The pane owns the height; only the card's contents scroll. */
+#tab-editor:has(#controllerView:not([hidden])) { display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+#tab-editor:not(.active):has(#controllerView:not([hidden])) { display: none; }
+#controllerView { flex: 1; min-height: 0; }
+.controller-layout { display: grid; height: 100%; min-height: 0; grid-template-columns: minmax(0, 1fr) 330px; gap: 16px; }
 .controller-layout:has(#controllerCard[hidden]) { grid-template-columns: minmax(0, 1fr); }
-.controller-picture-scroll { overflow-x: auto; }
-#controllerPicture { position: relative; min-width: 850px; aspect-ratio: 1720 / 900; }
+.controller-picture-scroll { min-height: 0; min-width: 0; }
+#controllerPicture { position: relative; width: 100%; height: 100%; }
 .controller-scene { display: block; width: 100%; height: 100%; }
 .controller-art [data-control] { cursor: pointer; }
 .controller-art [data-control]:hover { fill: var(--accent-dim); }
@@ -18,9 +22,9 @@
 .controller-arrow.control-unmapped { stroke: var(--text-dim); opacity: .6; }
 .controller-arrow.control-selected { stroke: var(--accent); }
 .controller-label {
-  position: absolute; transform: translate(-50%, -50%); width: 12.8%;
+  position: absolute; transform: translate(-50%, -50%); width: 146px; height: 30px; white-space: nowrap;
   display: flex; align-items: center; justify-content: space-between; gap: 5px;
-  padding: 7px 9px; border-radius: var(--radius-sm); border: 1px solid var(--border-hi);
+  padding: 4px 8px; border-radius: var(--radius-sm); border: 1px solid var(--border-hi);
   background: var(--surface2); color: var(--text); font: inherit; font-size: 13px; cursor: pointer;
 }
 .controller-label small { color: var(--text-mid); font-size: 11px; white-space: nowrap; }
@@ -29,7 +33,7 @@
 .controller-label:focus-visible, #controllerCard button:focus-visible, .mapping-views button:focus-visible {
   outline: 2px solid var(--accent); outline-offset: 3px;
 }
-#controllerCard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; min-width: 0; }
+#controllerCard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; min-width: 0; min-height: 0; overflow-y: auto; }
 .controller-card-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .controller-card-header h2 { font-size: 18px; }
 .controller-card-hint { color: var(--text-mid); margin-top: 8px; font-size: 12px; }
@@ -41,10 +45,12 @@
 .controller-description { color: var(--text-mid); font-size: 12px; margin: 4px 0 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .controller-open-list { color: var(--accent); }
 @media (max-width: 1250px) {
-  .controller-layout { grid-template-columns: minmax(0, 1fr); }
-  .mapping-views { flex-wrap: wrap; }
-  .mapping-views span { flex-basis: 100%; margin-left: 0; }
+  .controller-layout:not(:has(#controllerCard[hidden])) { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(300px, 1fr) 170px; gap: 10px; }
+  .mapping-views { margin-bottom: 10px; }
+  #tab-editor:has(#controllerView:not([hidden])) { padding: 12px; }
 }
+.controller-arrow-head { fill: var(--text-mid); pointer-events: none; }
+.controller-arrow-head.control-selected { fill: var(--accent); }
 
 .controller-tabs { margin-top: 14px; }
 .controller-tabs [aria-selected="true"] { color: var(--accent); border-color: var(--accent); }
@@ -57,5 +63,5 @@
 .controller-inline-editor .action-row, .controller-inline-editor > button, .controller-macro { margin-top: 8px; }
 .controller-json-editor { margin-top: 14px; }
 .controller-json { min-height: 300px; }
-.controller-conflict { border-left: 3px solid var(--danger); padding-left: 8px; }
-.controller-conflict-message { color: var(--danger); font-size: 12px; margin-top: 6px; }
+.controller-conflict { border-left: 3px solid #ff9999; padding-left: 8px; background: #321f29; }
+.controller-conflict-message { color: #ffbbbb; font-size: 12px; margin-top: 6px; }

@@ -1,0 +1,41 @@
+[
+  {
+    "name": "cancel",
+    "command": [
+      "node",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_check.cjs",
+      "/tmp/sdfix-u1/conflict-mutations/cancel/index.html"
+    ],
+    "red_exit": 1,
+    "named_failure": "cancel retains row markers",
+    "named_failure_seen": true,
+    "green_exit": 0,
+    "restored_bytes": true
+  },
+  {
+    "name": "save",
+    "command": [
+      "node",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_check.cjs",
+      "/tmp/sdfix-u1/conflict-mutations/save/index.html"
+    ],
+    "red_exit": 1,
+    "named_failure": "successful Save clears row markers",
+    "named_failure_seen": true,
+    "green_exit": 0,
+    "restored_bytes": true
+  },
+  {
+    "name": "resolve",
+    "command": [
+      "node",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_check.cjs",
+      "/tmp/sdfix-u1/conflict-mutations/resolve/index.html"
+    ],
+    "red_exit": 1,
+    "named_failure": "resolving the channel/CC collision clears marks",
+    "named_failure_seen": true,
+    "green_exit": 0,
+    "restored_bytes": true
+  }
+]

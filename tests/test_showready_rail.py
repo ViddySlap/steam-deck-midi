@@ -25,6 +25,8 @@ def verify_pins(root):
         pins[name] = digest
     actual = {p.relative_to(root).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
               for p in kit.rglob('*') if p.is_file() and p.name != 'SHA256SUMS'}
+    geometry = root / 'tests/ui_controller_geometry.cjs'
+    actual['tests/ui_controller_geometry.cjs'] = hashlib.sha256(geometry.read_bytes()).hexdigest()
     if not actual or pins != actual:
         raise AssertionError('SHA256SUMS mismatch: ' + repr(sorted(set(pins) ^ set(actual)))
                              + ' changed=' + repr([p for p in pins if p in actual and pins[p] != actual[p]]))
@@ -34,10 +36,18 @@ class ShowreadyPinTests(unittest.TestCase):
     def test_pins_match_exact_file_set_and_bytes(self):
         verify_pins(ROOT)
 
+    def test_geometry_runner_and_check_exist_and_are_pinned(self):
+        pins = (KIT / 'SHA256SUMS').read_text(encoding='ascii')
+        for name in ('scripts/showready/ui_geometry.sh', 'scripts/showready/ui_geometry.py', 'tests/ui_controller_geometry.cjs'):
+            self.assertTrue((ROOT / name).is_file(), name)
+            self.assertIn(hashlib.sha256((ROOT / name).read_bytes()).hexdigest() + '  ' + name, pins)
+
     def test_unpinned_edit_and_extra_file_are_red(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             shutil.copytree(KIT, root / 'scripts/showready')
+            (root / 'tests').mkdir()
+            shutil.copyfile(ROOT / 'tests/ui_controller_geometry.cjs', root / 'tests/ui_controller_geometry.cjs')
             verify_pins(root)
             rail = root / 'scripts/showready/win_rail.sh'
             original = rail.read_bytes()

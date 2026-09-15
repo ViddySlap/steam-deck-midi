@@ -126,6 +126,7 @@ function harness(stored = null, storageFails = false, assetFails = false) {
       if (url === '/api/macros') return response({macros:data.macros});
       if (url === '/api/conflicts') return response({conflicts:data.conflicts});
       if (url === '/api/save') {
+        if (data.saveFails) { data.requests.at(-1).failed=true; return {ok:false, status:500, json:async()=>({error:'Planted save failure'})}; }
         const body = JSON.parse(options.body);
         data.sections[body.section] = body.document.mappings;
         return response({saved_to:'Scratch.json'});
@@ -386,7 +387,7 @@ async function checkEditing() {
   await id('controllerMappingsTab').fire('click');
   await type('L2_SOFT','cc'); await input('L2_SOFT','f_cc',72); await click('L2_SOFT','.controller-apply');
   data.conflicts=[{channel:0,cc:72,actions:['L2_SOFT','BTN_A']}];
-  const saves = () => data.requests.filter(r => r.url === '/api/save');
+  const saves = () => data.requests.filter(r => r.url === '/api/save' && !r.failed);
   const saveCount=saves().length;
   await id('btnSave').fire('click');
   assert.equal(id('conflictOverlay').classList.contains('open'),true,'Save opens existing conflict modal');
@@ -394,14 +395,27 @@ async function checkEditing() {
   assert.ok(row('L2_SOFT').classList.contains('controller-conflict'),'open control conflicting row marked');
   assert.ok(!row('L2_FULL').classList.contains('controller-conflict'),'non-conflicting row unmarked');
   await id('btnConflictCancel').fire('click');
-  assert.ok(!row('L2_SOFT').classList.contains('controller-conflict'),'cancel clears row markers');
+  assert.ok(row('L2_SOFT').classList.contains('controller-conflict'),'cancel retains row markers');
+  assert.equal(id('conflictOverlay').classList.contains('open'),false,'marks readable after modal closes');
+  assert.match(row('L2_SOFT').querySelector('.controller-conflict-message').textContent,/MIDI CC conflict/);
+  await open('btn_a');
+  assert.ok(row('BTN_A').classList.contains('controller-conflict'),'marks persist across card navigation');
+  await open('l2');
   assert.equal(saves().length,saveCount);
+  data.saveFails=true;
+  await id('btnSave').fire('click'); await id('btnConflictForce').fire('click'); await settle();
+  assert.ok(row('L2_SOFT').classList.contains('controller-conflict'),'failed Save retains marks after modal closes');
+  assert.equal(id('conflictOverlay').classList.contains('open'),false);
+  data.saveFails=false;
   await id('btnSave').fire('click'); await id('btnConflictForce').fire('click'); await settle();
   assert.equal(saves().length,saveCount+1,'force uses existing save path');
   assert.equal(JSON.parse(saves().at(-1).body).document.mappings.L2_SOFT.cc,72);
   assert.equal(id('conflictOverlay').classList.contains('open'),false);
-  assert.ok(!row('L2_SOFT').classList.contains('controller-conflict'));
+  assert.ok(!row('L2_SOFT').classList.contains('controller-conflict'),'successful Save clears row markers');
+  assert.equal(row('L2_SOFT').querySelector('.controller-conflict-message'),null,'successful Save clears messages');
   data.conflicts=[];
+  run("ControllerView.markConflicts([{channel:0,cc:72,actions:['L2_SOFT','BTN_A']}]); commit('L2_SOFT',{type:'cc',channel:0,cc:73});");
+  assert.ok(!row('L2_SOFT').classList.contains('controller-conflict'),'resolving the channel/CC collision clears marks');
 
   await run('loadAll()');
   await click('L2_SOFT','.controller-edit');
