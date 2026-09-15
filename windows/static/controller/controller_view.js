@@ -16,6 +16,7 @@ const ControllerView = (() => {
   const heads = new Map();
   const hits = new Map();
   let layoutObserver = null;
+  let live = null;
   const el = id => document.getElementById(id);
   const svgElement = (tag, attrs = {}) => {
     const node = document.createElementNS('http://www.w3.org/2000/svg', tag);
@@ -200,15 +201,17 @@ const ControllerView = (() => {
     el('mappingSidebar').hidden = tab === 'editor' && view !== 'list';
     el('viewController').setAttribute('aria-pressed', String(view === 'controller'));
     el('viewList').setAttribute('aria-pressed', String(view === 'list'));
+    el('controllerLiveTools').hidden = view !== 'controller';
+    live?.setVisible(tab === 'editor' && view === 'controller');
   }
 
   function tabChanged(name) { tab = name; setView(view, false); }
 
-  function openControl(id) {
+  function openControl(id, focus = true) {
     if (!map?.controls.some(control => control.id === id)) return;
     activeControl = id;
     refresh();
-    el('controllerTitle').focus();
+    if (focus) el('controllerTitle').focus();
   }
 
   function closeControl() {
@@ -320,6 +323,7 @@ const ControllerView = (() => {
       }
     }
     renderCard();
+    live?.refresh();
   }
 
   function draw(art) {
@@ -369,7 +373,19 @@ const ControllerView = (() => {
       picture.appendChild(label);
       labels.set(control.id, label);
     }
+    live = ControllerLive.create(map, art, labels, {
+      currentControl: () => activeControl,
+      openControl: id => openControl(id, false),
+      hasUnsavedEdit: () => {
+        const control = map.controls.find(c => c.id === activeControl);
+        if (!control) return false;
+        return advanced.get(control.id)?.dirty || Object.values(control.groups).flat().some(action =>
+          editors.get(action)?.dirty || (dirty && JSON.stringify(state[action] || null) !==
+            JSON.stringify(sectionDocument.mappings?.[action] || sharedMappings[action] || null)));
+      },
+    });
     refresh();
+    live.setVisible(tab === 'editor' && view === 'controller');
     // Layout requires the real SVG geometry API. The VM behavior check deliberately
     // has no layout engine; its initial anchor attributes still describe the map.
     if (typeof ResizeObserver !== 'undefined') {

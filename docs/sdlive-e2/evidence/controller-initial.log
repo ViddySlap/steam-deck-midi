@@ -1,0 +1,6 @@
+UI controller editing: PASS (all seven forms, isolation, validation, clear, macro parity, Advanced, conflict guard, drafts, sections, reset)
+TypeError: el.remove is not a function
+    at Object.fn (evalmachine.<anonymous>:103:25)
+    at Object.tick (/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_check.cjs:112:54)
+    at checkLive (/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_check.cjs:680:5)
+    at async /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_check.cjs:297:3

@@ -11,7 +11,7 @@ const relation = JSON.parse(fs.readFileSync(path.join(staticRoot, 'controller/co
 const artwork = fs.readFileSync(path.join(staticRoot, 'controller/steam_deck.svg'), 'utf8');
 const decode = s => s.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
 
-function harness(stored = null, storageFails = false, assetFails = false) {
+function harness(stored = null, storageFails = false, assetFails = false, liveOptions = {}) {
   let document;
   class Element {
     constructor(tag = 'div') {
@@ -46,6 +46,7 @@ function harness(stored = null, storageFails = false, assetFails = false) {
       return child;
     }
     replaceChildren(...children) { this.children = []; this._text = ''; children.forEach(c => this.appendChild(c)); }
+    remove() { if (this.parentNode) this.parentNode.children = this.parentNode.children.filter(c => c !== this); this.parentNode = null; }
     addEventListener(name, fn) { (this.listeners[name] ||= []).push(fn); }
     async fire(name, event = {}) {
       if (this.disabled && name === 'click') return;
@@ -96,12 +97,42 @@ function harness(stored = null, storageFails = false, assetFails = false) {
   document.createElementNS = (_, tag) => new Element(tag);
   document.importNode = node => node;
   const storage = new Map(stored === null ? [] : [['steamdeck.mappingView', stored]]);
-  const data = {version: 0, calls: [], requests: [], conflicts: [], macros: [], copied: null, sections: {
+  if (liveOptions.follow !== undefined) storage.set('steamdeck.controllerFollow', String(liveOptions.follow));
+  const data = {snapshot: liveOptions.snapshot || {pressed:[], axes:{}, midi:[], seq:7}, streams: [], version: 0, calls: [], requests: [], conflicts: [], macros: [], copied: null, sections: {
     windows: {L2_SOFT: {type:'note', channel:0, note:36, velocity:100}, L_TRIGGER_PRESSURE: {type:'axis_to_cc', cc:11}},
     macbook: {L2_FULL: {type:'cc', channel:1, cc:22}},
   }};
-  const context = vm.createContext({document, console, setTimeout() {}, setInterval() {},
-    window: {confirm: () => true},
+  let now = 1000, timerId = 0, frameId = 0, renderedFrames = 0;
+  const timers = new Map(), frames = new Map();
+  const window = new Element('window'); window.confirm = () => true;
+  const tick = ms => {
+    const end = now + ms;
+    for (;;) {
+      const due = [...timers].filter(([,t]) => t.at <= end).sort((a,b) => a[1].at-b[1].at)[0];
+      if (!due) break;
+      now = due[1].at; timers.delete(due[0]); due[1].fn();
+    }
+    now = end;
+  };
+  const frame = () => {
+    const batch = [...frames.values()]; frames.clear();
+    for (const fn of batch) { renderedFrames++; fn(now); }
+    return batch.length;
+  };
+  const context = vm.createContext({document, console, AbortController, setInterval() {},
+    setTimeout(fn, ms = 0) { const id = ++timerId; timers.set(id, {fn, at:now+ms}); return id; },
+    clearTimeout(id) { timers.delete(id); },
+    requestAnimationFrame(fn) { const id = ++frameId; frames.set(id, fn); return id; },
+    cancelAnimationFrame(id) { frames.delete(id); },
+    performance: {now: () => now}, window,
+    EventSource: class {
+      constructor(url) { this.url = url; this.closed = false; this.listeners = {}; data.streams.push(this); }
+      addEventListener(kind, fn) { this.listeners[kind] = fn; }
+      close() { this.closed = true; }
+      emit(kind, payload) { this.listeners[kind]?.({data:JSON.stringify(payload)}); }
+      open() { this.onopen?.(); }
+      error() { this.onerror?.(); }
+    },
     navigator: {clipboard: {writeText: async text => { data.copied = text; }}},
     localStorage: {
       getItem(key) { if (storageFails) throw new Error('Storage denied'); return storage.get(key) ?? null; },
@@ -113,7 +144,14 @@ function harness(stored = null, storageFails = false, assetFails = false) {
       data.requests.push({url, ...options});
       const response = body => ({ok:true, json:async() => JSON.parse(JSON.stringify(body))});
       if (url === '/static/controller/steam_deck.svg') return {ok:!assetFails, status:503, text:async() => artwork};
-      if (url === '/api/controller-map') return response(relation);
+      // Flask serializes object keys in sorted order; arrays keep map order.
+      if (url === '/api/controller-map') return response(liveOptions.sortedGroups ? {...relation, controls:relation.controls.map(c =>
+        ({...c, groups:Object.fromEntries(Object.entries(c.groups).sort(([a],[b])=>a.localeCompare(b)))}))} : relation);
+      if (url === '/api/live/snapshot') {
+        if (data.deferSnapshot) return data.deferSnapshot;
+        if (data.snapshotFails) return {ok:false, status:503};
+        return response(data.snapshot);
+      }
       if (url === '/api/state-version') return response(data.version);
       if (url === '/api/actions') return response({actions:relation.controls.flatMap(c => Object.values(c.groups).flat())});
       if (url.startsWith('/api/mappings')) {
@@ -144,7 +182,7 @@ function harness(stored = null, storageFails = false, assetFails = false) {
     const src = match[1].match(/src="\/static\/([^"]+)"/);
     vm.runInContext(src ? fs.readFileSync(path.join(staticRoot, src[1]), 'utf8') : match[2], context);
   }
-  return {document, data, storage, run: code => vm.runInContext(code, context)};
+  return {document, window, data, storage, tick, frame, frames, timers, get renderedFrames() { return renderedFrames; }, run: code => vm.runInContext(code, context)};
 }
 const settle = async () => { for (let i = 0; i < 40; i++) await Promise.resolve(); };
 (async () => {
@@ -259,6 +297,7 @@ const settle = async () => { for (let i = 0; i < 40; i++) await Promise.resolve(
   await failed.document.getElementById('viewList').fire('click');
   assert.equal(failed.document.getElementById('editorContent').hidden, false, 'asset failure leaves List usable');
   await checkEditing();
+  await checkLive();
   console.log('UI controller behavior: PASS (23 arrows, map anchors/shapes, front door, storage, drill-in, List handoff, commit, sections, reload, Escape, unique IDs, asset failure)');
 })().catch(error => { console.error(error); process.exitCode = 1; });
 
@@ -467,4 +506,229 @@ async function checkEditing() {
   assert.equal(await pendingLoad,false,'in-flight load cannot overwrite newly typed row');
   assert.equal(id('controller_L2_SOFT_f_note').value,'112','revision guard preserves inline input');
   console.log('UI controller editing: PASS (all seven forms, isolation, validation, clear, macro parity, Advanced, conflict guard, drafts, sections, reset)');
+}
+
+async function checkLive() {
+  const h = harness(null, false, false, {sortedGroups:true}); await settle();
+  const {document:doc, data} = h;
+  const id = name => doc.getElementById(name);
+  const label = name => doc.querySelector(`.controller-label[data-control="${name}"]`);
+  const shape = name => doc.querySelector('.controller-art').querySelector(`[data-control="${name}"]`);
+  const row = action => id('controllerRows').querySelector(`[data-action="${action}"]`);
+  const dot = name => doc.querySelector(`[data-live-dot="${name}"]`);
+  const bar = name => doc.querySelector(`[data-live-bar="${name}"]`);
+  const streams = () => data.streams.at(-1);
+  let seq = 7;
+  const emit = (kind, action, rest = {}) => streams().emit(kind, {kind, action, seq:++seq, ...rest});
+  const input = (action, state) => emit('input', action, {state});
+  const axis = (action, value) => emit('axis', action, {value});
+  const midi = action => emit('midi', action, {bytes:[144,36,100]});
+  assert.equal(data.streams.length, 1, 'visible Controller owns one EventSource');
+  assert.equal(streams().url, '/api/live/events?since=7', 'snapshot cursor covers connection gap');
+  assert.equal(data.calls.filter(url => url === '/api/live/snapshot').length, 1);
+  assert.equal(data.requests.find(r => r.url === '/api/live/snapshot').cache, 'no-store');
+  h.frame();
+  assert.equal(id('controllerFollow').getAttribute('aria-pressed'), 'false', 'follow defaults OFF');
+  assert.equal(id('controllerLiveStatus').textContent, 'offline');
+  streams().open(); h.frame();
+  assert.equal(id('controllerLiveStatus').textContent, 'live');
+  input('BTN_A', 'down');
+  assert.ok(!shape('btn_a').classList.contains('control-down'), 'events do not paint synchronously');
+  h.frame();
+  assert.ok(shape('btn_a').classList.contains('control-down'), 'input down lights the physical shape');
+  assert.ok(label('btn_a').classList.contains('control-down'), 'input down lights the label');
+  assert.ok(!shape('btn_b').classList.contains('control-down'), 'unrelated control stays dark');
+  assert.equal(id('controllerCard').hidden, true, 'follow off opens nothing');
+  input('BTN_A_LAYER_2', 'down'); h.frame();
+  assert.equal(label('btn_a').querySelector('.controller-live-tag').textContent, 'tap L2', 'group tags use tap/hold/layer order');
+  input('BTN_A', 'up'); h.frame();
+  assert.ok(shape('btn_a').classList.contains('control-down'), 'second held ID keeps its control lit');
+  assert.equal(label('btn_a').querySelector('.controller-live-tag').textContent, 'L2');
+  input('BTN_A_LAYER_2', 'up'); h.frame();
+  assert.ok(!shape('btn_a').classList.contains('control-down'), 'last up clears the physical shape');
+  assert.ok(!label('btn_a').classList.contains('control-down'));
+  assert.equal(label('btn_a').querySelector('.controller-live-tag').hidden, true);
+  input('DPAD_UP_LONG_PRESS', 'down'); h.frame();
+  assert.ok(shape('dpad_up').classList.contains('control-down'));
+  assert.equal(label('dpad_up').querySelector('.controller-live-tag').textContent, 'hold');
+  input('DPAD_UP_LONG_PRESS', 'up'); h.frame();
+  assert.equal(label('dpad_up').querySelector('.controller-live-tag').hidden, true);
+
+  assert.equal(Number(dot('left_stick').getAttribute('cx')), 280, 'wire zero is centered; sender already subtracts rest offset');
+  const stickCaptions=doc.querySelector('.controller-art').querySelectorAll('text').filter(t => ['L3','R3'].includes(t.textContent));
+  assert.equal(stickCaptions.length,2,'both stick captions are observed');
+  for (const caption of stickCaptions) {
+    assert.equal(Number(caption.getAttribute('y')),153,'stick caption stays above the centered live dot');
+  }
+  axis('L_STICK_X_AXIS', 16324); axis('L_STICK_Y_AXIS', -16601);
+  axis('R_STICK_X_AXIS', -33048); axis('R_STICK_Y_AXIS', 33103);
+  axis('L_TRIGGER_PRESSURE', 32768); axis('R_TRIGGER_PRESSURE', 65535);
+  h.frame();
+  assert.equal(Number(dot('left_stick').getAttribute('cx')), 280+16324/32649*30, 'axis moves stick dot to computed X');
+  assert.equal(Number(dot('left_stick').getAttribute('cy')), 190, 'axis moves stick dot to computed Y');
+  assert.equal(Number(dot('right_stick').getAttribute('cx')), 870);
+  assert.equal(Number(dot('right_stick').getAttribute('cy')), 145, 'positive wire Y points up');
+  assert.equal(Number(bar('l2').getAttribute('width')), 32768/65535*64, 'trigger pressure sets proportional bar width');
+  assert.equal(Number(bar('r2').getAttribute('width')), 64);
+  axis('L_STICK_X_AXIS', 99999); axis('R_TRIGGER_PRESSURE', -100); h.frame();
+  assert.equal(Number(dot('left_stick').getAttribute('cx')), 310, 'stick values clamp');
+  assert.equal(Number(bar('r2').getAttribute('width')), 0, 'trigger values clamp');
+  axis('L_STICK_X_AXIS', 0); axis('L_STICK_Y_AXIS', 0); h.frame();
+  assert.equal(Number(dot('left_stick').getAttribute('cx')), 280);
+  assert.equal(Number(dot('left_stick').getAttribute('cy')), 175);
+  assert.equal(dot('left_pad').style.opacity, '0', 'no touch is implied before pad events');
+  axis('L_PAD_X_POS', 32767); axis('L_PAD_Y_POS', -32768); h.frame();
+  assert.equal(Number(dot('left_pad').getAttribute('cx')), 340);
+  assert.equal(Number(dot('left_pad').getAttribute('cy')), 350);
+  assert.equal(dot('left_pad').style.opacity, '1');
+  h.tick(299); h.frame(); assert.equal(dot('left_pad').style.opacity, '1');
+  h.tick(1); h.frame(); assert.equal(dot('left_pad').style.opacity, '0', 'pad fades after 300 ms without position events');
+  axis('R_PAD_X_POS', -32768); h.frame();
+  h.tick(200); axis('R_PAD_Y_POS', 32767); h.frame();
+  h.tick(100); h.frame(); assert.equal(dot('right_pad').style.opacity, '1', 'either pad axis refreshes touch age');
+  h.tick(200); h.frame(); assert.equal(dot('right_pad').style.opacity, '0');
+  for (const [action, value, x] of [['GYRO_PITCH',32767,643],['GYRO_YAW',-32767,601],['GYRO_ROLL',0,622]]) {
+    axis(action,value); h.frame();
+    assert.equal(Number(doc.querySelector(`[data-live-axis="${action}"]`).getAttribute('cx')),x,'gyro indicator uses its own axis');
+  }
+
+  await label('l2').fire('click'); h.frame();
+  const originalRow = row('L2_SOFT');
+  input('L2_SOFT','down'); h.frame();
+  assert.ok(!row('L2_SOFT').classList.contains('controller-midi-flash'), 'receive alone does not flash MIDI row');
+  for (const action of ['L2_SOFT','L2_SOFT_LAYER_2','L_TRIGGER_PRESSURE']) {
+    midi(action); h.frame();
+    assert.deepEqual(id('controllerRows').querySelectorAll('.controller-midi-flash').map(r=>r.dataset.action),[action], 'MIDI flashes matching row only');
+    h.tick(100); midi(action); h.frame(); h.tick(50); h.frame();
+    assert.ok(row(action).classList.contains('controller-midi-flash'), 'MIDI flash retriggers');
+    h.tick(100); h.frame();
+    assert.ok(!row(action).classList.contains('controller-midi-flash'), 'MIDI flash expires after 150 ms');
+  }
+  midi(null); midi('BTN_B'); h.frame();
+  assert.equal(id('controllerRows').querySelectorAll('.controller-midi-flash').length,0,'null and other-card MIDI flash nothing');
+  assert.equal(row('L2_SOFT'),originalRow,'live rendering never rebuilds the open rows');
+  await label('dpad_up').fire('click'); h.frame(); midi('DPAD_UP_LONG_PRESS'); h.frame();
+  assert.deepEqual(id('controllerRows').querySelectorAll('.controller-midi-flash').map(r=>r.dataset.action),['DPAD_UP_LONG_PRESS']);
+  h.tick(150); h.frame();
+
+  await id('controllerFollow').fire('click'); h.frame();
+  assert.equal(h.storage.get('steamdeck.controllerFollow'),'true','follow preference persists');
+  assert.equal(id('controllerFollow').getAttribute('aria-pressed'),'true');
+  input('BTN_A_LAYER_2','down'); midi('BTN_A_LAYER_2'); h.frame();
+  assert.equal(id('controllerTitle').textContent,'A','follow on opens pressed control');
+  assert.ok(row('BTN_A_LAYER_2').classList.contains('controller-midi-flash'),'same-frame follow retains matching MIDI flash');
+  await row('BTN_A').querySelector('.controller-edit').fire('click');
+  const type = row('BTN_A').querySelector('.controller-type'); type.value='note'; await type.fire('change');
+  const note = id('controller_BTN_A_f_note'); note.value='86'; await note.fire('input'); h.frame();
+  input('BTN_B','down'); h.frame();
+  assert.equal(id('controllerTitle').textContent,'A','follow cannot switch cards over an unsaved inline edit');
+  assert.equal(id('controller_BTN_A_f_note'),note,'follow preserves the actual draft node');
+  assert.equal(note.value,'86');
+  assert.equal(id('controllerFollowNote').hidden,false,'follow explains paused editing');
+  assert.equal(id('controllerFollowNote').textContent,'follow paused: unsaved edit');
+  await row('BTN_A').querySelector('.controller-apply').fire('click'); h.frame();
+  input('BTN_X','down'); h.frame();
+  assert.equal(id('controllerTitle').textContent,'A','applied but unsaved inline edit also pauses follow');
+  await id('btnSave').fire('click'); h.frame();
+  assert.equal(id('controllerTitle').textContent,'A','blocked follow press is not replayed after Save');
+  input('BTN_X','down'); h.frame();
+  assert.equal(id('controllerTitle').textContent,'X','saved card allows follow again');
+  assert.equal(id('controllerFollowNote').hidden,true);
+  await id('controllerAdvancedTab').fire('click');
+  const raw=doc.querySelector('.controller-json'); raw.value='{"BTN_X":'; await raw.fire('input');
+  input('BTN_Y','down'); h.frame();
+  assert.equal(id('controllerTitle').textContent,'X','Advanced unsaved draft pauses follow');
+  assert.equal(raw.value,'{"BTN_X":');
+  await id('controllerFollow').fire('click'); h.frame();
+  assert.equal(id('controllerFollowNote').hidden,true,'follow off clears pause note');
+  const writeCount=data.requests.filter(r=>r.method && r.method!=='GET').length;
+  await id('controllerFollow').fire('click'); h.frame(); await id('controllerFollow').fire('click'); h.frame();
+  assert.equal(data.requests.filter(r=>r.method && r.method!=='GET').length,writeCount,'follow toggle is view-only');
+
+  // Measure callbacks and DOM writes, not a caption or a production counter.
+  const before=h.renderedFrames, oldX=dot('left_stick').getAttribute('cx');
+  let paints=0;
+  const toggle=shape('left_stick').classList.toggle;
+  shape('left_stick').classList.toggle=(name,force)=>{ if(name==='control-down') paints++; return toggle(name,force); };
+  for (let i=0;i<500;i++) axis('L_STICK_X_AXIS', i);
+  assert.equal(dot('left_stick').getAttribute('cx'),oldX,'burst does not render in event callbacks');
+  assert.equal(h.frames.size,1,'500 axis events schedule one animation frame');
+  assert.equal(h.frame(),1,'500 axis events produce at most one render per frame');
+  assert.equal(h.renderedFrames-before,1);
+  assert.equal(paints,1,'burst paints each shape exactly once');
+  assert.equal(Number(dot('left_stick').getAttribute('cx')),280+499/32649*30,'burst paints latest axis value');
+  assert.equal(h.frame(),0,'burst leaves no rendering backlog');
+
+  // Loss, reconnect, cancellation and late-delivery races use actual shipped handlers.
+  const lost=streams();
+  data.snapshot={pressed:['BTN_B'],axes:{R_TRIGGER_PRESSURE:65535,L_PAD_X_POS:32767},midi:[{action:'BTN_B'}],seq:9000};
+  lost.emit('dropped',{seq:8999,count:1});
+  assert.equal(lost.closed,true,'dropped stream closes before resync');
+  h.tick(0); await settle(); h.frame();
+  assert.equal(streams().url,'/api/live/events?since=9000','drop resumes from fresh snapshot');
+  assert.ok(shape('btn_b').classList.contains('control-down'),'snapshot restores held input');
+  streams().emit('input',{seq:8999,action:'BTN_B',state:'up'}); h.frame();
+  assert.ok(shape('btn_b').classList.contains('control-down'),'old event cannot overwrite snapshot state');
+  streams().emit('input',{seq:9001,action:'BTN_B',state:'up'}); h.frame();
+  assert.ok(!shape('btn_b').classList.contains('control-down'),'newer event updates snapshot state');
+  assert.ok(!shape('l2').classList.contains('control-down'),'snapshot clears missed releases');
+  assert.equal(Number(bar('r2').getAttribute('width')),64,'snapshot restores axes');
+  assert.equal(dot('left_pad').style.opacity,'0','snapshot cannot revive an old pad touch');
+  assert.equal(id('controllerRows').querySelectorAll('.controller-midi-flash').length,0,'snapshot history never replays flashes');
+  const prior=data.streams.length;
+  streams().error(); h.frame();
+  assert.equal(id('controllerLiveStatus').textContent,'offline');
+  assert.equal(streams().closed,true,'error closes native reconnecting stream');
+  h.tick(249); await settle(); assert.equal(data.streams.length,prior,'reconnect waits for backoff');
+  h.tick(1); await settle(); assert.equal(data.streams.length,prior+1);
+  streams().error(); h.tick(499); await settle(); assert.equal(data.streams.length,prior+1,'consecutive error doubles backoff');
+  h.tick(1); await settle(); assert.equal(data.streams.length,prior+2);
+  streams().open(); h.frame(); streams().error(); h.tick(250); await settle();
+  assert.equal(data.streams.length,prior+3,'successful open resets backoff');
+  streams().open(); h.frame();
+  const hidden=streams();
+  await id('viewList').fire('click');
+  assert.equal(hidden.closed,true,'hiding Controller closes EventSource');
+  assert.equal(h.frames.size,0,'hidden view cancels rendering');
+  hidden.emit('input',{seq:9999,action:'BTN_A',state:'down'}); hidden.error();
+  h.tick(10000); await settle();
+  assert.equal(data.streams.length,prior+3,'hidden view ignores late events and retries');
+  await id('viewController').fire('click'); await settle(); h.frame();
+  assert.equal(data.streams.length,prior+4,'showing Controller opens a fresh stream');
+  h.run("switchTab('engines')"); assert.equal(streams().closed,true,'changing app tabs closes EventSource');
+  h.run("switchTab('editor')"); await settle(); h.frame();
+  doc.hidden=true; await doc.fire('visibilitychange'); assert.equal(streams().closed,true,'hidden browser tab closes EventSource');
+  doc.hidden=false; await doc.fire('visibilitychange'); await settle();
+  await h.window.fire('pagehide'); assert.equal(streams().closed,true,'pagehide closes EventSource');
+  await h.window.fire('pageshow'); await settle();
+  streams().error(); await id('viewList').fire('click');
+  const stopped=data.streams.length; h.tick(10000); await settle();
+  assert.equal(data.streams.length,stopped,'hide cancels retry timer');
+  let release;
+  data.deferSnapshot=new Promise(resolve=>{ release=resolve; });
+  await id('viewController').fire('click');
+  const request=data.requests.at(-1); assert.equal(request.url,'/api/live/snapshot');
+  await id('viewList').fire('click');
+  assert.equal(request.signal.aborted,true,'hide aborts in-flight snapshot');
+  release({ok:true,json:async()=>({pressed:[],axes:{},seq:50})}); await settle();
+  assert.equal(data.streams.length,stopped,'late snapshot cannot create a hidden client');
+  delete data.deferSnapshot;
+  data.snapshotFails=true; await id('viewController').fire('click'); await settle(); h.frame();
+  assert.equal(id('controllerLiveStatus').textContent,'offline');
+  data.snapshotFails=false; h.tick(8000); await settle();
+  assert.equal(data.streams.length,stopped+1,'snapshot failure retries from a new snapshot');
+  await id('viewList').fire('click');
+  assert.ok(data.streams.every(s=>s.closed),'all test clients explicitly closed');
+
+  const remembered=harness('controller',false,false,{follow:true}); await settle(); remembered.frame();
+  assert.equal(remembered.document.getElementById('controllerFollow').getAttribute('aria-pressed'),'true','browser follow restored');
+  const denied=harness(null,true,false,{follow:true}); await settle(); denied.frame();
+  assert.equal(denied.document.getElementById('controllerFollow').getAttribute('aria-pressed'),'false','denied storage defaults follow off');
+  await denied.document.getElementById('controllerFollow').fire('click'); denied.frame();
+  assert.equal(denied.document.getElementById('controllerFollow').getAttribute('aria-pressed'),'true','denied storage still toggles follow');
+  const list=harness('list'); await settle();
+  assert.equal(list.data.streams.length,0,'remembered List opens no live client');
+  assert.equal(list.data.calls.includes('/api/live/snapshot'),false,'remembered List fetches no live snapshot');
+  for (const client of [remembered,denied,list]) await client.document.getElementById('viewList').fire('click');
+  console.log('UI controller live: PASS (snapshot/SSE lifecycle, highlights/groups, axes/clamps, pad expiry, gyro, exact MIDI rows, follow/drafts, 500-event frame bound)');
 }

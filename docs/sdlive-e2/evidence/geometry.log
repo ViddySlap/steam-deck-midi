@@ -1,0 +1,14 @@
+PASS free port 17841
+PASS free port 47841
+page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "http://127.0.0.1:17841/", waiting until "networkidle"
+
+    at /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_geometry.cjs:118:18
+PASS bridge PID 29285 gone=True
+RECEIPT /private/tmp/sdlive-e2/geometry/geometry-bptjgzdd/receipt.json
+Traceback (most recent call last):
+  File "/tmp/sdlive-e2/ui_geometry.py", line 84, in <module>
+    if code:raise RuntimeError('Pristine geometry failed; see '+str(work/'pristine.log'))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Pristine geometry failed; see /private/tmp/sdlive-e2/geometry/geometry-bptjgzdd/pristine.log

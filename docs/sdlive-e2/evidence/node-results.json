@@ -1,0 +1,30 @@
+[
+  {
+    "command": [
+      "node",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_check.cjs"
+    ],
+    "exit": 0
+  },
+  {
+    "command": [
+      "node",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_macro_check.cjs"
+    ],
+    "exit": 0
+  },
+  {
+    "command": [
+      "node",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_reload_check.cjs"
+    ],
+    "exit": 0
+  },
+  {
+    "command": [
+      "node",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_sections_check.cjs"
+    ],
+    "exit": 0
+  }
+]

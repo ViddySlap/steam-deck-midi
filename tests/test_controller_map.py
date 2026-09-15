@@ -63,6 +63,18 @@ class ControllerMapTests(unittest.TestCase):
                         expected = "analog"
                     self.assertEqual(group, expected, action)
 
+    def test_live_ranges_cover_exactly_the_analog_actions(self):
+        analog = {a for c in self.controls for a in c["groups"].get("analog", [])}
+        self.assertTrue(analog)
+        self.assertEqual(set(self.map["axis_ranges"]), analog)
+        for action, bounds in self.map["axis_ranges"].items():
+            with self.subTest(action=action):
+                self.assertEqual(set(bounds), {"min", "max", "rest"})
+                self.assertTrue(all(type(v) is int for v in bounds.values()))
+                self.assertLessEqual(bounds["min"], bounds["rest"])
+                self.assertLess(bounds["rest"], bounds["max"])
+                self.assertEqual(bounds["rest"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()

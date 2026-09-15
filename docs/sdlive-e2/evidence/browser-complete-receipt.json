@@ -1,0 +1,50 @@
+{
+  "work": "/private/tmp/sdlive-e2/browser-complete/geometry-uxceo5jp",
+  "bridge_argv": [
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+    "-B",
+    "-u",
+    "-m",
+    "windows.win_recv",
+    "--listen",
+    "127.0.0.1:47842",
+    "--map",
+    "config/windows_midi_map.json",
+    "--preset-section",
+    "windows",
+    "--dry-run",
+    "--no-engines",
+    "--no-pulse",
+    "--no-osc-relay",
+    "--ui-port",
+    "17842"
+  ],
+  "checks": [
+    {
+      "name": "pristine",
+      "command": [
+        "node",
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdlive-e2/check_browser.cjs",
+        "http://127.0.0.1:17842",
+        "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+        "--single-process",
+        "--out",
+        "/private/tmp/sdlive-e2/browser-complete/geometry-uxceo5jp/pristine"
+      ],
+      "exit": 0,
+      "log": "/private/tmp/sdlive-e2/browser-complete/geometry-uxceo5jp/pristine.log"
+    }
+  ],
+  "bridge_pid": 8216,
+  "settings": {
+    "feedback_port": null,
+    "listen": "127.0.0.1:47842",
+    "map_path": "/private/tmp/sdlive-e2/browser-complete/geometry-uxceo5jp/tree/config/presets/EDM Show.json",
+    "midi_port": "DECK_IN",
+    "preset_section": "windows",
+    "pulse_port": null,
+    "ui_port": 17842
+  },
+  "bridge_pid_gone": true,
+  "exit": 0
+}

@@ -1,0 +1,14 @@
+UI controller editing: PASS (all seven forms, isolation, validation, clear, macro parity, Advanced, conflict guard, drafts, sections, reset)
+AssertionError [ERR_ASSERTION]: dropped stream closes before resync
+
+false !== true
+
+    at checkLive (/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/check.cjs:666:10)
+    at async /private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/check.cjs:300:3 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: 'strictEqual',
+  diff: 'simple'
+}

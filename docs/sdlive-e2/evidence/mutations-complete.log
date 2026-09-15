@@ -1,0 +1,16 @@
+pristine GREEN exit 0
+group-order RED exit 1
+group-order-restored GREEN exit 0
+highlight RED exit 1
+highlight-restored GREEN exit 0
+stick-position RED exit 1
+stick-position-restored GREEN exit 0
+row-flash RED exit 1
+row-flash-restored GREEN exit 0
+follow-edit-guard RED exit 1
+follow-edit-guard-restored GREEN exit 0
+frame-coalescing RED exit 1
+frame-coalescing-restored GREEN exit 0
+close-stream RED exit 1
+close-stream-restored GREEN exit 0
+Evidence: /private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/results.json

@@ -65,3 +65,23 @@
 .controller-json { min-height: 300px; }
 .controller-conflict { border-left: 3px solid #ff9999; padding-left: 8px; background: #321f29; }
 .controller-conflict-message { color: #ffbbbb; font-size: 12px; margin-top: 6px; }
+
+/* Live state does not change control/label geometry or rebuild editor rows. */
+.mapping-view-hint { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.controller-live-tools { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-shrink: 0; }
+#controllerLiveTools[hidden], #controllerFollowNote[hidden], .controller-live-tag[hidden] { display: none; }
+.controller-live-tools span { margin-left: 0; font-size: 11px; }
+#controllerLiveStatus { min-width: 36px; color: var(--text-dim); }
+#controllerLiveStatus.is-live { color: var(--accent); }
+.controller-art .control-down { fill: var(--accent); stroke: var(--text); opacity: 1; }
+.controller-label.control-down { color: var(--text); border-color: var(--accent); background: var(--accent-dim); }
+.controller-label.control-down small { display: none; }
+.controller-label.control-down > span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.controller-live-tag { font-size: 10px; color: var(--text); white-space: nowrap; }
+.controller-live-overlay { pointer-events: none; }
+.controller-live-dot { fill: var(--accent); stroke: var(--bg); stroke-width: 2; }
+.controller-live-dot[data-live-dot$="pad"] { transition: opacity 80ms linear; }
+.controller-live-track { fill: var(--bg); stroke: var(--text-dim); stroke-width: 2; }
+.controller-live-fill { fill: var(--accent); }
+.controller-live-axis-label { fill: var(--text); font-size: 12px; }
+.controller-row.controller-midi-flash { background: var(--accent-dim); box-shadow: inset 3px 0 var(--accent); }

@@ -41,7 +41,7 @@
     <text x="600" y="276">Select a control to inspect</text>
     <text x="1000" y="226">A</text><text x="1040" y="186">B</text>
     <text x="960" y="186">X</text><text x="1000" y="146">Y</text>
-    <text x="280" y="181">L3</text><text x="900" y="181">R3</text>
+    <text x="280" y="153" font-size="12">L3</text><text x="900" y="153" font-size="12">R3</text>
     <text x="260" y="487" font-size="16">REAR</text><text x="940" y="487" font-size="16">REAR</text>
     <text x="600" y="507">GYRO</text>
   </g>

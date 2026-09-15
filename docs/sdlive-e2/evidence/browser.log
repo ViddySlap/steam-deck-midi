@@ -1,0 +1,20 @@
+PASS free port 17842
+PASS free port 47842
+PASS loopback sender destination
+PASS observed live clients
+PASS observed live clients
+PASS default Controller visible
+PASS Follow default off
+PASS follow off leaves card closed
+PASS received highlight label
+page.waitForFunction: Timeout 30000ms exceeded.
+    at /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdlive-e2/check_browser.cjs:49:16
+PASS bridge PID 96132 gone=True
+RECEIPT /private/tmp/sdlive-e2/browser/geometry-rd16t6wf/receipt.json
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdlive-e2/check_browser.py", line 19, in <module>
+    exec(compile(source, str(ROOT / 'scripts/showready/ui_geometry.py'), 'exec'))
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/ui_geometry.py", line 83, in <module>
+    if code:raise RuntimeError('Pristine geometry failed; see '+str(work/'pristine.log'))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Pristine geometry failed; see /private/tmp/sdlive-e2/browser/geometry-rd16t6wf/pristine.log

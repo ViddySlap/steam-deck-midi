@@ -1,0 +1,9 @@
+PASS loopback sender destination
+PASS observed live clients
+PASS observed live clients
+PASS default Controller visible
+PASS Follow default off
+PASS follow off leaves card closed
+PASS received highlight label
+page.waitForFunction: Timeout 30000ms exceeded.
+    at /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdlive-e2/check_browser.cjs:49:16

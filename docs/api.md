@@ -9,8 +9,8 @@ Later links must extend this inventory with every new UI or control action.
 | --- | --- | --- |
 | GET | `/` | Serve the mapping editor HTML. |
 | GET | `/static/<path:filename>` | Serve the editor's static assets (Flask-generated route). |
-| GET | `/api/live/events` | Stream received input and sent MIDI as bounded, lossy SSE; optional since sequence. |
-| GET | `/api/live/snapshot` | Read pressed actions, axes, recent MIDI, sequence, drops and live client count. |
+| GET | `/api/live/events` | Stream received highlights, stick/pad dots, trigger/gyro values and attributable MIDI row flashes as bounded, lossy SSE; optional since sequence. |
+| GET | `/api/live/snapshot` | Initialize/resynchronize controller pressed actions and axes; read recent MIDI, sequence, drops and live client count. |
 | GET | `/api/state-version` | Return an integer revision for applied reloads and successful per-action disk writes. |
 | POST | `/api/reload` | Request an immediate reload of the active preset and changed local settings. |
 | POST | `/api/shutdown` | Loopback only: request graceful bridge Quit; return 202 {"stopping": true}, including repeated calls while stopping. |
@@ -229,6 +229,60 @@ unsaved-change confirmation. Background reads also check for edits made while
 HTTP requests were in flight before replacing any draft.
 
 ## Live events
+
+### View-only exemptions
+
+Exactly these two persistent controller preferences are exempt from a bridge
+action endpoint. Neither writes a preset or changes MIDI behavior:
+
+| Preference | Browser behavior |
+| --- | --- |
+| List/Controller choice | `steamdeck.mappingView` in localStorage; default Controller. List closes the live client. |
+| Follow toggle | `steamdeck.controllerFollow` in localStorage; default off. When on, received input down opens its physical control's card without stealing keyboard focus. |
+
+Storage reads/writes use try/catch; denied storage keeps both choices usable for
+the current page. Follow pauses while the open card has unapplied row/Advanced
+text or applied mapping changes awaiting Save. It displays
+`follow paused: unsaved edit`. After Apply and Save, the next press can follow;
+blocked presses are never replayed later. Navigation and edit operations retain
+the HTTP equivalents in the Controller view table above.
+
+### Controller consumer
+
+While the Controller sub-view and Mappings tab are visible, the browser fetches
+the snapshot with no-store, applies its pressed/axis state, then opens one
+EventSource at `since=snapshot.seq`. Hiding the view, switching application or
+browser tabs, or leaving the page closes it, aborts an in-flight snapshot, and
+cancels render/retry/expiry work. A late callback cannot open a hidden client.
+Errors show `offline`, clear stale display state, close native auto-reconnect,
+and retry snapshot plus stream after 250 ms, doubling to 8 s; opening resets
+the backoff. A `dropped` event closes and resynchronizes immediately. `live`
+means the SSE connection is open, not that a Deck or MIDI device is connected.
+
+Input down/up highlights the shape and label while any Action ID in that
+control's groups remains down. Tags identify tap, hold, L2 or analog groups.
+Axis values use only `axis_ranges` in the owned map, also available from GET
+`/api/controller-map`: min/max/rest in wire units for every analog Action ID.
+Signed values normalize on either side of zero; positive Y draws upward.
+Stick bounds include the sender's already-subtracted rest offsets (wire rest
+is zero); pads use signed 16-bit bounds, triggers unsigned 16-bit bounds, and
+gyro uses the sender's integrated/clamped bounds. Values clamp to these ranges.
+Stick/pad travel is 30 SVG units; trigger fill is value/max across 64 SVG units.
+Gyro pitch/yaw/roll have independent centered indicators.
+
+Pad dots fade after 300 ms without a received position event. Snapshot positions
+have no age, so they do not imply a current pad touch. Other axes retain their
+last received value, with zero centered; the UI does not invent missing samples.
+Snapshot MIDI history is not replayed. Only a streamed MIDI event attributed
+to the open card (or its same-frame Follow target) flashes that Action ID row
+for 150 ms, extended by another matching event. Null attribution flashes nothing.
+
+Event callbacks only replace bounded latest state, including one pending Follow
+target. requestAnimationFrame draws at most once per frame; a burst leaves no
+render queue. One expiry timer requests a frame when a pad/flash expires, with
+no continuous idle animation. Live paints preserve the existing editor nodes.
+
+### Wire contract
 
 `GET /api/live/snapshot` returns `{pressed: [ActionID], axes: {ActionID: value},
 midi: [event], seq: integer, dropped: integer, clients: integer}`. MIDI retains

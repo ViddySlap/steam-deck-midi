@@ -1,0 +1,77 @@
+{
+  "entry_head": "95d3da0a740911e0677a549b75bee648a198b2cc",
+  "protected_unchanged": [
+    "windows/receiver.py",
+    "windows/live_events.py",
+    "windows/win_recv.py",
+    "windows/midi.py",
+    "windows/config.py",
+    "scripts/showready",
+    "tests/ui_controller_geometry.cjs",
+    "config",
+    "deck",
+    "protocol",
+    "mac",
+    "tests/ui_reload_check.cjs",
+    "tests/ui_sections_check.cjs"
+  ],
+  "preserved_assertion_lines": {
+    "tests/ui_controller_check.cjs": 130,
+    "tests/test_controller_map.py": 21
+  },
+  "bridge_cleanup": [
+    {
+      "pid": 96132,
+      "absent": true,
+      "receipt": "/tmp/sdlive-e2/browser/geometry-rd16t6wf/receipt.json",
+      "method": "os.kill(pid, 0) -> ProcessLookupError"
+    },
+    {
+      "pid": 8216,
+      "absent": true,
+      "receipt": "/tmp/sdlive-e2/browser-complete/geometry-uxceo5jp/receipt.json",
+      "method": "os.kill(pid, 0) -> ProcessLookupError"
+    },
+    {
+      "pid": 99902,
+      "absent": true,
+      "receipt": "/tmp/sdlive-e2/browser-final/geometry-pg633g_x/receipt.json",
+      "method": "os.kill(pid, 0) -> ProcessLookupError"
+    },
+    {
+      "pid": 29285,
+      "absent": true,
+      "receipt": "/tmp/sdlive-e2/geometry/geometry-bptjgzdd/receipt.json",
+      "method": "os.kill(pid, 0) -> ProcessLookupError"
+    },
+    {
+      "pid": 11377,
+      "absent": true,
+      "receipt": "/tmp/sdlive-e2/geometry-complete/geometry-sl0yyqt8/receipt.json",
+      "method": "os.kill(pid, 0) -> ProcessLookupError"
+    },
+    {
+      "pid": 3716,
+      "absent": true,
+      "receipt": "/tmp/sdlive-e2/geometry-final/geometry-r1k_zbgt/receipt.json",
+      "method": "os.kill(pid, 0) -> ProcessLookupError"
+    },
+    {
+      "pid": 78715,
+      "absent": true,
+      "receipt": "/tmp/sdlive-e2/geometry-list/geometry-su02pt3g/receipt.json",
+      "method": "os.kill(pid, 0) -> ProcessLookupError"
+    }
+  ],
+  "sha256": {
+    "windows/static/controller/controller_live.js": "692a13df3ab9ad2a3deaaeca5754ce278e2ec6154e27dbd77f3495929a2e786e",
+    "windows/static/controller/controller_view.js": "4f0441de6d1d8713015fd8485545d7fd3538b6f167534e6cd321e92de271e971",
+    "windows/static/controller/controller_map.json": "78fbcd794863e6db034f75cdf884dca2836bd9a8e008c2bc711d2426a3008382",
+    "windows/static/controller/controller_view.css": "35fc8ce17add49a9fb53c4b638fe47bccdbf0b472beb5d481ac1d6020f284764",
+    "windows/static/controller/steam_deck.svg": "7042b34e233b8ceb96ce74088c0e9efefe9b756cf3ea81092facb04fcf218acb",
+    "windows/static/index.html": "1d5b55a8b38f1a4b21a99933333a5f04539a3e18e43dfc576ecf1c0bee6311f0",
+    "tests/ui_controller_check.cjs": "185ad6bd259b18e19d3eaae752e83a7014d318b0d594bbaf551cad78d4ccb851",
+    "tests/test_controller_map.py": "482030b2351d5ed29aa2cd0c0e1ae1b70f5d1c86c1da98e634f41a721f6cef7d",
+    "docs/api.md": "a3f558237284ac35ac02e2e78da35b7502065ce009cac4daa8f18518cd1220f9"
+  }
+}

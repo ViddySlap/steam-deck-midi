@@ -1,0 +1,145 @@
+[
+  {
+    "name": "loopback sender destination",
+    "actual": "127.0.0.1",
+    "expected": "127.0.0.1"
+  },
+  {
+    "name": "observed live clients",
+    "actual": 0,
+    "expected": 0
+  },
+  {
+    "name": "observed live clients",
+    "actual": 1,
+    "expected": 1
+  },
+  {
+    "name": "default Controller visible",
+    "actual": true,
+    "expected": true
+  },
+  {
+    "name": "Follow default off",
+    "actual": "false",
+    "expected": "false"
+  },
+  {
+    "name": "follow off leaves card closed",
+    "actual": false,
+    "expected": false
+  },
+  {
+    "name": "received highlight label",
+    "actual": true,
+    "expected": true
+  },
+  {
+    "name": "multi-ID hold/release",
+    "actual": true,
+    "expected": true
+  },
+  {
+    "name": "actual MIDI flashes its exact row",
+    "actual": [
+      "BTN_A"
+    ],
+    "expected": [
+      "BTN_A"
+    ]
+  },
+  {
+    "name": "real stick X/Y and trigger geometry",
+    "actual": [
+      "310",
+      "205"
+    ],
+    "expected": [
+      "310",
+      "205"
+    ]
+  },
+  {
+    "name": "three gyro indicators",
+    "actual": [
+      "643",
+      "601",
+      "622"
+    ],
+    "expected": [
+      "643",
+      "601",
+      "622"
+    ]
+  },
+  {
+    "name": "pad arrives then visibly fades",
+    "actual": true,
+    "expected": true
+  },
+  {
+    "name": "follow opens physical B card",
+    "actual": "B",
+    "expected": "B"
+  },
+  {
+    "name": "follow preserves unsaved card",
+    "actual": "B",
+    "expected": "B"
+  },
+  {
+    "name": "follow preserves actual typed field",
+    "actual": "86",
+    "expected": "86"
+  },
+  {
+    "name": "pause note visible",
+    "actual": true,
+    "expected": true
+  },
+  {
+    "name": "observed live clients",
+    "actual": 0,
+    "expected": 0
+  },
+  {
+    "name": "observed live clients",
+    "actual": 1,
+    "expected": 1
+  },
+  {
+    "name": "reopen uses current snapshot",
+    "actual": true,
+    "expected": true
+  },
+  {
+    "name": "observed live clients",
+    "actual": 0,
+    "expected": 0
+  },
+  {
+    "name": "observed live clients",
+    "actual": 1,
+    "expected": 1
+  },
+  {
+    "name": "follow preference remembered after reload",
+    "actual": "true",
+    "expected": "true"
+  },
+  {
+    "name": "observed live clients",
+    "actual": 1,
+    "expected": 1
+  },
+  {
+    "name": "browser JS errors",
+    "actual": [],
+    "expected": []
+  },
+  {
+    "name": "observed live clients",
+    "actual": 0,
+    "expected": 0
+  }
+]

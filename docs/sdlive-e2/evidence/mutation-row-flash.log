@@ -1,0 +1,18 @@
+UI controller editing: PASS (all seven forms, isolation, validation, clear, macro parity, Advanced, conflict guard, drafts, sections, reset)
+AssertionError [ERR_ASSERTION]: MIDI flashes matching row only
++ actual - expected
+
++ []
+- [
+-   'L2_SOFT'
+- ]
+
+    at checkLive (/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/check.cjs:601:12)
+    at async /private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/check.cjs:300:3 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: [],
+  expected: [Array],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}

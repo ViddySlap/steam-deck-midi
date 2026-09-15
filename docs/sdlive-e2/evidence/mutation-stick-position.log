@@ -1,0 +1,16 @@
+UI controller editing: PASS (all seven forms, isolation, validation, clear, macro parity, Advanced, conflict guard, drafts, sections, reset)
+AssertionError [ERR_ASSERTION]: axis moves stick dot to computed X
++ actual - expected
+
++ 280
+- 294.9995405678581
+
+    at checkLive (/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/check.cjs:567:10)
+    at async /private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/check.cjs:300:3 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 280,
+  expected: 294.9995405678581,
+  operator: 'strictEqual',
+  diff: 'simple'
+}

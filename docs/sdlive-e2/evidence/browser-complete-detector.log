@@ -1,0 +1,25 @@
+PASS loopback sender destination
+PASS observed live clients
+PASS observed live clients
+PASS default Controller visible
+PASS Follow default off
+PASS follow off leaves card closed
+PASS received highlight label
+PASS multi-ID hold/release
+PASS actual MIDI flashes its exact row
+PASS real stick X/Y and trigger geometry
+PASS three gyro indicators
+PASS pad arrives then visibly fades
+PASS follow opens physical B card
+PASS follow preserves unsaved card
+PASS follow preserves actual typed field
+PASS pause note visible
+PASS observed live clients
+PASS observed live clients
+PASS reopen uses current snapshot
+PASS observed live clients
+PASS observed live clients
+PASS follow preference remembered after reload
+PASS observed live clients
+PASS browser JS errors
+PASS observed live clients

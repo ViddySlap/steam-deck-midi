@@ -1,0 +1,197 @@
+[
+  {
+    "name": "pristine",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/check.cjs",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a",
+    "exit": 0,
+    "expected": "GREEN",
+    "assertion": null,
+    "log": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/pristine.log"
+  },
+  {
+    "name": "group-order",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/check.cjs",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a",
+    "exit": 1,
+    "expected": "RED",
+    "assertion": "group tags use tap/hold/layer order",
+    "log": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/group-order.log"
+  },
+  {
+    "name": "group-order-restored",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/check.cjs",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a",
+    "exit": 0,
+    "expected": "GREEN",
+    "assertion": null,
+    "log": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/group-order-restored.log"
+  },
+  {
+    "name": "highlight",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/check.cjs",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a",
+    "exit": 1,
+    "expected": "RED",
+    "assertion": "input down lights the physical shape",
+    "log": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/highlight.log"
+  },
+  {
+    "name": "highlight-restored",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/check.cjs",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a",
+    "exit": 0,
+    "expected": "GREEN",
+    "assertion": null,
+    "log": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/highlight-restored.log"
+  },
+  {
+    "name": "stick-position",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/check.cjs",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a",
+    "exit": 1,
+    "expected": "RED",
+    "assertion": "axis moves stick dot to computed X",
+    "log": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/stick-position.log"
+  },
+  {
+    "name": "stick-position-restored",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/check.cjs",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a",
+    "exit": 0,
+    "expected": "GREEN",
+    "assertion": null,
+    "log": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/stick-position-restored.log"
+  },
+  {
+    "name": "row-flash",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/check.cjs",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a",
+    "exit": 1,
+    "expected": "RED",
+    "assertion": "MIDI flashes matching row only",
+    "log": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/row-flash.log"
+  },
+  {
+    "name": "row-flash-restored",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/check.cjs",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a",
+    "exit": 0,
+    "expected": "GREEN",
+    "assertion": null,
+    "log": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/row-flash-restored.log"
+  },
+  {
+    "name": "follow-edit-guard",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/check.cjs",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a",
+    "exit": 1,
+    "expected": "RED",
+    "assertion": "follow cannot switch cards over an unsaved inline edit",
+    "log": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/follow-edit-guard.log"
+  },
+  {
+    "name": "follow-edit-guard-restored",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/check.cjs",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a",
+    "exit": 0,
+    "expected": "GREEN",
+    "assertion": null,
+    "log": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/follow-edit-guard-restored.log"
+  },
+  {
+    "name": "frame-coalescing",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/check.cjs",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a",
+    "exit": 1,
+    "expected": "RED",
+    "assertion": "500 axis events schedule one animation frame",
+    "log": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/frame-coalescing.log"
+  },
+  {
+    "name": "frame-coalescing-restored",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/check.cjs",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a",
+    "exit": 0,
+    "expected": "GREEN",
+    "assertion": null,
+    "log": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/frame-coalescing-restored.log"
+  },
+  {
+    "name": "close-stream",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/check.cjs",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a",
+    "exit": 1,
+    "expected": "RED",
+    "assertion": "dropped stream closes before resync",
+    "log": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/close-stream.log"
+  },
+  {
+    "name": "close-stream-restored",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/check.cjs",
+      "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a",
+    "exit": 0,
+    "expected": "GREEN",
+    "assertion": null,
+    "log": "/private/tmp/sdlive-e2/mutations-complete/proof-uok1dv2a/close-stream-restored.log"
+  }
+]

@@ -1,0 +1,23 @@
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
+  [
++   'L_TRIGGER_PRESSURE',
++   'L2_SOFT_LAYER_2',
++   'L2_FULL_LAYER_2',
+    'L2_SOFT',
+    'L2_FULL',
+-   'L2_SOFT_LAYER_2',
+-   'L2_FULL_LAYER_2',
+-   'L_TRIGGER_PRESSURE'
+  ]
+
+    at checkEditing (/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_check.cjs:404:10)
+    at async /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_check.cjs:299:3 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: [Array],
+  expected: [Array],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}

@@ -554,7 +554,12 @@
       <div class="mapping-views" role="group" aria-label="Mapping view">
         <button class="btn" id="viewController" aria-pressed="true">Controller</button>
         <button class="btn" id="viewList" aria-pressed="false">List</button>
-        <span>Choose a control to see its mappings. Counts use the selected section.</span>
+        <span class="mapping-view-hint">Choose a control to see its mappings. Counts use the selected section.</span>
+        <div id="controllerLiveTools" class="controller-live-tools">
+          <button class="btn btn-sm" id="controllerFollow" aria-pressed="false">Follow: off</button>
+          <span id="controllerLiveStatus" role="status">offline</span>
+          <span id="controllerFollowNote" role="status" hidden>follow paused: unsaved edit</span>
+        </div>
       </div>
       <div id="controllerView">
         <div class="controller-layout">
@@ -764,6 +769,7 @@
 <!-- ── Toast container ── -->
 <div class="toasts" id="toasts"></div>
 
+<script src="/static/controller/controller_live.js"></script>
 <script src="/static/controller/controller_view.js"></script>
 <script>
 "use strict";
