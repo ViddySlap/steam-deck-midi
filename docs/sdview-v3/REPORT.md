@@ -111,8 +111,45 @@ channel-CC remap and PowerShell guard execution without powershell/pwsh.
 
 ## EDM Show MIDI instrument
 
-PENDING execution against the implementation commit. This report will be updated
-in the evidence-only commit after the pinned HEAD comparison completes.
+Executed at HEAD bb619c6f223f9e85a3022f3acf78e54dae0692b4 (both archived
+candidate arm commits match). The final evidence commit changes only docs.
+The pinned README commands were used with scratch/output paths relocated:
+
+```sh
+.venv/bin/python -B scripts/showready/deck_script.py --out /tmp/sdview-v3/deck-script.json
+TMPDIR=/tmp/sdview-v3 .venv/bin/python -B scripts/showready/ab_run.py --candidate HEAD --preset '.showready/fixtures/mac/presets/EDM Show.json' --section windows --script /tmp/sdview-v3/deck-script.json --scratch /tmp/sdview-v3/ab-final --out /tmp/sdview-v3/mac-edm-final.json
+```
+
+Generator exit 0: script_sha256
+9256621abf62eb21e6c345ef286b6b7fcc087a2db87b8f682ce7fcf7703a993e;
+732 steps, 47039 packets, scripted duration 469.716666743 seconds.
+Final replay exit 0, verbatim verdict:
+
+```json
+{"comparisons": {"B1": {"different_mappings": [], "totals": {"mappings": 56, "mappings_exercised": 56, "messages_A": 1531, "messages_B": 1531, "steps": 732}, "unexercised_mappings": []}, "B2": {"different_mappings": [], "totals": {"mappings": 56, "mappings_exercised": 56, "messages_A": 1531, "messages_B": 1531, "steps": 732}, "unexercised_mappings": []}}, "error": null, "passed": true, "result": "/tmp/sdview-v3/mac-edm-final.json.gz"}
+```
+
+Both B1 (flat) and B2 (sectioned windows) equal A (v0.4.9). Every mapping was
+exercised, with no different or unexercised mapping. The same result records
+real-rate pacing, exact capture bytes/hashes, coverage, free non-default ports,
+no-UI/stub-MIDI argv, quiescence and process cleanup. It is synthetic Deck input
+and a controlled receiver clock with real loopback UDP, not hardware/Windows
+show readiness. The pinned instrument and MIDI code remain unchanged.
+
+Primary machine-readable evidence: docs/sdview-v3/midi-verdict.json.
+Raw capture: /tmp/sdview-v3/mac-edm-final.json.gz, SHA256
+a80ad7c8512c7c238f8fd7edcb4a182d1c43f5d9964f952bf071cdc822759bdb.
+
+`.venv/bin/python /tmp/sdview-v3/finish_evidence.py` exited 0, extracted that
+artifact, asserted both candidate identities and all comparisons passed, and
+independently repeated os.kill(pid, 0) for every recorded arm after the driver's
+Popen.wait/kill(pid,0) cleanup. Every PID raised ProcessLookupError. The script
+is also committed as docs/sdview-v3/finish_evidence.py. Its earlier_replay entry
+retains the same checks for the initial implementation 9d459fc: that preliminary
+run also passed and all its processes are gone. Its command used --scratch
+/tmp/sdview-v3/ab and --out /tmp/sdview-v3/mac-edm.json with the same other args.
+The final-HEAD run above is the primary V3 result.
+
 
 ## OWED TO THE GATE
 
