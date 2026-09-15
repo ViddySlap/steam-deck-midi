@@ -283,14 +283,25 @@ class EngineConfigRouteTests(_TreeMixin, unittest.TestCase):
         self.assertIs(registry.get_by_type("autopilot"), old)
 
     def test_restart_required_types_answer_409_and_write_nothing(self):
+        spec = json.loads((FACTORY / "steam_input_layer_tracker.json").read_text(encoding="utf-8"))
+        (self.factory_dir / "steam_input_layer_tracker.json").write_text(json.dumps(self.loopback(spec)))
         registry = self.load()
+        tracker = registry.get_by_type("steam_input_layer_tracker")
+        self.assertIsNotNone(tracker)  # loaded, valid stanza: only the gate can refuse it
         client = self.server(registry, self.tasks)._app.test_client()
-        for type_name in sorted(engine_config_api.RESTART_REQUIRED_REASONS):
+        with _ReceiverThread(self.tasks):
+            response = client.put("/api/engines/steam_input_layer_tracker/config",
+                                  json=self.factory_spec("steam_input_layer_tracker"))
+        self.assertEqual(response.status_code, 409)
+        self.assertIs(registry.get_by_type("steam_input_layer_tracker"), tracker)
+        for type_name, reason in sorted(engine_config_api.RESTART_REQUIRED_REASONS.items()):
             with self.subTest(type_name=type_name):
                 response = client.put(f"/api/engines/{type_name}/config", json={"type": type_name})
                 self.assertEqual(response.status_code, 409)
-                self.assertEqual(response.get_json()["error"], "restart_required")
+                self.assertEqual(response.get_json(), {"error": "restart_required", "type": type_name,
+                                                       "reason": reason})
                 self.assertFalse((self.user_dir / f"{type_name}.json").exists())
+        self.assertEqual([p.name for p in self.user_dir.iterdir()], [])
 
     def test_other_user_file_for_the_type_is_a_conflict(self):
         (self.user_dir / "aaa.json").write_text(json.dumps(self.factory_spec("autopilot")))

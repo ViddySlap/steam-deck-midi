@@ -1,0 +1,58 @@
+{
+  "audio_opacity": {
+    "statuses": [
+      200
+    ],
+    "n": 20,
+    "p50_ms": 0.159,
+    "max_ms": 0.252
+  },
+  "autopilot": {
+    "statuses": [
+      200
+    ],
+    "n": 20,
+    "p50_ms": 0.264,
+    "max_ms": 0.413
+  },
+  "autopilot_ptz": {
+    "statuses": [
+      200
+    ],
+    "n": 20,
+    "p50_ms": 0.162,
+    "max_ms": 0.268
+  },
+  "global_color": {
+    "statuses": [
+      200
+    ],
+    "n": 20,
+    "p50_ms": 0.146,
+    "max_ms": 0.21
+  },
+  "gyro_feedback": {
+    "statuses": [
+      200
+    ],
+    "n": 20,
+    "p50_ms": 0.119,
+    "max_ms": 0.184
+  },
+  "l_stick_layer": {
+    "statuses": [
+      200
+    ],
+    "n": 20,
+    "p50_ms": 0.154,
+    "max_ms": 0.19
+  },
+  "ptz_visca": {
+    "statuses": [
+      200
+    ],
+    "n": 20,
+    "p50_ms": 0.238,
+    "max_ms": 0.292
+  }
+}

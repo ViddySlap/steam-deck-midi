@@ -1,0 +1,383 @@
+{
+  "sweep_green": true,
+  "rows": [
+    {
+      "id": "M0",
+      "what": "clean",
+      "modules": [
+        "tests.test_engine_config_api",
+        "tests.test_agent_routes",
+        "tests.test_receiver_tasks",
+        "tests.test_resolume_home_defaults",
+        "tests.test_ui_server"
+      ],
+      "exit": 0,
+      "summary": [
+        "Ran 114 tests in 2.872s",
+        "OK (skipped=1)"
+      ],
+      "failing_tests": [],
+      "verdict": "GREEN as required"
+    },
+    {
+      "id": "M1",
+      "what": "serve_forever does not drain receiver tasks",
+      "modules": [
+        "tests.test_receiver_tasks"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 3 tests in 3.087s",
+        "FAILED (errors=1)"
+      ],
+      "failing_tests": [
+        "test_serve_forever_runs_queued_tasks_on_its_own_thread"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M2",
+      "what": "PUT applies on the HTTP thread, not the receiver thread",
+      "modules": [
+        "tests.test_engine_config_api"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 14 tests in 1.773s",
+        "FAILED (failures=2)"
+      ],
+      "failing_tests": [
+        "test_no_receiver_loop_times_out_writes_nothing_and_never_runs_later",
+        "test_swap_runs_on_the_receiver_thread"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M3",
+      "what": "replace keeps the old instance's note-emit filters",
+      "modules": [
+        "tests.test_engine_config_api"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 14 tests in 1.851s",
+        "FAILED (failures=2)"
+      ],
+      "failing_tests": [
+        "test_replace_removes_filters_shuts_down_keeps_slot_and_binds",
+        "test_replaced_autopilot_filter_is_gone"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M4",
+      "what": "replace appends the new engine instead of taking the slot",
+      "modules": [
+        "tests.test_engine_config_api"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 14 tests in 1.854s",
+        "FAILED (failures=2)"
+      ],
+      "failing_tests": [
+        "test_put_writes_only_the_user_file_and_swaps_the_live_instance",
+        "test_replace_removes_filters_shuts_down_keeps_slot_and_binds"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M5",
+      "what": "replace skips old.shutdown()",
+      "modules": [
+        "tests.test_engine_config_api"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 14 tests in 1.849s",
+        "FAILED (failures=1)"
+      ],
+      "failing_tests": [
+        "test_replace_removes_filters_shuts_down_keeps_slot_and_binds"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M6",
+      "what": "swap does not carry the runtime active flag",
+      "modules": [
+        "tests.test_engine_config_api"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 14 tests in 1.848s",
+        "FAILED (failures=1)"
+      ],
+      "failing_tests": [
+        "test_swap_carries_the_runtime_active_flag"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M7",
+      "what": "no isolation probe before writing",
+      "modules": [
+        "tests.test_engine_config_api"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 14 tests in 6.900s",
+        "FAILED (failures=3)"
+      ],
+      "failing_tests": [
+        "test_build_failure_on_the_receiver_thread_restores_the_file",
+        "test_invalid_input_writes_nothing_and_keeps_the_instance"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M8",
+      "what": "restart_required gate removed",
+      "modules": [
+        "tests.test_engine_config_api"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 14 tests in 1.832s",
+        "FAILED (failures=1)"
+      ],
+      "failing_tests": [
+        "test_restart_required_types_answer_409_and_write_nothing"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M9",
+      "what": "build failure does not restore the file",
+      "modules": [
+        "tests.test_engine_config_api"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 14 tests in 1.855s",
+        "FAILED (failures=1)"
+      ],
+      "failing_tests": [
+        "test_build_failure_on_the_receiver_thread_restores_the_file"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M10",
+      "what": "swap emits one MIDI message (equality detector must fire)",
+      "modules": [
+        "tests.test_engine_config_api"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 14 tests in 1.870s",
+        "FAILED (failures=1)"
+      ],
+      "failing_tests": [
+        "test_recorded_midi_equals_a_run_without_the_put"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M11",
+      "what": "relay bind failure does not restore the previous relay",
+      "modules": [
+        "tests.test_agent_routes"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 14 tests in 1.071s",
+        "FAILED (failures=1)"
+      ],
+      "failing_tests": [
+        "test_bind_failure_restores_the_previous_relay_and_file"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M12",
+      "what": "relay file replaced before the new relay starts",
+      "modules": [
+        "tests.test_agent_routes"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 14 tests in 0.152s",
+        "FAILED (failures=3)"
+      ],
+      "failing_tests": [
+        "test_bind_failure_restores_the_previous_relay_and_file",
+        "test_put_writes_the_file_and_the_live_relay_forwards_to_the_new_destination",
+        "test_ui_server_and_serve_forever_share_the_task_queue_and_ring"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M13",
+      "what": "midi ports route opens an input port",
+      "modules": [
+        "tests.test_agent_routes"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 14 tests in 0.476s",
+        "FAILED (failures=1)"
+      ],
+      "failing_tests": [
+        "test_lists_names_and_selected_ports_without_opening_any_port"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M14",
+      "what": "log ring not installed by win_recv",
+      "modules": [
+        "tests.test_agent_routes"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 14 tests in 0.406s",
+        "FAILED (errors=2)"
+      ],
+      "failing_tests": [
+        "test_tray_mode_tail_reports_the_rotating_file",
+        "test_ui_server_and_serve_forever_share_the_task_queue_and_ring"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M15",
+      "what": "log tail route not loopback-only",
+      "modules": [
+        "tests.test_agent_routes"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 14 tests in 0.471s",
+        "FAILED (failures=5)"
+      ],
+      "failing_tests": [
+        "test_non_loopback_remote_is_403_before_any_work"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M16",
+      "what": "ring keeps unbounded memory",
+      "modules": [
+        "tests.test_agent_routes"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 14 tests in 0.485s",
+        "FAILED (failures=1)"
+      ],
+      "failing_tests": [
+        "test_tail_returns_newest_lines_bounded_by_the_ring"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M17",
+      "what": "tail accepts lines above 1000",
+      "modules": [
+        "tests.test_agent_routes"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 14 tests in 0.480s",
+        "FAILED (failures=1)"
+      ],
+      "failing_tests": [
+        "test_invalid_lines_is_400"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M18",
+      "what": "osc_sync default back to the placeholder path",
+      "modules": [
+        "tests.test_resolume_home_defaults"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 5 tests in 0.013s",
+        "FAILED (failures=1, errors=1, skipped=1)"
+      ],
+      "failing_tests": [
+        "test_missing_key_resolves_under_the_running_users_home",
+        "test_placeholder_is_gone_from_both_defaults_and_the_factory_file"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M19",
+      "what": "stageflow default ignores the home",
+      "modules": [
+        "tests.test_resolume_home_defaults"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 5 tests in 0.012s",
+        "FAILED (errors=1, skipped=1)"
+      ],
+      "failing_tests": [
+        "test_missing_key_resolves_under_the_running_users_home"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M20",
+      "what": "factory osc_sync.json carries the key again",
+      "modules": [
+        "tests.test_resolume_home_defaults"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 5 tests in 0.013s",
+        "FAILED (failures=1, skipped=1)"
+      ],
+      "failing_tests": [
+        "test_placeholder_is_gone_from_both_defaults_and_the_factory_file"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M21",
+      "what": "api.md row for GET /api/logs/tail removed",
+      "modules": [
+        "tests.test_ui_server"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 78 tests in 0.424s",
+        "FAILED (failures=1)"
+      ],
+      "failing_tests": [
+        "test_api_inventory_matches_registered_method_paths"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M22",
+      "what": "wiring: serve_forever gets no task queue",
+      "modules": [
+        "tests.test_agent_routes"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 14 tests in 0.405s",
+        "FAILED (errors=1)"
+      ],
+      "failing_tests": [
+        "test_ui_server_and_serve_forever_share_the_task_queue_and_ring"
+      ],
+      "verdict": "RED as required"
+    }
+  ]
+}

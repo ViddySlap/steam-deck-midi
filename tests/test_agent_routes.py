@@ -185,7 +185,9 @@ class LogTailRouteTests(unittest.TestCase):
         self.assertRegex(body["lines"][0], r"^\d{4}-\d\d-\d\d \d\d:\d\d:\d\d,\d{3} INFO ")
         self.assertIsNone(body["log_file"])
         full = self.client.get("/api/logs/tail?lines=1000").get_json()["lines"]
+        self.assertEqual(RING_CAPACITY, 1000)
         self.assertEqual(len(full), RING_CAPACITY)
+        self.assertEqual(len(self.ring.tail(10_000)), RING_CAPACITY)  # memory is bounded, not just the reply
         self.assertTrue(full[0].endswith("line 5"))
         self.assertEqual(self.client.get("/api/logs/tail?lines=1").get_json()["count"], 1)
 

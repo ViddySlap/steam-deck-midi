@@ -1,0 +1,291 @@
+{
+  "pid": 1358,
+  "ui_port": 57212,
+  "listen": 49656,
+  "steps": [
+    {
+      "name": "GET autopilot config",
+      "status": 200,
+      "ok": true,
+      "body": {
+        "source": "factory",
+        "loaded": true,
+        "live_swappable": true
+      }
+    },
+    {
+      "name": "PUT autopilot config",
+      "status": 200,
+      "ok": true,
+      "body": {
+        "body": {
+          "active": true,
+          "ok": true,
+          "path": "/tmp/sdauto-a2/e2e/config/engines/autopilot.json",
+          "source": "user",
+          "spec": {
+            "column_quantize": true,
+            "defaults": {
+              "fx": {
+                "beats_per_clip": 16,
+                "clip_mode": 0,
+                "transition_seconds": 0.0
+              },
+              "logo": {
+                "beats_per_clip": 16,
+                "clip_mode": 0,
+                "transition_seconds": 0.0
+              },
+              "video": {
+                "beats_per_clip": 16,
+                "clip_mode": 0,
+                "transition_seconds": 0.0
+              }
+            },
+            "enabled": true,
+            "fallback_clock": {
+              "_comment": "Free-running internal clock for shows without Pulse. Takes over when no MIDI clock tick has arrived for takeover_after_seconds, and hands straight back the moment real ticks resume.",
+              "bpm": 128.0,
+              "enabled": true,
+              "takeover_after_seconds": 2.0
+            },
+            "inputs": {
+              "beats_lookup": [
+                1,
+                4,
+                8,
+                16,
+                32,
+                64,
+                128
+              ],
+              "channel": 14,
+              "fx": {
+                "_comment": "FX is layer 5, which is NOT inside a Resolume layer group, so there is no /composition/groups/N to advance -- group stays null and column_advance stays false by design. FX advances to the next CLIP on its own layer instead, which the single-layer path already does every beats_per_clip whenever MODE is LINEAR or RANDOM. Set the fx MODE selector to LINEAR to get it.",
+                "cc_beats": 71,
+                "cc_enable": 70,
+                "cc_mode": 73,
+                "cc_transition": 72,
+                "column_advance": false,
+                "group": null,
+                "layer_ccs": {
+                  "5": 74
+                }
+              },
+              "logo": {
+                "cc_beats": 81,
+                "cc_enable": 80,
+                "cc_mode": 83,
+                "cc_transition": 82,
+                "column_advance": true,
+                "group": 2,
+                "layer_ccs": {
+                  "6": 84,
+                  "7": 85
+                }
+              },
+              "transition_max_seconds": 5.0,
+              "video": {
+                "cc_beats": 61,
+                "cc_enable": 60,
+                "cc_mode": 63,
+                "cc_transition": 62,
+                "column_advance": true,
+                "group": 1,
+                "layer_ccs": {
+                  "1": 64,
+                  "2": 65,
+                  "3": 66,
+                  "4": 67
+                }
+              }
+            },
+            "name": "Autopilot",
+            "outputs": {
+              "osc": {
+                "host": "127.0.0.1",
+                "port": 49575
+              },
+              "rest": {
+                "base_url": "http://127.0.0.1:57211",
+                "timeout_seconds": 1.5
+              }
+            },
+            "tempo_source": {
+              "kind": "midi_clock",
+              "port": "PULSE_OUT",
+              "ppqn": 24
+            },
+            "type": "autopilot",
+            "update_hz": 20
+          },
+          "type": "autopilot"
+        },
+        "file_update_hz": 20
+      }
+    },
+    {
+      "name": "GET after PUT",
+      "status": 200,
+      "ok": true,
+      "body": {
+        "source": "user",
+        "update_hz": 20
+      }
+    },
+    {
+      "name": "PUT osc_sync is restart_required",
+      "status": 409,
+      "ok": true,
+      "body": {
+        "error": "restart_required",
+        "reason": "shutdown joins an in-flight sync pass for up to 5 s, which would stall MIDI on the receiver thread while the pass holds composition master at 0",
+        "type": "osc_sync"
+      }
+    },
+    {
+      "name": "PUT invalid autopilot",
+      "status": 400,
+      "ok": true,
+      "body": {
+        "error": "invalid autopilot config: could not convert string to float: 'fast'"
+      }
+    },
+    {
+      "name": "GET osc-relay",
+      "status": 200,
+      "ok": true,
+      "body": {
+        "config": {
+          "destinations": [
+            "127.0.0.1:51252"
+          ],
+          "enabled": true,
+          "listen": "127.0.0.1:63984"
+        },
+        "load_error": null,
+        "path": "/tmp/sdauto-a2/e2e/config/osc_relay.json",
+        "running": true,
+        "stats": {
+          "destinations": [
+            "127.0.0.1:51252"
+          ],
+          "listen": "127.0.0.1:63984",
+          "packets_in": 0,
+          "packets_out": 0,
+          "running": true,
+          "send_errors": 0
+        }
+      }
+    },
+    {
+      "name": "PUT osc-relay and forward one datagram",
+      "status": 200,
+      "ok": true,
+      "body": {
+        "body": {
+          "config": {
+            "destinations": [
+              "127.0.0.1:49575"
+            ],
+            "enabled": true,
+            "listen": "127.0.0.1:63984"
+          },
+          "load_error": null,
+          "ok": true,
+          "path": "/tmp/sdauto-a2/e2e/config/osc_relay.json",
+          "running": true,
+          "stats": {
+            "destinations": [
+              "127.0.0.1:49575"
+            ],
+            "listen": "127.0.0.1:63984",
+            "packets_in": 0,
+            "packets_out": 0,
+            "running": true,
+            "send_errors": 0
+          }
+        },
+        "received": "/sdauto-a2/e2e"
+      }
+    },
+    {
+      "name": "GET midi ports",
+      "status": 200,
+      "ok": true,
+      "body": {
+        "error": null,
+        "inputs": [
+          "IAC Driver DECK_IN",
+          "IAC Driver DECK_OUT",
+          "IAC Driver PULSE_OUT",
+          "ipMIDI Port 1"
+        ],
+        "outputs": [
+          "IAC Driver DECK_IN",
+          "IAC Driver DECK_OUT",
+          "IAC Driver PULSE_OUT",
+          "ipMIDI Port 1"
+        ],
+        "selected": {
+          "feedback": {
+            "requested": null,
+            "resolved": null
+          },
+          "output": {
+            "requested": "DECK_IN",
+            "resolved": "DECK_IN"
+          },
+          "pulse": {
+            "requested": null,
+            "resolved": null
+          }
+        }
+      }
+    },
+    {
+      "name": "GET logs tail",
+      "status": 200,
+      "ok": true,
+      "body": {
+        "count": 41,
+        "log_file": null,
+        "first": "2026-09-15 13:14:02,628 INFO root build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z"
+      }
+    },
+    {
+      "name": "GET logs tail lines=0",
+      "status": 400,
+      "ok": true,
+      "body": {
+        "error": "lines must be an integer from 1 to 1000"
+      }
+    },
+    {
+      "name": "POST shutdown",
+      "status": 202,
+      "ok": true,
+      "body": {
+        "stopping": true
+      }
+    },
+    {
+      "name": "process exited 0",
+      "status": 0,
+      "ok": true,
+      "body": null
+    },
+    {
+      "name": "ps -p shows no process",
+      "status": 1,
+      "ok": true,
+      "body": null
+    }
+  ],
+  "exit_code": 0,
+  "ps_after": {
+    "exit": 1,
+    "stdout": "PID TTY           TIME CMD"
+  },
+  "passed": true
+}

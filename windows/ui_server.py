@@ -946,7 +946,7 @@ class MappingUIServer:
                 self.engine_registry, self.receiver_tasks, type_name, body)
             return jsonify(payload), status
 
-        # ── OSC relay, MIDI ports, log tail ───────────────────────
+        # -- OSC relay, MIDI ports, log tail --
         @app.route("/api/osc-relay", methods=["GET"])
         def get_osc_relay() -> Response:
             if not _remote_is_loopback():
