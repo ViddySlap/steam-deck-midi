@@ -43,6 +43,7 @@ Later links must extend this inventory with every new UI or control action.
 | POST | `/api/engines/<type_name>/active` | Toggle a loaded engine live; persist on preset save. |
 | POST | `/api/engines/osc-sync/resync` | Resynchronize OSC targets and return their count. |
 | POST | `/api/engines/gyro-feedback/resync` | Invert gyro-feedback polarity and refresh its outputs. |
+| POST | `/api/engines/autopilot/state/clear` | Reset autopilot channel intent (enabled, beats, transition, mode, layers) to config defaults and persist it; return {persisted, channels}. |
 | POST | `/api/engines/refresh` | Invoke every loaded engine's refresh hook and return results. |
 
 `GET /api/settings` reports resolved live MIDI port names; unavailable/disabled

@@ -43,12 +43,15 @@ from __future__ import annotations
 
 import logging
 import random
+import threading
 import time
 from collections import deque
 from dataclasses import dataclass, field
 from enum import IntEnum
+from pathlib import Path
 from typing import Callable
 
+from windows.engines import autopilot_state
 from windows.engines.base import Engine
 from windows.engines.osc_client import OscClient
 from windows.engines.resolume_rest import ResolumeRestClient, ResolumeRestError
@@ -130,6 +133,8 @@ class ChannelState:
 
 class AutopilotEngine(Engine):
     type_name = "autopilot"
+    # load_engines passes state_dir only to engine classes that declare this.
+    accepts_state_dir = True
 
     def __init__(
         self,
@@ -141,6 +146,7 @@ class AutopilotEngine(Engine):
         rest_client: ResolumeRestClient | None = None,
         osc_client: OscClient | None = None,
         rng: random.Random | None = None,
+        state_dir: str | Path | None = None,
     ) -> None:
         super().__init__(name, config, midi_out, clock=clock)
         inputs = config.get("inputs", {})
@@ -156,6 +162,9 @@ class AutopilotEngine(Engine):
         self._channels: dict[str, ChannelConfig] = {}
         self._states: dict[str, ChannelState] = {}
         self._cc_to_channel_param: dict[int, tuple[str, str, int | None]] = {}
+        # Config defaults for the persisted intent fields, per channel, so the
+        # clear route can put them back.
+        self._intent_defaults: dict[str, tuple[int, float, ClipMode]] = {}
 
         for key in CHANNEL_KEYS:
             ch_inputs = inputs.get(key, {})
@@ -194,6 +203,11 @@ class AutopilotEngine(Engine):
                 layer_enabled={layer: False for layer in layer_ccs},
             )
             self._states[key] = state
+            self._intent_defaults[key] = (
+                state.beats_per_clip,
+                state.transition_seconds,
+                state.clip_mode,
+            )
 
         # OSC client for layer master / next-clip / transition writes
         osc_cfg = outputs.get("osc", {})
@@ -271,6 +285,14 @@ class AutopilotEngine(Engine):
         # instead of waiting takeover_after_seconds like the config promises.
         self._clock_grace_anchor: float | None = None
 
+        # --- Channel intent persistence (docs/autopilot-state.md) -----------
+        self._intent_lock = threading.Lock()
+        self._state_writer: autopilot_state.AutopilotStateWriter | None = None
+        self._other_persisted_engines: dict[str, dict] = {}
+        self._restored_channels: list[str] = []
+        if state_dir is not None:
+            self._init_persistence(Path(state_dir))
+
     # ----- Engine ABC overrides ------------------------------------------------
 
     def bind_registry(self, registry) -> None:
@@ -289,6 +311,8 @@ class AutopilotEngine(Engine):
         return 1.0 / self._update_hz
 
     def on_midi_in(self, channel: int, cc: int, value: int, now: float) -> None:
+        if self._restored_channels:
+            self._apply_restored_intent()
         if channel != self._midi_channel:
             return
         target = self._cc_to_channel_param.get(cc)
@@ -299,11 +323,8 @@ class AutopilotEngine(Engine):
         if param == "enable":
             new_val = value >= 64
             if new_val != state.enabled:
-                state.enabled = new_val
-                LOGGER.info("autopilot %s: enabled=%s", ch_key, new_val)
-                if new_val:
-                    # On enable, snap masters to the first selected layer.
-                    self._snap_to_first_selected(ch_key)
+                self._apply_enable(ch_key, new_val)
+                self._persist_intent()
         elif param == "beats":
             idx = max(0, min(value, len(self._beats_lookup) - 1))
             new_beats = self._beats_lookup[idx]
@@ -311,12 +332,13 @@ class AutopilotEngine(Engine):
                 state.beats_per_clip = new_beats
                 state.beat_in_clip = 0
                 LOGGER.info("autopilot %s: beats_per_clip=%s", ch_key, new_beats)
+                self._persist_intent()
         elif param == "transition":
             new_seconds = (value / 127.0) * self._transition_max
-            state.transition_seconds = new_seconds
-            # Push to Resolume per-layer transition param immediately.
-            for layer in state.selected_layers():
-                self._send_layer_transition(layer, new_seconds)
+            changed = new_seconds != state.transition_seconds
+            self._apply_transition(state, new_seconds)
+            if changed:
+                self._persist_intent()
         elif param == "mode":
             # Wire dropdown sends raw 0/1/2 (normalize=false on the Write CC node).
             clamped = max(0, min(2, int(value)))
@@ -328,6 +350,7 @@ class AutopilotEngine(Engine):
                 if old_mode == ClipMode.RANDOM:
                     state.bag.clear()
                 LOGGER.info("autopilot %s: mode=%s", ch_key, new_mode.name)
+                self._persist_intent()
         elif param == "layer":
             assert payload is not None
             new_val = value >= 64
@@ -343,8 +366,11 @@ class AutopilotEngine(Engine):
                 # If the visible layer was unselected, advance to next selected.
                 if not new_val and state.visible_layer == payload:
                     self._snap_to_first_selected(ch_key)
+                self._persist_intent()
 
     def on_midi_clock(self, message_type: str, now: float) -> None:
+        if self._restored_channels:
+            self._apply_restored_intent()
         if message_type == "start":
             self._reset_clock_state()
             self._clock_running = True
@@ -374,6 +400,8 @@ class AutopilotEngine(Engine):
             self._on_beat_boundary(now)
 
     def tick(self, now: float) -> None:
+        if self._restored_channels:
+            self._apply_restored_intent()
         self._advance_fallback_clock(now)
         # Per-tick cross-fade ramping. Uses wall clock (not MIDI clock ticks)
         # so the fade is smooth even when Pulse → Windows MIDI input has timing
@@ -398,6 +426,9 @@ class AutopilotEngine(Engine):
                 state.crossfade_start_time = None
 
     def shutdown(self) -> None:
+        if self._state_writer is not None:
+            # Waits for the last change to reach disk; never raises.
+            self._state_writer.close()
         try:
             self._osc.close()
         except Exception:
@@ -431,6 +462,155 @@ class AutopilotEngine(Engine):
                 "cycle_index": state.cycle_index,
             }
         return out
+
+    # ----- channel intent persistence ------------------------------------------
+
+    def _apply_enable(self, ch_key: str, new_val: bool) -> None:
+        # The one enable path: a live CC and a restored enabled=true both land here.
+        state = self._states[ch_key]
+        state.enabled = new_val
+        LOGGER.info("autopilot %s: enabled=%s", ch_key, new_val)
+        if new_val:
+            # On enable, snap masters to the first selected layer.
+            self._snap_to_first_selected(ch_key)
+
+    def _apply_transition(self, state: ChannelState, new_seconds: float) -> None:
+        state.transition_seconds = new_seconds
+        # Push to Resolume per-layer transition param immediately.
+        for layer in state.selected_layers():
+            self._send_layer_transition(layer, new_seconds)
+
+    def _init_persistence(self, state_dir: Path) -> None:
+        path = state_dir / autopilot_state.STATE_FILE_NAME
+        self._state_writer = autopilot_state.AutopilotStateWriter(path)
+        self._restore_intent(path)
+
+    def _restore_intent(self, path: Path) -> None:
+        """Overlay persisted intent fields onto the config-built channel states."""
+        try:
+            engines = autopilot_state.read_state_file(
+                path, frozenset(ClipMode.__members__)
+            )
+        except autopilot_state.StateFileInvalid as exc:
+            LOGGER.warning(
+                "%s: ignoring autopilot state file %s (%s); using config defaults",
+                self.name,
+                path,
+                exc,
+            )
+            return
+        if engines is None:
+            return
+        self._other_persisted_engines = {
+            name: entry for name, entry in engines.items() if name != self.name
+        }
+        entry = engines.get(self.name)
+        if entry is None:
+            return
+        ignored: list[str] = []
+        for ch_key, saved in entry["channels"].items():
+            state = self._states.get(ch_key)
+            if state is None:
+                ignored.append(ch_key)
+                continue
+            state.enabled = saved["enabled"]
+            state.beats_per_clip = saved["beats_per_clip"]
+            state.transition_seconds = float(saved["transition_seconds"])
+            state.clip_mode = ClipMode[saved["clip_mode"]]
+            for layer_key, on in saved["layer_enabled"].items():
+                layer = int(layer_key)
+                if layer in state.layer_enabled:
+                    state.layer_enabled[layer] = on
+                else:
+                    ignored.append(f"{ch_key}.layer {layer_key}")
+            self._restored_channels.append(ch_key)
+        # Replay in config channel order, the order live CCs are handled in.
+        self._restored_channels = [k for k in self._states if k in self._restored_channels]
+        if ignored:
+            LOGGER.warning(
+                "%s: autopilot state entries not in config were ignored: %s",
+                self.name,
+                ", ".join(ignored),
+            )
+        LOGGER.info(
+            "%s: restored autopilot intent for %s from %s",
+            self.name,
+            ", ".join(self._restored_channels),
+            path,
+        )
+
+    def _apply_restored_intent(self) -> None:
+        """Replay a restore's Resolume side effects on the first dispatch.
+
+        Deferred from construction to the first on_midi_in/on_midi_clock/tick
+        the registry delivers, because the registry delivers nothing to an
+        inactive engine: a preset that keeps autopilot off must not have it
+        write layer masters at startup, exactly as a live CC would not.
+        """
+        channels, self._restored_channels = self._restored_channels, []
+        for ch_key in channels:
+            state = self._states[ch_key]
+            self._apply_transition(state, state.transition_seconds)
+            if state.enabled:
+                self._apply_enable(ch_key, True)
+
+    def _intent_document(self) -> dict:
+        channels = {
+            key: {
+                "enabled": state.enabled,
+                "beats_per_clip": state.beats_per_clip,
+                "transition_seconds": state.transition_seconds,
+                "clip_mode": state.clip_mode.name,
+                "layer_enabled": {
+                    str(layer): on for layer, on in sorted(state.layer_enabled.items())
+                },
+            }
+            for key, state in self._states.items()
+        }
+        engines = dict(self._other_persisted_engines)
+        engines[self.name] = {"channels": channels}
+        return autopilot_state.build_document(engines)
+
+    def _persist_intent(self) -> None:
+        writer = self._state_writer
+        if writer is None:
+            return
+        try:
+            with self._intent_lock:
+                writer.submit(self._intent_document())
+        except Exception:  # noqa: BLE001 - never raise into the MIDI path
+            LOGGER.exception("%s: autopilot state snapshot failed", self.name)
+
+    def clear_intent(self) -> dict:
+        """Reset every channel's intent to config defaults and persist it.
+
+        Mirrors what the equivalent live CCs do (disable, unselect layers,
+        default beats/transition/mode); runtime state follows the same rules
+        on_midi_in applies. Returns {"persisted": bool, "channels": ...}.
+        """
+        with self._intent_lock:
+            self._restored_channels = []
+            for key, state in self._states.items():
+                beats, seconds, mode = self._intent_defaults[key]
+                state.enabled = False
+                if state.beats_per_clip != beats:
+                    state.beats_per_clip = beats
+                    state.beat_in_clip = 0
+                state.transition_seconds = seconds
+                if state.clip_mode != mode:
+                    if state.clip_mode == ClipMode.RANDOM:
+                        state.bag.clear()
+                    state.clip_mode = mode
+                for layer in state.layer_enabled:
+                    state.layer_enabled[layer] = False
+                if state.visible_layer is not None or state.target_layer is not None:
+                    self._snap_to_first_selected(key)
+        persisted = False
+        if self._state_writer is not None:
+            self._persist_intent()
+            persisted = self._state_writer.flush()
+        status = self.status()
+        return {"persisted": persisted, "channels": status["channels"]}
 
     # ----- internal helpers ---------------------------------------------------
 

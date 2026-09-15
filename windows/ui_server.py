@@ -894,6 +894,22 @@ class MappingUIServer:
                 return jsonify({"error": str(exc)}), 500
             return jsonify({"ok": True, **state})
 
+        @app.route("/api/engines/autopilot/state/clear", methods=["POST"])
+        def clear_autopilot_state() -> Response:
+            """Reset autopilot channel intent to config defaults and persist it.
+
+            Touches only the five persisted intent fields per channel (see
+            docs/autopilot-state.md); deletes no file and no other state.
+            """
+            engine = self._find_engine("autopilot")
+            if engine is None:
+                return jsonify({"error": "autopilot engine not loaded"}), 404
+            try:
+                result = engine.clear_intent()
+            except Exception as exc:  # noqa: BLE001 - surface to UI
+                return jsonify({"error": str(exc)}), 500
+            return jsonify({"ok": True, **result})
+
         @app.route("/api/engines/refresh", methods=["POST"])
         def refresh_engines() -> Response:
             """Dev endpoint: trigger every engine's `refresh()` hook.

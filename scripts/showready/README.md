@@ -224,6 +224,64 @@ The result retains process IDs, terminate/wait method and PID absence proof.
 Raw captures, arm stdout and copied trees remain in the unique reported scratch
 folder, with no running processes. The driver never calls an HTTP shutdown API.
 
+## Engine A/B instrument (sdauto A1)
+
+The bar 1 A/B above runs `--no-engines`, so engine output is not covered there.
+`engine_ab.py` covers every engine that writes to the shared MidiOut:
+autopilot (with its note-emit filter that defers or drops L_PAD_LEFT,
+L_PAD_LEFT_LONG_PRESS, L_PAD_RIGHT and L_PAD_RIGHT_LONG_PRESS on ch0),
+l_stick_layer, gyro_feedback, global_color and audio_opacity (protocol midi).
+Harness code is standard library plus ab_run/deck_script helpers; the arms use
+the checkout venv. It verifies both fixture manifests before reading a preset.
+
+Each arm is an untouched `git archive` tree in its own Python process (both
+revisions are the `windows` package). Inside it, engines are built by THAT
+revision's `load_engines` + `bind_registry` from the SAME five config stanzas:
+the v0.4.9 factory configs with OSC/REST rewritten to loopback, audio_opacity
+set to protocol midi, and the active flags from the preset's `engines` block.
+OSC and REST clients are recording fakes, the RNG is seeded, any socket or
+MIDI port open is refused and counted, and time is the script's fake clock.
+The script calls the registry the way windows/receiver.py does (feedback CCs,
+Deck CCs and notes through `should_emit_note`, note-offs, axis events, MIDI
+clock start/stop/continue, ticks, refresh) with the preset's own note and L4
+mappings. Arms: A = v0.4.9; B_nostate = candidate with `state_dir=None`;
+B_state = candidate with the default `config/state/` present and empty (it must
+end holding `autopilot_channels.local.json` whenever autopilot is active, or
+persistence was not exercised). Both B arms must equal A event for event: MIDI
+bytes, OSC address and value, and every filter decision.
+
+Coverage: an engine the preset leaves active needs output on every arm (MIDI,
+plus OSC for autopilot and global_color; autopilot also at least one re-emitted
+and one dropped column note). An engine the preset turns off must emit nothing
+outside `load` and `refresh`. Zero observations is RED, never a pass. The
+result's `coverage` table names each engine, its per-arm counts and the input
+kinds that produced output.
+
+```bash
+mkdir -p /tmp/sdauto-engine-ab
+.venv/bin/python -B scripts/showready/engine_ab.py --candidate HEAD --preset '.showready/fixtures/mac/presets/EDM Show.json' --section windows --out /tmp/sdauto-engine-ab/mac-edm.json
+.venv/bin/python -B scripts/showready/engine_ab.py --candidate HEAD --preset '.showready/fixtures/windows-installed/presets/EDM Show.json' --out /tmp/sdauto-engine-ab/windows-edm.json
+.venv/bin/python -B scripts/showready/engine_ab.py --candidate HEAD --preset '.showready/fixtures/mac/presets/PTZ.json' --section windows --out /tmp/sdauto-engine-ab/mac-ptz.json
+.venv/bin/python -B scripts/showready/engine_ab.py --candidate HEAD --preset '.showready/fixtures/windows-installed/presets/PTZ.json' --out /tmp/sdauto-engine-ab/windows-ptz.json
+```
+
+Exit 0 and `passed: true` only when both comparisons are identical, coverage
+holds and no socket/port was attempted. Controls (expected exit 1 and
+`control_expected: true`; exit 2 means the control did NOT behave):
+
+```bash
+.venv/bin/python -B scripts/showready/engine_ab.py --candidate HEAD --preset '.showready/fixtures/mac/presets/EDM Show.json' --section windows --control sensitivity-autopilot --out /tmp/sdauto-engine-ab/sens-autopilot.json
+.venv/bin/python -B scripts/showready/engine_ab.py --candidate HEAD --preset '.showready/fixtures/mac/presets/EDM Show.json' --section windows --control sensitivity-l_stick_layer --out /tmp/sdauto-engine-ab/sens-lstick.json
+```
+
+`sensitivity-autopilot` changes one byte of the candidate copy's column note set
+(86 to 96); `sensitivity-l_stick_layer` flips the low bit of the positive CC
+number it emits. Each must make the candidate differ from A with exactly that
+engine family in `different_sources` (`receiver` may also differ when the
+filter decides differently). Coverage in a control run is judged on arm A.
+The copied trees, script, captures and arm logs stay in the reported work
+folder; each arm process has exited before the result is written.
+
 ## Controller geometry (Mac, real Chromium)
 
 ```bash

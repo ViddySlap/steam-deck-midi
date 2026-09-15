@@ -50,6 +50,8 @@ _USER_DIR_NAME = "engines"
 _FACTORY_DIR_NAME = "engines.factory"
 _LEGACY_USER_FILE = "engines.json"
 _LEGACY_FACTORY_FILE = "engines.factory.json"
+_STATE_DIR_NAME = "state"
+_DERIVE_STATE_DIR = object()
 
 
 class EngineRegistry:
@@ -228,8 +230,19 @@ class EngineRegistry:
         ]
 
 
-def load_engines(config_path: str | Path, midi_out: MidiOut) -> EngineRegistry:
+def load_engines(
+    config_path: str | Path,
+    midi_out: MidiOut,
+    *,
+    state_dir: str | Path | None | object = _DERIVE_STATE_DIR,
+) -> EngineRegistry:
     """Load engine config from disk and instantiate the registry.
+
+    `state_dir` is the machine-local directory engines that declare
+    `accepts_state_dir` (autopilot) persist runtime intent into. By default it
+    is `<user engines dir>/../state` (config/state/ next to config/engines/);
+    `None` disables persistence. It is never allowed inside the engines dir,
+    where every *.json is loaded as an engine stanza.
 
     `config_path` may point at:
 
@@ -278,6 +291,19 @@ def load_engines(config_path: str | Path, midi_out: MidiOut) -> EngineRegistry:
         )
         user_specs.append(fspec)
 
+    if state_dir is _DERIVE_STATE_DIR:
+        state_dir = user_dir.parent / _STATE_DIR_NAME
+    if state_dir is not None:
+        resolved_state = Path(state_dir).resolve()
+        resolved_user = user_dir.resolve()
+        if resolved_state == resolved_user or resolved_user in resolved_state.parents:
+            LOGGER.error(
+                "state dir %s is inside the engines dir %s; engine state persistence disabled",
+                state_dir,
+                user_dir,
+            )
+            state_dir = None
+
     registry = EngineRegistry()
 
     # Pass 1: instantiate + register every engine. Inter-engine references
@@ -294,8 +320,11 @@ def load_engines(config_path: str | Path, midi_out: MidiOut) -> EngineRegistry:
             LOGGER.warning("unknown engine type %r; skipping", engine_type)
             continue
         name = spec.get("name", engine_type)
+        kwargs = {}
+        if state_dir is not None and getattr(cls, "accepts_state_dir", False):
+            kwargs["state_dir"] = Path(state_dir)
         try:
-            engine = cls(name=name, config=spec, midi_out=midi_out)
+            engine = cls(name=name, config=spec, midi_out=midi_out, **kwargs)
             registry.add(engine)
             LOGGER.info("loaded engine %s (type=%s)", name, engine_type)
         except Exception:
