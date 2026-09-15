@@ -568,8 +568,13 @@
               <h2 id="controllerTitle" tabindex="-1"></h2>
               <button class="btn btn-sm" id="controllerClose" aria-label="Close control details">Close</button>
             </div>
-            <p class="controller-card-hint">Mappings in the selected section. Use Open in list to edit.</p>
-            <div id="controllerRows"></div>
+            <p class="controller-card-hint">Edit mappings in the selected section. Apply changes, then Save.</p>
+            <div class="action-row controller-tabs" role="tablist" aria-label="Control editor">
+              <button class="btn btn-sm" id="controllerMappingsTab" role="tab" aria-controls="controllerRows" aria-selected="true">Mappings</button>
+              <button class="btn btn-sm" id="controllerAdvancedTab" role="tab" aria-controls="controllerAdvanced" aria-selected="false">Advanced</button>
+            </div>
+            <div id="controllerRows" role="tabpanel" aria-labelledby="controllerMappingsTab"></div>
+            <div id="controllerAdvanced" role="tabpanel" aria-labelledby="controllerAdvancedTab" hidden></div>
           </aside>
         </div>
       </div>
@@ -934,6 +939,7 @@ async function loadAll(section = selectedSection, {preserveEdits = false} = {}) 
     for (const a of allActions) state[a] = raw[a] || null;
     for (const [a, s] of Object.entries(raw)) if (!(a in state)) state[a] = s;
 
+    if (typeof ControllerView !== 'undefined') ControllerView.resetDrafts();
     renderSidebar();
     if (typeof ControllerView !== 'undefined') ControllerView.refresh();
     renderSettingsGrids();
@@ -1003,7 +1009,7 @@ function isLocalSection() {
   return legacyPreset || selectedSection === bridgeSection;
 }
 function hasUnsavedEdits() {
-  return dirty || formDirty;
+  return dirty || formDirty || (typeof ControllerView !== 'undefined' && ControllerView.hasDrafts());
 }
 function discardChanges() {
   return !hasUnsavedEdits() || window.confirm('You have unsaved changes. Discard them?');
@@ -1134,21 +1140,21 @@ function commit(action, spec) {
   setDirty(true);
   updateCount();
   refreshChip(action);
-  if (typeof ControllerView !== 'undefined') ControllerView.refresh();
+  if (typeof ControllerView !== 'undefined') ControllerView.refresh(action);
 }
 
 // ─────────────────────────────────────────────────────────────────
 // Editor
 // ─────────────────────────────────────────────────────────────────
 const TYPE_LABELS = {
-  '':                '— Unmapped —',
+  '':                '- Unmapped -',
   note:              'Note',
   cc:                'Control Change (CC)',
   macro_cc:          'Macro CC (click / long-press fade)',
   relative_cc:       'Relative CC (encoder tick)',
   staged_note_macro: 'Staged Note Macro',
-  axis_to_cc:        'Axis → CC (analog input)',
-  axis_split_cc:     'Axis → split CC (bipolar split, center = 0)',
+  axis_to_cc:        'Axis to CC (analog input)',
+  axis_split_cc:     'Axis to split CC (bipolar split, center = 0)',
 };
 const DEFAULTS = {
   note:              { type:'note', channel:0, note:36, velocity:127 },
@@ -1186,7 +1192,7 @@ function renderEditor(action) {
       </div>
     </div>
     <div class="section">
-      <div class="section-title">Raw JSON <span style="color:var(--text-dim);text-transform:none;font-weight:400">— paste any mapping here</span></div>
+      <div class="section-title">Raw JSON <span style="color:var(--text-dim);text-transform:none;font-weight:400">- paste any mapping here</span></div>
       <div class="field">
         <textarea class="json-textarea" id="jsonRaw" spellcheck="false">${spec ? JSON.stringify(spec, null, 2) : ''}</textarea>
         <div class="json-err" id="jsonErr"></div>
@@ -1231,9 +1237,7 @@ function renderEditor(action) {
   });
 }
 
-function renderFields(type, spec) {
-  const container = document.getElementById('fields');
-  const applyRow = document.getElementById('applyRow');
+function renderFields(type, spec, container = document.getElementById('fields'), prefix = '', applyRow = document.getElementById('applyRow')) {
   container.innerHTML = '';
   if (!type) { applyRow.style.display = 'none'; return; }
   applyRow.style.display = 'flex';
@@ -1245,8 +1249,8 @@ function renderFields(type, spec) {
   };
   const fld = (id, label, input, hint) => {
     const d = document.createElement('div'); d.className = 'field';
-    const l = document.createElement('label'); l.textContent = label; l.setAttribute('for', id);
-    d.appendChild(l); input.id = id; d.appendChild(input);
+    const l = document.createElement('label'); l.textContent = label; l.setAttribute('for', prefix + id);
+    d.appendChild(l); input.id = prefix + id; d.appendChild(input);
     if (hint) { const h = document.createElement('div'); h.className = 'field-hint'; h.textContent = hint; d.appendChild(h); }
     return d;
   };
@@ -1266,14 +1270,14 @@ function renderFields(type, spec) {
 
   if (type === 'note') {
     row(
-      fld('f_ch',   'Channel (0–15)',   num('f_ch',  s.channel??0, 0, 15)),
-      fld('f_note', 'Note (0–127)',     num('f_note',s.note??36, 0, 127)),
-      fld('f_vel',  'Velocity (1–127)', num('f_vel', s.velocity??127, 1, 127)),
+      fld('f_ch',   'Channel (0-15)',   num('f_ch',  s.channel??0, 0, 15)),
+      fld('f_note', 'Note (0-127)',     num('f_note',s.note??36, 0, 127)),
+      fld('f_vel',  'Velocity (1-127)', num('f_vel', s.velocity??127, 1, 127)),
     );
   } else if (type === 'cc') {
     row(
-      fld('f_ch',  'Channel (0–15)',  num('f_ch',  s.channel??0, 0, 15)),
-      fld('f_cc',  'CC (0–127)',      num('f_cc',  s.cc??1, 0, 127)),
+      fld('f_ch',  'Channel (0-15)',  num('f_ch',  s.channel??0, 0, 15)),
+      fld('f_cc',  'CC (0-127)',      num('f_cc',  s.cc??1, 0, 127)),
     );
     row(
       fld('f_on',  'On value',  num('f_on',  s.on_value??127, 0, 127)),
@@ -1281,8 +1285,8 @@ function renderFields(type, spec) {
     );
   } else if (type === 'macro_cc') {
     row(
-      fld('f_ch',      'Channel (0–15)',  num('f_ch', s.channel??0, 0, 15)),
-      fld('f_cc',      'CC (0–127)',      num('f_cc', s.cc??22, 0, 127)),
+      fld('f_ch',      'Channel (0-15)',  num('f_ch', s.channel??0, 0, 15)),
+      fld('f_cc',      'CC (0-127)',      num('f_cc', s.cc??22, 0, 127)),
       fld('f_gesture', 'Gesture',         sel('f_gesture', [['click','click'],['long_press','long_press']], s.gesture??'click')),
     );
     row(
@@ -1292,8 +1296,8 @@ function renderFields(type, spec) {
     );
   } else if (type === 'relative_cc') {
     row(
-      fld('f_ch',   'Channel (0–15)',           num('f_ch',  s.channel??0, 0, 15)),
-      fld('f_cc',   'CC (0–127)',               num('f_cc',  s.cc??47, 0, 127)),
+      fld('f_ch',   'Channel (0-15)',           num('f_ch',  s.channel??0, 0, 15)),
+      fld('f_cc',   'CC (0-127)',               num('f_cc',  s.cc??47, 0, 127)),
     );
     row(
       fld('f_step', 'Step value (1=inc, 127=dec)', num('f_step', s.step_value??1, 0, 127)),
@@ -1301,7 +1305,7 @@ function renderFields(type, spec) {
     );
   } else if (type === 'staged_note_macro') {
     row(
-      fld('f_note', 'Note (0–127)', num('f_note', s.note??36, 0, 127)),
+      fld('f_note', 'Note (0-127)', num('f_note', s.note??36, 0, 127)),
       fld('f_vel',  'Velocity',     num('f_vel',  s.velocity??127, 1, 127)),
     );
     row(
@@ -1310,7 +1314,8 @@ function renderFields(type, spec) {
     );
     const raField = document.createElement('div'); raField.className = 'field';
     const raLabel = document.createElement('label'); raLabel.textContent = 'Refresh actions (comma-separated)';
-    const raInput = document.createElement('input'); raInput.type='text'; raInput.id='f_ra';
+    const raInput = document.createElement('input'); raInput.type='text'; raInput.id=prefix + 'f_ra';
+    raLabel.setAttribute('for', raInput.id);
     raInput.value=(s.refresh_actions||[]).join(', ');
     raInput.placeholder='e.g. L_PAD_LEFT, L_PAD_RIGHT';
     raField.appendChild(raLabel); raField.appendChild(raInput);
@@ -1325,8 +1330,8 @@ function renderFields(type, spec) {
     );
   } else if (type === 'axis_to_cc') {
     row(
-      fld('f_ch', 'Channel (0–15)', num('f_ch', s.channel??0, 0, 15)),
-      fld('f_cc', 'CC (0–127)',     num('f_cc', s.cc??1, 0, 127)),
+      fld('f_ch', 'Channel (0-15)', num('f_ch', s.channel??0, 0, 15)),
+      fld('f_cc', 'CC (0-127)',     num('f_cc', s.cc??1, 0, 127)),
     );
     const ir = s.input_range || [-32768, 32767];
     const or_ = s.output_range || [0, 127];
@@ -1344,11 +1349,11 @@ function renderFields(type, spec) {
     );
   } else if (type === 'axis_split_cc') {
     row(
-      fld('f_ch', 'Channel (0–15)', num('f_ch', s.channel??15, 0, 15)),
+      fld('f_ch', 'Channel (0-15)', num('f_ch', s.channel??15, 0, 15)),
     );
     row(
       fld('f_ccp', 'CC + (positive direction)', num('f_ccp', s.cc_positive??114, 0, 127)),
-      fld('f_ccn', 'CC − (negative direction)', num('f_ccn', s.cc_negative??116, 0, 127)),
+      fld('f_ccn', 'CC - (negative direction)', num('f_ccn', s.cc_negative??116, 0, 127)),
     );
     row(
       fld('f_imax', 'Input max (full deflection)', num('f_imax', s.input_max??32767, 1, 32767)),
@@ -1363,7 +1368,9 @@ function renderFields(type, spec) {
 function v(id) { return document.getElementById(id)?.value ?? ''; }
 function n(id) { return parseInt(v(id), 10); }
 
-function readFields(type) {
+function readFields(type, container = null, prefix = '') {
+  const v = id => (container ? container.querySelector('#' + prefix + id) : document.getElementById(id))?.value ?? '';
+  const n = id => parseInt(v(id), 10);
   if (type === 'note')
     return { type:'note', channel:n('f_ch'), note:n('f_note'), velocity:n('f_vel') };
   if (type === 'cc')
@@ -1620,9 +1627,9 @@ function macroDesc(macro) {
   return macro.type;
 }
 
-function macroCompatible(macro) {
-  if (!selected) return false;
-  const spec = state[selected];
+function macroCompatible(macro, action = selected) {
+  if (!action) return false;
+  const spec = state[action];
   return !spec || spec.type === macro.type;
 }
 
@@ -1674,9 +1681,8 @@ function renderMacroLibrary() {
   }
 }
 
-function applyMacroToSelected(macro) {
-  if (!selected) { toast('Select a button first', 'warn'); return; }
-  const currentSpec = state[selected];
+function applyMacroToAction(macro, action) {
+  const currentSpec = state[action];
   let base;
   if (!currentSpec || currentSpec.type !== macro.type) {
     base = { ...DEFAULTS[macro.type] };
@@ -1699,7 +1705,13 @@ function applyMacroToSelected(macro) {
     if (macro.modifier_hold_ms != null) base.modifier_hold_ms = macro.modifier_hold_ms;
     else delete base.modifier_hold_ms;
   }
-  commit(selected, base);
+  commit(action, base);
+  return base;
+}
+
+function applyMacroToSelected(macro) {
+  if (!selected) { toast('Select a button first', 'warn'); return; }
+  applyMacroToAction(macro, selected);
   switchTab('editor');
   renderEditor(selected);
   toast(`Applied "${macro.name}" to ${selected}`);
@@ -1986,7 +1998,11 @@ function showConflictModal(conflicts, onForce) {
     conflicts.map(c => `Ch${c.channel+1} CC${c.cc}: ${c.actions.join(', ')}`).join('\n');
   const ov = document.getElementById('conflictOverlay');
   ov.classList.add('open');
-  const cleanup = () => ov.classList.remove('open');
+  if (typeof ControllerView !== 'undefined') ControllerView.markConflicts(conflicts);
+  const cleanup = () => {
+    ov.classList.remove('open');
+    if (typeof ControllerView !== 'undefined') ControllerView.markConflicts([]);
+  };
   document.getElementById('btnConflictCancel').onclick = cleanup;
   document.getElementById('btnConflictForce').onclick = () => { cleanup(); onForce(); };
 }

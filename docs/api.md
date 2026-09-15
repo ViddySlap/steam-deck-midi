@@ -117,7 +117,7 @@ controls operate on this bridge and are disabled while editing another section.
 
 Mappings opens in Controller view by default; the Controller/List choice is
 stored per browser. Labels show mapped/total Action IDs in the selected section.
-Selecting a label, its arrow or the drawn shape opens grouped read-only rows;
+Selecting a label, its arrow or the drawn shape opens grouped editable rows;
 Open in list selects that Action ID in the existing editor. Escape closes the
 card. These navigation actions do not write configuration. Agents use the two
 controller GET routes in the table above and GET `/api/mappings` for the same
@@ -125,6 +125,35 @@ saved information; the browser card also reflects its current unsaved draft.
 The map's `label_anchor` places each callout, `anchor` places the control, and
 `scene_view_box` frames both. The original artwork, CSS and view script are
 served by the existing static-file route. No new routes are introduced here.
+
+Each row's Edit button expands the shared List forms with unique field IDs.
+Type changes use the same defaults; Apply fields and Clear update the page draft.
+Apply macro... lists GET `/api/macros` with the same compatibility and target-field
+merge as the List library. Mappings and Advanced are tabs inside the card.
+Advanced edits one object keyed by this control's Action IDs. Apply parses and
+checks every key/value before committing any: foreign IDs, arrays, non-object
+mappings and unsupported types are refused. Missing IDs and null clear the draft.
+Copy copies the current text, including unapplied edits. Server parser validation
+still runs on Save. Shared fallback/ownership rules below remain unchanged.
+
+| Controller operation | HTTP equivalent (registered route table above) |
+| --- | --- |
+| Inspect rows, switch control, Mappings/Advanced, Copy saved JSON | GET `/api/controller-map/<control_id>` with section; project grouped rows to an object keyed by action_id |
+| Set type and edit fields (all seven types), Apply fields/JSON | PUT `/api/mappings/<action_id>` for one mapping; POST `/api/save` for the full section document |
+| Clear or omit an Action ID | DELETE `/api/mappings/<action_id>`; omit it from the document sent to POST `/api/save` |
+| Apply library macro | GET `/api/macros`, POST `/api/macros/<macro_id>/apply` |
+| Save, conflict check, cancel/force | POST `/api/conflicts`, then existing POST `/api/save` only after confirmation; cancel writes nothing |
+| Select section, discard drafts/reload | GET `/api/mappings?section=name`; POST `/api/reload` requests receiver reload |
+| Factory reset | POST `/api/reset` with section |
+
+Browser Apply operations remain drafts until the existing Save button is used;
+per-action API writes persist immediately. Draft typing, tabs and clipboard are
+local operations, not separate server state. HTTP clients retain their draft
+locally and use the listed read/write endpoints. Save uses the existing conflict
+modal; its open-control conflicting rows are marked until cancel or force.
+Unapplied row/Advanced edits protect against polling reloads, section switches
+and explicit reload without discard confirmation. Other row commits and saves
+retain them. Accepted loads/reset discard the old section's cached editors.
 
 `windows/static/controller/controller_map.json` is the only owned physical
 control-to-Action-ID relation. `schema_version: 1` defines an ordered `controls`

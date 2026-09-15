@@ -45,3 +45,17 @@
   .mapping-views { flex-wrap: wrap; }
   .mapping-views span { flex-basis: 100%; margin-left: 0; }
 }
+
+.controller-tabs { margin-top: 14px; }
+.controller-tabs [aria-selected="true"] { color: var(--accent); border-color: var(--accent); }
+#controllerRows[hidden], #controllerAdvanced[hidden], .controller-inline-editor[hidden] { display: none; }
+.controller-inline-editor { margin-top: 12px; padding: 10px; background: var(--surface2); border-radius: var(--radius-sm); }
+.controller-inline-editor .row { flex-wrap: wrap; }
+.controller-inline-editor .field { min-width: 100px; }
+.controller-inline-editor input, .controller-inline-editor select, .controller-macro, .controller-json { width: 100%; min-width: 0; }
+.controller-inline-editor label, .controller-json-editor > label { display: block; margin-bottom: 5px; font-size: 12px; }
+.controller-inline-editor .action-row, .controller-inline-editor > button, .controller-macro { margin-top: 8px; }
+.controller-json-editor { margin-top: 14px; }
+.controller-json { min-height: 300px; }
+.controller-conflict { border-left: 3px solid var(--danger); padding-left: 8px; }
+.controller-conflict-message { color: var(--danger); font-size: 12px; margin-top: 6px; }

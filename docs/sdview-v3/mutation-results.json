@@ -1,0 +1,171 @@
+[
+  {
+    "name": "pristine",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "exit": 0,
+    "expected": "GREEN",
+    "assertion": "",
+    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/pristine.log"
+  },
+  {
+    "name": "field-apply",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "exit": 1,
+    "expected": "RED",
+    "assertion": "note form commits its own fields",
+    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/field-apply.log"
+  },
+  {
+    "name": "field-apply-restored",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "exit": 0,
+    "expected": "GREEN",
+    "assertion": "",
+    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/field-apply-restored.log"
+  },
+  {
+    "name": "draft-tracking",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "exit": 1,
+    "expected": "RED",
+    "assertion": "typed inline field participates in draft listener",
+    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/draft-tracking.log"
+  },
+  {
+    "name": "draft-tracking-restored",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "exit": 0,
+    "expected": "GREEN",
+    "assertion": "",
+    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/draft-tracking-restored.log"
+  },
+  {
+    "name": "foreign-json",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "exit": 1,
+    "expected": "RED",
+    "assertion": "bad Advanced input commits nothing",
+    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/foreign-json.log"
+  },
+  {
+    "name": "foreign-json-restored",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "exit": 0,
+    "expected": "GREEN",
+    "assertion": "",
+    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/foreign-json-restored.log"
+  },
+  {
+    "name": "conflict-mark",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "exit": 1,
+    "expected": "RED",
+    "assertion": "open control conflicting row marked",
+    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/conflict-mark.log"
+  },
+  {
+    "name": "conflict-mark-restored",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "exit": 0,
+    "expected": "GREEN",
+    "assertion": "",
+    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/conflict-mark-restored.log"
+  },
+  {
+    "name": "macro-apply",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "exit": 1,
+    "expected": "RED",
+    "assertion": "inline macro merge matches List",
+    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/macro-apply.log"
+  },
+  {
+    "name": "macro-apply-restored",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "exit": 0,
+    "expected": "GREEN",
+    "assertion": "",
+    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/macro-apply-restored.log"
+  },
+  {
+    "name": "sibling-draft",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "exit": 1,
+    "expected": "RED",
+    "assertion": "sibling commit preserves typed fields",
+    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/sibling-draft.log"
+  },
+  {
+    "name": "sibling-draft-restored",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/check.cjs",
+      "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/static/index.html"
+    ],
+    "cwd": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g",
+    "exit": 0,
+    "expected": "GREEN",
+    "assertion": "",
+    "log": "/private/tmp/sdview-v3/mutations/proof-ep0v6_8g/sibling-draft-restored.log"
+  }
+]
