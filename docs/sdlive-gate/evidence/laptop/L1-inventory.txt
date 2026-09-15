@@ -1,0 +1,15 @@
+CLONE_HEAD 9fc224a7d1232042ab32575b02c61be510747fa2
+CLONE_BRANCH chain/steamdeck-20260914
+CLONE_PORCELAIN_LINES 0
+EDGE C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe 153.0.4234.32
+EDGE_ABSENT C:\Program Files\Microsoft\Edge\Application\msedge.exe
+NODE C:\Program Files\nodejs\node.exe v24.14.1
+PLAYWRIGHT_CORE_ENV 
+PWCORE C:\Users\Ben\AppData\Roaming\npm\node_modules\playwright-core False
+PWCORE C:\Users\Ben\node_modules\playwright-core False
+MSEDGE_PROCESSES_NOW 0
+PYTHON_PROCESSES 0
+UDP45123 pid=23640
+TCP7723 pid=23640
+CPU 13th Gen Intel(R) Core(TM) i9-13900HX LOGICAL 32
+PY_VERSION Python 3.12.10

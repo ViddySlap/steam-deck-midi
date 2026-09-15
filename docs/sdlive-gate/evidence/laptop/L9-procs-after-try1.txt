@@ -1,0 +1,44 @@
+PROC 57056 parent=44052 node.exe start=09/02/2026 23:38:13 "C:\Program Files\Adobe\Adobe Creative Cloud Experience\libs\node.exe" "C:\Program Files\Adobe\Adobe Creative Cloud Experience\js\main.js"
+== owned-tree-sensitivity.txt
+296636 299660 python.exe parent=299628 start=09/15/2026 02:24:39 gone=True
+296636 299472 msedge.exe parent=299124 start=09/15/2026 02:24:59 gone=True
+296636 290480 msedge.exe parent=299124 start=09/15/2026 02:24:59 gone=True
+296636 300096 msedge.exe parent=299124 start=09/15/2026 02:24:59 gone=True
+296636 299836 node.exe parent=297628 start=09/15/2026 02:24:39 gone=True
+296636 299612 msedge.exe parent=299124 start=09/15/2026 02:24:59 gone=True
+296636 297056 python.exe parent=294180 start=09/15/2026 02:23:13 gone=True
+296636 299384 msedge.exe parent=299124 start=09/15/2026 02:24:59 gone=True
+296636 299124 msedge.exe parent=299836 start=09/15/2026 02:24:59 gone=True
+296636 299480 msedge.exe parent=299124 start=09/15/2026 02:24:59 gone=True
+296636 294180 python.exe parent=297628 start=09/15/2026 02:23:13 gone=True
+296636 299628 python.exe parent=297628 start=09/15/2026 02:24:39 gone=True
+296636 296128 msedge.exe parent=299124 start=09/15/2026 02:24:59 gone=True
+296636 297628 python.exe parent=296636 start=09/15/2026 02:23:11 gone=True
+== owned-tree-clean.txt
+298516 300780 python.exe parent=299112 start=09/15/2026 02:25:53 gone=True
+298516 300016 python.exe parent=298516 start=09/15/2026 02:25:51 gone=True
+298516 299112 python.exe parent=300016 start=09/15/2026 02:25:53 gone=True
+== python-pids.txt
+293064
+285296
+287380
+297924
+291268
+296636
+298516
+TCP 62444->62443 Established pid=62448
+TCP 62443->62444 Established pid=62448
+TCP 62442->62441 Established pid=62448
+TCP 62441->62442 Established pid=62448
+TCP 61881->61880 Established pid=16000
+TCP 61880->61881 Established pid=16000
+TCP 61876->61874 Established pid=12780
+TCP 61874->61876 Established pid=16000
+TCP 49741->49740 Established pid=2104
+TCP 49740->49741 Established pid=2104
+TCP 49738->49737 Established pid=5560
+TCP 49737->49738 Established pid=5560
+TCP 49736->49735 Established pid=3120
+TCP 49735->49736 Established pid=3120
+TCP 49733->49732 Established pid=1268
+TCP 49732->49733 Established pid=1268

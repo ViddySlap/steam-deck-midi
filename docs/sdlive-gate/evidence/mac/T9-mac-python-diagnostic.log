@@ -1,0 +1,5 @@
+{"repeat": 1, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 1, "arm": "OPEN", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 1, "arm": "CLOSED-B", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"result": "/tmp/sdlive-gate/mac-diagnostic.json.gz", "rule_passed": true, "bar3_counts": false, "error": null, "limitation": null, "exit_code": 78}
+HARNESS-SKIP: diagnostic or missing qualified sensitivity control; no bar 3 credit

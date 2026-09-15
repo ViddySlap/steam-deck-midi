@@ -1,0 +1,3 @@
+{"repeat": 1, "arm": "OPEN", "load": "verified", "accepted": true, "passed": false, "timed_midi_messages": 0, "minimum_timed_midi_messages": 1000, "timing_status": "INVALID"}
+{"result": "/tmp/sdlive-gate/mac-dead-client.json.gz", "rule_passed": false, "bar3_counts": false, "error": "ValueError: Invalid arm: OPEN", "limitation": null, "exit_code": 1}
+.venv/bin/python -B scripts/showready/timing_ab.py --candidate HEAD --script   0.77s user 0.25s system 94% cpu 1.081 total

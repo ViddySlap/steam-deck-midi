@@ -1,0 +1,2 @@
+PROC 298760 parent=297000 cmd.exe start=09/15/2026 02:31:32 "c:\windows\system32\cmd.exe" /c "powershell -NoProfile -ExecutionPolicy Bypass -File "C:/Users/Ben/AppData/Local/Temp/sdwin/sdlive-gate/browsers.ps1""
+DEFAULT_HTTP_PROGID ChromeHTML

@@ -1,0 +1,33 @@
+ROOT C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.showready\fixtures exists=False
+ROOT C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures exists=True
+  C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\mac\MANIFEST.sha256 3017 0c1b3014f6fba58f76b54f1e0c8f843788f0fbbb2993d20e0415841bc2200524
+  C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\mac\presets\default.json 7388 5ebcf1e85dc3881d59e1658103ec17a0a3add438571679b3fca4f30b0f9a52a1
+  C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\mac\presets\EDM Show.json 18919 58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84
+  C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\mac\presets\EDM Show.json.v049.bak 7815 3b2ef2e5702e014ef897517618ef79b588d6d29bfba48e10d0270b135d78567b
+  C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\mac\presets\PTZ.json 16725 11b37cd675fab1a32df5070d11d4219399b6a46a0d6ff6728d10c6eac89752c6
+  C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\mac\presets\PTZ.json.v049.bak 6906 3d5b996a843a541a5d2606fd2b2c4078e0287c9d31f009598f11ae4344abbf8d
+  C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\windows-installed\macro_library.json 818 434f71efe7304937210500c6b44f46611fa54ab7b2849ad1ae737e19efcc9d2a
+  C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\windows-installed\MANIFEST.sha256 8313 7c6dad5b30ab05f1d005d1d722964ec847e6db19726bf0eb500d8bbcf10e331d
+  C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\windows-installed\windows_midi_map.json 7936 f55c050913548c4bb48d013a9de4cd553b5c15e09657f36e4846bc5e2219a303
+  C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\windows-installed\windows_receiver_settings.local.json 219 c9dac6cbeb8dfd2f67fa5d5a2df56d3b33a995b64f05e84b099716a448b85000
+  C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\windows-installed\presets\.active 13 cc768739b3a6e51fbebb2608a19c38964c37cf6f6f4adde02667afae9a812f4d
+  C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\windows-installed\presets\.active.bak-20260529-pre-v047-sync 15 1c30b50423eae7d4f859d9d6bd748a0c024affae6cd63a1028d00e431d26492f
+  C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\windows-installed\presets\default.json 7722 e89c76db1d0bcf390631545c43d54b02662613ea27db98176a40177c27f14eeb
+  C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\windows-installed\presets\default.json.bak-20260529-pre-v047-sync 8035 6239567bde4f161578f1d8b594531fd007efe6cfd8f21e576b0616b938418585
+  C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\windows-installed\presets\EDM Show.json 8219 90b2d19e07578d53775036eeeb05ad30f2feafc6c51fee1c8a76461447a8f4be
+  C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\windows-installed\presets\PTZ.json 7263 450f2edf992ba2435acf47f69ca80710d3e24eae00e205d869da062911308398
+  C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\windows-installed\presets\test 1.json 8581 b3e26772a2b8bf1b344ba25328e156459343b929e5d93db8d574ae9baee02447
+  C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\windows-installed\presets\v1 Default.json 8800 d1fd3f3acd70ca2cb873ae86e29779574af3b6a8be80c5bf44175a4549a50f2d
+WORKDIR fixtures
+WORKDIR sdlive-e0
+WORKDIR sdlive-gate
+WORKDIR ug
+WORKDIR ug2
+WORKDIR ug3
+WORKDIR vg
+WORKDIR w1
+WORKDIR w2
+WORKDIR w3
+WORKDIR w4
+WORKDIR wg
+WORKDIR wj

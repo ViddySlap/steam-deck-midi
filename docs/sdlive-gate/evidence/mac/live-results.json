@@ -1,0 +1,705 @@
+{
+  "results": [
+    {
+      "name": "pre: bridge has zero live clients before any page",
+      "pass": true,
+      "detail": {
+        "clients": 0
+      }
+    },
+    {
+      "name": "pre: Controller ready (23 labels, live)",
+      "pass": true,
+      "detail": {
+        "ok": true,
+        "ms": 44
+      }
+    },
+    {
+      "name": "pre: one live client while Controller visible",
+      "pass": true,
+      "detail": {
+        "ok": true,
+        "ms": 1,
+        "seen": [
+          1
+        ]
+      }
+    },
+    {
+      "name": "1d: Follow default OFF on a fresh profile",
+      "pass": true,
+      "detail": {
+        "aria": "false",
+        "text": "Follow: off"
+      }
+    },
+    {
+      "name": "1a: BTN_A down lights A shape and label",
+      "pass": true,
+      "detail": {
+        "wait": {
+          "ok": true,
+          "ms": 28
+        },
+        "idle": {
+          "shapeDown": false,
+          "labelDown": false,
+          "fill": "rgb(34, 40, 64)",
+          "stroke": "rgb(154, 164, 200)",
+          "labelBg": "rgb(28, 33, 48)",
+          "labelBorder": "rgb(61, 77, 128)",
+          "tag": "",
+          "tagHidden": true
+        },
+        "down": {
+          "shapeDown": true,
+          "labelDown": true,
+          "fill": "rgb(74, 158, 255)",
+          "stroke": "rgb(221, 226, 240)",
+          "labelBg": "rgb(42, 90, 154)",
+          "labelBorder": "rgb(74, 158, 255)",
+          "tag": "tap",
+          "tagHidden": false
+        }
+      }
+    },
+    {
+      "name": "1a: lit computed style differs from idle",
+      "pass": true,
+      "detail": {
+        "idle": [
+          "rgb(34, 40, 64)",
+          "rgb(154, 164, 200)",
+          "rgb(28, 33, 48)",
+          "rgb(61, 77, 128)"
+        ],
+        "down": [
+          "rgb(74, 158, 255)",
+          "rgb(221, 226, 240)",
+          "rgb(42, 90, 154)",
+          "rgb(74, 158, 255)"
+        ]
+      }
+    },
+    {
+      "name": "1a: bridge snapshot shows BTN_A pressed",
+      "pass": true,
+      "detail": {
+        "pressed": [
+          "BTN_A"
+        ]
+      }
+    },
+    {
+      "name": "1a: follow OFF leaves card closed on press",
+      "pass": true,
+      "detail": {}
+    },
+    {
+      "name": "1a: BTN_A up clears shape and label",
+      "pass": true,
+      "detail": {
+        "wait": {
+          "ok": true,
+          "ms": 38
+        },
+        "up": {
+          "shapeDown": false,
+          "labelDown": false,
+          "fill": "rgb(34, 40, 64)",
+          "stroke": "rgb(154, 164, 200)",
+          "labelBg": "rgb(28, 33, 48)",
+          "labelBorder": "rgb(61, 77, 128)",
+          "tag": "",
+          "tagHidden": true
+        }
+      }
+    },
+    {
+      "name": "1a: L2_SOFT_LAYER_2 lights L2 with its group tag L2",
+      "pass": true,
+      "detail": {
+        "wait": {
+          "ok": true,
+          "ms": 33
+        },
+        "l2": {
+          "shapeDown": true,
+          "labelDown": true,
+          "fill": "rgb(74, 158, 255)",
+          "stroke": "rgb(221, 226, 240)",
+          "labelBg": "rgb(42, 90, 154)",
+          "labelBorder": "rgb(74, 158, 255)",
+          "tag": "L2",
+          "tagHidden": false
+        }
+      }
+    },
+    {
+      "name": "1a: L2 clears on up",
+      "pass": true,
+      "detail": {
+        "ok": true,
+        "ms": 48
+      }
+    },
+    {
+      "name": "1b: left stick dot at right edge centre within 5 percent",
+      "pass": true,
+      "detail": {
+        "wait": {
+          "ok": true,
+          "ms": 35
+        },
+        "cx": "310",
+        "cy": "175",
+        "dx": 30,
+        "dy": 0,
+        "travel": 30,
+        "shapeBBox": {
+          "x": 237,
+          "y": 132,
+          "w": 86,
+          "h": 86
+        },
+        "shapeRightEdgeCentre": {
+          "x": 323,
+          "y": 175
+        },
+        "screen": {
+          "dot": {
+            "cx": 461.1351013183594,
+            "cy": 421.67030334472656,
+            "w": 12.4969482421875,
+            "h": 12.496917724609375
+          },
+          "shape": {
+            "x": 395.9725646972656,
+            "y": 383.286865234375,
+            "w": 76.76681518554688,
+            "h": 76.766845703125
+          },
+          "normX": 0.6976746127501744,
+          "normY": 3.9753591339441607e-7
+        }
+      }
+    },
+    {
+      "name": "1b: R2 bar about half at R_TRIGGER_PRESSURE 32768 of 65535",
+      "pass": true,
+      "detail": {
+        "wait": {
+          "ok": true,
+          "ms": 49
+        },
+        "width": "32.000488288700694",
+        "fraction": 0.5000076295109483
+      }
+    },
+    {
+      "name": "1b: trackpad dot visible while its events flow",
+      "pass": true,
+      "detail": {
+        "samples": [
+          "0.729388",
+          "1",
+          "1",
+          "1",
+          "1",
+          "1",
+          "1",
+          "1",
+          "1"
+        ],
+        "visibleWhileFlowing": 8,
+        "packetsTicks": 56
+      }
+    },
+    {
+      "name": "1b: trackpad dot fades after events stop",
+      "pass": true,
+      "detail": {
+        "msAfterStop": 381,
+        "wait": {
+          "ok": true,
+          "ms": 380
+        }
+      }
+    },
+    {
+      "name": "2: AFTER inputs rendered (A lit, stick up-right, R2 70 percent)",
+      "pass": true,
+      "detail": {
+        "wait": {
+          "ok": true,
+          "ms": 24
+        },
+        "stick": {
+          "cx": "301.21198199026",
+          "cy": "153.7866885225621",
+          "width": null,
+          "opacity": "1",
+          "shapeBBox": {
+            "x": 237,
+            "y": 132,
+            "w": 86,
+            "h": 86
+          },
+          "shapeScreen": {
+            "x": 395.9725646972656,
+            "y": 383.286865234375,
+            "w": 76.76681518554688,
+            "h": 76.766845703125
+          },
+          "dotScreen": {
+            "cx": 453.2905731201172,
+            "cy": 402.7344970703125,
+            "w": 12.496917724609375,
+            "h": 12.4969482421875
+          }
+        },
+        "r2": {
+          "cx": null,
+          "cy": null,
+          "width": "44.80048828870069",
+          "opacity": "1",
+          "shapeBBox": {
+            "x": 945,
+            "y": 32,
+            "w": 90,
+            "h": 36
+          },
+          "shapeScreen": {
+            "x": 1027.9599609375,
+            "y": 294.02313232421875,
+            "w": 80.33740234375,
+            "h": 32.13494873046875
+          },
+          "dotScreen": {
+            "cx": 1059.5595092773438,
+            "cy": 317.231689453125,
+            "w": 39.9906005859375,
+            "h": 7.14111328125
+          }
+        }
+      }
+    },
+    {
+      "name": "1c: D-pad Up card open with tap and long-press rows",
+      "pass": true,
+      "detail": {
+        "wait": {
+          "ok": true,
+          "ms": 0
+        },
+        "rows": [
+          "DPAD_UP",
+          "DPAD_UP_LONG_PRESS"
+        ]
+      }
+    },
+    {
+      "name": "1c: bridge sent MIDI attributed to DPAD_UP_LONG_PRESS",
+      "pass": true,
+      "detail": {
+        "midiTotalBefore": 19,
+        "lastMidi": [
+          {
+            "action": "DPAD_UP_LONG_PRESS",
+            "bytes": [
+              176,
+              22,
+              61
+            ],
+            "kind": "midi",
+            "seq": 177,
+            "timestamp": 314508.510169958
+          },
+          {
+            "action": "DPAD_UP_LONG_PRESS",
+            "bytes": [
+              176,
+              22,
+              63
+            ],
+            "kind": "midi",
+            "seq": 178,
+            "timestamp": 314508.540841416
+          },
+          {
+            "action": "DPAD_UP_LONG_PRESS",
+            "bytes": [
+              176,
+              22,
+              65
+            ],
+            "kind": "midi",
+            "seq": 179,
+            "timestamp": 314508.577217666
+          },
+          {
+            "action": "DPAD_UP_LONG_PRESS",
+            "bytes": [
+              176,
+              22,
+              67
+            ],
+            "kind": "midi",
+            "seq": 180,
+            "timestamp": 314508.612321625
+          },
+          {
+            "action": "DPAD_UP_LONG_PRESS",
+            "bytes": [
+              176,
+              22,
+              69
+            ],
+            "kind": "midi",
+            "seq": 181,
+            "timestamp": 314508.641492041
+          }
+        ]
+      }
+    },
+    {
+      "name": "1c: long-press row flashes within 100 ms of the press",
+      "pass": true,
+      "detail": {
+        "sentAt": 1789461380379,
+        "firstFlashAt": 1789461380390,
+        "deltaMs": 11,
+        "domAt50ms": {
+          "DPAD_UP": false,
+          "DPAD_UP_LONG_PRESS": true
+        }
+      }
+    },
+    {
+      "name": "1c: tap row does not flash",
+      "pass": true,
+      "detail": {
+        "tapFlashes": 0,
+        "domAt50ms": {
+          "DPAD_UP": false,
+          "DPAD_UP_LONG_PRESS": true
+        },
+        "otherRowsFlashed": [
+          "DPAD_UP_LONG_PRESS"
+        ]
+      }
+    },
+    {
+      "name": "1e: List view -> zero live clients within 2 s (bridge snapshot)",
+      "pass": true,
+      "detail": {
+        "ok": true,
+        "ms": 1,
+        "seen": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "1e: back to Controller -> one live client",
+      "pass": true,
+      "detail": {
+        "reopened": {
+          "ok": true,
+          "ms": 23,
+          "seen": [
+            0,
+            1
+          ]
+        },
+        "statusWhileList": "offline"
+      }
+    },
+    {
+      "name": "1d: Follow toggles ON",
+      "pass": true,
+      "detail": {
+        "wait": {
+          "ok": true,
+          "ms": 7
+        },
+        "text": "Follow: on"
+      }
+    },
+    {
+      "name": "1d: Follow ON + BTN_Y press opens Y card",
+      "pass": true,
+      "detail": {
+        "ok": true,
+        "ms": 16
+      }
+    },
+    {
+      "name": "1d: unsaved inline edit + BTN_X press -> card does not switch, paused note shows",
+      "pass": true,
+      "detail": {
+        "noteShown": {
+          "ok": true,
+          "ms": 3
+        },
+        "xLit": {
+          "ok": true,
+          "ms": 25
+        },
+        "afterX": {
+          "title": "Y",
+          "hidden": false,
+          "note": "follow paused: unsaved edit",
+          "typed": "99"
+        }
+      }
+    },
+    {
+      "name": "1a-1e: no page JavaScript errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "post: closing the page returns clients to 0",
+      "pass": true,
+      "detail": {
+        "ok": true,
+        "ms": 1,
+        "seen": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "1f: stress page ready",
+      "pass": true,
+      "detail": {
+        "ok": true,
+        "ms": 30
+      }
+    },
+    {
+      "name": "1f: streamed 13 axes at 60 Hz for the duration",
+      "pass": true,
+      "detail": {
+        "elapsedS": 60.239554207999994,
+        "ticks": 3600,
+        "axisPackets": 47397,
+        "hz": 59.76139842552004,
+        "streamErr": null
+      }
+    },
+    {
+      "name": "1f: every click opened its card within 500 ms",
+      "pass": true,
+      "detail": [
+        {
+          "id": "btn_a",
+          "clickToOpenMs": 79,
+          "ok": true,
+          "atS": 5
+        },
+        {
+          "id": "btn_b",
+          "clickToOpenMs": 8,
+          "ok": true,
+          "atS": 10
+        },
+        {
+          "id": "dpad_up",
+          "clickToOpenMs": 25,
+          "ok": true,
+          "atS": 15
+        },
+        {
+          "id": "l2",
+          "clickToOpenMs": 12,
+          "ok": true,
+          "atS": 20
+        },
+        {
+          "id": "left_stick",
+          "clickToOpenMs": 16,
+          "ok": true,
+          "atS": 25
+        },
+        {
+          "id": "r1",
+          "clickToOpenMs": 7,
+          "ok": true,
+          "atS": 30
+        },
+        {
+          "id": "start",
+          "clickToOpenMs": 15,
+          "ok": true,
+          "atS": 35
+        },
+        {
+          "id": "gyro",
+          "clickToOpenMs": 7,
+          "ok": true,
+          "atS": 40
+        },
+        {
+          "id": "btn_a",
+          "clickToOpenMs": 16,
+          "ok": true,
+          "atS": 45
+        },
+        {
+          "id": "btn_b",
+          "clickToOpenMs": 6,
+          "ok": true,
+          "atS": 50
+        },
+        {
+          "id": "dpad_up",
+          "clickToOpenMs": 18,
+          "ok": true,
+          "atS": 55
+        },
+        {
+          "id": "l2",
+          "clickToOpenMs": 14,
+          "ok": true,
+          "atS": 60
+        }
+      ]
+    },
+    {
+      "name": "1f: page still live after stress, no JS errors",
+      "pass": true,
+      "detail": {
+        "pageStream": {
+          "data_events": 31534,
+          "dropped_events": 0,
+          "dropped_count": 0,
+          "live": "live"
+        },
+        "errors": []
+      }
+    },
+    {
+      "name": "1f: browser heap growth recorded (post-GC)",
+      "pass": true,
+      "detail": {
+        "heapBefore": {
+          "JSEventListeners": 250,
+          "Nodes": 2702,
+          "JSHeapUsedSize": 1505100,
+          "JSHeapTotalSize": 2408448
+        },
+        "heapAfter": {
+          "JSEventListeners": 511,
+          "Nodes": 6996,
+          "JSHeapUsedSize": 2545368,
+          "JSHeapTotalSize": 3244032
+        },
+        "growthBytes": 1040268,
+        "heapDuring": [
+          {
+            "JSEventListeners": 284,
+            "Nodes": 3068,
+            "JSHeapUsedSize": 2434252,
+            "JSHeapTotalSize": 5079040
+          },
+          {
+            "JSEventListeners": 305,
+            "Nodes": 3459,
+            "JSHeapUsedSize": 2608376,
+            "JSHeapTotalSize": 3506176
+          },
+          {
+            "JSEventListeners": 326,
+            "Nodes": 3890,
+            "JSHeapUsedSize": 2619244,
+            "JSHeapTotalSize": 3506176
+          },
+          {
+            "JSEventListeners": 371,
+            "Nodes": 4874,
+            "JSHeapUsedSize": 2734452,
+            "JSHeapTotalSize": 3768320
+          },
+          {
+            "JSEventListeners": 432,
+            "Nodes": 5883,
+            "JSHeapUsedSize": 2988200,
+            "JSHeapTotalSize": 4030464
+          },
+          {
+            "JSEventListeners": 453,
+            "Nodes": 6169,
+            "JSHeapUsedSize": 2691860,
+            "JSHeapTotalSize": 3768320
+          },
+          {
+            "JSEventListeners": 466,
+            "Nodes": 6387,
+            "JSHeapUsedSize": 2752596,
+            "JSHeapTotalSize": 3768320
+          },
+          {
+            "JSEventListeners": 511,
+            "Nodes": 7057,
+            "JSHeapUsedSize": 2783048,
+            "JSHeapTotalSize": 3506176
+          },
+          {
+            "JSEventListeners": 517,
+            "Nodes": 7204,
+            "JSHeapUsedSize": 2914064,
+            "JSHeapTotalSize": 3768320
+          },
+          {
+            "JSEventListeners": 517,
+            "Nodes": 7202,
+            "JSHeapUsedSize": 2908280,
+            "JSHeapTotalSize": 3768320
+          },
+          {
+            "JSEventListeners": 517,
+            "Nodes": 7206,
+            "JSHeapUsedSize": 2925088,
+            "JSHeapTotalSize": 3768320
+          },
+          {
+            "JSEventListeners": 526,
+            "Nodes": 7374,
+            "JSHeapUsedSize": 2879340,
+            "JSHeapTotalSize": 3768320
+          }
+        ]
+      }
+    },
+    {
+      "name": "1f: bridge dropped count recorded",
+      "pass": true,
+      "detail": {
+        "bridgeDroppedBefore": 0,
+        "bridgeDroppedAfter": 58675,
+        "bridgeDroppedDuringStress": 58675,
+        "pageDataEvents": 31534,
+        "pageDroppedEvents": 0,
+        "pageDroppedCount": 0,
+        "clients": 1
+      }
+    },
+    {
+      "name": "post: stress page closed -> clients 0",
+      "pass": true,
+      "detail": {
+        "ok": true,
+        "ms": 45,
+        "seen": [
+          1,
+          1,
+          0
+        ]
+      }
+    }
+  ],
+  "failed": 0
+}

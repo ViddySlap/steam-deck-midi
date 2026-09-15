@@ -1,0 +1,109 @@
+===== C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-clean\timing-lckbbkzd\r1-CLOSED-try1
+L4: INFO listening on udp://127.0.0.1:60699
+HEAD: INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+HEAD: INFO selected MIDI output port: name=SDWIN_RECORDER_NO_REAL_PORT index=n/a
+HEAD: INFO mapping UI available at http://127.0.0.1:61083
+HEAD: INFO listening on udp://127.0.0.1:60699
+HEAD: Exception in thread tray:
+HEAD: Traceback (most recent call last):
+HEAD:   File "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\threading.py", line 1075, in _bootstrap_inner
+HEAD:     self.run()
+HEAD:   File "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\threading.py", line 1012, in run
+HEAD:     self._target(*self._args, **self._kwargs)
+HEAD:   File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Lib\site-packages\pystray\_base.py", line 212, in run
+HEAD:     self._run()
+HEAD:   File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Lib\site-packages\pystray\_base.py", line 379, in _run
+HEAD:     raise NotImplementedError()
+HEAD: NotImplementedError
+HEAD: INFO action=BTN_A state=down seq=1
+HEAD: INFO released note mapping for BTN_A
+HEAD: INFO action=BTN_A state=up seq=11
+HEAD: INFO action=BTN_B state=down seq=36
+HEAD: INFO released note mapping for BTN_B
+HEAD: INFO action=BTN_B state=up seq=46
+HEAD: INFO action=BTN_X state=down seq=71
+HEAD: INFO released note mapping for BTN_X
+HEAD: INFO action=BTN_X state=up seq=81
+HEAD: INFO action=BTN_Y state=down seq=106
+TRACEBACK_COUNT 15246
+FILE bridge.log 5817312 02:27:09.704
+FILE capture.jsonl 4314873 02:27:09.704
+FILE capture.jsonl.done.json 129 02:27:13.626
+FILE capture.jsonl.ready.json 464 02:25:54.044
+FILE client.log 0 02:25:53.012
+FILE options.json 4738 02:25:53.011
+FILE start 0 02:25:54.060
+FILE timing.json 2777393 02:27:12.876
+===== C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-sensitivity\timing-th5rpdjc\r1-CLOSED-try1
+L7: INFO listening on udp://127.0.0.1:59570
+HEAD: INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+HEAD: INFO selected MIDI output port: name=SDWIN_RECORDER_NO_REAL_PORT index=n/a
+HEAD: INFO mapping UI available at http://127.0.0.1:60169
+HEAD: Exception in thread tray:
+HEAD: Traceback (most recent call last):
+HEAD:   File "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\threading.py", line 1075, in _bootstrap_inner
+HEAD: INFO listening on udp://127.0.0.1:59570
+HEAD:     self.run()
+HEAD:   File "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\threading.py", line 1012, in run
+HEAD:     self._target(*self._args, **self._kwargs)
+HEAD:   File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Lib\site-packages\pystray\_base.py", line 212, in run
+HEAD:     self._run()
+HEAD:   File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Lib\site-packages\pystray\_base.py", line 379, in _run
+HEAD:     raise NotImplementedError()
+HEAD: NotImplementedError
+HEAD: INFO action=BTN_A state=down seq=1
+HEAD: INFO released note mapping for BTN_A
+HEAD: INFO action=BTN_A state=up seq=11
+HEAD: INFO action=BTN_B state=down seq=36
+HEAD: INFO released note mapping for BTN_B
+HEAD: INFO action=BTN_B state=up seq=46
+HEAD: INFO action=BTN_X state=down seq=71
+HEAD: INFO released note mapping for BTN_X
+HEAD: INFO action=BTN_X state=up seq=81
+HEAD: INFO action=BTN_Y state=down seq=106
+TRACEBACK_COUNT 15246
+FILE bridge.log 5908788 02:24:30.719
+FILE capture.jsonl 4315156 02:24:30.719
+FILE capture.jsonl.done.json 129 02:24:34.500
+FILE capture.jsonl.ready.json 476 02:23:14.991
+FILE client.log 0 02:23:13.751
+FILE options.json 4750 02:23:13.750
+FILE start 0 02:23:15.016
+FILE timing.json 2777677 02:24:33.593
+===== C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-sensitivity\timing-th5rpdjc\r1-OPEN-try1
+L9: INFO listening on udp://127.0.0.1:62406
+HEAD: INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+HEAD: INFO selected MIDI output port: name=SDWIN_RECORDER_NO_REAL_PORT index=n/a
+HEAD: INFO mapping UI available at http://127.0.0.1:55179
+HEAD: Exception in thread tray:
+HEAD: Traceback (most recent call last):
+HEAD:   File "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\threading.py", line 1075, in _bootstrap_inner
+HEAD:     self.run()
+HEAD:   File "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\threading.py", line 1012, in run
+HEAD: INFO listening on udp://127.0.0.1:62406
+HEAD:     self._target(*self._args, **self._kwargs)
+HEAD:   File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Lib\site-packages\pystray\_base.py", line 212, in run
+HEAD:     self._run()
+HEAD:   File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Lib\site-packages\pystray\_base.py", line 379, in _run
+HEAD:     raise NotImplementedError()
+HEAD: NotImplementedError
+HEAD: The syntax of the command is incorrect.
+HEAD: INFO action=BTN_A state=down seq=1
+HEAD: INFO released note mapping for BTN_A
+HEAD: INFO action=BTN_A state=up seq=11
+HEAD: INFO action=BTN_B state=down seq=36
+HEAD: INFO released note mapping for BTN_B
+HEAD: INFO action=BTN_B state=up seq=46
+HEAD: INFO action=BTN_X state=down seq=71
+HEAD: INFO released note mapping for BTN_X
+HEAD: INFO action=BTN_X state=up seq=81
+TRACEBACK_COUNT 1649
+FILE bridge.log 648007 02:25:35.225
+FILE capture.jsonl 622149 02:25:35.191
+FILE capture.jsonl.ready.json 476 02:24:39.634
+FILE client-gone.ps1 137 02:25:37.339
+FILE client-stop 0 02:25:37.331
+FILE client.json 25078 02:25:35.578
+FILE client.log 0 02:24:39.168
+FILE options.json 4746 02:24:39.165
+FILE start 0 02:24:59.790

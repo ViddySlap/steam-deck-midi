@@ -1,0 +1,15 @@
+PASS 1440x900.bridge-snapshot-one-live-client {"clients":1}
+PASS 1440x900.closed.count-23-labels 23
+PASS 1440x900.closed.count-23-shapes 23
+PASS 1440x900.closed.count-23-leaders 23
+PASS 1440x900.closed.count-23-heads 23
+PASS 1440x900.closed.stream-live-with-overlays-drawn {"live":"live","dots":{"left_stick":["301.21198199026","153.7866885225621"],"right_stick":["930","205"],"left_pad":["310","320"],"right_pad":["890","320"]},"bars":{"l2":"64","r2":"44.80048828870069"}}
+FAIL 1440x900.closed.label-overlaps-zero [["btn_a","btn_b"]]
+PASS 1440x900.closed.leader-crossings-zero []
+PASS 1440x900.closed.endpoints-on-own-shape-edge []
+PASS 1440x900.closed.no-glyph-covered-by-leader-or-head []
+PASS 1440x900.closed.live-overlays-cover-no-glyph-label-or-card []
+FAIL 1440x900.closed.labels-topmost-hit-test [{"id":"btn_a","hit":"controller-label"}]
+PASS 1440x900.closed.labels-and-shapes-inside-pane []
+PASS 1440x900.closed.no-page-or-pane-scroll [{"id":"HTML","sw":1440,"cw":1440,"sh":900,"ch":900,"st":0,"sl":0},{"id":"BODY","sw":1440,"cw":1440,"sh":900,"ch":900,"st":0,"sl":0},{"id":"tab-editor","sw":1440,"cw":1440,"sh":727,"ch":727,"st":0,"sl":0},{"id":"DIV","sw":1400,"cw":1400,"sh":642,"ch":642,"st":0,"sl":0}]
+SUMMARY 13/15 PASS

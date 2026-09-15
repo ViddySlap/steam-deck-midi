@@ -1,0 +1,679 @@
+{
+ "result": "/tmp/sdlive-gate/laptop/try2/edge-clean.json.gz",
+ "control": null,
+ "repeats": 5,
+ "client": [
+  "C:\\Program Files\\nodejs\\node.exe",
+  "C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\scripts\\showready\\timing_browser.cjs",
+  "{url}",
+  "{stop}",
+  "{receipt}",
+  "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+ ],
+ "host": "Windows-11-10.0.26200-SP0",
+ "error": null,
+ "passed": false,
+ "measurement_qualified": true,
+ "sensitivity_timing_red": null,
+ "sensitivity_valid": false,
+ "bar3_counts": false,
+ "wall_seconds": 1652.6232930002734,
+ "rows": [
+  {
+   "repeat": 1,
+   "arm": "CLOSED",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 7.7671,
+    "p95": 128.71975999999998,
+    "p99": 1656.4336019999998,
+    "max": 2050.0148,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 1,
+   "arm": "OPEN",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": 0,
+   "client_counts_minmax": [
+    1,
+    1
+   ],
+   "data_events": 14791,
+   "error": null,
+   "stats": {
+    "p50": 6.43305,
+    "p95": 144.52808499999944,
+    "p99": 1640.0471629999988,
+    "max": 2018.4886,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 1,
+   "arm": "CLOSED-B",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 6.38445,
+    "p95": 169.91119499999974,
+    "p99": 1640.8980079999997,
+    "max": 2019.9762,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 2,
+   "arm": "CLOSED",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 6.7970500000000005,
+    "p95": 236.1441199999992,
+    "p99": 1637.568566,
+    "max": 2021.88,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 2,
+   "arm": "OPEN",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": 0,
+   "client_counts_minmax": [
+    1,
+    1
+   ],
+   "data_events": 14791,
+   "error": null,
+   "stats": {
+    "p50": 5.49575,
+    "p95": 177.8454199999997,
+    "p99": 1637.1591889999997,
+    "max": 2029.9708,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 2,
+   "arm": "CLOSED-B",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 5.59845,
+    "p95": 175.8962449999999,
+    "p99": 1647.897863999992,
+    "max": 2034.1825,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 3,
+   "arm": "CLOSED",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 6.7846,
+    "p95": 302.82668499999977,
+    "p99": 1650.157808,
+    "max": 2029.1063,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 3,
+   "arm": "OPEN",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": 0,
+   "client_counts_minmax": [
+    1,
+    1
+   ],
+   "data_events": 14769,
+   "error": null,
+   "stats": {
+    "p50": 5.5432,
+    "p95": 144.39410999999973,
+    "p99": 1642.0833749999997,
+    "max": 2025.2514,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 3,
+   "arm": "CLOSED-B",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 5.743449999999999,
+    "p95": 204.03129499999955,
+    "p99": 1669.511292,
+    "max": 2086.906,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 4,
+   "arm": "CLOSED",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 7.35985,
+    "p95": 171.5118999999999,
+    "p99": 1694.2086439999978,
+    "max": 2120.6297,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 4,
+   "arm": "OPEN",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": 0,
+   "client_counts_minmax": [
+    1,
+    1
+   ],
+   "data_events": 14877,
+   "error": null,
+   "stats": {
+    "p50": 6.0362,
+    "p95": 265.9498799999999,
+    "p99": 1643.1294499999997,
+    "max": 2026.224,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 4,
+   "arm": "CLOSED-B",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 7.000500000000001,
+    "p95": 221.24209499999998,
+    "p99": 1641.4700939999996,
+    "max": 2051.5027,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 5,
+   "arm": "CLOSED",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 5.8451,
+    "p95": 192.58268499999997,
+    "p99": 1638.5422029999997,
+    "max": 2081.9195,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 5,
+   "arm": "OPEN",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": 0,
+   "client_counts_minmax": [
+    1,
+    1
+   ],
+   "data_events": 14882,
+   "error": null,
+   "stats": {
+    "p50": 5.2004,
+    "p95": 160.89204999999953,
+    "p99": 1640.2714129999958,
+    "max": 2015.5495,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 5,
+   "arm": "CLOSED-B",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 7.18365,
+    "p95": 244.3773049999997,
+    "p99": 1643.4740969999966,
+    "max": 2020.1873,
+    "n": 9638
+   }
+  }
+ ],
+ "pooled": {
+  "CLOSED": {
+   "p50": 6.9704999999999995,
+   "p95": 232.0971850000004,
+   "p99": 1658.3488419999999,
+   "max": 2120.6297,
+   "n": 48190
+  },
+  "OPEN": {
+   "p50": 5.6967,
+   "p95": 201.9234650000004,
+   "p99": 1641.658144,
+   "max": 2029.9708,
+   "n": 48190
+  },
+  "CLOSED-B": {
+   "p50": 6.4749,
+   "p95": 206.99460000000082,
+   "p99": 1648.2806950000008,
+   "max": 2086.906,
+   "n": 48190
+  }
+ },
+ "worst_case_pooled": {
+  "CLOSED": {
+   "p50": 6.7714,
+   "p95": 94.10993000000019,
+   "p99": 177.41015899999996,
+   "max": 414.5566,
+   "n": 45080
+  },
+  "OPEN": {
+   "p50": 5.47715,
+   "p95": 72.21730000000001,
+   "p99": 146.333252,
+   "max": 310.3654,
+   "n": 45080
+  },
+  "CLOSED-B": {
+   "p50": 6.2086500000000004,
+   "p95": 89.696405,
+   "p99": 160.715218,
+   "max": 335.3207,
+   "n": 45080
+  }
+ },
+ "noise_floor": {
+  "p50": 0.4955999999999996,
+  "p95": 25.10258499999958,
+  "p99": 10.068146999999044
+ },
+ "open_delta": {
+  "p50": 1.2737999999999996,
+  "p95": 30.173720000000003,
+  "p99": 16.690697999999884
+ },
+ "within": {
+  "p50": true,
+  "p95": false,
+  "p99": false
+ },
+ "recomputed_matches_instrument": true,
+ "instrument_rule": {
+  "floor_can_resolve_2ms": true,
+  "noise_floor_ms": {
+   "p50": 0.4955999999999996,
+   "p95": 25.10258499999958,
+   "p99": 10.068146999999044
+  },
+  "open_delta_ms": {
+   "p50": 1.2737999999999996,
+   "p95": 30.173720000000003,
+   "p99": 16.690697999999884
+  },
+  "passed": false,
+  "valid_arms": true,
+  "within": {
+   "p50": true,
+   "p95": false,
+   "p99": false
+  }
+ },
+ "per_repeat": [
+  {
+   "repeat": 1,
+   "within": {
+    "p50": true,
+    "p95": true,
+    "p99": true
+   },
+   "passed": false
+  },
+  {
+   "repeat": 2,
+   "within": {
+    "p50": true,
+    "p95": true,
+    "p99": true
+   },
+   "passed": false
+  },
+  {
+   "repeat": 3,
+   "within": {
+    "p50": true,
+    "p95": false,
+    "p99": true
+   },
+   "passed": false
+  },
+  {
+   "repeat": 4,
+   "within": {
+    "p50": true,
+    "p95": false,
+    "p99": true
+   },
+   "passed": false
+  },
+  {
+   "repeat": 5,
+   "within": {
+    "p50": true,
+    "p95": true,
+    "p99": true
+   },
+   "passed": false
+  }
+ ],
+ "top_outliers": [
+  {
+   "latency_ms": 2120.6297,
+   "repeat": 4,
+   "arm": "CLOSED",
+   "cause_step": 24,
+   "action": "DPAD_UP_LONG_PRESS",
+   "bytes": [
+    176,
+    22,
+    0
+   ]
+  },
+  {
+   "latency_ms": 2118.1527,
+   "repeat": 4,
+   "arm": "CLOSED",
+   "cause_step": 26,
+   "action": "DPAD_DOWN_LONG_PRESS",
+   "bytes": [
+    176,
+    20,
+    127
+   ]
+  },
+  {
+   "latency_ms": 2114.4182,
+   "repeat": 4,
+   "arm": "CLOSED",
+   "cause_step": 24,
+   "action": "DPAD_UP_LONG_PRESS",
+   "bytes": [
+    176,
+    22,
+    1
+   ]
+  },
+  {
+   "latency_ms": 2098.2859,
+   "repeat": 4,
+   "arm": "CLOSED",
+   "cause_step": 26,
+   "action": "DPAD_DOWN_LONG_PRESS",
+   "bytes": [
+    176,
+    20,
+    126
+   ]
+  },
+  {
+   "latency_ms": 2088.8037,
+   "repeat": 4,
+   "arm": "CLOSED",
+   "cause_step": 24,
+   "action": "DPAD_UP_LONG_PRESS",
+   "bytes": [
+    176,
+    22,
+    2
+   ]
+  }
+ ]
+}

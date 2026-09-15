@@ -1,0 +1,4 @@
+START 04:03:08
+ssh_dispatch_run_fatal: Connection to fe80::fa1d:ffeb:3115:a0d6%en0 port 22: Operation timed out
+RAIL_EXIT 255
+END 04:03:29

@@ -1,0 +1,6 @@
+FOUND C:\Users\Ben\Documents\project-workspaces\life-os-tbex-chain\web-ui-server\node_modules\playwright-core 1.58.2
+ROOT_ABSENT C:\Users\Ben\AppData\Roaming\npm
+FOUND C:\Users\Ben\AppData\Local\npm-cache\_npx\9833c18b2d85bc59\node_modules\playwright-core 1.60.0-alpha-1774999321000
+FOUND C:\Users\Ben\AppData\Local\npm-cache\_npx\b234c773f454f454\node_modules\playwright-core 1.59.1
+FOUND C:\Users\Ben\AppData\Local\npm-cache\_npx\e41f203b7505f1fb\node_modules\playwright-core 1.59.1
+DONE

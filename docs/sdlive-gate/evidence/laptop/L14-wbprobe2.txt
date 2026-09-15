@@ -1,0 +1,6 @@
+EXIT 0 PID 285796
+[{"cmd": "C:/Windows/System32/cmd.exe /c rem %s", "returned": false}, {"cmd": "C:/Windows/System32/cmd.exe /c exit 0 %s", "returned": false}, {"cmd": "C:/Users/Ben/Documents/project-workspaces/steam-deck-midi-rc/.venv/Scripts/python.exe -c pass %s", "returned": true}, {"cmd": "C:/Windows/System32/cmd.exe /d /c rem.%s", "returned": false}]
+The syntax of the command is incorrect.
+The syntax of the command is incorrect.
+The syntax of the command is incorrect.
+PID_GONE True

@@ -1,0 +1,21 @@
+START 2026-09-15T03:09:46
+CLIENT python
+{"repeat": 1, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 1, "arm": "OPEN", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 1, "arm": "CLOSED-B", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 2, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 2, "arm": "OPEN", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 2, "arm": "CLOSED-B", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 3, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 3, "arm": "OPEN", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 3, "arm": "CLOSED-B", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 4, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 4, "arm": "OPEN", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 4, "arm": "CLOSED-B", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 5, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 5, "arm": "OPEN", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 5, "arm": "CLOSED-B", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"result": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\sdlive-gate\\python-clean.json.gz", "rule_passed": true, "bar3_counts": false, "error": null, "limitation": null, "exit_code": 78}
+HARNESS-SKIP: diagnostic or missing qualified sensitivity control; no bar 3 credit
+RAIL_EXIT 78
+END 2026-09-15T03:39:16

@@ -1,0 +1,4 @@
+usage: ui_geometry.py [-h] --chromium CHROMIUM --scratch SCRATCH
+                      [--single-process] [--revision REVISION] [--mutations]
+                      [--ui-port UI_PORT] [--listen-port LISTEN_PORT]
+ui_geometry.py: error: scratch must be under /tmp/sdfix-<link>/

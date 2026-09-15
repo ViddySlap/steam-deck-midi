@@ -1,0 +1,4 @@
+START_SENS 2026-09-15T03:10:52
+{"repeat": 1, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 1, "arm": "OPEN", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 1, "arm": "CLOSED-B", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}

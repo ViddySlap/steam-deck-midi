@@ -1,0 +1,53 @@
+{
+ "result": "/tmp/sdlive-gate/laptop/try1/edge-clean.json.gz",
+ "control": null,
+ "repeats": 5,
+ "client": [
+  "C:\\Program Files\\nodejs\\node.exe",
+  "C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\scripts\\showready\\timing_browser.cjs",
+  "{url}",
+  "{stop}",
+  "{receipt}",
+  "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+ ],
+ "host": "Windows-11-10.0.26200-SP0",
+ "error": "ValueError: Invalid arm: CLOSED",
+ "passed": false,
+ "measurement_qualified": null,
+ "sensitivity_timing_red": null,
+ "sensitivity_valid": null,
+ "bar3_counts": false,
+ "wall_seconds": 87.2458864999935,
+ "rows": [
+  {
+   "repeat": 1,
+   "arm": "CLOSED",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": false,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 6.8849,
+    "p95": 191.90332499999974,
+    "p99": 1638.7698169999996,
+    "max": 2027.8326,
+    "n": 9638
+   }
+  }
+ ]
+}

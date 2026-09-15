@@ -1,0 +1,7 @@
+START 2026-09-15T03:07:30
+CLIENT python
+{"repeat": 1, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 1, "arm": "OPEN", "load": "verified", "accepted": true, "passed": false, "timed_midi_messages": 0, "minimum_timed_midi_messages": 1000, "timing_status": "INVALID"}
+{"result": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\sdlive-gate\\python-sensitivity.json.gz", "rule_passed": false, "bar3_counts": false, "error": "ValueError: Invalid arm: OPEN", "limitation": null, "exit_code": 1}
+RAIL_EXIT 1
+END 2026-09-15T03:09:46

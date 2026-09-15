@@ -1,0 +1,31 @@
+START 03:55:05
+HEAD 51b1d5b12c1757166069ce9359cb60426c40da04
+COMMAND win-edm C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe -B scripts/showready/ab_run.py --candidate 51b1d5b12c1757166069ce9359cb60426c40da04 --preset "C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\windows-installed\presets\EDM Show.json" --script "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\deck-script.json" --fixtures "C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures" --scratch "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\ab-win-edm" --out "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\ab-win-edm.json"
+COMMAND win-ptz C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe -B scripts/showready/ab_run.py --candidate 51b1d5b12c1757166069ce9359cb60426c40da04 --preset "C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\windows-installed\presets\PTZ.json" --script "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\deck-script.json" --fixtures "C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures" --scratch "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\ab-win-ptz" --out "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\ab-win-ptz.json"
+COMMAND win-default C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe -B scripts/showready/ab_run.py --candidate 51b1d5b12c1757166069ce9359cb60426c40da04 --preset "C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures\windows-installed\presets\default.json" --script "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\deck-script.json" --fixtures "C:\Users\Ben\AppData\Local\Temp\sdwin\fixtures" --scratch "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\ab-win-default" --out "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\ab-win-default.json"
+EXIT win-edm 0 PID 295132
+OUT win-edm {"result": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\sdlive-gate\\ab-win-edm.json.gz", "passed": true, "error": null, "comparisons": {"B1": {"totals": {"steps": 732, "mappings": 56, "mappings_exercised": 56, "messages_A": 1531, "messages_B": 1531}, "different_mappings": [], "unexercised_mappings": []}}}
+EXIT win-ptz 0 PID 302692
+OUT win-ptz {"result": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\sdlive-gate\\ab-win-ptz.json.gz", "passed": true, "error": null, "comparisons": {"B1": {"totals": {"steps": 732, "mappings": 52, "mappings_exercised": 52, "messages_A": 1395, "messages_B": 1395}, "different_mappings": [], "unexercised_mappings": []}}}
+EXIT win-default 0 PID 284024
+OUT win-default {"result": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\sdlive-gate\\ab-win-default.json.gz", "passed": true, "error": null, "comparisons": {"B1": {"totals": {"steps": 732, "mappings": 56, "mappings_exercised": 56, "messages_A": 1531, "messages_B": 1531}, "different_mappings": [], "unexercised_mappings": []}}}
+PID 295132 gone=True
+PID 302692 gone=True
+PID 284024 gone=True
+PID 291004 gone=True
+PID 291632 gone=True
+PID 293848 gone=True
+PID 286780 gone=True
+PID 303836 gone=True
+PID 302944 gone=True
+PID 302144 gone=True
+PID 301128 gone=True
+PID 293912 gone=True
+PID 302588 gone=True
+PID 272892 gone=True
+PID 301264 gone=True
+PID 288164 gone=True
+PID 303516 gone=True
+PID 301700 gone=True
+RAIL_EXIT 0
+END 04:03:08

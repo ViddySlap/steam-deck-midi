@@ -1,0 +1,672 @@
+{
+ "result": "/tmp/sdlive-gate/laptop/try2/python-clean.json.gz",
+ "control": null,
+ "repeats": 5,
+ "client": "python streaming reader",
+ "host": "Windows-11-10.0.26200-SP0",
+ "error": null,
+ "passed": true,
+ "measurement_qualified": true,
+ "sensitivity_timing_red": null,
+ "sensitivity_valid": false,
+ "bar3_counts": false,
+ "wall_seconds": 1702.780908800196,
+ "rows": [
+  {
+   "repeat": 1,
+   "arm": "CLOSED",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 6.0755,
+    "p95": 183.28541499999986,
+    "p99": 1659.1490159999994,
+    "max": 2041.1315,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 1,
+   "arm": "OPEN",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": 0,
+   "client_counts_minmax": [
+    1,
+    1
+   ],
+   "data_events": 14751,
+   "error": null,
+   "stats": {
+    "p50": 5.63745,
+    "p95": 172.83197999999987,
+    "p99": 1650.203698,
+    "max": 2048.3971,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 1,
+   "arm": "CLOSED-B",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 6.43705,
+    "p95": 231.41060999999988,
+    "p99": 1639.7650619999997,
+    "max": 2038.2332,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 2,
+   "arm": "CLOSED",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 6.94505,
+    "p95": 193.2825599999999,
+    "p99": 1645.3536479999996,
+    "max": 2025.3982,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 2,
+   "arm": "OPEN",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": 0,
+   "client_counts_minmax": [
+    1,
+    1
+   ],
+   "data_events": 14777,
+   "error": null,
+   "stats": {
+    "p50": 5.9396,
+    "p95": 163.31476499999982,
+    "p99": 1639.9970739999994,
+    "max": 2035.8695,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 2,
+   "arm": "CLOSED-B",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 6.22,
+    "p95": 233.01749999999953,
+    "p99": 1641.4649419999976,
+    "max": 2014.9535,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 3,
+   "arm": "CLOSED",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 6.15025,
+    "p95": 239.9633299999999,
+    "p99": 1658.259811,
+    "max": 2025.9993,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 3,
+   "arm": "OPEN",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": 0,
+   "client_counts_minmax": [
+    1,
+    1
+   ],
+   "data_events": 14794,
+   "error": null,
+   "stats": {
+    "p50": 6.1776,
+    "p95": 193.6559749999996,
+    "p99": 1650.1964009999967,
+    "max": 2027.2898,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 3,
+   "arm": "CLOSED-B",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 5.892049999999999,
+    "p95": 228.7087699999998,
+    "p99": 1652.7422969999946,
+    "max": 2036.3957,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 4,
+   "arm": "CLOSED",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 9.121300000000002,
+    "p95": 184.55271999999982,
+    "p99": 1638.680642999999,
+    "max": 2011.2798,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 4,
+   "arm": "OPEN",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": 0,
+   "client_counts_minmax": [
+    1,
+    1
+   ],
+   "data_events": 14421,
+   "error": null,
+   "stats": {
+    "p50": 10.0305,
+    "p95": 504.498795,
+    "p99": 1638.0769379999997,
+    "max": 2011.2754,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 4,
+   "arm": "CLOSED-B",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 7.4296500000000005,
+    "p95": 529.6282299999996,
+    "p99": 1637.2351599999995,
+    "max": 2056.5783,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 5,
+   "arm": "CLOSED",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 7.89465,
+    "p95": 184.75657499999994,
+    "p99": 1640.3563779999986,
+    "max": 2014.2903,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 5,
+   "arm": "OPEN",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": 0,
+   "client_counts_minmax": [
+    1,
+    1
+   ],
+   "data_events": 14576,
+   "error": null,
+   "stats": {
+    "p50": 8.2624,
+    "p95": 267.9179999999999,
+    "p99": 1636.8593619999997,
+    "max": 2034.5469,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 5,
+   "arm": "CLOSED-B",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 6.34835,
+    "p95": 330.06929499999995,
+    "p99": 1642.0196769999984,
+    "max": 2036.2202,
+    "n": 9638
+   }
+  }
+ ],
+ "pooled": {
+  "CLOSED": {
+   "p50": 7.19965,
+   "p95": 202.1634600000006,
+   "p99": 1651.4832400000003,
+   "max": 2041.1315,
+   "n": 48190
+  },
+  "OPEN": {
+   "p50": 6.99085,
+   "p95": 341.9678950000003,
+   "p99": 1642.6114040000004,
+   "max": 2048.3971,
+   "n": 48190
+  },
+  "CLOSED-B": {
+   "p50": 6.4456500000000005,
+   "p95": 349.637645,
+   "p99": 1643.3308670000004,
+   "max": 2056.5783,
+   "n": 48190
+  }
+ },
+ "worst_case_pooled": {
+  "CLOSED": {
+   "p50": 6.97565,
+   "p95": 86.28723,
+   "p99": 163.81228399999995,
+   "max": 271.0281,
+   "n": 45080
+  },
+  "OPEN": {
+   "p50": 6.7334499999999995,
+   "p95": 104.05138500000002,
+   "p99": 240.59303799999967,
+   "max": 607.4054,
+   "n": 45080
+  },
+  "CLOSED-B": {
+   "p50": 6.16465,
+   "p95": 141.05022000000008,
+   "p99": 293.4930749999996,
+   "max": 697.9733,
+   "n": 45080
+  }
+ },
+ "noise_floor": {
+  "p50": 0.7539999999999996,
+  "p95": 147.4741849999994,
+  "p99": 8.152372999999898
+ },
+ "open_delta": {
+  "p50": 0.2088000000000001,
+  "p95": 139.80443499999967,
+  "p99": 8.871835999999803
+ },
+ "within": {
+  "p50": true,
+  "p95": true,
+  "p99": true
+ },
+ "recomputed_matches_instrument": true,
+ "instrument_rule": {
+  "floor_can_resolve_2ms": true,
+  "noise_floor_ms": {
+   "p50": 0.7539999999999996,
+   "p95": 147.4741849999994,
+   "p99": 8.152372999999898
+  },
+  "open_delta_ms": {
+   "p50": 0.2088000000000001,
+   "p95": 139.80443499999967,
+   "p99": 8.871835999999803
+  },
+  "passed": true,
+  "valid_arms": true,
+  "within": {
+   "p50": true,
+   "p95": true,
+   "p99": true
+  }
+ },
+ "per_repeat": [
+  {
+   "repeat": 1,
+   "within": {
+    "p50": true,
+    "p95": true,
+    "p99": true
+   },
+   "passed": true
+  },
+  {
+   "repeat": 2,
+   "within": {
+    "p50": true,
+    "p95": true,
+    "p99": false
+   },
+   "passed": false
+  },
+  {
+   "repeat": 3,
+   "within": {
+    "p50": true,
+    "p95": false,
+    "p99": false
+   },
+   "passed": false
+  },
+  {
+   "repeat": 4,
+   "within": {
+    "p50": true,
+    "p95": true,
+    "p99": true
+   },
+   "passed": false
+  },
+  {
+   "repeat": 5,
+   "within": {
+    "p50": true,
+    "p95": true,
+    "p99": false
+   },
+   "passed": false
+  }
+ ],
+ "top_outliers": [
+  {
+   "latency_ms": 2056.5783,
+   "repeat": 4,
+   "arm": "CLOSED-B",
+   "cause_step": 102,
+   "action": "L_PAD_RIGHT_LONG_PRESS",
+   "bytes": [
+    128,
+    87,
+    0
+   ]
+  },
+  {
+   "latency_ms": 2048.3971,
+   "repeat": 1,
+   "arm": "OPEN",
+   "cause_step": 28,
+   "action": "DPAD_LEFT_LONG_PRESS",
+   "bytes": [
+    176,
+    23,
+    0
+   ]
+  },
+  {
+   "latency_ms": 2047.4139,
+   "repeat": 1,
+   "arm": "OPEN",
+   "cause_step": 30,
+   "action": "DPAD_RIGHT_LONG_PRESS",
+   "bytes": [
+    176,
+    21,
+    0
+   ]
+  },
+  {
+   "latency_ms": 2041.1315,
+   "repeat": 1,
+   "arm": "CLOSED",
+   "cause_step": 24,
+   "action": "DPAD_UP_LONG_PRESS",
+   "bytes": [
+    176,
+    22,
+    0
+   ]
+  },
+  {
+   "latency_ms": 2040.1291,
+   "repeat": 1,
+   "arm": "CLOSED",
+   "cause_step": 26,
+   "action": "DPAD_DOWN_LONG_PRESS",
+   "bytes": [
+    176,
+    20,
+    127
+   ]
+  }
+ ]
+}

@@ -1,0 +1,11 @@
+FETCH 91e1b01708aa6f9de184b7f79de8286f32d42485 try1 From https://github.com/ViddySlap/steam-deck-midi
+FETCH 91e1b01708aa6f9de184b7f79de8286f32d42485 try1  * branch            91e1b01708aa6f9de184b7f79de8286f32d42485 -> FETCH_HEAD
+FETCHED 91e1b01708aa6f9de184b7f79de8286f32d42485 ok=True
+FETCH 95d3da0a740911e0677a549b75bee648a198b2cc try1 error: RPC failed; curl 28 Operation too slow. Less than 1000 bytes/sec transferred the last 60 seconds
+FETCH 95d3da0a740911e0677a549b75bee648a198b2cc try1 error: 29748 bytes of body are still expected
+FETCH 95d3da0a740911e0677a549b75bee648a198b2cc try1 fetch-pack: unexpected disconnect while reading sideband packet
+FETCH 95d3da0a740911e0677a549b75bee648a198b2cc try1 fatal: early EOF
+FETCH 95d3da0a740911e0677a549b75bee648a198b2cc try1 fatal: unpack-objects failed
+FETCH 95d3da0a740911e0677a549b75bee648a198b2cc try2 fatal: unable to access 'https://github.com/ViddySlap/steam-deck-midi.git/': Connection timed out after 300004 milliseconds
+FETCH 95d3da0a740911e0677a549b75bee648a198b2cc try3 fatal: unable to access 'https://github.com/ViddySlap/steam-deck-midi.git/': Recv failure: Connection was reset
+FETCHED 95d3da0a740911e0677a549b75bee648a198b2cc ok=False

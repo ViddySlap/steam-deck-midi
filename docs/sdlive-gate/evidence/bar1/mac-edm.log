@@ -1,0 +1,4 @@
+START 02:42:01
+{"result": "/tmp/sdlive-gate/bar1/mac-edm.json.gz", "passed": true, "error": null, "comparisons": {"B1": {"totals": {"steps": 732, "mappings": 56, "mappings_exercised": 56, "messages_A": 1531, "messages_B": 1531}, "different_mappings": [], "unexercised_mappings": []}, "B2": {"totals": {"steps": 732, "mappings": 56, "mappings_exercised": 56, "messages_A": 1531, "messages_B": 1531}, "different_mappings": [], "unexercised_mappings": []}}}
+EXIT 0
+END 02:49:54

@@ -1,0 +1,21 @@
+{
+ "timing_packets": 20513,
+ "timing_steps": 15370,
+ "deck_packets": 47039,
+ "distinct_deck_tuples": 246,
+ "kinds": {
+  "action": 124,
+  "heartbeat": 5143,
+  "axis": 15246
+ },
+ "foreign": [],
+ "foreign_count": 0,
+ "worst_segment": "simultaneous-sticks-triggers-60hz",
+ "worst_ticks": 2520,
+ "events_per_tick_histogram": {
+  "6": 2520
+ },
+ "axis_sets_per_tick": {
+  "L_STICK_X_AXIS, L_STICK_Y_AXIS, L_TRIGGER_PRESSURE, R_STICK_X_AXIS, R_STICK_Y_AXIS, R_TRIGGER_PRESSURE": 2520
+ }
+}

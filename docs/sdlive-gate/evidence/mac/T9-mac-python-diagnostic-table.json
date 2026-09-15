@@ -1,0 +1,276 @@
+{
+ "result": "/tmp/sdlive-gate/mac-diagnostic.json.gz",
+ "control": null,
+ "repeats": 1,
+ "client": "python streaming reader",
+ "host": "macOS-15.6.1-arm64-arm-64bit",
+ "error": null,
+ "passed": true,
+ "measurement_qualified": false,
+ "sensitivity_timing_red": null,
+ "sensitivity_valid": null,
+ "bar3_counts": false,
+ "wall_seconds": 219.0230488749803,
+ "rows": [
+  {
+   "repeat": 1,
+   "arm": "CLOSED",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "empty"
+   ],
+   "load_after": [
+    "empty"
+   ],
+   "loadavg_before": [
+    [
+     2.66552734375,
+     2.408203125,
+     2.64013671875
+    ]
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 1.115021,
+    "p95": 118.98696424999702,
+    "p99": 1662.265377499995,
+    "max": 2040.486625,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 1,
+   "arm": "OPEN",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "empty"
+   ],
+   "load_after": [
+    "empty"
+   ],
+   "loadavg_before": [
+    [
+     3.4443359375,
+     2.708984375,
+     2.73291015625
+    ]
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": 0,
+   "client_counts_minmax": [
+    1,
+    1
+   ],
+   "data_events": 15980,
+   "error": null,
+   "stats": {
+    "p50": 1.118375,
+    "p95": 119.65423759999837,
+    "p99": 1657.588737209998,
+    "max": 2039.320292,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 1,
+   "arm": "CLOSED-B",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "empty"
+   ],
+   "load_after": [
+    "empty"
+   ],
+   "loadavg_before": [
+    [
+     3.13720703125,
+     2.7548828125,
+     2.74755859375
+    ]
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 1.1457085,
+    "p95": 119.57948739999813,
+    "p99": 1657.2728041299997,
+    "max": 2035.153125,
+    "n": 9638
+   }
+  }
+ ],
+ "pooled": {
+  "CLOSED": {
+   "p50": 1.115021,
+   "p95": 118.98696424999702,
+   "p99": 1662.265377499995,
+   "max": 2040.486625,
+   "n": 9638
+  },
+  "OPEN": {
+   "p50": 1.118375,
+   "p95": 119.65423759999837,
+   "p99": 1657.588737209998,
+   "max": 2039.320292,
+   "n": 9638
+  },
+  "CLOSED-B": {
+   "p50": 1.1457085,
+   "p95": 119.57948739999813,
+   "p99": 1657.2728041299997,
+   "max": 2035.153125,
+   "n": 9638
+  }
+ },
+ "worst_case_pooled": {
+  "CLOSED": {
+   "p50": 1.098063,
+   "p95": 1.51462525,
+   "p99": 1.7086036000000002,
+   "max": 3.468625,
+   "n": 9016
+  },
+  "OPEN": {
+   "p50": 1.0981665,
+   "p95": 1.52777125,
+   "p99": 1.7245964000000005,
+   "max": 4.6805,
+   "n": 9016
+  },
+  "CLOSED-B": {
+   "p50": 1.1239165,
+   "p95": 1.5442917500000002,
+   "p99": 1.7185186500000003,
+   "max": 5.283167,
+   "n": 9016
+  }
+ },
+ "noise_floor": {
+  "p50": 0.03068749999999998,
+  "p95": 0.5925231500011137,
+  "p99": 4.992573369995398
+ },
+ "open_delta": {
+  "p50": 0.003353999999999857,
+  "p95": 0.6672733500013521,
+  "p99": 4.676640289997067
+ },
+ "within": {
+  "p50": true,
+  "p95": true,
+  "p99": true
+ },
+ "recomputed_matches_instrument": true,
+ "instrument_rule": {
+  "floor_can_resolve_2ms": true,
+  "noise_floor_ms": {
+   "p50": 0.03068749999999998,
+   "p95": 0.5925231500011137,
+   "p99": 4.992573369995398
+  },
+  "open_delta_ms": {
+   "p50": 0.003353999999999857,
+   "p95": 0.6672733500013521,
+   "p99": 4.676640289997067
+  },
+  "passed": true,
+  "valid_arms": true,
+  "within": {
+   "p50": true,
+   "p95": true,
+   "p99": true
+  }
+ },
+ "per_repeat": [
+  {
+   "repeat": 1,
+   "within": {
+    "p50": true,
+    "p95": true,
+    "p99": true
+   },
+   "passed": true
+  }
+ ],
+ "top_outliers": [
+  {
+   "latency_ms": 2040.486625,
+   "repeat": 1,
+   "arm": "CLOSED",
+   "cause_step": 24,
+   "action": "DPAD_UP_LONG_PRESS",
+   "bytes": [
+    176,
+    22,
+    0
+   ]
+  },
+  {
+   "latency_ms": 2039.320292,
+   "repeat": 1,
+   "arm": "OPEN",
+   "cause_step": 102,
+   "action": "L_PAD_RIGHT_LONG_PRESS",
+   "bytes": [
+    128,
+    87,
+    0
+   ]
+  },
+  {
+   "latency_ms": 2039.3035,
+   "repeat": 1,
+   "arm": "OPEN",
+   "cause_step": 100,
+   "action": "L_PAD_LEFT_LONG_PRESS",
+   "bytes": [
+    128,
+    86,
+    0
+   ]
+  },
+  {
+   "latency_ms": 2038.062792,
+   "repeat": 1,
+   "arm": "CLOSED",
+   "cause_step": 26,
+   "action": "DPAD_DOWN_LONG_PRESS",
+   "bytes": [
+    176,
+    20,
+    127
+   ]
+  },
+  {
+   "latency_ms": 2036.885459,
+   "repeat": 1,
+   "arm": "OPEN",
+   "cause_step": 28,
+   "action": "DPAD_LEFT_LONG_PRESS",
+   "bytes": [
+    176,
+    23,
+    0
+   ]
+  }
+ ]
+}

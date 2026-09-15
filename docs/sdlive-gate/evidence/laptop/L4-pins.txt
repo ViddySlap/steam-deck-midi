@@ -1,0 +1,24 @@
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.262s
+
+OK
+Traceback (most recent call last):
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\showready\deck_script.py", line 223, in <module>
+    main()
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\showready\deck_script.py", line 206, in main
+    verified = verify_fixtures(fixtures)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\showready\deck_script.py", line 80, in verify_fixtures
+    entries = read_json(manifest)['entries']
+              ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\showready\deck_script.py", line 20, in read_json
+    return json.loads(Path(path).read_text(encoding='utf-8-sig'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.showready\\fixtures\\mac\\MANIFEST.sha256'

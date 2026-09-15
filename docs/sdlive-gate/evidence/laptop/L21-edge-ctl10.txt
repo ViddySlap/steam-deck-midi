@@ -1,0 +1,22 @@
+START 2026-09-15T03:39:18
+CLIENT edge
+CTL10_SHA cc4c7698951de835700082b46a03bded3d503210
+{"repeat": 1, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 1, "arm": "OPEN", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 1, "arm": "CLOSED-B", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 2, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 2, "arm": "OPEN", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 2, "arm": "CLOSED-B", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 3, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 3, "arm": "OPEN", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"repeat": 3, "arm": "CLOSED-B", "load": "verified", "accepted": true, "passed": true, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID"}
+{"result": "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\sdlive-gate\\edge-ctl10.json.gz", "rule_passed": false, "bar3_counts": false, "error": null, "limitation": null, "exit_code": 1}
+Owned descendant PIDs alive: 1
+At C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\timing.ps1:47 char:17
++   if ($alive) { throw "Owned descendant PIDs alive: $alive" }
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Owned descendant PIDs alive: 1:String) [], RuntimeException
+    + FullyQualifiedErrorId : Owned descendant PIDs alive: 1
+ 
+RAIL_EXIT 1
+END 2026-09-15T03:55:05

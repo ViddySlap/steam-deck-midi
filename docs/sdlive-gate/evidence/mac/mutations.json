@@ -1,0 +1,192 @@
+{
+ "a-forward-after-publish-plus-5ms": {
+  "tree": "/tmp/sdlive-gate/mut/a-forward-after-publish-plus-5ms",
+  "mutated_files": [
+   "windows/live_events.py"
+  ],
+  "red": {
+   "command": [
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+    "-B",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.test_live_events"
+   ],
+   "exit": 1,
+   "log": "/tmp/sdlive-gate/mut/a-forward-after-publish-plus-5ms/red.log",
+   "failing_tests": [
+    "test_all_methods_forward_exact_arguments_before_publish_including_panic (tests.test_live_events.LiveMidiTests.test_all_methods_forward_exact_arguments_before_publish_including_panic)",
+    "test_full_buffer_and_stalled_stream_leave_all_thousand_midi_calls_identical (tests.test_live_events.LiveEventsTests.test_full_buffer_and_stalled_stream_leave_all_thousand_midi_calls_identical)",
+    "test_raising_publisher_does_not_stop_forward_and_backend_error_is_preserved (tests.test_live_events.LiveMidiTests.test_raising_publisher_does_not_stop_forward_and_backend_error_is_preserved)",
+    "test_real_mido_backend_panic_and_partial_failure_publish_only_sent_bytes (tests.test_live_events.LiveMidiTests.test_real_mido_backend_panic_and_partial_failure_publish_only_sent_bytes)",
+    "test_stalled_tcp_reader_cannot_hold_server_stop (tests.test_live_events.LiveRouteTests.test_stalled_tcp_reader_cannot_hold_server_stop)"
+   ],
+   "assertion_error": true,
+   "import_or_syntax_error": false,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 14 tests in 25.267s",
+    "",
+    "FAILED (failures=5)"
+   ]
+  },
+  "restored_bytes_equal": true,
+  "green": {
+   "command": [
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+    "-B",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.test_live_events"
+   ],
+   "exit": 0,
+   "log": "/tmp/sdlive-gate/mut/a-forward-after-publish-plus-5ms/restored.log",
+   "failing_tests": [],
+   "assertion_error": false,
+   "import_or_syntax_error": false,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 14 tests in 1.130s",
+    "",
+    "OK"
+   ]
+  },
+  "passed": true
+ },
+ "b-publish-out-of-order": {
+  "tree": "/tmp/sdlive-gate/mut/b-publish-out-of-order",
+  "mutated_files": [
+   "windows/receiver.py"
+  ],
+  "red": {
+   "command": [
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+    "-B",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.test_live_events"
+   ],
+   "exit": 1,
+   "log": "/tmp/sdlive-gate/mut/b-publish-out-of-order/red.log",
+   "failing_tests": [
+    "test_rejected_packets_heartbeat_and_duplicate_publish_nothing (tests.test_live_events.LiveMidiTests.test_rejected_packets_heartbeat_and_duplicate_publish_nothing)"
+   ],
+   "assertion_error": true,
+   "import_or_syntax_error": false,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 14 tests in 1.136s",
+    "",
+    "FAILED (failures=1)"
+   ]
+  },
+  "restored_bytes_equal": true,
+  "green": {
+   "command": [
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+    "-B",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.test_live_events"
+   ],
+   "exit": 0,
+   "log": "/tmp/sdlive-gate/mut/b-publish-out-of-order/restored.log",
+   "failing_tests": [],
+   "assertion_error": false,
+   "import_or_syntax_error": false,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 14 tests in 1.127s",
+    "",
+    "OK"
+   ]
+  },
+  "passed": true
+ },
+ "c-eventsource-stays-open-when-hidden": {
+  "tree": "/tmp/sdlive-gate/mut/c-eventsource-stays-open-when-hidden",
+  "mutated_files": [
+   "windows/static/controller/controller_live.js"
+  ],
+  "red": {
+   "command": [
+    "node",
+    "tests/ui_controller_check.cjs"
+   ],
+   "exit": 1,
+   "log": "/tmp/sdlive-gate/mut/c-eventsource-stays-open-when-hidden/red.log",
+   "failing_tests": [],
+   "assertion_error": true,
+   "import_or_syntax_error": false,
+   "tail": [
+    "  expected: true,",
+    "  operator: 'strictEqual',",
+    "  diff: 'simple'",
+    "}"
+   ]
+  },
+  "restored_bytes_equal": true,
+  "green": {
+   "command": [
+    "node",
+    "tests/ui_controller_check.cjs"
+   ],
+   "exit": 0,
+   "log": "/tmp/sdlive-gate/mut/c-eventsource-stays-open-when-hidden/restored.log",
+   "failing_tests": [],
+   "assertion_error": false,
+   "import_or_syntax_error": false,
+   "tail": [
+    "UI controller editing: PASS (all seven forms, isolation, validation, clear, macro parity, Advanced, conflict guard, drafts, sections, reset)",
+    "UI controller live: PASS (snapshot/SSE lifecycle, highlights/groups, axes/clamps, pad expiry, gyro, exact MIDI rows, follow/drafts, 500-event frame bound)",
+    "UI controller behavior: PASS (23 arrows, map anchors/shapes, front door, storage, drill-in, List handoff, commit, sections, reload, Escape, unique IDs, asset failure)"
+   ]
+  },
+  "passed": true
+ },
+ "d-follow-default-on": {
+  "tree": "/tmp/sdlive-gate/mut/d-follow-default-on",
+  "mutated_files": [
+   "windows/static/controller/controller_live.js"
+  ],
+  "red": {
+   "command": [
+    "node",
+    "tests/ui_controller_check.cjs"
+   ],
+   "exit": 1,
+   "log": "/tmp/sdlive-gate/mut/d-follow-default-on/red.log",
+   "failing_tests": [],
+   "assertion_error": true,
+   "import_or_syntax_error": false,
+   "tail": [
+    "  expected: 'false',",
+    "  operator: 'strictEqual',",
+    "  diff: 'simple'",
+    "}"
+   ]
+  },
+  "restored_bytes_equal": true,
+  "green": {
+   "command": [
+    "node",
+    "tests/ui_controller_check.cjs"
+   ],
+   "exit": 0,
+   "log": "/tmp/sdlive-gate/mut/d-follow-default-on/restored.log",
+   "failing_tests": [],
+   "assertion_error": false,
+   "import_or_syntax_error": false,
+   "tail": [
+    "UI controller editing: PASS (all seven forms, isolation, validation, clear, macro parity, Advanced, conflict guard, drafts, sections, reset)",
+    "UI controller live: PASS (snapshot/SSE lifecycle, highlights/groups, axes/clamps, pad expiry, gyro, exact MIDI rows, follow/drafts, 500-event frame bound)",
+    "UI controller behavior: PASS (23 arrows, map anchors/shapes, front door, storage, drill-in, List handoff, commit, sections, reload, Escape, unique IDs, asset failure)"
+   ]
+  },
+  "passed": true
+ }
+}

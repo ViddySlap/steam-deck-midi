@@ -1,0 +1,548 @@
+{
+ "result": "/tmp/sdlive-gate/mac-sensitivity.json.gz",
+ "control": "sensitivity",
+ "repeats": 3,
+ "client": [
+  "node",
+  "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/timing_browser.cjs",
+  "{url}",
+  "{stop}",
+  "{receipt}",
+  "/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+  "--single-process"
+ ],
+ "host": "macOS-15.6.1-arm64-arm-64bit",
+ "error": null,
+ "passed": false,
+ "measurement_qualified": true,
+ "sensitivity_timing_red": true,
+ "sensitivity_valid": null,
+ "bar3_counts": false,
+ "wall_seconds": 691.1977172080078,
+ "rows": [
+  {
+   "repeat": 1,
+   "arm": "CLOSED",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "empty"
+   ],
+   "load_after": [
+    "empty"
+   ],
+   "loadavg_before": [
+    [
+     2.93310546875,
+     3.1005859375,
+     3.13916015625
+    ]
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 1.115625,
+    "p95": 120.32787319999882,
+    "p99": 1659.976119499999,
+    "max": 2038.724584,
+    "n": 9638
+   },
+   "foreign_lines_at_start": 0,
+   "load1_at_start": 2.93,
+   "sample_age_s": 0.67,
+   "foreign_lines_max_during": 0
+  },
+  {
+   "repeat": 1,
+   "arm": "OPEN",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "empty"
+   ],
+   "load_after": [
+    "empty"
+   ],
+   "loadavg_before": [
+    [
+     2.68994140625,
+     2.9873046875,
+     3.08935546875
+    ]
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": 0,
+   "client_counts_minmax": [
+    1,
+    1
+   ],
+   "data_events": 17469,
+   "error": null,
+   "stats": {
+    "p50": 4888.029854,
+    "p95": 9859.5791911,
+    "p99": 10273.90992504,
+    "max": 10381.70825,
+    "n": 9638
+   },
+   "foreign_lines_at_start": 0,
+   "load1_at_start": 2.69,
+   "sample_age_s": 0.09,
+   "foreign_lines_max_during": 0
+  },
+  {
+   "repeat": 1,
+   "arm": "CLOSED-B",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "empty"
+   ],
+   "load_after": [
+    "empty"
+   ],
+   "loadavg_before": [
+    [
+     3.1123046875,
+     3.033203125,
+     3.09326171875
+    ]
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 1.2040625,
+    "p95": 120.09075624999889,
+    "p99": 1658.93252783,
+    "max": 2036.87175,
+    "n": 9638
+   },
+   "foreign_lines_at_start": 0,
+   "load1_at_start": 3.04,
+   "sample_age_s": 1.14,
+   "foreign_lines_max_during": 0
+  },
+  {
+   "repeat": 2,
+   "arm": "CLOSED",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "empty"
+   ],
+   "load_after": [
+    "empty"
+   ],
+   "loadavg_before": [
+    [
+     7.49072265625,
+     4.2412109375,
+     3.53369140625
+    ]
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 1.2596255,
+    "p95": 119.6161338999982,
+    "p99": 1659.2225300399973,
+    "max": 2039.370208,
+    "n": 9638
+   },
+   "foreign_lines_at_start": 0,
+   "load1_at_start": 7.49,
+   "sample_age_s": 0.68,
+   "foreign_lines_max_during": 0
+  },
+  {
+   "repeat": 2,
+   "arm": "OPEN",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "empty"
+   ],
+   "load_after": [
+    "empty"
+   ],
+   "loadavg_before": [
+    [
+     5.81005859375,
+     4.3427734375,
+     3.62353515625
+    ]
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": 0,
+   "client_counts_minmax": [
+    1,
+    1
+   ],
+   "data_events": 17499,
+   "error": null,
+   "stats": {
+    "p50": 5256.7757295,
+    "p95": 10607.6084312,
+    "p99": 11046.298855,
+    "max": 11155.388958,
+    "n": 9638
+   },
+   "foreign_lines_at_start": 0,
+   "load1_at_start": 5.81,
+   "sample_age_s": 1.46,
+   "foreign_lines_max_during": 0
+  },
+  {
+   "repeat": 2,
+   "arm": "CLOSED-B",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "empty"
+   ],
+   "load_after": [
+    "empty"
+   ],
+   "loadavg_before": [
+    [
+     4.82421875,
+     4.353515625,
+     3.6875
+    ]
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 1.282229,
+    "p95": 119.57275179999773,
+    "p99": 1660.6174662499993,
+    "max": 2042.2135,
+    "n": 9638
+   },
+   "foreign_lines_at_start": 0,
+   "load1_at_start": 4.82,
+   "sample_age_s": 0.91,
+   "foreign_lines_max_during": 0
+  },
+  {
+   "repeat": 3,
+   "arm": "CLOSED",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "empty"
+   ],
+   "load_after": [
+    "empty"
+   ],
+   "loadavg_before": [
+    [
+     3.962890625,
+     4.17236328125,
+     3.669921875
+    ]
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 1.198813,
+    "p95": 119.14112949999755,
+    "p99": 1656.26149842,
+    "max": 2035.770042,
+    "n": 9638
+   },
+   "foreign_lines_at_start": 0,
+   "load1_at_start": 3.96,
+   "sample_age_s": 2.08,
+   "foreign_lines_max_during": 0
+  },
+  {
+   "repeat": 3,
+   "arm": "OPEN",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "empty"
+   ],
+   "load_after": [
+    "empty"
+   ],
+   "loadavg_before": [
+    [
+     4.4150390625,
+     4.10888671875,
+     3.67578125
+    ]
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": 0,
+   "client_counts_minmax": [
+    1,
+    1
+   ],
+   "data_events": 17531,
+   "error": null,
+   "stats": {
+    "p50": 5265.8231875,
+    "p95": 10602.09687495,
+    "p99": 11035.84282054,
+    "max": 11148.669041,
+    "n": 9638
+   },
+   "foreign_lines_at_start": 0,
+   "load1_at_start": 4.42,
+   "sample_age_s": 2.04,
+   "foreign_lines_max_during": 0
+  },
+  {
+   "repeat": 3,
+   "arm": "CLOSED-B",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "empty"
+   ],
+   "load_after": [
+    "empty"
+   ],
+   "loadavg_before": [
+    [
+     4.09130859375,
+     4.04248046875,
+     3.68701171875
+    ]
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 1.2440625,
+    "p95": 120.00733389999789,
+    "p99": 1659.10881875,
+    "max": 2035.090792,
+    "n": 9638
+   },
+   "foreign_lines_at_start": 0,
+   "load1_at_start": 4.09,
+   "sample_age_s": 0.78,
+   "foreign_lines_max_during": 0
+  }
+ ],
+ "pooled": {
+  "CLOSED": {
+   "p50": 1.183729,
+   "p95": 120.9743147999953,
+   "p99": 1659.0393110799994,
+   "max": 2039.370208,
+   "n": 28914
+  },
+  "OPEN": {
+   "p50": 5133.6648545,
+   "p95": 10347.23216435,
+   "p99": 10985.26164425,
+   "max": 11155.388958,
+   "n": 28914
+  },
+  "CLOSED-B": {
+   "p50": 1.2379375000000001,
+   "p95": 120.70043124999556,
+   "p99": 1659.2306024999998,
+   "max": 2042.2135,
+   "n": 28914
+  }
+ },
+ "worst_case_pooled": {
+  "CLOSED": {
+   "p50": 1.1646874999999999,
+   "p95": 1.67792895,
+   "p99": 1.8465642599999998,
+   "max": 19.003292,
+   "n": 27048
+  },
+  "OPEN": {
+   "p50": 5508.4103545,
+   "p95": 10382.356828950002,
+   "p99": 10997.202381489999,
+   "max": 11155.388958,
+   "n": 27048
+  },
+  "CLOSED-B": {
+   "p50": 1.214896,
+   "p95": 1.709208,
+   "p99": 1.87723026,
+   "max": 16.0685,
+   "n": 27048
+  }
+ },
+ "noise_floor": {
+  "p50": 0.054208500000000104,
+  "p95": 0.27388354999973785,
+  "p99": 0.1912914200004252
+ },
+ "open_delta": {
+  "p50": 5132.4811254999995,
+  "p95": 10226.257849550004,
+  "p99": 9326.22233317
+ },
+ "within": {
+  "p50": false,
+  "p95": false,
+  "p99": false
+ },
+ "recomputed_matches_instrument": true,
+ "instrument_rule": {
+  "floor_can_resolve_2ms": true,
+  "noise_floor_ms": {
+   "p50": 0.054208500000000104,
+   "p95": 0.27388354999973785,
+   "p99": 0.1912914200004252
+  },
+  "open_delta_ms": {
+   "p50": 5132.4811254999995,
+   "p95": 10226.257849550004,
+   "p99": 9326.22233317
+  },
+  "passed": false,
+  "valid_arms": true,
+  "within": {
+   "p50": false,
+   "p95": false,
+   "p99": false
+  }
+ },
+ "per_repeat": [
+  {
+   "repeat": 1,
+   "within": {
+    "p50": false,
+    "p95": false,
+    "p99": false
+   },
+   "passed": false
+  },
+  {
+   "repeat": 2,
+   "within": {
+    "p50": false,
+    "p95": false,
+    "p99": false
+   },
+   "passed": false
+  },
+  {
+   "repeat": 3,
+   "within": {
+    "p50": false,
+    "p95": false,
+    "p99": false
+   },
+   "passed": false
+  }
+ ],
+ "top_outliers": [
+  {
+   "latency_ms": 11155.388958,
+   "repeat": 2,
+   "arm": "OPEN",
+   "cause_step": 15237,
+   "action": "R_TRIGGER_PRESSURE",
+   "bytes": [
+    176,
+    2,
+    0
+   ]
+  },
+  {
+   "latency_ms": 11151.76825,
+   "repeat": 2,
+   "arm": "OPEN",
+   "cause_step": 15241,
+   "action": "R_STICK_Y_AXIS",
+   "bytes": [
+    191,
+    117,
+    0
+   ]
+  },
+  {
+   "latency_ms": 11151.090625,
+   "repeat": 2,
+   "arm": "OPEN",
+   "cause_step": 15236,
+   "action": "L_TRIGGER_PRESSURE",
+   "bytes": [
+    176,
+    1,
+    0
+   ]
+  },
+  {
+   "latency_ms": 11150.482333,
+   "repeat": 2,
+   "arm": "OPEN",
+   "cause_step": 15231,
+   "action": "R_TRIGGER_PRESSURE",
+   "bytes": [
+    176,
+    2,
+    13
+   ]
+  },
+  {
+   "latency_ms": 11148.669041,
+   "repeat": 3,
+   "arm": "OPEN",
+   "cause_step": 15237,
+   "action": "R_TRIGGER_PRESSURE",
+   "bytes": [
+    176,
+    2,
+    0
+   ]
+  }
+ ]
+}

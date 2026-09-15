@@ -1,0 +1,2 @@
+GUARD GREEN: snapshot; protected state observed; pythonProcesses=0
+scripts/showready/win_rail.sh run sdlive-gate scripts/showready/win_guard.ps1  0.01s user 0.01s system 0% cpu 2.748 total

@@ -1,0 +1,15 @@
+scripts/showready/ab_run.py: OK
+scripts/showready/ui_geometry.sh: OK
+scripts/showready/timing_browser.cjs: OK
+scripts/showready/ui_geometry.py: OK
+scripts/showready/timing_subset_check.py: OK
+scripts/showready/timing_ab.py: OK
+scripts/showready/.gitattributes: OK
+scripts/showready/win_guard.ps1: OK
+tests/ui_controller_geometry.cjs: OK
+scripts/showready/deck_script.py: OK
+scripts/showready/capture_runner.py: OK
+scripts/showready/timing_script.py: OK
+scripts/showready/win_rail.sh: OK
+scripts/showready/README.md: OK
+scripts/showready/timing_script.json: OK

@@ -1,0 +1,79 @@
+{
+ "result": "/tmp/sdlive-gate/laptop/try2/edge-sensitivity.json.gz",
+ "control": "sensitivity",
+ "repeats": 3,
+ "client": [
+  "C:\\Program Files\\nodejs\\node.exe",
+  "C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\scripts\\showready\\timing_browser.cjs",
+  "{url}",
+  "{stop}",
+  "{receipt}",
+  "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+ ],
+ "host": "Windows-11-10.0.26200-SP0",
+ "error": "ValueError: Invalid arm: OPEN",
+ "passed": false,
+ "measurement_qualified": null,
+ "sensitivity_timing_red": null,
+ "sensitivity_valid": null,
+ "bar3_counts": false,
+ "wall_seconds": 132.61362019972876,
+ "rows": [
+  {
+   "repeat": 1,
+   "arm": "CLOSED",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": true,
+   "timed_midi": 9638,
+   "worst_n": 9016,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": 23990,
+   "stream_dropped": null,
+   "client_counts_minmax": null,
+   "data_events": null,
+   "error": null,
+   "stats": {
+    "p50": 7.4138,
+    "p95": 299.72162999999995,
+    "p99": 1638.7176869999998,
+    "max": 2012.8349,
+    "n": 9638
+   }
+  },
+  {
+   "repeat": 1,
+   "arm": "OPEN",
+   "load_status": "verified",
+   "accepted": true,
+   "passed": false,
+   "timed_midi": 0,
+   "worst_n": 0,
+   "load_before": [
+    "not applicable"
+   ],
+   "load_after": [
+    "not applicable"
+   ],
+   "loadavg_before": [
+    null
+   ],
+   "publisher_dropped": null,
+   "stream_dropped": 0,
+   "client_counts_minmax": [
+    1,
+    1
+   ],
+   "data_events": 2937,
+   "error": "URLError: <urlopen error timed out>"
+  }
+ ]
+}

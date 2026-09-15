@@ -1,0 +1,129 @@
+===== C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-clean\timing-lckbbkzd\r1-CLOSED-try1
+--- bridge.log (5817312 bytes)
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-clean\timing-lckbbkzd\candidate\windows\receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-clean\timing-lckbbkzd\candidate\windows\receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-clean\timing-lckbbkzd\candidate\windows\receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-clean\timing-lckbbkzd\candidate\windows\receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-clean\timing-lckbbkzd\candidate\windows\receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-clean\timing-lckbbkzd\candidate\windows\receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-clean\timing-lckbbkzd\candidate\windows\receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+--- client.log (0 bytes)
+===== C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-sensitivity\timing-th5rpdjc\r1-CLOSED-try1
+--- bridge.log (5908788 bytes)
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-sensitivity\timing-th5rpdjc\candidate\windows\receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-sensitivity\timing-th5rpdjc\candidate\windows\receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-sensitivity\timing-th5rpdjc\candidate\windows\receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-sensitivity\timing-th5rpdjc\candidate\windows\receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-sensitivity\timing-th5rpdjc\candidate\windows\receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-sensitivity\timing-th5rpdjc\candidate\windows\receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-sensitivity\timing-th5rpdjc\candidate\windows\receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+--- client.log (0 bytes)
+===== C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-sensitivity\timing-th5rpdjc\r1-OPEN-try1
+--- bridge.log (648007 bytes)
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-sensitivity\timing-th5rpdjc\candidate\windows\receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-sensitivity\timing-th5rpdjc\candidate\windows\receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-sensitivity\timing-th5rpdjc\candidate\windows\receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-sensitivity\timing-th5rpdjc\candidate\windows\receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+Traceback (most recent call last):
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\showready\capture_runner.py", line 204, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\showready\capture_runner.py", line 200, in main
+    return bridge.main(bridge_argv)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-sensitivity\timing-th5rpdjc\candidate\windows\win_recv.py", line 472, in main
+    _run_bridge_loop()
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-sensitivity\timing-th5rpdjc\candidate\windows\win_recv.py", line 436, in _run_bridge_loop
+    serve_forever(
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\edge-sensitivity\timing-th5rpdjc\candidate\windows\receiver.py", line 1054, in serve_forever
+    payload, addr = sock.recvfrom(4096)
+                    ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\showready\capture_runner.py", line 190, in recvfrom
+    raise ValueError('Dropped, reordered or foreign UDP packet at ' + str(count))
+ValueError: Dropped, reordered or foreign UDP packet at 4318
+--- client.log (0 bytes)

@@ -1,0 +1,4 @@
+EXIT 0 PID 300452
+{"tryorder": ["C:/Windows/System32/cmd.exe /c rem %s", "windows-default", "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"], "first_type": "GenericBrowser", "first_name": "C:/Windows/System32/cmd.exe", "first_args": ["/c", "rem", "%s"], "first_open_returned": false}
+The syntax of the command is incorrect.
+PID_GONE True

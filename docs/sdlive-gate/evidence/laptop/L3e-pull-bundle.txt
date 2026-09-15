@@ -1,0 +1,14 @@
+BUNDLE_SHA256 906a526c11065bf47e36b2005c6dcd51172d40104cf3a375da4ae18f1c009dbf
+VERIFY The bundle contains this ref:
+VERIFY 19016931cb70cbe4a546c42c09130f2bb7d38a39 refs/heads/chain/steamdeck-20260914
+VERIFY The bundle requires this ref:
+VERIFY 9fc224a7d1232042ab32575b02c61be510747fa2 
+VERIFY The bundle uses this hash algorithm: sha1
+VERIFY C:/Users/Ben/AppData/Local/Temp/sdwin/sdlive-gate/sdlive.bundle is okay
+FETCH From C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\sdlive.bundle
+FETCH  * branch            chain/steamdeck-20260914 -> FETCH_HEAD
+FETCH_HEAD 19016931cb70cbe4a546c42c09130f2bb7d38a39
+MERGE  create mode 100644 windows/live_events.py
+MERGE  create mode 100644 windows/static/controller/controller_live.js
+PINNED_HEAD 19016931cb70cbe4a546c42c09130f2bb7d38a39
+PORCELAIN_LINES 0

@@ -1,0 +1,6 @@
+page.goto: Timeout 30000ms exceeded.
+Call log:
+[2m  - navigating to "http://127.0.0.1:18864/", waiting until "networkidle"[22m
+
+    at /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/ui_controller_geometry.cjs:118:18
+node tests/ui_controller_geometry.cjs http://127.0.0.1:18864 $CH  --out   0.83s user 0.46s system 4% cpu 30.503 total
