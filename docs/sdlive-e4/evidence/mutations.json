@@ -1,0 +1,141 @@
+{
+  "work": "/tmp/sdlive-e4/mutations-s5yuof0l",
+  "restored_byte_identical": true,
+  "results": [
+    {
+      "control": "floor-classification",
+      "phase": "pristine",
+      "command": [
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "tests.test_showready_timing_script.TimingScriptTests.test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict",
+        "-v"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict (tests.test_showready_timing_script.TimingScriptTests.test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.010s\n\nOK\n"
+    },
+    {
+      "control": "floor-classification",
+      "phase": "reverted",
+      "command": [
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "tests.test_showready_timing_script.TimingScriptTests.test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict",
+        "-v"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict (tests.test_showready_timing_script.TimingScriptTests.test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict) ... FAIL\n\n======================================================================\nFAIL: test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict (tests.test_showready_timing_script.TimingScriptTests.test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/tmp/sdlive-e4/mutations-s5yuof0l/tests/test_showready_timing_script.py\", line 60, in test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict\n    self.assertEqual(bad['rows'][1]['timing_status'], 'INVALID')\nAssertionError: 'VALID' != 'INVALID'\n- VALID\n+ INVALID\n? ++\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.012s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "control": "floor-classification",
+      "phase": "restored",
+      "command": [
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "tests.test_showready_timing_script.TimingScriptTests.test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict",
+        "-v"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict (tests.test_showready_timing_script.TimingScriptTests.test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.011s\n\nOK\n"
+    },
+    {
+      "control": "floor-verdict",
+      "phase": "pristine",
+      "command": [
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "tests.test_showready_timing_script.TimingScriptTests.test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict",
+        "-v"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict (tests.test_showready_timing_script.TimingScriptTests.test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.010s\n\nOK\n"
+    },
+    {
+      "control": "floor-verdict",
+      "phase": "reverted",
+      "command": [
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "tests.test_showready_timing_script.TimingScriptTests.test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict",
+        "-v"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict (tests.test_showready_timing_script.TimingScriptTests.test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict) ... FAIL\n\n======================================================================\nFAIL: test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict (tests.test_showready_timing_script.TimingScriptTests.test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/tmp/sdlive-e4/mutations-s5yuof0l/tests/test_showready_timing_script.py\", line 61, in test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict\n    self.assertFalse(bad['rule']['passed'])\nAssertionError: True is not false\n\n----------------------------------------------------------------------\nRan 1 test in 0.010s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "control": "floor-verdict",
+      "phase": "restored",
+      "command": [
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "tests.test_showready_timing_script.TimingScriptTests.test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict",
+        "-v"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict (tests.test_showready_timing_script.TimingScriptTests.test_power_floor_999_is_invalid_and_blocks_otherwise_green_verdict) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.010s\n\nOK\n"
+    },
+    {
+      "control": "segment-population",
+      "phase": "pristine",
+      "command": [
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "tests.test_showready_timing_script.TimingScriptTests.test_segment_statistics_use_only_own_causal_messages",
+        "-v"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_segment_statistics_use_only_own_causal_messages (tests.test_showready_timing_script.TimingScriptTests.test_segment_statistics_use_only_own_causal_messages) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.009s\n\nOK\n"
+    },
+    {
+      "control": "segment-population",
+      "phase": "reverted",
+      "command": [
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "tests.test_showready_timing_script.TimingScriptTests.test_segment_statistics_use_only_own_causal_messages",
+        "-v"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "test_segment_statistics_use_only_own_causal_messages (tests.test_showready_timing_script.TimingScriptTests.test_segment_statistics_use_only_own_causal_messages) ... FAIL\n\n======================================================================\nFAIL: test_segment_statistics_use_only_own_causal_messages (tests.test_showready_timing_script.TimingScriptTests.test_segment_statistics_use_only_own_causal_messages)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/tmp/sdlive-e4/mutations-s5yuof0l/tests/test_showready_timing_script.py\", line 71, in test_segment_statistics_use_only_own_causal_messages\n    self.assertAlmostEqual(result['worst_case']['pooled_ms']['OPEN'][key], value)\nAssertionError: 1000 != 4 within 7 places (996 difference)\n\n----------------------------------------------------------------------\nRan 1 test in 0.009s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "control": "segment-population",
+      "phase": "restored",
+      "command": [
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "tests.test_showready_timing_script.TimingScriptTests.test_segment_statistics_use_only_own_causal_messages",
+        "-v"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_segment_statistics_use_only_own_causal_messages (tests.test_showready_timing_script.TimingScriptTests.test_segment_statistics_use_only_own_causal_messages) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.009s\n\nOK\n"
+    }
+  ]
+}

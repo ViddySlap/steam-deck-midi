@@ -1,0 +1,23 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "b2ca727c0acdc710a9ae98b6e01b76f3d4f28914",
+    "--",
+    "windows",
+    "protocol",
+    "deck",
+    "config",
+    "tests/ui_controller_check.cjs",
+    "tests/ui_controller_macro_check.cjs",
+    "tests/ui_reload_check.cjs",
+    "tests/ui_sections_check.cjs",
+    "tests/ui_controller_geometry.cjs",
+    "scripts/showready/deck_script.py",
+    "scripts/showready/capture_runner.py",
+    "scripts/showready/ab_run.py"
+  ],
+  "exit_code": 0,
+  "diff": "",
+  "protected_paths_unchanged": true
+}

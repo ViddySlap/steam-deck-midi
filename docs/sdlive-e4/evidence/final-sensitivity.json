@@ -1,0 +1,566 @@
+{
+  "source": "/tmp/sdlive-e4/final-sensitivity.json.gz",
+  "source_sha256": "f42c2b6655d189d97e0fe258391cbfc0dab6b632e483e668602e06faade2074d",
+  "command": [
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+    "scripts/showready/timing_ab.py",
+    "--candidate",
+    "b2ca727c0acdc710a9ae98b6e01b76f3d4f28914",
+    "--script",
+    "scripts/showready/timing_script.json",
+    "--repeats",
+    "1",
+    "--control",
+    "sensitivity",
+    "--allow-unverified-load",
+    "--scratch",
+    "/tmp/sdlive-e4/final-sensitivity",
+    "--out",
+    "/tmp/sdlive-e4/final-sensitivity.json.gz"
+  ],
+  "candidate": {
+    "archive_sha256": "8a97e6e7a51d38e26f022521df53bdc94c3bfbc55b6172dc557a43c929a94ddf",
+    "commit": "b2ca727c0acdc710a9ae98b6e01b76f3d4f28914",
+    "git_tree": "37339a2f8b22b155cdabfede3867e0450a2981a6"
+  },
+  "instrument_sha256": {
+    "scripts/showready/.gitattributes": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9",
+    "scripts/showready/README.md": "f2fd54ffcd2c44eb8894bb238364c644a9285cc49302f18a587d070f24806f24",
+    "scripts/showready/SHA256SUMS": "d21154f8dee753f631bb344cd24cb3791750fef9a76279afb0adbaeadd7ff884",
+    "scripts/showready/ab_run.py": "015a326e7761025fd7c0b838bd9bb10af3dd1982378cf30fca3f71ff8488feee",
+    "scripts/showready/capture_runner.py": "c254085b20553f64d9ba03a869367edad613c839e900b6a97d3fd77b26e4861d",
+    "scripts/showready/deck_script.py": "c0661d3331140f0571e593b87f72bfb6b1ac2b632b96cb97208f941fbd2a8f72",
+    "scripts/showready/timing_ab.py": "df8b45cd411085f2d34cfb9504db8652737f38a20fd8c24f3a4b5f9150048e8e",
+    "scripts/showready/timing_browser.cjs": "23f89a1360aab4e32abc6661c2f76622eeccd5c2adacaddef830fa150d0fa21a",
+    "scripts/showready/timing_script.json": "ffd4e26716f660a98365e77bb5a159c15b6067dc4a824127245f267489913a12",
+    "scripts/showready/timing_script.py": "c4417699bf5c8f40ca771b91e244f73ecf8cb902218c86c35d606fd747ba6e83",
+    "scripts/showready/timing_subset_check.py": "8a06ea19310034a8eb1ae702056b20cb6df7973ca0a7e6a7b6ad15ceffadf6fa",
+    "scripts/showready/ui_geometry.py": "39a5ddab2c9e8478f445e9f17e76d8318f6a402da9d942ddda05923b14f17bf4",
+    "scripts/showready/ui_geometry.sh": "046dd157b4ed7335d435561025288862b5b399a72912c4985bbc291dd2584656",
+    "scripts/showready/win_guard.ps1": "ae0032500ecd3dc87ffafd6aaf10b4839306ceb81fdde2d5d9d9b20afff8b93a",
+    "scripts/showready/win_rail.sh": "e9dc0ead29e91be11f1a4a2d57a4cbe272d1e5e2c791a8055834f5768277c1e8"
+  },
+  "rows": [
+    {
+      "arm": "CLOSED",
+      "identical": true,
+      "load_status": "UNVERIFIED-LOAD",
+      "midi_messages": 9644,
+      "minimum_timed_midi_messages": 1000,
+      "publisher_dropped": 23990,
+      "repeat": 1,
+      "statistics_ms": {
+        "count": 9638,
+        "max": 2387.840416,
+        "p50": 1.21575,
+        "p95": 194.31547044998635,
+        "p99": 1954.0495813699815
+      },
+      "stream_dropped": null,
+      "timed_midi_messages": 9638,
+      "timing_status": "VALID",
+      "worst_case_statistics_ms": {
+        "count": 9016,
+        "max": 45.7545,
+        "p50": 1.1942499999999998,
+        "p95": 1.9702705,
+        "p99": 21.399659900000028
+      },
+      "wall_seconds": 73.792243833,
+      "checks": [
+        {
+          "before": {
+            "command": "pgrep -f \"while True: pass\"",
+            "exit_code": 3,
+            "load_average": [
+              3.2626953125,
+              3.3125,
+              3.4375
+            ],
+            "status": "unreadable",
+            "stderr": "sysmon request failed with error: sysmond service not found\npgrep: Cannot get process list\n",
+            "stdout": ""
+          },
+          "after": {
+            "command": "pgrep -f \"while True: pass\"",
+            "exit_code": 3,
+            "load_average": [
+              3.828125,
+              3.54736328125,
+              3.517578125
+            ],
+            "status": "unreadable",
+            "stderr": "sysmon request failed with error: sysmond service not found\npgrep: Cannot get process list\n",
+            "stdout": ""
+          },
+          "load_status": "UNVERIFIED-LOAD"
+        }
+      ],
+      "cleanup": {
+        "exit_code": -15,
+        "pid": 21869,
+        "pid_gone": true,
+        "proof": "Popen.wait + kill(pid,0)",
+        "was_alive": true
+      },
+      "stream_data_events": null,
+      "pacing": {
+        "other-axes-60hz/GYRO_PITCH": {
+          "count": 17,
+          "max_ns": 16705416,
+          "median_ns": 16682959,
+          "min_ns": 16675209,
+          "no_overspeed": true
+        },
+        "other-axes-60hz/GYRO_ROLL": {
+          "count": 17,
+          "max_ns": 16688000,
+          "median_ns": 16676667,
+          "min_ns": 16674208,
+          "no_overspeed": true
+        },
+        "other-axes-60hz/GYRO_YAW": {
+          "count": 17,
+          "max_ns": 16687875,
+          "median_ns": 16677709,
+          "min_ns": 16675333,
+          "no_overspeed": true
+        },
+        "other-axes-60hz/L_PAD_X_POS": {
+          "count": 17,
+          "max_ns": 16709083,
+          "median_ns": 16679167,
+          "min_ns": 16675042,
+          "no_overspeed": true
+        },
+        "other-axes-60hz/L_PAD_Y_POS": {
+          "count": 17,
+          "max_ns": 16688458,
+          "median_ns": 16676083,
+          "min_ns": 16673959,
+          "no_overspeed": true
+        },
+        "other-axes-60hz/R_PAD_X_POS": {
+          "count": 17,
+          "max_ns": 16691000,
+          "median_ns": 16676125,
+          "min_ns": 16673584,
+          "no_overspeed": true
+        },
+        "other-axes-60hz/R_PAD_Y_POS": {
+          "count": 17,
+          "max_ns": 16702958,
+          "median_ns": 16677083,
+          "min_ns": 16674958,
+          "no_overspeed": true
+        },
+        "simultaneous-sticks-triggers-60hz/L_STICK_X_AXIS": {
+          "count": 2519,
+          "max_ns": 18576917,
+          "median_ns": 16706000,
+          "min_ns": 16688666,
+          "no_overspeed": true
+        },
+        "simultaneous-sticks-triggers-60hz/L_STICK_Y_AXIS": {
+          "count": 2519,
+          "max_ns": 18482458,
+          "median_ns": 16706333,
+          "min_ns": 16691250,
+          "no_overspeed": true
+        },
+        "simultaneous-sticks-triggers-60hz/L_TRIGGER_PRESSURE": {
+          "count": 2519,
+          "max_ns": 19277625,
+          "median_ns": 16706416,
+          "min_ns": 16690167,
+          "no_overspeed": true
+        },
+        "simultaneous-sticks-triggers-60hz/R_STICK_X_AXIS": {
+          "count": 2519,
+          "max_ns": 18585875,
+          "median_ns": 16706500,
+          "min_ns": 16691375,
+          "no_overspeed": true
+        },
+        "simultaneous-sticks-triggers-60hz/R_STICK_Y_AXIS": {
+          "count": 2519,
+          "max_ns": 18849167,
+          "median_ns": 16706375,
+          "min_ns": 16690750,
+          "no_overspeed": true
+        },
+        "simultaneous-sticks-triggers-60hz/R_TRIGGER_PRESSURE": {
+          "count": 2519,
+          "max_ns": 19313042,
+          "median_ns": 16706292,
+          "min_ns": 16689875,
+          "no_overspeed": true
+        }
+      }
+    },
+    {
+      "arm": "OPEN",
+      "identical": true,
+      "load_status": "UNVERIFIED-LOAD",
+      "midi_messages": 9644,
+      "minimum_timed_midi_messages": 1000,
+      "publisher_dropped": 23990,
+      "repeat": 1,
+      "statistics_ms": {
+        "count": 9638,
+        "max": 10909.970959,
+        "p50": 5113.717917,
+        "p95": 10391.091173199999,
+        "p99": 10797.5077375
+      },
+      "stream_dropped": 0,
+      "timed_midi_messages": 9638,
+      "timing_status": "VALID",
+      "worst_case_statistics_ms": {
+        "count": 9016,
+        "max": 10909.970959,
+        "p50": 5458.068666499999,
+        "p95": 10421.917218999999,
+        "p99": 10804.0841437
+      },
+      "wall_seconds": 74.135180041,
+      "checks": [
+        {
+          "before": {
+            "command": "pgrep -f \"while True: pass\"",
+            "exit_code": 3,
+            "load_average": [
+              3.828125,
+              3.54736328125,
+              3.517578125
+            ],
+            "status": "unreadable",
+            "stderr": "sysmon request failed with error: sysmond service not found\npgrep: Cannot get process list\n",
+            "stdout": ""
+          },
+          "after": {
+            "command": "pgrep -f \"while True: pass\"",
+            "exit_code": 3,
+            "load_average": [
+              4.263671875,
+              3.75927734375,
+              3.5986328125
+            ],
+            "status": "unreadable",
+            "stderr": "sysmon request failed with error: sysmond service not found\npgrep: Cannot get process list\n",
+            "stdout": ""
+          },
+          "load_status": "UNVERIFIED-LOAD"
+        }
+      ],
+      "cleanup": {
+        "exit_code": -15,
+        "pid": 25133,
+        "pid_gone": true,
+        "proof": "Popen.wait + kill(pid,0)",
+        "was_alive": true
+      },
+      "stream_data_events": 12218,
+      "pacing": {
+        "other-axes-60hz/GYRO_PITCH": {
+          "count": 17,
+          "max_ns": 16705041,
+          "median_ns": 16688500,
+          "min_ns": 16677875,
+          "no_overspeed": true
+        },
+        "other-axes-60hz/GYRO_ROLL": {
+          "count": 17,
+          "max_ns": 16849000,
+          "median_ns": 16689708,
+          "min_ns": 16681542,
+          "no_overspeed": true
+        },
+        "other-axes-60hz/GYRO_YAW": {
+          "count": 17,
+          "max_ns": 16741291,
+          "median_ns": 16707500,
+          "min_ns": 16688584,
+          "no_overspeed": true
+        },
+        "other-axes-60hz/L_PAD_X_POS": {
+          "count": 17,
+          "max_ns": 16778583,
+          "median_ns": 16693500,
+          "min_ns": 16678375,
+          "no_overspeed": true
+        },
+        "other-axes-60hz/L_PAD_Y_POS": {
+          "count": 17,
+          "max_ns": 16919167,
+          "median_ns": 16708750,
+          "min_ns": 16687125,
+          "no_overspeed": true
+        },
+        "other-axes-60hz/R_PAD_X_POS": {
+          "count": 17,
+          "max_ns": 16888958,
+          "median_ns": 16709375,
+          "min_ns": 16692000,
+          "no_overspeed": true
+        },
+        "other-axes-60hz/R_PAD_Y_POS": {
+          "count": 17,
+          "max_ns": 16879708,
+          "median_ns": 16699667,
+          "min_ns": 16688791,
+          "no_overspeed": true
+        },
+        "simultaneous-sticks-triggers-60hz/L_STICK_X_AXIS": {
+          "count": 2519,
+          "max_ns": 35357250,
+          "median_ns": 16773625,
+          "min_ns": 16700334,
+          "no_overspeed": true
+        },
+        "simultaneous-sticks-triggers-60hz/L_STICK_Y_AXIS": {
+          "count": 2519,
+          "max_ns": 35264084,
+          "median_ns": 16773625,
+          "min_ns": 16702000,
+          "no_overspeed": true
+        },
+        "simultaneous-sticks-triggers-60hz/L_TRIGGER_PRESSURE": {
+          "count": 2519,
+          "max_ns": 34696750,
+          "median_ns": 16774208,
+          "min_ns": 16698750,
+          "no_overspeed": true
+        },
+        "simultaneous-sticks-triggers-60hz/R_STICK_X_AXIS": {
+          "count": 2519,
+          "max_ns": 35066958,
+          "median_ns": 16773666,
+          "min_ns": 16701916,
+          "no_overspeed": true
+        },
+        "simultaneous-sticks-triggers-60hz/R_STICK_Y_AXIS": {
+          "count": 2519,
+          "max_ns": 34883083,
+          "median_ns": 16774084,
+          "min_ns": 16703375,
+          "no_overspeed": true
+        },
+        "simultaneous-sticks-triggers-60hz/R_TRIGGER_PRESSURE": {
+          "count": 2519,
+          "max_ns": 34677334,
+          "median_ns": 16773542,
+          "min_ns": 16701667,
+          "no_overspeed": true
+        }
+      }
+    },
+    {
+      "arm": "CLOSED-B",
+      "identical": true,
+      "load_status": "UNVERIFIED-LOAD",
+      "midi_messages": 9644,
+      "minimum_timed_midi_messages": 1000,
+      "publisher_dropped": 23990,
+      "repeat": 1,
+      "statistics_ms": {
+        "count": 9638,
+        "max": 2341.760041,
+        "p50": 1.265063,
+        "p95": 204.40675974999996,
+        "p99": 1894.7407060399998
+      },
+      "stream_dropped": null,
+      "timed_midi_messages": 9638,
+      "timing_status": "VALID",
+      "worst_case_statistics_ms": {
+        "count": 9016,
+        "max": 36.703875,
+        "p50": 1.2426665,
+        "p95": 2.22521925,
+        "p99": 7.185823150000027
+      },
+      "wall_seconds": 73.846858708,
+      "checks": [
+        {
+          "before": {
+            "command": "pgrep -f \"while True: pass\"",
+            "exit_code": 3,
+            "load_average": [
+              4.263671875,
+              3.75927734375,
+              3.5986328125
+            ],
+            "status": "unreadable",
+            "stderr": "sysmon request failed with error: sysmond service not found\npgrep: Cannot get process list\n",
+            "stdout": ""
+          },
+          "after": {
+            "command": "pgrep -f \"while True: pass\"",
+            "exit_code": 3,
+            "load_average": [
+              5.11083984375,
+              4.0791015625,
+              3.7265625
+            ],
+            "status": "unreadable",
+            "stderr": "sysmon request failed with error: sysmond service not found\npgrep: Cannot get process list\n",
+            "stdout": ""
+          },
+          "load_status": "UNVERIFIED-LOAD"
+        }
+      ],
+      "cleanup": {
+        "exit_code": -15,
+        "pid": 29464,
+        "pid_gone": true,
+        "proof": "Popen.wait + kill(pid,0)",
+        "was_alive": true
+      },
+      "stream_data_events": null,
+      "pacing": {
+        "other-axes-60hz/GYRO_PITCH": {
+          "count": 17,
+          "max_ns": 16691000,
+          "median_ns": 16681083,
+          "min_ns": 16675291,
+          "no_overspeed": true
+        },
+        "other-axes-60hz/GYRO_ROLL": {
+          "count": 17,
+          "max_ns": 16690375,
+          "median_ns": 16680041,
+          "min_ns": 16675792,
+          "no_overspeed": true
+        },
+        "other-axes-60hz/GYRO_YAW": {
+          "count": 17,
+          "max_ns": 16705875,
+          "median_ns": 16690792,
+          "min_ns": 16678875,
+          "no_overspeed": true
+        },
+        "other-axes-60hz/L_PAD_X_POS": {
+          "count": 17,
+          "max_ns": 16687333,
+          "median_ns": 16677083,
+          "min_ns": 16675125,
+          "no_overspeed": true
+        },
+        "other-axes-60hz/L_PAD_Y_POS": {
+          "count": 17,
+          "max_ns": 16685583,
+          "median_ns": 16680875,
+          "min_ns": 16674583,
+          "no_overspeed": true
+        },
+        "other-axes-60hz/R_PAD_X_POS": {
+          "count": 17,
+          "max_ns": 16681000,
+          "median_ns": 16676333,
+          "min_ns": 16674000,
+          "no_overspeed": true
+        },
+        "other-axes-60hz/R_PAD_Y_POS": {
+          "count": 17,
+          "max_ns": 16682833,
+          "median_ns": 16678541,
+          "min_ns": 16674958,
+          "no_overspeed": true
+        },
+        "simultaneous-sticks-triggers-60hz/L_STICK_X_AXIS": {
+          "count": 2519,
+          "max_ns": 25211166,
+          "median_ns": 16714292,
+          "min_ns": 16691625,
+          "no_overspeed": true
+        },
+        "simultaneous-sticks-triggers-60hz/L_STICK_Y_AXIS": {
+          "count": 2519,
+          "max_ns": 24041000,
+          "median_ns": 16714875,
+          "min_ns": 16692833,
+          "no_overspeed": true
+        },
+        "simultaneous-sticks-triggers-60hz/L_TRIGGER_PRESSURE": {
+          "count": 2519,
+          "max_ns": 27747042,
+          "median_ns": 16715208,
+          "min_ns": 16692917,
+          "no_overspeed": true
+        },
+        "simultaneous-sticks-triggers-60hz/R_STICK_X_AXIS": {
+          "count": 2519,
+          "max_ns": 27489792,
+          "median_ns": 16714959,
+          "min_ns": 16693500,
+          "no_overspeed": true
+        },
+        "simultaneous-sticks-triggers-60hz/R_STICK_Y_AXIS": {
+          "count": 2519,
+          "max_ns": 27686459,
+          "median_ns": 16715042,
+          "min_ns": 16693834,
+          "no_overspeed": true
+        },
+        "simultaneous-sticks-triggers-60hz/R_TRIGGER_PRESSURE": {
+          "count": 2519,
+          "max_ns": 29065333,
+          "median_ns": 16714958,
+          "min_ns": 16691917,
+          "no_overspeed": true
+        }
+      }
+    }
+  ],
+  "worst_case": {
+    "name": "simultaneous-sticks-triggers-60hz",
+    "pooled_ms": {
+      "CLOSED": {
+        "count": 9016,
+        "max": 45.7545,
+        "p50": 1.1942499999999998,
+        "p95": 1.9702705,
+        "p99": 21.399659900000028
+      },
+      "CLOSED-B": {
+        "count": 9016,
+        "max": 36.703875,
+        "p50": 1.2426665,
+        "p95": 2.22521925,
+        "p99": 7.185823150000027
+      },
+      "OPEN": {
+        "count": 9016,
+        "max": 10909.970959,
+        "p50": 5458.068666499999,
+        "p95": 10421.917218999999,
+        "p99": 10804.0841437
+      }
+    }
+  },
+  "rule": {
+    "floor_can_resolve_2ms": true,
+    "noise_floor_ms": {
+      "p50": 0.04931299999999994,
+      "p95": 10.091289300013614,
+      "p99": 59.308875329981674
+    },
+    "open_delta_ms": {
+      "p50": 5112.502167,
+      "p95": 10196.775702750012,
+      "p99": 8843.458156130018
+    },
+    "passed": false,
+    "valid_arms": true,
+    "within": {
+      "p50": false,
+      "p95": false,
+      "p99": false
+    }
+  },
+  "bar3_counts": false,
+  "measurement_qualified": false,
+  "wall_seconds": 235.73297108296538,
+  "raw_verified": true
+}

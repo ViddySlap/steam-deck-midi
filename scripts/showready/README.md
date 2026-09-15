@@ -267,7 +267,7 @@ free non-default loopback UDP/TCP ports. No real MIDI constructor is available.
 The candidate is resolved once. No installed bridge, port or preset is touched.
 
 The arms run serially in INTERLEAVED order CLOSED, OPEN, CLOSED-B, repeated
-R times. Default R=5, minimum 5. CLOSED has no HTTP client at all during replay;
+R times. Default R=5; clean qualification requires R>=5 and sensitivity R>=3. CLOSED has no HTTP client at all during replay;
 its in-process publisher snapshots must show zero clients. OPEN's Python client
 fetches snapshot, subscribes from its sequence, drains SSE as fast as it can,
 and refreshes/reconnects on drops as the page does. An additional 250 ms HTTP
@@ -325,6 +325,11 @@ a byte difference, client death or packet loss alone does not prove sensitivity.
 If the NOISE FLOOR is wide enough that the 2 ms sensitivity control passes,
 bar 3 does not count and the report says so.
 
+The injected 2 ms fault uses a perf_counter_ns deadline with sleep(0) yields
+inside the disposable publisher. A positive sleep(0.002) can expand to an OS
+timer tick and overrun this workload; no production code or clean arm is changed.
+The deadline is a minimum, so host scheduling can still extend the delay.
+
 The clean command needs `--sensitivity-result` from the same candidate, script,
 preset, host/Python runtime, receiver clock, client command and pinned instrument. It must be a
 qualified 2 ms timing RED with complete valid arms and identical bytes. This
@@ -335,13 +340,72 @@ exit 0. The sensitivity control is expected to exit 1; inspect
 CLOSED/CLOSED-B comparison against its measured floor; that timing inequality
 holds by construction and does not independently certify low host noise.
 
+### Pinned short timing workload (sdlive E4)
+
+`--script <path>` was already required in E3 and remains explicit. The full
+Deck generator and bar 1 commands above are unchanged. For bar 3 use the
+committed `scripts/showready/timing_script.json`; the gate does not edit or
+regenerate the release workload in place.
+
+The E4 generator selects events from the pinned full Deck script (logical
+SHA256 `9256621abf62eb21e6c345ef286b6b7fcc087a2db87b8f682ce7fcf7703a993e`).
+It changes only selection, order and pacing. Regeneration is exclusive-create:
+
+```bash
+mkdir -p /tmp/sdlive-gate
+shasum -a 256 -c scripts/showready/SHA256SUMS
+.venv/bin/python -B scripts/showready/deck_script.py --out /tmp/sdlive-gate/deck-script.json
+.venv/bin/python -B scripts/showready/timing_subset_check.py scripts/showready/timing_script.json /tmp/sdlive-gate/deck-script.json
+.venv/bin/python -B scripts/showready/timing_script.py /tmp/sdlive-gate/deck-script.json --out /tmp/sdlive-gate/regenerated-timing.json
+cmp scripts/showready/timing_script.json /tmp/sdlive-gate/regenerated-timing.json
+```
+
+The generator command reports composition and duration: 124 button events
+(62 IDs, exactly one down/up pair each), 15,246 axis events and 5,143 legal
+heartbeat timer probes. Schedule: 70.400000882 seconds. Button down dwell is
+100 ms, release gap 250 ms; an additional 2.25 s settles timers before the
+worst case, and after the last axis. Button timers may overlap during the
+button segment; attribution retains their initiating input. Bar 1 still uses
+its full, isolated-timer workload.
+
+The named `simultaneous-sticks-triggers-60hz` segment contains 2,520 ticks,
+42.000000840 seconds: L/R stick X/Y plus L/R trigger pressure every tick,
+interleaved in that order. Per-axis tick interval is 16,666,667 ns, rounded
+from `deck/xinput_send.py`'s `AXIS_MIN_INTERVAL = 1.0 / 60.0`. One-nanosecond
+ordering offsets represent each tick's batch in the existing strictly ordered
+packet format. Real sends take measurable time, retain every scheduled gap,
+and never catch up. Pacing evidence follows EACH axis across interleaved ticks;
+zero intervals or overspeed fail. Remaining seven axes also sweep at 60 Hz.
+The mechanical subset check examines every decoded wire packet and step,
+ignores only sequence numbers, rejects foreign encodings and mismatched
+step/packet metadata, and refuses an empty script.
+
+Each arm reports `timed_midi_messages` and `timing_status`. Fewer than 1,000
+causally timed MIDI messages is `INVALID`, even with identical bytes and green
+latency inequalities. Startup output cannot pay this floor. Both per-repeat
+and pooled verdicts refuse an invalid arm. Rows include the worst segment's
+own p50/p95/p99/max/count; `summary.worst_case.pooled_ms` pools only that
+segment's messages across repeats, selected by causal input step. An empty
+worst-case population fails. The locked inequality still uses the full pooled
+population; separate segment statistics remain visible for inspection.
+
 ### Duration and load qualification
 
-The FULL pinned script lasts 469.716666743 seconds before scheduling overhead.
-Five interleaved triplets need at least 7045.750001145 seconds (117.43 minutes),
-plus startup/cleanup. R=5 minimizes this mandatory cost. A roughly ten-minute
-full-rate run is mathematically incompatible with this script and R>=5.
-Do not truncate it or accelerate it for release credit.
+Clean qualification requires R>=5. The approved 2 ms sensitivity control
+requires R>=3. Smaller R (including R=1) runs diagnostically and can never
+qualify. Speed must remain 1. Mac Python-client runs are always DIAGNOSTIC;
+Mac qualification requires the real Chromium client through `--client-cmd`.
+Windows may use the Python client only under the fallback described below.
+
+Nominal schedule costs, computed as `70.400000882 * 3 * R / 60`:
+R=5 clean = 17.600000221 minutes; R=3 sensitivity = 10.560000132 minutes.
+E4's R=1 Python validation measured about 74 seconds of replay per arm.
+Budget about 19-21 minutes for each qualifying clean command, 12-14 minutes
+for each sensitivity command, and 31-35 minutes total per host/client pair.
+These are estimates, UNVERIFIED-BY-EXECUTION for Chromium/Edge qualification;
+startup, browser cleanup, host scheduling and load retries add wall time.
+A one-triplet Python diagnostic is about 4 minutes. Every actual replay
+retains `wall_seconds`; the outer result also records total wall time.
 
 Before AND after every attempted arm, Mac runs `pgrep -f "while True: pass"`
 and records stdout, stderr, exit code and `os.getloadavg()`. Only exit 1 with
@@ -351,64 +415,74 @@ Unreadable inventory fails closed unless `--allow-unverified-load` is explicitly
 set: then every affected arm is UNVERIFIED-LOAD and cannot earn bar 3 credit.
 Windows records `not applicable` for pgrep and load average.
 
-For executor diagnostics ONLY, `--speed 15 --allow-unverified-load` compresses
-wall pacing, retaining the complete script and its receiver logical time.
-It also drains the preceding bridge loop before each accelerated packet to
-prevent compressed timer probes overflowing UDP in the sleep mutant. Neither
-acceleration nor this drain exists at speed 1. This mode targets approximately
-ten minutes per five-triplet run; wall time is recorded, not promised. It is
-never a timing qualification. The gate's unaccelerated load-verified run is
-authoritative. Hardware and Windows suite remain separate show-ready bars.
+### QUALIFYING commands: Mac with real Chromium
 
-### Gate commands: Mac
-
-From this checkout, generate once, then run sensitivity followed by clean:
+Run from the Mac checkout, one command at a time. Use the same candidate,
+script and client argv in both commands; keep the kit unchanged between them.
+The earlier pin/subset verification must pass first. These commands have no
+accelerated or unverified-load flags. Each repeat is CLOSED / OPEN / CLOSED-B.
+The sensitivity command should exit 1 with complete valid arms, identical
+bytes and `sensitivity_timing_red:true`. An invalid arm is not sensitivity proof.
+The clean command validates that receipt itself; only `bar3_counts:true` earns
+credit. Do not interpret the control's exit code alone as success.
 
 ```bash
-mkdir -p /tmp/sdlive-gate
-.venv/bin/python -B scripts/showready/deck_script.py --out /tmp/sdlive-gate/deck-script.json
-.venv/bin/python -B scripts/showready/timing_ab.py --candidate HEAD --script /tmp/sdlive-gate/deck-script.json --scratch /tmp/sdlive-gate/sensitivity --out /tmp/sdlive-gate/sensitivity.json.gz --control sensitivity
-.venv/bin/python -B scripts/showready/timing_ab.py --candidate HEAD --script /tmp/sdlive-gate/deck-script.json --scratch /tmp/sdlive-gate/clean --out /tmp/sdlive-gate/clean.json.gz --sensitivity-result /tmp/sdlive-gate/sensitivity.json.gz
-.venv/bin/python -B scripts/showready/timing_ab.py --candidate HEAD --script /tmp/sdlive-gate/deck-script.json --scratch /tmp/sdlive-gate/dead --out /tmp/sdlive-gate/dead.json.gz --control dead-client
+.venv/bin/python -B scripts/showready/timing_ab.py --candidate HEAD --script scripts/showready/timing_script.json --repeats 3 --control sensitivity --scratch /tmp/sdlive-gate/mac-sensitivity --out /tmp/sdlive-gate/mac-sensitivity.json.gz --client-cmd '["node","/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/timing_browser.cjs","{url}","{stop}","{receipt}","/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell","--single-process"]'
+.venv/bin/python -B scripts/showready/timing_ab.py --candidate HEAD --script scripts/showready/timing_script.json --repeats 5 --scratch /tmp/sdlive-gate/mac-clean --out /tmp/sdlive-gate/mac-clean.json.gz --sensitivity-result /tmp/sdlive-gate/mac-sensitivity.json.gz --client-cmd '["node","/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/timing_browser.cjs","{url}","{stop}","{receipt}","/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell","--single-process"]'
 ```
 
-### Real browser hook (Mac and Windows)
+Mac Python-client validation, DIAGNOSTIC only (about 4 minutes):
+
+```bash
+.venv/bin/python -B scripts/showready/timing_ab.py --candidate HEAD --script scripts/showready/timing_script.json --repeats 1 --allow-unverified-load --scratch /tmp/sdlive-gate/mac-diagnostic --out /tmp/sdlive-gate/mac-diagnostic.json.gz
+```
+
+### Real browser hook and owned process cleanup
 
 `--client-cmd` is a JSON argv array, run directly without a shell.
-`--client-cmd-file` reads that array from a JSON file, avoiding PowerShell
-native-argument quote stripping. `{url}`,
-`{stop}` and `{receipt}` placeholders are required. The command stays foreground,
-owns its browser, never daemonizes, and writes an atomic JSON receipt with
-`ready:true` after Controller is visible, live, and Follow is ON. It polls the
-stop-file path and gracefully closes every owned child before exiting 0. The
-final receipt reports `browser_pids`, `data_events`, `dropped`, and `error:null`.
-The driver requests stop, waits, checks its process handle and checks each
-reported browser PID (kill(pid,0) on Mac; a file-backed Get-Process script on
-Windows). A missing receipt/PID, early exit or failed teardown invalidates the
-arm. Gate must additionally retain the Windows guard's final Python inventory.
+`--client-cmd-file` reads the same array from a file for PowerShell.
+`{url}`, `{stop}` and `{receipt}` placeholders are required. The foreground
+adapter `timing_browser.cjs` creates a fresh profile, opens the real Controller,
+enables Follow and consumes native EventSource events. Its ready receipt and
+periodic page checks require Controller visible, live and Follow ON.
+`PLAYWRIGHT_CORE` may point at an EXISTING playwright-core module.
 
-The pinned adapter `timing_browser.cjs` creates a fresh browser profile, opens
-the real Controller page, enables Follow, consumes native EventSource events,
-and samples actual visibility/live/Follow state. It closes the browser server
-and reports the browser PID for the driver's independent absence check.
-`PLAYWRIGHT_CORE` may identify an existing playwright-core installation.
+The driver requests cooperative stop and waits for the adapter. The adapter
+closes its owned browser server, then records `browser_pids`, `data_events`,
+`dropped` and `error:null`. Playwright's Windows kill fallback addresses only
+its launched PID tree (`taskkill /pid <owned pid> /T /F`), never an image name.
+The driver independently checks each recorded PID with a file-backed
+Get-Process script on Windows (kill(pid,0) on Mac). Missing receipts, early
+exit or failed teardown invalidate an arm. Retain the final guard's Python
+inventory as well. If any cleanup fails, stop, inspect the recorded owned PIDs
+and clean up only those PID trees before the final guard; never kill Edge,
+Python or the installed tray by process name.
 
-Add this identical option to BOTH sensitivity and clean commands on the Mac:
+### QUALIFYING commands: laptop with headless Edge
 
-```bash
---client-cmd '["node","/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/timing_browser.cjs","{url}","{stop}","{receipt}","/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell","--single-process"]'
-```
+UNVERIFIED-BY-EXECUTION in E4. Only the gate touches the laptop. Run the guard
+snapshot BEFORE the first act and compare AFTER the last act, including
+artifact downloads and cleanup. Use `win_rail.sh`, the clone venv and existing
+verified fixtures. Confirm pulled clone HEAD equals pushed Mac HEAD. Never
+modify the orphan checkout. The sectioned Mac EDM Show fixture is consumed
+with section `windows` on both hosts. No MIDI ports are available to the arms.
 
-### Gate commands: laptop (UNVERIFIED-BY-EXECUTION in E3)
+Save this body as `/tmp/sdlive-gate/timing.ps1`, then run the rail command below.
+An existing Node/playwright-core installation is needed for the Edge adapter.
+If dependencies are absent, select the Python fallback without any install.
+If an existing Edge fails to launch, preserve the failed receipt, prove every
+owned process gone, then rerun with `-PythonClient` to obtain BOTH a new
+sensitivity receipt and clean result. A needed installer download instead is
+NEEDS-MASTER and a stop, never a workaround.
 
-Only the gate runs these, with the existing win_rail.sh guard snapshot BEFORE
-its first laptop act and guard compare AFTER its last, including downloads.
-Use the clone venv, verify clone HEAD after pull, and put this body in a local
-.ps1 carried by `scripts/showready/win_rail.sh run sdlive-gate <local.ps1>`.
-No inline PowerShell. Do not change/install dependencies if absent: escalate.
-The sectioned EDM Show fixture is the verified MAC fixture on both hosts.
+When using the fallback, the gate's REPORT.md MUST state: "The real-browser
+case is measured on the Mac only. Laptop timing used the Python streaming
+client because <observed reason>." Do not claim Edge timing from Python data.
+Both client modes require R=3 sensitivity then R=5 clean, with their own
+matching receipt. Estimated wall time: 12-14 minutes then 19-21 minutes.
 
 ```powershell
+param([switch]$PythonClient)
 $ErrorActionPreference = 'Stop'
 Set-Location 'C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc'
 $work = 'C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate'
@@ -416,31 +490,52 @@ New-Item -ItemType Directory -Force -Path $work | Out-Null
 $python = (Resolve-Path '.\.venv\Scripts\python.exe').Path
 $env:PYSTRAY_BACKEND = 'dummy'
 $env:BROWSER = 'C:/Windows/System32/cmd.exe /c rem %s'
+$env:TMP = $work
+$env:TEMP = $work
 function Invoke-TrackedPython([string[]]$PythonArgs) {
-  $child = Start-Process -FilePath $python -ArgumentList $PythonArgs -PassThru -NoNewWindow
+  # Paths passed here have no embedded quotes; quote EACH argument for Windows.
+  $quoted = $PythonArgs | ForEach-Object { '"' + $_ + '"' }
+  $child = Start-Process -FilePath $python -ArgumentList $quoted -PassThru -NoNewWindow
   $child.Id | Add-Content -Encoding ascii -Path "$work\python-pids.txt"
+  $null = $child.Handle
   $child.WaitForExit()
   $code = $child.ExitCode
   if (Get-Process -Id $child.Id -ErrorAction SilentlyContinue) { throw 'Python PID still exists' }
   return $code
 }
+$code = Invoke-TrackedPython @('-B', '-m', 'unittest', 'tests.test_showready_rail.ShowreadyPinTests.test_pins_match_exact_file_set_and_bytes')
+if ($code -ne 0) { exit $code }
 $code = Invoke-TrackedPython @('-B', 'scripts/showready/deck_script.py', '--out', "$work\deck-script.json")
 if ($code -ne 0) { exit $code }
-# Set PLAYWRIGHT_CORE to the gate's already installed module. Verify Edge exists.
+$code = Invoke-TrackedPython @('-B', 'scripts/showready/timing_subset_check.py', 'scripts/showready/timing_script.json', "$work\deck-script.json")
+if ($code -ne 0) { exit $code }
+$common = @('-B', 'scripts/showready/timing_ab.py', '--candidate', 'HEAD', '--script', 'scripts/showready/timing_script.json')
 $edge = 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
-if (-not (Test-Path $edge)) { throw 'NEEDS-MASTER: existing browser required' }
-$client = @('node', "$PWD\scripts\showready\timing_browser.cjs", '{url}', '{stop}', '{receipt}', $edge) | ConvertTo-Json -Compress
-$client | Set-Content -Encoding ascii -Path "$work\client-command.json"
-$common = @('-B', 'scripts/showready/timing_ab.py', '--candidate', 'HEAD', '--script', "$work\deck-script.json", '--client-cmd-file', "$work\client-command.json")
-$code = Invoke-TrackedPython ($common + @('--scratch', "$work\sensitivity", '--out', "$work\sensitivity.json.gz", '--control', 'sensitivity'))
-if ($code -ne 1) { throw 'Expected sensitivity exit 1; inspect JSON timing inequality before continuing' }
-$cleanExit = Invoke-TrackedPython ($common + @('--scratch', "$work\clean", '--out', "$work\clean.json.gz", '--sensitivity-result', "$work\sensitivity.json.gz"))
-$code = Invoke-TrackedPython @('-B', 'scripts/showready/timing_ab.py', '--candidate', 'HEAD', '--script', "$work\deck-script.json", '--scratch', "$work\dead", '--out', "$work\dead.json.gz", '--control', 'dead-client')
-if ($code -ne 1) { throw 'Dead client was not rejected' }
+if (-not (Test-Path $edge)) { $edge = 'C:\Program Files\Microsoft\Edge\Application\msedge.exe' }
+$node = Get-Command node -ErrorAction SilentlyContinue
+if (-not $PythonClient -and ((-not (Test-Path $edge)) -or (-not $node) -or (-not $env:PLAYWRIGHT_CORE) -or (-not (Test-Path $env:PLAYWRIGHT_CORE)))) {
+  $PythonClient = $true
+  'Python fallback: existing Edge/Node/PLAYWRIGHT_CORE unavailable; real-browser case measured on Mac only.' | Set-Content -Encoding ascii "$work\client-choice.txt"
+}
+if (-not $PythonClient) {
+  $client = @($node.Source, "$PWD\scripts\showready\timing_browser.cjs", '{url}', '{stop}', '{receipt}', $edge) | ConvertTo-Json -Compress
+  $client | Set-Content -Encoding ascii -Path "$work\client-command.json"
+  $common += @('--client-cmd-file', "$work\client-command.json")
+  $label = 'edge'
+} else {
+  $label = 'python'
+}
+$code = Invoke-TrackedPython ($common + @('--repeats', '3', '--scratch', "$work\$label-sensitivity", '--out', "$work\$label-sensitivity.json.gz", '--control', 'sensitivity'))
+if ($code -ne 1) { throw 'Expected sensitivity exit 1; inspect JSON before continuing' }
+$cleanExit = Invoke-TrackedPython ($common + @('--repeats', '5', '--scratch', "$work\$label-clean", '--out', "$work\$label-clean.json.gz", '--sensitivity-result', "$work\$label-sensitivity.json.gz"))
 exit $cleanExit
 ```
 
-Wrap this work using the rail's Start-Process/PassThru PID recording convention,
-then Get-Process checks, downloads, and final guard compare. Do the Python-reader
-matrix separately by omitting `--client-cmd` from BOTH runs. The browser matrix
-must use its own sensitivity receipt. No E3 laptop command was executed.
+```bash
+scripts/showready/win_rail.sh run sdlive-gate scripts/showready/win_guard.ps1 -Mode snapshot -Out 'C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\before.json'
+# Clone sync, suite, fixture/pin checks, and any existing module selection belong here.
+scripts/showready/win_rail.sh run sdlive-gate /tmp/sdlive-gate/timing.ps1
+# Fallback only after failed browser cleanup is proved: same command with -PythonClient.
+# Download results and prove every recorded PID gone BEFORE final compare.
+scripts/showready/win_rail.sh run sdlive-gate scripts/showready/win_guard.ps1 -Mode compare -Baseline 'C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\before.json' -Out 'C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate\after.json'
+```

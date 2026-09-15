@@ -8,6 +8,7 @@ from pathlib import Path
 import platform
 import shutil
 import socket
+import statistics
 import subprocess
 import sys
 import tempfile
@@ -21,6 +22,7 @@ from ab_run import (KIT, ROOT, archive, compare, free_port, git, pacing_summary,
 from deck_script import canonical, effective, read_json, sha, validate, verify_fixtures
 
 BAR3_TOLERANCE_MS = 1.0
+MIN_TIMED_MIDI_MESSAGES = 1000
 STATISTICS = ('p50', 'p95', 'p99')
 ARMS = ('CLOSED', 'OPEN', 'CLOSED-B')
 
@@ -40,7 +42,7 @@ def stats(values):
             'max': max(values), 'count': len(values)}
 
 
-def verdict(closed, opened, closed_b, *, identical, dropped_reported, live):
+def verdict(closed, opened, closed_b, *, identical, dropped_reported, live, valid_arms=True):
     floor = {key: abs(closed[key] - closed_b[key]) for key in STATISTICS}
     delta = {key: abs(opened[key] - closed[key]) for key in STATISTICS}
     within = {key: delta[key] <= floor[key] + BAR3_TOLERANCE_MS for key in STATISTICS}
@@ -48,7 +50,62 @@ def verdict(closed, opened, closed_b, *, identical, dropped_reported, live):
     sensitivity_visible = any(2.0 > floor[k] + BAR3_TOLERANCE_MS for k in STATISTICS)
     return {'noise_floor_ms': floor, 'open_delta_ms': delta, 'within': within,
             'floor_can_resolve_2ms': sensitivity_visible,
-            'passed': all(within.values()) and identical and dropped_reported and live and sensitivity_visible}
+            'valid_arms': valid_arms,
+            'passed': all(within.values()) and identical and dropped_reported and live and sensitivity_visible and valid_arms}
+
+
+def power_floor(samples):
+    count = len(samples)
+    return {'timed_midi_messages': count, 'minimum_timed_midi_messages': MIN_TIMED_MIDI_MESSAGES,
+            'timing_status': 'VALID' if count >= MIN_TIMED_MIDI_MESSAGES else 'INVALID'}
+
+
+def sensitivity_delay(clock=time.perf_counter_ns, pause=lambda: time.sleep(0)):
+    """Plant 2 ms without a coarse positive sleep expanding it to a timer tick."""
+    deadline = clock() + 2_000_000
+    while clock() < deadline:
+        pause()
+
+
+def timing_pacing(script, sends, speed):
+    if script.get('schema') != 'sdlive-timing-script/1':
+        return pacing_summary(script, {'arm': sends}, speed)['arm']
+    grouped = {}
+    for step in script['steps']:
+        if step['event']['kind'] == 'axis':
+            key = step['segment'] + '/' + step['event']['action']
+            grouped.setdefault(key, []).append(step)
+    result = {}
+    for key, steps in grouped.items():
+        intervals = [sends[b['id']] - sends[a['id']] for a, b in zip(steps, steps[1:])]
+        minimums = [round((b['at_ns'] - a['at_ns']) / speed) for a, b in zip(steps, steps[1:])]
+        result[key] = {'count': len(intervals), 'min_ns': min(intervals) if intervals else None,
+                       'median_ns': statistics.median(intervals) if intervals else None,
+                       'max_ns': max(intervals) if intervals else None,
+                       'no_overspeed': bool(intervals) and all(a >= b for a, b in zip(intervals, minimums))}
+    if not result:
+        raise ValueError('Zero axis pacing observations')
+    return result
+
+
+def measurement_qualified(args, runs):
+    minimum_repeats = 3 if args.control == 'sensitivity' else 5
+    return (args.repeats >= minimum_repeats and args.speed == 1 and
+            (os.name == 'nt' or bool(args.client_cmd)) and
+            len(runs) == args.repeats * len(ARMS) and
+            all(r['load_status'] == 'verified' and r['arm']['passed'] and
+                power_floor(r['arm']['samples'])['timing_status'] == 'VALID' for r in runs))
+
+
+def sensitivity_matches(control, result):
+    return bool(control.get('sensitivity_timing_red') and
+        control.get('summary', {}).get('byte_identical') and
+        control.get('summary', {}).get('rule', {}).get('valid_arms') and
+        control.get('measurement_qualified') and control.get('control') == 'sensitivity' and
+        control.get('repeats', 0) >= 3 and
+        all(control.get(k) == result.get(k) for k in
+            ('host', 'candidate', 'preset_sha256', 'client', 'receiver_clock', 'instrument_sha256')) and
+        control.get('script', {}).get('sha256') == result['script']['sha256'])
 
 
 def load_check():
@@ -215,9 +272,10 @@ class CaptureTiming:
                     raise ValueError('MIDI not quiescent after timer horizon')
                 result.update(snapshot_after=self.live.snapshot(), received=read_json(done),
                               sends=self.sent, invalid=self.invalid, samples=self.samples,
-                              pacing=pacing_summary(self.script, {'arm': self.sent}, self.config['speed'])['arm'])
+                              pacing=timing_pacing(self.script, self.sent, self.config['speed']),
+                              **power_floor(self.samples))
                 result['passed'] = bool(self.samples) and not self.invalid and all(
-                    p['no_overspeed'] for p in result['pacing'].values())
+                    p['no_overspeed'] for p in result['pacing'].values()) and result['timing_status'] == 'VALID'
             except Exception as exc:
                 result['error'] = type(exc).__name__ + ': ' + str(exc)
             target = Path(self.config['result'])
@@ -448,11 +506,16 @@ def run_arm(args, tree, work, script, mappings, label):
             if process:
                 result['cleanup'] = stop_process(process)
                 result['passed'] &= result['cleanup']['pid_gone'] and result['cleanup']['was_alive']
+            result.update(power_floor(result.get('samples', [])))
+            result['passed'] &= result['timing_status'] == 'VALID'
     return result
 
 
 def summarize(runs, script):
     grouped = {name: [] for name in ARMS}
+    worst_grouped = {name: [] for name in ARMS}
+    worst_name = script.get('worst_case_segment')
+    steps = {s['id']: s for s in script['steps']}
     rows, per_repeat = [], []
     baseline = runs[0]['arm'].get('records', [])
     baseline_bytes = [(r['step'], r['bytes']) for r in baseline if r['record'] == 'midi']
@@ -470,20 +533,30 @@ def summarize(runs, script):
         row = {'repeat': item['repeat'], 'arm': name, 'statistics_ms': stats(values), 'identical': same,
                'load_status': item['load_status'], 'publisher_dropped': arm['snapshot_after']['dropped'],
                'stream_dropped': arm.get('stream', {}).get('dropped'),
-               'midi_messages': sum(r['record'] == 'midi' for r in arm['records'])}
+               'midi_messages': sum(r['record'] == 'midi' for r in arm['records']),
+               **power_floor(samples)}
+        if worst_name:
+            worst_values = [s['latency_ms'] for s in samples if steps[s['cause_step']].get('segment') == worst_name]
+            if not worst_values:
+                raise ValueError('Zero worst-case latency observations')
+            row['worst_case_statistics_ms'] = stats(worst_values)
+            worst_grouped[name].extend(worst_values)
         rows.append(row)
     pooled = {name: stats(values) for name, values in grouped.items()}
     drops = all(type(i['arm'].get('stream', {}).get('dropped')) is int for i in runs if i['name'] == 'OPEN')
     live = all(i['arm'].get('live_valid') for i in runs if i['name'] == 'OPEN')
-    outcome = verdict(pooled['CLOSED'], pooled['OPEN'], pooled['CLOSED-B'], identical=identical, dropped_reported=drops, live=live)
+    outcome = verdict(pooled['CLOSED'], pooled['OPEN'], pooled['CLOSED-B'], identical=identical,
+                      dropped_reported=drops, live=live,
+                      valid_arms=all(r['timing_status'] == 'VALID' for r in rows))
     for repeat in sorted({i['repeat'] for i in runs}):
         triplet = {r['arm']: r for r in rows if r['repeat'] == repeat}
         per_repeat.append({'repeat': repeat, **verdict(*(triplet[n]['statistics_ms'] for n in ARMS),
-            identical=all(r['identical'] for r in triplet.values()), dropped_reported=drops, live=live)})
-    steps = {s['id']: s for s in script['steps']}
+            identical=all(r['identical'] for r in triplet.values()), dropped_reported=drops, live=live,
+            valid_arms=all(r['timing_status'] == 'VALID' for r in triplet.values()))})
     outliers = sorted(({**s, 'repeat': i['repeat'], 'arm': i['name'], 'input': steps[s['cause_step']]}
                        for i in runs for s in i['arm']['samples']), key=lambda s: s['latency_ms'], reverse=True)[:5]
     return {'rows': rows, 'pooled_ms': pooled, 'rule': outcome, 'per_repeat': per_repeat,
+            'worst_case': {'name': worst_name, 'pooled_ms': {n: stats(v) for n, v in worst_grouped.items()}} if worst_name else None,
             'byte_identical': identical, 'top_five_outliers': outliers,
             'null_control': {'passed': identical and all(
                 abs(pooled['CLOSED'][k] - pooled['CLOSED-B'][k]) <=
@@ -492,6 +565,7 @@ def summarize(runs, script):
 
 
 def run(args):
+    started = time.perf_counter()
     result = {'schema': 'sdlive-timing/1', 'passed': False, 'bar3_counts': False, 'runs': [],
               'command': [sys.executable, *sys.argv], 'repeats': args.repeats, 'speed': args.speed,
               'receiver_clock': args.clock, 'control': args.control,
@@ -506,6 +580,7 @@ def run(args):
         script = read_json(args.script)
         validate(script)
         result['script'] = script
+        result['script_file_sha256'] = sha(args.script.read_bytes())
         result['instrument_sha256'] = {str(p.relative_to(ROOT)): sha(p.read_bytes()) for p in KIT.iterdir() if p.is_file()}
         verified = verify_fixtures(args.fixtures)
         preset = args.preset.resolve()
@@ -531,10 +606,11 @@ def run(args):
             anchor = '        ticket = next(self._tickets)'
             if original.count(anchor) != 1:
                 raise ValueError('Sensitivity mutation anchor drift')
-            mutated = original.replace(anchor, '        if self._clients:\n            time.sleep(0.002)\n' + anchor)
+            mutated = original.replace(anchor, '        if self._clients:\n            from timing_ab import sensitivity_delay\n            sensitivity_delay()\n' + anchor)
             source.write_text(mutated, encoding='utf-8')
             result['mutation'] = {'path': 'windows/live_events.py', 'before': sha(original.encode()),
-                                  'after': sha(source.read_bytes()), 'sleep_seconds': .002}
+                                  'after': sha(source.read_bytes()), 'sleep_seconds': .002,
+                                  'delay_method': 'perf_counter_ns deadline + sleep(0) yields; minimum 2 ms'}
         names = ('OPEN',) if args.control == 'dead-client' else ARMS
         for repeat in range(1, args.repeats + 1):
             for name in names:
@@ -546,12 +622,13 @@ def run(args):
                 # Persist after each arm; all attempts and errors remain reviewable.
                 write_result(args.out, result)
                 print(json.dumps({'repeat': repeat, 'arm': name, 'load': guarded['load_status'],
-                                  'accepted': guarded['accepted'], 'passed': guarded.get('arm', {}).get('passed')}), flush=True)
+                                  'accepted': guarded['accepted'], 'passed': guarded.get('arm', {}).get('passed'),
+                                  **power_floor((guarded.get('arm') or {}).get('samples', []))}), flush=True)
                 if not guarded['accepted'] or not guarded['arm']['passed']:
                     raise ValueError('Invalid arm: ' + name)
         result['summary'] = summarize(result['runs'], script)
         result['passed'] = result['summary']['rule']['passed']
-        qualified = (args.speed == 1 and all(r['load_status'] == 'verified' for r in result['runs']))
+        qualified = measurement_qualified(args, result['runs'])
         result['measurement_qualified'] = qualified
         if args.control == 'sensitivity':
             result['sensitivity_detected'] = not result['summary']['rule']['passed']
@@ -564,19 +641,11 @@ def run(args):
                 payload = args.sensitivity_result.read_bytes()
                 control = json.loads(gzip.decompress(payload) if payload[:2] == b'\x1f\x8b' else payload)
                 result['sensitivity_receipt_sha256'] = sha(payload)
-                result['sensitivity_valid'] = bool(control.get('sensitivity_timing_red') and
-                    control.get('summary', {}).get('byte_identical') and
-                    control.get('measurement_qualified') and control.get('control') == 'sensitivity' and
-                    control.get('host') == result['host'] and control.get('repeats', 0) >= 5 and
-                    control.get('candidate') == result['candidate'] and
-                    control.get('script', {}).get('sha256') == script['sha256'] and
-                    control.get('preset_sha256') == result['preset_sha256'] and
-                    control.get('client') == result['client'] and
-                    control.get('receiver_clock') == args.clock and
-                    control.get('instrument_sha256') == result['instrument_sha256'])
+                result['sensitivity_valid'] = sensitivity_matches(control, result)
             result['bar3_counts'] = result['passed'] and qualified and result.get('sensitivity_valid', False)
     except Exception as exc:
         result.update(passed=False, error=type(exc).__name__ + ': ' + str(exc))
+    result['wall_seconds'] = time.perf_counter() - started
     return result
 
 
@@ -603,8 +672,8 @@ def main():
     args = parser.parse_args()
     if args.client_cmd_file:
         args.client_cmd = read_json(args.client_cmd_file)
-    if args.repeats < 5 or not 0 < args.speed <= 50 or args.load_retries < 1:
-        parser.error('Requires repeats >=5, 0<speed<=50, load-retries >=1')
+    if args.repeats < 1 or not 0 < args.speed <= 50 or args.load_retries < 1:
+        parser.error('Requires repeats >=1 (clean qualification >=5; sensitivity >=3), 0<speed<=50, load-retries >=1')
     if args.client_cmd is not None and (not isinstance(args.client_cmd, list) or not args.client_cmd or
             not all(isinstance(s, str) for s in args.client_cmd) or
             not all(any(p in s for s in args.client_cmd) for p in ('{url}', '{stop}', '{receipt}'))):

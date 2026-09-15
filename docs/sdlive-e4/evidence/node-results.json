@@ -1,0 +1,38 @@
+[
+  {
+    "command": [
+      "node",
+      "tests/ui_controller_check.cjs"
+    ],
+    "exit_code": 0,
+    "stdout": "UI controller editing: PASS (all seven forms, isolation, validation, clear, macro parity, Advanced, conflict guard, drafts, sections, reset)\nUI controller live: PASS (snapshot/SSE lifecycle, highlights/groups, axes/clamps, pad expiry, gyro, exact MIDI rows, follow/drafts, 500-event frame bound)\nUI controller behavior: PASS (23 arrows, map anchors/shapes, front door, storage, drill-in, List handoff, commit, sections, reload, Escape, unique IDs, asset failure)\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "node",
+      "tests/ui_controller_macro_check.cjs"
+    ],
+    "exit_code": 0,
+    "stdout": "Controller macro parity: 48 disk writes match page Save; 72 incompatible writes refused without byte changes\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "node",
+      "tests/ui_reload_check.cjs"
+    ],
+    "exit_code": 0,
+    "stdout": "UI reload behavior: PASS (timer, clean editor/engines, dirty notice, explicit reload, in-flight edits, retry)\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "node",
+      "tests/ui_sections_check.cjs"
+    ],
+    "exit_code": 0,
+    "stdout": "UI section behavior: PASS (selection, dirty guard, engine refresh, remote save, shared inheritance, CRUD calls)\n",
+    "stderr": ""
+  }
+]

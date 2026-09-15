@@ -139,14 +139,14 @@ class TimingTests(unittest.TestCase):
             for name in timing.ARMS:
                 samples = [{'record': 'midi', 'step': 0, 'cause_step': 0,
                             'bytes': [144, 60, value], 'latency_ms': float(value)}
-                           for value in (1, 2, 3)]
+                           for value in (1, 2, 3) * 334]
                 runs.append({'name': name, 'repeat': repeat, 'load_status': 'verified',
                     'arm': {'records': samples, 'samples': samples,
                             'snapshot_after': {'dropped': 0}, 'stream': {'dropped': 0}, 'live_valid': True}})
         result = timing.summarize(runs, script)
         self.assertTrue(result['rule']['passed'])
         self.assertTrue(result['null_control']['passed'])
-        self.assertEqual(result['pooled_ms']['OPEN']['count'], 15)
+        self.assertEqual(result['pooled_ms']['OPEN']['count'], 5010)
         self.assertEqual(result['top_five_outliers'][0]['input']['event']['action'], 'BTN_A')
         self.assertEqual(len(result['top_five_outliers']), 5)
         mutant = copy.deepcopy(runs)
