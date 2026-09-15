@@ -199,6 +199,11 @@ class TimingTests(unittest.TestCase):
                 child.kill()
                 child.wait()
 
+    def test_bridge_noop_browser_command_really_succeeds(self):
+        # A failing BROWSER makes webbrowser fall back to the default browser, a real live client.
+        import shlex, webbrowser
+        self.assertIs(webbrowser.GenericBrowser(shlex.split(timing.NOOP_BROWSER)).open('http://127.0.0.1:9/'), True)
+
 
 if __name__ == '__main__':
     unittest.main()

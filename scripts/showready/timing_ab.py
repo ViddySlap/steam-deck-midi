@@ -6,6 +6,7 @@ import math
 import os
 from pathlib import Path
 import platform
+import shlex
 import shutil
 import socket
 import statistics
@@ -25,6 +26,9 @@ BAR3_TOLERANCE_MS = 1.0
 MIN_TIMED_MIDI_MESSAGES = 1000
 STATISTICS = ('p50', 'p95', 'p99')
 ARMS = ('CLOSED', 'OPEN', 'CLOSED-B')
+# webbrowser runs BROWSER via shlex.split; every cmd.exe form returns nonzero on Windows,
+# which falls through to the default browser (a real live client). Python -c pass exits 0.
+NOOP_BROWSER = shlex.quote(sys.executable.replace('\\', '/')) + ' -c pass %s' if os.name == 'nt' else '/usr/bin/true'
 
 
 def percentile(values, percent):
@@ -417,7 +421,7 @@ def run_arm(args, tree, work, script, mappings, label):
                '--', '--map', str(tree / 'config/windows_midi_map.json'), '--preset-section', 'windows',
                '--listen', '127.0.0.1:' + str(udp), '--ui-port', str(ui), '--no-engines', '--no-pulse', '--no-osc-relay']
     env = {**os.environ, 'PYTHONDONTWRITEBYTECODE': '1', 'PYSTRAY_BACKEND': 'dummy',
-           'BROWSER': 'C:/Windows/System32/cmd.exe /c rem %s' if os.name == 'nt' else '/usr/bin/true'}
+           'BROWSER': NOOP_BROWSER}
     result = {'command': command, 'udp_port': udp, 'ui_port': ui, 'passed': False, 'client_counts': []}
     client = external = process = None
     client_stop, receipt = directory / 'client-stop', directory / 'client.json'

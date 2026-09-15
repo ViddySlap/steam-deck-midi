@@ -2,6 +2,7 @@
 import http.client
 import json
 from pathlib import Path
+import shlex
 import socket
 import tempfile
 import threading
@@ -355,7 +356,7 @@ class LiveRouteTests(unittest.TestCase):
         self.addCleanup(log.close)
         proc = subprocess.Popen(command, cwd=Path(__file__).resolve().parents[1],
                                 env={**os.environ, "PYSTRAY_BACKEND": "dummy", "BROWSER":
-                                     "C:/Windows/System32/cmd.exe /c rem %s" if os.name == "nt" else "/usr/bin/true"},
+                                     shlex.quote(sys.executable.replace("\\", "/")) + " -c pass %s" if os.name == "nt" else "/usr/bin/true"},
                                 stdout=log, stderr=subprocess.STDOUT)
         stream = None
         try:
