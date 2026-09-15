@@ -192,7 +192,9 @@ class BridgeShutdownTests(unittest.TestCase):
                     tray_callback[0]()
                     self.assertTrue(receiver.stop_event.is_set())
 
+                # The sidecar tray is a win32/linux path; macOS starts none (sdauto A3).
                 with patch.dict("sys.modules", {"windows.tray": fake_tray}), \
+                     patch.object(win_recv.sys, "platform", "win32"), \
                      patch.object(win_recv, "open_midi_output", return_value=midi), \
                      patch.object(win_recv, "open_midi_input", return_value=None), \
                      patch.object(win_recv, "serve_forever", side_effect=loop), \

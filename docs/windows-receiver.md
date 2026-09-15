@@ -54,6 +54,10 @@ It provides:
 - **Global Settings tab**: edit `macro_settings` and `analog_settings` values
 
 Use `--no-ui` to disable the UI and tray, or `--ui-port` to change the port (default 7723).
+Use `--no-browser` to keep the UI running without opening it in a browser at startup (default off);
+with `--tray`, a second launch while one is running then logs the existing URL and exits 0 instead of opening it.
+Without `--tray`, the bridge starts a sidecar tray icon on Windows (and Linux, where pystray supports it)
+but not on macOS, where stop it with Ctrl-C or `POST /api/shutdown`.
 
 ## MIDI Map Format
 

@@ -119,6 +119,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="disable the mapping web UI and system tray",
     )
     parser.add_argument(
+        "--no-browser",
+        action="store_true",
+        help="do not open the mapping web UI in a browser at startup",
+    )
+    parser.add_argument(
         "--ui-port",
         type=int,
         default=7723,
@@ -188,6 +193,18 @@ def parse_listen(value: str) -> tuple[str, int]:
         raise argparse.ArgumentTypeError("listen must be in host:port form") from exc
 
 
+def _should_start_receiver_tray(platform: str, tray_mode: bool) -> bool:
+    """Whether the non-tray bridge starts the sidecar ``ReceiverTray``.
+
+    ``--tray`` mode never uses the sidecar (``run_tray_mode`` owns its tray).
+    macOS gets no sidecar: pystray's AppKit backend runs off the main thread
+    there, and stopping it at teardown traps (sdcore2-gate F5).
+    """
+    if tray_mode:
+        return False
+    return platform != "darwin"
+
+
 def _open_browser_delayed(url: str, delay: float = 1.2) -> None:
     def _open() -> None:
         time.sleep(delay)
@@ -241,6 +258,13 @@ def main(argv: list[str] | None = None) -> int:
         _instance_lock_handle, is_first = acquire_single_instance_lock()
         if not is_first:
             ui_url = f"http://127.0.0.1:{args.ui_port}"
+            if args.no_browser:
+                logging.info(
+                    "single-instance: another tray-mode process is running at %s; "
+                    "--no-browser set, exiting",
+                    ui_url,
+                )
+                return 0
             logging.info(
                 "single-instance: another tray-mode process is running; "
                 "opening %s and exiting",
@@ -445,17 +469,19 @@ def main(argv: list[str] | None = None) -> int:
         )
         ui_server.run_in_thread()
         logging.info("mapping UI available at %s", ui_server.url)
-        if not args.tray:
+        if not args.tray and not args.no_browser:
             # Tray mode shows the browser via the tray menu instead.
             _open_browser_delayed(ui_server.url)
 
-        if not args.tray:
+        if _should_start_receiver_tray(sys.platform, args.tray):
             try:
                 from windows.tray import ReceiverTray
                 tray = ReceiverTray(ui_url=ui_server.url, quit_callback=receiver.request_shutdown)
                 tray.run_in_thread()
             except Exception as exc:
                 logging.warning("system tray unavailable: %s", exc)
+        elif not args.tray:
+            logging.info("system tray not started on %s; stop with POST /api/shutdown", sys.platform)
 
     def _run_bridge_loop() -> None:
         serve_forever(

@@ -1,0 +1,171 @@
+{
+  "platform": "darwin",
+  "sweep_green": true,
+  "rows": [
+    {
+      "id": "M0",
+      "what": "clean",
+      "modules": [
+        "tests.test_win_recv_tray_platform",
+        "tests.test_bridge_shutdown",
+        "tests.test_win_recv_settings"
+      ],
+      "exit": 0,
+      "summary": [
+        "Ran 23 tests in 0.411s",
+        "OK"
+      ],
+      "failing_tests": [],
+      "verdict": "GREEN as required"
+    },
+    {
+      "id": "M1",
+      "what": "platform rule starts the sidecar on darwin",
+      "modules": [
+        "tests.test_win_recv_tray_platform"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 9 tests in 0.032s",
+        "FAILED (failures=2)"
+      ],
+      "failing_tests": [
+        "test_darwin_non_tray_never_constructs_or_stops_receiver_tray",
+        "test_platform_rule"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M2",
+      "what": "platform rule never starts the sidecar (win32 regresses)",
+      "modules": [
+        "tests.test_win_recv_tray_platform",
+        "tests.test_bridge_shutdown"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 16 tests in 0.358s",
+        "FAILED (failures=3)"
+      ],
+      "failing_tests": [
+        "test_main_wires_both_tray_modes_to_the_http_shutdown_function",
+        "test_platform_rule",
+        "test_win32_non_tray_constructs_runs_and_stops_receiver_tray"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M3",
+      "what": "tray-mode clause removed from the platform rule",
+      "modules": [
+        "tests.test_win_recv_tray_platform"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 9 tests in 0.031s",
+        "FAILED (failures=2)"
+      ],
+      "failing_tests": [
+        "test_tray_mode_never_starts_the_sidecar"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M4",
+      "what": "main() reverted to today's `if not args.tray` sidecar start",
+      "modules": [
+        "tests.test_win_recv_tray_platform"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 9 tests in 0.031s",
+        "FAILED (failures=1)"
+      ],
+      "failing_tests": [
+        "test_darwin_non_tray_never_constructs_or_stops_receiver_tray"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M5",
+      "what": "--no-browser ignored in non-tray mode",
+      "modules": [
+        "tests.test_win_recv_tray_platform"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 9 tests in 2.451s",
+        "FAILED (failures=2)"
+      ],
+      "failing_tests": [
+        "test_no_browser_never_opens_a_browser",
+        "test_without_no_browser_opens_once_after_the_delay"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M6",
+      "what": "--no-browser ignored in the already-running path",
+      "modules": [
+        "tests.test_win_recv_tray_platform"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 9 tests in 0.032s",
+        "FAILED (failures=1)"
+      ],
+      "failing_tests": [
+        "test_already_running_with_no_browser_exits_without_opening"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M7",
+      "what": "non-tray startup never opens the browser",
+      "modules": [
+        "tests.test_win_recv_tray_platform"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 9 tests in 0.031s",
+        "FAILED (failures=1)"
+      ],
+      "failing_tests": [
+        "test_without_no_browser_opens_once_after_the_delay"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M8",
+      "what": "win32 sidecar tray not stopped at teardown",
+      "modules": [
+        "tests.test_win_recv_tray_platform"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 9 tests in 0.032s",
+        "FAILED (failures=1)"
+      ],
+      "failing_tests": [
+        "test_win32_non_tray_constructs_runs_and_stops_receiver_tray"
+      ],
+      "verdict": "RED as required"
+    },
+    {
+      "id": "M9",
+      "what": "existing shutdown test without its win32 pin (proves the test change is needed on darwin)",
+      "modules": [
+        "tests.test_bridge_shutdown"
+      ],
+      "exit": 1,
+      "summary": [
+        "Ran 7 tests in 0.345s",
+        "FAILED (failures=1)"
+      ],
+      "failing_tests": [
+        "test_main_wires_both_tray_modes_to_the_http_shutdown_function"
+      ],
+      "verdict": "RED as required"
+    }
+  ]
+}
