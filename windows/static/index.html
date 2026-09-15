@@ -488,6 +488,7 @@
   @keyframes toastOut { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(12px); } }
   .toast.fading { animation: toastOut .18s ease forwards; }
 </style>
+<link rel="stylesheet" href="/static/controller/controller_view.css">
 </head>
 <body>
 
@@ -528,7 +529,7 @@
 <div class="main">
 
   <!-- Sidebar -->
-  <nav class="sidebar">
+  <nav class="sidebar" id="mappingSidebar" hidden>
     <div class="sidebar-top">
       <div class="search-box">
         <input type="text" id="searchInput" placeholder="Filter actions…" autocomplete="off">
@@ -550,7 +551,29 @@
 
     <!-- Editor tab -->
     <div class="tab-pane active" id="tab-editor">
-      <div id="editorContent">
+      <div class="mapping-views" role="group" aria-label="Mapping view">
+        <button class="btn" id="viewController" aria-pressed="true">Controller</button>
+        <button class="btn" id="viewList" aria-pressed="false">List</button>
+        <span>Choose a control to see its mappings. Counts use the selected section.</span>
+      </div>
+      <div id="controllerView">
+        <div class="controller-layout">
+          <div class="controller-picture-scroll">
+            <div id="controllerPicture" aria-label="Steam Deck controls">
+              <p id="controllerMessage" role="status">Loading controller...</p>
+            </div>
+          </div>
+          <aside id="controllerCard" aria-labelledby="controllerTitle" hidden>
+            <div class="controller-card-header">
+              <h2 id="controllerTitle" tabindex="-1"></h2>
+              <button class="btn btn-sm" id="controllerClose" aria-label="Close control details">Close</button>
+            </div>
+            <p class="controller-card-hint">Mappings in the selected section. Use Open in list to edit.</p>
+            <div id="controllerRows"></div>
+          </aside>
+        </div>
+      </div>
+      <div id="editorContent" hidden>
         <div class="empty-state" id="emptyState">
           <div class="icon">🎮</div>
           <p>Select an action from the sidebar to edit its MIDI mapping.</p>
@@ -736,6 +759,7 @@
 <!-- ── Toast container ── -->
 <div class="toasts" id="toasts"></div>
 
+<script src="/static/controller/controller_view.js"></script>
 <script>
 "use strict";
 
@@ -805,7 +829,7 @@ function mappingDotClass(spec) {
 }
 function mappingBadge(spec) {
   const labels = { note:'NOTE', cc:'CC', macro_cc:'MACRO', relative_cc:'REL',
-    staged_note_macro:'STAGED', axis_to_cc:'AXIS', axis_split_cc:'AXIS±' };
+    staged_note_macro:'STAGED', axis_to_cc:'AXIS', axis_split_cc:'AXIS+/-' };
   return labels[spec?.type] || null;
 }
 function mappingBadgeClass(spec) {
@@ -818,13 +842,13 @@ function mappingDesc(spec) {
   if (!spec) return 'unmapped';
   const t = spec.type;
   const ch = `ch${(spec.channel ?? 0) + 1}`;
-  if (t === 'note')              return `${ch} · note ${spec.note ?? '?'}  vel ${spec.velocity ?? 127}`;
-  if (t === 'cc')                return `${ch} · CC ${spec.cc ?? '?'}`;
-  if (t === 'macro_cc')          return `${ch} · CC ${spec.cc ?? '?'} · ${spec.gesture}`;
-  if (t === 'relative_cc')       return `${ch} · CC ${spec.cc ?? '?'} · step ${spec.step_value}`;
+  if (t === 'note')              return `${ch} | note ${spec.note ?? '?'}  vel ${spec.velocity ?? 127}`;
+  if (t === 'cc')                return `${ch} | CC ${spec.cc ?? '?'}`;
+  if (t === 'macro_cc')          return `${ch} | CC ${spec.cc ?? '?'} | ${spec.gesture}`;
+  if (t === 'relative_cc')       return `${ch} | CC ${spec.cc ?? '?'} | step ${spec.step_value}`;
   if (t === 'staged_note_macro') return `note ${spec.note ?? '?'}  staged`;
-  if (t === 'axis_to_cc')        return `${ch} · CC ${spec.cc ?? '?'} · axis`;
-  if (t === 'axis_split_cc')     return `${ch} · CC +${spec.cc_positive ?? '?'} / −${spec.cc_negative ?? '?'} · split`;
+  if (t === 'axis_to_cc')        return `${ch} | CC ${spec.cc ?? '?'} | axis`;
+  if (t === 'axis_split_cc')     return `${ch} | CC +${spec.cc_positive ?? '?'} / -${spec.cc_negative ?? '?'} | split`;
   return t;
 }
 
@@ -911,6 +935,7 @@ async function loadAll(section = selectedSection, {preserveEdits = false} = {}) 
     for (const [a, s] of Object.entries(raw)) if (!(a in state)) state[a] = s;
 
     renderSidebar();
+    if (typeof ControllerView !== 'undefined') ControllerView.refresh();
     renderSettingsGrids();
     updateCount();
     renderPresetDropdown();
@@ -1109,6 +1134,7 @@ function commit(action, spec) {
   setDirty(true);
   updateCount();
   refreshChip(action);
+  if (typeof ControllerView !== 'undefined') ControllerView.refresh();
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -1991,6 +2017,7 @@ document.getElementById('btnResetConfirm').addEventListener('click', async () =>
 // Tabs
 // ─────────────────────────────────────────────────────────────────
 function switchTab(name) {
+  if (typeof ControllerView !== 'undefined') ControllerView.tabChanged(name);
   document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x.dataset.tab === name));
   document.querySelectorAll('.tab-pane').forEach(x => x.classList.toggle('active', x.id === `tab-${name}`));
   if (name === 'macrolib') renderMacroLibrary();
@@ -2091,6 +2118,7 @@ document.addEventListener('keydown', e => {
 // ─────────────────────────────────────────────────────────────────
 // Boot
 // ─────────────────────────────────────────────────────────────────
+if (typeof ControllerView !== 'undefined') ControllerView.init();
 setInterval(pollStateVersion, 2000);
 loadAll();
 </script>

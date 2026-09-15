@@ -115,6 +115,17 @@ controls operate on this bridge and are disabled while editing another section.
 
 ## Controller view
 
+Mappings opens in Controller view by default; the Controller/List choice is
+stored per browser. Labels show mapped/total Action IDs in the selected section.
+Selecting a label, its arrow or the drawn shape opens grouped read-only rows;
+Open in list selects that Action ID in the existing editor. Escape closes the
+card. These navigation actions do not write configuration. Agents use the two
+controller GET routes in the table above and GET `/api/mappings` for the same
+saved information; the browser card also reflects its current unsaved draft.
+The map's `label_anchor` places each callout, `anchor` places the control, and
+`scene_view_box` frames both. The original artwork, CSS and view script are
+served by the existing static-file route. No new routes are introduced here.
+
 `windows/static/controller/controller_map.json` is the only owned physical
 control-to-Action-ID relation. `schema_version: 1` defines an ordered `controls`
 list with stable IDs, labels, kinds, anchors and grouped Action IDs. `view_box`

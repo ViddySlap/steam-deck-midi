@@ -1,0 +1,47 @@
+/* Controller-only layout; the original List editor retains its DOM and forms. */
+#mappingSidebar[hidden], #editorContent[hidden], #controllerView[hidden],
+#controllerCard[hidden] { display: none; }
+.mapping-views { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; }
+.mapping-views span { color: var(--text-mid); margin-left: 8px; }
+.mapping-views [aria-pressed="true"] { color: var(--accent); border-color: var(--accent); background: var(--accent-glow); }
+.controller-layout { display: grid; grid-template-columns: minmax(0, 1fr) 350px; gap: 20px; align-items: start; }
+.controller-layout:has(#controllerCard[hidden]) { grid-template-columns: minmax(0, 1fr); }
+.controller-picture-scroll { overflow-x: auto; }
+#controllerPicture { position: relative; min-width: 850px; aspect-ratio: 1720 / 900; }
+.controller-scene { display: block; width: 100%; height: 100%; }
+.controller-art [data-control] { cursor: pointer; }
+.controller-art [data-control]:hover { fill: var(--accent-dim); }
+.controller-art .control-selected { stroke: var(--accent); stroke-width: 5px; }
+.controller-art .control-unmapped { opacity: .5; }
+.controller-arrow { stroke: var(--text-mid); stroke-width: 2; fill: none; }
+.controller-arrow-hit { stroke: transparent; stroke-width: 18; fill: none; cursor: pointer; }
+.controller-arrow.control-unmapped { stroke: var(--text-dim); opacity: .6; }
+.controller-arrow.control-selected { stroke: var(--accent); }
+.controller-label {
+  position: absolute; transform: translate(-50%, -50%); width: 12.8%;
+  display: flex; align-items: center; justify-content: space-between; gap: 5px;
+  padding: 7px 9px; border-radius: var(--radius-sm); border: 1px solid var(--border-hi);
+  background: var(--surface2); color: var(--text); font: inherit; font-size: 13px; cursor: pointer;
+}
+.controller-label small { color: var(--text-mid); font-size: 11px; white-space: nowrap; }
+.controller-label.control-unmapped { color: var(--text-mid); background: var(--surface); border-color: var(--border); }
+.controller-label:hover, .controller-label.control-selected { border-color: var(--accent); background: var(--accent-glow); }
+.controller-label:focus-visible, #controllerCard button:focus-visible, .mapping-views button:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 3px;
+}
+#controllerCard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; min-width: 0; }
+.controller-card-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.controller-card-header h2 { font-size: 18px; }
+.controller-card-hint { color: var(--text-mid); margin-top: 8px; font-size: 12px; }
+.controller-group { margin-top: 18px; }
+.controller-group h3 { color: var(--text-mid); font-size: 11px; letter-spacing: .08em; margin-bottom: 6px; }
+.controller-row { padding: 10px 0; border-top: 1px solid var(--border); }
+.controller-row-head { display: flex; align-items: start; justify-content: space-between; gap: 6px; }
+.controller-action { font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 11px; overflow-wrap: anywhere; }
+.controller-description { color: var(--text-mid); font-size: 12px; margin: 4px 0 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.controller-open-list { color: var(--accent); }
+@media (max-width: 1250px) {
+  .controller-layout { grid-template-columns: minmax(0, 1fr); }
+  .mapping-views { flex-wrap: wrap; }
+  .mapping-views span { flex-basis: 100%; margin-left: 0; }
+}

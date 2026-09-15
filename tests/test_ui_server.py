@@ -852,6 +852,39 @@ class SectionApiTests(unittest.TestCase):
 
 
 class HtmlApiBarTests(unittest.TestCase):
+    def test_external_static_api_detector_fires_and_restores(self):
+        import shutil
+        from unittest.mock import patch
+        static_source = Path(__file__).resolve().parents[1] / "windows/static"
+        with tempfile.TemporaryDirectory() as tmp:
+            static_copy = Path(tmp) / "static"
+            shutil.copytree(static_source, static_copy)
+            make_server = _make_server
+
+            def with_scratch_static():
+                fixture = make_server()
+                fixture[0]._app.static_folder = str(static_copy)
+                return fixture
+
+            def check():
+                result = unittest.TestResult()
+                case = HtmlApiBarTests("test_html_parses_and_all_api_paths_are_registered")
+                with patch(__name__ + "._make_server", side_effect=with_scratch_static):
+                    case.run(result)
+                return result
+
+            self.assertTrue(check().wasSuccessful(), "pristine static tree must be GREEN")
+            planted = static_copy / "controller/nested/planted.js"
+            planted.parent.mkdir(parents=True)
+            planted.write_text("fetch('/api/ui-bar-planted-unknown');\n", encoding="utf-8")
+            red = check()
+            self.assertFalse(red.wasSuccessful(), "unknown external API literal must be RED")
+            self.assertEqual(red.errors, [])
+            self.assertIn("HTML API path has no registered route: /api/ui-bar-planted-unknown",
+                          "\n".join(detail for _, detail in red.failures))
+            planted.unlink()
+            self.assertTrue(check().wasSuccessful(), "restored static tree must be GREEN")
+
     def test_html_parses_and_all_api_paths_are_registered(self):
         import re
         import shutil
@@ -886,6 +919,10 @@ class HtmlApiBarTests(unittest.TestCase):
         adapter = server._app.url_map.bind("localhost")
         paths = set(re.findall(r"[\"'`](/api/[^\"'`\s]*)", html))
         self.assertTrue(paths, "API path detector must find actual calls")
+        # External scripts and future static assets obey the same API bar.
+        for asset in Path(server._app.static_folder).rglob("*"):
+            if asset.is_file():
+                paths.update(re.findall(r"[\"'`](/api/[^\"'`\s]*)", asset.read_bytes().decode("utf-8", errors="replace")))
         for path in sorted(paths):
             # Dynamic JS template slots represent one encoded route component.
             concrete = re.sub(r"\$\{[^}]+\}", "example", path).split("?")[0]

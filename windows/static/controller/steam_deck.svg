@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" role="img" aria-label="Original Steam Deck control outline">
+  <!-- Original geometric drawing. Coordinates match controller_map.json. -->
+  <g fill="var(--surface2)" stroke="var(--border-hi)" stroke-width="3">
+    <path d="M180 100 Q130 100 115 160 L90 330 Q85 405 160 415 L1040 415 Q1115 405 1110 330 L1085 160 Q1070 100 1020 100 Z"/>
+    <rect x="380" y="115" width="440" height="270" rx="16" fill="var(--bg)"/>
+    <rect x="399" y="134" width="402" height="232" rx="6" fill="var(--surface)" stroke="var(--border)"/>
+  </g>
+  <g fill="var(--surface3)" stroke="var(--text-mid)" stroke-width="2">
+    <rect data-control="l2" x="165" y="32" width="90" height="36" rx="14"/>
+    <rect data-control="r2" x="945" y="32" width="90" height="36" rx="14"/>
+    <rect data-control="l1" x="200" y="76" width="80" height="28" rx="10"/>
+    <rect data-control="r1" x="920" y="76" width="80" height="28" rx="10"/>
+    <circle data-control="select" cx="275" cy="105" r="12"/>
+    <circle data-control="start" cx="925" cy="105" r="12"/>
+    <circle data-control="left_stick" cx="280" cy="175" r="43"/>
+    <circle data-control="right_stick" cx="900" cy="175" r="43"/>
+    <circle data-control="btn_a" cx="1000" cy="220" r="19"/>
+    <circle data-control="btn_b" cx="1040" cy="180" r="19"/>
+    <circle data-control="btn_x" cx="960" cy="180" r="19"/>
+    <circle data-control="btn_y" cx="1000" cy="140" r="19"/>
+    <path data-control="dpad_up" d="M184 259 V225 H216 V259 L200 271 Z"/>
+    <path data-control="dpad_down" d="M184 301 L200 289 L216 301 V335 H184 Z"/>
+    <path data-control="dpad_left" d="M179 264 L191 280 L179 296 H145 V264 Z"/>
+    <path data-control="dpad_right" d="M221 264 H255 V296 H221 L209 280 Z"/>
+    <rect data-control="left_pad" x="268" y="275" width="84" height="90" rx="12"/>
+    <rect data-control="right_pad" x="848" y="275" width="84" height="90" rx="12"/>
+  </g>
+  <g fill="none" stroke="var(--border-hi)" stroke-width="2" stroke-dasharray="8 6">
+    <rect x="190" y="423" width="140" height="127" rx="24"/>
+    <rect x="870" y="423" width="140" height="127" rx="24"/>
+  </g>
+  <g fill="var(--surface3)" stroke="var(--text-mid)" stroke-width="2">
+    <rect data-control="l4" x="225" y="433" width="70" height="24" rx="10"/>
+    <rect data-control="l5" x="225" y="503" width="70" height="24" rx="10"/>
+    <rect data-control="r4" x="905" y="433" width="70" height="24" rx="10"/>
+    <rect data-control="r5" x="905" y="503" width="70" height="24" rx="10"/>
+    <rect data-control="gyro" x="540" y="457" width="120" height="86" rx="14"/>
+  </g>
+  <g fill="var(--text-mid)" font-family="inherit" text-anchor="middle" font-size="18" pointer-events="none">
+    <text x="600" y="244" font-size="24" letter-spacing="4">CONTROLLER</text>
+    <text x="600" y="276">Select a control to inspect</text>
+    <text x="1000" y="226">A</text><text x="1040" y="186">B</text>
+    <text x="960" y="186">X</text><text x="1000" y="146">Y</text>
+    <text x="280" y="181">L3</text><text x="900" y="181">R3</text>
+    <text x="260" y="487" font-size="16">REAR</text><text x="940" y="487" font-size="16">REAR</text>
+    <text x="600" y="507">GYRO</text>
+  </g>
+</svg>

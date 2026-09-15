@@ -22,6 +22,10 @@
         "layer_2": [
           "BTN_A_LAYER_2"
         ]
+      },
+      "label_anchor": {
+        "x": 1330,
+        "y": 340
       }
     },
     {
@@ -39,6 +43,10 @@
         "layer_2": [
           "BTN_B_LAYER_2"
         ]
+      },
+      "label_anchor": {
+        "x": 1330,
+        "y": 270
       }
     },
     {
@@ -56,6 +64,10 @@
         "layer_2": [
           "BTN_X_LAYER_2"
         ]
+      },
+      "label_anchor": {
+        "x": 1330,
+        "y": 200
       }
     },
     {
@@ -73,6 +85,10 @@
         "layer_2": [
           "BTN_Y_LAYER_2"
         ]
+      },
+      "label_anchor": {
+        "x": 1330,
+        "y": 130
       }
     },
     {
@@ -90,6 +106,10 @@
         "long_press": [
           "DPAD_UP_LONG_PRESS"
         ]
+      },
+      "label_anchor": {
+        "x": -130,
+        "y": 205
       }
     },
     {
@@ -107,6 +127,10 @@
         "long_press": [
           "DPAD_DOWN_LONG_PRESS"
         ]
+      },
+      "label_anchor": {
+        "x": -130,
+        "y": 345
       }
     },
     {
@@ -124,6 +148,10 @@
         "long_press": [
           "DPAD_LEFT_LONG_PRESS"
         ]
+      },
+      "label_anchor": {
+        "x": -130,
+        "y": 275
       }
     },
     {
@@ -141,6 +169,10 @@
         "long_press": [
           "DPAD_RIGHT_LONG_PRESS"
         ]
+      },
+      "label_anchor": {
+        "x": -130,
+        "y": 415
       }
     },
     {
@@ -164,7 +196,11 @@
           "L_STICK_Y_AXIS"
         ]
       },
-      "notes": "The stick click and four digital directions share this physical stick. Digital directions are tap actions; continuous X/Y values are analog. L3/R3 are not separate arrows."
+      "notes": "The stick click and four digital directions share this physical stick. Digital directions are tap actions; continuous X/Y values are analog. L3/R3 are not separate arrows.",
+      "label_anchor": {
+        "x": -130,
+        "y": 130
+      }
     },
     {
       "id": "right_stick",
@@ -187,7 +223,11 @@
           "R_STICK_Y_AXIS"
         ]
       },
-      "notes": "The stick click and four digital directions share this physical stick. Digital directions are tap actions; continuous X/Y values are analog. L3/R3 are not separate arrows."
+      "notes": "The stick click and four digital directions share this physical stick. Digital directions are tap actions; continuous X/Y values are analog. L3/R3 are not separate arrows.",
+      "label_anchor": {
+        "x": 1330,
+        "y": 410
+      }
     },
     {
       "id": "l1",
@@ -204,6 +244,10 @@
         "layer_2": [
           "L1_LAYER_2"
         ]
+      },
+      "label_anchor": {
+        "x": 180,
+        "y": -90
       }
     },
     {
@@ -221,6 +265,10 @@
         "layer_2": [
           "R1_LAYER_2"
         ]
+      },
+      "label_anchor": {
+        "x": 1020,
+        "y": -90
       }
     },
     {
@@ -244,7 +292,11 @@
           "L_TRIGGER_PRESSURE"
         ]
       },
-      "notes": "SOFT and FULL are two digital stages of one trigger, both under tap. Their LAYER_2 variants stay on this trigger; continuous trigger pressure is analog."
+      "notes": "SOFT and FULL are two digital stages of one trigger, both under tap. Their LAYER_2 variants stay on this trigger; continuous trigger pressure is analog.",
+      "label_anchor": {
+        "x": -80,
+        "y": -90
+      }
     },
     {
       "id": "r2",
@@ -267,7 +319,11 @@
           "R_TRIGGER_PRESSURE"
         ]
       },
-      "notes": "SOFT and FULL are two digital stages of one trigger, both under tap. Their LAYER_2 variants stay on this trigger; continuous trigger pressure is analog."
+      "notes": "SOFT and FULL are two digital stages of one trigger, both under tap. Their LAYER_2 variants stay on this trigger; continuous trigger pressure is analog.",
+      "label_anchor": {
+        "x": 1280,
+        "y": -90
+      }
     },
     {
       "id": "l4",
@@ -282,7 +338,11 @@
           "L4"
         ]
       },
-      "notes": "Rear grip button; anchor is in the rear-button inset below the front face."
+      "notes": "Rear grip button; anchor is in the rear-button inset below the front face.",
+      "label_anchor": {
+        "x": 20,
+        "y": 600
+      }
     },
     {
       "id": "l5",
@@ -297,7 +357,11 @@
           "L5"
         ]
       },
-      "notes": "Rear grip button; anchor is in the rear-button inset below the front face."
+      "notes": "Rear grip button; anchor is in the rear-button inset below the front face.",
+      "label_anchor": {
+        "x": 300,
+        "y": 665
+      }
     },
     {
       "id": "r4",
@@ -312,7 +376,11 @@
           "R4"
         ]
       },
-      "notes": "Rear grip button; anchor is in the rear-button inset below the front face."
+      "notes": "Rear grip button; anchor is in the rear-button inset below the front face.",
+      "label_anchor": {
+        "x": 1180,
+        "y": 600
+      }
     },
     {
       "id": "r5",
@@ -327,7 +395,11 @@
           "R5"
         ]
       },
-      "notes": "Rear grip button; anchor is in the rear-button inset below the front face."
+      "notes": "Rear grip button; anchor is in the rear-button inset below the front face.",
+      "label_anchor": {
+        "x": 900,
+        "y": 665
+      }
     },
     {
       "id": "start",
@@ -341,6 +413,10 @@
         "tap": [
           "START"
         ]
+      },
+      "label_anchor": {
+        "x": 760,
+        "y": -90
       }
     },
     {
@@ -355,6 +431,10 @@
         "tap": [
           "SELECT"
         ]
+      },
+      "label_anchor": {
+        "x": 440,
+        "y": -90
       }
     },
     {
@@ -383,7 +463,11 @@
           "L_PAD_Y_POS"
         ]
       },
-      "notes": "All four digital directions and their LONG_PRESS actions belong to this trackpad. X/Y_POS are continuous pad position, not stick axes. No separate pad click Action ID exists."
+      "notes": "All four digital directions and their LONG_PRESS actions belong to this trackpad. X/Y_POS are continuous pad position, not stick axes. No separate pad click Action ID exists.",
+      "label_anchor": {
+        "x": -130,
+        "y": 485
+      }
     },
     {
       "id": "right_pad",
@@ -411,7 +495,11 @@
           "R_PAD_Y_POS"
         ]
       },
-      "notes": "All four digital directions and their LONG_PRESS actions belong to this trackpad. X/Y_POS are continuous pad position, not stick axes. No separate pad click Action ID exists."
+      "notes": "All four digital directions and their LONG_PRESS actions belong to this trackpad. X/Y_POS are continuous pad position, not stick axes. No separate pad click Action ID exists.",
+      "label_anchor": {
+        "x": 1330,
+        "y": 480
+      }
     },
     {
       "id": "gyro",
@@ -432,7 +520,17 @@
           "GYRO_ROLL"
         ]
       },
-      "notes": "FORWARD and BACKWARD name digital gyro actions, so they use tap. PITCH, YAW and ROLL carry continuous values under analog. The anchor marks a gyro tile, not a physical button."
+      "notes": "FORWARD and BACKWARD name digital gyro actions, so they use tap. PITCH, YAW and ROLL carry continuous values under analog. The anchor marks a gyro tile, not a physical button.",
+      "label_anchor": {
+        "x": 600,
+        "y": 665
+      }
     }
+  ],
+  "scene_view_box": [
+    -260,
+    -150,
+    1720,
+    900
   ]
 }

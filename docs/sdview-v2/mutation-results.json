@@ -1,0 +1,200 @@
+[
+  {
+    "name": "pristine-controller",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/tests/ui_controller_check.cjs",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/windows/static/index.html"
+    ],
+    "cwd": "/tmp/sdview-v2/mutations/proof-dj9mpy2b",
+    "exit": 0,
+    "expected": "GREEN",
+    "log": "/tmp/sdview-v2/mutations/proof-dj9mpy2b/pristine-controller.log"
+  },
+  {
+    "name": "pristine-api",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "-m",
+      "unittest",
+      "tests.test_ui_server.HtmlApiBarTests"
+    ],
+    "cwd": "/tmp/sdview-v2/mutations/proof-dj9mpy2b",
+    "exit": 0,
+    "expected": "GREEN",
+    "log": "/tmp/sdview-v2/mutations/proof-dj9mpy2b/pristine-api.log"
+  },
+  {
+    "name": "commit-refresh",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/tests/ui_controller_check.cjs",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/windows/static/index.html"
+    ],
+    "cwd": "/tmp/sdview-v2/mutations/proof-dj9mpy2b",
+    "exit": 1,
+    "expected": "RED",
+    "log": "/tmp/sdview-v2/mutations/proof-dj9mpy2b/commit-refresh.log"
+  },
+  {
+    "name": "commit-refresh-restored",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/tests/ui_controller_check.cjs",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/windows/static/index.html"
+    ],
+    "cwd": "/tmp/sdview-v2/mutations/proof-dj9mpy2b",
+    "exit": 0,
+    "expected": "GREEN",
+    "log": "/tmp/sdview-v2/mutations/proof-dj9mpy2b/commit-refresh-restored.log"
+  },
+  {
+    "name": "load-refresh",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/tests/ui_controller_check.cjs",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/windows/static/index.html"
+    ],
+    "cwd": "/tmp/sdview-v2/mutations/proof-dj9mpy2b",
+    "exit": 1,
+    "expected": "RED",
+    "log": "/tmp/sdview-v2/mutations/proof-dj9mpy2b/load-refresh.log"
+  },
+  {
+    "name": "load-refresh-restored",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/tests/ui_controller_check.cjs",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/windows/static/index.html"
+    ],
+    "cwd": "/tmp/sdview-v2/mutations/proof-dj9mpy2b",
+    "exit": 0,
+    "expected": "GREEN",
+    "log": "/tmp/sdview-v2/mutations/proof-dj9mpy2b/load-refresh-restored.log"
+  },
+  {
+    "name": "default-view",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/tests/ui_controller_check.cjs",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/windows/static/index.html"
+    ],
+    "cwd": "/tmp/sdview-v2/mutations/proof-dj9mpy2b",
+    "exit": 1,
+    "expected": "RED",
+    "log": "/tmp/sdview-v2/mutations/proof-dj9mpy2b/default-view.log"
+  },
+  {
+    "name": "default-view-restored",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/tests/ui_controller_check.cjs",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/windows/static/index.html"
+    ],
+    "cwd": "/tmp/sdview-v2/mutations/proof-dj9mpy2b",
+    "exit": 0,
+    "expected": "GREEN",
+    "log": "/tmp/sdview-v2/mutations/proof-dj9mpy2b/default-view-restored.log"
+  },
+  {
+    "name": "arrow",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/tests/ui_controller_check.cjs",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/windows/static/index.html"
+    ],
+    "cwd": "/tmp/sdview-v2/mutations/proof-dj9mpy2b",
+    "exit": 1,
+    "expected": "RED",
+    "log": "/tmp/sdview-v2/mutations/proof-dj9mpy2b/arrow.log"
+  },
+  {
+    "name": "arrow-restored",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/tests/ui_controller_check.cjs",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/windows/static/index.html"
+    ],
+    "cwd": "/tmp/sdview-v2/mutations/proof-dj9mpy2b",
+    "exit": 0,
+    "expected": "GREEN",
+    "log": "/tmp/sdview-v2/mutations/proof-dj9mpy2b/arrow-restored.log"
+  },
+  {
+    "name": "open-label",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/tests/ui_controller_check.cjs",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/windows/static/index.html"
+    ],
+    "cwd": "/tmp/sdview-v2/mutations/proof-dj9mpy2b",
+    "exit": 1,
+    "expected": "RED",
+    "log": "/tmp/sdview-v2/mutations/proof-dj9mpy2b/open-label.log"
+  },
+  {
+    "name": "open-label-restored",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/tests/ui_controller_check.cjs",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/windows/static/index.html"
+    ],
+    "cwd": "/tmp/sdview-v2/mutations/proof-dj9mpy2b",
+    "exit": 0,
+    "expected": "GREEN",
+    "log": "/tmp/sdview-v2/mutations/proof-dj9mpy2b/open-label-restored.log"
+  },
+  {
+    "name": "svg-shape",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/tests/ui_controller_check.cjs",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/windows/static/index.html"
+    ],
+    "cwd": "/tmp/sdview-v2/mutations/proof-dj9mpy2b",
+    "exit": 1,
+    "expected": "RED",
+    "log": "/tmp/sdview-v2/mutations/proof-dj9mpy2b/svg-shape.log"
+  },
+  {
+    "name": "svg-shape-restored",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/tests/ui_controller_check.cjs",
+      "/tmp/sdview-v2/mutations/proof-dj9mpy2b/windows/static/index.html"
+    ],
+    "cwd": "/tmp/sdview-v2/mutations/proof-dj9mpy2b",
+    "exit": 0,
+    "expected": "GREEN",
+    "log": "/tmp/sdview-v2/mutations/proof-dj9mpy2b/svg-shape-restored.log"
+  },
+  {
+    "name": "external-api-literal",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "-m",
+      "unittest",
+      "tests.test_ui_server.HtmlApiBarTests"
+    ],
+    "cwd": "/tmp/sdview-v2/mutations/proof-dj9mpy2b",
+    "exit": 1,
+    "expected": "RED",
+    "log": "/tmp/sdview-v2/mutations/proof-dj9mpy2b/external-api-literal.log"
+  },
+  {
+    "name": "external-api-literal-restored",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "-m",
+      "unittest",
+      "tests.test_ui_server.HtmlApiBarTests"
+    ],
+    "cwd": "/tmp/sdview-v2/mutations/proof-dj9mpy2b",
+    "exit": 0,
+    "expected": "GREEN",
+    "log": "/tmp/sdview-v2/mutations/proof-dj9mpy2b/external-api-literal-restored.log"
+  }
+]
