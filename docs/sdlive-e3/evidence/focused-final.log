@@ -1,0 +1,15 @@
+test_cleanup_waits_and_proves_direct_client_gone (tests.test_showready_timing.TimingTests.test_cleanup_waits_and_proves_direct_client_gone) ... ok
+test_clock_and_causal_attribution_includes_delayed_midi_after_release (tests.test_showready_timing.TimingTests.test_clock_and_causal_attribution_includes_delayed_midi_after_release) ... ok
+test_dead_client_fails_even_with_identical_latency_and_bytes (tests.test_showready_timing.TimingTests.test_dead_client_fails_even_with_identical_latency_and_bytes) ... ok
+test_load_command_exit_one_and_denied_are_different (tests.test_showready_timing.TimingTests.test_load_command_exit_one_and_denied_are_different) ... ok
+test_percentiles_fixed_interpolated_list (tests.test_showready_timing.TimingTests.test_percentiles_fixed_interpolated_list) ... ok
+test_pgrep_guard_reruns_contaminated_arm_and_keeps_both_checks (tests.test_showready_timing.TimingTests.test_pgrep_guard_reruns_contaminated_arm_and_keeps_both_checks) ... ok
+test_sender_records_perf_counter_not_coarse_monotonic (tests.test_showready_timing.TimingTests.test_sender_records_perf_counter_not_coarse_monotonic) ... ok
+test_summary_rechecks_every_message_and_exposes_top_outlier_step (tests.test_showready_timing.TimingTests.test_summary_rechecks_every_message_and_exposes_top_outlier_step) ... ok
+test_two_ms_shift_fails_and_small_shift_within_floor_passes (tests.test_showready_timing.TimingTests.test_two_ms_shift_fails_and_small_shift_within_floor_passes) ... ok
+test_unreadable_is_never_empty_and_preexisting_load_skips_work (tests.test_showready_timing.TimingTests.test_unreadable_is_never_empty_and_preexisting_load_skips_work) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.481s
+
+OK

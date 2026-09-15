@@ -256,3 +256,191 @@ bar. All mutations live in browser DOMs served from the scratch fixture copy;
 no production file or preset is mutated. Each mutant's log retains its RED.
 A browser launch failure is a nonzero result, never geometry credit. Try default
 launch first, then --single-process (one browser at a time), and record errors.
+
+## Bar 3 timing instrument (sdlive E3)
+
+`timing_ab.py` reuses the pinned Deck generator, recorder, archive, fixture
+verification, byte coverage comparator and pacing helpers. It starts UI-enabled
+archived candidate processes only, with dummy tray, no-op BROWSER, engines/pulse/
+OSC relay off, disposable sectioned EDM Show (`--preset-section windows`), and
+free non-default loopback UDP/TCP ports. No real MIDI constructor is available.
+The candidate is resolved once. No installed bridge, port or preset is touched.
+
+The arms run serially in INTERLEAVED order CLOSED, OPEN, CLOSED-B, repeated
+R times. Default R=5, minimum 5. CLOSED has no HTTP client at all during replay;
+its in-process publisher snapshots must show zero clients. OPEN's Python client
+fetches snapshot, subscribes from its sequence, drains SSE as fast as it can,
+and refreshes/reconnects on drops as the page does. An additional 250 ms HTTP
+snapshot monitor proves client presence throughout OPEN. It is the same monitor
+for an external browser. Headers/keepalives alone cannot pay stream coverage:
+at least one real data event, positive client counts and an explicit dropped
+count are required. Snapshot overwrite counts and stream missed counts are
+reported separately; coalescing is not counted as dropping.
+
+### Clock and origin of each MIDI message
+
+Sending is a thread INSIDE the bridge process. Sender and the existing Recorder
+both timestamp with `time.perf_counter_ns()` in that SAME PID; no cross-process
+offset or resolution assumption is needed. The old recorder field name
+`monotonic_ns` is retained for W3 compatibility, and the timing record additionally
+names it `perf_counter_ns`. Latency is recorded minus sent, in milliseconds.
+W4 measured Python 3.12 on the laptop: `monotonic_ns` used GetTickCount64 at
+15.625 ms, while `perf_counter_ns` used QueryPerformanceCounter at 100 ns.
+These coarse monotonic values must never be subtracted for this instrument.
+Clock implementation and resolution are captured separately in every arm.
+
+The recorder uses E1's current Action ID plus accepted-input publication to
+associate output with input. Immediate note/CC releases belong to UP; fades,
+relative repeats and staged outputs retain their initiating DOWN through UP.
+Timer heartbeats are not credited as physical inputs. Each MIDI row retains
+both current replay step and causal input step. Unknown attribution, a negative
+latency or zero samples fails. Startup MIDI has no causal input: its bytes are
+compared but it has no fabricated latency. Intentional hold/fade/staged delays
+are INCLUDED in the latency distribution, not subtracted. Top outliers identify
+the initiating step, action, phase, exact MIDI bytes and both timestamps.
+
+`--clock script` (default) retains W3's deterministic receiver scheduling so
+identical timer output can be required. Latencies and UDP pacing still use real
+perf_counter time. `--clock wall` is an additional diagnostic of the ordinary
+bridge scheduler; all comparisons and controls must use the same mode. The
+script-clock test measures observer overhead under the pinned schedule; it does
+not certify ordinary Windows scheduler behavior. E3's report separately audits
+that scheduler, without changing it.
+
+### Locked verdict rule
+
+Compute p50, p95, p99 and max of latency per arm (pooled over repeats) and per
+repeat. The NOISE FLOOR is |CLOSED - CLOSED-B| per statistic. Bar 3 PASSES when,
+for p50, p95 and p99, |OPEN - CLOSED| <= NOISE FLOOR + 1.0 ms AND the byte sequence
+of every arm is identical to CLOSED (the bar 1 property, re-checked), AND the
+stream's dropped count is reported (drops are allowed; delay is not). Report max
+separately, not as a pass criterion, with the top 5 outliers and their steps.
+
+The tolerance is ONE named constant: `BAR3_TOLERANCE_MS = 1.0` in timing_ab.py.
+Percentiles use linear interpolation at `(N-1)*p/100`. The pooled rule determines
+the numeric outcome; per-repeat rules are also retained, including noisy reds.
+A floor wide enough to admit a synthetic +2 ms shift makes the measurement
+invalid. The real sensitivity run must additionally fail the timing inequality;
+a byte difference, client death or packet loss alone does not prove sensitivity.
+If the NOISE FLOOR is wide enough that the 2 ms sensitivity control passes,
+bar 3 does not count and the report says so.
+
+The clean command needs `--sensitivity-result` from the same candidate, script,
+preset, host/Python runtime, receiver clock, client command and pinned instrument. It must be a
+qualified 2 ms timing RED with complete valid arms and identical bytes. This
+receipt is hashed. A numeric pass without this proof is exit 78 with HARNESS-SKIP,
+never bar 3 credit. Invalid arms/rule failure are exit 1. Qualified clean PASS is
+exit 0. The sensitivity control is expected to exit 1; inspect
+`sensitivity_timing_red`, not merely its exit. NULL is the nonempty identical
+CLOSED/CLOSED-B comparison against its measured floor; that timing inequality
+holds by construction and does not independently certify low host noise.
+
+### Duration and load qualification
+
+The FULL pinned script lasts 469.716666743 seconds before scheduling overhead.
+Five interleaved triplets need at least 7045.750001145 seconds (117.43 minutes),
+plus startup/cleanup. R=5 minimizes this mandatory cost. A roughly ten-minute
+full-rate run is mathematically incompatible with this script and R>=5.
+Do not truncate it or accelerate it for release credit.
+
+Before AND after every attempted arm, Mac runs `pgrep -f "while True: pass"`
+and records stdout, stderr, exit code and `os.getloadavg()`. Only exit 1 with
+empty output/error is EMPTY. Present load discards the attempt, waits 30 seconds
+and re-runs it, with at most `--load-retries 3` attempts. Exhaustion fails.
+Unreadable inventory fails closed unless `--allow-unverified-load` is explicitly
+set: then every affected arm is UNVERIFIED-LOAD and cannot earn bar 3 credit.
+Windows records `not applicable` for pgrep and load average.
+
+For executor diagnostics ONLY, `--speed 15 --allow-unverified-load` compresses
+wall pacing, retaining the complete script and its receiver logical time.
+It also drains the preceding bridge loop before each accelerated packet to
+prevent compressed timer probes overflowing UDP in the sleep mutant. Neither
+acceleration nor this drain exists at speed 1. This mode targets approximately
+ten minutes per five-triplet run; wall time is recorded, not promised. It is
+never a timing qualification. The gate's unaccelerated load-verified run is
+authoritative. Hardware and Windows suite remain separate show-ready bars.
+
+### Gate commands: Mac
+
+From this checkout, generate once, then run sensitivity followed by clean:
+
+```bash
+mkdir -p /tmp/sdlive-gate
+.venv/bin/python -B scripts/showready/deck_script.py --out /tmp/sdlive-gate/deck-script.json
+.venv/bin/python -B scripts/showready/timing_ab.py --candidate HEAD --script /tmp/sdlive-gate/deck-script.json --scratch /tmp/sdlive-gate/sensitivity --out /tmp/sdlive-gate/sensitivity.json.gz --control sensitivity
+.venv/bin/python -B scripts/showready/timing_ab.py --candidate HEAD --script /tmp/sdlive-gate/deck-script.json --scratch /tmp/sdlive-gate/clean --out /tmp/sdlive-gate/clean.json.gz --sensitivity-result /tmp/sdlive-gate/sensitivity.json.gz
+.venv/bin/python -B scripts/showready/timing_ab.py --candidate HEAD --script /tmp/sdlive-gate/deck-script.json --scratch /tmp/sdlive-gate/dead --out /tmp/sdlive-gate/dead.json.gz --control dead-client
+```
+
+### Real browser hook (Mac and Windows)
+
+`--client-cmd` is a JSON argv array, run directly without a shell.
+`--client-cmd-file` reads that array from a JSON file, avoiding PowerShell
+native-argument quote stripping. `{url}`,
+`{stop}` and `{receipt}` placeholders are required. The command stays foreground,
+owns its browser, never daemonizes, and writes an atomic JSON receipt with
+`ready:true` after Controller is visible, live, and Follow is ON. It polls the
+stop-file path and gracefully closes every owned child before exiting 0. The
+final receipt reports `browser_pids`, `data_events`, `dropped`, and `error:null`.
+The driver requests stop, waits, checks its process handle and checks each
+reported browser PID (kill(pid,0) on Mac; a file-backed Get-Process script on
+Windows). A missing receipt/PID, early exit or failed teardown invalidates the
+arm. Gate must additionally retain the Windows guard's final Python inventory.
+
+The pinned adapter `timing_browser.cjs` creates a fresh browser profile, opens
+the real Controller page, enables Follow, consumes native EventSource events,
+and samples actual visibility/live/Follow state. It closes the browser server
+and reports the browser PID for the driver's independent absence check.
+`PLAYWRIGHT_CORE` may identify an existing playwright-core installation.
+
+Add this identical option to BOTH sensitivity and clean commands on the Mac:
+
+```bash
+--client-cmd '["node","/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/timing_browser.cjs","{url}","{stop}","{receipt}","/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell","--single-process"]'
+```
+
+### Gate commands: laptop (UNVERIFIED-BY-EXECUTION in E3)
+
+Only the gate runs these, with the existing win_rail.sh guard snapshot BEFORE
+its first laptop act and guard compare AFTER its last, including downloads.
+Use the clone venv, verify clone HEAD after pull, and put this body in a local
+.ps1 carried by `scripts/showready/win_rail.sh run sdlive-gate <local.ps1>`.
+No inline PowerShell. Do not change/install dependencies if absent: escalate.
+The sectioned EDM Show fixture is the verified MAC fixture on both hosts.
+
+```powershell
+$ErrorActionPreference = 'Stop'
+Set-Location 'C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc'
+$work = 'C:\Users\Ben\AppData\Local\Temp\sdwin\sdlive-gate'
+New-Item -ItemType Directory -Force -Path $work | Out-Null
+$python = (Resolve-Path '.\.venv\Scripts\python.exe').Path
+$env:PYSTRAY_BACKEND = 'dummy'
+$env:BROWSER = 'C:/Windows/System32/cmd.exe /c rem %s'
+function Invoke-TrackedPython([string[]]$PythonArgs) {
+  $child = Start-Process -FilePath $python -ArgumentList $PythonArgs -PassThru -NoNewWindow
+  $child.Id | Add-Content -Encoding ascii -Path "$work\python-pids.txt"
+  $child.WaitForExit()
+  $code = $child.ExitCode
+  if (Get-Process -Id $child.Id -ErrorAction SilentlyContinue) { throw 'Python PID still exists' }
+  return $code
+}
+$code = Invoke-TrackedPython @('-B', 'scripts/showready/deck_script.py', '--out', "$work\deck-script.json")
+if ($code -ne 0) { exit $code }
+# Set PLAYWRIGHT_CORE to the gate's already installed module. Verify Edge exists.
+$edge = 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
+if (-not (Test-Path $edge)) { throw 'NEEDS-MASTER: existing browser required' }
+$client = @('node', "$PWD\scripts\showready\timing_browser.cjs", '{url}', '{stop}', '{receipt}', $edge) | ConvertTo-Json -Compress
+$client | Set-Content -Encoding ascii -Path "$work\client-command.json"
+$common = @('-B', 'scripts/showready/timing_ab.py', '--candidate', 'HEAD', '--script', "$work\deck-script.json", '--client-cmd-file', "$work\client-command.json")
+$code = Invoke-TrackedPython ($common + @('--scratch', "$work\sensitivity", '--out', "$work\sensitivity.json.gz", '--control', 'sensitivity'))
+if ($code -ne 1) { throw 'Expected sensitivity exit 1; inspect JSON timing inequality before continuing' }
+$cleanExit = Invoke-TrackedPython ($common + @('--scratch', "$work\clean", '--out', "$work\clean.json.gz", '--sensitivity-result', "$work\sensitivity.json.gz"))
+$code = Invoke-TrackedPython @('-B', 'scripts/showready/timing_ab.py', '--candidate', 'HEAD', '--script', "$work\deck-script.json", '--scratch', "$work\dead", '--out', "$work\dead.json.gz", '--control', 'dead-client')
+if ($code -ne 1) { throw 'Dead client was not rejected' }
+exit $cleanExit
+```
+
+Wrap this work using the rail's Start-Process/PassThru PID recording convention,
+then Get-Process checks, downloads, and final guard compare. Do the Python-reader
+matrix separately by omitting `--client-cmd` from BOTH runs. The browser matrix
+must use its own sensitivity receipt. No E3 laptop command was executed.

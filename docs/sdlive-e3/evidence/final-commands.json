@@ -1,0 +1,71 @@
+[
+  {
+    "name": "sensitivity",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/timing_ab.py",
+      "--candidate",
+      "HEAD",
+      "--script",
+      "/tmp/sdlive-e3/deck-script.json",
+      "--speed",
+      "15",
+      "--allow-unverified-load",
+      "--scratch",
+      "/tmp/sdlive-e3/final-sensitivity",
+      "--out",
+      "/tmp/sdlive-e3/final-sensitivity.json.gz",
+      "--control",
+      "sensitivity"
+    ],
+    "exit_code": 1,
+    "wall_seconds": 610.3058785410249
+  },
+  {
+    "name": "clean",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/timing_ab.py",
+      "--candidate",
+      "HEAD",
+      "--script",
+      "/tmp/sdlive-e3/deck-script.json",
+      "--speed",
+      "15",
+      "--allow-unverified-load",
+      "--scratch",
+      "/tmp/sdlive-e3/final-clean",
+      "--out",
+      "/tmp/sdlive-e3/final-clean.json.gz",
+      "--sensitivity-result",
+      "/tmp/sdlive-e3/final-sensitivity.json.gz"
+    ],
+    "exit_code": 78,
+    "wall_seconds": 502.2705121249892
+  },
+  {
+    "name": "dead",
+    "command": [
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+      "-B",
+      "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/timing_ab.py",
+      "--candidate",
+      "HEAD",
+      "--script",
+      "/tmp/sdlive-e3/deck-script.json",
+      "--speed",
+      "15",
+      "--allow-unverified-load",
+      "--scratch",
+      "/tmp/sdlive-e3/final-dead",
+      "--out",
+      "/tmp/sdlive-e3/final-dead.json.gz",
+      "--control",
+      "dead-client"
+    ],
+    "exit_code": 1,
+    "wall_seconds": 1.193273082957603
+  }
+]

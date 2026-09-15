@@ -1,0 +1,30 @@
+[
+  {
+    "command": [
+      "node",
+      "tests/ui_controller_check.cjs"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "node",
+      "tests/ui_controller_macro_check.cjs"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "node",
+      "tests/ui_reload_check.cjs"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "node",
+      "tests/ui_sections_check.cjs"
+    ],
+    "exit_code": 0
+  }
+]

@@ -1,0 +1,95 @@
+{
+  "command": [
+    "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+    "scripts/showready/timing_ab.py",
+    "--candidate",
+    "HEAD",
+    "--script",
+    "/tmp/sdlive-e3/deck-script.json",
+    "--scratch",
+    "/tmp/sdlive-e3/sensitivity",
+    "--out",
+    "/tmp/sdlive-e3/sensitivity.json",
+    "--control",
+    "sensitivity",
+    "--speed",
+    "15",
+    "--allow-unverified-load"
+  ],
+  "error": "ValueError: Invalid arm: OPEN",
+  "arms": [
+    {
+      "error": null,
+      "cleanup": {
+        "exit_code": -15,
+        "pid": 43588,
+        "pid_gone": true,
+        "proof": "Popen.wait + kill(pid,0)",
+        "was_alive": true
+      },
+      "command": [
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+        "-B",
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/capture_runner.py",
+        "/private/tmp/sdlive-e3/sensitivity/timing-9rp0yft3/candidate",
+        "/private/tmp/sdlive-e3/sensitivity/timing-9rp0yft3/candidate/config",
+        "/private/tmp/sdlive-e3/sensitivity/timing-9rp0yft3/r1-CLOSED-try1/capture.jsonl",
+        "--script",
+        "/private/tmp/sdlive-e3/sensitivity/timing-9rp0yft3/script.json",
+        "--clock",
+        "script",
+        "--timing-config",
+        "/private/tmp/sdlive-e3/sensitivity/timing-9rp0yft3/r1-CLOSED-try1/options.json",
+        "--",
+        "--map",
+        "/private/tmp/sdlive-e3/sensitivity/timing-9rp0yft3/candidate/config/windows_midi_map.json",
+        "--preset-section",
+        "windows",
+        "--listen",
+        "127.0.0.1:55365",
+        "--ui-port",
+        "52983",
+        "--no-engines",
+        "--no-pulse",
+        "--no-osc-relay"
+      ]
+    },
+    {
+      "error": "ValueError: Arm/client exited during replay",
+      "cleanup": {
+        "exit_code": 1,
+        "pid": 44809,
+        "pid_gone": true,
+        "proof": "Popen.wait + kill(pid,0)",
+        "was_alive": false
+      },
+      "command": [
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python",
+        "-B",
+        "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/capture_runner.py",
+        "/private/tmp/sdlive-e3/sensitivity/timing-9rp0yft3/candidate",
+        "/private/tmp/sdlive-e3/sensitivity/timing-9rp0yft3/candidate/config",
+        "/private/tmp/sdlive-e3/sensitivity/timing-9rp0yft3/r1-OPEN-try1/capture.jsonl",
+        "--script",
+        "/private/tmp/sdlive-e3/sensitivity/timing-9rp0yft3/script.json",
+        "--clock",
+        "script",
+        "--timing-config",
+        "/private/tmp/sdlive-e3/sensitivity/timing-9rp0yft3/r1-OPEN-try1/options.json",
+        "--",
+        "--map",
+        "/private/tmp/sdlive-e3/sensitivity/timing-9rp0yft3/candidate/config/windows_midi_map.json",
+        "--preset-section",
+        "windows",
+        "--listen",
+        "127.0.0.1:64581",
+        "--ui-port",
+        "53075",
+        "--no-engines",
+        "--no-pulse",
+        "--no-osc-relay"
+      ]
+    }
+  ],
+  "classification": "Invalid accelerated attempt: packet loss, not timing sensitivity credit."
+}

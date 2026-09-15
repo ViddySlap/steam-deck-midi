@@ -1,0 +1,624 @@
+"""Bar 3: interleaved same-candidate MIDI latency, with fail-closed controls."""
+import argparse
+import hashlib
+import json
+import math
+import os
+from pathlib import Path
+import platform
+import shutil
+import socket
+import subprocess
+import sys
+import tempfile
+import threading
+import time
+import urllib.request
+
+sys.dont_write_bytecode = True
+from ab_run import (KIT, ROOT, archive, compare, free_port, git, pacing_summary,
+                    read_records, validate_scratch, wait_gap, write_result)
+from deck_script import canonical, effective, read_json, sha, validate, verify_fixtures
+
+BAR3_TOLERANCE_MS = 1.0
+STATISTICS = ('p50', 'p95', 'p99')
+ARMS = ('CLOSED', 'OPEN', 'CLOSED-B')
+
+
+def percentile(values, percent):
+    """Linear interpolation at (n-1)*p, including endpoints; empty is an error."""
+    values = sorted(values)
+    if not values or not 0 <= percent <= 100 or not all(math.isfinite(x) for x in values):
+        raise ValueError('Nonempty finite samples and percentile 0..100 required')
+    at = (len(values) - 1) * percent / 100
+    lo, hi = math.floor(at), math.ceil(at)
+    return values[lo] + (values[hi] - values[lo]) * (at - lo)
+
+
+def stats(values):
+    return {**{key: percentile(values, p) for key, p in zip(STATISTICS, (50, 95, 99))},
+            'max': max(values), 'count': len(values)}
+
+
+def verdict(closed, opened, closed_b, *, identical, dropped_reported, live):
+    floor = {key: abs(closed[key] - closed_b[key]) for key in STATISTICS}
+    delta = {key: abs(opened[key] - closed[key]) for key in STATISTICS}
+    within = {key: delta[key] <= floor[key] + BAR3_TOLERANCE_MS for key in STATISTICS}
+    # A known +2 ms shift must not fit inside this measured floor.
+    sensitivity_visible = any(2.0 > floor[k] + BAR3_TOLERANCE_MS for k in STATISTICS)
+    return {'noise_floor_ms': floor, 'open_delta_ms': delta, 'within': within,
+            'floor_can_resolve_2ms': sensitivity_visible,
+            'passed': all(within.values()) and identical and dropped_reported and live and sensitivity_visible}
+
+
+def load_check():
+    result = {'command': 'pgrep -f "while True: pass"', 'load_average': None}
+    try:
+        result['load_average'] = list(os.getloadavg())
+    except (AttributeError, OSError) as exc:
+        result['load_average_note'] = 'not applicable on Windows' if os.name == 'nt' else str(exc)
+    if os.name == 'nt':
+        return {**result, 'status': 'not applicable', 'exit_code': None}
+    try:
+        check = subprocess.run(['pgrep', '-f', 'while True: pass'], capture_output=True, text=True)
+        result.update(exit_code=check.returncode, stdout=check.stdout, stderr=check.stderr)
+        if check.returncode == 1 and not check.stdout.strip() and not check.stderr.strip():
+            result['status'] = 'empty'
+        elif check.returncode == 0 and check.stdout.strip() and not check.stderr.strip():
+            result['status'] = 'load-present'
+        else:
+            result['status'] = 'unreadable'
+    except OSError as exc:
+        result.update(status='unreadable', error=repr(exc))
+    if result['load_average'] is None:
+        result['status'] = 'unreadable'
+    return result
+
+
+def guarded_arm(run, check=load_check, *, allow_unverified=False, retries=3, pause=time.sleep):
+    """Every attempt retains both checks, even a skipped/failed attempt."""
+    attempts = []
+    for number in range(1, retries + 1):
+        before = check()
+        outcome = None
+        error = None
+        try:
+            if before['status'] in ('empty', 'not applicable') or (
+                    before['status'] == 'unreadable' and allow_unverified):
+                outcome = run(number)
+        except Exception as exc:
+            error = type(exc).__name__ + ': ' + str(exc)
+        after = check()
+        row = {'attempt': number, 'before': before, 'after': after, 'arm': outcome, 'error': error}
+        attempts.append(row)
+        dirty = any(c['status'] == 'load-present' for c in (before, after))
+        unreadable = any(c['status'] == 'unreadable' for c in (before, after))
+        row['load_status'] = 'UNVERIFIED-LOAD' if unreadable else 'CONTAMINATED' if dirty else 'verified'
+        if dirty:
+            if number < retries:
+                pause(30)
+                continue
+            break
+        if error or outcome is None or (unreadable and not allow_unverified):
+            break
+        return {'accepted': True, 'load_status': row['load_status'], 'attempts': attempts, 'arm': outcome}
+    return {'accepted': False, 'attempts': attempts, 'load_status': attempts[-1]['load_status']}
+
+
+class CaptureTiming:
+    """Loaded ONLY in the archived bridge process by the pinned recorder.
+
+    Sender and recorder call perf_counter_ns in this same process. The optional
+    script clock is receiver scheduling only, never a latency timestamp.
+    """
+    def __init__(self, config, script, context):
+        self.config, self.script, self.context = config, script, context
+        self.sent, self.origins = {}, {}
+        self.live = None
+        self.invalid = []
+        self.samples = []
+        self.completed_packets = 0
+        self.mappings = config['mappings']
+
+    def install(self, module):
+        self.action = module.current_action
+        original = module.LiveEvents.publish
+        owner = self
+
+        def observed(publisher, event):
+            owner.live = publisher
+            if event['kind'] in ('input', 'axis'):
+                action = event['action']
+                kind = owner.mappings.get(action, {}).get('type')
+                # Delayed fade/repeat/staged output belongs to its DOWN even
+                # after UP. Immediate note/CC releases belong to the UP.
+                if event.get('state') != 'up' or kind not in ('macro_cc', 'relative_cc', 'staged_note_macro'):
+                    owner.origins[action] = owner.context['step']
+            return original(publisher, event)
+        module.LiveEvents.publish = observed
+        original_init = module.LiveEvents.__init__
+
+        def init(publisher, *a, **kw):
+            original_init(publisher, *a, **kw)
+            owner.live = publisher
+        module.LiveEvents.__init__ = init
+
+    def enrich(self, row):
+        if row['record'] != 'midi':
+            return
+        row['perf_counter_ns'] = row['monotonic_ns']  # Existing Recorder uses perf_counter_ns.
+        action = self.action()
+        cause = self.origins.get(action)
+        sent = self.sent.get(cause)
+        row.update(action=action, cause_step=cause, send_perf_counter_ns=sent)
+        if row['step'] == -1:
+            row['latency_ms'] = None  # Startup has no physical input; bytes still compared.
+        elif sent is None or row['perf_counter_ns'] < sent:
+            self.invalid.append(dict(row))
+        else:
+            row['latency_ms'] = (row['perf_counter_ns'] - sent) / 1e6
+            self.samples.append(dict(row))
+
+    def start(self, host, port, capture):
+        def replay():
+            result = {'timestamp_clock': vars(time.get_clock_info('perf_counter')),
+                      'clock_method': 'sender and Recorder perf_counter_ns in the same PID',
+                      'pid': os.getpid(), 'passed': False}
+            try:
+                start_file = Path(self.config['start'])
+                deadline = time.perf_counter() + 60
+                while not start_file.exists():
+                    if time.perf_counter() >= deadline:
+                        raise TimeoutError('Parent never authorized replay')
+                    time.sleep(.01)
+                result['snapshot_before'] = self.live.snapshot()
+                steps = {s['id']: s for s in self.script['steps']}
+                start = last = step_start = time.perf_counter_ns()
+                previous_at = 0
+                with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sender:
+                    for index, row in enumerate(self.script['packets']):
+                        step = steps[row['step']]
+                        event = row['at_ns'] == step['at_ns']
+                        sleeper = (lambda _: time.sleep(0)) if step['event']['kind'] == 'axis' else time.sleep
+                        if event:
+                            wait_gap(last, round((row['at_ns'] - previous_at) / self.config['speed']), sleep=sleeper)
+                        else:
+                            wait_gap(step_start, round((row['at_ns'] - step['at_ns']) / self.config['speed']), sleep=sleeper)
+                        # Accelerated diagnostics cannot earn timing credit.
+                        # Drain the prior loop so compressed timer probes do
+                        # not overflow UDP during the planted sleep control.
+                        if self.config['speed'] != 1:
+                            ack_deadline = time.perf_counter() + 10
+                            while self.completed_packets < index:
+                                if time.perf_counter() >= ack_deadline:
+                                    raise TimeoutError('Diagnostic packet drain')
+                                time.sleep(0)
+                        payload = bytes.fromhex(row['hex'])
+                        sent_at = time.perf_counter_ns()
+                        if event:
+                            self.sent[row['step']] = sent_at
+                        if sender.sendto(payload, (host, port)) != len(payload):
+                            raise RuntimeError('Partial datagram')
+                        if event:
+                            last = step_start = time.perf_counter_ns()
+                            previous_at = row['at_ns']
+                result['wall_seconds'] = (time.perf_counter_ns() - start) / 1e9
+                done = Path(str(capture) + '.done.json')
+                deadline = time.perf_counter() + 10
+                while not done.exists():
+                    if time.perf_counter() >= deadline:
+                        raise TimeoutError('Packet capture incomplete')
+                    time.sleep(.01)
+                size = capture.stat().st_size
+                time.sleep(.3)
+                if capture.stat().st_size != size:
+                    raise ValueError('MIDI not quiescent after timer horizon')
+                result.update(snapshot_after=self.live.snapshot(), received=read_json(done),
+                              sends=self.sent, invalid=self.invalid, samples=self.samples,
+                              pacing=pacing_summary(self.script, {'arm': self.sent}, self.config['speed'])['arm'])
+                result['passed'] = bool(self.samples) and not self.invalid and all(
+                    p['no_overspeed'] for p in result['pacing'].values())
+            except Exception as exc:
+                result['error'] = type(exc).__name__ + ': ' + str(exc)
+            target = Path(self.config['result'])
+            temporary = target.with_suffix('.tmp')
+            temporary.write_bytes(canonical(result))
+            temporary.replace(target)
+        threading.Thread(target=replay, name='bar3-sender', daemon=True).start()
+
+
+def snapshot(url):
+    with urllib.request.urlopen(url + '/api/live/snapshot', timeout=2) as response:
+        return json.load(response)
+
+
+class StreamingClient:
+    """Initial snapshot, drain SSE immediately, refresh snapshot on every loss."""
+    def __init__(self, url):
+        self.url = url
+        self.stop = threading.Event()
+        self.ready = threading.Event()
+        self.events = []
+        self.snapshots = []
+        self.error = None
+        self.response = None
+        self.thread = threading.Thread(target=self.read, name='bar3-stream', daemon=True)
+        self.thread.start()
+
+    def read(self):
+        try:
+            state = snapshot(self.url)
+            self.snapshots.append(state)
+            while not self.stop.is_set():
+                with urllib.request.urlopen(self.url + '/api/live/events?since=' + str(state['seq']), timeout=3) as response:
+                    self.response = response
+                    if response.headers.get_content_type() != 'text/event-stream':
+                        raise ValueError('Not an SSE stream')
+                    self.ready.set()
+                    refresh = False
+                    for line in response:
+                        if self.stop.is_set():
+                            break
+                        if line.startswith(b'data: '):
+                            event = json.loads(line[6:])
+                            self.events.append(event)
+                            if event['kind'] == 'dropped':
+                                state = snapshot(self.url)
+                                self.snapshots.append(state)
+                                refresh = True
+                                break
+                    if not refresh and not self.stop.is_set():
+                        raise ValueError('Unexpected stream EOF')
+        except Exception as exc:
+            if not self.stop.is_set():
+                self.error = type(exc).__name__ + ': ' + str(exc)
+        finally:
+            self.ready.set()
+
+    def close(self):
+        self.stop.set()
+        self.thread.join(4)
+        return {'events': self.events, 'snapshots': self.snapshots, 'error': self.error,
+                'thread_gone': not self.thread.is_alive(),
+                'data_events': sum(e['kind'] != 'dropped' for e in self.events),
+                'dropped': sum(e.get('count', 0) for e in self.events if e['kind'] == 'dropped')}
+
+
+def live_valid(evidence):
+    counts = evidence.get('client_counts', [])
+    stream = evidence.get('stream', {})
+    return bool(counts) and all(c > 0 for c in counts) and stream.get('data_events', 0) > 0 and (
+        type(stream.get('dropped')) is int) and not stream.get('error')
+
+
+def stop_process(process):
+    was_alive = process.poll() is None
+    if was_alive:
+        process.terminate()
+    try:
+        code = process.wait(timeout=10)
+    except subprocess.TimeoutExpired:
+        process.kill()
+        code = process.wait(timeout=10)
+    gone = process.poll() is not None
+    if os.name == 'posix':
+        try:
+            os.kill(process.pid, 0)
+            gone = False
+        except ProcessLookupError:
+            pass
+    return {'pid': process.pid, 'exit_code': code, 'pid_gone': gone,
+            'was_alive': was_alive, 'proof': 'Popen.wait + kill(pid,0)' if os.name == 'posix' else 'Popen.wait signaled handle'}
+
+
+def verify_client_pids(pids, work):
+    if not pids or any(type(p) is not int or p <= 1 for p in pids):
+        raise ValueError('External client must report its browser PIDs')
+    if os.name == 'nt':
+        script = work / 'client-gone.ps1'
+        script.write_text('$ErrorActionPreference = "Stop"\n' +
+                          '$found = @(Get-Process -Id ' + ','.join(map(str, pids)) +
+                          ' -ErrorAction SilentlyContinue)\nif ($found.Count) { exit 1 }\nexit 0\n', encoding='ascii')
+        check = subprocess.run(['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', str(script)], capture_output=True, text=True)
+        return {'pids': pids, 'gone': check.returncode == 0, 'command': str(script), 'exit_code': check.returncode,
+                'stdout': check.stdout, 'stderr': check.stderr}
+    found = []
+    for pid in pids:
+        try:
+            os.kill(pid, 0)
+            found.append(pid)
+        except ProcessLookupError:
+            pass
+    return {'pids': pids, 'gone': not found, 'found': found, 'proof': 'kill(pid,0)'}
+
+
+def wait_json(path, process, timeout=30):
+    deadline = time.perf_counter() + timeout
+    while not path.exists():
+        if process.poll() is not None:
+            raise RuntimeError('Process exited before ' + path.name)
+        if time.perf_counter() >= deadline:
+            raise TimeoutError(path.name)
+        time.sleep(.02)
+    return read_json(path)
+
+
+def run_arm(args, tree, work, script, mappings, label):
+    directory = work / label
+    directory.mkdir()
+    capture = directory / 'capture.jsonl'
+    start = directory / 'start'
+    result_file = directory / 'timing.json'
+    options = directory / 'options.json'
+    options.write_bytes(canonical({'start': str(start), 'result': str(result_file), 'speed': args.speed, 'mappings': mappings}))
+    udp, ui = free_port(socket.SOCK_DGRAM), free_port(socket.SOCK_STREAM)
+    while ui == udp:
+        ui = free_port(socket.SOCK_STREAM)
+    command = [sys.executable, '-B', str(KIT / 'capture_runner.py'), str(tree), str(tree / 'config'), str(capture),
+               '--script', str(work / 'script.json'), '--clock', args.clock, '--timing-config', str(options),
+               '--', '--map', str(tree / 'config/windows_midi_map.json'), '--preset-section', 'windows',
+               '--listen', '127.0.0.1:' + str(udp), '--ui-port', str(ui), '--no-engines', '--no-pulse', '--no-osc-relay']
+    env = {**os.environ, 'PYTHONDONTWRITEBYTECODE': '1', 'PYSTRAY_BACKEND': 'dummy',
+           'BROWSER': 'C:/Windows/System32/cmd.exe /c rem %s' if os.name == 'nt' else '/usr/bin/true'}
+    result = {'command': command, 'udp_port': udp, 'ui_port': ui, 'passed': False, 'client_counts': []}
+    client = external = process = None
+    client_stop, receipt = directory / 'client-stop', directory / 'client.json'
+    is_open = '-OPEN-' in label
+    with (directory / 'bridge.log').open('wb') as log, (directory / 'client.log').open('wb') as client_log:
+        try:
+            process = subprocess.Popen(command, cwd=tree, stdout=log, stderr=subprocess.STDOUT, env=env)
+            result['ready'] = wait_json(Path(str(capture) + '.ready.json'), process)
+            url = 'http://127.0.0.1:' + str(ui)
+            if is_open:
+                if args.control == 'dead-client':
+                    pass  # Plant absence; the ordinary presence check must fail.
+                elif args.client_cmd:
+                    argv = [s.replace('{url}', url).replace('{stop}', str(client_stop)).replace('{receipt}', str(receipt)) for s in args.client_cmd]
+                    result['client_command'] = argv
+                    external = subprocess.Popen(argv, env=env, stdout=client_log, stderr=subprocess.STDOUT)
+                    deadline = time.perf_counter() + 30
+                    while True:
+                        ready = read_json(receipt) if receipt.exists() else {}
+                        if ready.get('error') or external.poll() is not None:
+                            raise ValueError('External client failed: ' + str(ready))
+                        if ready.get('ready'):
+                            result['client_ready'] = ready
+                            break
+                        if time.perf_counter() >= deadline:
+                            raise TimeoutError('External client not ready')
+                        time.sleep(.02)
+                else:
+                    client = StreamingClient(url)
+                    if not client.ready.wait(10) or client.error:
+                        raise ValueError('DEAD CLIENT: ' + str(client.error))
+                count = snapshot(url)['clients']
+                result['client_counts'].append(count)
+                if count == 0:
+                    raise ValueError('DEAD CLIENT: snapshot clients=0')
+            start.touch()
+            deadline = time.perf_counter() + script['duration_ns'] / 1e9 / args.speed * 2 + 60
+            while not result_file.exists():
+                if process.poll() is not None or (external and external.poll() is not None):
+                    raise ValueError('Arm/client exited during replay')
+                if client and client.error:
+                    raise ValueError('Client failed: ' + client.error)
+                if time.perf_counter() >= deadline:
+                    raise TimeoutError('Replay did not finish')
+                if is_open:
+                    count = snapshot(url)['clients']
+                    result['client_counts'].append(count)
+                    if count == 0:
+                        raise ValueError('DEAD CLIENT: stream disappeared')
+                time.sleep(.25)
+            result.update(read_json(result_file))
+            records = read_records(capture)
+            result['records'] = records
+            result['capture_sha256'] = sha(capture.read_bytes())
+            result['coverage'] = compare(script, records, records, mappings, mappings)
+            result['passed'] = result['passed'] and result['coverage']['passed'] and (
+                result['received']['packet_stream_sha256'] == script['packet_stream_sha256'] and
+                result['received']['packets_received'] == len(script['packets']))
+            if not is_open:
+                result['passed'] &= all(result[k]['clients'] == 0 for k in ('snapshot_before', 'snapshot_after'))
+        except Exception as exc:
+            result.update(passed=False, error=type(exc).__name__ + ': ' + str(exc))
+        finally:
+            if client:
+                result['stream'] = client.close()
+                result['passed'] &= result['stream']['thread_gone']
+            if external:
+                client_stop.touch()
+                try:
+                    external.wait(timeout=20)
+                except subprocess.TimeoutExpired:
+                    result['passed'] = False
+                result['client_cleanup'] = stop_process(external)
+                if receipt.exists():
+                    final = read_json(receipt)
+                    result['stream'] = final
+                    try:
+                        result['browser_cleanup'] = verify_client_pids(final.get('browser_pids'), directory)
+                    except Exception as exc:
+                        result['browser_cleanup'] = {'gone': False, 'error': str(exc)}
+                result['passed'] &= (result['client_cleanup']['pid_gone'] and result['client_cleanup']['exit_code'] == 0 and
+                                     result.get('browser_cleanup', {}).get('gone', False))
+            if is_open:
+                result['live_valid'] = live_valid(result)
+                result['passed'] &= result['live_valid']
+            if process:
+                result['cleanup'] = stop_process(process)
+                result['passed'] &= result['cleanup']['pid_gone'] and result['cleanup']['was_alive']
+    return result
+
+
+def summarize(runs, script):
+    grouped = {name: [] for name in ARMS}
+    rows, per_repeat = [], []
+    baseline = runs[0]['arm'].get('records', [])
+    baseline_bytes = [(r['step'], r['bytes']) for r in baseline if r['record'] == 'midi']
+    identical = bool(baseline_bytes)
+    for item in runs:
+        arm = item['arm']
+        samples = arm.get('samples', [])
+        values = [r['latency_ms'] for r in samples]
+        if not values:
+            raise ValueError('Zero latency observations')
+        name = item['name']
+        grouped[name].extend(values)
+        same = [(r['step'], r['bytes']) for r in arm['records'] if r['record'] == 'midi'] == baseline_bytes
+        identical &= same
+        row = {'repeat': item['repeat'], 'arm': name, 'statistics_ms': stats(values), 'identical': same,
+               'load_status': item['load_status'], 'publisher_dropped': arm['snapshot_after']['dropped'],
+               'stream_dropped': arm.get('stream', {}).get('dropped'),
+               'midi_messages': sum(r['record'] == 'midi' for r in arm['records'])}
+        rows.append(row)
+    pooled = {name: stats(values) for name, values in grouped.items()}
+    drops = all(type(i['arm'].get('stream', {}).get('dropped')) is int for i in runs if i['name'] == 'OPEN')
+    live = all(i['arm'].get('live_valid') for i in runs if i['name'] == 'OPEN')
+    outcome = verdict(pooled['CLOSED'], pooled['OPEN'], pooled['CLOSED-B'], identical=identical, dropped_reported=drops, live=live)
+    for repeat in sorted({i['repeat'] for i in runs}):
+        triplet = {r['arm']: r for r in rows if r['repeat'] == repeat}
+        per_repeat.append({'repeat': repeat, **verdict(*(triplet[n]['statistics_ms'] for n in ARMS),
+            identical=all(r['identical'] for r in triplet.values()), dropped_reported=drops, live=live)})
+    steps = {s['id']: s for s in script['steps']}
+    outliers = sorted(({**s, 'repeat': i['repeat'], 'arm': i['name'], 'input': steps[s['cause_step']]}
+                       for i in runs for s in i['arm']['samples']), key=lambda s: s['latency_ms'], reverse=True)[:5]
+    return {'rows': rows, 'pooled_ms': pooled, 'rule': outcome, 'per_repeat': per_repeat,
+            'byte_identical': identical, 'top_five_outliers': outliers,
+            'null_control': {'passed': identical and all(
+                abs(pooled['CLOSED'][k] - pooled['CLOSED-B'][k]) <=
+                outcome['noise_floor_ms'][k] + BAR3_TOLERANCE_MS for k in STATISTICS),
+                'note': 'Closed contrast uses the measured floor by definition; also requires nonempty identical bytes.'}}
+
+
+def run(args):
+    result = {'schema': 'sdlive-timing/1', 'passed': False, 'bar3_counts': False, 'runs': [],
+              'command': [sys.executable, *sys.argv], 'repeats': args.repeats, 'speed': args.speed,
+              'receiver_clock': args.clock, 'control': args.control,
+              'tolerance_ms': BAR3_TOLERANCE_MS, 'client': args.client_cmd or 'python streaming reader',
+              'clock_method': 'Sender and recorder use perf_counter_ns in ONE bridge process per arm.'}
+    result['host'] = {'hostname': socket.gethostname(), 'platform': platform.platform(), 'python': sys.version}
+    try:
+        validate_scratch(args.scratch)
+        args.scratch.mkdir(parents=True, exist_ok=True)
+        work = Path(tempfile.mkdtemp(prefix='timing-', dir=args.scratch)).resolve()
+        result['work'] = str(work)
+        script = read_json(args.script)
+        validate(script)
+        result['script'] = script
+        result['instrument_sha256'] = {str(p.relative_to(ROOT)): sha(p.read_bytes()) for p in KIT.iterdir() if p.is_file()}
+        verified = verify_fixtures(args.fixtures)
+        preset = args.preset.resolve()
+        if str(preset) not in verified or preset.name != 'EDM Show.json':
+            raise ValueError('Requires verified EDM Show fixture')
+        raw = read_json(preset)
+        if 'windows' not in raw.get('sections', {}):
+            raise ValueError('Requires sectioned EDM Show and --preset-section windows')
+        result['preset_sha256'] = sha(preset.read_bytes())
+        tree = work / 'candidate'
+        result['candidate'] = archive(args.repo, args.candidate, tree)
+        config = tree / 'config'
+        shutil.rmtree(config / 'presets')
+        (config / 'presets').mkdir()
+        (config / 'presets/replay.json').write_bytes(preset.read_bytes())
+        (config / 'presets/.active').write_text('replay.json', encoding='ascii')
+        (config / 'windows_midi_map.json').write_bytes(preset.read_bytes())
+        (work / 'script.json').write_bytes(canonical(script))
+        mappings = effective(raw, 'windows')['mappings']
+        if args.control == 'sensitivity':
+            source = tree / 'windows/live_events.py'
+            original = source.read_text(encoding='utf-8')
+            anchor = '        ticket = next(self._tickets)'
+            if original.count(anchor) != 1:
+                raise ValueError('Sensitivity mutation anchor drift')
+            mutated = original.replace(anchor, '        if self._clients:\n            time.sleep(0.002)\n' + anchor)
+            source.write_text(mutated, encoding='utf-8')
+            result['mutation'] = {'path': 'windows/live_events.py', 'before': sha(original.encode()),
+                                  'after': sha(source.read_bytes()), 'sleep_seconds': .002}
+        names = ('OPEN',) if args.control == 'dead-client' else ARMS
+        for repeat in range(1, args.repeats + 1):
+            for name in names:
+                guarded = guarded_arm(lambda attempt: run_arm(args, tree, work, script, mappings,
+                    f'r{repeat}-{name}-try{attempt}'), allow_unverified=args.allow_unverified_load,
+                    retries=args.load_retries)
+                guarded.update(repeat=repeat, name=name)
+                result['runs'].append(guarded)
+                # Persist after each arm; all attempts and errors remain reviewable.
+                write_result(args.out, result)
+                print(json.dumps({'repeat': repeat, 'arm': name, 'load': guarded['load_status'],
+                                  'accepted': guarded['accepted'], 'passed': guarded.get('arm', {}).get('passed')}), flush=True)
+                if not guarded['accepted'] or not guarded['arm']['passed']:
+                    raise ValueError('Invalid arm: ' + name)
+        result['summary'] = summarize(result['runs'], script)
+        result['passed'] = result['summary']['rule']['passed']
+        qualified = (args.speed == 1 and all(r['load_status'] == 'verified' for r in result['runs']))
+        result['measurement_qualified'] = qualified
+        if args.control == 'sensitivity':
+            result['sensitivity_detected'] = not result['summary']['rule']['passed']
+            result['sensitivity_timing_red'] = not all(result['summary']['rule']['within'].values())
+            if not result['sensitivity_timing_red']:
+                result['limitation'] = 'Instrument cannot see a 2 ms publisher delay with this noise floor; bar 3 does not count.'
+        elif args.control is None:
+            if args.sensitivity_result:
+                import gzip
+                payload = args.sensitivity_result.read_bytes()
+                control = json.loads(gzip.decompress(payload) if payload[:2] == b'\x1f\x8b' else payload)
+                result['sensitivity_receipt_sha256'] = sha(payload)
+                result['sensitivity_valid'] = bool(control.get('sensitivity_timing_red') and
+                    control.get('summary', {}).get('byte_identical') and
+                    control.get('measurement_qualified') and control.get('control') == 'sensitivity' and
+                    control.get('host') == result['host'] and control.get('repeats', 0) >= 5 and
+                    control.get('candidate') == result['candidate'] and
+                    control.get('script', {}).get('sha256') == script['sha256'] and
+                    control.get('preset_sha256') == result['preset_sha256'] and
+                    control.get('client') == result['client'] and
+                    control.get('receiver_clock') == args.clock and
+                    control.get('instrument_sha256') == result['instrument_sha256'])
+            result['bar3_counts'] = result['passed'] and qualified and result.get('sensitivity_valid', False)
+    except Exception as exc:
+        result.update(passed=False, error=type(exc).__name__ + ': ' + str(exc))
+    return result
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--candidate', default='HEAD')
+    parser.add_argument('--repo', type=Path, default=ROOT)
+    parser.add_argument('--fixtures', type=Path, default=ROOT / '.showready/fixtures')
+    parser.add_argument('--preset', type=Path, default=ROOT / '.showready/fixtures/mac/presets/EDM Show.json')
+    parser.add_argument('--preset-section', choices=['windows'], default='windows')
+    parser.add_argument('--script', type=Path, required=True)
+    parser.add_argument('--scratch', type=Path, required=True)
+    parser.add_argument('--out', type=Path, required=True)
+    parser.add_argument('--repeats', type=int, default=5)
+    parser.add_argument('--speed', type=float, default=1)
+    parser.add_argument('--clock', choices=['script', 'wall'], default='script')
+    parser.add_argument('--allow-unverified-load', action='store_true', help='Diagnostics only; never bar 3 credit')
+    parser.add_argument('--load-retries', type=int, default=3)
+    parser.add_argument('--control', choices=['sensitivity', 'dead-client'])
+    parser.add_argument('--sensitivity-result', type=Path)
+    client = parser.add_mutually_exclusive_group()
+    client.add_argument('--client-cmd', type=json.loads, help='JSON argv array; {url}, {stop}, {receipt} placeholders')
+    client.add_argument('--client-cmd-file', type=Path, help='File-backed JSON argv for PowerShell native arguments')
+    args = parser.parse_args()
+    if args.client_cmd_file:
+        args.client_cmd = read_json(args.client_cmd_file)
+    if args.repeats < 5 or not 0 < args.speed <= 50 or args.load_retries < 1:
+        parser.error('Requires repeats >=5, 0<speed<=50, load-retries >=1')
+    if args.client_cmd is not None and (not isinstance(args.client_cmd, list) or not args.client_cmd or
+            not all(isinstance(s, str) for s in args.client_cmd) or
+            not all(any(p in s for s in args.client_cmd) for p in ('{url}', '{stop}', '{receipt}'))):
+        parser.error('--client-cmd requires a nonempty JSON argv array containing all three placeholders')
+    result = run(args)
+    path = write_result(args.out, result)
+    # A provisional numeric pass is not an authoritative bar 3 pass.
+    code = 0 if result['bar3_counts'] else 1 if not result['passed'] else 78
+    print(json.dumps({'result': str(path), 'rule_passed': result['passed'], 'bar3_counts': result['bar3_counts'],
+                      'error': result.get('error'), 'limitation': result.get('limitation'), 'exit_code': code}))
+    if code == 78:
+        print('HARNESS-SKIP: diagnostic or missing qualified sensitivity control; no bar 3 credit')
+    return code
+
+
+if __name__ == '__main__':
+    sys.exit(main())

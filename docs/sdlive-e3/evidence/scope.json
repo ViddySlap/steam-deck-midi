@@ -1,0 +1,29 @@
+{
+  "entry": "bd1bdda42d9f9926ec23ab5d5218e029435f50a4",
+  "command": [
+    "git",
+    "diff",
+    "bd1bdda42d9f9926ec23ab5d5218e029435f50a4",
+    "--",
+    "windows",
+    "protocol",
+    "deck",
+    "config",
+    "mac",
+    "tests/test_showready_instrument.py",
+    "tests/test_showready_rail.py",
+    "tests/test_ui_node.py"
+  ],
+  "unchanged": [
+    "windows",
+    "protocol",
+    "deck",
+    "config",
+    "mac",
+    "tests/test_showready_instrument.py",
+    "tests/test_showready_rail.py",
+    "tests/test_ui_node.py"
+  ],
+  "diff_empty": true,
+  "existing_assertions_changed": false
+}

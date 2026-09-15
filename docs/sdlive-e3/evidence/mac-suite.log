@@ -1,0 +1,3959 @@
+...........Autopilot: fallback_clock.bpm must be > 0 (got 0.0); disabling fallback
+...............................................INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=dry-run index=n/a
+INFO mapping UI available at http://127.0.0.1:7723
+INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=dry-run index=n/a
+INFO mapping UI available at http://127.0.0.1:7723
+.INFO listening on udp://127.0.0.1:0
+INFO action=BTN_A state=down seq=1
+INFO action=BTN_B state=down seq=2
+INFO released note mapping for BTN_A
+INFO released CC mapping for BTN_B
+.INFO listening on udp://127.0.0.1:0
+INFO listening for MIDI feedback: name=<Mock name='mock.port_name' id='4427401264'> index=<Mock name='mock.port_index' id='4427401360'>
+INFO listening for MIDI clock: name=<Mock name='mock.port_name' id='4325432432'> index=<Mock name='mock.port_index' id='4415701360'>
+...WARNING bridge exited unexpectedly; stopping tray
+.INFO Bumper Blast: engage at amount=0.394
+.INFO Bumper Blast: engage at amount=0.394
+INFO Bumper Blast: disengage
+..INFO Bumper Blast: engage at amount=1.000
+.INFO Bumper Blast: engage at amount=0.055
+.INFO Bumper Blast: engage at amount=0.394
+.INFO Bumper Blast: engage at amount=0.504
+.INFO Bumper Blast: engage at amount=1.000
+..INFO Bumper Blast: bound to steam_input_layer_tracker (current=chaser)
+INFO Bumper Blast: engage at amount=0.787
+INFO steam_input_layer_tracker: layer -> flash
+INFO Bumper Blast: disengage
+.INFO Bumper Blast: engage at amount=0.787
+.INFO Bumper Blast: bound to steam_input_layer_tracker (current=flash)
+.INFO Bumper Blast: engage at amount=0.787
+INFO Bumper Blast: disengage
+..INFO Bumper Blast: engage at amount=0.787
+INFO Bumper Blast: disengage
+..INFO Bumper Blast: engage at amount=0.787
+...INFO Chaser Stack: engage
+INFO Chaser Stack: disengage
+.INFO Chaser Stack: engage
+.INFO Chaser Stack: engage
+.INFO Chaser Stack: engage
+.INFO Chaser Stack: engage
+.INFO Chaser Stack: engage
+INFO steam_input_layer_tracker: layer -> flash
+INFO Chaser Stack: disengage
+.INFO Chaser Stack: engage
+..INFO Chaser Stack: engage
+INFO Chaser Stack: disengage
+.INFO Chaser Stack: engage
+.INFO Chaser Stack: engage
+.INFO Chaser Stack: engage
+..........................................................................................................................INFO engine rec1 (rec1) active=False
+.INFO engine rec2 (rec2) active=False
+.INFO engine rec1 (rec1) active=False
+.........INFO engine a (a) active=False
+...............INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: beats_per_clip=1
+INFO autopilot video: beats_per_clip=32
+INFO autopilot video: beats_per_clip=128
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: enabled=True
+INFO autopilot video: enabled=False
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: layer 3 enabled=True
+INFO autopilot video: layer 1 enabled=False
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: mode=LINEAR
+INFO autopilot video: mode=RANDOM
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: mode=RANDOM
+INFO autopilot video: mode=LINEAR
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: layer 2 enabled=True
+INFO autopilot video: enabled=True
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: layer 2 enabled=True
+INFO autopilot video: enabled=True
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: enabled=True
+INFO autopilot: deferring column trigger note=82 to next beat
+INFO autopilot: deferring column trigger note=83 to next beat
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 3 enabled=True
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: layer 2 enabled=True
+INFO autopilot video: enabled=True
+INFO autopilot: deferring column trigger note=87 to next beat
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: enabled=True
+INFO autopilot: deferring column trigger note=86 to next beat
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: enabled=True
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: layer 2 enabled=True
+INFO autopilot video: enabled=True
+INFO autopilot: deferring column trigger note=86 to next beat
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: enabled=True
+INFO autopilot: deferring column trigger note=86 to next beat
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: layer 2 enabled=True
+INFO autopilot video: enabled=True
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: layer 2 enabled=True
+INFO autopilot video: enabled=True
+INFO Autopilot: no MIDI clock for 2.0s; fallback clock running at 128.0 BPM
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: layer 2 enabled=True
+INFO autopilot video: enabled=True
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: layer 2 enabled=True
+.INFO autopilot: clip cache primed for layers {1: 2, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: enabled=True
+INFO autopilot video: mode=LINEAR
+.INFO autopilot: clip cache primed for layers {1: 2, 2: 2, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: layer 2 enabled=True
+INFO autopilot video: enabled=True
+INFO autopilot video: mode=LINEAR
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: layer 2 enabled=True
+INFO autopilot video: enabled=True
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: enabled=True
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: layer 2 enabled=True
+INFO autopilot video: enabled=True
+.INFO autopilot: clip cache primed for layers {1: 3, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: enabled=True
+INFO autopilot video: mode=RANDOM
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: enabled=True
+INFO autopilot video: mode=RANDOM
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: enabled=True
+.INFO autopilot: clip cache primed for layers {1: 2, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+INFO autopilot video: layer 1 enabled=True
+INFO autopilot video: enabled=True
+INFO autopilot video: mode=LINEAR
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+.INFO autopilot: clip cache primed for layers {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0}
+...INFO auto-merging factory default for engine type 'audio_opacity' (not in engines/)
+INFO auto-merging factory default for engine type 'osc_sync' (not in engines/)
+INFO loaded engine Audio Engine (type=audio_opacity)
+INFO loaded engine OSC Sync (type=osc_sync)
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/case.py:589: ResourceWarning: unclosed <socket.socket fd=3, family=2, type=2, proto=0, laddr=('0.0.0.0', 0)>
+  if method() is not None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.INFO auto-merging factory default for engine type 'osc_sync' (not in engines/)
+INFO loaded engine Audio Engine (type=audio_opacity)
+INFO loaded engine OSC Sync (type=osc_sync)
+.INFO migrated legacy engine stanza 'audio_opacity' -> /tmp/sdlive-e3/tmpdiijpelk/engines/audio_opacity.json
+INFO migrated legacy engine stanza 'osc_sync' -> /tmp/sdlive-e3/tmpdiijpelk/engines/osc_sync.json
+INFO archived engines.json -> engines.json.migrated (migrated=2, skipped=0)
+INFO loaded engine My Audio (type=audio_opacity)
+INFO loaded engine OSC Sync (type=osc_sync)
+.INFO auto-merging factory default for engine type 'audio_opacity' (not in engines/)
+INFO auto-merging factory default for engine type 'osc_sync' (not in engines/)
+INFO loaded engine Audio Engine (type=audio_opacity)
+INFO loaded engine OSC Sync (type=osc_sync)
+.INFO migrated legacy engine stanza 'audio_opacity' -> /tmp/sdlive-e3/tmp45vk0sru/engines/audio_opacity.json
+INFO archived engines.json -> engines.json.migrated (migrated=1, skipped=0)
+INFO loaded engine Audio Engine (type=audio_opacity)
+.INFO legacy stanza for type 'audio_opacity' already in engines/; skipping migration
+INFO archived engines.json -> engines.json.migrated (migrated=0, skipped=1)
+INFO loaded engine Recent Custom (type=audio_opacity)
+.INFO no engines config at /tmp/sdlive-e3/tmp34c25wu9/does-not-exist; engine registry is empty
+.INFO loaded engine Audio Engine (type=audio_opacity)
+.WARNING duplicate engine type 'audio_opacity' in audio_opacity.json and z_audio_variant.json; keeping audio_opacity.json
+INFO loaded engine Alpha (type=audio_opacity)
+.INFO loaded engine Custom Audio (type=audio_opacity)
+.INFO loaded engine Audio Engine (type=audio_opacity)
+INFO engine OSC Sync is disabled in config; skipping
+.ERROR failed to parse OSC preset /tmp/sdlive-e3/tmp745p3bfm.xml: not well-formed (invalid token): line 1, column 12
+..INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
+.INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
+.INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
+.INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
+.INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
+.INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
+.INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
+.INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
+.WARNING osc_sync: no targets; sync pass is a no-op
+INFO osc_sync: sync pass complete in 0.00s; 0 wiggled, 0 skipped
+.INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
+.INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
+.INFO osc_sync: parsed 1 wigglable targets from /tmp/sdlive-e3/tmpjhjogqac.xml
+.INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
+INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
+.INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
+.INFO osc_sync: sync pass complete in 0.00s; 0 wiggled, 1 skipped
+.INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 1 skipped
+.ERROR osc_sync: composition fetch failed: simulated GET failure
+INFO osc_sync: sync pass complete in 0.00s; 0 wiggled, 0 skipped
+.INFO Flash Blast lane white: PENDING -> BUILDING (norm=0.110)
+.INFO Flash Blast lane white: PENDING -> BUILDING (norm=0.299)
+INFO Flash Blast lane white: BUILDING -> IDLE (abort, clean disappear)
+.INFO Flash Blast lane white: PENDING -> BUILDING (norm=0.299)
+.INFO Flash Blast lane white: PENDING -> BUILDING (norm=0.299)
+INFO Flash Blast lane white: BUILDING -> RELEASING
+.INFO Flash Blast lane white: PENDING -> BUILDING (norm=0.299)
+INFO Flash Blast lane white: BUILDING -> RELEASING
+.INFO Flash Blast lane white: PENDING -> BUILDING (norm=0.299)
+...INFO Flash Blast lane white: PENDING -> RELEASING (fast tap, norm=1.000)
+.INFO Flash Blast lane white: PENDING -> BUILDING (norm=0.299)
+INFO Flash Blast lane white: BUILDING -> RELEASING
+.INFO Flash Blast lane white: PENDING -> RELEASING (fast tap, norm=1.000)
+..INFO Flash Blast lane color: PENDING -> IDLE (tap, peak=0.701)
+..INFO Flash Blast: bound to steam_input_layer_tracker (current=chaser)
+...INFO Flash Blast lane white: PENDING -> BUILDING (norm=0.299)
+INFO Flash Blast lane white: BUILDING -> RELEASING
+.INFO Flash Blast lane white: PENDING -> IDLE (tap, peak=0.701)
+.INFO Flash Blast lane white: PENDING -> IDLE (tap, peak=0.701)
+..s...........................................INFO Gyro Feedback: gyro MIDI toggled ON (set 1, ch11)
+.INFO Gyro Feedback: gyro MIDI toggled ON (set 1, ch15)
+.INFO Gyro Feedback: gyro MIDI toggled ON (set 1, ch15)
+.INFO Gyro Feedback: gyro MIDI toggled ON (set 1, ch15)
+.INFO Gyro Feedback: hold mode ENTER (set 2, ch13)
+INFO Gyro Feedback: hold mode EXIT
+.INFO Gyro Feedback: hold mode ENTER (set 2, ch13)
+.INFO Gyro Feedback: hold mode ENTER (set 2, ch13)
+INFO Gyro Feedback: hold mode EXIT
+.INFO Gyro Feedback: gyro MIDI toggled ON (set 1, ch15)
+INFO Gyro Feedback: hold mode ENTER (set 2, ch13)
+INFO Gyro Feedback: hold mode EXIT
+.INFO Gyro Feedback: hold mode EXIT
+.INFO Gyro Feedback: gyro MIDI toggled ON (set 1, ch15)
+.....INFO Gyro Feedback: gyro MIDI toggled ON (set 1, ch15)
+.INFO Gyro Feedback: gyro MIDI toggled ON (set 1, ch15)
+.INFO Gyro Feedback: gyro MIDI toggled ON (set 1, ch15)
+.INFO Gyro Feedback: gyro MIDI toggled ON (set 1, ch15)
+.INFO Gyro Feedback: gyro MIDI toggled ON (set 1, ch15)
+INFO Gyro Feedback: gyro MIDI toggled OFF
+.INFO Gyro Feedback: gyro MIDI toggled ON (set 1, ch15)
+.INFO Gyro Feedback: gyro MIDI toggled ON (set 1, ch15)
+....INFO layer state resync for cc=74 from=layer_1 to=layer_2 via=toggle
+INFO action=L4 state=down seq=1
+INFO layer state resync for cc=74 from=layer_2 to=layer_1 via=toggle
+INFO action=L4 state=down seq=2
+.INFO layer state resync for cc=74 from=layer_1 to=layer_2 via=toggle
+INFO action=L4 state=down seq=1
+.INFO layer state resync for cc=74 from=layer_1 to=layer_2 via=toggle
+INFO action=L4 state=down seq=1
+INFO layer state resync for cc=74 from=layer_2 to=layer_1 via=toggle
+INFO action=L4 state=down seq=2
+INFO layer state resync for cc=74 from=layer_1 to=layer_2 via=toggle
+INFO action=L4 state=down seq=3
+INFO layer state resync for cc=74 from=layer_2 to=layer_1 via=toggle
+INFO action=L4 state=down seq=4
+INFO layer state resync for cc=74 from=layer_1 to=layer_2 via=toggle
+INFO action=L4 state=down seq=5
+INFO layer state resync for cc=74 from=layer_2 to=layer_1 via=toggle
+INFO action=L4 state=down seq=6
+..INFO hot-reloaded mappings: 4 actions
+INFO layer state resync for cc=74 from=layer_1 to=layer_2 via=toggle
+INFO action=L4 state=down seq=1
+.INFO hot-reloaded mappings: 4 actions
+.INFO action=L1 state=down seq=1
+INFO hot-reloaded mappings: 4 actions
+.INFO layer state resync for cc=74 from=layer_1 to=layer_2 via=toggle
+INFO action=L4 state=down seq=1
+INFO hot-reloaded mappings: 4 actions
+.INFO hot-reloaded mappings: 3 actions
+................WARNING l_stick_layer: invalid default_layer 'bogus'; using 'a'
+..INFO l_stick_layer: set -> b
+.INFO l_stick_layer: set -> b
+INFO l_stick_layer: set -> a
+.INFO l_stick_layer: set -> b
+.INFO l_stick_layer: set -> b
+INFO l_stick_layer: set -> a
+..INFO l_stick_layer: set -> b
+.INFO l_stick_layer: set -> b
+....................INFO action=BTN_A state=down seq=0
+INFO action=BTN_A state=down seq=0
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=1
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=1
+INFO action=BTN_A state=down seq=2
+INFO action=BTN_A state=down seq=2
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=3
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=3
+INFO action=BTN_A state=down seq=4
+INFO action=BTN_A state=down seq=4
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=5
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=5
+INFO action=BTN_A state=down seq=6
+INFO action=BTN_A state=down seq=6
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=7
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=7
+INFO action=BTN_A state=down seq=8
+INFO action=BTN_A state=down seq=8
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=9
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=9
+INFO action=BTN_A state=down seq=10
+INFO action=BTN_A state=down seq=10
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=11
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=11
+INFO action=BTN_A state=down seq=12
+INFO action=BTN_A state=down seq=12
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=13
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=13
+INFO action=BTN_A state=down seq=14
+INFO action=BTN_A state=down seq=14
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=15
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=15
+INFO action=BTN_A state=down seq=16
+INFO action=BTN_A state=down seq=16
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=17
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=17
+INFO action=BTN_A state=down seq=18
+INFO action=BTN_A state=down seq=18
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=19
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=19
+INFO action=BTN_A state=down seq=20
+INFO action=BTN_A state=down seq=20
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=21
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=21
+INFO action=BTN_A state=down seq=22
+INFO action=BTN_A state=down seq=22
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=23
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=23
+INFO action=BTN_A state=down seq=24
+INFO action=BTN_A state=down seq=24
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=25
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=25
+INFO action=BTN_A state=down seq=26
+INFO action=BTN_A state=down seq=26
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=27
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=27
+INFO action=BTN_A state=down seq=28
+INFO action=BTN_A state=down seq=28
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=29
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=29
+INFO action=BTN_A state=down seq=30
+INFO action=BTN_A state=down seq=30
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=31
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=31
+INFO action=BTN_A state=down seq=32
+INFO action=BTN_A state=down seq=32
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=33
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=33
+INFO action=BTN_A state=down seq=34
+INFO action=BTN_A state=down seq=34
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=35
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=35
+INFO action=BTN_A state=down seq=36
+INFO action=BTN_A state=down seq=36
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=37
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=37
+INFO action=BTN_A state=down seq=38
+INFO action=BTN_A state=down seq=38
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=39
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=39
+INFO action=BTN_A state=down seq=40
+INFO action=BTN_A state=down seq=40
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=41
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=41
+INFO action=BTN_A state=down seq=42
+INFO action=BTN_A state=down seq=42
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=43
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=43
+INFO action=BTN_A state=down seq=44
+INFO action=BTN_A state=down seq=44
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=45
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=45
+INFO action=BTN_A state=down seq=46
+INFO action=BTN_A state=down seq=46
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=47
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=47
+INFO action=BTN_A state=down seq=48
+INFO action=BTN_A state=down seq=48
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=49
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=49
+INFO action=BTN_A state=down seq=50
+INFO action=BTN_A state=down seq=50
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=51
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=51
+INFO action=BTN_A state=down seq=52
+INFO action=BTN_A state=down seq=52
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=53
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=53
+INFO action=BTN_A state=down seq=54
+INFO action=BTN_A state=down seq=54
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=55
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=55
+INFO action=BTN_A state=down seq=56
+INFO action=BTN_A state=down seq=56
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=57
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=57
+INFO action=BTN_A state=down seq=58
+INFO action=BTN_A state=down seq=58
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=59
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=59
+INFO action=BTN_A state=down seq=60
+INFO action=BTN_A state=down seq=60
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=61
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=61
+INFO action=BTN_A state=down seq=62
+INFO action=BTN_A state=down seq=62
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=63
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=63
+INFO action=BTN_A state=down seq=64
+INFO action=BTN_A state=down seq=64
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=65
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=65
+INFO action=BTN_A state=down seq=66
+INFO action=BTN_A state=down seq=66
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=67
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=67
+INFO action=BTN_A state=down seq=68
+INFO action=BTN_A state=down seq=68
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=69
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=69
+INFO action=BTN_A state=down seq=70
+INFO action=BTN_A state=down seq=70
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=71
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=71
+INFO action=BTN_A state=down seq=72
+INFO action=BTN_A state=down seq=72
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=73
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=73
+INFO action=BTN_A state=down seq=74
+INFO action=BTN_A state=down seq=74
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=75
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=75
+INFO action=BTN_A state=down seq=76
+INFO action=BTN_A state=down seq=76
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=77
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=77
+INFO action=BTN_A state=down seq=78
+INFO action=BTN_A state=down seq=78
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=79
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=79
+INFO action=BTN_A state=down seq=80
+INFO action=BTN_A state=down seq=80
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=81
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=81
+INFO action=BTN_A state=down seq=82
+INFO action=BTN_A state=down seq=82
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=83
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=83
+INFO action=BTN_A state=down seq=84
+INFO action=BTN_A state=down seq=84
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=85
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=85
+INFO action=BTN_A state=down seq=86
+INFO action=BTN_A state=down seq=86
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=87
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=87
+INFO action=BTN_A state=down seq=88
+INFO action=BTN_A state=down seq=88
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=89
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=89
+INFO action=BTN_A state=down seq=90
+INFO action=BTN_A state=down seq=90
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=91
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=91
+INFO action=BTN_A state=down seq=92
+INFO action=BTN_A state=down seq=92
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=93
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=93
+INFO action=BTN_A state=down seq=94
+INFO action=BTN_A state=down seq=94
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=95
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=95
+INFO action=BTN_A state=down seq=96
+INFO action=BTN_A state=down seq=96
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=97
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=97
+INFO action=BTN_A state=down seq=98
+INFO action=BTN_A state=down seq=98
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=99
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=99
+INFO action=BTN_A state=down seq=100
+INFO action=BTN_A state=down seq=100
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=101
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=101
+INFO action=BTN_A state=down seq=102
+INFO action=BTN_A state=down seq=102
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=103
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=103
+INFO action=BTN_A state=down seq=104
+INFO action=BTN_A state=down seq=104
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=105
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=105
+INFO action=BTN_A state=down seq=106
+INFO action=BTN_A state=down seq=106
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=107
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=107
+INFO action=BTN_A state=down seq=108
+INFO action=BTN_A state=down seq=108
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=109
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=109
+INFO action=BTN_A state=down seq=110
+INFO action=BTN_A state=down seq=110
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=111
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=111
+INFO action=BTN_A state=down seq=112
+INFO action=BTN_A state=down seq=112
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=113
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=113
+INFO action=BTN_A state=down seq=114
+INFO action=BTN_A state=down seq=114
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=115
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=115
+INFO action=BTN_A state=down seq=116
+INFO action=BTN_A state=down seq=116
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=117
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=117
+INFO action=BTN_A state=down seq=118
+INFO action=BTN_A state=down seq=118
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=119
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=119
+INFO action=BTN_A state=down seq=120
+INFO action=BTN_A state=down seq=120
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=121
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=121
+INFO action=BTN_A state=down seq=122
+INFO action=BTN_A state=down seq=122
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=123
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=123
+INFO action=BTN_A state=down seq=124
+INFO action=BTN_A state=down seq=124
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=125
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=125
+INFO action=BTN_A state=down seq=126
+INFO action=BTN_A state=down seq=126
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=127
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=127
+INFO action=BTN_A state=down seq=128
+INFO action=BTN_A state=down seq=128
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=129
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=129
+INFO action=BTN_A state=down seq=130
+INFO action=BTN_A state=down seq=130
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=131
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=131
+INFO action=BTN_A state=down seq=132
+INFO action=BTN_A state=down seq=132
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=133
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=133
+INFO action=BTN_A state=down seq=134
+INFO action=BTN_A state=down seq=134
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=135
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=135
+INFO action=BTN_A state=down seq=136
+INFO action=BTN_A state=down seq=136
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=137
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=137
+INFO action=BTN_A state=down seq=138
+INFO action=BTN_A state=down seq=138
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=139
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=139
+INFO action=BTN_A state=down seq=140
+INFO action=BTN_A state=down seq=140
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=141
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=141
+INFO action=BTN_A state=down seq=142
+INFO action=BTN_A state=down seq=142
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=143
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=143
+INFO action=BTN_A state=down seq=144
+INFO action=BTN_A state=down seq=144
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=145
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=145
+INFO action=BTN_A state=down seq=146
+INFO action=BTN_A state=down seq=146
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=147
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=147
+INFO action=BTN_A state=down seq=148
+INFO action=BTN_A state=down seq=148
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=149
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=149
+INFO action=BTN_A state=down seq=150
+INFO action=BTN_A state=down seq=150
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=151
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=151
+INFO action=BTN_A state=down seq=152
+INFO action=BTN_A state=down seq=152
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=153
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=153
+INFO action=BTN_A state=down seq=154
+INFO action=BTN_A state=down seq=154
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=155
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=155
+INFO action=BTN_A state=down seq=156
+INFO action=BTN_A state=down seq=156
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=157
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=157
+INFO action=BTN_A state=down seq=158
+INFO action=BTN_A state=down seq=158
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=159
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=159
+INFO action=BTN_A state=down seq=160
+INFO action=BTN_A state=down seq=160
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=161
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=161
+INFO action=BTN_A state=down seq=162
+INFO action=BTN_A state=down seq=162
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=163
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=163
+INFO action=BTN_A state=down seq=164
+INFO action=BTN_A state=down seq=164
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=165
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=165
+INFO action=BTN_A state=down seq=166
+INFO action=BTN_A state=down seq=166
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=167
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=167
+INFO action=BTN_A state=down seq=168
+INFO action=BTN_A state=down seq=168
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=169
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=169
+INFO action=BTN_A state=down seq=170
+INFO action=BTN_A state=down seq=170
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=171
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=171
+INFO action=BTN_A state=down seq=172
+INFO action=BTN_A state=down seq=172
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=173
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=173
+INFO action=BTN_A state=down seq=174
+INFO action=BTN_A state=down seq=174
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=175
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=175
+INFO action=BTN_A state=down seq=176
+INFO action=BTN_A state=down seq=176
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=177
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=177
+INFO action=BTN_A state=down seq=178
+INFO action=BTN_A state=down seq=178
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=179
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=179
+INFO action=BTN_A state=down seq=180
+INFO action=BTN_A state=down seq=180
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=181
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=181
+INFO action=BTN_A state=down seq=182
+INFO action=BTN_A state=down seq=182
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=183
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=183
+INFO action=BTN_A state=down seq=184
+INFO action=BTN_A state=down seq=184
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=185
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=185
+INFO action=BTN_A state=down seq=186
+INFO action=BTN_A state=down seq=186
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=187
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=187
+INFO action=BTN_A state=down seq=188
+INFO action=BTN_A state=down seq=188
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=189
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=189
+INFO action=BTN_A state=down seq=190
+INFO action=BTN_A state=down seq=190
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=191
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=191
+INFO action=BTN_A state=down seq=192
+INFO action=BTN_A state=down seq=192
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=193
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=193
+INFO action=BTN_A state=down seq=194
+INFO action=BTN_A state=down seq=194
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=195
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=195
+INFO action=BTN_A state=down seq=196
+INFO action=BTN_A state=down seq=196
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=197
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=197
+INFO action=BTN_A state=down seq=198
+INFO action=BTN_A state=down seq=198
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=199
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=199
+INFO action=BTN_A state=down seq=200
+INFO action=BTN_A state=down seq=200
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=201
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=201
+INFO action=BTN_A state=down seq=202
+INFO action=BTN_A state=down seq=202
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=203
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=203
+INFO action=BTN_A state=down seq=204
+INFO action=BTN_A state=down seq=204
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=205
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=205
+INFO action=BTN_A state=down seq=206
+INFO action=BTN_A state=down seq=206
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=207
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=207
+INFO action=BTN_A state=down seq=208
+INFO action=BTN_A state=down seq=208
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=209
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=209
+INFO action=BTN_A state=down seq=210
+INFO action=BTN_A state=down seq=210
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=211
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=211
+INFO action=BTN_A state=down seq=212
+INFO action=BTN_A state=down seq=212
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=213
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=213
+INFO action=BTN_A state=down seq=214
+INFO action=BTN_A state=down seq=214
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=215
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=215
+INFO action=BTN_A state=down seq=216
+INFO action=BTN_A state=down seq=216
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=217
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=217
+INFO action=BTN_A state=down seq=218
+INFO action=BTN_A state=down seq=218
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=219
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=219
+INFO action=BTN_A state=down seq=220
+INFO action=BTN_A state=down seq=220
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=221
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=221
+INFO action=BTN_A state=down seq=222
+INFO action=BTN_A state=down seq=222
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=223
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=223
+INFO action=BTN_A state=down seq=224
+INFO action=BTN_A state=down seq=224
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=225
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=225
+INFO action=BTN_A state=down seq=226
+INFO action=BTN_A state=down seq=226
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=227
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=227
+INFO action=BTN_A state=down seq=228
+INFO action=BTN_A state=down seq=228
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=229
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=229
+INFO action=BTN_A state=down seq=230
+INFO action=BTN_A state=down seq=230
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=231
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=231
+INFO action=BTN_A state=down seq=232
+INFO action=BTN_A state=down seq=232
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=233
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=233
+INFO action=BTN_A state=down seq=234
+INFO action=BTN_A state=down seq=234
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=235
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=235
+INFO action=BTN_A state=down seq=236
+INFO action=BTN_A state=down seq=236
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=237
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=237
+INFO action=BTN_A state=down seq=238
+INFO action=BTN_A state=down seq=238
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=239
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=239
+INFO action=BTN_A state=down seq=240
+INFO action=BTN_A state=down seq=240
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=241
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=241
+INFO action=BTN_A state=down seq=242
+INFO action=BTN_A state=down seq=242
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=243
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=243
+INFO action=BTN_A state=down seq=244
+INFO action=BTN_A state=down seq=244
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=245
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=245
+INFO action=BTN_A state=down seq=246
+INFO action=BTN_A state=down seq=246
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=247
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=247
+INFO action=BTN_A state=down seq=248
+INFO action=BTN_A state=down seq=248
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=249
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=249
+INFO action=BTN_A state=down seq=250
+INFO action=BTN_A state=down seq=250
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=251
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=251
+INFO action=BTN_A state=down seq=252
+INFO action=BTN_A state=down seq=252
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=253
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=253
+INFO action=BTN_A state=down seq=254
+INFO action=BTN_A state=down seq=254
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=255
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=255
+INFO action=BTN_A state=down seq=256
+INFO action=BTN_A state=down seq=256
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=257
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=257
+INFO action=BTN_A state=down seq=258
+INFO action=BTN_A state=down seq=258
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=259
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=259
+INFO action=BTN_A state=down seq=260
+INFO action=BTN_A state=down seq=260
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=261
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=261
+INFO action=BTN_A state=down seq=262
+INFO action=BTN_A state=down seq=262
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=263
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=263
+INFO action=BTN_A state=down seq=264
+INFO action=BTN_A state=down seq=264
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=265
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=265
+INFO action=BTN_A state=down seq=266
+INFO action=BTN_A state=down seq=266
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=267
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=267
+INFO action=BTN_A state=down seq=268
+INFO action=BTN_A state=down seq=268
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=269
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=269
+INFO action=BTN_A state=down seq=270
+INFO action=BTN_A state=down seq=270
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=271
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=271
+INFO action=BTN_A state=down seq=272
+INFO action=BTN_A state=down seq=272
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=273
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=273
+INFO action=BTN_A state=down seq=274
+INFO action=BTN_A state=down seq=274
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=275
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=275
+INFO action=BTN_A state=down seq=276
+INFO action=BTN_A state=down seq=276
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=277
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=277
+INFO action=BTN_A state=down seq=278
+INFO action=BTN_A state=down seq=278
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=279
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=279
+INFO action=BTN_A state=down seq=280
+INFO action=BTN_A state=down seq=280
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=281
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=281
+INFO action=BTN_A state=down seq=282
+INFO action=BTN_A state=down seq=282
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=283
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=283
+INFO action=BTN_A state=down seq=284
+INFO action=BTN_A state=down seq=284
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=285
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=285
+INFO action=BTN_A state=down seq=286
+INFO action=BTN_A state=down seq=286
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=287
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=287
+INFO action=BTN_A state=down seq=288
+INFO action=BTN_A state=down seq=288
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=289
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=289
+INFO action=BTN_A state=down seq=290
+INFO action=BTN_A state=down seq=290
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=291
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=291
+INFO action=BTN_A state=down seq=292
+INFO action=BTN_A state=down seq=292
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=293
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=293
+INFO action=BTN_A state=down seq=294
+INFO action=BTN_A state=down seq=294
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=295
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=295
+INFO action=BTN_A state=down seq=296
+INFO action=BTN_A state=down seq=296
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=297
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=297
+INFO action=BTN_A state=down seq=298
+INFO action=BTN_A state=down seq=298
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=299
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=299
+INFO action=BTN_A state=down seq=300
+INFO action=BTN_A state=down seq=300
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=301
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=301
+INFO action=BTN_A state=down seq=302
+INFO action=BTN_A state=down seq=302
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=303
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=303
+INFO action=BTN_A state=down seq=304
+INFO action=BTN_A state=down seq=304
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=305
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=305
+INFO action=BTN_A state=down seq=306
+INFO action=BTN_A state=down seq=306
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=307
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=307
+INFO action=BTN_A state=down seq=308
+INFO action=BTN_A state=down seq=308
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=309
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=309
+INFO action=BTN_A state=down seq=310
+INFO action=BTN_A state=down seq=310
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=311
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=311
+INFO action=BTN_A state=down seq=312
+INFO action=BTN_A state=down seq=312
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=313
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=313
+INFO action=BTN_A state=down seq=314
+INFO action=BTN_A state=down seq=314
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=315
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=315
+INFO action=BTN_A state=down seq=316
+INFO action=BTN_A state=down seq=316
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=317
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=317
+INFO action=BTN_A state=down seq=318
+INFO action=BTN_A state=down seq=318
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=319
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=319
+INFO action=BTN_A state=down seq=320
+INFO action=BTN_A state=down seq=320
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=321
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=321
+INFO action=BTN_A state=down seq=322
+INFO action=BTN_A state=down seq=322
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=323
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=323
+INFO action=BTN_A state=down seq=324
+INFO action=BTN_A state=down seq=324
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=325
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=325
+INFO action=BTN_A state=down seq=326
+INFO action=BTN_A state=down seq=326
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=327
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=327
+INFO action=BTN_A state=down seq=328
+INFO action=BTN_A state=down seq=328
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=329
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=329
+INFO action=BTN_A state=down seq=330
+INFO action=BTN_A state=down seq=330
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=331
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=331
+INFO action=BTN_A state=down seq=332
+INFO action=BTN_A state=down seq=332
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=333
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=333
+INFO action=BTN_A state=down seq=334
+INFO action=BTN_A state=down seq=334
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=335
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=335
+INFO action=BTN_A state=down seq=336
+INFO action=BTN_A state=down seq=336
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=337
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=337
+INFO action=BTN_A state=down seq=338
+INFO action=BTN_A state=down seq=338
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=339
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=339
+INFO action=BTN_A state=down seq=340
+INFO action=BTN_A state=down seq=340
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=341
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=341
+INFO action=BTN_A state=down seq=342
+INFO action=BTN_A state=down seq=342
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=343
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=343
+INFO action=BTN_A state=down seq=344
+INFO action=BTN_A state=down seq=344
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=345
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=345
+INFO action=BTN_A state=down seq=346
+INFO action=BTN_A state=down seq=346
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=347
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=347
+INFO action=BTN_A state=down seq=348
+INFO action=BTN_A state=down seq=348
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=349
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=349
+INFO action=BTN_A state=down seq=350
+INFO action=BTN_A state=down seq=350
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=351
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=351
+INFO action=BTN_A state=down seq=352
+INFO action=BTN_A state=down seq=352
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=353
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=353
+INFO action=BTN_A state=down seq=354
+INFO action=BTN_A state=down seq=354
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=355
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=355
+INFO action=BTN_A state=down seq=356
+INFO action=BTN_A state=down seq=356
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=357
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=357
+INFO action=BTN_A state=down seq=358
+INFO action=BTN_A state=down seq=358
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=359
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=359
+INFO action=BTN_A state=down seq=360
+INFO action=BTN_A state=down seq=360
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=361
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=361
+INFO action=BTN_A state=down seq=362
+INFO action=BTN_A state=down seq=362
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=363
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=363
+INFO action=BTN_A state=down seq=364
+INFO action=BTN_A state=down seq=364
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=365
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=365
+INFO action=BTN_A state=down seq=366
+INFO action=BTN_A state=down seq=366
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=367
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=367
+INFO action=BTN_A state=down seq=368
+INFO action=BTN_A state=down seq=368
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=369
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=369
+INFO action=BTN_A state=down seq=370
+INFO action=BTN_A state=down seq=370
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=371
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=371
+INFO action=BTN_A state=down seq=372
+INFO action=BTN_A state=down seq=372
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=373
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=373
+INFO action=BTN_A state=down seq=374
+INFO action=BTN_A state=down seq=374
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=375
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=375
+INFO action=BTN_A state=down seq=376
+INFO action=BTN_A state=down seq=376
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=377
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=377
+INFO action=BTN_A state=down seq=378
+INFO action=BTN_A state=down seq=378
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=379
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=379
+INFO action=BTN_A state=down seq=380
+INFO action=BTN_A state=down seq=380
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=381
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=381
+INFO action=BTN_A state=down seq=382
+INFO action=BTN_A state=down seq=382
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=383
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=383
+INFO action=BTN_A state=down seq=384
+INFO action=BTN_A state=down seq=384
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=385
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=385
+INFO action=BTN_A state=down seq=386
+INFO action=BTN_A state=down seq=386
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=387
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=387
+INFO action=BTN_A state=down seq=388
+INFO action=BTN_A state=down seq=388
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=389
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=389
+INFO action=BTN_A state=down seq=390
+INFO action=BTN_A state=down seq=390
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=391
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=391
+INFO action=BTN_A state=down seq=392
+INFO action=BTN_A state=down seq=392
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=393
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=393
+INFO action=BTN_A state=down seq=394
+INFO action=BTN_A state=down seq=394
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=395
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=395
+INFO action=BTN_A state=down seq=396
+INFO action=BTN_A state=down seq=396
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=397
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=397
+INFO action=BTN_A state=down seq=398
+INFO action=BTN_A state=down seq=398
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=399
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=399
+INFO action=BTN_A state=down seq=400
+INFO action=BTN_A state=down seq=400
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=401
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=401
+INFO action=BTN_A state=down seq=402
+INFO action=BTN_A state=down seq=402
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=403
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=403
+INFO action=BTN_A state=down seq=404
+INFO action=BTN_A state=down seq=404
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=405
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=405
+INFO action=BTN_A state=down seq=406
+INFO action=BTN_A state=down seq=406
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=407
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=407
+INFO action=BTN_A state=down seq=408
+INFO action=BTN_A state=down seq=408
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=409
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=409
+INFO action=BTN_A state=down seq=410
+INFO action=BTN_A state=down seq=410
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=411
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=411
+INFO action=BTN_A state=down seq=412
+INFO action=BTN_A state=down seq=412
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=413
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=413
+INFO action=BTN_A state=down seq=414
+INFO action=BTN_A state=down seq=414
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=415
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=415
+INFO action=BTN_A state=down seq=416
+INFO action=BTN_A state=down seq=416
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=417
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=417
+INFO action=BTN_A state=down seq=418
+INFO action=BTN_A state=down seq=418
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=419
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=419
+INFO action=BTN_A state=down seq=420
+INFO action=BTN_A state=down seq=420
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=421
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=421
+INFO action=BTN_A state=down seq=422
+INFO action=BTN_A state=down seq=422
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=423
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=423
+INFO action=BTN_A state=down seq=424
+INFO action=BTN_A state=down seq=424
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=425
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=425
+INFO action=BTN_A state=down seq=426
+INFO action=BTN_A state=down seq=426
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=427
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=427
+INFO action=BTN_A state=down seq=428
+INFO action=BTN_A state=down seq=428
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=429
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=429
+INFO action=BTN_A state=down seq=430
+INFO action=BTN_A state=down seq=430
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=431
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=431
+INFO action=BTN_A state=down seq=432
+INFO action=BTN_A state=down seq=432
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=433
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=433
+INFO action=BTN_A state=down seq=434
+INFO action=BTN_A state=down seq=434
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=435
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=435
+INFO action=BTN_A state=down seq=436
+INFO action=BTN_A state=down seq=436
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=437
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=437
+INFO action=BTN_A state=down seq=438
+INFO action=BTN_A state=down seq=438
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=439
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=439
+INFO action=BTN_A state=down seq=440
+INFO action=BTN_A state=down seq=440
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=441
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=441
+INFO action=BTN_A state=down seq=442
+INFO action=BTN_A state=down seq=442
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=443
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=443
+INFO action=BTN_A state=down seq=444
+INFO action=BTN_A state=down seq=444
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=445
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=445
+INFO action=BTN_A state=down seq=446
+INFO action=BTN_A state=down seq=446
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=447
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=447
+INFO action=BTN_A state=down seq=448
+INFO action=BTN_A state=down seq=448
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=449
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=449
+INFO action=BTN_A state=down seq=450
+INFO action=BTN_A state=down seq=450
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=451
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=451
+INFO action=BTN_A state=down seq=452
+INFO action=BTN_A state=down seq=452
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=453
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=453
+INFO action=BTN_A state=down seq=454
+INFO action=BTN_A state=down seq=454
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=455
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=455
+INFO action=BTN_A state=down seq=456
+INFO action=BTN_A state=down seq=456
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=457
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=457
+INFO action=BTN_A state=down seq=458
+INFO action=BTN_A state=down seq=458
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=459
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=459
+INFO action=BTN_A state=down seq=460
+INFO action=BTN_A state=down seq=460
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=461
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=461
+INFO action=BTN_A state=down seq=462
+INFO action=BTN_A state=down seq=462
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=463
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=463
+INFO action=BTN_A state=down seq=464
+INFO action=BTN_A state=down seq=464
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=465
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=465
+INFO action=BTN_A state=down seq=466
+INFO action=BTN_A state=down seq=466
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=467
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=467
+INFO action=BTN_A state=down seq=468
+INFO action=BTN_A state=down seq=468
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=469
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=469
+INFO action=BTN_A state=down seq=470
+INFO action=BTN_A state=down seq=470
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=471
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=471
+INFO action=BTN_A state=down seq=472
+INFO action=BTN_A state=down seq=472
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=473
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=473
+INFO action=BTN_A state=down seq=474
+INFO action=BTN_A state=down seq=474
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=475
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=475
+INFO action=BTN_A state=down seq=476
+INFO action=BTN_A state=down seq=476
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=477
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=477
+INFO action=BTN_A state=down seq=478
+INFO action=BTN_A state=down seq=478
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=479
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=479
+INFO action=BTN_A state=down seq=480
+INFO action=BTN_A state=down seq=480
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=481
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=481
+INFO action=BTN_A state=down seq=482
+INFO action=BTN_A state=down seq=482
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=483
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=483
+INFO action=BTN_A state=down seq=484
+INFO action=BTN_A state=down seq=484
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=485
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=485
+INFO action=BTN_A state=down seq=486
+INFO action=BTN_A state=down seq=486
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=487
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=487
+INFO action=BTN_A state=down seq=488
+INFO action=BTN_A state=down seq=488
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=489
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=489
+INFO action=BTN_A state=down seq=490
+INFO action=BTN_A state=down seq=490
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=491
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=491
+INFO action=BTN_A state=down seq=492
+INFO action=BTN_A state=down seq=492
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=493
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=493
+INFO action=BTN_A state=down seq=494
+INFO action=BTN_A state=down seq=494
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=495
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=495
+INFO action=BTN_A state=down seq=496
+INFO action=BTN_A state=down seq=496
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=497
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=497
+INFO action=BTN_A state=down seq=498
+INFO action=BTN_A state=down seq=498
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=499
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=499
+INFO action=BTN_A state=down seq=500
+INFO action=BTN_A state=down seq=500
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=501
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=501
+INFO action=BTN_A state=down seq=502
+INFO action=BTN_A state=down seq=502
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=503
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=503
+INFO action=BTN_A state=down seq=504
+INFO action=BTN_A state=down seq=504
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=505
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=505
+INFO action=BTN_A state=down seq=506
+INFO action=BTN_A state=down seq=506
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=507
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=507
+INFO action=BTN_A state=down seq=508
+INFO action=BTN_A state=down seq=508
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=509
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=509
+INFO action=BTN_A state=down seq=510
+INFO action=BTN_A state=down seq=510
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=511
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=511
+INFO action=BTN_A state=down seq=512
+INFO action=BTN_A state=down seq=512
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=513
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=513
+INFO action=BTN_A state=down seq=514
+INFO action=BTN_A state=down seq=514
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=515
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=515
+INFO action=BTN_A state=down seq=516
+INFO action=BTN_A state=down seq=516
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=517
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=517
+INFO action=BTN_A state=down seq=518
+INFO action=BTN_A state=down seq=518
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=519
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=519
+INFO action=BTN_A state=down seq=520
+INFO action=BTN_A state=down seq=520
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=521
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=521
+INFO action=BTN_A state=down seq=522
+INFO action=BTN_A state=down seq=522
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=523
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=523
+INFO action=BTN_A state=down seq=524
+INFO action=BTN_A state=down seq=524
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=525
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=525
+INFO action=BTN_A state=down seq=526
+INFO action=BTN_A state=down seq=526
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=527
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=527
+INFO action=BTN_A state=down seq=528
+INFO action=BTN_A state=down seq=528
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=529
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=529
+INFO action=BTN_A state=down seq=530
+INFO action=BTN_A state=down seq=530
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=531
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=531
+INFO action=BTN_A state=down seq=532
+INFO action=BTN_A state=down seq=532
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=533
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=533
+INFO action=BTN_A state=down seq=534
+INFO action=BTN_A state=down seq=534
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=535
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=535
+INFO action=BTN_A state=down seq=536
+INFO action=BTN_A state=down seq=536
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=537
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=537
+INFO action=BTN_A state=down seq=538
+INFO action=BTN_A state=down seq=538
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=539
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=539
+INFO action=BTN_A state=down seq=540
+INFO action=BTN_A state=down seq=540
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=541
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=541
+INFO action=BTN_A state=down seq=542
+INFO action=BTN_A state=down seq=542
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=543
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=543
+INFO action=BTN_A state=down seq=544
+INFO action=BTN_A state=down seq=544
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=545
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=545
+INFO action=BTN_A state=down seq=546
+INFO action=BTN_A state=down seq=546
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=547
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=547
+INFO action=BTN_A state=down seq=548
+INFO action=BTN_A state=down seq=548
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=549
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=549
+INFO action=BTN_A state=down seq=550
+INFO action=BTN_A state=down seq=550
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=551
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=551
+INFO action=BTN_A state=down seq=552
+INFO action=BTN_A state=down seq=552
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=553
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=553
+INFO action=BTN_A state=down seq=554
+INFO action=BTN_A state=down seq=554
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=555
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=555
+INFO action=BTN_A state=down seq=556
+INFO action=BTN_A state=down seq=556
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=557
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=557
+INFO action=BTN_A state=down seq=558
+INFO action=BTN_A state=down seq=558
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=559
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=559
+INFO action=BTN_A state=down seq=560
+INFO action=BTN_A state=down seq=560
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=561
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=561
+INFO action=BTN_A state=down seq=562
+INFO action=BTN_A state=down seq=562
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=563
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=563
+INFO action=BTN_A state=down seq=564
+INFO action=BTN_A state=down seq=564
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=565
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=565
+INFO action=BTN_A state=down seq=566
+INFO action=BTN_A state=down seq=566
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=567
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=567
+INFO action=BTN_A state=down seq=568
+INFO action=BTN_A state=down seq=568
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=569
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=569
+INFO action=BTN_A state=down seq=570
+INFO action=BTN_A state=down seq=570
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=571
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=571
+INFO action=BTN_A state=down seq=572
+INFO action=BTN_A state=down seq=572
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=573
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=573
+INFO action=BTN_A state=down seq=574
+INFO action=BTN_A state=down seq=574
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=575
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=575
+INFO action=BTN_A state=down seq=576
+INFO action=BTN_A state=down seq=576
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=577
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=577
+INFO action=BTN_A state=down seq=578
+INFO action=BTN_A state=down seq=578
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=579
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=579
+INFO action=BTN_A state=down seq=580
+INFO action=BTN_A state=down seq=580
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=581
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=581
+INFO action=BTN_A state=down seq=582
+INFO action=BTN_A state=down seq=582
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=583
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=583
+INFO action=BTN_A state=down seq=584
+INFO action=BTN_A state=down seq=584
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=585
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=585
+INFO action=BTN_A state=down seq=586
+INFO action=BTN_A state=down seq=586
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=587
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=587
+INFO action=BTN_A state=down seq=588
+INFO action=BTN_A state=down seq=588
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=589
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=589
+INFO action=BTN_A state=down seq=590
+INFO action=BTN_A state=down seq=590
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=591
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=591
+INFO action=BTN_A state=down seq=592
+INFO action=BTN_A state=down seq=592
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=593
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=593
+INFO action=BTN_A state=down seq=594
+INFO action=BTN_A state=down seq=594
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=595
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=595
+INFO action=BTN_A state=down seq=596
+INFO action=BTN_A state=down seq=596
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=597
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=597
+INFO action=BTN_A state=down seq=598
+INFO action=BTN_A state=down seq=598
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=599
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=599
+INFO action=BTN_A state=down seq=600
+INFO action=BTN_A state=down seq=600
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=601
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=601
+INFO action=BTN_A state=down seq=602
+INFO action=BTN_A state=down seq=602
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=603
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=603
+INFO action=BTN_A state=down seq=604
+INFO action=BTN_A state=down seq=604
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=605
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=605
+INFO action=BTN_A state=down seq=606
+INFO action=BTN_A state=down seq=606
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=607
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=607
+INFO action=BTN_A state=down seq=608
+INFO action=BTN_A state=down seq=608
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=609
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=609
+INFO action=BTN_A state=down seq=610
+INFO action=BTN_A state=down seq=610
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=611
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=611
+INFO action=BTN_A state=down seq=612
+INFO action=BTN_A state=down seq=612
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=613
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=613
+INFO action=BTN_A state=down seq=614
+INFO action=BTN_A state=down seq=614
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=615
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=615
+INFO action=BTN_A state=down seq=616
+INFO action=BTN_A state=down seq=616
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=617
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=617
+INFO action=BTN_A state=down seq=618
+INFO action=BTN_A state=down seq=618
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=619
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=619
+INFO action=BTN_A state=down seq=620
+INFO action=BTN_A state=down seq=620
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=621
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=621
+INFO action=BTN_A state=down seq=622
+INFO action=BTN_A state=down seq=622
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=623
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=623
+INFO action=BTN_A state=down seq=624
+INFO action=BTN_A state=down seq=624
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=625
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=625
+INFO action=BTN_A state=down seq=626
+INFO action=BTN_A state=down seq=626
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=627
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=627
+INFO action=BTN_A state=down seq=628
+INFO action=BTN_A state=down seq=628
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=629
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=629
+INFO action=BTN_A state=down seq=630
+INFO action=BTN_A state=down seq=630
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=631
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=631
+INFO action=BTN_A state=down seq=632
+INFO action=BTN_A state=down seq=632
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=633
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=633
+INFO action=BTN_A state=down seq=634
+INFO action=BTN_A state=down seq=634
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=635
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=635
+INFO action=BTN_A state=down seq=636
+INFO action=BTN_A state=down seq=636
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=637
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=637
+INFO action=BTN_A state=down seq=638
+INFO action=BTN_A state=down seq=638
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=639
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=639
+INFO action=BTN_A state=down seq=640
+INFO action=BTN_A state=down seq=640
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=641
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=641
+INFO action=BTN_A state=down seq=642
+INFO action=BTN_A state=down seq=642
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=643
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=643
+INFO action=BTN_A state=down seq=644
+INFO action=BTN_A state=down seq=644
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=645
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=645
+INFO action=BTN_A state=down seq=646
+INFO action=BTN_A state=down seq=646
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=647
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=647
+INFO action=BTN_A state=down seq=648
+INFO action=BTN_A state=down seq=648
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=649
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=649
+INFO action=BTN_A state=down seq=650
+INFO action=BTN_A state=down seq=650
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=651
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=651
+INFO action=BTN_A state=down seq=652
+INFO action=BTN_A state=down seq=652
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=653
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=653
+INFO action=BTN_A state=down seq=654
+INFO action=BTN_A state=down seq=654
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=655
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=655
+INFO action=BTN_A state=down seq=656
+INFO action=BTN_A state=down seq=656
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=657
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=657
+INFO action=BTN_A state=down seq=658
+INFO action=BTN_A state=down seq=658
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=659
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=659
+INFO action=BTN_A state=down seq=660
+INFO action=BTN_A state=down seq=660
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=661
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=661
+INFO action=BTN_A state=down seq=662
+INFO action=BTN_A state=down seq=662
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=663
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=663
+INFO action=BTN_A state=down seq=664
+INFO action=BTN_A state=down seq=664
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=665
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=665
+INFO action=BTN_A state=down seq=666
+INFO action=BTN_A state=down seq=666
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=667
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=667
+INFO action=BTN_A state=down seq=668
+INFO action=BTN_A state=down seq=668
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=669
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=669
+INFO action=BTN_A state=down seq=670
+INFO action=BTN_A state=down seq=670
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=671
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=671
+INFO action=BTN_A state=down seq=672
+INFO action=BTN_A state=down seq=672
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=673
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=673
+INFO action=BTN_A state=down seq=674
+INFO action=BTN_A state=down seq=674
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=675
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=675
+INFO action=BTN_A state=down seq=676
+INFO action=BTN_A state=down seq=676
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=677
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=677
+INFO action=BTN_A state=down seq=678
+INFO action=BTN_A state=down seq=678
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=679
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=679
+INFO action=BTN_A state=down seq=680
+INFO action=BTN_A state=down seq=680
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=681
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=681
+INFO action=BTN_A state=down seq=682
+INFO action=BTN_A state=down seq=682
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=683
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=683
+INFO action=BTN_A state=down seq=684
+INFO action=BTN_A state=down seq=684
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=685
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=685
+INFO action=BTN_A state=down seq=686
+INFO action=BTN_A state=down seq=686
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=687
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=687
+INFO action=BTN_A state=down seq=688
+INFO action=BTN_A state=down seq=688
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=689
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=689
+INFO action=BTN_A state=down seq=690
+INFO action=BTN_A state=down seq=690
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=691
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=691
+INFO action=BTN_A state=down seq=692
+INFO action=BTN_A state=down seq=692
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=693
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=693
+INFO action=BTN_A state=down seq=694
+INFO action=BTN_A state=down seq=694
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=695
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=695
+INFO action=BTN_A state=down seq=696
+INFO action=BTN_A state=down seq=696
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=697
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=697
+INFO action=BTN_A state=down seq=698
+INFO action=BTN_A state=down seq=698
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=699
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=699
+INFO action=BTN_A state=down seq=700
+INFO action=BTN_A state=down seq=700
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=701
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=701
+INFO action=BTN_A state=down seq=702
+INFO action=BTN_A state=down seq=702
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=703
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=703
+INFO action=BTN_A state=down seq=704
+INFO action=BTN_A state=down seq=704
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=705
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=705
+INFO action=BTN_A state=down seq=706
+INFO action=BTN_A state=down seq=706
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=707
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=707
+INFO action=BTN_A state=down seq=708
+INFO action=BTN_A state=down seq=708
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=709
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=709
+INFO action=BTN_A state=down seq=710
+INFO action=BTN_A state=down seq=710
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=711
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=711
+INFO action=BTN_A state=down seq=712
+INFO action=BTN_A state=down seq=712
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=713
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=713
+INFO action=BTN_A state=down seq=714
+INFO action=BTN_A state=down seq=714
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=715
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=715
+INFO action=BTN_A state=down seq=716
+INFO action=BTN_A state=down seq=716
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=717
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=717
+INFO action=BTN_A state=down seq=718
+INFO action=BTN_A state=down seq=718
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=719
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=719
+INFO action=BTN_A state=down seq=720
+INFO action=BTN_A state=down seq=720
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=721
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=721
+INFO action=BTN_A state=down seq=722
+INFO action=BTN_A state=down seq=722
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=723
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=723
+INFO action=BTN_A state=down seq=724
+INFO action=BTN_A state=down seq=724
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=725
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=725
+INFO action=BTN_A state=down seq=726
+INFO action=BTN_A state=down seq=726
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=727
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=727
+INFO action=BTN_A state=down seq=728
+INFO action=BTN_A state=down seq=728
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=729
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=729
+INFO action=BTN_A state=down seq=730
+INFO action=BTN_A state=down seq=730
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=731
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=731
+INFO action=BTN_A state=down seq=732
+INFO action=BTN_A state=down seq=732
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=733
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=733
+INFO action=BTN_A state=down seq=734
+INFO action=BTN_A state=down seq=734
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=735
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=735
+INFO action=BTN_A state=down seq=736
+INFO action=BTN_A state=down seq=736
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=737
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=737
+INFO action=BTN_A state=down seq=738
+INFO action=BTN_A state=down seq=738
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=739
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=739
+INFO action=BTN_A state=down seq=740
+INFO action=BTN_A state=down seq=740
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=741
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=741
+INFO action=BTN_A state=down seq=742
+INFO action=BTN_A state=down seq=742
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=743
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=743
+INFO action=BTN_A state=down seq=744
+INFO action=BTN_A state=down seq=744
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=745
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=745
+INFO action=BTN_A state=down seq=746
+INFO action=BTN_A state=down seq=746
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=747
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=747
+INFO action=BTN_A state=down seq=748
+INFO action=BTN_A state=down seq=748
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=749
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=749
+INFO action=BTN_A state=down seq=750
+INFO action=BTN_A state=down seq=750
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=751
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=751
+INFO action=BTN_A state=down seq=752
+INFO action=BTN_A state=down seq=752
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=753
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=753
+INFO action=BTN_A state=down seq=754
+INFO action=BTN_A state=down seq=754
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=755
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=755
+INFO action=BTN_A state=down seq=756
+INFO action=BTN_A state=down seq=756
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=757
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=757
+INFO action=BTN_A state=down seq=758
+INFO action=BTN_A state=down seq=758
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=759
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=759
+INFO action=BTN_A state=down seq=760
+INFO action=BTN_A state=down seq=760
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=761
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=761
+INFO action=BTN_A state=down seq=762
+INFO action=BTN_A state=down seq=762
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=763
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=763
+INFO action=BTN_A state=down seq=764
+INFO action=BTN_A state=down seq=764
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=765
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=765
+INFO action=BTN_A state=down seq=766
+INFO action=BTN_A state=down seq=766
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=767
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=767
+INFO action=BTN_A state=down seq=768
+INFO action=BTN_A state=down seq=768
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=769
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=769
+INFO action=BTN_A state=down seq=770
+INFO action=BTN_A state=down seq=770
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=771
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=771
+INFO action=BTN_A state=down seq=772
+INFO action=BTN_A state=down seq=772
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=773
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=773
+INFO action=BTN_A state=down seq=774
+INFO action=BTN_A state=down seq=774
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=775
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=775
+INFO action=BTN_A state=down seq=776
+INFO action=BTN_A state=down seq=776
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=777
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=777
+INFO action=BTN_A state=down seq=778
+INFO action=BTN_A state=down seq=778
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=779
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=779
+INFO action=BTN_A state=down seq=780
+INFO action=BTN_A state=down seq=780
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=781
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=781
+INFO action=BTN_A state=down seq=782
+INFO action=BTN_A state=down seq=782
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=783
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=783
+INFO action=BTN_A state=down seq=784
+INFO action=BTN_A state=down seq=784
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=785
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=785
+INFO action=BTN_A state=down seq=786
+INFO action=BTN_A state=down seq=786
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=787
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=787
+INFO action=BTN_A state=down seq=788
+INFO action=BTN_A state=down seq=788
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=789
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=789
+INFO action=BTN_A state=down seq=790
+INFO action=BTN_A state=down seq=790
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=791
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=791
+INFO action=BTN_A state=down seq=792
+INFO action=BTN_A state=down seq=792
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=793
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=793
+INFO action=BTN_A state=down seq=794
+INFO action=BTN_A state=down seq=794
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=795
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=795
+INFO action=BTN_A state=down seq=796
+INFO action=BTN_A state=down seq=796
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=797
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=797
+INFO action=BTN_A state=down seq=798
+INFO action=BTN_A state=down seq=798
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=799
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=799
+INFO action=BTN_A state=down seq=800
+INFO action=BTN_A state=down seq=800
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=801
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=801
+INFO action=BTN_A state=down seq=802
+INFO action=BTN_A state=down seq=802
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=803
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=803
+INFO action=BTN_A state=down seq=804
+INFO action=BTN_A state=down seq=804
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=805
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=805
+INFO action=BTN_A state=down seq=806
+INFO action=BTN_A state=down seq=806
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=807
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=807
+INFO action=BTN_A state=down seq=808
+INFO action=BTN_A state=down seq=808
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=809
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=809
+INFO action=BTN_A state=down seq=810
+INFO action=BTN_A state=down seq=810
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=811
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=811
+INFO action=BTN_A state=down seq=812
+INFO action=BTN_A state=down seq=812
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=813
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=813
+INFO action=BTN_A state=down seq=814
+INFO action=BTN_A state=down seq=814
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=815
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=815
+INFO action=BTN_A state=down seq=816
+INFO action=BTN_A state=down seq=816
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=817
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=817
+INFO action=BTN_A state=down seq=818
+INFO action=BTN_A state=down seq=818
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=819
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=819
+INFO action=BTN_A state=down seq=820
+INFO action=BTN_A state=down seq=820
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=821
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=821
+INFO action=BTN_A state=down seq=822
+INFO action=BTN_A state=down seq=822
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=823
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=823
+INFO action=BTN_A state=down seq=824
+INFO action=BTN_A state=down seq=824
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=825
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=825
+INFO action=BTN_A state=down seq=826
+INFO action=BTN_A state=down seq=826
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=827
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=827
+INFO action=BTN_A state=down seq=828
+INFO action=BTN_A state=down seq=828
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=829
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=829
+INFO action=BTN_A state=down seq=830
+INFO action=BTN_A state=down seq=830
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=831
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=831
+INFO action=BTN_A state=down seq=832
+INFO action=BTN_A state=down seq=832
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=833
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=833
+INFO action=BTN_A state=down seq=834
+INFO action=BTN_A state=down seq=834
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=835
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=835
+INFO action=BTN_A state=down seq=836
+INFO action=BTN_A state=down seq=836
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=837
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=837
+INFO action=BTN_A state=down seq=838
+INFO action=BTN_A state=down seq=838
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=839
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=839
+INFO action=BTN_A state=down seq=840
+INFO action=BTN_A state=down seq=840
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=841
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=841
+INFO action=BTN_A state=down seq=842
+INFO action=BTN_A state=down seq=842
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=843
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=843
+INFO action=BTN_A state=down seq=844
+INFO action=BTN_A state=down seq=844
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=845
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=845
+INFO action=BTN_A state=down seq=846
+INFO action=BTN_A state=down seq=846
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=847
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=847
+INFO action=BTN_A state=down seq=848
+INFO action=BTN_A state=down seq=848
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=849
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=849
+INFO action=BTN_A state=down seq=850
+INFO action=BTN_A state=down seq=850
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=851
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=851
+INFO action=BTN_A state=down seq=852
+INFO action=BTN_A state=down seq=852
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=853
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=853
+INFO action=BTN_A state=down seq=854
+INFO action=BTN_A state=down seq=854
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=855
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=855
+INFO action=BTN_A state=down seq=856
+INFO action=BTN_A state=down seq=856
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=857
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=857
+INFO action=BTN_A state=down seq=858
+INFO action=BTN_A state=down seq=858
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=859
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=859
+INFO action=BTN_A state=down seq=860
+INFO action=BTN_A state=down seq=860
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=861
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=861
+INFO action=BTN_A state=down seq=862
+INFO action=BTN_A state=down seq=862
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=863
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=863
+INFO action=BTN_A state=down seq=864
+INFO action=BTN_A state=down seq=864
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=865
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=865
+INFO action=BTN_A state=down seq=866
+INFO action=BTN_A state=down seq=866
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=867
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=867
+INFO action=BTN_A state=down seq=868
+INFO action=BTN_A state=down seq=868
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=869
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=869
+INFO action=BTN_A state=down seq=870
+INFO action=BTN_A state=down seq=870
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=871
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=871
+INFO action=BTN_A state=down seq=872
+INFO action=BTN_A state=down seq=872
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=873
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=873
+INFO action=BTN_A state=down seq=874
+INFO action=BTN_A state=down seq=874
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=875
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=875
+INFO action=BTN_A state=down seq=876
+INFO action=BTN_A state=down seq=876
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=877
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=877
+INFO action=BTN_A state=down seq=878
+INFO action=BTN_A state=down seq=878
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=879
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=879
+INFO action=BTN_A state=down seq=880
+INFO action=BTN_A state=down seq=880
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=881
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=881
+INFO action=BTN_A state=down seq=882
+INFO action=BTN_A state=down seq=882
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=883
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=883
+INFO action=BTN_A state=down seq=884
+INFO action=BTN_A state=down seq=884
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=885
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=885
+INFO action=BTN_A state=down seq=886
+INFO action=BTN_A state=down seq=886
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=887
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=887
+INFO action=BTN_A state=down seq=888
+INFO action=BTN_A state=down seq=888
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=889
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=889
+INFO action=BTN_A state=down seq=890
+INFO action=BTN_A state=down seq=890
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=891
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=891
+INFO action=BTN_A state=down seq=892
+INFO action=BTN_A state=down seq=892
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=893
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=893
+INFO action=BTN_A state=down seq=894
+INFO action=BTN_A state=down seq=894
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=895
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=895
+INFO action=BTN_A state=down seq=896
+INFO action=BTN_A state=down seq=896
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=897
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=897
+INFO action=BTN_A state=down seq=898
+INFO action=BTN_A state=down seq=898
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=899
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=899
+INFO action=BTN_A state=down seq=900
+INFO action=BTN_A state=down seq=900
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=901
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=901
+INFO action=BTN_A state=down seq=902
+INFO action=BTN_A state=down seq=902
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=903
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=903
+INFO action=BTN_A state=down seq=904
+INFO action=BTN_A state=down seq=904
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=905
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=905
+INFO action=BTN_A state=down seq=906
+INFO action=BTN_A state=down seq=906
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=907
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=907
+INFO action=BTN_A state=down seq=908
+INFO action=BTN_A state=down seq=908
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=909
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=909
+INFO action=BTN_A state=down seq=910
+INFO action=BTN_A state=down seq=910
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=911
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=911
+INFO action=BTN_A state=down seq=912
+INFO action=BTN_A state=down seq=912
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=913
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=913
+INFO action=BTN_A state=down seq=914
+INFO action=BTN_A state=down seq=914
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=915
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=915
+INFO action=BTN_A state=down seq=916
+INFO action=BTN_A state=down seq=916
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=917
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=917
+INFO action=BTN_A state=down seq=918
+INFO action=BTN_A state=down seq=918
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=919
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=919
+INFO action=BTN_A state=down seq=920
+INFO action=BTN_A state=down seq=920
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=921
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=921
+INFO action=BTN_A state=down seq=922
+INFO action=BTN_A state=down seq=922
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=923
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=923
+INFO action=BTN_A state=down seq=924
+INFO action=BTN_A state=down seq=924
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=925
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=925
+INFO action=BTN_A state=down seq=926
+INFO action=BTN_A state=down seq=926
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=927
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=927
+INFO action=BTN_A state=down seq=928
+INFO action=BTN_A state=down seq=928
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=929
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=929
+INFO action=BTN_A state=down seq=930
+INFO action=BTN_A state=down seq=930
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=931
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=931
+INFO action=BTN_A state=down seq=932
+INFO action=BTN_A state=down seq=932
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=933
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=933
+INFO action=BTN_A state=down seq=934
+INFO action=BTN_A state=down seq=934
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=935
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=935
+INFO action=BTN_A state=down seq=936
+INFO action=BTN_A state=down seq=936
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=937
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=937
+INFO action=BTN_A state=down seq=938
+INFO action=BTN_A state=down seq=938
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=939
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=939
+INFO action=BTN_A state=down seq=940
+INFO action=BTN_A state=down seq=940
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=941
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=941
+INFO action=BTN_A state=down seq=942
+INFO action=BTN_A state=down seq=942
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=943
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=943
+INFO action=BTN_A state=down seq=944
+INFO action=BTN_A state=down seq=944
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=945
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=945
+INFO action=BTN_A state=down seq=946
+INFO action=BTN_A state=down seq=946
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=947
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=947
+INFO action=BTN_A state=down seq=948
+INFO action=BTN_A state=down seq=948
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=949
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=949
+INFO action=BTN_A state=down seq=950
+INFO action=BTN_A state=down seq=950
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=951
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=951
+INFO action=BTN_A state=down seq=952
+INFO action=BTN_A state=down seq=952
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=953
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=953
+INFO action=BTN_A state=down seq=954
+INFO action=BTN_A state=down seq=954
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=955
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=955
+INFO action=BTN_A state=down seq=956
+INFO action=BTN_A state=down seq=956
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=957
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=957
+INFO action=BTN_A state=down seq=958
+INFO action=BTN_A state=down seq=958
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=959
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=959
+INFO action=BTN_A state=down seq=960
+INFO action=BTN_A state=down seq=960
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=961
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=961
+INFO action=BTN_A state=down seq=962
+INFO action=BTN_A state=down seq=962
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=963
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=963
+INFO action=BTN_A state=down seq=964
+INFO action=BTN_A state=down seq=964
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=965
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=965
+INFO action=BTN_A state=down seq=966
+INFO action=BTN_A state=down seq=966
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=967
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=967
+INFO action=BTN_A state=down seq=968
+INFO action=BTN_A state=down seq=968
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=969
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=969
+INFO action=BTN_A state=down seq=970
+INFO action=BTN_A state=down seq=970
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=971
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=971
+INFO action=BTN_A state=down seq=972
+INFO action=BTN_A state=down seq=972
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=973
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=973
+INFO action=BTN_A state=down seq=974
+INFO action=BTN_A state=down seq=974
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=975
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=975
+INFO action=BTN_A state=down seq=976
+INFO action=BTN_A state=down seq=976
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=977
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=977
+INFO action=BTN_A state=down seq=978
+INFO action=BTN_A state=down seq=978
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=979
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=979
+INFO action=BTN_A state=down seq=980
+INFO action=BTN_A state=down seq=980
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=981
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=981
+INFO action=BTN_A state=down seq=982
+INFO action=BTN_A state=down seq=982
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=983
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=983
+INFO action=BTN_A state=down seq=984
+INFO action=BTN_A state=down seq=984
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=985
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=985
+INFO action=BTN_A state=down seq=986
+INFO action=BTN_A state=down seq=986
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=987
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=987
+INFO action=BTN_A state=down seq=988
+INFO action=BTN_A state=down seq=988
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=989
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=989
+INFO action=BTN_A state=down seq=990
+INFO action=BTN_A state=down seq=990
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=991
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=991
+INFO action=BTN_A state=down seq=992
+INFO action=BTN_A state=down seq=992
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=993
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=993
+INFO action=BTN_A state=down seq=994
+INFO action=BTN_A state=down seq=994
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=995
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=995
+INFO action=BTN_A state=down seq=996
+INFO action=BTN_A state=down seq=996
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=997
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=997
+INFO action=BTN_A state=down seq=998
+INFO action=BTN_A state=down seq=998
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=999
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=999
+..INFO action=BTN_A state=down seq=1
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=3
+..INFO action=BTN_A state=down seq=1
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=2
+..INFO action=BTN_A state=down seq=10
+WARNING ignored out-of-order packet from 127.0.0.1:45678 seq=9 last_seq=10
+WARNING ignored invalid packet from 127.0.0.1:45678: payload is not valid JSON
+.INFO action=BTN_A state=down seq=1
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=2
+INFO action=FADE state=down seq=3
+INFO action=REL state=down seq=4
+INFO action=STAGE state=down seq=5
+INFO action=BTN_A state=down seq=7
+INFO released note mapping for BTN_A
+.INFO listening on udp://127.0.0.1:52294
+..INFO action=BTN_A state=down seq=1
+..INFO NestDrop: b advance (/Queue/Queue2 -> /Controls/Deck1/btSpace)
+.INFO NestDrop: x advance (/Queue/Queue1 -> /Controls/Deck1/btSpace)
+INFO NestDrop: b advance (/Queue/Queue2 -> /Controls/Deck1/btSpace)
+INFO NestDrop: lpad_up advance (/Queue/Queue3 -> /Controls/Deck2/btSpace)
+INFO NestDrop: lpad_down advance (/Queue/Queue4 -> /Controls/Deck2/btSpace)
+INFO NestDrop: x advance (/Queue/Queue1 -> /Controls/Deck1/btSpace)
+.INFO NestDrop: x advance (/Queue/Queue1 -> /Controls/Deck1/btSpace)
+INFO NestDrop: x re-press within fade window; not advancing
+INFO NestDrop: lpad_up advance (/Queue/Queue3 -> /Controls/Deck2/btSpace)
+INFO NestDrop: x advance (/Queue/Queue1 -> /Controls/Deck1/btSpace)
+.INFO NestDrop: x advance (/Queue/Queue1 -> /Controls/Deck4/btSpace)
+.INFO NestDrop: lpad_down advance (/Queue/Queue4 -> /Controls/Deck2/btSpace)
+.INFO NestDrop: lpad_down advance (/Queue/Queue4 -> /Controls/Deck2/btSpace)
+INFO NestDrop: lpad_down advance (/Queue/Queue4 -> /Controls/Deck2/btSpace)
+INFO NestDrop: lpad_down advance (/Queue/Queue4 -> /Controls/Deck2/btSpace)
+INFO NestDrop: lpad_down advance (/Queue/Queue4 -> /Controls/Deck2/btSpace)
+.INFO NestDrop: lpad_up advance (/Queue/Queue3 -> /Controls/Deck2/btSpace)
+.INFO NestDrop: lpad_up advance (/Queue/Queue3 -> /Controls/Deck2/btSpace)
+INFO NestDrop: lpad_up advance (/Queue/Queue3 -> /Controls/Deck2/btSpace)
+INFO NestDrop: lpad_up advance (/Queue/Queue3 -> /Controls/Deck2/btSpace)
+INFO NestDrop: lpad_up advance (/Queue/Queue3 -> /Controls/Deck2/btSpace)
+INFO NestDrop: lpad_up advance (/Queue/Queue3 -> /Controls/Deck2/btSpace)
+.INFO NestDrop: lpad_up advance (/Queue/Queue3 -> /Controls/Deck2/btSpace)
+INFO NestDrop: lpad_down advance (/Queue/Queue4 -> /Controls/Deck2/btSpace)
+INFO NestDrop: lpad_up advance (/Queue/Queue3 -> /Controls/Deck2/btSpace)
+..INFO NestDrop: x advance (/Queue/Queue1 -> /Controls/Deck1/btSpace)
+INFO NestDrop: x re-press within fade window; not advancing
+INFO NestDrop: x re-press within fade window; not advancing
+INFO NestDrop: x re-press within fade window; not advancing
+INFO NestDrop: x advance (/Queue/Queue1 -> /Controls/Deck1/btSpace)
+.INFO NestDrop: x advance (/Queue/Queue1 -> /Controls/Deck1/btSpace)
+INFO NestDrop: x re-press within fade window; not advancing
+INFO NestDrop: x re-press within fade window; not advancing
+..INFO NestDrop: x advance (/Queue/Queue1 -> /Controls/Deck1/btSpace)
+INFO NestDrop: lpad_down advance (/Queue/Queue4 -> /Controls/Deck2/btSpace)
+INFO NestDrop: lpad_down advance (/Queue/Queue4 -> /Controls/Deck2/btSpace)
+.INFO NestDrop: x advance (/Queue/Queue1 -> /Controls/Deck1/btSpace)
+INFO NestDrop: x re-press within fade window; not advancing
+INFO NestDrop: x re-press within fade window; not advancing
+INFO NestDrop: x re-press within fade window; not advancing
+INFO NestDrop: x re-press within fade window; not advancing
+INFO NestDrop: x re-press within fade window; not advancing
+INFO NestDrop: x re-press within fade window; not advancing
+INFO NestDrop: x re-press within fade window; not advancing
+INFO NestDrop: x re-press within fade window; not advancing
+INFO NestDrop: x re-press within fade window; not advancing
+INFO NestDrop: x re-press within fade window; not advancing
+...INFO NestDrop: x advance (/Queue/Queue1 -> /Controls/Deck1/btSpace)
+INFO NestDrop: x re-press within fade window; not advancing
+.INFO NestDrop: x advance (/Queue/Queue1 -> /Controls/Deck1/btSpace)
+.INFO NestDrop: x advance (/Queue/Queue1 -> /Controls/Deck1/btSpace)
+INFO NestDrop: x re-press within fade window; not advancing
+INFO NestDrop: x re-press within fade window; not advancing
+INFO NestDrop: x re-press within fade window; not advancing
+.INFO NestDrop: x advance (/Queue/Queue1 -> /Controls/Deck1/btSpace)
+....WARNING osc_relay: duplicate destination 10.10.10.5:7002 ignored
+........INFO osc_relay: listening on udp://127.0.0.1:53226 -> 127.0.0.1:52215
+INFO osc_relay: first datagram received (1024 bytes); Resolume -> relay path is live
+.INFO osc_relay: listening on udp://127.0.0.1:57791 -> 127.0.0.1:57314, 127.0.0.1:63948
+INFO osc_relay: first datagram received (44 bytes); Resolume -> relay path is live
+..INFO osc_relay: listening on udp://127.0.0.1:61693 -> 127.0.0.1:64690, 127.0.0.1:52147
+INFO osc_relay: first datagram received (8 bytes); Resolume -> relay path is live
+.INFO osc_relay: listening on udp://127.0.0.1:60023 -> 127.0.0.1:63730
+.INFO osc_relay: listening on udp://127.0.0.1:58770 -> 127.0.0.1:53624
+INFO osc_relay: first datagram received (4 bytes); Resolume -> relay path is live
+.INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
+.INFO osc_sync: sync pass complete in 0.00s; 3 wiggled, 0 skipped
+.INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
+.WARNING osc_sync: no targets; sync pass is a no-op
+INFO osc_sync: sync pass complete in 0.00s; 0 wiggled, 0 skipped
+.INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 1 skipped
+.WARNING osc_sync: no targets; sync pass is a no-op
+INFO osc_sync: sync pass complete in 0.00s; 0 wiggled, 0 skipped
+..INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
+.INFO osc_sync: sync pass complete in 0.00s; 1 wiggled, 0 skipped
+.WARNING osc_sync: no targets; sync pass is a no-op
+INFO osc_sync: sync pass complete in 0.00s; 0 wiggled, 0 skipped
+.INFO osc_sync: sync pass complete in 0.00s; 2 wiggled, 0 skipped
+.INFO preset watch changed: /tmp/sdlive-e3/tmp95thwr4h/presets/Show.json
+.INFO preset watch changed: /tmp/sdlive-e3/tmpf47bnupv/presets/Show.json
+ERROR preset watch poll failed; retrying
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/preset_watch.py", line 74, in run
+    self.reload_event.set()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_preset_watch.py", line 119, in fail_once
+    raise RuntimeError('event failed')
+RuntimeError: event failed
+.ERROR preset watch initial scan failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/preset_watch.py", line 40, in __init__
+    self._snapshot = self._scan()
+                     ^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/mock.py", line 1198, in _execute_mock_call
+    raise effect
+OSError: initial scan failed
+..ERROR preset watch poll failed; retrying
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/preset_watch.py", line 58, in run
+    current = self._scan()
+              ^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/mock.py", line 1202, in _execute_mock_call
+    raise result
+RuntimeError: scan failed
+INFO preset watch changed: /tmp/sdlive-e3/tmpvw4pnj_5/presets/Show.json
+.INFO preset watch changed: /tmp/sdlive-e3/tmpwtdz5ajg/presets/Show.json
+INFO preset watch changed: /tmp/sdlive-e3/tmpwtdz5ajg/presets/Show.json
+.INFO preset watch changed: /tmp/sdlive-e3/tmpw63dolp6/presets/Show.json
+INFO preset watch changed: /tmp/sdlive-e3/tmpw63dolp6/presets/Other.json
+INFO preset watch changed: /tmp/sdlive-e3/tmpw63dolp6/presets/Other.json
+INFO preset watch changed: /tmp/sdlive-e3/tmpw63dolp6/presets/.active
+INFO preset watch changed: /tmp/sdlive-e3/tmpw63dolp6/bridge.local.json
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=dry-run index=n/a
+INFO mapping UI available at http://127.0.0.1:7723
+INFO preset watch changed: /tmp/sdlive-e3/tmp3dxpcn3l/presets/.active
+INFO preset watch changed: /tmp/sdlive-e3/tmp3dxpcn3l/presets/Other.json
+INFO listening on udp://0.0.0.0:45123
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=2
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=3
+INFO shutdown requested
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=dry-run index=n/a
+INFO mapping UI available at http://127.0.0.1:7723
+INFO preset watch changed: /tmp/sdlive-e3/tmp0y54s77_/bridge.local.json
+INFO listening on udp://0.0.0.0:45123
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=2
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=3
+INFO shutdown requested
+INFO preset watch changed: /tmp/sdlive-e3/tmp0y54s77_/bridge.local.json
+INFO listening on udp://0.0.0.0:45123
+ERROR hot-reload failed: cannot read bridge settings /tmp/sdlive-e3/tmp0y54s77_/bridge.local.json: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+INFO action=BTN_A state=down seq=4
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=5
+INFO shutdown requested
+INFO preset watch changed: /tmp/sdlive-e3/tmp0y54s77_/bridge.local.json
+INFO listening on udp://0.0.0.0:45123
+ERROR hot-reload failed: preset section 'missing' is not available; available sections: macbook, windows
+INFO action=BTN_A state=down seq=6
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=7
+INFO shutdown requested
+INFO preset watch changed: /tmp/sdlive-e3/tmp0y54s77_/bridge.local.json
+INFO listening on udp://0.0.0.0:45123
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=8
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=9
+INFO shutdown requested
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=dry-run index=n/a
+INFO mapping UI available at http://127.0.0.1:7723
+INFO listening on udp://0.0.0.0:45123
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=2
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=3
+INFO shutdown requested
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=dry-run index=n/a
+INFO mapping UI available at http://127.0.0.1:7723
+INFO preset watch changed: /tmp/sdlive-e3/tmpcf4oizks/presets/default.json
+INFO listening on udp://0.0.0.0:45123
+ERROR hot-reload failed: mapping file is not valid JSON: /tmp/sdlive-e3/tmpcf4oizks/presets/default.json
+INFO action=BTN_A state=down seq=2
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=3
+INFO shutdown requested
+INFO preset watch changed: /tmp/sdlive-e3/tmpcf4oizks/presets/default.json
+INFO listening on udp://0.0.0.0:45123
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=4
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=5
+INFO shutdown requested
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=dry-run index=n/a
+INFO preset watch changed: /tmp/sdlive-e3/tmphm7430xp/presets/default.json
+INFO listening on udp://0.0.0.0:45123
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=2
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=3
+INFO shutdown requested
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=dry-run index=n/a
+INFO mapping UI available at http://127.0.0.1:7723
+INFO listening on udp://0.0.0.0:45123
+INFO preset watch changed: /tmp/sdlive-e3/tmpir77lw1d/presets/default.json
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=2
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=3
+INFO shutdown requested
+INFO preset watch changed: /tmp/sdlive-e3/tmpir77lw1d/presets/default.json
+INFO listening on udp://0.0.0.0:45123
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=4
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=5
+INFO shutdown requested
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=dry-run index=n/a
+INFO mapping UI available at http://127.0.0.1:7723
+INFO listening on udp://0.0.0.0:45123
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=2
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=3
+INFO shutdown requested
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=dry-run index=n/a
+INFO mapping UI available at http://127.0.0.1:7723
+INFO preset watch changed: /tmp/sdlive-e3/tmp1zr6a9c6/presets/default.json
+INFO listening on udp://0.0.0.0:45123
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=2
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=3
+INFO shutdown requested
+...........................................................WARNING ptz_visca: VISCA socket bind to 203.0.113.255 failed (camera NIC absent?); sender unbound \u2014 engine loads but sends nothing
+........................................INFO action=R_STICK_RIGHT state=down seq=1
+INFO released note mapping for R_STICK_RIGHT
+INFO action=R_STICK_RIGHT state=up seq=2
+.INFO action=L1_LAYER_2 state=down seq=1
+.INFO action=DPAD_DOWN_LONG_PRESS state=down seq=1
+INFO action=DPAD_DOWN state=down seq=2
+INFO released note mapping for DPAD_DOWN
+INFO action=DPAD_DOWN state=up seq=3
+.INFO action=DPAD_DOWN state=down seq=1
+INFO released note mapping for DPAD_DOWN
+INFO action=DPAD_DOWN state=up seq=2
+INFO action=DPAD_DOWN state=down seq=3
+.INFO action=BTN_A state=down seq=1
+.INFO action=BTN_A state=down seq=1
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=2
+...INFO action=R4 state=down seq=1
+INFO action=L4 state=down seq=2
+INFO action=SELECT state=down seq=3
+INFO action=R2_FULL_LAYER_2 state=down seq=4
+INFO action=R2_SOFT_LAYER_2 state=down seq=5
+.INFO layer state resync for cc=74 from=layer_1 to=layer_2 via=GYRO_FORWARD
+INFO action=GYRO_FORWARD state=down seq=1
+INFO layer state resync for cc=74 from=layer_2 to=layer_1 via=toggle
+INFO action=L4 state=down seq=2
+.INFO layer state resync for cc=74 from=layer_1 to=layer_2 via=toggle
+INFO action=L4 state=down seq=1
+.INFO action=BTN_A state=down seq=1
+.INFO action=BTN_A state=down seq=5
+WARNING ignored out-of-order packet from 10.10.10.2:45123 seq=4 last_seq=5
+.INFO action=R2_FULL_LAYER_2 state=down seq=1
+INFO released note mapping for R2_FULL_LAYER_2
+INFO action=R2_FULL_LAYER_2 state=up seq=2
+..INFO action=START state=down seq=1
+INFO action=BTN_A_LAYER_2 state=down seq=2
+INFO layer state resync for cc=78 from=layer_2 to=layer_1 via=toggle
+INFO action=START state=down seq=3
+INFO layer state resync for cc=78 from=layer_1 to=layer_2 via=BTN_A_LAYER_2
+INFO action=BTN_A_LAYER_2 state=down seq=4
+.INFO action=BTN_A state=down seq=1
+INFO layer state resync for cc=78 from=layer_1 to=unknown via=test
+.INFO action=R2_FULL state=down seq=1
+INFO layer state resync for cc=79 from=layer_1 to=layer_2 via=toggle
+INFO action=SELECT state=down seq=2
+INFO action=R2_FULL_LAYER_2 state=down seq=3
+INFO released note mapping for R2_FULL_LAYER_2
+INFO action=R2_FULL_LAYER_2 state=up seq=4
+.INFO action=BTN_A state=down seq=1
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=2
+INFO action=BTN_A state=down seq=3
+ERROR loop guard tripped: received 4 events in 1.00s; muting MIDI for 0.50s
+INFO released note mapping for BTN_A
+WARNING dropping event during loop-guard cooldown: action=BTN_A state=down seq=5
+.INFO action=DPAD_RIGHT_LONG_PRESS state=down seq=1
+.INFO action=DPAD_DOWN_LONG_PRESS state=down seq=1
+INFO action=DPAD_RIGHT_LONG_PRESS state=down seq=2
+.INFO action=DPAD_DOWN_LONG_PRESS state=down seq=1
+INFO action=DPAD_DOWN_LONG_PRESS state=up seq=2
+.INFO action=DPAD_DOWN_LONG_PRESS state=down seq=1
+.INFO action=DPAD_DOWN_LONG_PRESS state=down seq=1
+.INFO action=DPAD_DOWN_LONG_PRESS state=down seq=1
+INFO manual override detected; canceling fade channel=0 cc=20 value=90
+.INFO action=R_PAD_LEFT state=down seq=1
+.INFO action=R_PAD_RIGHT state=down seq=1
+INFO action=R_PAD_LEFT state=down seq=2
+.INFO action=R_PAD_RIGHT state=down seq=1
+INFO action=R_PAD_RIGHT state=up seq=2
+.INFO action=BTN_A state=down seq=1
+WARNING input timeout reached; releasing active MIDI state
+INFO released note mapping for BTN_A
+.INFO action=R2_SOFT state=down seq=1
+INFO released note mapping for R2_SOFT
+INFO action=R2_SOFT state=up seq=2
+INFO action=R2_FULL state=down seq=3
+INFO released note mapping for R2_FULL
+INFO action=R2_FULL state=up seq=4
+INFO action=R2_SOFT_LAYER_2 state=down seq=5
+INFO released note mapping for R2_SOFT_LAYER_2
+INFO action=R2_SOFT_LAYER_2 state=up seq=6
+INFO action=R2_FULL_LAYER_2 state=down seq=7
+INFO released note mapping for R2_FULL_LAYER_2
+INFO action=R2_FULL_LAYER_2 state=up seq=8
+.INFO action=L_PAD_LEFT_LONG_PRESS state=down seq=1
+INFO action=L_PAD_RIGHT state=down seq=2
+INFO released note mapping for L_PAD_RIGHT
+INFO action=L_PAD_RIGHT state=up seq=3
+INFO action=L_PAD_LEFT state=down seq=4
+INFO released note mapping for L_PAD_LEFT
+INFO action=L_PAD_LEFT state=up seq=5
+.INFO action=L_PAD_RIGHT_LONG_PRESS state=down seq=1
+INFO action=L_PAD_RIGHT_LONG_PRESS state=down seq=2
+.INFO action=L_PAD_LEFT_LONG_PRESS state=down seq=1
+INFO action=L_PAD_LEFT_LONG_PRESS state=up seq=2
+.INFO action=BTN_A state=down seq=1
+INFO action=R_STICK_RIGHT state=down seq=3
+INFO action=R_STICK_RIGHT state=down seq=4
+.INFO action=BTN_A state=down seq=1
+WARNING input timeout reached; releasing active MIDI state
+ERROR MIDI output error while releasing BTN_A: note_off failed
+ERROR MIDI output error during panic reset: panic failed
+.ERROR MIDI output error while handling BTN_A: note_on failed
+.INFO action=START state=down seq=1
+.INFO action=DPAD_DOWN_LONG_PRESS state=down seq=1
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'FakeEngineRegistry' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'FakeEngineRegistry' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'FakeEngineRegistry' object has no attribute 'on_axis_event'
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'FakeEngineRegistry' object has no attribute 'on_axis_event'
+.INFO action=SELECT state=down seq=1
+INFO released CC mapping for SELECT
+INFO action=SELECT state=up seq=2
+.ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/receiver.py", line 896, in _handle_axis_event
+    self._engine_registry.on_axis_event(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+.INFO action=L1 state=down seq=1
+..................s................WARNING SF: canonical layer 99 out of range (1 layers in comp)
+.WARNING SF: could not find 'STAGEFLOW BRIDGE' effect in comp
+.WARNING SF: comp GET failed: simulated GET failure
+...INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '-', '-']
+.INFO SF: rescan triggered (cc_rescan, CC 91)
+INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '-', '-']
+.INFO SF: rescan triggered (cc_sync, CC 90)
+INFO SF: rescan already in flight (trigger=cc_sync ignored)
+INFO SF: rescan triggered (cc_rescan, CC 91)
+INFO SF: rescan already in flight (trigger=cc_rescan ignored)
+.INFO SF: rescan triggered (cc_rescan, CC 91)
+INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '-', '-']
+.INFO SF: rescan triggered (cc_sync, CC 90)
+INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '-', '-']
+..INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '-', '-']
+.INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '-', '-']
+.INFO SF: discovered 6 Wire String In param IDs
+INFO SF: rescan wrote 6 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '-', '-']
+.INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '(empty)', '(empty)']
+.INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '-', '-']
+.INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['1-FULL SCREEN', '2-EACH SECTION', '3-SPLIT', '4-LOGO', '-', '-']
+.INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '-', '-']
+.INFO SF: discovered 42 Wire String In param IDs
+INFO SF: rescan wrote 42 String Ins, skipped 0, names=['FULL SCREEN', 'EACH SECTION', 'SPLIT', 'LOGO', '-', '-']
+....INFO steam_input_layer_tracker: layer -> chaser
+.INFO steam_input_layer_tracker: layer -> flash
+..INFO steam_input_layer_tracker: layer -> flash
+....WARNING steam_input_layer_tracker: invalid default_layer 'bogus'; using 'chaser'
+.INFO steam_input_layer_tracker: layer -> flash
+.INFO steam_input_layer_tracker: layer -> chaser
+.INFO steam_input_layer_tracker: layer -> flash
+..INFO steam_input_layer_tracker: layer -> flash
+INFO steam_input_layer_tracker: layer -> chaser
+....INFO steam_input_layer_tracker: layer -> flash
+ERROR steam_input_layer_tracker: observer raised on layer change to 'flash'
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/engines/steam_input_layer_tracker.py", line 209, in _set_layer
+    callback(new_layer)
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_steam_input_layer_tracker.py", line 220, in bad_observer
+    raise RuntimeError("boom")
+RuntimeError: boom
+.INFO steam_input_layer_tracker: layer -> flash
+INFO steam_input_layer_tracker: layer -> chaser
+.INFO steam_input_layer_tracker: layer -> flash
+.INFO steam_input_layer_tracker: layer -> flash
+..INFO steam_input_layer_tracker: layer -> flash
+INFO steam_input_layer_tracker: layer -> chaser
+.INFO steam_input_layer_tracker: layer -> flash
+INFO steam_input_layer_tracker: layer -> chaser
+.INFO steam_input_layer_tracker: layer -> flash
+.INFO steam_input_layer_tracker: layer -> flash
+.INFO steam_input_layer_tracker: layer -> flash
+................................./opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/case.py:589: ResourceWarning: unclosed file <_io.BufferedReader name='/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/static/index.html'>
+  if method() is not None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.........ERROR engine bad refresh failed
+Traceback (most recent call last):
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/windows/engines/registry.py", line 207, in refresh
+    engine.refresh()
+  File "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/tests/test_ui_server.py", line 584, in refresh
+    raise RuntimeError("simulated refresh failure")
+RuntimeError: simulated refresh failure
+.............................................INFO created bridge settings /tmp/sdlive-e3/tmpfoklakhi/config/bridge.local.json with preset_section=macbook
+..........INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=resolved output index=2
+INFO action=BTN_A state=down seq=1
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=resolved output index=2
+INFO mapping UI available at http://127.0.0.1:7723
+INFO listening on udp://0.0.0.0:45123
+ERROR hot-reload failed: preset section 'macbook' is not available; available sections: windows
+INFO action=BTN_A state=down seq=1
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=2
+INFO shutdown requested
+..INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=resolved output index=2
+INFO action=BTN_A state=down seq=1
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=resolved output index=2
+INFO mapping UI available at http://127.0.0.1:7900
+INFO listening on udp://127.0.0.1:49000
+INFO hot-reloaded mappings: 1 actions
+INFO action=BTN_A state=down seq=1
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=2
+INFO shutdown requested
+INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=resolved output index=2
+INFO action=BTN_A state=down seq=1
+.INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+INFO selected MIDI output port: name=resolved output index=2
+INFO action=BTN_A state=down seq=1
+..............................
+----------------------------------------------------------------------
+Ran 893 tests in 15.860s
+
+OK (skipped=2)
+sent action=BTN_A state=down seq=17
+sent action=BTN_A state=up seq=1
+MIDI note_on channel=1 note=80 velocity=127
+MIDI note_off channel=1 note=80 velocity=0
+MIDI panic
+MIDI note_on channel=1 note=80 velocity=127
+MIDI note_off channel=1 note=80 velocity=0
+MIDI panic
+MIDI note_on channel=1 note=80 velocity=127
+MIDI note_off channel=1 note=80 velocity=0
+MIDI panic
+MIDI note_on channel=1 note=80 velocity=127
+MIDI note_off channel=1 note=80 velocity=0
+MIDI panic
+MIDI note_on channel=0 note=36 velocity=127
+MIDI note_off channel=0 note=36 velocity=0
+MIDI panic
+MIDI note_on channel=0 note=36 velocity=127
+MIDI note_off channel=0 note=36 velocity=0
+MIDI panic
+MIDI note_on channel=0 note=36 velocity=127
+MIDI note_off channel=0 note=36 velocity=0
+MIDI panic
+MIDI note_on channel=0 note=61 velocity=127
+MIDI note_off channel=0 note=61 velocity=0
+MIDI panic
+MIDI note_on channel=1 note=80 velocity=127
+MIDI note_off channel=1 note=80 velocity=0
+MIDI panic
+MIDI note_on channel=0 note=45 velocity=127
+MIDI note_off channel=0 note=45 velocity=0
+MIDI panic
+MIDI note_on channel=0 note=57 velocity=127
+MIDI note_off channel=0 note=57 velocity=0
+MIDI panic
+MIDI note_on channel=1 note=80 velocity=127
+MIDI note_off channel=1 note=80 velocity=0
+MIDI panic
+MIDI note_on channel=0 note=36 velocity=127
+MIDI note_off channel=0 note=36 velocity=0
+MIDI panic
+HTML API bar: 24 paths registered; HTML parsed; ids unique
+HTML API bar: 25 paths registered; HTML parsed; ids unique
+HTML API bar: 24 paths registered; HTML parsed; ids unique
+HTML API bar: 24 paths registered; HTML parsed; ids unique

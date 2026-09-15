@@ -1,0 +1,1 @@
+UI reload behavior: PASS (timer, clean editor/engines, dirty notice, explicit reload, in-flight edits, retry)

@@ -1,0 +1,474 @@
+[
+  {
+    "path": "/tmp/sdlive-e3/final-sensitivity.json.gz",
+    "arms": [
+      {
+        "repeat": 1,
+        "arm": "CLOSED",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 49.649125,
+          "p95": 129.7509504,
+          "p99": 139.37806816,
+          "max": 160.901166,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 1,
+        "arm": "OPEN",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 462.084625,
+          "p95": 1591.7054839999996,
+          "p99": 1787.41502892,
+          "max": 2059.164542,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 1,
+        "arm": "CLOSED-B",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 49.447292,
+          "p95": 128.3180586,
+          "p99": 136.17601384,
+          "max": 142.48275,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 2,
+        "arm": "CLOSED",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 55.251458,
+          "p95": 134.21869999999998,
+          "p99": 174.85619692,
+          "max": 190.587792,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 2,
+        "arm": "OPEN",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 478.829417,
+          "p95": 1541.9605584,
+          "p99": 1674.0488480000001,
+          "max": 1741.698417,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 2,
+        "arm": "CLOSED-B",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 48.223334,
+          "p95": 127.7826084,
+          "p99": 135.32462891999998,
+          "max": 138.843875,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 3,
+        "arm": "CLOSED",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 50.274459,
+          "p95": 130.05533359999998,
+          "p99": 151.69524108,
+          "max": 153.420208,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 3,
+        "arm": "OPEN",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 459.846625,
+          "p95": 1521.8250496,
+          "p99": 1616.67332624,
+          "max": 1689.783416,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 3,
+        "arm": "CLOSED-B",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 48.821625,
+          "p95": 128.5780418,
+          "p99": 135.74789808,
+          "max": 140.444625,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 4,
+        "arm": "CLOSED",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 48.252167,
+          "p95": 127.89273359999999,
+          "p99": 135.27346992000003,
+          "max": 138.4755,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 4,
+        "arm": "OPEN",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 447.243333,
+          "p95": 1506.5431666,
+          "p99": 1725.41748608,
+          "max": 1910.778041,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 4,
+        "arm": "CLOSED-B",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 48.539417,
+          "p95": 127.41201659999999,
+          "p99": 134.73493984,
+          "max": 138.627917,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 5,
+        "arm": "CLOSED",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 50.017625,
+          "p95": 128.3613506,
+          "p99": 136.56611016,
+          "max": 145.538375,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 5,
+        "arm": "OPEN",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 489.72975,
+          "p95": 1619.2393336,
+          "p99": 1878.63116692,
+          "max": 2077.752584,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 5,
+        "arm": "CLOSED-B",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 48.764833,
+          "p95": 127.7103246,
+          "p99": 135.46543499999999,
+          "max": 138.706291,
+          "count": 1525
+        }
+      }
+    ],
+    "raw_verified": true,
+    "rule": {
+      "noise_floor_ms": {
+        "p50": 1.619290999999997,
+        "p95": 2.1792409999999904,
+        "p99": 9.272561760000002
+      },
+      "open_delta_ms": {
+        "p50": 416.78254200000003,
+        "p95": 1426.7687168,
+        "p99": 1590.73973992
+      },
+      "within": {
+        "p50": false,
+        "p95": false,
+        "p99": false
+      },
+      "floor_can_resolve_2ms": false,
+      "passed": false
+    },
+    "bar3_counts": false
+  },
+  {
+    "path": "/tmp/sdlive-e3/final-clean.json.gz",
+    "arms": [
+      {
+        "repeat": 1,
+        "arm": "CLOSED",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 47.771541,
+          "p95": 125.79833299999999,
+          "p99": 134.496827,
+          "max": 137.841041,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 1,
+        "arm": "OPEN",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 49.093291,
+          "p95": 127.57512539999998,
+          "p99": 134.69090508,
+          "max": 137.764875,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 1,
+        "arm": "CLOSED-B",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 48.486291,
+          "p95": 127.80853359999999,
+          "p99": 134.87042808,
+          "max": 139.527917,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 2,
+        "arm": "CLOSED",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 48.2165,
+          "p95": 127.03508359999998,
+          "p99": 135.516812,
+          "max": 138.297209,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 2,
+        "arm": "OPEN",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 48.58125,
+          "p95": 127.0571914,
+          "p99": 135.06591008,
+          "max": 137.15875,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 2,
+        "arm": "CLOSED-B",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 47.636375,
+          "p95": 126.65444219999999,
+          "p99": 134.49023,
+          "max": 139.17,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 3,
+        "arm": "CLOSED",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 47.913333,
+          "p95": 127.59217479999998,
+          "p99": 135.94993200000002,
+          "max": 140.523083,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 3,
+        "arm": "OPEN",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 48.254416,
+          "p95": 126.995408,
+          "p99": 134.738462,
+          "max": 137.670708,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 3,
+        "arm": "CLOSED-B",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 48.003,
+          "p95": 127.86057459999999,
+          "p99": 135.71089992,
+          "max": 140.67475,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 4,
+        "arm": "CLOSED",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 48.475541,
+          "p95": 126.6503082,
+          "p99": 135.607655,
+          "max": 137.833792,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 4,
+        "arm": "OPEN",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 48.3265,
+          "p95": 127.03675779999999,
+          "p99": 135.243567,
+          "max": 140.089166,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 4,
+        "arm": "CLOSED-B",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 48.563,
+          "p95": 127.6713416,
+          "p99": 135.69081200000002,
+          "max": 138.435667,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 5,
+        "arm": "CLOSED",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 49.408541,
+          "p95": 126.6246834,
+          "p99": 134.87938316,
+          "max": 138.890917,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 5,
+        "arm": "OPEN",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 48.459125,
+          "p95": 126.45249139999999,
+          "p99": 134.013012,
+          "max": 139.488459,
+          "count": 1525
+        }
+      },
+      {
+        "repeat": 5,
+        "arm": "CLOSED-B",
+        "midi_messages": 1531,
+        "latency_samples": 1525,
+        "pid_gone": true,
+        "statistics_ms": {
+          "p50": 48.906041,
+          "p95": 129.2386584,
+          "p99": 135.99911608,
+          "max": 140.662291,
+          "count": 1525
+        }
+      }
+    ],
+    "raw_verified": true,
+    "rule": {
+      "noise_floor_ms": {
+        "p50": 0.2738340000000008,
+        "p95": 0.9926501999999857,
+        "p99": 0.09437384000000293
+      },
+      "open_delta_ms": {
+        "p50": 0.21645800000000293,
+        "p95": 0.1600661999999886,
+        "p99": 0.587341159999994
+      },
+      "within": {
+        "p50": true,
+        "p95": true,
+        "p99": true
+      },
+      "floor_can_resolve_2ms": true,
+      "passed": true
+    },
+    "bar3_counts": false
+  }
+]

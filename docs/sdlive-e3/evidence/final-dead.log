@@ -1,0 +1,2 @@
+{"repeat": 1, "arm": "OPEN", "load": "UNVERIFIED-LOAD", "accepted": true, "passed": false}
+{"result": "/tmp/sdlive-e3/final-dead.json.gz", "rule_passed": false, "bar3_counts": false, "error": "ValueError: Invalid arm: OPEN", "limitation": null, "exit_code": 1}

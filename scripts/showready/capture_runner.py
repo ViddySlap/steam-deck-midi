@@ -78,12 +78,18 @@ def main(argv=None):
     parser.add_argument('--script', type=Path, required=True)
     parser.add_argument('--clock', choices=('script', 'wall'), default='script')
     parser.add_argument('--dead-recorder', action='store_true')
+    parser.add_argument('--timing-config', type=Path,
+                        help='Bar 3 same-process sender configuration; enables UI')
     # Parse our arguments separately: everything after -- belongs to main.
     argv = list(sys.argv[1:] if argv is None else argv)
     split = argv.index('--')
     args = parser.parse_args(argv[:split])
     bridge_argv = argv[split + 1:]
-    required = {'--no-engines', '--no-pulse', '--no-osc-relay', '--no-ui'}
+    required = {'--no-engines', '--no-pulse', '--no-osc-relay'}
+    if not args.timing_config:
+        required.add('--no-ui')
+    elif '--no-ui' in bridge_argv:
+        raise ValueError('Timing arms require UI on')
     if not required.issubset(bridge_argv) or any(v in bridge_argv for v in
             ('--tray', '--feedback-port', '--list-ports', '--check-midi-port')):
         raise ValueError('Unsafe bridge arguments')
@@ -97,8 +103,14 @@ def main(argv=None):
     script = read_json(args.script)
     validate(script)
     context = {'step': -1, 'logical_ns': 0}
+    timing = None
+    if args.timing_config:
+        from timing_ab import CaptureTiming
+        timing = CaptureTiming(read_json(args.timing_config), script, context)
     with args.out_file.open('x', encoding='ascii', buffering=1) as output:
         def emit(row):
+            if timing:
+                timing.enrich(row)
             output.write(json.dumps(row, separators=(',', ':')) + '\n')
 
         def violation():
@@ -114,6 +126,8 @@ def main(argv=None):
         bridge = importlib.import_module('windows.win_recv')
         receiver_module = importlib.import_module('windows.receiver')
         midi_module = importlib.import_module('windows.midi')
+        if timing:
+            timing.install(importlib.import_module('windows.live_events'))
         for name, module in list(sys.modules.items()):
             if name.startswith(('windows.', 'protocol.')) and getattr(module, '__file__', None):
                 if not Path(module.__file__).resolve().is_relative_to(tree):
@@ -127,6 +141,8 @@ def main(argv=None):
         for kind, check_port in ((socket.SOCK_DGRAM, port), (socket.SOCK_STREAM, parsed.ui_port)):
             with socket.socket(socket.AF_INET, kind) as check:
                 check.bind((host, check_port))
+        if timing:
+            timing.start(host, port, args.out_file)
         recorder = Recorder(emit, context, args.dead_recorder)
         bridge.open_midi_output = midi_module.open_midi_output = lambda *a, **k: recorder
         bridge.open_midi_input = midi_module.open_midi_input = lambda port_name, *a, **k: None if not port_name else denied()
@@ -162,6 +178,8 @@ def main(argv=None):
             def recvfrom(self, *a, **kw):
                 nonlocal count
                 # Entering the next receive proves the last full bridge loop ran.
+                if timing:
+                    timing.completed_packets = count
                 if count == len(script['packets']):
                     Path(str(args.out_file) + '.done.json').write_bytes(canonical({
                         'packets_received': count, 'packet_stream_sha256': digest.hexdigest(),
