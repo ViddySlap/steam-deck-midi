@@ -13,8 +13,9 @@ from pathlib import Path
 from typing import Any, Callable
 
 from flask import Flask, Response, jsonify, request, send_from_directory
-from werkzeug.serving import make_server
+from werkzeug.serving import WSGIRequestHandler, make_server
 
+from windows.live_events import LiveEvents
 from windows.bridge_settings import BridgeSettings
 from windows.config import (
     _SAFE_FILENAME_RE,
@@ -213,6 +214,7 @@ class MappingUIServer:
         pulse_port: str | None = "PULSE_OUT",
         state_version_fn: Callable[[], int] | None = None,
         shutdown_fn: Callable[[], None] | None = None,
+        live_events: LiveEvents | None = None,
     ) -> None:
         self.base_map_path = base_map_path
         self.presets_dir = presets_dir
@@ -220,6 +222,7 @@ class MappingUIServer:
         self.actions_yaml_path = actions_yaml_path
         self.reload_event = reload_event
         self.shutdown_fn = shutdown_fn
+        self.live_events = live_events if live_events is not None else LiveEvents()
         self._shutdown_lock = threading.Lock()
         self._stopping = False
         self._http_server = None
@@ -346,6 +349,29 @@ class MappingUIServer:
         @app.route("/")
         def index() -> Response:
             return send_from_directory(str(static_dir), "index.html")
+
+        @app.route("/api/live/snapshot", methods=["GET"])
+        def live_snapshot() -> Response:
+            response = jsonify(self.live_events.snapshot())
+            response.headers["Cache-Control"] = "no-store"
+            return response
+
+        @app.route("/api/live/events", methods=["GET"])
+        def live_events() -> Response:
+            raw = request.args.get("since", request.headers.get("Last-Event-ID"))
+            try:
+                since = None if raw is None else int(raw)
+                if since is not None and (since < 0 or len(raw) > 20):
+                    raise ValueError
+            except ValueError:
+                return jsonify({"error": "since must be a non-negative integer"}), 400
+            subscription = self.live_events.subscribe(since)
+            if subscription is None:
+                return jsonify({"error": "live events unavailable"}), 503
+            response = Response(subscription.stream(), mimetype="text/event-stream",
+                                headers={"Cache-Control": "no-store", "X-Accel-Buffering": "no"})
+            response.call_on_close(subscription.close)
+            return response
 
         @app.route("/api/state-version", methods=["GET"])
         def state_version() -> Response:
@@ -906,7 +932,14 @@ class MappingUIServer:
     # ------------------------------------------------------------------
 
     def run_in_thread(self) -> threading.Thread:
-        self._http_server = make_server("127.0.0.1", self.port, self._app, threaded=True)
+        class LiveRequestHandler(WSGIRequestHandler):
+            def run_wsgi(self):
+                if self.path.split("?", 1)[0] == "/api/live/events":
+                    self.connection.settimeout(0.5)
+                return super().run_wsgi()
+
+        self._http_server = make_server("127.0.0.1", self.port, self._app, threaded=True,
+                                       request_handler=LiveRequestHandler)
         # server_close waits for every response to finish, including shutdown's
         # 202. A timer or a daemon request thread could truncate that response.
         self._http_server.daemon_threads = False
@@ -923,6 +956,7 @@ class MappingUIServer:
 
     def stop(self) -> None:
         """Close HTTP from the bridge owner, after in-flight replies finish."""
+        self.live_events.close()
         if self._http_server is not None:
             self._http_server.shutdown()
             self._http_server.server_close()

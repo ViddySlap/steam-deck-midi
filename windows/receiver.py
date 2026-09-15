@@ -7,7 +7,7 @@ import socket
 import threading
 import time
 from collections import deque
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Callable
 
@@ -23,6 +23,7 @@ from windows.config import (
     RelativeCCMapping,
     StagedNoteMacroMapping,
 )
+from windows.live_events import action_context, attributed, current_action, safe_publish
 from windows.midi import MidiControlChange, MidiError, MidiIn, MidiOut
 
 
@@ -77,6 +78,7 @@ class ActiveMacroFade:
     target_value: int
     start_time: float
     duration_seconds: float
+    action: str | None = field(default_factory=current_action)
 
 
 @dataclass
@@ -129,10 +131,12 @@ class ActionReceiver:
         rate_limit_cooldown_seconds: float = 1.0,
         clock: Callable[[], float] = time.monotonic,
         engine_registry: Any = None,
+        live_events=None,
     ) -> None:
         self.state_version = 0
         self.stop_event = threading.Event()
         self._midi_out = midi_out
+        self._live_events = live_events
         self._mappings = mappings
         self._timeout_seconds = timeout_seconds
         self._macro_settings = macro_settings or MacroSettings()
@@ -253,9 +257,15 @@ class ActionReceiver:
             LOGGER.debug("heartbeat seq=%s from %s:%s", event.seq, addr[0], addr[1])
             return True
         if isinstance(event, AxisEvent):
+            if self._live_events is not None:
+                safe_publish(self._live_events, {"kind": "axis", "action": event.action,
+                                                 "value": event.value})
             return self._handle_axis_event(event)
         if not self._allow_event(event, timestamp):
             return False
+        if self._live_events is not None:
+            safe_publish(self._live_events, {"kind": "input", "action": event.action,
+                                             "state": event.state})
         self._update_layer_state_from_action(event, timestamp)
         self._refresh_staged_note_macros(event.action, timestamp)
         try:
@@ -300,7 +310,8 @@ class ActionReceiver:
         self._active_relative_ccs.clear()
         for active in list(self._active_staged_note_macros.values()):
             try:
-                self._midi_out.note_off(active.modifier_channel, active.note, 0)
+                with action_context(active.action):
+                    self._midi_out.note_off(active.modifier_channel, active.note, 0)
             except MidiError as exc:
                 LOGGER.error(
                     "MIDI output error while releasing staged note macro %s: %s",
@@ -372,7 +383,8 @@ class ActionReceiver:
             )
 
             if self._macro_values.get(key) != next_value:
-                self._send_macro_value(fade.channel, fade.cc, next_value)
+                with action_context(fade.action):
+                    self._send_macro_value(fade.channel, fade.cc, next_value)
 
             if progress >= 1.0:
                 self._active_macro_fades.pop(key, None)
@@ -458,7 +470,8 @@ class ActionReceiver:
 
         for active in list(self._active_relative_ccs.values()):
             while timestamp >= active.next_send_time:
-                self._emit_cc(active.channel, active.cc, active.step_value)
+                with action_context(active.action):
+                    self._emit_cc(active.channel, active.cc, active.step_value)
                 active.next_send_time += active.repeat_interval_seconds
 
     def advance_staged_note_macros(self, now: float | None = None) -> None:
@@ -468,11 +481,13 @@ class ActionReceiver:
 
         for action, active in list(self._active_staged_note_macros.items()):
             if not active.trigger_sent and timestamp >= active.trigger_time:
-                self._emit_note_on(active.trigger_channel, active.note, active.velocity)
+                with action_context(active.action):
+                    self._emit_note_on(active.trigger_channel, active.note, active.velocity)
                 active.trigger_sent = True
             if timestamp < active.off_time:
                 continue
-            self._midi_out.note_off(active.modifier_channel, active.note, 0)
+            with action_context(active.action):
+                self._midi_out.note_off(active.modifier_channel, active.note, 0)
             self._active_staged_note_macros.pop(action, None)
 
     def _allow_event(self, event: ActionEvent, timestamp: float) -> bool:
@@ -533,6 +548,7 @@ class ActionReceiver:
         self.release_all()
         return False
 
+    @attributed
     def _dispatch_event(self, event: ActionEvent, timestamp: float) -> bool:
         mapping = self._mappings.get(event.action)
         if mapping is None:
@@ -584,6 +600,7 @@ class ActionReceiver:
             )
         raise TypeError(f"unsupported mapping type: {type(mapping)!r}")
 
+    @attributed
     def _release_mapping(self, action: str, mapping: MidiMapping) -> None:
         if isinstance(mapping, NoteMapping):
             self._midi_out.note_off(mapping.channel, mapping.note, 0)
@@ -719,6 +736,7 @@ class ActionReceiver:
                 timestamp + extension,
             )
 
+    @attributed
     def _update_layer_state_from_action(self, event: ActionEvent, timestamp: float) -> None:
         if event.state != "down":
             return
@@ -870,6 +888,7 @@ class ActionReceiver:
             return True
         return False
 
+    @attributed
     def _handle_axis_event(self, event: AxisEvent) -> bool:
         # Fan every axis event to engines first — including ones with no
         # CC mapping (e.g. deck-side state pings like GYRO_STATE_NOW).

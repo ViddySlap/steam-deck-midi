@@ -21,6 +21,7 @@ from windows.config import (
     load_midi_map,
 )
 from windows.engines import load_engines
+from windows.live_events import LiveEvents, LiveMidiOut
 from windows.midi import (
     MidiError,
     get_output_port_names,
@@ -285,7 +286,8 @@ def main(argv: list[str] | None = None) -> int:
         macro_library_path = base_map_path.parent / "macro_library.json"
 
         listen_host, listen_port = parse_listen(args.listen)
-        midi_out = open_midi_output(args.midi_port, args.dry_run)
+        live_events = LiveEvents()
+        midi_out = LiveMidiOut(open_midi_output(args.midi_port, args.dry_run), live_events)
         midi_in = open_midi_input(args.feedback_port, args.dry_run)
     except (argparse.ArgumentTypeError, ConfigError, MidiError) as exc:
         parser.error(str(exc))
@@ -369,6 +371,7 @@ def main(argv: list[str] | None = None) -> int:
         timeout_seconds=args.timeout,
         macro_settings=receiver_config.macro_settings,
         engine_registry=engine_registry,
+        live_events=live_events,
     )
 
     # OSC fan-out relay. Core infrastructure, not an engine -- deliberately
@@ -409,6 +412,7 @@ def main(argv: list[str] | None = None) -> int:
             engine_registry=engine_registry,
             bridge_settings=bridge_settings,
             state_version_fn=lambda: receiver.state_version,
+            live_events=live_events,
             listen=f"{listen_host}:{listen_port}",
             midi_port=midi_out.port_name,
             feedback_port=midi_in.port_name if midi_in is not None else None,
