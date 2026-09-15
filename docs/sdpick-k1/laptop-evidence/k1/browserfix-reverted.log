@@ -1,0 +1,15 @@
+test_bridge_noop_browser_command_really_succeeds (tests.test_showready_timing.TimingTests.test_bridge_noop_browser_command_really_succeeds) ... The syntax of the command is incorrect.
+FAIL
+
+======================================================================
+FAIL: test_bridge_noop_browser_command_really_succeeds (tests.test_showready_timing.TimingTests.test_bridge_noop_browser_command_really_succeeds)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\sdwin\sdpick-k1\browserfix-reverted\tests\test_showready_timing.py", line 205, in test_bridge_noop_browser_command_really_succeeds
+    self.assertIs(webbrowser.GenericBrowser(shlex.split(timing.NOOP_BROWSER)).open('http://127.0.0.1:9/'), True)
+AssertionError: False is not True
+
+----------------------------------------------------------------------
+Ran 1 test in 0.047s
+
+FAILED (failures=1)

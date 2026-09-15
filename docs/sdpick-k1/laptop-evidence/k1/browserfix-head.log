@@ -1,0 +1,6 @@
+test_bridge_noop_browser_command_really_succeeds (tests.test_showready_timing.TimingTests.test_bridge_noop_browser_command_really_succeeds) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.052s
+
+OK
