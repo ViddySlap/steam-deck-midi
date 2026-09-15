@@ -1,0 +1,60 @@
+{
+ "fine_trigger_s": 0.2,
+ "stack_trigger_s": 1.0,
+ "script_bytes_per_s": 16954.8,
+ "sender_rate_hz": 291.4,
+ "stall_seconds_planted": 2.5,
+ "arms": {
+  "NEGATIVE-no-stall": {
+   "samples": 104,
+   "max_recvq_bytes": 90,
+   "max_backlog_s": 0.0053,
+   "crossed_fine_200ms": false,
+   "crossed_stack_1s": false,
+   "peak_samples": [
+    {
+     "t": 5.866,
+     "recvq_bytes": 90,
+     "backlog_s": 0.0053
+    },
+    {
+     "t": 0.003,
+     "recvq_bytes": 0,
+     "backlog_s": 0.0
+    },
+    {
+     "t": 0.06,
+     "recvq_bytes": 0,
+     "backlog_s": 0.0
+    }
+   ]
+  },
+  "POSITIVE-planted-stall": {
+   "samples": 106,
+   "max_recvq_bytes": 64260,
+   "max_backlog_s": 3.7901,
+   "crossed_fine_200ms": true,
+   "crossed_stack_1s": true,
+   "peak_samples": [
+    {
+     "t": 3.952,
+     "recvq_bytes": 64260,
+     "backlog_s": 3.7901
+    },
+    {
+     "t": 3.893,
+     "recvq_bytes": 62730,
+     "backlog_s": 3.6998
+    },
+    {
+     "t": 3.835,
+     "recvq_bytes": 61110,
+     "backlog_s": 3.6043
+    }
+   ]
+  }
+ },
+ "detector_fires_on_a_stall": true,
+ "detector_silent_without_one": true,
+ "result": "DETECTOR PROVEN BOTH WAYS"
+}

@@ -1,0 +1,122 @@
+{
+ "wrapper_drives": "timing_ab.guarded_arm(timing_ab.run_arm(...)) - the same calls as timing_ab.run() lines 803-806",
+ "arm_result_fields": {
+  "equal": true,
+  "count": 29,
+  "only_in_wrapper": [],
+  "only_in_stock": []
+ },
+ "guard_row_fields": {
+  "equal": true,
+  "count": 6,
+  "only_in_wrapper": [],
+  "only_in_stock": []
+ },
+ "load_before_fields": {
+  "equal": true,
+  "count": 7,
+  "only_in_wrapper": [],
+  "only_in_stock": []
+ },
+ "bridge_sample_fields": {
+  "equal": true,
+  "count": 10,
+  "only_in_wrapper": [],
+  "only_in_stock": []
+ },
+ "sample_fields": {
+  "equal": true,
+  "count": 10,
+  "only_in_wrapper": [],
+  "only_in_stock": []
+ },
+ "coverage_fields": {
+  "equal": true,
+  "count": 8,
+  "only_in_wrapper": [],
+  "only_in_stock": []
+ },
+ "arm_directory_files": {
+  "equal": true,
+  "wrapper": [
+   "bridge.log",
+   "capture.jsonl",
+   "capture.jsonl.done.json",
+   "capture.jsonl.ready.json",
+   "client.log",
+   "options.json",
+   "start",
+   "timing.json"
+  ],
+  "stock": [
+   "bridge.log",
+   "capture.jsonl",
+   "capture.jsonl.done.json",
+   "capture.jsonl.ready.json",
+   "client.log",
+   "options.json",
+   "start",
+   "timing.json"
+  ]
+ },
+ "arm_directories": {
+  "wrapper": "/tmp/sdstall/equiv/wrapper/timing-liazhryv/r1-CLOSED-try1",
+  "stock": "/tmp/sdstall/equiv/stock/timing-t6o3bu_e/r1-CLOSED-try1"
+ },
+ "values_for_the_record": {
+  "passed": {
+   "wrapper": true,
+   "stock": true
+  },
+  "timing_status": {
+   "wrapper": "VALID",
+   "stock": "VALID"
+  },
+  "every_message_timing_status": {
+   "wrapper": "VALID",
+   "stock": "VALID"
+  },
+  "timed_midi_messages": {
+   "wrapper": 9638,
+   "stock": 9638
+  },
+  "every_message_timed_midi_messages": {
+   "wrapper": 9638,
+   "stock": 9638
+  },
+  "client_counts": {
+   "wrapper": [],
+   "stock": []
+  }
+ },
+ "load_status": {
+  "wrapper": "verified",
+  "stock": "verified"
+ },
+ "snapshot_clients": {
+  "wrapper": [
+   0,
+   0
+  ],
+  "stock": [
+   0,
+   0
+  ]
+ },
+ "candidate": {
+  "wrapper": {
+   "archive_sha256": "d3929488c54e31746e5a4d797eacfb5e88a50996f3e11c906238c579b2c07a2b",
+   "commit": "e2919763fe9174fe0fe44e2782f4279895cf0434",
+   "git_tree": "5332ac9d3f3f55f80f3501f92a8f4971f331d86d"
+  },
+  "stock": {
+   "archive_sha256": "d3929488c54e31746e5a4d797eacfb5e88a50996f3e11c906238c579b2c07a2b",
+   "commit": "e2919763fe9174fe0fe44e2782f4279895cf0434",
+   "git_tree": "5332ac9d3f3f55f80f3501f92a8f4971f331d86d"
+  }
+ },
+ "instrument_sha256_equal": true,
+ "script_sha256_equal": true,
+ "preset_sha256_equal": true,
+ "result": "EQUIVALENT"
+}
