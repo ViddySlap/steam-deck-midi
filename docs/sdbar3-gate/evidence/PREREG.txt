@@ -1,0 +1,9 @@
+sdbar3 gate pre-registration, written BEFORE any gate M_bridge data exists.
+Verdict source: m_bridge.rule of the pooled R=5 clean run (instrument timing_ab.py b9b7994a...), per MASTER 04:00/04:04 declared rule.
+- floor-resolution clause (floor_can_resolve_2ms) is NOT part of the declared rule; it is reported beside, not required (B1 decision 1). Resolution is proven only by the R=3 sensitivity run going RED on M_bridge.
+- delta and floor are absolute values (|OPEN-CLOSED|, |CLOSED-CLOSED-B|), as in the locked rule; stricter than signed.
+- sensitivity: m_bridge_sensitivity_timing_red must be True (exit 1). Exit 3 or not RED => rule INVALID, stop, NEEDS-MASTER.
+- An arm that is not accepted (load) or not passed stops the instrument; the run is repeated whole when clean. No arm dropped.
+- The controller-view PNG is taken during an OPEN arm of a SEPARATE non-qualifying R=1 run (a second screenshot client would contaminate a qualifying arm).
+- External load sampler (docs/sdlive-gate/scripts/foreign_load.py every 2.5 s) runs during both runs, as in sdlive.
+Tue Sep 15 11:14:16 MDT 2026
