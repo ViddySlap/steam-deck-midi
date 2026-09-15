@@ -12,7 +12,7 @@
       ],
       "exit": 0,
       "summary": [
-        "Ran 23 tests in 0.411s",
+        "Ran 23 tests in 0.407s",
         "OK"
       ],
       "failing_tests": [],
@@ -44,7 +44,7 @@
       ],
       "exit": 1,
       "summary": [
-        "Ran 16 tests in 0.358s",
+        "Ran 16 tests in 0.367s",
         "FAILED (failures=3)"
       ],
       "failing_tests": [
@@ -62,7 +62,7 @@
       ],
       "exit": 1,
       "summary": [
-        "Ran 9 tests in 0.031s",
+        "Ran 9 tests in 0.032s",
         "FAILED (failures=2)"
       ],
       "failing_tests": [
@@ -94,7 +94,7 @@
       ],
       "exit": 1,
       "summary": [
-        "Ran 9 tests in 2.451s",
+        "Ran 9 tests in 2.444s",
         "FAILED (failures=2)"
       ],
       "failing_tests": [
@@ -127,7 +127,7 @@
       ],
       "exit": 1,
       "summary": [
-        "Ran 9 tests in 0.031s",
+        "Ran 9 tests in 0.032s",
         "FAILED (failures=1)"
       ],
       "failing_tests": [
@@ -159,7 +159,7 @@
       ],
       "exit": 1,
       "summary": [
-        "Ran 7 tests in 0.345s",
+        "Ran 7 tests in 0.331s",
         "FAILED (failures=1)"
       ],
       "failing_tests": [

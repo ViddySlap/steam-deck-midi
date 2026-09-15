@@ -1,0 +1,284 @@
+CLONE_HEAD 38de0a4c3dae84411fe2ba06a1ae4d117b13dfec
+PORTS_FREE udp=47311 ui=7811
+BASE_PYTHON C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\python.exe
+DRIVER_LAUNCHER_PID 322356
+DRIVER_EXITED True after 34s code=0
+RECORDED_TREE 322356,318040,316264,324216
+JSON {
+JSON   "label": "head",
+JSON   "driver_pid": 322356,
+JSON   "argv": [
+JSON     "C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv\\Scripts\\python.exe",
+JSON     "-B",
+JSON     "-u",
+JSON     "-m",
+JSON     "windows.win_recv",
+JSON     "--listen",
+JSON     "127.0.0.1:47311",
+JSON     "--map",
+JSON     "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\sdauto-a3\\f2-head-r4\\config\\windows_midi_map.json",
+JSON     "--midi-port",
+JSON     "DECK_IN",
+JSON     "--timeout",
+JSON     "2.0",
+JSON     "--ui-port",
+JSON     "7811",
+JSON     "--dry-run",
+JSON     "--no-ui",
+JSON     "--no-engines",
+JSON     "--no-pulse",
+JSON     "--no-osc-relay",
+JSON     "--no-browser"
+JSON   ],
+JSON   "events": [
+JSON     [
+JSON       2887976.156,
+JSON       "popen pid 318040"
+JSON     ]
+JSON   ],
+JSON   "console": {
+JSON     "enable_ctrl_c": true,
+JSON     "SetConsoleCtrlHandler_NULL_FALSE": 1,
+JSON     "driver_executable": "C:\\Users\\Ben\\AppData\\Local\\Python\\pythoncore-3.12-64\\python.exe"
+JSON   },
+JSON   "booted": true,
+JSON   "tree": [
+JSON     {
+JSON       "pid": 318040,
+JSON       "image": "C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv\\Scripts\\python.exe"
+JSON     },
+JSON     {
+JSON       "pid": 316264,
+JSON       "image": "C:\\Windows\\System32\\conhost.exe"
+JSON     },
+JSON     {
+JSON       "pid": 324216,
+JSON       "image": "C:\\Users\\Ben\\AppData\\Local\\Python\\pythoncore-3.12-64\\python.exe"
+JSON     }
+JSON   ],
+JSON   "cpu": {
+JSON     "wall_seconds": 30.219,
+JSON     "logical_cores": 32,
+JSON     "per_pid": [
+JSON       {
+JSON         "pid": 318040,
+JSON         "image": "C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv\\Scripts\\python.exe",
+JSON         "cpu_seconds_before": 0.0,
+JSON         "cpu_seconds_after": 0.0,
+JSON         "cpu_seconds": 0.0,
+JSON         "pct_of_one_core": 0.0,
+JSON         "pct_of_all_cores": 0.0
+JSON       },
+JSON       {
+JSON         "pid": 316264,
+JSON         "image": "C:\\Windows\\System32\\conhost.exe",
+JSON         "cpu_seconds_before": 0.0,
+JSON         "cpu_seconds_after": 0.0,
+JSON         "cpu_seconds": 0.0,
+JSON         "pct_of_one_core": 0.0,
+JSON         "pct_of_all_cores": 0.0
+JSON       },
+JSON       {
+JSON         "pid": 324216,
+JSON         "image": "C:\\Users\\Ben\\AppData\\Local\\Python\\pythoncore-3.12-64\\python.exe",
+JSON         "cpu_seconds_before": 0.09375,
+JSON         "cpu_seconds_after": 0.15625,
+JSON         "cpu_seconds": 0.0625,
+JSON         "pct_of_one_core": 0.21,
+JSON         "pct_of_all_cores": 0.006
+JSON       }
+JSON     ],
+JSON     "tree_cpu_seconds": 0.0625,
+JSON     "tree_pct_of_one_core": 0.21,
+JSON     "tree_pct_of_all_cores": 0.006,
+JSON     "per_second_deltas": [
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0156
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0156
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0156
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0156
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       },
+JSON       {
+JSON         "318040": 0.0,
+JSON         "316264": 0.0,
+JSON         "324216": 0.0
+JSON       }
+JSON     ]
+JSON   },
+JSON   "stops": [
+JSON     {
+JSON       "method": "CTRL_C_EVENT",
+JSON       "sender_exit": 0,
+JSON       "sender_log": "free=1 attach=1 err=187 attached=[318040, 324216, 329380] foreign=[] ignore_ctrl_c=1\ngenerate=1 err=187\n",
+JSON       "sender_stderr": "",
+JSON       "tree_exited_within_5s": true,
+JSON       "elapsed": 0.359,
+JSON       "exit_codes": {
+JSON         "318040": 0,
+JSON         "316264": 0,
+JSON         "324216": 0
+JSON       }
+JSON     }
+JSON   ],
+JSON   "driver_signals_received": [],
+JSON   "popen_returncode": 0,
+JSON   "final_exit_codes": {
+JSON     "318040": 0,
+JSON     "316264": 0,
+JSON     "324216": 0
+JSON   },
+JSON   "all_gone": true,
+JSON   "udp_port_rebind": "ok",
+JSON   "log_tail": [
+JSON     "MIDI cc channel=1 control=79 value=0",
+JSON     "MIDI cc channel=0 control=74 value=127",
+JSON     "MIDI cc channel=1 control=74 value=0",
+JSON     "INFO listening on udp://127.0.0.1:47311",
+JSON     "INFO shutdown requested",
+JSON     "MIDI panic"
+JSON   ]
+JSON }
+PID 316264 gone=True
+PID 318040 gone=True
+PID 322356 gone=True
+PID 324216 gone=True
+PYTHON_PROCESSES_AFTER 0

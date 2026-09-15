@@ -1,0 +1,272 @@
+{
+  "label": "v049",
+  "driver_pid": 322648,
+  "argv": [
+    "C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-u",
+    "-m",
+    "windows.win_recv",
+    "--listen",
+    "127.0.0.1:47312",
+    "--map",
+    "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\sdauto-a3\\f2-v049-r1\\tree\\config\\windows_midi_map.json",
+    "--midi-port",
+    "DECK_IN",
+    "--timeout",
+    "2.0",
+    "--ui-port",
+    "7812",
+    "--dry-run",
+    "--no-ui",
+    "--no-engines",
+    "--no-pulse",
+    "--no-osc-relay"
+  ],
+  "events": [
+    [
+      2888025.265,
+      "popen pid 328848"
+    ]
+  ],
+  "console": {
+    "enable_ctrl_c": true,
+    "SetConsoleCtrlHandler_NULL_FALSE": 1,
+    "driver_executable": "C:\\Users\\Ben\\AppData\\Local\\Python\\pythoncore-3.12-64\\python.exe"
+  },
+  "booted": true,
+  "tree": [
+    {
+      "pid": 328848,
+      "image": "C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv\\Scripts\\python.exe"
+    },
+    {
+      "pid": 317472,
+      "image": "C:\\Windows\\System32\\conhost.exe"
+    },
+    {
+      "pid": 328484,
+      "image": "C:\\Users\\Ben\\AppData\\Local\\Python\\pythoncore-3.12-64\\python.exe"
+    }
+  ],
+  "cpu": {
+    "wall_seconds": 30.086,
+    "logical_cores": 32,
+    "per_pid": [
+      {
+        "pid": 328848,
+        "image": "C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv\\Scripts\\python.exe",
+        "cpu_seconds_before": 0.0,
+        "cpu_seconds_after": 0.0,
+        "cpu_seconds": 0.0,
+        "pct_of_one_core": 0.0,
+        "pct_of_all_cores": 0.0
+      },
+      {
+        "pid": 317472,
+        "image": "C:\\Windows\\System32\\conhost.exe",
+        "cpu_seconds_before": 0.015625,
+        "cpu_seconds_after": 0.015625,
+        "cpu_seconds": 0.0,
+        "pct_of_one_core": 0.0,
+        "pct_of_all_cores": 0.0
+      },
+      {
+        "pid": 328484,
+        "image": "C:\\Users\\Ben\\AppData\\Local\\Python\\pythoncore-3.12-64\\python.exe",
+        "cpu_seconds_before": 0.21875,
+        "cpu_seconds_after": 0.25,
+        "cpu_seconds": 0.0312,
+        "pct_of_one_core": 0.1,
+        "pct_of_all_cores": 0.003
+      }
+    ],
+    "tree_cpu_seconds": 0.0312,
+    "tree_pct_of_one_core": 0.1,
+    "tree_pct_of_all_cores": 0.003,
+    "per_second_deltas": [
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0156
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0156
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      },
+      {
+        "328848": 0.0,
+        "317472": 0.0,
+        "328484": 0.0
+      }
+    ]
+  },
+  "stops": [
+    {
+      "method": "CTRL_C_EVENT",
+      "sender_exit": 0,
+      "sender_log": "free=1 attach=1 err=187 attached=[327916, 328484, 328848] foreign=[] ignore_ctrl_c=1\ngenerate=1 err=187\n",
+      "sender_stderr": "",
+      "tree_exited_within_5s": true,
+      "elapsed": 0.266,
+      "exit_codes": {
+        "328848": 0,
+        "317472": 0,
+        "328484": 0
+      }
+    }
+  ],
+  "driver_signals_received": [],
+  "popen_returncode": 0,
+  "final_exit_codes": {
+    "328848": 0,
+    "317472": 0,
+    "328484": 0
+  },
+  "all_gone": true,
+  "udp_port_rebind": "ok",
+  "log_tail": [
+    "MIDI cc channel=1 control=79 value=0",
+    "MIDI cc channel=0 control=74 value=127",
+    "MIDI cc channel=1 control=74 value=0",
+    "INFO listening on udp://127.0.0.1:47312",
+    "INFO shutdown requested",
+    "MIDI panic"
+  ]
+}

@@ -1,0 +1,20 @@
+label=base-shutdown tree=/tmp/sdauto-a3/base/tree stop=shutdown udp=50535 ui=58979 extra= PYSTRAY_BACKEND=unset
+pgrep_while_true_before=[] load={ 2.61 2.60 2.69 }
+pid=43496 started=13:31:37
+http_up=1 after_polls=2
+cpu_samples_%cpu=92.8 93.9 94.1 94.2 94.0 94.2 94.3 94.2 94.3 94.1 94.3 94.2 94.5 94.1 94.1 94.2 94.3 94.3 93.6 94.2 94.0 94.2 94.1 94.0 94.2 94.2 94.2 94.3 94.1 94.5
+cputime_before=0:00.23 cputime_after=0:28.83 cpu_seconds=28.60 wall_seconds=30.34 cpu_pct_of_one_core=94.3
+ps_pcpu_n=30 mean=94.1 min=92.8 max=94.5
+threads=6
+POST /api/shutdown http=202 body={"stopping":true}
+exited_within_5s=yes polls=2 wait_status=133
+PID_GONE=43496
+ports_bound_lsof_exit=1 (1=released)
+new_crash_reports=[/Users/viddyslap/Library/Logs/DiagnosticReports/Python-2026-09-15-133208.ips ]
+pgrep_while_true_after=[] load={ 2.36 2.54 2.67 }
+log_tail:
+MIDI cc channel=1 control=74 value=0
+INFO mapping UI available at http://127.0.0.1:58979
+INFO listening on udp://127.0.0.1:50535
+INFO listening for MIDI feedback: name=IAC Driver DECK_OUT index=n/a
+MIDI panic

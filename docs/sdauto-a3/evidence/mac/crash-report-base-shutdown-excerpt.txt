@@ -1,0 +1,4 @@
+file: ~/Library/Logs/DiagnosticReports/Python-2026-09-15-133208.ips (base-shutdown arm, pid 43496)
+"pid" : 43496
+"exception" : {"codes":"0x0000000000000001, 0x000000019224bcc0","rawCodes":[1,6746848448],"type":"EXC_BREAKPOINT","signal":"SIGTRAP"}
+"asi" : {"libsystem_c.dylib":["Must only be used from the main thread"]}

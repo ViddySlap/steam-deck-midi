@@ -1,0 +1,20 @@
+label=head-shutdown tree=/tmp/sdauto-a3/head/tree stop=shutdown udp=54095 ui=59017 extra= PYSTRAY_BACKEND=unset
+pgrep_while_true_before=[] load={ 2.36 2.54 2.67 }
+pid=44889 started=13:32:10
+http_up=1 after_polls=2
+cpu_samples_%cpu=0.4 0.1 0.0 0.0 0.2 0.3 0.1 0.1 0.2 0.2 0.2 0.1 0.2 0.2 0.3 0.2 0.0 0.2 0.1 0.2 0.2 0.2 0.1 0.1 0.1 0.1 0.0 0.2 0.1 0.0
+cputime_before=0:00.13 cputime_after=0:00.22 cpu_seconds=0.09 wall_seconds=30.55 cpu_pct_of_one_core=0.3
+ps_pcpu_n=30 mean=0.1 min=0.0 max=0.4
+threads=3
+POST /api/shutdown http=202 body={"stopping":true}
+exited_within_5s=yes polls=2 wait_status=0
+PID_GONE=44889
+ports_bound_lsof_exit=1 (1=released)
+new_crash_reports=[]
+pgrep_while_true_after=[] load={ 2.92 2.65 2.70 }
+log_tail:
+INFO mapping UI available at http://127.0.0.1:59017
+INFO system tray not started on darwin; stop with POST /api/shutdown
+INFO listening on udp://127.0.0.1:54095
+INFO listening for MIDI feedback: name=IAC Driver DECK_OUT index=n/a
+MIDI panic

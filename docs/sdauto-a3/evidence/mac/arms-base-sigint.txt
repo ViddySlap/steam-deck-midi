@@ -1,0 +1,21 @@
+label=base-sigint tree=/tmp/sdauto-a3/base/tree stop=sigint udp=56636 ui=58473 extra= PYSTRAY_BACKEND=unset
+pgrep_while_true_before=[] load={ 2.53 2.77 2.81 }
+pid=30353 started=13:26:12
+http_up=1 after_polls=2
+cpu_samples_%cpu=92.8 94.2 94.5 94.2 94.5 94.3 94.0 94.3 94.2 94.1 93.7 94.2 94.2 94.3 94.2 94.2 94.1 94.0 94.2 94.2 94.3 94.2 94.4 94.6 94.1 94.2 94.1 94.3 94.3 94.5
+cputime_before=0:00.21 cputime_after=0:28.85 cpu_seconds=28.64 wall_seconds=30.36 cpu_pct_of_one_core=94.3
+ps_pcpu_n=30 mean=94.2 min=92.8 max=94.6
+threads=6
+sent SIGINT at 13:26:42
+exited_within_5s=no; sending SIGTERM
+after_sigterm wait_status=143
+PID_GONE=30353
+ports_bound_lsof_exit=1 (1=released)
+new_crash_reports=[]
+pgrep_while_true_after=[] load={ 2.52 2.73 2.79 }
+log_tail:
+MIDI cc channel=0 control=74 value=127
+MIDI cc channel=1 control=74 value=0
+INFO mapping UI available at http://127.0.0.1:58473
+INFO listening on udp://127.0.0.1:56636
+INFO listening for MIDI feedback: name=IAC Driver DECK_OUT index=n/a

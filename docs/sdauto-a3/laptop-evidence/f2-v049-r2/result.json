@@ -1,0 +1,284 @@
+{
+  "label": "v049",
+  "driver_pid": 296520,
+  "argv": [
+    "C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-u",
+    "-m",
+    "windows.win_recv",
+    "--listen",
+    "127.0.0.1:47312",
+    "--map",
+    "C:\\Users\\Ben\\AppData\\Local\\Temp\\sdwin\\sdauto-a3\\f2-v049-r2\\tree\\config\\windows_midi_map.json",
+    "--midi-port",
+    "DECK_IN",
+    "--timeout",
+    "2.0",
+    "--ui-port",
+    "7812",
+    "--dry-run",
+    "--no-ui",
+    "--no-engines",
+    "--no-pulse",
+    "--no-osc-relay"
+  ],
+  "events": [
+    [
+      2888074.593,
+      "popen pid 309748"
+    ]
+  ],
+  "console": {
+    "enable_ctrl_c": false,
+    "driver_executable": "C:\\Users\\Ben\\AppData\\Local\\Python\\pythoncore-3.12-64\\python.exe"
+  },
+  "booted": true,
+  "tree": [
+    {
+      "pid": 309748,
+      "image": "C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv\\Scripts\\python.exe"
+    },
+    {
+      "pid": 327784,
+      "image": "C:\\Windows\\System32\\conhost.exe"
+    },
+    {
+      "pid": 329448,
+      "image": "C:\\Users\\Ben\\AppData\\Local\\Python\\pythoncore-3.12-64\\python.exe"
+    }
+  ],
+  "cpu": {
+    "wall_seconds": 30.271,
+    "logical_cores": 32,
+    "per_pid": [
+      {
+        "pid": 309748,
+        "image": "C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv\\Scripts\\python.exe",
+        "cpu_seconds_before": 0.015625,
+        "cpu_seconds_after": 0.015625,
+        "cpu_seconds": 0.0,
+        "pct_of_one_core": 0.0,
+        "pct_of_all_cores": 0.0
+      },
+      {
+        "pid": 327784,
+        "image": "C:\\Windows\\System32\\conhost.exe",
+        "cpu_seconds_before": 0.0,
+        "cpu_seconds_after": 0.0,
+        "cpu_seconds": 0.0,
+        "pct_of_one_core": 0.0,
+        "pct_of_all_cores": 0.0
+      },
+      {
+        "pid": 329448,
+        "image": "C:\\Users\\Ben\\AppData\\Local\\Python\\pythoncore-3.12-64\\python.exe",
+        "cpu_seconds_before": 0.15625,
+        "cpu_seconds_after": 0.15625,
+        "cpu_seconds": 0.0,
+        "pct_of_one_core": 0.0,
+        "pct_of_all_cores": 0.0
+      }
+    ],
+    "tree_cpu_seconds": 0.0,
+    "tree_pct_of_one_core": 0.0,
+    "tree_pct_of_all_cores": 0.0,
+    "per_second_deltas": [
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      },
+      {
+        "309748": 0.0,
+        "327784": 0.0,
+        "329448": 0.0
+      }
+    ]
+  },
+  "stops": [
+    {
+      "method": "CTRL_C_EVENT",
+      "sender_exit": 0,
+      "sender_log": "free=1 attach=1 err=187 attached=[309748, 325788, 329448] foreign=[] ignore_ctrl_c=1\ngenerate=1 err=187\n",
+      "sender_stderr": "",
+      "tree_exited_within_5s": false,
+      "elapsed": 5.172,
+      "exit_codes": {
+        "309748": 259,
+        "327784": 259,
+        "329448": 259
+      }
+    },
+    {
+      "method": "CTRL_BREAK_EVENT",
+      "sender_exit": 3221225786,
+      "sender_log": "free=1 attach=1 err=187 attached=[309748, 329076, 329448] foreign=[] ignore_ctrl_c=1\ngenerate=1 err=187\n",
+      "sender_stderr": "",
+      "tree_exited_within_5s": true,
+      "elapsed": 0.14,
+      "exit_codes": {
+        "309748": 3221225786,
+        "327784": 0,
+        "329448": 3221225786
+      }
+    }
+  ],
+  "driver_signals_received": [],
+  "popen_returncode": 3221225786,
+  "final_exit_codes": {
+    "309748": 3221225786,
+    "327784": 0,
+    "329448": 3221225786
+  },
+  "all_gone": true,
+  "udp_port_rebind": "ok",
+  "log_tail": [
+    "MIDI cc channel=1 control=78 value=0",
+    "MIDI cc channel=0 control=79 value=0",
+    "MIDI cc channel=1 control=79 value=0",
+    "MIDI cc channel=0 control=74 value=127",
+    "MIDI cc channel=1 control=74 value=0",
+    "INFO listening on udp://127.0.0.1:47312"
+  ]
+}

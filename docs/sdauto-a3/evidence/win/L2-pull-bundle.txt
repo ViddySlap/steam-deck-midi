@@ -1,0 +1,14 @@
+BUNDLE_SHA256 1fb17fa0409e201f2d0f318a8d4b3f8481decfc11c27771cd3eba3df8aeee178
+VERIFY The bundle contains this ref:
+VERIFY 38de0a4c3dae84411fe2ba06a1ae4d117b13dfec refs/heads/chain/steamdeck-20260914
+VERIFY The bundle requires this ref:
+VERIFY d882f97b6e9f11226ba26ea9ceb87d4ae7adebec 
+VERIFY The bundle uses this hash algorithm: sha1
+VERIFY C:/Users/Ben/AppData/Local/Temp/sdwin/sdauto-a3/sdpick.bundle is okay
+FETCH From C:\Users\Ben\AppData\Local\Temp\sdwin\sdauto-a3\sdpick.bundle
+FETCH  * branch            chain/steamdeck-20260914 -> FETCH_HEAD
+FETCH_HEAD 38de0a4c3dae84411fe2ba06a1ae4d117b13dfec
+MERGE  create mode 100644 windows/log_ring.py
+MERGE  create mode 100644 windows/receiver_tasks.py
+PINNED_HEAD 38de0a4c3dae84411fe2ba06a1ae4d117b13dfec
+PORCELAIN_LINES 0

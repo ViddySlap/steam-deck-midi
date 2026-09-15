@@ -1,0 +1,130 @@
+Analysis of sampling Python (pid 34422) every 1 millisecond
+Process:         Python [34422]
+Path:            /opt/homebrew/*/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python
+Load Address:    0x102ecc000
+Identifier:      org.python.python
+Version:         3.12.13 (3.12.13)
+Code Type:       ARM64
+Platform:        macOS
+Parent Process:  zsh [34420]
+Target Type:     live task
+
+Date/Time:       2026-09-15 13:27:42.973 -0600
+Launch Time:     2026-09-15 13:27:38.912 -0600
+OS Version:      macOS 15.6.1 (24G90)
+Report Version:  7
+Analysis Tool:   /usr/bin/sample
+
+Physical footprint:         52.6M
+Physical footprint (peak):  52.6M
+Idle exit:                  untracked
+----
+
+Call graph:
+    2347 Thread_64150201   DispatchQueue_1: com.apple.main-thread  (serial)
+    + 2347 start  (in dyld) + 6076  [0x18d17eb98]
+    +   2347 Py_BytesMain  (in Python) + 40  [0x103911978]
+    +     2347 pymain_main  (in Python) + 304  [0x1039118d8]
+    +       2347 Py_RunMain  (in Python) + 200  [0x1039111e8]
+    +         2347 pymain_run_module  (in Python) + 228  [0x103911b8c]
+    +           2347 _PyEval_EvalFrameDefault  (in Python) + 11064  [0x1038922c4]
+    +             2347 PyObject_Vectorcall  (in Python) + 88  [0x1037a27bc]
+    +               2347 cfunction_vectorcall_FASTCALL_KEYWORDS  (in Python) + 92  [0x1037f35a4]
+    +                 2347 builtin_exec  (in Python) + 444  [0x10388b788]
+    +                   2347 PyEval_EvalCode  (in Python) + 184  [0x10388f51c]
+    +                     2347 _PyEval_EvalFrameDefault  (in Python) + 11064  [0x1038922c4]
+    +                       2347 PyObject_Vectorcall  (in Python) + 88  [0x1037a27bc]
+    +                         2347 method_vectorcall_VARARGS  (in Python) + 128  [0x1037ad90c]
+    +                           2347 sock_recvfrom  (in _socket.cpython-312-darwin.so) + 116  [0x103d0d160]
+    +                             2347 sock_recvfrom_guts  (in _socket.cpython-312-darwin.so) + 136  [0x103d0ee34]
+    +                               2346 sock_call_ex  (in _socket.cpython-312-darwin.so) + 156  [0x103d0e2f0]
+    +                               ! 2346 internal_select  (in _socket.cpython-312-darwin.so) + 112  [0x103d0e494]
+    +                               !   2346 poll  (in libsystem_kernel.dylib) + 8  [0x18d4e6498]
+    +                               1 sock_call_ex  (in _socket.cpython-312-darwin.so) + 460  [0x103d0e420]
+    +                                 1 _PyErr_SetString  (in Python) + 36  [0x1038b8a30]
+    +                                   1 _platform_strlen  (in libsystem_platform.dylib) + 0  [0x18d556a40]
+    2347 Thread_64150202
+    + 2347 thread_start  (in libsystem_pthread.dylib) + 8  [0x18d51ab80]
+    +   2347 _pthread_start  (in libsystem_pthread.dylib) + 136  [0x18d51fc0c]
+    +     2347 pythread_wrapper  (in Python) + 48  [0x103901a14]
+    +       2347 thread_run  (in Python) + 144  [0x10396d024]
+    +         2347 method_vectorcall  (in Python) + 368  [0x1037a500c]
+    +           2347 _PyEval_EvalFrameDefault  (in Python) + 11064  [0x1038922c4]
+    +             2347 PyObject_Vectorcall  (in Python) + 88  [0x1037a27bc]
+    +               2346 method_vectorcall_VARARGS_KEYWORDS  (in Python) + 148  [0x1037ada28]
+    +               ! 2346 lock_PyThread_acquire_lock  (in Python) + 56  [0x10396d888]
+    +               !   2345 acquire_timed  (in Python) + 244  [0x10396dc7c]
+    +               !   : 2345 PyThread_acquire_lock_timed  (in Python) + 240  [0x103901db0]
+    +               !   :   2345 _pthread_cond_wait  (in libsystem_pthread.dylib) + 984  [0x18d5200e0]
+    +               !   :     2345 __psynch_cvwait  (in libsystem_kernel.dylib) + 8  [0x18d4e13cc]
+    +               !   1 acquire_timed  (in Python) + 256  [0x10396dc88]
+    +               !     1 _PyThreadState_SwapNoGIL  (in Python) + 0  [0x1038ea970]
+    +               1 method_vectorcall_VARARGS_KEYWORDS  (in Python) + 148  [0x1037ada28]
+    2347 Thread_64150203
+    + 2347 thread_start  (in libsystem_pthread.dylib) + 8  [0x18d51ab80]
+    +   2347 _pthread_start  (in libsystem_pthread.dylib) + 136  [0x18d51fc0c]
+    +     2347 pythread_wrapper  (in Python) + 48  [0x103901a14]
+    +       2347 thread_run  (in Python) + 144  [0x10396d024]
+    +         2347 method_vectorcall  (in Python) + 368  [0x1037a500c]
+    +           2347 _PyEval_EvalFrameDefault  (in Python) + 5040  [0x103890b3c]
+    +             2347 _PyVectorcall_Call  (in Python) + 152  [0x1037a2678]
+    +               2347 method_vectorcall  (in Python) + 304  [0x1037a4fcc]
+    +                 2341 _PyEval_EvalFrameDefault  (in Python) + 1132  [0x10388fbf8]
+    +                 ! 2338 select_poll_poll  (in select.cpython-312-darwin.so) + 300  [0x1034892fc]
+    +                 ! : 2338 poll  (in libsystem_kernel.dylib) + 8  [0x18d4e6498]
+    +                 ! 3 select_poll_poll  (in select.cpython-312-darwin.so) + 312  [0x103489308]
+    +                 !   2 PyEval_RestoreThread  (in Python) + 24  [0x1038c617c]
+    +                 !   | 2 take_gil  (in Python) + 36  [0x1038c5848]
+    +                 !   |   2 __error  (in libsystem_kernel.dylib) + 0  [0x18d4de5fc]
+    +                 !   1 _PyThreadState_SwapNoGIL  (in Python) + 32  [0x1038ea990]
+    +                 !     1 _tlv_get_addr  (in libdyld.dylib) + 0  [0x18d5290f8]
+    +                 4 _PyEval_EvalFrameDefault  (in Python) + 4076,1132,...  [0x103890778,0x10388fbf8,...]
+    +                 1 _PyEval_EvalFrameDefault  (in Python) + 20416  [0x10389474c]
+    +                 ! 1 list_iter  (in Python) + 40  [0x1037cc564]
+    +                 !   1 _PyObject_GC_New  (in Python) + 108  [0x1039137d4]
+    +                 !     1 _PyObject_Malloc  (in Python) + 80  [0x1037fbca0]
+    +                 1 _PyEval_EvalFrameDefault  (in Python) + 23752  [0x103895454]
+    +                   1 listiter_dealloc  (in Python) + 80  [0x1037cc87c]
+    2347 Thread_64150206
+    + 2347 start_wqthread  (in libsystem_pthread.dylib) + 8  [0x18d51ab74]
+    +   2347 _pthread_wqthread  (in libsystem_pthread.dylib) + 368  [0x18d51beb0]
+    +     2347 __workq_kernreturn  (in libsystem_kernel.dylib) + 8  [0x18d4df8b0]
+    2347 Thread_64150225
+    + 2347 thread_start  (in libsystem_pthread.dylib) + 8  [0x18d51ab80]
+    +   2347 _pthread_start  (in libsystem_pthread.dylib) + 136  [0x18d51fc0c]
+    +     2347 pythread_wrapper  (in Python) + 48  [0x103901a14]
+    +       2347 thread_run  (in Python) + 144  [0x10396d024]
+    +         2347 method_vectorcall  (in Python) + 368  [0x1037a500c]
+    +           2347 _PyEval_EvalFrameDefault  (in Python) + 5040  [0x103890b3c]
+    +             2347 method_vectorcall  (in Python) + 368  [0x1037a500c]
+    +               2347 _PyEval_EvalFrameDefault  (in Python) + 11064  [0x1038922c4]
+    +                 2347 PyObject_Vectorcall  (in Python) + 88  [0x1037a27bc]
+    +                   2347 objcsel_vectorcall_simple  (in _objc.cpython-312-darwin.so) + 504  [0x1051ac5a0]  selector.m:659
+    +                     2347 PyObjCFFI_Caller_SimpleSEL  (in _objc.cpython-312-darwin.so) + 508  [0x10518aa78]  libffi_support.m:5288
+    +                       2347 ffi_call_int  (in libffi.dylib) + 1220  [0x19fccfaf0]
+    +                         2347 ffi_call_SYSV  (in libffi.dylib) + 80  [0x19fcc7050]
+    +                           2226 -[NSApplication run]  (in AppKit) + 664  [0x191520c9c]
+    +                           ! 2171 -[NSApplication reportException:]  (in AppKit) + 624  [0x19180048c]
+    +                           ! : 2171 _os_log_impl  (in libsystem_trace.dylib) + 28  [0x18d2678e8]
+    +                           ! :   2171 _os_log  (in libsystem_trace.dylib) + 168  [0x18d267998]
+    +                           ! :     2010 _os_log_impl_flatten_and_send  (in libsystem_trace.dylib) + 2080  [0x18d2681d0]
+    +                           ! :     | 2006 _os_log_fmt_flatten_object_impl  (in libsystem_trace.dylib) + 368  [0x18d271200]
+    +                           ! :     | + 2006 _os_log_fmt_flatten_NSCF  (in libsystem_trace.dylib) + 64  [0x18d26a758]
+    +                           ! :     | +   2002 _NS_os_log_callback  (in Foundation) + 280  [0x18eb9ee58]
+    +                           ! :     | +   ! 1973 -[_NSCallStackArray descriptionWithLocale:indent:]  (in Foundation) + 128  [0x18ec4fa04]
+    +                           ! :     | +   ! : 1947 backtrace_symbols  (in libsystem_c.dylib) + 152  [0x18d3c2f94]
+    +                           ! :     | +   ! : | 1893 dyld4::APIs::dladdr(void const*, dl_info*)  (in dyld) + 236  [0x18d1b2e1c]
+    +                           ! :     | +   ! : | + 1872 dyld3::MachOLoaded::findClosestSymbol(unsigned long long, char const**, unsigned long long*) const  (in dyld) + 416,440,...  [0x18d1cfc3c,0x18d1cfc54,...]
+    +                           ! :     | +   ! : | + 18 dyld3::MachOLoaded::findClosestSymbol(unsigned long long, char const**, unsigned long long*) const  (in dyld) + 80  [0x18d1cfaec]
+    +                           ! :     | +   ! : | + ! 14 dyld3::MachOLoaded::getLinkEditPointers(Diagnostics&, dyld3::MachOLoaded::LinkEditInfo&) const  (in dyld) + 40  [0x18d1cee54]
+    +                           ! :     | +   ! : | + ! : 13 dyld3::MachOLoaded::getLinkEditLoadCommands(Diagnostics&, dyld3::MachOLoaded::LinkEditInfo&) const  (in dyld) + 188  [0x18d1ce91c]
+    +                           ! :     | +   ! : | + ! : | 6 dyld3::MachOFile::forEachLoadCommand(Diagnostics&, void (load_command const*, bool&) block_pointer) const  (in dyld) + 224  [0x18d17a19c]
+    +                           ! :     | +   ! : | + ! : | + 6 invocation function for block in dyld3::MachOLoaded::getLinkEditLoadCommands(Diagnostics&, dyld3::MachOLoaded::LinkEditInfo&) const  (in dyld) + 480,28,... 
+    +                           ! :     | +   ! : | + ! : | 5 dyld3::MachOFile::forEachLoadCommand(Diagnostics&, void (load_command const*, bool&) block_pointer) const  (in dyld) + 28,164,...  [0x18d17a0d8,0x18d17a160,..
+    +                           ! :     | +   ! : | + ! : | 2 invocation function for block in dyld3::MachOLoaded::getLinkEditLoadCommands(Diagnostics&, dyld3::MachOLoaded::LinkEditInfo&) const  (in dyld) + 1128  [0x18d1
+    +                           ! :     | +   ! : | + ! : 1 dyld3::MachOFile::forEachLoadCommand(Diagnostics&, void (load_command const*, bool&) block_pointer) const  (in dyld) + 328  [0x18d17a204]
+    +                           ! :     | +   ! : | + ! 4 dyld3::MachOLoaded::getLinkEditPointers(Diagnostics&, dyld3::MachOLoaded::LinkEditInfo&) const  (in dyld) + 140  [0x18d1ceeb8]
+    +                           ! :     | +   ! : | + !   4 mach_o::Header::forEachSegment(void (mach_o::Header::SegmentInfo const&, bool&) block_pointer) const  (in dyld) + 124  [0x18d1f7214]
+    +                           ! :     | +   ! : | + !     2 mach_o::Header::forEachLoadCommand(void (load_command const*, bool&) block_pointer) const  (in dyld) + 212,236  [0x18d1f435c,0x18d1f4374]
+    +                           ! :     | +   ! : | + !     1 invocation function for block in mach_o::Header::forEachSegment(void (mach_o::Header::SegmentInfo const&, bool&) block_pointer) const  (in dyld) + 288  [0x18d
+    +                           ! :     | +   ! : | + !     1 mach_o::Header::forEachLoadCommand(void (load_command const*, bool&) block_pointer) const  (in dyld) + 208  [0x18d1f4358]
