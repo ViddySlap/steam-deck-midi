@@ -1,0 +1,643 @@
+{
+  "results": [
+    {
+      "id": "a.1440x900.opens-on-controller",
+      "pass": true,
+      "detail": {
+        "controllerVisible": true,
+        "listHidden": true,
+        "pressed": "true",
+        "activeTab": "editor",
+        "section": "windows"
+      }
+    },
+    {
+      "id": "a.1440x900.section-is-windows",
+      "pass": true,
+      "detail": "windows"
+    },
+    {
+      "id": "a.1440x900.23-arrows",
+      "pass": true,
+      "detail": "23 arrows, 23 unique, zero-size: "
+    },
+    {
+      "id": "a.1440x900.23-labels",
+      "pass": true,
+      "detail": "23 labels"
+    },
+    {
+      "id": "a.1440x900.labels-equal-map",
+      "pass": true,
+      "detail": "label ids vs /api/controller-map ids"
+    },
+    {
+      "id": "a.1440x900.labels-inside-viewport",
+      "pass": true,
+      "detail": "all 23 inside 1440x900"
+    },
+    {
+      "id": "a.1440x900.no-label-intersections",
+      "pass": true,
+      "detail": "253 pairs, 0 intersect"
+    },
+    {
+      "id": "a.1440x900.no-horizontal-page-scroll",
+      "pass": true,
+      "detail": "scrollWidth 1440 vs 1440"
+    },
+    {
+      "id": "a.1440x900.list-switch-shows-list-editor",
+      "pass": true,
+      "detail": {
+        "list": true,
+        "sidebar": true,
+        "ctrl": true,
+        "chips": 75
+      }
+    },
+    {
+      "id": "a.1440x900.reload-remembers-list",
+      "pass": true,
+      "detail": {
+        "list": true,
+        "pressed": "true",
+        "stored": "list"
+      }
+    },
+    {
+      "id": "a.1440x900.reload-remembers-controller",
+      "pass": true,
+      "detail": {
+        "ctrl": true,
+        "stored": "controller"
+      }
+    },
+    {
+      "id": "b.1440x900.all-23-groups-equal-api",
+      "pass": true,
+      "detail": "23/23 equal"
+    },
+    {
+      "id": "b.1440x900.all-badges-equal-api-mapping-type",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "id": "b.1440x900.escape-closes-all-23",
+      "pass": true,
+      "detail": "23/23 closed"
+    },
+    {
+      "id": "b.keyboard-enter-opens-escape-returns-focus",
+      "pass": true,
+      "detail": {
+        "kb1": {
+          "open": true,
+          "title": "B",
+          "focus": "controllerTitle"
+        },
+        "kb2": {
+          "closed": true,
+          "focus": "btn_b",
+          "focusVisible": "solid"
+        }
+      }
+    },
+    {
+      "id": "c1.disk-diff",
+      "pass": true,
+      "detail": {
+        "op": "BTN_A note 36 -> 50 (row form)",
+        "diff": [
+          {
+            "path": "sections.windows.mappings.BTN_A.note",
+            "before": 36,
+            "after": 50
+          }
+        ]
+      }
+    },
+    {
+      "id": "c1.page-clean-after-save",
+      "pass": true,
+      "detail": "UNSAVED badge cleared"
+    },
+    {
+      "id": "c2.disk-diff",
+      "pass": true,
+      "detail": {
+        "op": "R_STICK_X_AXIS axis_split_cc deadzone 3500 -> 4000",
+        "diff": [
+          {
+            "path": "sections.windows.mappings.R_STICK_X_AXIS.deadzone",
+            "before": 3500,
+            "after": 4000
+          }
+        ]
+      }
+    },
+    {
+      "id": "c2.page-clean-after-save",
+      "pass": true,
+      "detail": "UNSAVED badge cleared"
+    },
+    {
+      "id": "c3.disk-diff",
+      "pass": true,
+      "detail": {
+        "op": "Clear BTN_Y_LAYER_2",
+        "diff": [
+          {
+            "path": "sections.windows.mappings.BTN_Y_LAYER_2",
+            "before": {
+              "channel": 0,
+              "note": 43,
+              "type": "note",
+              "velocity": 127
+            },
+            "after": "<absent>"
+          }
+        ]
+      }
+    },
+    {
+      "id": "c3.page-clean-after-save",
+      "pass": true,
+      "detail": "UNSAVED badge cleared"
+    },
+    {
+      "id": "c4.incompatible-macros-disabled",
+      "pass": true,
+      "detail": [
+        {
+          "v": "",
+          "d": false,
+          "t": "Apply macro..."
+        },
+        {
+          "v": "click-toggle",
+          "d": false,
+          "t": "Click Toggle"
+        },
+        {
+          "v": "animated-fade",
+          "d": false,
+          "t": "Animated Fade"
+        },
+        {
+          "v": "encoder-plus",
+          "d": true,
+          "t": "Encoder + (incompatible)"
+        },
+        {
+          "v": "encoder-minus",
+          "d": true,
+          "t": "Encoder − (incompatible)"
+        },
+        {
+          "v": "staged-modifier",
+          "d": true,
+          "t": "Staged Modifier (incompatible)"
+        }
+      ]
+    },
+    {
+      "id": "c4.disk-diff",
+      "pass": true,
+      "detail": {
+        "op": "Apply macro click-toggle to DPAD_DOWN_LONG_PRESS (macro_cc long_press)",
+        "diff": [
+          {
+            "path": "sections.windows.mappings.DPAD_DOWN_LONG_PRESS.gesture",
+            "before": "long_press",
+            "after": "click"
+          }
+        ]
+      }
+    },
+    {
+      "id": "c4.page-clean-after-save",
+      "pass": true,
+      "detail": "UNSAVED badge cleared"
+    },
+    {
+      "id": "c5.disk-diff",
+      "pass": true,
+      "detail": {
+        "op": "Advanced JSON: L5 note 75 -> 80, velocity 127 -> 100",
+        "diff": [
+          {
+            "path": "sections.windows.mappings.L5.note",
+            "before": 75,
+            "after": 80
+          },
+          {
+            "path": "sections.windows.mappings.L5.velocity",
+            "before": 127,
+            "after": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "c5.page-clean-after-save",
+      "pass": true,
+      "detail": "UNSAVED badge cleared"
+    },
+    {
+      "id": "c6.conflict-modal-and-marked-rows",
+      "pass": true,
+      "detail": {
+        "rows": [
+          "START"
+        ],
+        "msg": [
+          "MIDI CC conflict"
+        ],
+        "details": "Ch3 CC79: START, SELECT"
+      }
+    },
+    {
+      "id": "c6.cancel-writes-nothing",
+      "pass": true,
+      "detail": "sha before a0c1f0110d8ee384706e82a6a6651c1a8a4b2f284dfecb707a19faee0c9a6a69 after cancel+3s a0c1f0110d8ee384706e82a6a6651c1a8a4b2f284dfecb707a19faee0c9a6a69; marked rows after cancel 0"
+    },
+    {
+      "id": "c6.cancel-clears-marks",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "id": "c6.save-anyway-writes",
+      "pass": true,
+      "detail": [
+        {
+          "path": "sections.windows.mappings.START.cc",
+          "before": 78,
+          "after": 79
+        }
+      ]
+    },
+    {
+      "id": "d8.disk-diff",
+      "pass": true,
+      "detail": {
+        "op": "Advanced JSON null clears SELECT",
+        "diff": [
+          {
+            "path": "sections.windows.mappings.SELECT",
+            "before": {
+              "cc": 79,
+              "channel": 2,
+              "off_value": 0,
+              "on_value": 127,
+              "type": "cc"
+            },
+            "after": "<absent>"
+          }
+        ]
+      }
+    },
+    {
+      "id": "d8.page-clean-after-save",
+      "pass": true,
+      "detail": "UNSAVED badge cleared"
+    },
+    {
+      "id": "d.advanced-foreign-id-refused-atomically",
+      "pass": true,
+      "detail": {
+        "err": "JSON error: BTN_A does not belong to this control.",
+        "save": true
+      }
+    },
+    {
+      "id": "d.reload-discards-refused-draft",
+      "pass": true,
+      "detail": "no drafts, no UNSAVED badge"
+    },
+    {
+      "id": "d1.disk-diff",
+      "pass": true,
+      "detail": {
+        "op": "Set type: GYRO_FORWARD unmapped -> note (DEFAULTS)",
+        "diff": [
+          {
+            "path": "sections.windows.mappings.GYRO_FORWARD",
+            "before": "<absent>",
+            "after": {
+              "type": "note",
+              "channel": 0,
+              "note": 36,
+              "velocity": 127
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "d1.page-clean-after-save",
+      "pass": true,
+      "detail": "UNSAVED badge cleared"
+    },
+    {
+      "id": "d2.disk-diff",
+      "pass": true,
+      "detail": {
+        "op": "cc: L4 on_value 127 -> 100",
+        "diff": [
+          {
+            "path": "sections.windows.mappings.L4.on_value",
+            "before": 127,
+            "after": 100
+          }
+        ]
+      }
+    },
+    {
+      "id": "d2.page-clean-after-save",
+      "pass": true,
+      "detail": "UNSAVED badge cleared"
+    },
+    {
+      "id": "d3.disk-diff",
+      "pass": true,
+      "detail": {
+        "op": "macro_cc: DPAD_RIGHT fade override 1.5",
+        "diff": [
+          {
+            "path": "sections.windows.mappings.DPAD_RIGHT.fade_duration_seconds",
+            "before": "<absent>",
+            "after": 1.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "d3.page-clean-after-save",
+      "pass": true,
+      "detail": "UNSAVED badge cleared"
+    },
+    {
+      "id": "d4.disk-diff",
+      "pass": true,
+      "detail": {
+        "op": "relative_cc: R_PAD_DOWN repeat_interval_ms 40 -> 60",
+        "diff": [
+          {
+            "path": "sections.windows.mappings.R_PAD_DOWN.repeat_interval_ms",
+            "before": 40,
+            "after": 60
+          }
+        ]
+      }
+    },
+    {
+      "id": "d4.page-clean-after-save",
+      "pass": true,
+      "detail": "UNSAVED badge cleared"
+    },
+    {
+      "id": "d5.disk-diff",
+      "pass": true,
+      "detail": {
+        "op": "staged_note_macro: L_PAD_LEFT_LONG_PRESS macro_delay_ms 120",
+        "diff": [
+          {
+            "path": "sections.windows.mappings.L_PAD_LEFT_LONG_PRESS.macro_delay_ms",
+            "before": "<absent>",
+            "after": 120
+          }
+        ]
+      }
+    },
+    {
+      "id": "d5.page-clean-after-save",
+      "pass": true,
+      "detail": "UNSAVED badge cleared"
+    },
+    {
+      "id": "d6.disk-diff",
+      "pass": true,
+      "detail": {
+        "op": "axis_to_cc: L_TRIGGER_PRESSURE deadzone 5000 -> 6000, curve linear -> quadratic",
+        "diff": [
+          {
+            "path": "sections.windows.mappings.L_TRIGGER_PRESSURE.curve",
+            "before": "linear",
+            "after": "quadratic"
+          },
+          {
+            "path": "sections.windows.mappings.L_TRIGGER_PRESSURE.deadzone",
+            "before": 5000,
+            "after": 6000
+          }
+        ]
+      }
+    },
+    {
+      "id": "d6.page-clean-after-save",
+      "pass": true,
+      "detail": "UNSAVED badge cleared"
+    },
+    {
+      "id": "d9.copy-json-to-clipboard",
+      "pass": true,
+      "detail": "{\n  \"BTN_A_LAYER_2\": {\n    \"channel\": 0,\n    \"note\": 37,\n    \"type\": \"note\",\n    \"velocity\": 127\n  },\n  \"BTN_A\": {\n    \""
+    },
+    {
+      "id": "d10.section-switch-dismiss-keeps-draft",
+      "pass": true,
+      "detail": {
+        "section": "windows",
+        "v": "57"
+      }
+    },
+    {
+      "id": "d10.section-switch-accept-shows-macbook",
+      "pass": true,
+      "detail": "ch1 | note 38  vel 127"
+    },
+    {
+      "id": "d11.open-in-list-one-click",
+      "pass": true,
+      "detail": {
+        "list": true,
+        "badge": "BTN_A",
+        "note": "50"
+      }
+    },
+    {
+      "id": "e.notice-appears-and-typed-value-survives",
+      "pass": true,
+      "detail": {
+        "notice": true,
+        "text": "preset changed on disk - reload to see it Reload",
+        "v": "55"
+      }
+    },
+    {
+      "id": "e.typed-value-survives-further-polls",
+      "pass": true,
+      "detail": {
+        "notice": true,
+        "v": "55"
+      }
+    },
+    {
+      "id": "e.reload-accepted-hides-notice",
+      "pass": true,
+      "detail": "after Reload accept"
+    },
+    {
+      "id": "e2.put-200",
+      "pass": true,
+      "detail": "200"
+    },
+    {
+      "id": "e2.notice-and-draft-kept",
+      "pass": true,
+      "detail": {
+        "noticeBefore": false,
+        "notice": true,
+        "v": "60",
+        "desc": "ch1 | note 40  vel 127"
+      }
+    },
+    {
+      "id": "e2.file-after",
+      "pass": true,
+      "detail": {
+        "diff": [
+          {
+            "path": "sections.windows.mappings.BTN_X.note",
+            "before": 40,
+            "after": 44
+          }
+        ],
+        "sha": "b77411f79a4688580cbcf45c8fc853f363d7330b89466ec5a0bc1966b39fe1a4"
+      }
+    },
+    {
+      "id": "e2.reload-shows-agent-value",
+      "pass": true,
+      "detail": "ch1 | note 44  vel 127"
+    },
+    {
+      "id": "d12.reset-writes-only-windows-to-factory",
+      "pass": true,
+      "detail": {
+        "macbookSame": true,
+        "mappingsFactory": true,
+        "onlyWindows": true,
+        "paths": 26
+      }
+    },
+    {
+      "id": "a.1024x768.opens-on-controller",
+      "pass": true,
+      "detail": {
+        "controllerVisible": true,
+        "listHidden": true,
+        "pressed": "true",
+        "activeTab": "editor",
+        "section": "windows"
+      }
+    },
+    {
+      "id": "a.1024x768.section-is-windows",
+      "pass": true,
+      "detail": "windows"
+    },
+    {
+      "id": "a.1024x768.23-arrows",
+      "pass": true,
+      "detail": "23 arrows, 23 unique, zero-size: "
+    },
+    {
+      "id": "a.1024x768.23-labels",
+      "pass": true,
+      "detail": "23 labels"
+    },
+    {
+      "id": "a.1024x768.labels-equal-map",
+      "pass": true,
+      "detail": "label ids vs /api/controller-map ids"
+    },
+    {
+      "id": "a.1024x768.labels-inside-viewport",
+      "pass": true,
+      "detail": "all 23 inside 1024x768"
+    },
+    {
+      "id": "a.1024x768.no-label-intersections",
+      "pass": false,
+      "detail": [
+        "dpad_rightxleft_pad",
+        "right_stickxright_pad"
+      ]
+    },
+    {
+      "id": "a.1024x768.no-horizontal-page-scroll",
+      "pass": true,
+      "detail": "scrollWidth 1024 vs 1024"
+    },
+    {
+      "id": "a.1024x768.list-switch-shows-list-editor",
+      "pass": true,
+      "detail": {
+        "list": true,
+        "sidebar": true,
+        "ctrl": true,
+        "chips": 75
+      }
+    },
+    {
+      "id": "a.1024x768.reload-remembers-list",
+      "pass": true,
+      "detail": {
+        "list": true,
+        "pressed": "true",
+        "stored": "list"
+      }
+    },
+    {
+      "id": "a.1024x768.reload-remembers-controller",
+      "pass": true,
+      "detail": {
+        "ctrl": true,
+        "stored": "controller"
+      }
+    },
+    {
+      "id": "b.1024x768.all-23-groups-equal-api",
+      "pass": true,
+      "detail": "23/23 equal"
+    },
+    {
+      "id": "b.1024x768.all-badges-equal-api-mapping-type",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "id": "b.1024x768.escape-closes-all-23",
+      "pass": true,
+      "detail": "23/23 closed"
+    },
+    {
+      "id": "dialog-queue-empty-at-end",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "id": "no-page-errors-final",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "header_height": {
+    "1024x768": 106,
+    "1440x900": 106
+  }
+}

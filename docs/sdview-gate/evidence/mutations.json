@@ -1,0 +1,92 @@
+{
+  "head": "b38ffb23c3d9bfb78f8fc2337abe61cb00336907",
+  "rows": [
+    {
+      "id": "a-map-id",
+      "mutation": "remove BTN_A_LAYER_2 from btn_a layer_2 in controller_map.json",
+      "file": "windows/static/controller/controller_map.json",
+      "command": "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python -B -m unittest -v tests.test_controller_map",
+      "red_exit": 1,
+      "red_marker": "test_every_catalog_action_appears_exactly_once",
+      "red_marker_found": true,
+      "restored_equals_head_blob": true,
+      "green_exit": 0,
+      "pass": true,
+      "red_log": "/tmp/sdview-gate/mut/a-map-id-red.log",
+      "green_log": "/tmp/sdview-gate/mut/a-map-id-green.log"
+    },
+    {
+      "id": "b-put-skips-validation",
+      "mutation": "edit_mapping writes the file directly instead of through _write_preset (no load_midi_map validation)",
+      "file": "windows/ui_server.py",
+      "command": "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python -B -m unittest -v tests.test_controller_routes",
+      "red_exit": 1,
+      "red_marker": "test_bad_specs_return_parser_error_and_preserve_bytes_even_when_forced",
+      "red_marker_found": true,
+      "restored_equals_head_blob": true,
+      "green_exit": 0,
+      "pass": true,
+      "red_log": "/tmp/sdview-gate/mut/b-put-skips-validation-red.log",
+      "green_log": "/tmp/sdview-gate/mut/b-put-skips-validation-green.log"
+    },
+    {
+      "id": "c-clear-noop",
+      "mutation": "drill-in Clear mapping no longer commits null",
+      "file": "windows/static/controller/controller_view.js",
+      "command": "/opt/homebrew/bin/node tests/ui_controller_check.cjs",
+      "red_exit": 1,
+      "red_marker": "AssertionError",
+      "red_marker_found": true,
+      "restored_equals_head_blob": true,
+      "green_exit": 0,
+      "pass": true,
+      "red_log": "/tmp/sdview-gate/mut/c-clear-noop-red.log",
+      "green_log": "/tmp/sdview-gate/mut/c-clear-noop-green.log"
+    },
+    {
+      "id": "d-api-row",
+      "mutation": "remove the DELETE /api/mappings/<action_id> row from docs/api.md",
+      "file": "docs/api.md",
+      "command": "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python -B -m unittest -v tests.test_ui_server.BridgeSettingsApiTests.test_api_inventory_matches_registered_method_paths",
+      "red_exit": 1,
+      "red_marker": "AssertionError",
+      "red_marker_found": true,
+      "restored_equals_head_blob": true,
+      "green_exit": 0,
+      "pass": true,
+      "red_log": "/tmp/sdview-gate/mut/d-api-row-red.log",
+      "green_log": "/tmp/sdview-gate/mut/d-api-row-green.log"
+    },
+    {
+      "id": "e-default-list-node",
+      "mutation": "default sub-view becomes List when no preference is stored",
+      "file": "windows/static/controller/controller_view.js",
+      "command": "/opt/homebrew/bin/node tests/ui_controller_check.cjs",
+      "red_exit": 1,
+      "red_marker": "Controller is the default front door",
+      "red_marker_found": true,
+      "restored_equals_head_blob": true,
+      "green_exit": 0,
+      "pass": true,
+      "red_log": "/tmp/sdview-gate/mut/e-default-list-node-red.log",
+      "green_log": "/tmp/sdview-gate/mut/e-default-list-node-green.log"
+    },
+    {
+      "id": "e-default-list-browser",
+      "mutation": "same mutation, served by a real bridge from the mutant copy; ui_gate.cjs frontdoor in Chromium",
+      "command": "node /Users/viddyslap/Documents/project-workspaces/steam-deck-midi/docs/sdview-gate/scripts/ui_gate.cjs frontdoor 17794 /tmp/sdview-gate/mut/e-default-list-browser <out>",
+      "bridge_argv": "/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python -u -m windows.win_recv --listen 127.0.0.1:47794 --map config/windows_midi_map.json --preset-section windows --dry-run --no-engines --no-pulse --no-osc-relay --ui-port 17794 --timeout 2.0",
+      "bridge_pid": 67444,
+      "bridge_gone": true,
+      "red_exit": 1,
+      "red_marker": "FAIL a.1440x900.opens-on-controller",
+      "red_marker_found": true,
+      "restored_equals_head_blob": true,
+      "green_exit": 0,
+      "pass": true,
+      "red_log": "/tmp/sdview-gate/mut/e-browser-red.log",
+      "green_log": "/tmp/sdview-gate/mut/e-browser-green.log"
+    }
+  ],
+  "all_pass": true
+}

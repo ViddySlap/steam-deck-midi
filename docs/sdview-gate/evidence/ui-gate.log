@@ -1,0 +1,100 @@
+PASS a.1440x900.opens-on-controller {"controllerVisible":true,"listHidden":true,"pressed":"true","activeTab":"editor","section":"windows"}
+PASS a.1440x900.section-is-windows windows
+PASS a.1440x900.23-arrows 23 arrows, 23 unique, zero-size: 
+PASS a.1440x900.23-labels 23 labels
+PASS a.1440x900.labels-equal-map label ids vs /api/controller-map ids
+PASS a.1440x900.labels-inside-viewport all 23 inside 1440x900
+PASS a.1440x900.no-label-intersections 253 pairs, 0 intersect
+PASS a.1440x900.no-horizontal-page-scroll scrollWidth 1440 vs 1440
+  PNG /tmp/sdview-gate/ui-head/shots/after-controller-front-door.png
+PASS a.1440x900.list-switch-shows-list-editor {"list":true,"sidebar":true,"ctrl":true,"chips":75}
+PASS a.1440x900.reload-remembers-list {"list":true,"pressed":"true","stored":"list"}
+PASS a.1440x900.reload-remembers-controller {"ctrl":true,"stored":"controller"}
+PASS b.1440x900.all-23-groups-equal-api 23/23 equal
+PASS b.1440x900.all-badges-equal-api-mapping-type []
+PASS b.1440x900.escape-closes-all-23 23/23 closed
+PASS b.keyboard-enter-opens-escape-returns-focus {"kb1":{"open":true,"title":"B","focus":"controllerTitle"},"kb2":{"closed":true,"focus":"btn_b","focusVisible":"solid"}}
+  PNG /tmp/sdview-gate/ui-head/shots/after-drill-a.png
+  PNG /tmp/sdview-gate/ui-head/shots/after-drill-l2.png
+  PNG /tmp/sdview-gate/ui-head/shots/after-drill-left-stick.png
+  PNG /tmp/sdview-gate/ui-head/shots/after-drill-left-trackpad.png
+  PNG /tmp/sdview-gate/ui-head/shots/after-drill-gyro.png
+  PNG /tmp/sdview-gate/ui-head/shots/after-row-open-in-edit.png
+PASS c1.disk-diff {"op":"BTN_A note 36 -> 50 (row form)","diff":[{"path":"sections.windows.mappings.BTN_A.note","before":36,"after":50}]}
+PASS c1.page-clean-after-save UNSAVED badge cleared
+PASS c2.disk-diff {"op":"R_STICK_X_AXIS axis_split_cc deadzone 3500 -> 4000","diff":[{"path":"sections.windows.mappings.R_STICK_X_AXIS.deadzone","before":3500,"after":4000}]}
+PASS c2.page-clean-after-save UNSAVED badge cleared
+PASS c3.disk-diff {"op":"Clear BTN_Y_LAYER_2","diff":[{"path":"sections.windows.mappings.BTN_Y_LAYER_2","before":{"channel":0,"note":43,"type":"note","velocity":127},"after":"<absent>"}]}
+PASS c3.page-clean-after-save UNSAVED badge cleared
+PASS c4.incompatible-macros-disabled [{"v":"","d":false,"t":"Apply macro..."},{"v":"click-toggle","d":false,"t":"Click Toggle"},{"v":"animated-fade","d":false,"t":"Animated Fade"},{"v":"encoder-plus","d":true,"t":"Encoder + (incompatible)"},{"v":"encoder-minus","d":true,"t":"Encoder − (incompatible)"},{"v":"staged-modifier","d":true,"t":"Staged Modifier (incompatible)"}]
+PASS c4.disk-diff {"op":"Apply macro click-toggle to DPAD_DOWN_LONG_PRESS (macro_cc long_press)","diff":[{"path":"sections.windows.mappings.DPAD_DOWN_LONG_PRESS.gesture","before":"long_press","after":"click"}]}
+PASS c4.page-clean-after-save UNSAVED badge cleared
+  PNG /tmp/sdview-gate/ui-head/shots/after-advanced-tab.png
+PASS c5.disk-diff {"op":"Advanced JSON: L5 note 75 -> 80, velocity 127 -> 100","diff":[{"path":"sections.windows.mappings.L5.note","before":75,"after":80},{"path":"sections.windows.mappings.L5.velocity","before":127,"after":100}]}
+PASS c5.page-clean-after-save UNSAVED badge cleared
+PASS c6.conflict-modal-and-marked-rows {"rows":["START"],"msg":["MIDI CC conflict"],"details":"Ch3 CC79: START, SELECT"}
+  PNG /tmp/sdview-gate/ui-head/shots/after-conflict-modal-marked-rows.png
+PASS c6.cancel-writes-nothing sha before a0c1f0110d8ee384706e82a6a6651c1a8a4b2f284dfecb707a19faee0c9a6a69 after cancel+3s a0c1f0110d8ee384706e82a6a6651c1a8a4b2f284dfecb707a19faee0c9a6a69; marked rows after cancel 0
+PASS c6.cancel-clears-marks 0
+PASS c6.save-anyway-writes [{"path":"sections.windows.mappings.START.cc","before":78,"after":79}]
+PASS d8.disk-diff {"op":"Advanced JSON null clears SELECT","diff":[{"path":"sections.windows.mappings.SELECT","before":{"cc":79,"channel":2,"off_value":0,"on_value":127,"type":"cc"},"after":"<absent>"}]}
+PASS d8.page-clean-after-save UNSAVED badge cleared
+PASS d.advanced-foreign-id-refused-atomically {"err":"JSON error: BTN_A does not belong to this control.","save":true}
+PASS d.reload-discards-refused-draft no drafts, no UNSAVED badge
+PASS d1.disk-diff {"op":"Set type: GYRO_FORWARD unmapped -> note (DEFAULTS)","diff":[{"path":"sections.windows.mappings.GYRO_FORWARD","before":"<absent>","after":{"type":"note","channel":0,"note":36,"velocity":127}}]}
+PASS d1.page-clean-after-save UNSAVED badge cleared
+PASS d2.disk-diff {"op":"cc: L4 on_value 127 -> 100","diff":[{"path":"sections.windows.mappings.L4.on_value","before":127,"after":100}]}
+PASS d2.page-clean-after-save UNSAVED badge cleared
+PASS d3.disk-diff {"op":"macro_cc: DPAD_RIGHT fade override 1.5","diff":[{"path":"sections.windows.mappings.DPAD_RIGHT.fade_duration_seconds","before":"<absent>","after":1.5}]}
+PASS d3.page-clean-after-save UNSAVED badge cleared
+PASS d4.disk-diff {"op":"relative_cc: R_PAD_DOWN repeat_interval_ms 40 -> 60","diff":[{"path":"sections.windows.mappings.R_PAD_DOWN.repeat_interval_ms","before":40,"after":60}]}
+PASS d4.page-clean-after-save UNSAVED badge cleared
+PASS d5.disk-diff {"op":"staged_note_macro: L_PAD_LEFT_LONG_PRESS macro_delay_ms 120","diff":[{"path":"sections.windows.mappings.L_PAD_LEFT_LONG_PRESS.macro_delay_ms","before":"<absent>","after":120}]}
+PASS d5.page-clean-after-save UNSAVED badge cleared
+PASS d6.disk-diff {"op":"axis_to_cc: L_TRIGGER_PRESSURE deadzone 5000 -> 6000, curve linear -> quadratic","diff":[{"path":"sections.windows.mappings.L_TRIGGER_PRESSURE.curve","before":"linear","after":"quadratic"},{"path":"sections.windows.mappings.L_TRIGGER_PRESSURE.deadzone","before":5000,"after":6000}]}
+PASS d6.page-clean-after-save UNSAVED badge cleared
+PASS d9.copy-json-to-clipboard {
+  "BTN_A_LAYER_2": {
+    "channel": 0,
+    "note": 37,
+    "type": "note",
+    "velocity": 127
+  },
+  "BTN_A": {
+    "
+  dialog confirm: "You have unsaved changes. Discard them?" -> false
+PASS d10.section-switch-dismiss-keeps-draft {"section":"windows","v":"57"}
+  dialog confirm: "You have unsaved changes. Discard them?" -> true
+PASS d10.section-switch-accept-shows-macbook ch1 | note 38  vel 127
+PASS d11.open-in-list-one-click {"list":true,"badge":"BTN_A","note":"50"}
+  PNG /tmp/sdview-gate/ui-head/shots/after-list-view.png
+PASS e.notice-appears-and-typed-value-survives {"notice":true,"text":"preset changed on disk - reload to see it Reload","v":"55"}
+PASS e.typed-value-survives-further-polls {"notice":true,"v":"55"}
+  PNG /tmp/sdview-gate/ui-head/shots/after-draft-notice.png
+  dialog confirm: "You have unsaved changes. Discard them?" -> true
+PASS e.reload-accepted-hides-notice after Reload accept
+PASS e2.put-200 200
+PASS e2.notice-and-draft-kept {"noticeBefore":false,"notice":true,"v":"60","desc":"ch1 | note 40  vel 127"}
+PASS e2.file-after {"diff":[{"path":"sections.windows.mappings.BTN_X.note","before":40,"after":44}],"sha":"b77411f79a4688580cbcf45c8fc853f363d7330b89466ec5a0bc1966b39fe1a4"}
+  dialog confirm: "You have unsaved changes. Discard them?" -> true
+PASS e2.reload-shows-agent-value ch1 | note 44  vel 127
+PASS d12.reset-writes-only-windows-to-factory {"macbookSame":true,"mappingsFactory":true,"onlyWindows":true,"paths":26}
+PASS a.1024x768.opens-on-controller {"controllerVisible":true,"listHidden":true,"pressed":"true","activeTab":"editor","section":"windows"}
+PASS a.1024x768.section-is-windows windows
+PASS a.1024x768.23-arrows 23 arrows, 23 unique, zero-size: 
+PASS a.1024x768.23-labels 23 labels
+PASS a.1024x768.labels-equal-map label ids vs /api/controller-map ids
+PASS a.1024x768.labels-inside-viewport all 23 inside 1024x768
+FAIL a.1024x768.no-label-intersections ["dpad_rightxleft_pad","right_stickxright_pad"]
+PASS a.1024x768.no-horizontal-page-scroll scrollWidth 1024 vs 1024
+  PNG /tmp/sdview-gate/ui-head/shots/after-controller-front-door-1024.png
+PASS a.1024x768.list-switch-shows-list-editor {"list":true,"sidebar":true,"ctrl":true,"chips":75}
+PASS a.1024x768.reload-remembers-list {"list":true,"pressed":"true","stored":"list"}
+PASS a.1024x768.reload-remembers-controller {"ctrl":true,"stored":"controller"}
+PASS b.1024x768.all-23-groups-equal-api 23/23 equal
+PASS b.1024x768.all-badges-equal-api-mapping-type []
+PASS b.1024x768.escape-closes-all-23 23/23 closed
+F4 note: header height at 1024x768 106
+F4 note: header height at 1440x900 106
+PASS dialog-queue-empty-at-end []
+PASS no-page-errors-final 

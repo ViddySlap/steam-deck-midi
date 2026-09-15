@@ -1,0 +1,601 @@
+[
+  {
+    "id": "c1",
+    "op": "BTN_A note 36 -> 50 (row form)",
+    "before_sha": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+    "after_sha": "b5ca30b284e0a889956b713ac5be3ae2718c9f3d54b8779ea2b8f9d515205292",
+    "diff": [
+      {
+        "path": "sections.windows.mappings.BTN_A.note",
+        "before": 36,
+        "after": 50
+      }
+    ],
+    "expected": [
+      {
+        "path": "sections.windows.mappings.BTN_A.note",
+        "before": 36,
+        "after": 50
+      }
+    ],
+    "pass": true,
+    "snapshot_sha256_note": "snapshot omitted in committed copy; after_sha is the file sha256"
+  },
+  {
+    "id": "c2",
+    "op": "R_STICK_X_AXIS axis_split_cc deadzone 3500 -> 4000",
+    "before_sha": "b5ca30b284e0a889956b713ac5be3ae2718c9f3d54b8779ea2b8f9d515205292",
+    "after_sha": "f6068cfbb54b904c881c151445a16d770664a019c37bb1abe4d016983c21ae43",
+    "diff": [
+      {
+        "path": "sections.windows.mappings.R_STICK_X_AXIS.deadzone",
+        "before": 3500,
+        "after": 4000
+      }
+    ],
+    "expected": [
+      {
+        "path": "sections.windows.mappings.R_STICK_X_AXIS.deadzone",
+        "before": 3500,
+        "after": 4000
+      }
+    ],
+    "pass": true,
+    "snapshot_sha256_note": "snapshot omitted in committed copy; after_sha is the file sha256"
+  },
+  {
+    "id": "c3",
+    "op": "Clear BTN_Y_LAYER_2",
+    "before_sha": "f6068cfbb54b904c881c151445a16d770664a019c37bb1abe4d016983c21ae43",
+    "after_sha": "186d2cd2e4bd080fa089f34da2ff4186fe16f158275bf46d06b3a22415d67c4d",
+    "diff": [
+      {
+        "path": "sections.windows.mappings.BTN_Y_LAYER_2",
+        "before": {
+          "channel": 0,
+          "note": 43,
+          "type": "note",
+          "velocity": 127
+        },
+        "after": "<absent>"
+      }
+    ],
+    "expected": [
+      {
+        "path": "sections.windows.mappings.BTN_Y_LAYER_2",
+        "before": {
+          "channel": 0,
+          "note": 43,
+          "type": "note",
+          "velocity": 127
+        },
+        "after": "<absent>"
+      }
+    ],
+    "pass": true,
+    "snapshot_sha256_note": "snapshot omitted in committed copy; after_sha is the file sha256"
+  },
+  {
+    "id": "c4",
+    "op": "Apply macro click-toggle to DPAD_DOWN_LONG_PRESS (macro_cc long_press)",
+    "before_sha": "186d2cd2e4bd080fa089f34da2ff4186fe16f158275bf46d06b3a22415d67c4d",
+    "after_sha": "f7b69086aa49f8cc90f266d5bdd2a6b846c51b5b63190dc4644f22db2968b7a1",
+    "diff": [
+      {
+        "path": "sections.windows.mappings.DPAD_DOWN_LONG_PRESS.gesture",
+        "before": "long_press",
+        "after": "click"
+      }
+    ],
+    "expected": [
+      {
+        "path": "sections.windows.mappings.DPAD_DOWN_LONG_PRESS.gesture",
+        "before": "long_press",
+        "after": "click"
+      }
+    ],
+    "pass": true,
+    "snapshot_sha256_note": "snapshot omitted in committed copy; after_sha is the file sha256"
+  },
+  {
+    "id": "c5",
+    "op": "Advanced JSON: L5 note 75 -> 80, velocity 127 -> 100",
+    "before_sha": "f7b69086aa49f8cc90f266d5bdd2a6b846c51b5b63190dc4644f22db2968b7a1",
+    "after_sha": "a0c1f0110d8ee384706e82a6a6651c1a8a4b2f284dfecb707a19faee0c9a6a69",
+    "diff": [
+      {
+        "path": "sections.windows.mappings.L5.note",
+        "before": 75,
+        "after": 80
+      },
+      {
+        "path": "sections.windows.mappings.L5.velocity",
+        "before": 127,
+        "after": 100
+      }
+    ],
+    "expected": [
+      {
+        "path": "sections.windows.mappings.L5.note",
+        "before": 75,
+        "after": 80
+      },
+      {
+        "path": "sections.windows.mappings.L5.velocity",
+        "before": 127,
+        "after": 100
+      }
+    ],
+    "pass": true,
+    "snapshot_sha256_note": "snapshot omitted in committed copy; after_sha is the file sha256"
+  },
+  {
+    "id": "c6-cancel",
+    "op": "conflict Cancel",
+    "before_sha": "a0c1f0110d8ee384706e82a6a6651c1a8a4b2f284dfecb707a19faee0c9a6a69",
+    "after_sha": "a0c1f0110d8ee384706e82a6a6651c1a8a4b2f284dfecb707a19faee0c9a6a69",
+    "diff": [],
+    "expected": [],
+    "pass": true,
+    "snapshot_sha256_note": "snapshot omitted in committed copy; after_sha is the file sha256"
+  },
+  {
+    "id": "c6",
+    "op": "START cc 78 -> 79, Save anyway",
+    "before_sha": "a0c1f0110d8ee384706e82a6a6651c1a8a4b2f284dfecb707a19faee0c9a6a69",
+    "after_sha": "b6c16e202ebba2b06187afc3545b7573429d63fa1170df3f32160133b283f883",
+    "diff": [
+      {
+        "path": "sections.windows.mappings.START.cc",
+        "before": 78,
+        "after": 79
+      }
+    ],
+    "expected": [
+      {
+        "path": "sections.windows.mappings.START.cc",
+        "before": 78,
+        "after": 79
+      }
+    ],
+    "pass": true,
+    "snapshot_sha256_note": "snapshot omitted in committed copy; after_sha is the file sha256"
+  },
+  {
+    "id": "d8",
+    "op": "Advanced JSON null clears SELECT",
+    "before_sha": "b6c16e202ebba2b06187afc3545b7573429d63fa1170df3f32160133b283f883",
+    "after_sha": "4dc9232dda6bc44a11d0885eb3275b8ba013de4e653e0f8aa3e405ecd0659f70",
+    "diff": [
+      {
+        "path": "sections.windows.mappings.SELECT",
+        "before": {
+          "cc": 79,
+          "channel": 2,
+          "off_value": 0,
+          "on_value": 127,
+          "type": "cc"
+        },
+        "after": "<absent>"
+      }
+    ],
+    "expected": [
+      {
+        "path": "sections.windows.mappings.SELECT",
+        "before": {
+          "cc": 79,
+          "channel": 2,
+          "off_value": 0,
+          "on_value": 127,
+          "type": "cc"
+        },
+        "after": "<absent>"
+      }
+    ],
+    "pass": true,
+    "snapshot_sha256_note": "snapshot omitted in committed copy; after_sha is the file sha256"
+  },
+  {
+    "id": "d1",
+    "op": "Set type: GYRO_FORWARD unmapped -> note (DEFAULTS)",
+    "before_sha": "4dc9232dda6bc44a11d0885eb3275b8ba013de4e653e0f8aa3e405ecd0659f70",
+    "after_sha": "cec039214cbd25593088024667517acedb1bd19cf18ce0e30e38fc4b71323437",
+    "diff": [
+      {
+        "path": "sections.windows.mappings.GYRO_FORWARD",
+        "before": "<absent>",
+        "after": {
+          "type": "note",
+          "channel": 0,
+          "note": 36,
+          "velocity": 127
+        }
+      }
+    ],
+    "expected": [
+      {
+        "path": "sections.windows.mappings.GYRO_FORWARD",
+        "before": "<absent>",
+        "after": {
+          "type": "note",
+          "channel": 0,
+          "note": 36,
+          "velocity": 127
+        }
+      }
+    ],
+    "pass": true,
+    "snapshot_sha256_note": "snapshot omitted in committed copy; after_sha is the file sha256"
+  },
+  {
+    "id": "d2",
+    "op": "cc: L4 on_value 127 -> 100",
+    "before_sha": "cec039214cbd25593088024667517acedb1bd19cf18ce0e30e38fc4b71323437",
+    "after_sha": "8e0c01a39ff7042afea7dc3c69640b33cfb8b98be6f01e1f65889b21ae1026b4",
+    "diff": [
+      {
+        "path": "sections.windows.mappings.L4.on_value",
+        "before": 127,
+        "after": 100
+      }
+    ],
+    "expected": [
+      {
+        "path": "sections.windows.mappings.L4.on_value",
+        "before": 127,
+        "after": 100
+      }
+    ],
+    "pass": true,
+    "snapshot_sha256_note": "snapshot omitted in committed copy; after_sha is the file sha256"
+  },
+  {
+    "id": "d3",
+    "op": "macro_cc: DPAD_RIGHT fade override 1.5",
+    "before_sha": "8e0c01a39ff7042afea7dc3c69640b33cfb8b98be6f01e1f65889b21ae1026b4",
+    "after_sha": "e98249e7a02662af3fffafddbd6006ad1fb89586ec7444c933ea9a7d46df6a6f",
+    "diff": [
+      {
+        "path": "sections.windows.mappings.DPAD_RIGHT.fade_duration_seconds",
+        "before": "<absent>",
+        "after": 1.5
+      }
+    ],
+    "expected": [
+      {
+        "path": "sections.windows.mappings.DPAD_RIGHT.fade_duration_seconds",
+        "before": "<absent>",
+        "after": 1.5
+      }
+    ],
+    "pass": true,
+    "snapshot_sha256_note": "snapshot omitted in committed copy; after_sha is the file sha256"
+  },
+  {
+    "id": "d4",
+    "op": "relative_cc: R_PAD_DOWN repeat_interval_ms 40 -> 60",
+    "before_sha": "e98249e7a02662af3fffafddbd6006ad1fb89586ec7444c933ea9a7d46df6a6f",
+    "after_sha": "b845e102fd3a11a31645297012b5a451726d5ea2fd1877a56b82b9921fafec17",
+    "diff": [
+      {
+        "path": "sections.windows.mappings.R_PAD_DOWN.repeat_interval_ms",
+        "before": 40,
+        "after": 60
+      }
+    ],
+    "expected": [
+      {
+        "path": "sections.windows.mappings.R_PAD_DOWN.repeat_interval_ms",
+        "before": 40,
+        "after": 60
+      }
+    ],
+    "pass": true,
+    "snapshot_sha256_note": "snapshot omitted in committed copy; after_sha is the file sha256"
+  },
+  {
+    "id": "d5",
+    "op": "staged_note_macro: L_PAD_LEFT_LONG_PRESS macro_delay_ms 120",
+    "before_sha": "b845e102fd3a11a31645297012b5a451726d5ea2fd1877a56b82b9921fafec17",
+    "after_sha": "a200e1131e4880c719b3d4aa2a70432a0cc82b4ea594dd09eba470f46de55be5",
+    "diff": [
+      {
+        "path": "sections.windows.mappings.L_PAD_LEFT_LONG_PRESS.macro_delay_ms",
+        "before": "<absent>",
+        "after": 120
+      }
+    ],
+    "expected": [
+      {
+        "path": "sections.windows.mappings.L_PAD_LEFT_LONG_PRESS.macro_delay_ms",
+        "before": "<absent>",
+        "after": 120
+      }
+    ],
+    "pass": true,
+    "snapshot_sha256_note": "snapshot omitted in committed copy; after_sha is the file sha256"
+  },
+  {
+    "id": "d6",
+    "op": "axis_to_cc: L_TRIGGER_PRESSURE deadzone 5000 -> 6000, curve linear -> quadratic",
+    "before_sha": "a200e1131e4880c719b3d4aa2a70432a0cc82b4ea594dd09eba470f46de55be5",
+    "after_sha": "62755fa695ca80c76a266ab3435ec73ba9cd6bc6b47109239a8e9e084402189d",
+    "diff": [
+      {
+        "path": "sections.windows.mappings.L_TRIGGER_PRESSURE.curve",
+        "before": "linear",
+        "after": "quadratic"
+      },
+      {
+        "path": "sections.windows.mappings.L_TRIGGER_PRESSURE.deadzone",
+        "before": 5000,
+        "after": 6000
+      }
+    ],
+    "expected": [
+      {
+        "path": "sections.windows.mappings.L_TRIGGER_PRESSURE.curve",
+        "before": "linear",
+        "after": "quadratic"
+      },
+      {
+        "path": "sections.windows.mappings.L_TRIGGER_PRESSURE.deadzone",
+        "before": 5000,
+        "after": 6000
+      }
+    ],
+    "pass": true,
+    "snapshot_sha256_note": "snapshot omitted in committed copy; after_sha is the file sha256"
+  },
+  {
+    "id": "e",
+    "op": "outside write: macbook BTN_A note 36 -> 37",
+    "before_sha": "62755fa695ca80c76a266ab3435ec73ba9cd6bc6b47109239a8e9e084402189d",
+    "after_sha": "9ab0d2365cc0aeaceb1c6ee5577e2aaa236eb24ff7a95cdd994f0efffedfcecc",
+    "diff": [
+      {
+        "path": "sections.macbook.mappings.BTN_A.note",
+        "before": 36,
+        "after": 37
+      }
+    ],
+    "expected": [
+      {
+        "path": "sections.macbook.mappings.BTN_A.note",
+        "before": 36,
+        "after": 37
+      }
+    ],
+    "pass": true,
+    "snapshot_sha256_note": "snapshot omitted in committed copy; after_sha is the file sha256"
+  },
+  {
+    "id": "e2",
+    "op": "curl PUT BTN_X note 44 under a typed draft of 60",
+    "before_sha": "9ab0d2365cc0aeaceb1c6ee5577e2aaa236eb24ff7a95cdd994f0efffedfcecc",
+    "after_sha": "b77411f79a4688580cbcf45c8fc853f363d7330b89466ec5a0bc1966b39fe1a4",
+    "diff": [
+      {
+        "path": "sections.windows.mappings.BTN_X.note",
+        "before": 40,
+        "after": 44
+      }
+    ],
+    "expected": [
+      {
+        "path": "sections.windows.mappings.BTN_X.note",
+        "before": 40,
+        "after": 44
+      }
+    ],
+    "pass": true,
+    "snapshot_sha256_note": "snapshot omitted in committed copy; after_sha is the file sha256"
+  },
+  {
+    "id": "d12",
+    "op": "Factory reset windows section",
+    "before_sha": "b77411f79a4688580cbcf45c8fc853f363d7330b89466ec5a0bc1966b39fe1a4",
+    "after_sha": "bbe0cff0931edc56a7c0b4ed54e81287418dffd111c4d0c27f5684fb27b3be0b",
+    "diff": [
+      {
+        "path": "sections.windows.engines",
+        "before": {
+          "audio_opacity": true,
+          "autopilot": true,
+          "bumper_blast": true,
+          "chaser_stack_dispatcher": true,
+          "flash_blast": true,
+          "global_color": true,
+          "gyro_feedback": true,
+          "l_stick_layer": true,
+          "nestdrop": true,
+          "osc_sync": true,
+          "ptz_visca": false,
+          "stageflow_bridge": true,
+          "steam_input_layer_tracker": true
+        },
+        "after": "<absent>"
+      },
+      {
+        "path": "sections.windows.mappings.BTN_A.note",
+        "before": 50,
+        "after": 36
+      },
+      {
+        "path": "sections.windows.mappings.BTN_X.note",
+        "before": 44,
+        "after": 40
+      },
+      {
+        "path": "sections.windows.mappings.BTN_Y_LAYER_2",
+        "before": "<absent>",
+        "after": {
+          "type": "note",
+          "channel": 0,
+          "note": 43,
+          "velocity": 127
+        }
+      },
+      {
+        "path": "sections.windows.mappings.DPAD_DOWN_LONG_PRESS.gesture",
+        "before": "click",
+        "after": "long_press"
+      },
+      {
+        "path": "sections.windows.mappings.DPAD_RIGHT.fade_duration_seconds",
+        "before": 1.5,
+        "after": "<absent>"
+      },
+      {
+        "path": "sections.windows.mappings.GYRO_BACKWARD",
+        "before": "<absent>",
+        "after": {
+          "type": "note",
+          "channel": 0,
+          "note": 97,
+          "velocity": 127
+        }
+      },
+      {
+        "path": "sections.windows.mappings.GYRO_FORWARD.note",
+        "before": 36,
+        "after": 96
+      },
+      {
+        "path": "sections.windows.mappings.L4.on_value",
+        "before": 100,
+        "after": 127
+      },
+      {
+        "path": "sections.windows.mappings.L5.note",
+        "before": 80,
+        "after": 75
+      },
+      {
+        "path": "sections.windows.mappings.L5.velocity",
+        "before": 100,
+        "after": 127
+      },
+      {
+        "path": "sections.windows.mappings.L_PAD_LEFT_LONG_PRESS.macro_delay_ms",
+        "before": 120,
+        "after": "<absent>"
+      },
+      {
+        "path": "sections.windows.mappings.L_TRIGGER_PRESSURE.curve",
+        "before": "quadratic",
+        "after": "linear"
+      },
+      {
+        "path": "sections.windows.mappings.L_TRIGGER_PRESSURE.deadzone",
+        "before": 6000,
+        "after": 1000
+      },
+      {
+        "path": "sections.windows.mappings.L_TRIGGER_PRESSURE.input_range.0",
+        "before": 5000,
+        "after": 1000
+      },
+      {
+        "path": "sections.windows.mappings.R_PAD_DOWN.repeat_interval_ms",
+        "before": 60,
+        "after": 40
+      },
+      {
+        "path": "sections.windows.mappings.R_STICK_DOWN",
+        "before": "<absent>",
+        "after": {
+          "type": "note",
+          "channel": 0,
+          "note": 57,
+          "velocity": 127
+        }
+      },
+      {
+        "path": "sections.windows.mappings.R_STICK_LEFT",
+        "before": "<absent>",
+        "after": {
+          "type": "note",
+          "channel": 0,
+          "note": 58,
+          "velocity": 127
+        }
+      },
+      {
+        "path": "sections.windows.mappings.R_STICK_RIGHT",
+        "before": "<absent>",
+        "after": {
+          "type": "note",
+          "channel": 0,
+          "note": 59,
+          "velocity": 127
+        }
+      },
+      {
+        "path": "sections.windows.mappings.R_STICK_UP",
+        "before": "<absent>",
+        "after": {
+          "type": "note",
+          "channel": 0,
+          "note": 56,
+          "velocity": 127
+        }
+      },
+      {
+        "path": "sections.windows.mappings.R_STICK_X_AXIS",
+        "before": {
+          "cc_negative": 116,
+          "cc_positive": 114,
+          "channel": 15,
+          "curve": "linear",
+          "deadzone": 4000,
+          "input_max": 32767,
+          "type": "axis_split_cc"
+        },
+        "after": "<absent>"
+      },
+      {
+        "path": "sections.windows.mappings.R_STICK_Y_AXIS",
+        "before": {
+          "cc_negative": 117,
+          "cc_positive": 115,
+          "channel": 15,
+          "curve": "linear",
+          "deadzone": 3500,
+          "input_max": 32767,
+          "type": "axis_split_cc"
+        },
+        "after": "<absent>"
+      },
+      {
+        "path": "sections.windows.mappings.R_TRIGGER_PRESSURE.deadzone",
+        "before": 5500,
+        "after": 1000
+      },
+      {
+        "path": "sections.windows.mappings.R_TRIGGER_PRESSURE.input_range.0",
+        "before": 5500,
+        "after": 1000
+      },
+      {
+        "path": "sections.windows.mappings.SELECT",
+        "before": "<absent>",
+        "after": {
+          "type": "cc",
+          "channel": 2,
+          "cc": 79,
+          "on_value": 127,
+          "off_value": 0
+        }
+      },
+      {
+        "path": "sections.windows.mappings.START.cc",
+        "before": 79,
+        "after": 78
+      }
+    ],
+    "expected": "windows section replaced by factory; macbook unchanged",
+    "pass": true,
+    "snapshot_sha256_note": "snapshot omitted in committed copy; after_sha is the file sha256"
+  }
+]

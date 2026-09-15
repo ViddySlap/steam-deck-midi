@@ -1,0 +1,2 @@
+MATCH pid=284604 ppid=284796 name=cmd.exe exe=c:\windows\system32\cmd.exe cmd="c:\windows\system32\cmd.exe" /c "powershell -NoProfile -ExecutionPolicy Bypass -File "C:/Users/Ben/AppData/Local/Temp/sdwin/vg/inventory.ps1""
+SELF 283436 MATCHING 1 PYTHON_MACHINE_WIDE 0

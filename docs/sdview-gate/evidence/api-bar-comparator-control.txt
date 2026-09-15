@@ -1,0 +1,1 @@
+comparator control: API copy final file == browser snapshot after step -> {'c1': False, 'c2': False, 'c3': False, 'c4': False, 'c5': False, 'c6-cancel': False, 'c6': False, 'd8': False, 'd1': False, 'd2': False, 'd3': False, 'd4': False, 'd5': False, 'd6': False, 'e': False, 'e2': False, 'd12': True}

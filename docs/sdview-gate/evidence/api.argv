@@ -1,0 +1,1 @@
+/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/.venv/bin/python -u -m windows.win_recv --listen 127.0.0.1:47792 --map config/windows_midi_map.json --preset-section windows --dry-run --no-engines --no-pulse --no-osc-relay --ui-port 17792 --timeout 2.0

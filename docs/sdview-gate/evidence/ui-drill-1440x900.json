@@ -1,0 +1,581 @@
+[
+  {
+    "control": "btn_a",
+    "label": "A",
+    "groups": {
+      "tap": [
+        "BTN_A"
+      ],
+      "layer_2": [
+        "BTN_A_LAYER_2"
+      ]
+    },
+    "api": {
+      "layer_2": [
+        "BTN_A_LAYER_2"
+      ],
+      "tap": [
+        "BTN_A"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "btn_b",
+    "label": "B",
+    "groups": {
+      "tap": [
+        "BTN_B"
+      ],
+      "layer_2": [
+        "BTN_B_LAYER_2"
+      ]
+    },
+    "api": {
+      "layer_2": [
+        "BTN_B_LAYER_2"
+      ],
+      "tap": [
+        "BTN_B"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "btn_x",
+    "label": "X",
+    "groups": {
+      "tap": [
+        "BTN_X"
+      ],
+      "layer_2": [
+        "BTN_X_LAYER_2"
+      ]
+    },
+    "api": {
+      "layer_2": [
+        "BTN_X_LAYER_2"
+      ],
+      "tap": [
+        "BTN_X"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "btn_y",
+    "label": "Y",
+    "groups": {
+      "tap": [
+        "BTN_Y"
+      ],
+      "layer_2": [
+        "BTN_Y_LAYER_2"
+      ]
+    },
+    "api": {
+      "layer_2": [
+        "BTN_Y_LAYER_2"
+      ],
+      "tap": [
+        "BTN_Y"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "dpad_up",
+    "label": "D-pad Up",
+    "groups": {
+      "tap": [
+        "DPAD_UP"
+      ],
+      "long_press": [
+        "DPAD_UP_LONG_PRESS"
+      ]
+    },
+    "api": {
+      "long_press": [
+        "DPAD_UP_LONG_PRESS"
+      ],
+      "tap": [
+        "DPAD_UP"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "dpad_down",
+    "label": "D-pad Down",
+    "groups": {
+      "tap": [
+        "DPAD_DOWN"
+      ],
+      "long_press": [
+        "DPAD_DOWN_LONG_PRESS"
+      ]
+    },
+    "api": {
+      "long_press": [
+        "DPAD_DOWN_LONG_PRESS"
+      ],
+      "tap": [
+        "DPAD_DOWN"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "dpad_left",
+    "label": "D-pad Left",
+    "groups": {
+      "tap": [
+        "DPAD_LEFT"
+      ],
+      "long_press": [
+        "DPAD_LEFT_LONG_PRESS"
+      ]
+    },
+    "api": {
+      "long_press": [
+        "DPAD_LEFT_LONG_PRESS"
+      ],
+      "tap": [
+        "DPAD_LEFT"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "dpad_right",
+    "label": "D-pad Right",
+    "groups": {
+      "tap": [
+        "DPAD_RIGHT"
+      ],
+      "long_press": [
+        "DPAD_RIGHT_LONG_PRESS"
+      ]
+    },
+    "api": {
+      "long_press": [
+        "DPAD_RIGHT_LONG_PRESS"
+      ],
+      "tap": [
+        "DPAD_RIGHT"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "left_stick",
+    "label": "Left stick",
+    "groups": {
+      "tap": [
+        "LEFT_STICK_CLICK_L3",
+        "L_STICK_UP",
+        "L_STICK_DOWN",
+        "L_STICK_LEFT",
+        "L_STICK_RIGHT"
+      ],
+      "analog": [
+        "L_STICK_X_AXIS",
+        "L_STICK_Y_AXIS"
+      ]
+    },
+    "api": {
+      "analog": [
+        "L_STICK_X_AXIS",
+        "L_STICK_Y_AXIS"
+      ],
+      "tap": [
+        "LEFT_STICK_CLICK_L3",
+        "L_STICK_UP",
+        "L_STICK_DOWN",
+        "L_STICK_LEFT",
+        "L_STICK_RIGHT"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "right_stick",
+    "label": "Right stick",
+    "groups": {
+      "tap": [
+        "RIGHT_STICK_CLICK_R3",
+        "R_STICK_UP",
+        "R_STICK_DOWN",
+        "R_STICK_LEFT",
+        "R_STICK_RIGHT"
+      ],
+      "analog": [
+        "R_STICK_X_AXIS",
+        "R_STICK_Y_AXIS"
+      ]
+    },
+    "api": {
+      "analog": [
+        "R_STICK_X_AXIS",
+        "R_STICK_Y_AXIS"
+      ],
+      "tap": [
+        "RIGHT_STICK_CLICK_R3",
+        "R_STICK_UP",
+        "R_STICK_DOWN",
+        "R_STICK_LEFT",
+        "R_STICK_RIGHT"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "l1",
+    "label": "L1",
+    "groups": {
+      "tap": [
+        "L1"
+      ],
+      "layer_2": [
+        "L1_LAYER_2"
+      ]
+    },
+    "api": {
+      "layer_2": [
+        "L1_LAYER_2"
+      ],
+      "tap": [
+        "L1"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "r1",
+    "label": "R1",
+    "groups": {
+      "tap": [
+        "R1"
+      ],
+      "layer_2": [
+        "R1_LAYER_2"
+      ]
+    },
+    "api": {
+      "layer_2": [
+        "R1_LAYER_2"
+      ],
+      "tap": [
+        "R1"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "l2",
+    "label": "L2",
+    "groups": {
+      "tap": [
+        "L2_SOFT",
+        "L2_FULL"
+      ],
+      "layer_2": [
+        "L2_SOFT_LAYER_2",
+        "L2_FULL_LAYER_2"
+      ],
+      "analog": [
+        "L_TRIGGER_PRESSURE"
+      ]
+    },
+    "api": {
+      "analog": [
+        "L_TRIGGER_PRESSURE"
+      ],
+      "layer_2": [
+        "L2_SOFT_LAYER_2",
+        "L2_FULL_LAYER_2"
+      ],
+      "tap": [
+        "L2_SOFT",
+        "L2_FULL"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "r2",
+    "label": "R2",
+    "groups": {
+      "tap": [
+        "R2_SOFT",
+        "R2_FULL"
+      ],
+      "layer_2": [
+        "R2_SOFT_LAYER_2",
+        "R2_FULL_LAYER_2"
+      ],
+      "analog": [
+        "R_TRIGGER_PRESSURE"
+      ]
+    },
+    "api": {
+      "analog": [
+        "R_TRIGGER_PRESSURE"
+      ],
+      "layer_2": [
+        "R2_SOFT_LAYER_2",
+        "R2_FULL_LAYER_2"
+      ],
+      "tap": [
+        "R2_SOFT",
+        "R2_FULL"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "l4",
+    "label": "L4",
+    "groups": {
+      "tap": [
+        "L4"
+      ]
+    },
+    "api": {
+      "tap": [
+        "L4"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "l5",
+    "label": "L5",
+    "groups": {
+      "tap": [
+        "L5"
+      ]
+    },
+    "api": {
+      "tap": [
+        "L5"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "r4",
+    "label": "R4",
+    "groups": {
+      "tap": [
+        "R4"
+      ]
+    },
+    "api": {
+      "tap": [
+        "R4"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "r5",
+    "label": "R5",
+    "groups": {
+      "tap": [
+        "R5"
+      ]
+    },
+    "api": {
+      "tap": [
+        "R5"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "start",
+    "label": "START",
+    "groups": {
+      "tap": [
+        "START"
+      ]
+    },
+    "api": {
+      "tap": [
+        "START"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "select",
+    "label": "SELECT",
+    "groups": {
+      "tap": [
+        "SELECT"
+      ]
+    },
+    "api": {
+      "tap": [
+        "SELECT"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "left_pad",
+    "label": "Left trackpad",
+    "groups": {
+      "tap": [
+        "L_PAD_UP",
+        "L_PAD_DOWN",
+        "L_PAD_LEFT",
+        "L_PAD_RIGHT"
+      ],
+      "long_press": [
+        "L_PAD_UP_LONG_PRESS",
+        "L_PAD_DOWN_LONG_PRESS",
+        "L_PAD_LEFT_LONG_PRESS",
+        "L_PAD_RIGHT_LONG_PRESS"
+      ],
+      "analog": [
+        "L_PAD_X_POS",
+        "L_PAD_Y_POS"
+      ]
+    },
+    "api": {
+      "analog": [
+        "L_PAD_X_POS",
+        "L_PAD_Y_POS"
+      ],
+      "long_press": [
+        "L_PAD_UP_LONG_PRESS",
+        "L_PAD_DOWN_LONG_PRESS",
+        "L_PAD_LEFT_LONG_PRESS",
+        "L_PAD_RIGHT_LONG_PRESS"
+      ],
+      "tap": [
+        "L_PAD_UP",
+        "L_PAD_DOWN",
+        "L_PAD_LEFT",
+        "L_PAD_RIGHT"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "right_pad",
+    "label": "Right trackpad",
+    "groups": {
+      "tap": [
+        "R_PAD_UP",
+        "R_PAD_DOWN",
+        "R_PAD_LEFT",
+        "R_PAD_RIGHT"
+      ],
+      "long_press": [
+        "R_PAD_UP_LONG_PRESS",
+        "R_PAD_DOWN_LONG_PRESS",
+        "R_PAD_LEFT_LONG_PRESS",
+        "R_PAD_RIGHT_LONG_PRESS"
+      ],
+      "analog": [
+        "R_PAD_X_POS",
+        "R_PAD_Y_POS"
+      ]
+    },
+    "api": {
+      "analog": [
+        "R_PAD_X_POS",
+        "R_PAD_Y_POS"
+      ],
+      "long_press": [
+        "R_PAD_UP_LONG_PRESS",
+        "R_PAD_DOWN_LONG_PRESS",
+        "R_PAD_LEFT_LONG_PRESS",
+        "R_PAD_RIGHT_LONG_PRESS"
+      ],
+      "tap": [
+        "R_PAD_UP",
+        "R_PAD_DOWN",
+        "R_PAD_LEFT",
+        "R_PAD_RIGHT"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  },
+  {
+    "control": "gyro",
+    "label": "Gyro",
+    "groups": {
+      "tap": [
+        "GYRO_FORWARD",
+        "GYRO_BACKWARD"
+      ],
+      "analog": [
+        "GYRO_PITCH",
+        "GYRO_YAW",
+        "GYRO_ROLL"
+      ]
+    },
+    "api": {
+      "analog": [
+        "GYRO_PITCH",
+        "GYRO_YAW",
+        "GYRO_ROLL"
+      ],
+      "tap": [
+        "GYRO_FORWARD",
+        "GYRO_BACKWARD"
+      ]
+    },
+    "equal": true,
+    "badgeMismatch": [],
+    "escapeClosed": true
+  }
+]

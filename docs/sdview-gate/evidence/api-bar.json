@@ -1,0 +1,278 @@
+{
+  "rows": [
+    {
+      "id": "bad-spec-channel-99",
+      "command": "curl -H 'content-type: application/json' --data '{\"type\": \"note\", \"channel\": 99, \"note\": 36, \"velocity\": 127}' -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X PUT http://127.0.0.1:17792/api/mappings/BTN_A?section=windows",
+      "http": 400,
+      "want_http": 400,
+      "sha_before": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "sha_after": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "bytes_identical": true,
+      "pass": true
+    },
+    {
+      "id": "bad-spec-channel-99-force",
+      "command": "curl -H 'content-type: application/json' --data '{\"type\": \"note\", \"channel\": 99, \"note\": 36, \"velocity\": 127}' -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X PUT http://127.0.0.1:17792/api/mappings/BTN_A?section=windows&force=1",
+      "http": 400,
+      "want_http": 400,
+      "sha_before": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "sha_after": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "bytes_identical": true,
+      "pass": true
+    },
+    {
+      "id": "bad-spec-unknown-type",
+      "command": "curl -H 'content-type: application/json' --data '{\"type\": \"bogus\"}' -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X PUT http://127.0.0.1:17792/api/mappings/BTN_A?section=windows",
+      "http": 400,
+      "want_http": 400,
+      "sha_before": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "sha_after": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "bytes_identical": true,
+      "pass": true
+    },
+    {
+      "id": "bad-spec-malformed-json",
+      "command": "curl -H 'content-type: application/json' --data '{not json' -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X PUT http://127.0.0.1:17792/api/mappings/BTN_A?section=windows",
+      "http": 400,
+      "want_http": 400,
+      "sha_before": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "sha_after": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "bytes_identical": true,
+      "pass": true
+    },
+    {
+      "id": "unknown-action",
+      "command": "curl -H 'content-type: application/json' --data '{\"type\": \"note\", \"channel\": 0, \"note\": 1, \"velocity\": 1}' -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X PUT http://127.0.0.1:17792/api/mappings/NOPE?section=windows",
+      "http": 404,
+      "want_http": 404,
+      "sha_before": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "sha_after": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "bytes_identical": true,
+      "pass": true
+    },
+    {
+      "id": "unknown-section",
+      "command": "curl -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X DELETE http://127.0.0.1:17792/api/mappings/BTN_A?section=nosuch",
+      "http": 422,
+      "want_http": 422,
+      "sha_before": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "sha_after": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "bytes_identical": true,
+      "pass": true
+    },
+    {
+      "id": "macro-incompatible",
+      "command": "curl -H 'content-type: application/json' --data '{\"action_id\": \"BTN_A\", \"section\": \"windows\"}' -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X POST http://127.0.0.1:17792/api/macros/encoder-plus/apply",
+      "http": 409,
+      "want_http": 409,
+      "sha_before": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "sha_after": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "bytes_identical": true,
+      "pass": true
+    },
+    {
+      "id": "get-controller-map",
+      "command": "curl -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X GET http://127.0.0.1:17792/api/controller-map",
+      "http": 200,
+      "want_http": 200,
+      "sha_before": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "sha_after": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "equals_owned_file": true,
+      "pass": true
+    },
+    {
+      "id": "get-controller-map-23-controls",
+      "command": "curl -sS -X GET http://127.0.0.1:17792/api/controller-map/<id>?section=windows x23",
+      "http": 200,
+      "want_http": 200,
+      "sha_before": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "sha_after": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "groups_equal_map": true,
+      "count": 23,
+      "pass": true
+    },
+    {
+      "id": "get-unknown-control",
+      "command": "curl -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X GET http://127.0.0.1:17792/api/controller-map/nosuch?section=windows",
+      "http": 404,
+      "want_http": 404,
+      "sha_before": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "sha_after": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "bytes_identical": true,
+      "pass": true
+    },
+    {
+      "id": "c1",
+      "command": "curl -H 'content-type: application/json' --data '{\"type\": \"note\", \"channel\": 0, \"note\": 50, \"velocity\": 127}' -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X PUT http://127.0.0.1:17792/api/mappings/BTN_A?section=windows",
+      "http": 200,
+      "want_http": 200,
+      "sha_before": "58e47bfde76eb5a49aac46594535bbe3abdbe5dc70b76780e07892633ba0ab84",
+      "sha_after": "8d6f0000e848e743d9f9491884bfe2b333b6fe18a8c713079ba79b5e14724d03",
+      "file_equals_browser_snapshot": true,
+      "pass": true
+    },
+    {
+      "id": "c2",
+      "command": "curl -H 'content-type: application/json' --data '{\"type\": \"axis_split_cc\", \"channel\": 15, \"cc_positive\": 114, \"cc_negative\": 116, \"input_max\": 32767, \"deadzone\": 4000, \"curve\": \"linear\"}' -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X PUT http://127.0.0.1:17792/api/mappings/R_STICK_X_AXIS?section=windows",
+      "http": 200,
+      "want_http": 200,
+      "sha_before": "8d6f0000e848e743d9f9491884bfe2b333b6fe18a8c713079ba79b5e14724d03",
+      "sha_after": "81b3239dbf5cfa0409c66fe609ac8c83c0fa78e32f29ee3b74389ae384b7b39f",
+      "file_equals_browser_snapshot": true,
+      "pass": true
+    },
+    {
+      "id": "c3",
+      "command": "curl -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X DELETE http://127.0.0.1:17792/api/mappings/BTN_Y_LAYER_2?section=windows",
+      "http": 200,
+      "want_http": 200,
+      "sha_before": "81b3239dbf5cfa0409c66fe609ac8c83c0fa78e32f29ee3b74389ae384b7b39f",
+      "sha_after": "7dbdf8f77c240c84c94a91a72df6af9c34abbd3c4abcda99a1fb33b1e968eda8",
+      "file_equals_browser_snapshot": true,
+      "pass": true
+    },
+    {
+      "id": "c4",
+      "command": "curl -H 'content-type: application/json' --data '{\"action_id\": \"DPAD_DOWN_LONG_PRESS\", \"section\": \"windows\"}' -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X POST http://127.0.0.1:17792/api/macros/click-toggle/apply",
+      "http": 200,
+      "want_http": 200,
+      "sha_before": "7dbdf8f77c240c84c94a91a72df6af9c34abbd3c4abcda99a1fb33b1e968eda8",
+      "sha_after": "68db174b77066f785bff50c013517397571c62d86f6396016f141320c5fc0be1",
+      "file_equals_browser_snapshot": true,
+      "pass": true
+    },
+    {
+      "id": "c5",
+      "command": "curl -H 'content-type: application/json' --data '{\"type\": \"note\", \"channel\": 0, \"note\": 80, \"velocity\": 100}' -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X PUT http://127.0.0.1:17792/api/mappings/L5?section=windows",
+      "http": 200,
+      "want_http": 200,
+      "sha_before": "68db174b77066f785bff50c013517397571c62d86f6396016f141320c5fc0be1",
+      "sha_after": "fda8f33a771dd462d5189ea075c0dbb06d51a1325dea1eff4562affe29653686",
+      "file_equals_browser_snapshot": true,
+      "pass": true
+    },
+    {
+      "id": "c6-cancel",
+      "command": "curl -H 'content-type: application/json' --data '{\"type\": \"cc\", \"channel\": 2, \"cc\": 79, \"on_value\": 127, \"off_value\": 0}' -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X PUT http://127.0.0.1:17792/api/mappings/START?section=windows",
+      "http": 409,
+      "want_http": 409,
+      "sha_before": "fda8f33a771dd462d5189ea075c0dbb06d51a1325dea1eff4562affe29653686",
+      "sha_after": "fda8f33a771dd462d5189ea075c0dbb06d51a1325dea1eff4562affe29653686",
+      "file_equals_browser_snapshot": true,
+      "bytes_identical": true,
+      "conflicts_in_body": true,
+      "pass": true
+    },
+    {
+      "id": "c6",
+      "command": "curl -H 'content-type: application/json' --data '{\"type\": \"cc\", \"channel\": 2, \"cc\": 79, \"on_value\": 127, \"off_value\": 0}' -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X PUT http://127.0.0.1:17792/api/mappings/START?section=windows&force=1",
+      "http": 200,
+      "want_http": 200,
+      "sha_before": "fda8f33a771dd462d5189ea075c0dbb06d51a1325dea1eff4562affe29653686",
+      "sha_after": "50e8cf2352f8c2fec95e76cc733bdece49f78c1793fbf2a0c716a3e428c85285",
+      "file_equals_browser_snapshot": true,
+      "pass": true
+    },
+    {
+      "id": "d8",
+      "command": "curl -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X DELETE http://127.0.0.1:17792/api/mappings/SELECT?section=windows",
+      "http": 200,
+      "want_http": 200,
+      "sha_before": "50e8cf2352f8c2fec95e76cc733bdece49f78c1793fbf2a0c716a3e428c85285",
+      "sha_after": "52c4513767556f577ecf6aa801a45e76b80e58117f9b0051ba07d172c58381af",
+      "file_equals_browser_snapshot": true,
+      "pass": true
+    },
+    {
+      "id": "d1",
+      "command": "curl -H 'content-type: application/json' --data '{\"type\": \"note\", \"channel\": 0, \"note\": 36, \"velocity\": 127}' -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X PUT http://127.0.0.1:17792/api/mappings/GYRO_FORWARD?section=windows",
+      "http": 200,
+      "want_http": 200,
+      "sha_before": "52c4513767556f577ecf6aa801a45e76b80e58117f9b0051ba07d172c58381af",
+      "sha_after": "c114c8996df59d8abda86a7acdbbba4ede5127a02f5838a21e90b940bcd55321",
+      "file_equals_browser_snapshot": true,
+      "pass": true
+    },
+    {
+      "id": "d2",
+      "command": "curl -H 'content-type: application/json' --data '{\"type\": \"cc\", \"channel\": 2, \"cc\": 74, \"on_value\": 100, \"off_value\": 0}' -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X PUT http://127.0.0.1:17792/api/mappings/L4?section=windows",
+      "http": 200,
+      "want_http": 200,
+      "sha_before": "c114c8996df59d8abda86a7acdbbba4ede5127a02f5838a21e90b940bcd55321",
+      "sha_after": "7d2ba2949f276f82e8efe8d7d0246a5a4d5962760fbe11f0f429b81cd204b333",
+      "file_equals_browser_snapshot": true,
+      "pass": true
+    },
+    {
+      "id": "d3",
+      "command": "curl -H 'content-type: application/json' --data '{\"type\": \"macro_cc\", \"channel\": 0, \"cc\": 21, \"gesture\": \"click\", \"fade_duration_seconds\": 1.5}' -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X PUT http://127.0.0.1:17792/api/mappings/DPAD_RIGHT?section=windows",
+      "http": 200,
+      "want_http": 200,
+      "sha_before": "7d2ba2949f276f82e8efe8d7d0246a5a4d5962760fbe11f0f429b81cd204b333",
+      "sha_after": "7712a50f268a36de10ab3af9f49ce0c43abeb13b8e8144b5f66d1207346c2d5d",
+      "file_equals_browser_snapshot": true,
+      "pass": true
+    },
+    {
+      "id": "d4",
+      "command": "curl -H 'content-type: application/json' --data '{\"type\": \"relative_cc\", \"channel\": 0, \"cc\": 49, \"step_value\": 127, \"repeat_interval_ms\": 60}' -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X PUT http://127.0.0.1:17792/api/mappings/R_PAD_DOWN?section=windows",
+      "http": 200,
+      "want_http": 200,
+      "sha_before": "7712a50f268a36de10ab3af9f49ce0c43abeb13b8e8144b5f66d1207346c2d5d",
+      "sha_after": "0ca04bb9deed539b418ca222dbb5eee149ed4a52c55ebcf01c4f7e42372b0b96",
+      "file_equals_browser_snapshot": true,
+      "pass": true
+    },
+    {
+      "id": "d5",
+      "command": "curl -H 'content-type: application/json' --data '{\"type\": \"staged_note_macro\", \"note\": 86, \"velocity\": 127, \"modifier_channel\": 0, \"trigger_channel\": 1, \"refresh_actions\": [\"L_PAD_LEFT\", \"L_PAD_RIGHT\"], \"macro_delay_ms\": 120}' -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X PUT http://127.0.0.1:17792/api/mappings/L_PAD_LEFT_LONG_PRESS?section=windows",
+      "http": 200,
+      "want_http": 200,
+      "sha_before": "0ca04bb9deed539b418ca222dbb5eee149ed4a52c55ebcf01c4f7e42372b0b96",
+      "sha_after": "237236524668a221828b5a6cef5f3eca4d02635c0b5ce65a8672aaa2a043d062",
+      "file_equals_browser_snapshot": true,
+      "pass": true
+    },
+    {
+      "id": "d6",
+      "command": "curl -H 'content-type: application/json' --data '{\"type\": \"axis_to_cc\", \"channel\": 0, \"cc\": 1, \"input_range\": [5000, 32767], \"output_range\": [0, 127], \"deadzone\": 6000, \"curve\": \"quadratic\"}' -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X PUT http://127.0.0.1:17792/api/mappings/L_TRIGGER_PRESSURE?section=windows",
+      "http": 200,
+      "want_http": 200,
+      "sha_before": "237236524668a221828b5a6cef5f3eca4d02635c0b5ce65a8672aaa2a043d062",
+      "sha_after": "5be5bd87fbee0c6ab3056a4ff62f459775115751706cac8e68f718b1592a78f6",
+      "file_equals_browser_snapshot": true,
+      "pass": true
+    },
+    {
+      "id": "e",
+      "command": "python3 outside write: sections.macbook.mappings.BTN_A.note = 37",
+      "http": 0,
+      "want_http": 0,
+      "sha_before": "5be5bd87fbee0c6ab3056a4ff62f459775115751706cac8e68f718b1592a78f6",
+      "sha_after": "02fa9db9551706fe4c01beeaa77abedba06678c0dc7bedc1dde7de0e1d604259",
+      "file_equals_browser_snapshot": true,
+      "pass": true
+    },
+    {
+      "id": "e2",
+      "command": "curl -H 'content-type: application/json' --data '{\"type\": \"note\", \"channel\": 0, \"note\": 44, \"velocity\": 127}' -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X PUT http://127.0.0.1:17792/api/mappings/BTN_X?section=windows",
+      "http": 200,
+      "want_http": 200,
+      "sha_before": "02fa9db9551706fe4c01beeaa77abedba06678c0dc7bedc1dde7de0e1d604259",
+      "sha_after": "e3cb90c8ebb4cceff519fe82872eac523ac8f5b7597c66efdd7ccba6cf2d5628",
+      "file_equals_browser_snapshot": true,
+      "pass": true
+    },
+    {
+      "id": "d12",
+      "command": "curl -H 'content-type: application/json' --data '{\"section\": \"windows\"}' -sS -o /tmp/sdview-gate/api-body.json -w %{http_code} -X POST http://127.0.0.1:17792/api/reset",
+      "http": 200,
+      "want_http": 200,
+      "sha_before": "e3cb90c8ebb4cceff519fe82872eac523ac8f5b7597c66efdd7ccba6cf2d5628",
+      "sha_after": "ec6d31cbb5540e2b77684964abd2f05d4f9496a3e50a766c31cce674b9e45001",
+      "file_equals_browser_snapshot": true,
+      "pass": true
+    }
+  ],
+  "all_pass": true
+}

@@ -1,0 +1,112 @@
+[
+  {
+    "viewport": "1440x900",
+    "state": "card-closed",
+    "outside": [],
+    "intersections": [],
+    "occluded": [
+      {
+        "id": "l5",
+        "by": [
+          "statusbar"
+        ]
+      },
+      {
+        "id": "r5",
+        "by": [
+          "statusbar"
+        ]
+      },
+      {
+        "id": "gyro",
+        "by": [
+          "statusbar"
+        ]
+      }
+    ],
+    "scrollers": [
+      {
+        "el": "tab-editor",
+        "scrollHeight": 818,
+        "clientHeight": 727
+      }
+    ]
+  },
+  {
+    "viewport": "1440x900",
+    "state": "card-open-btn_a",
+    "outside": [],
+    "intersections": [
+      "right_stickxright_pad"
+    ],
+    "occluded": [
+      {
+        "id": "right_stick",
+        "by": [
+          "controller-label"
+        ]
+      }
+    ],
+    "scrollers": []
+  },
+  {
+    "viewport": "1024x768",
+    "state": "card-closed",
+    "outside": [],
+    "intersections": [
+      "dpad_rightxleft_pad",
+      "right_stickxright_pad"
+    ],
+    "occluded": [
+      {
+        "id": "dpad_right",
+        "by": [
+          "controller-label"
+        ]
+      },
+      {
+        "id": "right_stick",
+        "by": [
+          "controller-label"
+        ]
+      }
+    ],
+    "scrollers": [
+      {
+        "el": "tab-editor",
+        "scrollHeight": 627,
+        "clientHeight": 595
+      }
+    ]
+  },
+  {
+    "viewport": "1024x768",
+    "state": "card-open-btn_a",
+    "outside": [],
+    "intersections": [
+      "dpad_rightxleft_pad",
+      "right_stickxright_pad"
+    ],
+    "occluded": [
+      {
+        "id": "dpad_right",
+        "by": [
+          "controller-label"
+        ]
+      },
+      {
+        "id": "right_stick",
+        "by": [
+          "controller-label"
+        ]
+      }
+    ],
+    "scrollers": [
+      {
+        "el": "tab-editor",
+        "scrollHeight": 1099,
+        "clientHeight": 595
+      }
+    ]
+  }
+]
