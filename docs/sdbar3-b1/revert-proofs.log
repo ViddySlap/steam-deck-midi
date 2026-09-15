@@ -1,0 +1,8 @@
+R1 t1_pre taken AFTER sendto: test_t1_pre_before_and_t1_post_after_sendto_for_every_timed_message exit=1 FAILED (failures=1)
+R2 missing stamp silently skipped: test_missing_t1_stamp_is_an_error_not_a_skip exit=1 FAILED (failures=1)
+R3 sensitivity-not-RED exit code removed: test_m_bridge_sensitivity_not_red_exits_nonzero exit=1 FAILED (failures=1)
+R4 M_total computation moved by 1 ns: test_m_total_unchanged_against_stored_fixture exit=1 FAILED (failures=1)
+R5 invalid arm no longer voids M_bridge: test_invalid_arm_voids_m_bridge_verdict exit=1 FAILED (failures=1)
+restored digest equal: True b9b7994a9f599d3eb8960379c7b2e09f4d4164daf743b4d852bcfa2f7d2c7c78
+clean module after restore: exit 0 OK
+MUTANTS RED 5/5

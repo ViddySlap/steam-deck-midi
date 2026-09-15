@@ -187,6 +187,191 @@ class TimingTests(unittest.TestCase):
                 self.assertEqual(result['sends'], {'0': 1000000, '1': 1000000})
                 self.assertEqual(result['pid'], os.getpid())
 
+    def replay_with_sendto(self, sendto_effect):
+        """Run the real sender loop over two packets of one step with a fake socket."""
+        from types import SimpleNamespace
+        from time import sleep
+        packets = [{'step': 0, 'at_ns': 1, 'hex': '7b7d'}, {'step': 0, 'at_ns': 2, 'hex': '7b7e7d'}]
+        script = {'steps': [{'id': 0, 'at_ns': 1, 'phase': 'tap', 'event': {'kind': 'action', 'action': 'BTN_A'}}],
+                  'packets': packets}
+        with tempfile.TemporaryDirectory() as directory:
+            work = Path(directory)
+            (work / 'start').touch()
+            (work / 'capture').touch()
+            (work / 'capture.done.json').write_text('{}')
+            owner = timing.CaptureTiming({'start': str(work / 'start'), 'result': str(work / 'result'),
+                                          'speed': 1, 'mappings': {}}, script, {})
+            owner.live = SimpleNamespace(snapshot=lambda: {'clients': 0})
+            owner.action = lambda: 'BTN_A'
+            owner.origins = {'BTN_A': 0}
+            calls = []
+            def sendto(payload, address):
+                packet = packets[len(calls)]
+                calls.append(payload)
+                return sendto_effect(owner, packet, payload)
+            with patch.object(timing, 'wait_gap'), patch.object(timing.socket, 'socket') as factory:
+                factory.return_value.__enter__.return_value.sendto.side_effect = sendto
+                owner.start('127.0.0.1', 47899, work / 'capture')
+                for _ in range(300):
+                    if (work / 'result').exists():
+                        break
+                    sleep(.01)
+                return json.loads((work / 'result').read_text())
+
+    def test_t1_pre_before_and_t1_post_after_sendto_for_every_timed_message(self):
+        from time import perf_counter_ns, sleep
+        def stalled(owner, packet, payload):
+            sleep(.005)  # The send stalls; the bridge receives and writes MIDI at its end.
+            owner.enrich({'record': 'midi', 'monotonic_ns': perf_counter_ns(), 'step': packet['step'],
+                          'logical_ns': packet['at_ns'], 'bytes': [144, 60, 1]})
+            return len(payload)
+        result = self.replay_with_sendto(stalled)
+        self.assertNotIn('error', result)
+        self.assertEqual(result['every_message_timed_midi_messages'], 2)
+        self.assertEqual([s['cause_packet'] for s in result['bridge_samples']], [0, 1])
+        self.assertEqual([s['first_packet'] for s in result['bridge_samples']], [True, False])
+        for index, sample in enumerate(result['bridge_samples']):
+            self.assertGreaterEqual(result['t1_post_ns'][index] - result['t1_pre_ns'][index], 5_000_000)
+            self.assertEqual(sample['t1_pre_ns'], result['t1_pre_ns'][index])
+            self.assertGreaterEqual(sample['m_bridge_ms'], 5, 'M_bridge includes the send stall')
+            self.assertLess(sample['m_post_ms'], 5, 'M_post excludes the send stall')
+            self.assertGreaterEqual(sample['latency_ms'], 5, 'M_total includes the send stall')
+            self.assertGreaterEqual(sample['latency_ms'], sample['m_bridge_ms'])
+
+    def test_missing_t1_stamp_is_an_error_not_a_skip(self):
+        timed = [{'step': 0, 'cause_step': 0, 'cause_packet': 0, 'first_packet': True, 't3_ns': 50, 'latency_ms': 1.0},
+                 {'step': 0, 'cause_step': 0, 'cause_packet': 1, 'first_packet': False, 't3_ns': 90, 'latency_ms': 2.0}]
+        joined = timing.bridge_join(timed, [10, 40], [20, 45])
+        self.assertEqual([j['m_bridge_ms'] for j in joined], [40e-6, 50e-6])
+        self.assertEqual([j['m_post_ms'] for j in joined], [30e-6, 45e-6])
+        for pre, post in (([10, None], [20, 45]), ([10, 40], [20, None]), ([10], [20])):
+            with self.assertRaisesRegex(ValueError, 'without t1_pre/t1_post'):
+                timing.bridge_join(timed, pre, post)
+        with self.assertRaisesRegex(ValueError, 'without t1_pre/t1_post'):
+            timing.bridge_join([{**timed[0], 'cause_packet': None}], [10], [20])
+        with self.assertRaisesRegex(ValueError, 'Impossible'):
+            timing.bridge_join(timed, [10, 95], [20, 96])
+        # Every packet the sender loop sends carries both stamps.
+        result = self.replay_with_sendto(lambda owner, packet, payload: len(payload))
+        self.assertEqual(len(result['t1_pre_ns']), 2)
+        self.assertTrue(all(type(v) is int for v in result['t1_pre_ns'] + result['t1_post_ns']))
+
+    def bridge_runs(self, shift=lambda arm, value: value, counts=None):
+        script = {'steps': [{'id': 0, 'segment': 'axes', 'event': {'action': 'L_STICK_X_AXIS'}}],
+                  'worst_case_segment': 'axes'}
+        base = [1.0 + (i % 100) / 100 for i in range(1000)] + [5.0] * 20
+        runs = []
+        for repeat in range(1, 6):
+            for name in timing.ARMS:
+                values = [shift(name, v) for v in base[:(counts or {}).get((repeat, name), len(base))]]
+                samples = [{'record': 'midi', 'step': 0, 'cause_step': 0, 'bytes': [176, 1, 1],
+                            'latency_ms': v + 3} for v in values]
+                joined = [{'step': 0, 'cause_step': 0, 'cause_packet': 0, 'first_packet': True,
+                           'm_bridge_ms': v, 'm_post_ms': v - .01, 'latency_ms': v + 3} for v in values]
+                runs.append({'name': name, 'repeat': repeat, 'load_status': 'verified',
+                             'arm': {'samples': samples, 'bridge_samples': joined, 'records': samples,
+                                     'stream': {'dropped': 0}, 'live_valid': True, 'snapshot_after': {'dropped': 0}}})
+        return runs, script
+
+    def test_m_bridge_rule_passes_within_floor_and_fails_two_ms_p99_shift(self):
+        runs, script = self.bridge_runs(lambda arm, v: v + .3 if arm == 'OPEN' else v)
+        result = timing.summarize_bridge(runs, script, True)
+        self.assertTrue(result['rule']['passed'])
+        self.assertAlmostEqual(result['rule']['open_delta_ms']['p99'], .3)
+        self.assertEqual(result['rows'][0]['counts'], {'first_packet_join': 1020, 'every_message': 1020,
+            'every_message_cause_first_packet': 1020, 'every_message_cause_later_packet': 0})
+        self.assertIn('m_total_ms', result['pooled_ms'])
+        self.assertIn('m_post_ms', result['worst_case']['pooled_ms'])
+        runs, script = self.bridge_runs(lambda arm, v: v + 2 if arm == 'OPEN' and v >= 5 else v)
+        result = timing.summarize_bridge(runs, script, True)
+        self.assertEqual(result['rule']['within'], {'p50': True, 'p95': True, 'p99': False})
+        self.assertFalse(result['rule']['passed'])
+        self.assertTrue(all(not r['passed'] for r in result['per_repeat']))
+        self.assertFalse(timing.summarize_bridge(self.bridge_runs()[0], script, False)['rule']['passed'],
+                         'Different bytes void the M_bridge verdict too')
+
+    def test_invalid_arm_voids_m_bridge_verdict(self):
+        runs, script = self.bridge_runs(counts={(3, 'OPEN'): 999})
+        result = timing.summarize_bridge(runs, script, True)
+        self.assertFalse(result['rule']['valid_arms'])
+        self.assertFalse(result['rule']['passed'])
+        self.assertEqual([r['passed'] for r in result['per_repeat']], [True, True, False, True, True])
+        self.assertEqual(result['rows'][7]['every_message_timing_status'], 'INVALID')
+        args = type('Args', (), {'control': 'sensitivity', 'repeats': 3, 'speed': 1, 'client_cmd': ['x'], 'rule': 'm_bridge'})()
+        clean, _ = self.bridge_runs()
+        self.assertTrue(timing.measurement_qualified(args, [{**r, 'arm': {**r['arm'], 'passed': True}} for r in clean[:9]]))
+        self.assertFalse(timing.measurement_qualified(args, [{**r, 'arm': {**r['arm'], 'passed': True}} for r in runs[:9]]))
+
+    def test_m_bridge_sensitivity_not_red_exits_nonzero(self):
+        from io import StringIO
+        from contextlib import redirect_stdout
+        argv = ['timing_ab.py', '--script', 'x.json', '--scratch', '/tmp/x', '--out', '/tmp/x.json',
+                '--repeats', '3', '--control', 'sensitivity']
+        def main(rule, red):
+            result = {'passed': False, 'bar3_counts': False, 'rule': rule}
+            if red is not None:
+                result['m_bridge_sensitivity_timing_red'] = red
+            out = StringIO()
+            with patch.object(sys, 'argv', argv + ['--rule', rule]), patch.object(timing, 'run', return_value=result), \
+                    patch.object(timing, 'write_result', return_value='/tmp/x.json'), redirect_stdout(out):
+                return timing.main(), out.getvalue()
+        for red in (False, None):
+            code, printed = main('m_bridge', red)
+            self.assertEqual(code, 3)
+            self.assertIn(timing.M_BRIDGE_INVALID, printed)
+        code, printed = main('m_bridge', True)
+        self.assertEqual(code, 1)
+        self.assertNotIn(timing.M_BRIDGE_INVALID, printed)
+        self.assertEqual(main('locked', False)[0], 1)
+
+    def test_m_total_unchanged_against_stored_fixture(self):
+        fixture = json.loads((ROOT / 'tests/showready_m_total_fixture.json').read_text())
+        capture = timing.CaptureTiming({'mappings': {}}, {}, {})
+        capture.sent = {int(k): v for k, v in fixture['sends'].items()}
+        current = [None]
+        capture.action = lambda: current[0]
+        for stored in fixture['rows']:
+            current[0] = stored['action']
+            capture.origins = {stored['action']: stored['cause_step']}
+            row = {k: stored[k] for k in ('record', 'monotonic_ns', 'step', 'logical_ns', 'bytes')}
+            capture.enrich(row)
+            self.assertEqual(row['latency_ms'], stored['latency_ms'])
+        self.assertEqual(len(capture.samples), len(fixture['rows']))
+        self.assertEqual(timing.stats([s['latency_ms'] for s in capture.samples]), fixture['base_statistics_ms'])
+
+    def test_foreign_lines_match_engine_tests_and_void_the_load_check(self):
+        tests = timing.FOREIGN_TESTS
+        ps = '\n'.join(['  11 /bin/zsh ' + tests + 'e54-guard.sh', '  12 node /x/run-all.sh --fast',
+                        '  13 zsh -c ' + tests + 'x.sh', '  14 codex exec zsh ' + tests + 'y.sh',
+                        '  15 /usr/bin/python3 ' + tests + 'z.py', '  16 bash -x ' + tests + 'w.sh'])
+        self.assertEqual([line.split()[0] for line in timing.foreign_lines(ps)], ['11', '12', '16'])
+        if os.name == 'nt':
+            return
+        empty = lambda: {'status': 'empty', 'load_average': [1, 2, 3]}
+        with patch.object(timing.subprocess, 'run') as run:
+            run.side_effect = [subprocess.CompletedProcess([], 0, '  1 /sbin/launchd\n', ''),
+                               subprocess.CompletedProcess([], 0, '{ 1.50 1.20 1.00 }\n', '')]
+            clean = timing.foreign_load_check(empty)
+            self.assertEqual((clean['status'], clean['foreign']['foreign_lines'], clean['foreign']['load1']), ('empty', 0, 1.5))
+            run.side_effect = [subprocess.CompletedProcess([], 0, ps, ''),
+                               subprocess.CompletedProcess([], 0, '{ 1.50 1.20 1.00 }\n', '')]
+            self.assertEqual(timing.foreign_load_check(empty)['status'], 'load-present')
+            run.side_effect = [subprocess.CompletedProcess([], 1, '', 'denied'),
+                               subprocess.CompletedProcess([], 0, '{ 1.50 1.20 1.00 }\n', '')]
+            self.assertEqual(timing.foreign_load_check(empty)['status'], 'unreadable')
+
+    def test_m_bridge_sensitivity_receipt_must_be_an_m_bridge_red(self):
+        result = {'host': 'h', 'candidate': 'c', 'preset_sha256': 'p', 'client': 'k', 'receiver_clock': 'script',
+                  'instrument_sha256': 'i', 'script': {'sha256': 's'}}
+        control = {**result, 'control': 'sensitivity', 'repeats': 3, 'measurement_qualified': True,
+                   'summary': {'byte_identical': True, 'rule': {'valid_arms': True}}, 'sensitivity_timing_red': True,
+                   'rule': 'm_bridge', 'm_bridge_sensitivity_timing_red': True, 'm_bridge': {'rule': {'valid_arms': True}}}
+        self.assertTrue(timing.sensitivity_matches(control, result, 'm_bridge'))
+        self.assertTrue(timing.sensitivity_matches(control, result))
+        self.assertFalse(timing.sensitivity_matches({**control, 'm_bridge_sensitivity_timing_red': False}, result, 'm_bridge'))
+        self.assertFalse(timing.sensitivity_matches({**control, 'rule': 'locked'}, result, 'm_bridge'))
+        self.assertFalse(timing.sensitivity_matches({**control, 'sensitivity_timing_red': False}, result))
+
     def test_cleanup_waits_and_proves_direct_client_gone(self):
         child = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(20)'])
         try:

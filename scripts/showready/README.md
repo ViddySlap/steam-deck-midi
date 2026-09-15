@@ -437,6 +437,61 @@ Mac Python-client validation, DIAGNOSTIC only (about 4 minutes):
 .venv/bin/python -B scripts/showready/timing_ab.py --candidate HEAD --script scripts/showready/timing_script.json --repeats 1 --allow-unverified-load --scratch /tmp/sdlive-gate/mac-diagnostic --out /tmp/sdlive-gate/mac-diagnostic.json.gz
 ```
 
+### Declared M_bridge rule (sdbar3 B1)
+
+In plain terms: the locked rule times each MIDI message from the send stamp of
+the input step that caused it, so the test rig's own pacing between that input
+and the timer heartbeat that actually releases a delayed output sits inside the
+number. M_bridge times each MIDI message from the send of the datagram the
+bridge was handling when it wrote that message: `t1_pre`, a perf_counter_ns
+taken IMMEDIATELY BEFORE `sendto()` for EVERY packet. It therefore excludes only
+the rig's pacing and includes the send syscall, kernel delivery, bridge wake-up
+and processing. A stamp after `sendto()` (`t1_post`) would shrink the number
+exactly when a loaded sender is descheduled after the send, a bias toward PASS
+with the view open, so `M_post = t3 - t1_post` is reported as a diagnostic only.
+`M_total = t3 - t0` is the locked metric, computed by the same function and
+printed beside M_bridge in every run (the `BESIDE` line), so the locked-rule RED
+stays visible; the default `--rule locked` is unchanged.
+
+`--rule m_bridge` PASSES when M_bridge's pooled |OPEN - CLOSED| <= |CLOSED - CLOSED-B| + 1.0 ms at p50,
+p95 AND p99, on the pinned `timing_script.json`, R=5 interleaved CLOSED / OPEN /
+CLOSED-B, Mac + Chromium, bytes identical, the live client proven, every arm
+with >= 1000 timed MIDI messages in the every-message set and a clean load
+check. Under `--rule m_bridge` the load check also counts `foreign_lines`
+(`ps -A -o pid=,command=` rows of zsh/bash/sh/node running a script under the
+harness engine tests or `run-all.sh`, excluding `codex exec`) and records
+sysctl load1; any foreign line is present load. The locked rule's "floor must
+resolve 2 ms" clause is reported but not required: the declared rule proves
+resolution only through its own sensitivity run. The six-axis worst-case segment
+is reported on its own (`m_bridge.worst_case`). Each arm row reports BOTH counts:
+`first_packet_join` (messages timed against a step's first-packet stamp, the
+locked set) and `every_message` (messages timed against their own packet's
+t1), plus how many of the latter were caused by a step's first packet or by a
+later packet (timer heartbeat or axis follow-on).
+
+The sensitivity control is the existing 2 ms publisher delay at R=3. If its
+M_bridge inequality is not RED, the tool prints
+`M_BRIDGE RULE INVALID: sensitivity control did not go RED` and exits 3, never a
+pass. A RED control exits 1 with `m_bridge_sensitivity_timing_red:true`. The clean command accepts only
+an `--rule m_bridge` receipt with that RED from the same candidate, host, client,
+script and pinned instrument.
+
+QUALIFYING commands, Mac + real Chromium, one at a time, sensitivity first. The
+gate also records load1 and foreign_lines around each command. Measured wall
+time for the same workload in the sdlive gate: sensitivity R=3 691 s (11.5 min),
+clean R=5 1135 s (18.9 min); budget 12-14 and 19-21 minutes plus load retries.
+
+```bash
+.venv/bin/python -B scripts/showready/timing_ab.py --rule m_bridge --candidate HEAD --script scripts/showready/timing_script.json --repeats 3 --control sensitivity --scratch /tmp/sdbar3-gate/mac-mbridge-sensitivity --out /tmp/sdbar3-gate/mac-mbridge-sensitivity.json.gz --client-cmd '["node","/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/timing_browser.cjs","{url}","{stop}","{receipt}","/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell","--single-process"]'
+.venv/bin/python -B scripts/showready/timing_ab.py --rule m_bridge --candidate HEAD --script scripts/showready/timing_script.json --repeats 5 --scratch /tmp/sdbar3-gate/mac-mbridge-clean --out /tmp/sdbar3-gate/mac-mbridge-clean.json.gz --sensitivity-result /tmp/sdbar3-gate/mac-mbridge-sensitivity.json.gz --client-cmd '["node","/Users/viddyslap/Documents/project-workspaces/steam-deck-midi/scripts/showready/timing_browser.cjs","{url}","{stop}","{receipt}","/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell","--single-process"]'
+```
+
+M_bridge Python-client diagnostic, never qualifying (about 4 minutes):
+
+```bash
+.venv/bin/python -B scripts/showready/timing_ab.py --rule m_bridge --candidate HEAD --script scripts/showready/timing_script.json --repeats 1 --scratch /tmp/sdbar3-b1/diagnostic --out /tmp/sdbar3-b1/diagnostic.json.gz
+```
+
 ### Real browser hook and owned process cleanup
 
 `--client-cmd` is a JSON argv array, run directly without a shell.

@@ -26,6 +26,10 @@ BAR3_TOLERANCE_MS = 1.0
 MIN_TIMED_MIDI_MESSAGES = 1000
 STATISTICS = ('p50', 'p95', 'p99')
 ARMS = ('CLOSED', 'OPEN', 'CLOSED-B')
+RULES = ('locked', 'm_bridge')
+M_BRIDGE_INVALID = 'M_BRIDGE RULE INVALID: sensitivity control did not go RED'
+# MASTER sdbar3 LOAD RULES: harness engine test runners are foreign load on the Mac.
+FOREIGN_TESTS = '/Users/viddyslap/Documents/project-workspaces/local-LLM-h14/engine/tests/'
 # webbrowser runs BROWSER via shlex.split; every cmd.exe form returns nonzero on Windows,
 # which falls through to the default browser (a real live client). Python -c pass exits 0.
 NOOP_BROWSER = shlex.quote(sys.executable.replace('\\', '/')) + ' -c pass %s' if os.name == 'nt' else '/usr/bin/true'
@@ -46,22 +50,57 @@ def stats(values):
             'max': max(values), 'count': len(values)}
 
 
-def verdict(closed, opened, closed_b, *, identical, dropped_reported, live, valid_arms=True):
+def verdict(closed, opened, closed_b, *, identical, dropped_reported, live, valid_arms=True,
+            require_floor_resolution=True):
     floor = {key: abs(closed[key] - closed_b[key]) for key in STATISTICS}
     delta = {key: abs(opened[key] - closed[key]) for key in STATISTICS}
     within = {key: delta[key] <= floor[key] + BAR3_TOLERANCE_MS for key in STATISTICS}
     # A known +2 ms shift must not fit inside this measured floor.
     sensitivity_visible = any(2.0 > floor[k] + BAR3_TOLERANCE_MS for k in STATISTICS)
+    # The declared M_bridge rule proves resolution by its own sensitivity run instead.
+    resolved = sensitivity_visible or not require_floor_resolution
     return {'noise_floor_ms': floor, 'open_delta_ms': delta, 'within': within,
             'floor_can_resolve_2ms': sensitivity_visible,
             'valid_arms': valid_arms,
-            'passed': all(within.values()) and identical and dropped_reported and live and sensitivity_visible and valid_arms}
+            'passed': all(within.values()) and identical and dropped_reported and live and resolved and valid_arms}
 
 
 def power_floor(samples):
     count = len(samples)
     return {'timed_midi_messages': count, 'minimum_timed_midi_messages': MIN_TIMED_MIDI_MESSAGES,
             'timing_status': 'VALID' if count >= MIN_TIMED_MIDI_MESSAGES else 'INVALID'}
+
+
+def every_message_floor(joined):
+    count = len(joined)
+    return {'every_message_timed_midi_messages': count, 'minimum_timed_midi_messages': MIN_TIMED_MIDI_MESSAGES,
+            'every_message_timing_status': 'VALID' if count >= MIN_TIMED_MIDI_MESSAGES else 'INVALID'}
+
+
+def m_total_ms(t3_ns, t0_ns):
+    """The locked rule's latency: recorder perf_counter minus the cause step's send stamp."""
+    return (t3_ns - t0_ns) / 1e6
+
+
+def bridge_join(timed, t1_pre, t1_post):
+    """Attach the causing packet's t1_pre/t1_post to EVERY timed MIDI message.
+
+    A timed message is joined to the packet the bridge was handling when it
+    wrote the MIDI (step and script instant of the last datagram received).
+    A missing stamp or an impossible order is an error, never a skip.
+    """
+    joined = []
+    for row in timed:
+        packet = row.get('cause_packet')
+        known = type(packet) is int and 0 <= packet < min(len(t1_pre), len(t1_post))
+        pre, post = (t1_pre[packet], t1_post[packet]) if known else (None, None)
+        if pre is None or post is None:
+            raise ValueError('Timed MIDI without t1_pre/t1_post: step %s packet %s' % (row.get('step'), packet))
+        if post < pre or row['t3_ns'] < pre:
+            raise ValueError('Impossible send/MIDI order at packet %s' % packet)
+        joined.append({**row, 't1_pre_ns': pre, 't1_post_ns': post,
+                       'm_bridge_ms': (row['t3_ns'] - pre) / 1e6, 'm_post_ms': (row['t3_ns'] - post) / 1e6})
+    return joined
 
 
 def sensitivity_delay(clock=time.perf_counter_ns, pause=lambda: time.sleep(0)):
@@ -98,13 +137,20 @@ def measurement_qualified(args, runs):
             (os.name == 'nt' or bool(args.client_cmd)) and
             len(runs) == args.repeats * len(ARMS) and
             all(r['load_status'] == 'verified' and r['arm']['passed'] and
-                power_floor(r['arm']['samples'])['timing_status'] == 'VALID' for r in runs))
+                power_floor(r['arm']['samples'])['timing_status'] == 'VALID' and
+                (getattr(args, 'rule', 'locked') != 'm_bridge' or
+                 every_message_floor(r['arm'].get('bridge_samples', []))['every_message_timing_status'] == 'VALID')
+                for r in runs))
 
 
-def sensitivity_matches(control, result):
-    return bool(control.get('sensitivity_timing_red') and
+def sensitivity_matches(control, result, rule='locked'):
+    if rule == 'm_bridge':
+        red = (control.get('rule') == 'm_bridge' and control.get('m_bridge_sensitivity_timing_red') and
+               control.get('m_bridge', {}).get('rule', {}).get('valid_arms'))
+    else:
+        red = control.get('sensitivity_timing_red') and control.get('summary', {}).get('rule', {}).get('valid_arms')
+    return bool(red and
         control.get('summary', {}).get('byte_identical') and
-        control.get('summary', {}).get('rule', {}).get('valid_arms') and
         control.get('measurement_qualified') and control.get('control') == 'sensitivity' and
         control.get('repeats', 0) >= 3 and
         all(control.get(k) == result.get(k) for k in
@@ -132,6 +178,52 @@ def load_check():
     except OSError as exc:
         result.update(status='unreadable', error=repr(exc))
     if result['load_average'] is None:
+        result['status'] = 'unreadable'
+    return result
+
+
+def foreign_lines(ps_stdout):
+    """`ps -A -o pid=,command=` rows running a harness engine test or run-all.sh."""
+    matched = []
+    for line in ps_stdout.splitlines():
+        command = line.strip().partition(' ')[2]
+        tokens = command.split()
+        if 'codex exec' in command or not tokens or os.path.basename(tokens[0]) not in ('zsh', 'bash', 'sh', 'node'):
+            continue
+        rest, script, i = tokens[1:], None, 0
+        while i < len(rest):
+            if rest[i] == '-c':
+                i += 2  # The command string is an option value, not a script.
+            elif rest[i].startswith('-'):
+                i += 1
+            else:
+                script = rest[i]
+                break
+        if script and (script.startswith(FOREIGN_TESTS) or os.path.basename(script) == 'run-all.sh'):
+            matched.append(line.strip()[:220])
+    return matched
+
+
+def foreign_load_check(check=load_check):
+    """load_check plus foreign_lines and sysctl load1; any foreign line is present load."""
+    result = check()
+    if result['status'] == 'not applicable':
+        return result
+    foreign = {'command': 'ps -A -o pid=,command=', 'foreign_lines': None, 'load1': None}
+    try:
+        ps = subprocess.run(['ps', '-A', '-o', 'pid=,command='], capture_output=True, text=True)
+        foreign.update(ps_exit=ps.returncode)
+        if ps.returncode == 0 and ps.stdout.strip():
+            foreign['matched'] = foreign_lines(ps.stdout)
+            foreign['foreign_lines'] = len(foreign['matched'])
+        loadavg = subprocess.run(['sysctl', '-n', 'vm.loadavg'], capture_output=True, text=True)
+        foreign['load1'] = float(loadavg.stdout.split()[1])
+    except (OSError, IndexError, ValueError) as exc:
+        foreign['error'] = repr(exc)
+    result['foreign'] = foreign
+    if foreign['foreign_lines']:
+        result['status'] = 'load-present'
+    elif foreign['foreign_lines'] is None and result['status'] == 'empty':
         result['status'] = 'unreadable'
     return result
 
@@ -180,6 +272,13 @@ class CaptureTiming:
         self.samples = []
         self.completed_packets = 0
         self.mappings = config['mappings']
+        packets = script.get('packets', [])
+        # (step, script instant) names ONE packet; capture_runner sets both at each receipt.
+        self.packet_index = {(p['step'], p['at_ns']): i for i, p in enumerate(packets)}
+        starts = {s['id']: s['at_ns'] for s in script.get('steps', [])}
+        self.first_packets = {i for i, p in enumerate(packets) if p['at_ns'] == starts.get(p['step'])}
+        self.t1_pre, self.t1_post = [None] * len(packets), [None] * len(packets)
+        self.timed = []
 
     def install(self, module):
         self.action = module.current_action
@@ -217,8 +316,14 @@ class CaptureTiming:
         elif sent is None or row['perf_counter_ns'] < sent:
             self.invalid.append(dict(row))
         else:
-            row['latency_ms'] = (row['perf_counter_ns'] - sent) / 1e6
+            row['latency_ms'] = m_total_ms(row['perf_counter_ns'], sent)
             self.samples.append(dict(row))
+        if row['step'] != -1:
+            packet = self.packet_index.get((row['step'], row.get('logical_ns')))
+            row['cause_packet'] = packet
+            self.timed.append({'step': row['step'], 'cause_step': cause, 'cause_packet': packet,
+                               'first_packet': packet in self.first_packets,
+                               't3_ns': row['perf_counter_ns'], 'latency_ms': row.get('latency_ms')})
 
     def start(self, host, port, capture):
         def replay():
@@ -258,7 +363,11 @@ class CaptureTiming:
                         sent_at = time.perf_counter_ns()
                         if event:
                             self.sent[row['step']] = sent_at
-                        if sender.sendto(payload, (host, port)) != len(payload):
+                        t1_pre = time.perf_counter_ns()  # t1_pre: IMMEDIATELY before sendto (M_bridge).
+                        written = sender.sendto(payload, (host, port))
+                        t1_post = time.perf_counter_ns()  # t1_post: immediately after it returns (diagnostic).
+                        self.t1_pre[index], self.t1_post[index] = t1_pre, t1_post
+                        if written != len(payload):
                             raise RuntimeError('Partial datagram')
                         if event:
                             last = step_start = time.perf_counter_ns()
@@ -274,10 +383,13 @@ class CaptureTiming:
                 time.sleep(.3)
                 if capture.stat().st_size != size:
                     raise ValueError('MIDI not quiescent after timer horizon')
+                joined = bridge_join(self.timed, self.t1_pre, self.t1_post)
                 result.update(snapshot_after=self.live.snapshot(), received=read_json(done),
                               sends=self.sent, invalid=self.invalid, samples=self.samples,
                               pacing=timing_pacing(self.script, self.sent, self.config['speed']),
                               **power_floor(self.samples))
+                result.update(t1_pre_ns=self.t1_pre, t1_post_ns=self.t1_post, bridge_samples=joined,
+                              **every_message_floor(joined))
                 result['passed'] = bool(self.samples) and not self.invalid and all(
                     p['no_overspeed'] for p in result['pacing'].values()) and result['timing_status'] == 'VALID'
             except Exception as exc:
@@ -511,8 +623,78 @@ def run_arm(args, tree, work, script, mappings, label):
                 result['cleanup'] = stop_process(process)
                 result['passed'] &= result['cleanup']['pid_gone'] and result['cleanup']['was_alive']
             result.update(power_floor(result.get('samples', [])))
+            result.update(every_message_floor(result.get('bridge_samples', [])))
             result['passed'] &= result['timing_status'] == 'VALID'
+            if args.rule == 'm_bridge':
+                result['passed'] &= result['every_message_timing_status'] == 'VALID'
     return result
+
+
+def open_flags(runs):
+    drops = all(type(i['arm'].get('stream', {}).get('dropped')) is int for i in runs if i['name'] == 'OPEN')
+    live = all(i['arm'].get('live_valid') for i in runs if i['name'] == 'OPEN')
+    return drops, live
+
+
+def summarize_bridge(runs, script, identical):
+    """Declared sdbar3 rule: M_bridge = t3 - t1_pre, M_post and the locked M_total beside it."""
+    metrics = ('m_bridge_ms', 'm_post_ms', 'm_total_ms')
+    worst_name = script.get('worst_case_segment')
+    steps = {s['id']: s for s in script['steps']}
+    grouped = {m: {name: [] for name in ARMS} for m in metrics}
+    worst = {m: {name: [] for name in ARMS} for m in metrics}
+    rows = []
+    for item in runs:
+        arm, name = item['arm'], item['name']
+        joined = arm.get('bridge_samples', [])
+        if not joined:
+            raise ValueError('Zero M_bridge observations')
+        values = {'m_bridge_ms': [s['m_bridge_ms'] for s in joined], 'm_post_ms': [s['m_post_ms'] for s in joined],
+                  'm_total_ms': [s['latency_ms'] for s in arm['samples']]}
+        row = {'repeat': item['repeat'], 'arm': name, 'load_status': item['load_status'],
+               'counts': {'first_packet_join': len(arm['samples']), 'every_message': len(joined),
+                          'every_message_cause_first_packet': sum(bool(s['first_packet']) for s in joined),
+                          'every_message_cause_later_packet': sum(not s['first_packet'] for s in joined)},
+               'statistics_ms': {m: stats(v) for m, v in values.items()}, **every_message_floor(joined)}
+        for m in metrics:
+            grouped[m][name].extend(values[m])
+        if worst_name:
+            chosen = [s for s in joined if s['cause_step'] is not None and steps[s['cause_step']].get('segment') == worst_name]
+            locked = [s for s in arm['samples'] if steps[s['cause_step']].get('segment') == worst_name]
+            if not chosen or not locked:
+                raise ValueError('Zero worst-case M_bridge observations')
+            picked = {'m_bridge_ms': [s['m_bridge_ms'] for s in chosen], 'm_post_ms': [s['m_post_ms'] for s in chosen],
+                      'm_total_ms': [s['latency_ms'] for s in locked]}
+            row['worst_case_statistics_ms'] = {m: stats(v) for m, v in picked.items()}
+            for m in metrics:
+                worst[m][name].extend(picked[m])
+        rows.append(row)
+    pooled = {m: {name: stats(v) for name, v in grouped[m].items()} for m in metrics}
+    drops, live = open_flags(runs)
+    rule = lambda triplet, valid: verdict(*triplet, identical=identical, dropped_reported=drops, live=live,
+                                          valid_arms=valid, require_floor_resolution=False)
+    outcome = rule([pooled['m_bridge_ms'][n] for n in ARMS],
+                   all(r['every_message_timing_status'] == 'VALID' for r in rows))
+    per_repeat = []
+    for repeat in sorted({i['repeat'] for i in runs}):
+        triplet = {r['arm']: r for r in rows if r['repeat'] == repeat}
+        per_repeat.append({'repeat': repeat, **rule([triplet[n]['statistics_ms']['m_bridge_ms'] for n in ARMS],
+            all(r['every_message_timing_status'] == 'VALID' for r in triplet.values()))})
+    return {'metric': 'M_bridge = t3 - t1_pre (binding); M_post = t3 - t1_post and M_total = t3 - t0 (reported)',
+            'rows': rows, 'pooled_ms': pooled, 'rule': outcome, 'per_repeat': per_repeat,
+            'diagnostic_m_post_rule': rule([pooled['m_post_ms'][n] for n in ARMS], outcome['valid_arms']),
+            'worst_case': {'name': worst_name, 'pooled_ms': {m: {n: stats(v) for n, v in worst[m].items()} for m in metrics}}
+                          if worst_name else None}
+
+
+def beside(result):
+    """Both rules' pooled deltas on one line; the locked RED stays visible under --rule m_bridge."""
+    line = {'rule': result.get('rule')}
+    for key, summary in (('locked', result.get('summary')), ('m_bridge', result.get('m_bridge'))):
+        if summary:
+            line[key] = {'passed': summary['rule']['passed'], 'open_delta_ms': summary['rule']['open_delta_ms'],
+                         'noise_floor_ms': summary['rule']['noise_floor_ms'], 'within': summary['rule']['within']}
+    return line
 
 
 def summarize(runs, script):
@@ -547,8 +729,7 @@ def summarize(runs, script):
             worst_grouped[name].extend(worst_values)
         rows.append(row)
     pooled = {name: stats(values) for name, values in grouped.items()}
-    drops = all(type(i['arm'].get('stream', {}).get('dropped')) is int for i in runs if i['name'] == 'OPEN')
-    live = all(i['arm'].get('live_valid') for i in runs if i['name'] == 'OPEN')
+    drops, live = open_flags(runs)
     outcome = verdict(pooled['CLOSED'], pooled['OPEN'], pooled['CLOSED-B'], identical=identical,
                       dropped_reported=drops, live=live,
                       valid_arms=all(r['timing_status'] == 'VALID' for r in rows))
@@ -572,7 +753,7 @@ def run(args):
     started = time.perf_counter()
     result = {'schema': 'sdlive-timing/1', 'passed': False, 'bar3_counts': False, 'runs': [],
               'command': [sys.executable, *sys.argv], 'repeats': args.repeats, 'speed': args.speed,
-              'receiver_clock': args.clock, 'control': args.control,
+              'receiver_clock': args.clock, 'control': args.control, 'rule': args.rule,
               'tolerance_ms': BAR3_TOLERANCE_MS, 'client': args.client_cmd or 'python streaming reader',
               'clock_method': 'Sender and recorder use perf_counter_ns in ONE bridge process per arm.'}
     result['host'] = {'hostname': socket.gethostname(), 'platform': platform.platform(), 'python': sys.version}
@@ -619,25 +800,32 @@ def run(args):
         for repeat in range(1, args.repeats + 1):
             for name in names:
                 guarded = guarded_arm(lambda attempt: run_arm(args, tree, work, script, mappings,
-                    f'r{repeat}-{name}-try{attempt}'), allow_unverified=args.allow_unverified_load,
-                    retries=args.load_retries)
+                    f'r{repeat}-{name}-try{attempt}'), foreign_load_check if args.rule == 'm_bridge' else load_check,
+                    allow_unverified=args.allow_unverified_load, retries=args.load_retries)
                 guarded.update(repeat=repeat, name=name)
                 result['runs'].append(guarded)
                 # Persist after each arm; all attempts and errors remain reviewable.
                 write_result(args.out, result)
                 print(json.dumps({'repeat': repeat, 'arm': name, 'load': guarded['load_status'],
                                   'accepted': guarded['accepted'], 'passed': guarded.get('arm', {}).get('passed'),
-                                  **power_floor((guarded.get('arm') or {}).get('samples', []))}), flush=True)
+                                  **power_floor((guarded.get('arm') or {}).get('samples', [])),
+                                  **every_message_floor((guarded.get('arm') or {}).get('bridge_samples', []))}), flush=True)
                 if not guarded['accepted'] or not guarded['arm']['passed']:
                     raise ValueError('Invalid arm: ' + name)
         result['summary'] = summarize(result['runs'], script)
-        result['passed'] = result['summary']['rule']['passed']
+        result['m_bridge'] = summarize_bridge(result['runs'], script, result['summary']['byte_identical'])
+        result['locked_rule_passed'] = result['summary']['rule']['passed']
+        result['m_bridge_rule_passed'] = result['m_bridge']['rule']['passed']
+        result['passed'] = result['m_bridge_rule_passed'] if args.rule == 'm_bridge' else result['locked_rule_passed']
         qualified = measurement_qualified(args, result['runs'])
         result['measurement_qualified'] = qualified
         if args.control == 'sensitivity':
             result['sensitivity_detected'] = not result['summary']['rule']['passed']
             result['sensitivity_timing_red'] = not all(result['summary']['rule']['within'].values())
-            if not result['sensitivity_timing_red']:
+            result['m_bridge_sensitivity_timing_red'] = not all(result['m_bridge']['rule']['within'].values())
+            if args.rule == 'm_bridge' and not result['m_bridge_sensitivity_timing_red']:
+                result['limitation'] = M_BRIDGE_INVALID
+            elif not result['sensitivity_timing_red']:
                 result['limitation'] = 'Instrument cannot see a 2 ms publisher delay with this noise floor; bar 3 does not count.'
         elif args.control is None:
             if args.sensitivity_result:
@@ -645,7 +833,7 @@ def run(args):
                 payload = args.sensitivity_result.read_bytes()
                 control = json.loads(gzip.decompress(payload) if payload[:2] == b'\x1f\x8b' else payload)
                 result['sensitivity_receipt_sha256'] = sha(payload)
-                result['sensitivity_valid'] = sensitivity_matches(control, result)
+                result['sensitivity_valid'] = sensitivity_matches(control, result, args.rule)
             result['bar3_counts'] = result['passed'] and qualified and result.get('sensitivity_valid', False)
     except Exception as exc:
         result.update(passed=False, error=type(exc).__name__ + ': ' + str(exc))
@@ -669,6 +857,8 @@ def main():
     parser.add_argument('--allow-unverified-load', action='store_true', help='Diagnostics only; never bar 3 credit')
     parser.add_argument('--load-retries', type=int, default=3)
     parser.add_argument('--control', choices=['sensitivity', 'dead-client'])
+    parser.add_argument('--rule', choices=RULES, default='locked',
+                        help='locked (default) or the declared sdbar3 m_bridge rule; both are always printed')
     parser.add_argument('--sensitivity-result', type=Path)
     client = parser.add_mutually_exclusive_group()
     client.add_argument('--client-cmd', type=json.loads, help='JSON argv array; {url}, {stop}, {receipt} placeholders')
@@ -686,8 +876,17 @@ def main():
     path = write_result(args.out, result)
     # A provisional numeric pass is not an authoritative bar 3 pass.
     code = 0 if result['bar3_counts'] else 1 if not result['passed'] else 78
-    print(json.dumps({'result': str(path), 'rule_passed': result['passed'], 'bar3_counts': result['bar3_counts'],
+    # An M_bridge sensitivity run that is not a timing RED (or never produced a verdict) is INVALID.
+    invalid = args.rule == 'm_bridge' and args.control == 'sensitivity' and result.get('m_bridge_sensitivity_timing_red') is not True
+    if invalid:
+        code = 3
+    print(json.dumps({'BESIDE': beside(result)}))
+    print(json.dumps({'result': str(path), 'rule': args.rule, 'rule_passed': result['passed'],
+                      'locked_rule_passed': result.get('locked_rule_passed'), 'm_bridge_rule_passed': result.get('m_bridge_rule_passed'),
+                      'bar3_counts': result['bar3_counts'],
                       'error': result.get('error'), 'limitation': result.get('limitation'), 'exit_code': code}))
+    if invalid:
+        print(M_BRIDGE_INVALID)
     if code == 78:
         print('HARNESS-SKIP: diagnostic or missing qualified sensitivity control; no bar 3 credit')
     return code

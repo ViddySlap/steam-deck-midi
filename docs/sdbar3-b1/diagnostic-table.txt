@@ -1,0 +1,32 @@
+rule m_bridge repeats 1 client python streaming reader qualified False locked_rule_passed False m_bridge_rule_passed True error None
+CLOSED: load verified attempts(before status, foreign_lines, load1, after status, foreign_lines)=[('empty', 0, 2.25, 'empty', 0)]
+  packets 20513 t1_pre recorded 20513 t1_post recorded 20513; every timed message has both stamps: True; min(t1_post - t1_pre) 2417 ns max 1516416 ns
+OPEN: load verified attempts(before status, foreign_lines, load1, after status, foreign_lines)=[('empty', 0, 3.23, 'empty', 0)]
+  packets 20513 t1_pre recorded 20513 t1_post recorded 20513; every timed message has both stamps: True; min(t1_post - t1_pre) 2417 ns max 3383500 ns
+CLOSED-B: load verified attempts(before status, foreign_lines, load1, after status, foreign_lines)=[('empty', 0, 3.05, 'empty', 0)]
+  packets 20513 t1_pre recorded 20513 t1_post recorded 20513; every timed message has both stamps: True; min(t1_post - t1_pre) 2416 ns max 2376416 ns
+| Arm | first_packet_join | every_message | cause first packet | cause later packet | status |
+| CLOSED | 9638 | 9638 | 9142 | 496 | VALID |
+| OPEN | 9638 | 9638 | 9142 | 496 | VALID |
+| CLOSED-B | 9638 | 9638 | 9142 | 496 | VALID |
+| Metric | Arm | p50 | p95 | p99 | max | n |
+| m_bridge_ms | CLOSED | 1.119 | 1.627 | 1.852 | 14.565 | 9638 |
+| m_bridge_ms | CLOSED-B | 1.148 | 1.661 | 1.883 | 37.456 | 9638 |
+| m_bridge_ms | OPEN | 1.120 | 1.664 | 1.961 | 13.085 | 9638 |
+| m_post_ms | CLOSED | 1.114 | 1.615 | 1.843 | 14.561 | 9638 |
+| m_post_ms | CLOSED-B | 1.139 | 1.639 | 1.855 | 37.452 | 9638 |
+| m_post_ms | OPEN | 1.109 | 1.639 | 1.941 | 13.081 | 9638 |
+| m_total_ms | CLOSED | 1.169 | 115.857 | 1648.956 | 2024.427 | 9638 |
+| m_total_ms | CLOSED-B | 1.200 | 114.666 | 1648.158 | 2023.975 | 9638 |
+| m_total_ms | OPEN | 1.170 | 115.653 | 1644.813 | 2019.666 | 9638 |
+| worst-case m_bridge_ms | CLOSED | 1.151 | 1.636 | 1.861 | 14.565 | 9016 |
+| worst-case m_bridge_ms | CLOSED-B | 1.181 | 1.668 | 1.887 | 37.456 | 9016 |
+| worst-case m_bridge_ms | OPEN | 1.152 | 1.671 | 1.976 | 13.085 | 9016 |
+| worst-case m_post_ms | CLOSED | 1.146 | 1.626 | 1.848 | 14.561 | 9016 |
+| worst-case m_post_ms | CLOSED-B | 1.173 | 1.648 | 1.864 | 37.452 | 9016 |
+| worst-case m_post_ms | OPEN | 1.142 | 1.653 | 1.953 | 13.081 | 9016 |
+| worst-case m_total_ms | CLOSED | 1.151 | 1.636 | 1.861 | 14.565 | 9016 |
+| worst-case m_total_ms | CLOSED-B | 1.182 | 1.668 | 1.887 | 37.456 | 9016 |
+| worst-case m_total_ms | OPEN | 1.152 | 1.671 | 1.976 | 13.085 | 9016 |
+locked (M_total) floor {'p50': 0.032, 'p95': 1.192, 'p99': 0.798} delta {'p50': 0.002, 'p95': 0.205, 'p99': 4.142} within {'p50': True, 'p95': True, 'p99': False} passed False
+m_bridge floor {'p50': 0.029, 'p95': 0.034, 'p99': 0.031} delta {'p50': 0.001, 'p95': 0.036, 'p99': 0.109} within {'p50': True, 'p95': True, 'p99': True} passed True
