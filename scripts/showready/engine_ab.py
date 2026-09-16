@@ -55,14 +55,18 @@ CONTROLS = {
         "COLUMN_PREV_NOTES = frozenset({82, 86})",
         "COLUMN_PREV_NOTES = frozenset({82, 96})",
     ),
-    # F6: one-character edit to a compared audio_opacity OSC ADDRESS. Only
-    # reachable when --audio-opacity-protocol osc, which is the point: under
-    # the old hardcoded "midi" this control could not go RED at all.
+    # F6: one-token edit to the VALUE of every compared audio_opacity OSC call.
+    # Only reachable when --audio-opacity-protocol osc, which is the point:
+    # under the old hardcoded "midi" this control could not go RED at all.
+    # NOT an edit to an osc.get() DEFAULT: the factory config supplies
+    # video_path and logo_path explicitly, so perturbing their defaults is
+    # INERT and the control passed while changing nothing. This edits the
+    # clamp in _send_master, which every emitted OSC value passes through.
     "sensitivity-audio_opacity-osc": (
         "audio_opacity",
         "windows/engines/audio_opacity.py",
-        'self._osc_logo_path = str(osc.get("logo_path", "/composition/groups/2/master"))',
-        'self._osc_logo_path = str(osc.get("logo_path", "/composition/groups/3/master"))',
+        "self._osc.send(osc_path, max(0.0, min(1.0, float(float_value))))",
+        "self._osc.send(osc_path, max(0.0, min(0.5, float(float_value))))",
     ),
     # One-bit edit to the l_stick_layer positive-direction CC number it emits.
     "sensitivity-l_stick_layer": (

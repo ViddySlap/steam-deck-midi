@@ -169,7 +169,7 @@ class AudioOpacityProtocolTests(unittest.TestCase):
         family, rel, old, new = control
         self.assertEqual(family, "audio_opacity")
         self.assertEqual(rel, "windows/engines/audio_opacity.py")
-        self.assertIn("logo_path", old)
+        self.assertIn("_osc.send", old)
         self.assertNotEqual(old, new)
 
     def test_the_control_anchor_exists_exactly_once_in_the_product(self):
@@ -179,15 +179,42 @@ class AudioOpacityProtocolTests(unittest.TestCase):
         self.assertEqual(source.count(old), 1, f"anchor not found exactly once in {rel}")
         self.assertEqual(source.count(new), 0, "the perturbed form is already present")
 
-    def test_the_perturbed_address_would_change_a_compared_osc_call(self):
-        """The control edits an address that reaches _send_master, which is the
-        only place audio_opacity emits, so a perturbation IS observable."""
-        import inspect
+    def test_the_osc_control_edits_an_EMITTING_call_not_a_default(self):
+        """PRESENCE IS NOT EFFECT.
 
-        from windows.engines import audio_opacity
-        source = inspect.getsource(audio_opacity)
-        self.assertIn("self._send_master(self._cc_logo_master, self._osc_logo_path", source)
-        self.assertIn("self._osc.send(osc_path", source)
+        The first version of this control perturbed the default in
+        `osc.get("logo_path", ...)`. The anchor existed exactly once, so an
+        existence check passed - but config/engines.factory/audio_opacity.json
+        SUPPLIES logo_path, so the default was never read and the control
+        changed nothing: engine_ab reported identical_events True and the
+        control did not fire. A control must edit a call that actually emits.
+        """
+        _, rel, old, new = self.engine_ab.CONTROLS["sensitivity-audio_opacity-osc"]
+        self.assertIn("self._osc.send(", old,
+                      "the control must perturb an emitting call, not a config default")
+        self.assertNotIn(".get(", old,
+                         "a .get() default is inert whenever the config supplies the key")
+
+    def test_no_control_perturbs_a_default_the_factory_config_supplies(self):
+        """The SHAPE of that defect, across every control."""
+        import json
+        import re
+
+        repo = Path(__file__).resolve().parents[1]
+        factory = repo / "config/engines.factory"
+        for name, (family, rel, old, _new) in self.engine_ab.CONTROLS.items():
+            match = re.search(r'\.get\(\s*["\'](\w+)["\']\s*,', old)
+            if not match:
+                continue
+            key = match.group(1)
+            path = factory / f"{family}.json"
+            if not path.is_file():
+                continue
+            text = path.read_text(encoding="utf-8")
+            with self.subTest(control=name, key=key):
+                self.assertNotIn(f'"{key}"', text,
+                                 f"{name} perturbs the default for {key!r}, but "
+                                 f"{path.name} supplies that key, so the edit is inert")
 
     def test_every_control_names_a_real_anchor(self):
         for name, (_, rel, old, _new) in self.engine_ab.CONTROLS.items():

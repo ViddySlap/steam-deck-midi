@@ -294,13 +294,19 @@ def wait_for_quiet(timeout: float = 1800.0) -> dict:
         load = load1()
         sync = vault_sync_sample()
         hottest = max((s["pcpu"] for s in sync), default=0.0)
-        load_ok = load is not None and load < QUIET_GATE_LOAD1
+        # Windows has no load average and no vault sync: those two lane rules
+        # are the MAC's. Treating an unavailable measurement as "not yet quiet"
+        # made this gate wait out its whole timeout on the laptop and the arm
+        # never started. An unavailable signal is NOT a failing signal - but it
+        # is recorded as unavailable, never reported as a measured quiet.
+        load_ok = load is None or load < QUIET_GATE_LOAD1
         sync_ok = hottest < VAULT_SYNC_HOLD_PERCENT
         waited = time.monotonic() - started
         if load_ok and sync_ok:
             return {"waited_seconds": round(waited, 1), "load1_at_start": load,
+                    "load1_available": load is not None,
                     "vault_sync_at_start": sync, "vault_sync_bursts_waited_out": bursts,
-                    "gate": "passed"}
+                    "gate": "passed" if load is not None else "passed (no load average on this platform)"}
         if not sync_ok:
             bursts.append({"t": round(waited, 1), "pcpu": hottest})
         if waited > timeout:
@@ -476,7 +482,7 @@ def run_arm(name: str, tree: Path, python: str, scratch: Path, stop: str,
                     "engines": str(engines_dir) if engines_dir else None}
 
     record["quiet_gate"] = wait_for_quiet()
-    if record["quiet_gate"]["gate"] == "timeout":
+    if record["quiet_gate"]["gate"].startswith("timeout"):
         record["verdict"] = "INVALID"
         record["needs_master"] = record["quiet_gate"]["needs_master"]
         return record
@@ -606,7 +612,7 @@ def run_arm(name: str, tree: Path, python: str, scratch: Path, stop: str,
                                          "seconds": round(now - started, 1)})
                 else:
                     busy_since.pop(row["pid"], None)
-            if sample["load1"] is not None and sample["load1"] > MAX_IN_ARM_LOAD1:
+            if sample["load1"] is not None and sample["load1"] > MAX_IN_ARM_LOAD1:  # noqa: E501 - unavailable is not a breach
                 breaches.append({"load1": sample["load1"], "t": sample["t"]})
             samples.append(sample)
             if proc.poll() is not None:
