@@ -66,6 +66,17 @@ MIN_FREE_MEMORY_PERCENT = 25.0    # MASTER 13 19:29: below => do not add a 3rd t
 # The installed tray owns these. Every arm must use others.
 FORBIDDEN_PORTS = {45123, 7723}
 
+# A bridge that cannot BIND has told us nothing about the receive loop. On
+# Windows, WSAEACCES (10013) comes from Hyper-V/WinNAT reserved port ranges and
+# hits an ephemeral port chosen moments earlier. Classifying that as a product
+# FAIL put a red against the defect class this instrument exists to measure.
+ENVIRONMENT_STARTUP_SIGNATURES = (
+    "forbidden by its access permissions",   # WSAEACCES 10013
+    "Only one usage of each socket address",  # WSAEADDRINUSE 10048
+    "Address already in use",                 # EADDRINUSE
+    "Permission denied",
+)
+
 # MASTER 13, 19:29(1): the vault sync is a NAMED non-lane load.
 VAULT_SYNC_PATTERN = "obsidian-headless"
 # MASTER 13, 17:18(2) + LOAD RULES: foreign script roots.
@@ -646,8 +657,18 @@ def run_arm(name: str, tree: Path, python: str, scratch: Path, stop: str,
             # this instrument exists for. Only a bridge that is still alive but
             # never bound is INVALID.
             record["exit_code_during_startup"] = proc.poll()
-            record["log_tail"] = log_path.read_text(errors="replace")[-3000:]
-            if proc.poll() is not None:
+            log_text = log_path.read_text(errors="replace")
+            record["log_tail"] = log_text[-3000:]
+            environment = next(
+                (sig for sig in ENVIRONMENT_STARTUP_SIGNATURES if sig in log_text), None)
+            if proc.poll() is not None and environment:
+                # Could not bind: says nothing about the product.
+                record["verdict"] = "INVALID"
+                record["reason"] = (
+                    f"bridge could not bind its socket ({environment!r}); "
+                    "an environment failure, not a receive-loop failure")
+                record["environment_failure"] = environment
+            elif proc.poll() is not None:
                 record["verdict"] = "FAIL"
                 record["reason"] = (
                     f"bridge exited during startup with code {proc.returncode} "
@@ -900,11 +921,16 @@ def main(argv=None) -> int:
 
     stops = ("sigint", "shutdown") if args.stop == "both" else (args.stop,)
     for stop in stops:
-        arm = run_arm(
-            name=f"{args.label}-{stop}", tree=args.tree.resolve(), python=args.python,
-            scratch=scratch, stop=stop, engines_dir=engines_dir,
-            idle_seconds=args.idle_seconds, no_ui=args.no_ui,
-            expect_no_sidecar=(platform.system() == "Darwin" and not args.no_ui))
+        for attempt in range(1, 4):
+            arm = run_arm(
+                name=f"{args.label}-{stop}", tree=args.tree.resolve(), python=args.python,
+                scratch=scratch, stop=stop, engines_dir=engines_dir,
+                idle_seconds=args.idle_seconds, no_ui=args.no_ui,
+                expect_no_sidecar=(platform.system() == "Darwin" and not args.no_ui))
+            arm["attempt"] = attempt
+            # A refused port is worth another draw; nothing else is retried.
+            if not arm.get("environment_failure") or attempt == 3:
+                break
         result["arms"].append(arm)
 
     verdicts = [a["verdict"] for a in result["arms"] if a["verdict"] != "NOT_APPLICABLE"]
