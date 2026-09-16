@@ -1,0 +1,15 @@
+BUNDLE_SHA256 418716d6f9a8172337329425b89fe3dcd00de9842a0e10d890bc69cb739e257c
+VERIFY The bundle contains this ref:
+VERIFY 2e4292a75f08674fdf5c78358485b27c2d3bd913 refs/heads/chain/steamdeck-20260914
+VERIFY The bundle requires this ref:
+VERIFY a4b2c01a0db154a610111edb83bf581f88c4220e 
+VERIFY The bundle uses this hash algorithm: sha1
+VERIFY C:/Users/Ben/AppData/Local/Temp/sdwin/sdrc-c1/steamdeck.bundle is okay
+FETCH From C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-c1\steamdeck.bundle
+FETCH  * branch            chain/steamdeck-20260914 -> FETCH_HEAD
+FETCH_HEAD 2e4292a75f08674fdf5c78358485b27c2d3bd913
+MERGE  1 file changed, 683 insertions(+)
+MERGE  create mode 100644 docs/sdpolish-gate/REPORT.md
+PINNED_HEAD 2e4292a75f08674fdf5c78358485b27c2d3bd913
+PORCELAIN_LINES 0
+RAIL_EXIT 0

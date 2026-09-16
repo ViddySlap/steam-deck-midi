@@ -1,0 +1,2 @@
+418716d6f9a8172337329425b89fe3dcd00de9842a0e10d890bc69cb739e257c  /tmp/sdrc-c1/bundle/steamdeck.bundle
+7b2c34d7adbcdcc7153bf02c33b4b8a897b4ede809ddf2a81830f2224b9bce2a  scripts/showready/pull_bundle.ps1

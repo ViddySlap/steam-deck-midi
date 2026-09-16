@@ -1,0 +1,15 @@
+PY -3.12 launcher_pid=360456 exit=0 gone=True
+  EXE C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\python.exe
+  VERSION 3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]
+  BITS 64
+  CLOCK monotonic implementation=GetTickCount64() resolution=0.015625 monotonic=True adjustable=False
+  CLOCK perf_counter implementation=QueryPerformanceCounter() resolution=1e-07 monotonic=True adjustable=False
+  CLOCK time implementation=GetSystemTimeAsFileTime() resolution=0.015625 monotonic=False adjustable=True
+PY -3.14 launcher_pid=361828 exit=0 gone=True
+  EXE C:\Users\Ben\AppData\Local\Python\pythoncore-3.14-64\python.exe
+  VERSION 3.14.3 (tags/v3.14.3:323c59a, Feb  3 2026, 16:04:56) [MSC v.1944 64 bit (AMD64)]
+  BITS 64
+  CLOCK monotonic implementation=QueryPerformanceCounter() resolution=1e-07 monotonic=True adjustable=False
+  CLOCK perf_counter implementation=QueryPerformanceCounter() resolution=1e-07 monotonic=True adjustable=False
+  CLOCK time implementation=GetSystemTimePreciseAsFileTime() resolution=1e-07 monotonic=False adjustable=True
+RAIL_EXIT 0

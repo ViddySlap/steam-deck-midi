@@ -1,0 +1,29 @@
+COMMAND powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\windows\build_installer_v2.ps1" -RepoRoot "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc"
+WORKDIR C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc
+PRE_HEAD 2e4292a75f08674fdf5c78358485b27c2d3bd913
+START_UTC 2026-09-16T09:11:16.9791252Z
+ROOT_PID 360664
+END_UTC 2026-09-16T09:11:32.4482849Z
+EXIT 1
+ELAPSED_S 15.5
+ROOT_GONE True
+LEFTOVER_COUNT 0
+== STDOUT LINES 2
+== STDERR (all)
+  Set-Content : Could not find a part of the path 
+  'C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\build\windows-file-version.txt'.
+  At C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\windows\build_exe_v2.ps1:81 char:1
+  + Set-Content -Path $versionInfoPath -Value $versionText -Encoding ASCI ...
+  + ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      + CategoryInfo          : ObjectNotFound: (C:\Users\Ben\Do...ile-version.txt:String) [Set-Content], DirectoryNotFo 
+     undException
+      + FullyQualifiedErrorId : GetContentWriterDirectoryNotFoundError,Microsoft.PowerShell.Commands.SetContentCommand
+   
+  Failed to build receiver EXE before installer packaging.
+  At C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\windows\build_installer_v2.ps1:17 char:5
+  +     throw "Failed to build receiver EXE before installer packaging."
+  +     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      + CategoryInfo          : OperationStopped: (Failed to build...ller packaging.:String) [], RuntimeException
+      + FullyQualifiedErrorId : Failed to build receiver EXE before installer packaging.
+   
+RAIL_EXIT 0

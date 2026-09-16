@@ -1,0 +1,24 @@
+MIDI cc channel=0 control=78 value=0
+MIDI cc channel=1 control=78 value=0
+MIDI cc channel=0 control=79 value=0
+MIDI cc channel=1 control=79 value=0
+MIDI cc channel=0 control=74 value=127
+MIDI cc channel=1 control=74 value=0
+MIDI cc channel=0 control=78 value=127
+MIDI cc channel=1 control=78 value=0
+MIDI note_on channel=0 note=36 velocity=127
+MIDI note_on channel=0 note=38 velocity=127
+MIDI note_on channel=0 note=40 velocity=127
+MIDI cc channel=15 control=116 value=127
+MIDI cc channel=15 control=116 value=91
+MIDI cc channel=15 control=116 value=56
+MIDI cc channel=15 control=116 value=20
+MIDI cc channel=15 control=116 value=0
+MIDI cc channel=15 control=114 value=20
+MIDI cc channel=15 control=114 value=56
+MIDI cc channel=15 control=114 value=91
+MIDI cc channel=15 control=114 value=127
+MIDI note_off channel=0 note=36 velocity=0
+MIDI note_off channel=0 note=38 velocity=0
+MIDI note_off channel=0 note=40 velocity=0
+MIDI panic

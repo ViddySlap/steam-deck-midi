@@ -1,0 +1,133 @@
+EXE C:\Users\Ben\Documents\steamdeck-midi-showready\candidate-2e4292a\STEAMDECK-MIDI-RECEIVER-2.exe
+EXE_SHA256 2fcb2868d847615b5dd8b78732b654c857d48872f7125ab014a51253797f9b1c
+FIXTURE_COPIED 11 files, manifest verified, into C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-c1\smoke2\config
+ACTIVE_PRESET EDM Show.json
+PORTS udp=46211 ui=47311 (checked free: no UDP endpoint and no TCP connection on either)
+ENV PYSTRAY_BACKEND=dummy BROWSER=C:/Users/Ben/Documents/project-workspaces/steam-deck-midi-rc/.venv/Scripts/python.exe -c pass %s TMP=TEMP=C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-c1
+BROWSERS_BEFORE 0
+MEI_DIRS_BEFORE 0
+ARGV C:\Users\Ben\Documents\steamdeck-midi-showready\candidate-2e4292a\STEAMDECK-MIDI-RECEIVER-2.exe --listen 127.0.0.1:46211 --map "C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-c1\smoke2\config\windows_midi_map.json" --ui-port 47311 --dry-run --no-engines --no-pulse --no-osc-relay --no-browser
+ROOT_PID 362072 start=2026-09-16T09:15:42.9825825Z
+UI_READY_S 1.05
+PID_TREE
+  362072 parent=354368 STEAMDECK-MIDI-RECEIVER-2.exe session=0 C:\Users\Ben\Documents\steamdeck-midi-showready\candidate-2e4292a\STEAMDECK-MIDI-RECEIVER-2.exe
+  357944 parent=362072 STEAMDECK-MIDI-RECEIVER-2.exe session=0 C:\Users\Ben\Documents\steamdeck-midi-showready\candidate-2e4292a\STEAMDECK-MIDI-RECEIVER-2.exe
+LISTENERS
+  UDP 127.0.0.1:46211 pid=357944
+  TCP 127.0.0.1:47311 pid=357944
+ROW | /api/version | 200 | {"build_time_utc":"2026-09-16T09:12:21Z","frozen":true,"git_commit":"2e4292a75f08674fdf5c78358485b27c2d3bd913","version":"0.5.0"}
+
+CHECK version=0.5.0 True git_commit=CANDIDATE True frozen=true True
+ROW | /api/controller-map | 200 | controls=23 sha256=4df22c828cbd45ce9866731d637110be6cdaf115fddc62d4ebd8ec97ff232355
+CHECK controller-map controls=23 True
+ROW | / | 200 | bytes=94112 sha256=fbf5a734c879385fbac18e46d6b35736b203085617e8897a449e265c395f538c source_sha256=fbf5a734c879385fbac18e46d6b35736b203085617e8897a449e265c395f538c equal=True
+ROW | /static/controller/controller_live.js | 200 | bytes=11206 sha256=5af0ac6863127baf11f56d5b7b63a9d8914953b11a1045879648f12271f14765 source_sha256=5af0ac6863127baf11f56d5b7b63a9d8914953b11a1045879648f12271f14765 equal=True
+ROW | /static/controller/controller_map.json | 200 | bytes=13191 sha256=13eded615d4fbdf85c589786a4218482d58fc070500be98173177b3847e4669e source_sha256=13eded615d4fbdf85c589786a4218482d58fc070500be98173177b3847e4669e equal=True
+ROW | /static/controller/controller_view.css | 200 | bytes=7260 sha256=ec184416170ef3a7f4f5aa50e6b0451a29dcffc8954ed817d85bb953403be790 source_sha256=ec184416170ef3a7f4f5aa50e6b0451a29dcffc8954ed817d85bb953403be790 equal=True
+ROW | /static/controller/controller_view.js | 200 | bytes=25021 sha256=69bb183fa6ff358c671ba48817c170910029a3a8ebc7e5b0dcf5dac854586d46 source_sha256=69bb183fa6ff358c671ba48817c170910029a3a8ebc7e5b0dcf5dac854586d46 equal=True
+ROW | /static/controller/steam_deck.svg | 200 | bytes=3622 sha256=4e3d68171e4cf5a4c17f52bf0d3c2d4378766232d6ba6412e380bff2d7863e78 source_sha256=4e3d68171e4cf5a4c17f52bf0d3c2d4378766232d6ba6412e380bff2d7863e78 equal=True
+ROW | /api/live/snapshot (before input) | 200 | {"axes":{},"clients":0,"dropped":0,"midi":[{"action":null,"bytes":[176,78,0],"kind":"midi","seq":1,"timestamp":2936671.2410072},{"action":null,"bytes":[177,78,0],"kind":"midi","seq":2,"timestamp":2936671.2410142},{"action":null,"bytes":[176,79,0],"kind":"midi","seq":3,"timestamp":2936671.2410195},{"action":null,"bytes":[177,79,0],"kind":"midi","seq":4,"timestamp":2936671.2410234},{"action":null,"bytes":[176,74,127],"kind":"midi","seq":5,"timestamp":2936671.2410272},{"action":null,"bytes":[177,74,0],"kind":"midi","seq":6,"timestamp":2936671.2410291}],"pressed":[],"seq":6}
+
+ROW | /api/live/snapshot (3 buttons down) | 200 | {"axes":{},"clients":0,"dropped":0,"midi":[{"action":null,"bytes":[176,78,0],"kind":"midi","seq":1,"timestamp":2936671.2410072},{"action":null,"bytes":[177,78,0],"kind":"midi","seq":2,"timestamp":2936671.2410142},{"action":null,"bytes":[176,79,0],"kind":"midi","seq":3,"timestamp":2936671.2410195},{"action":null,"bytes":[177,79,0],"kind":"midi","seq":4,"timestamp":2936671.2410234},{"action":null,"bytes":[176,74,127],"kind":"midi","seq":5,"timestamp":2936671.2410272},{"action":null,"bytes":[177,74,0],"kind":"midi","seq":6,"timestamp":2936671.2410291},{"action":"BTN_A","bytes":[176,78,127],"kind":"midi","seq":8,"timestamp":2936674.3249478},{"action":"BTN_A","bytes":[177,78,0],"kind":"midi","seq":9,"timestamp":2936674.3249515},{"action":"BTN_A","bytes":[144,36,127],"kind":"midi","seq":10,"timestamp":2936674.3249675},{"action":"BTN_B","bytes":[144,38,127],"kind":"midi","seq":12,"timestamp":2936674.3562445},{"action":"BTN_X","bytes":[144,40,127],"kind":"midi","seq":14,"timestamp":2936674.3883667}],"pressed":["BTN_A","BTN_B","BTN_X"],"seq":14}
+
+CHECK pressed=BTN_A,BTN_B,BTN_X True
+ROW | /api/live/snapshot (axis sweep R_STICK_X_AXIS -32767..32767 in 9 steps) | 200 | {"axes":{"R_STICK_X_AXIS":32767},"clients":0,"dropped":0,"midi":[{"action":null,"bytes":[176,78,0],"kind":"midi","seq":1,"timestamp":2936671.2410072},{"action":null,"bytes":[177,78,0],"kind":"midi","seq":2,"timestamp":2936671.2410142},{"action":null,"bytes":[176,79,0],"kind":"midi","seq":3,"timestamp":2936671.2410195},{"action":null,"bytes":[177,79,0],"kind":"midi","seq":4,"timestamp":2936671.2410234},{"action":null,"bytes":[176,74,127],"kind":"midi","seq":5,"timestamp":2936671.2410272},{"action":null,"bytes":[177,74,0],"kind":"midi","seq":6,"timestamp":2936671.2410291},{"action":"BTN_A","bytes":[176,78,127],"kind":"midi","seq":8,"timestamp":2936674.3249478},{"action":"BTN_A","bytes":[177,78,0],"kind":"midi","seq":9,"timestamp":2936674.3249515},{"action":"BTN_A","bytes":[144,36,127],"kind":"midi","seq":10,"timestamp":2936674.3249675},{"action":"BTN_B","bytes":[144,38,127],"kind":"midi","seq":12,"timestamp":2936674.3562445},{"action":"BTN_X","bytes":[144,40,127],"kind":"midi","seq":14,"timestamp":2936674.3883667},{"action":"R_STICK_X_AXIS","bytes":[191,116,127],"kind":"midi","seq":16,"timestamp":2936674.6347342},{"action":"R_STICK_X_AXIS","bytes":[191,116,91],"kind":"midi","seq":18,"timestamp":2936674.6823642},{"action":"R_STICK_X_AXIS","bytes":[191,116,56],"kind":"midi","seq":20,"timestamp":2936674.7335117},{"action":"R_STICK_X_AXIS","bytes":[191,116,20],"kind":"midi","seq":22,"timestamp":2936674.7758786},{"action":"R_STICK_X_AXIS","bytes":[191,116,0],"kind":"midi","seq":24,"timestamp":2936674.8278751},{"action":"R_STICK_X_AXIS","bytes":[191,114,20],"kind":"midi","seq":26,"timestamp":2936674.8692068},{"action":"R_STICK_X_AXIS","bytes":[191,114,56],"kind":"midi","seq":28,"timestamp":2936674.918823},{"action":"R_STICK_X_AXIS","bytes":[191,114,91],"kind":"midi","seq":30,"timestamp":2936674.9606694},{"action":"R_STICK_X_AXIS","bytes":[191,114,127],"kind":"midi","seq":32,"timestamp":2936675.0142839}],"pressed":["BTN_A","BTN_B","BTN_X"],"seq":32}
+
+CHECK axes.R_STICK_X_AXIS=32767 True
+ROW | /api/live/snapshot (3 buttons up) | 200 | pressed=[] seq=38 midi_rows=20 dropped=0 clients=0
+CHECK pressed empty after up True
+UDP_DATAGRAMS_SENT 15
+ROW | POST /api/shutdown | 202 | {"stopping":true}
+
+EXIT_CODE 0
+PID_GONE 362072 True
+PID_GONE 357944 True
+PORT_FREE udp=46211 True ui=47311 False
+LANE_PATH_PROCESSES 0
+STAGING_PROCESSES 0
+MEI_DIRS_AFTER 0
+BROWSERS_AFTER 0
+BROWSERS_EQUAL True
+== EXE STDOUT (last 60)
+  MIDI cc channel=0 control=78 value=0
+  MIDI cc channel=1 control=78 value=0
+  MIDI cc channel=0 control=79 value=0
+  MIDI cc channel=1 control=79 value=0
+  MIDI cc channel=0 control=74 value=127
+  MIDI cc channel=1 control=74 value=0
+  MIDI cc channel=0 control=78 value=127
+  MIDI cc channel=1 control=78 value=0
+  MIDI note_on channel=0 note=36 velocity=127
+  MIDI note_on channel=0 note=38 velocity=127
+  MIDI note_on channel=0 note=40 velocity=127
+  MIDI cc channel=15 control=116 value=127
+  MIDI cc channel=15 control=116 value=91
+  MIDI cc channel=15 control=116 value=56
+  MIDI cc channel=15 control=116 value=20
+  MIDI cc channel=15 control=116 value=0
+  MIDI cc channel=15 control=114 value=20
+  MIDI cc channel=15 control=114 value=56
+  MIDI cc channel=15 control=114 value=91
+  MIDI cc channel=15 control=114 value=127
+  MIDI note_off channel=0 note=36 velocity=0
+  MIDI note_off channel=0 note=38 velocity=0
+  MIDI note_off channel=0 note=40 velocity=0
+  MIDI panic
+== EXE STDERR (last 60)
+  INFO build fingerprint: version=0.5.0 commit=2e4292a75f08 built_utc=2026-09-16T09:12:21Z
+  INFO selected MIDI output port: name=DECK_IN index=n/a
+  INFO mapping UI available at http://127.0.0.1:47311
+  Exception in thread tray:
+  Traceback (most recent call last):
+    File "threading.py", line 1075, in _bootstrap_inner
+  INFO listening on udp://127.0.0.1:46211
+    File "threading.py", line 1012, in run
+    File "pystray\_base.py", line 212, in run
+    File "pystray\_base.py", line 379, in _run
+  NotImplementedError
+  INFO action=BTN_A state=down seq=1
+  INFO action=BTN_B state=down seq=2
+  INFO action=BTN_X state=down seq=3
+  ERROR engine_registry.on_axis_event failed
+  Traceback (most recent call last):
+    File "windows\receiver.py", line 901, in _handle_axis_event
+  AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+  ERROR engine_registry.on_axis_event failed
+  Traceback (most recent call last):
+    File "windows\receiver.py", line 901, in _handle_axis_event
+  AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+  ERROR engine_registry.on_axis_event failed
+  Traceback (most recent call last):
+    File "windows\receiver.py", line 901, in _handle_axis_event
+  AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+  ERROR engine_registry.on_axis_event failed
+  Traceback (most recent call last):
+    File "windows\receiver.py", line 901, in _handle_axis_event
+  AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+  ERROR engine_registry.on_axis_event failed
+  Traceback (most recent call last):
+    File "windows\receiver.py", line 901, in _handle_axis_event
+  AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+  ERROR engine_registry.on_axis_event failed
+  Traceback (most recent call last):
+    File "windows\receiver.py", line 901, in _handle_axis_event
+  AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+  ERROR engine_registry.on_axis_event failed
+  Traceback (most recent call last):
+    File "windows\receiver.py", line 901, in _handle_axis_event
+  AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+  ERROR engine_registry.on_axis_event failed
+  Traceback (most recent call last):
+    File "windows\receiver.py", line 901, in _handle_axis_event
+  AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+  ERROR engine_registry.on_axis_event failed
+  Traceback (most recent call last):
+    File "windows\receiver.py", line 901, in _handle_axis_event
+  AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+  INFO released note mapping for BTN_A
+  INFO action=BTN_A state=up seq=13
+  INFO released note mapping for BTN_B
+  INFO action=BTN_B state=up seq=14
+  INFO released note mapping for BTN_X
+  INFO action=BTN_X state=up seq=15
+RAIL_EXIT 0

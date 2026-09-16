@@ -1,0 +1,144 @@
+COMMAND powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\windows\build_installer_v2.ps1" -RepoRoot "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc"
+WORKDIR C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc
+PRE_HEAD 2e4292a75f08674fdf5c78358485b27c2d3bd913
+START_UTC 2026-09-16T09:12:20.7211978Z
+ROOT_PID 353404
+END_UTC 2026-09-16T09:14:53.2465018Z
+EXIT 0
+ELAPSED_S 152.5
+ROOT_GONE True
+LEFTOVER_COUNT 0
+== STDOUT LINES 200
+== STDERR (all)
+  121 INFO: PyInstaller: 6.22.3, contrib hooks: 2026.7
+  123 INFO: Python: 3.12.10
+  182 INFO: Platform: Windows-11-10.0.26200-SP0
+  184 INFO: Python environment: C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv-build
+  189 INFO: Removing temporary files and cleaning cache in C:\Users\Ben\AppData\Local\pyinstaller
+  1607 INFO: Module search paths (PYTHONPATH):
+  ['C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc',
+   'C:\\Users\\Ben\\AppData\\Local\\Python\\pythoncore-3.12-64\\python312.zip',
+   'C:\\Users\\Ben\\AppData\\Local\\Python\\pythoncore-3.12-64\\DLLs',
+   'C:\\Users\\Ben\\AppData\\Local\\Python\\pythoncore-3.12-64\\Lib',
+   'C:\\Users\\Ben\\AppData\\Local\\Python\\pythoncore-3.12-64',
+   'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build',
+   'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages',
+   'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc']
+  1869 INFO: Appending 'datas' from .spec
+  1875 INFO: checking Analysis
+  1875 INFO: Building Analysis because Analysis-00.toc is non existent
+  1876 INFO: Looking for Python shared library...
+  1876 INFO: Using Python shared library: C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\python312.dll
+  1876 INFO: Running Analysis Analysis-00.toc
+  1876 INFO: Target bytecode optimization level: 0
+  1876 INFO: Initializing module dependency graph...
+  1877 INFO: Initializing module graph hook caches...
+  1895 INFO: Analyzing modules for base_library.zip ...
+  2659 INFO: Processing standard module hook 'hook-encodings.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks'
+  4371 INFO: Processing standard module hook 'hook-math.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks'
+  9447 INFO: Processing standard module hook 'hook-pickle.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks'
+  12602 INFO: Processing standard module hook 'hook-heapq.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks'
+  17026 INFO: Caching module dependency graph...
+  17103 INFO: Analyzing C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\windows\win_recv.py
+  17314 INFO: Processing standard module hook 'hook-webbrowser.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks'
+  17686 INFO: Processing pre-safe-import-module hook 'hook-packaging.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+  17693 INFO: SetuptoolsInfo: initializing cached setuptools info...
+  18148 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+  18149 INFO: Processing pre-safe-import-module hook 'hook-importlib_metadata.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+  18150 INFO: Setuptools: 'importlib_metadata' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.importlib_metadata'!
+  18153 INFO: Processing standard module hook 'hook-setuptools.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks'
+  18186 INFO: Processing standard module hook 'hook-platform.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks'
+  18188 INFO: Processing pre-safe-import-module hook 'hook-distutils.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+  18218 INFO: Processing standard module hook 'hook-sysconfig.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks'
+  18225 INFO: Processing pre-safe-import-module hook 'hook-jaraco.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+  18226 INFO: Setuptools: 'jaraco' appears to be a full setuptools-vendored copy - creating alias to 'setuptools._vendor.jaraco'!
+  18231 INFO: Processing pre-safe-import-module hook 'hook-more_itertools.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+  18231 INFO: Setuptools: 'more_itertools' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.more_itertools'!
+  18464 INFO: Processing standard module hook 'hook-_osx_support.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks'
+  18874 INFO: Processing standard module hook 'hook-_ctypes.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks'
+  19190 INFO: Processing standard module hook 'hook-setuptools._vendor.jaraco.text.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks'
+  19195 INFO: Processing pre-safe-import-module hook 'hook-importlib_resources.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+  20124 INFO: Processing pre-safe-import-module hook 'hook-backports.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+  20126 INFO: Setuptools: 'backports' appears to be a full setuptools-vendored copy - creating alias to 'setuptools._vendor.backports'!
+  21918 INFO: Processing pre-safe-import-module hook 'hook-tomli.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+  21919 INFO: Setuptools: 'tomli' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.tomli'!
+  24035 INFO: Processing pre-safe-import-module hook 'hook-wheel.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+  24038 INFO: Setuptools: 'wheel' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.wheel'!
+  24173 INFO: Processing standard module hook 'hook-setuptools._vendor.importlib_metadata.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks'
+  24243 INFO: Processing pre-safe-import-module hook 'hook-zipp.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+  24246 INFO: Setuptools: 'zipp' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.zipp'!
+  25364 INFO: Processing standard module hook 'hook-xml.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks'
+  25572 INFO: Processing standard module hook 'hook-xml.etree.cElementTree.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks'
+  26201 INFO: Processing standard module hook 'hook-pystray.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+  26566 INFO: Processing pre-safe-import-module hook 'hook-six.moves.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+  26626 INFO: Processing pre-safe-import-module hook 'hook-gi.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+  26642 INFO: Processing standard module hook 'hook-PIL.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks'
+  26884 INFO: Processing standard module hook 'hook-PIL.Image.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks'
+  27556 INFO: Processing standard module hook 'hook-PIL.ImageFilter.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks'
+  30631 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks'
+  33557 INFO: Processing standard module hook 'hook-difflib.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks'
+  34349 INFO: Processing standard module hook 'hook-jinja2.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+  38307 INFO: Analyzing hidden import 'mido.backends.rtmidi'
+  38334 INFO: Analyzing hidden import 'flask.__main__'
+  38337 INFO: Analyzing hidden import 'flask.views'
+  38345 INFO: Analyzing hidden import 'jinja2.meta'
+  38351 INFO: Analyzing hidden import 'jinja2.nativetypes'
+  38359 INFO: Analyzing hidden import 'werkzeug.middleware.dispatcher'
+  38363 INFO: Analyzing hidden import 'werkzeug.middleware.http_proxy'
+  38374 INFO: Analyzing hidden import 'werkzeug.middleware.lint'
+  38395 INFO: Analyzing hidden import 'werkzeug.middleware.profiler'
+  39196 INFO: Analyzing hidden import 'werkzeug.middleware.proxy_fix'
+  39204 INFO: Analyzing hidden import 'werkzeug.testapp'
+  39215 INFO: Processing module hooks (post-graph stage)...
+  39877 INFO: Processing standard module hook 'hook-PIL.SpiderImagePlugin.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks'
+  40457 INFO: Performing binary vs. data reclassification (149 entries)
+  40719 INFO: Looking for ctypes DLLs
+  40808 INFO: Analyzing run-time hooks ...
+  40813 INFO: Including run-time hook 'pyi_rth_inspect.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+  40815 INFO: Including run-time hook 'pyi_rth_pkgutil.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+  40817 INFO: Including run-time hook 'pyi_rth_multiprocessing.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+  40820 INFO: Including run-time hook 'pyi_rth_setuptools.py' from 'C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv-build\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+  40841 INFO: Creating base_library.zip...
+  40882 INFO: Looking for dynamic libraries
+  41301 INFO: Extra DLL search directories (AddDllDirectory): []
+  41303 INFO: Extra DLL search directories (PATH): []
+  42662 INFO: Warnings written to C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\build\steamdeck-midi-receiver-2\warn-steamdeck-midi-receiver-2.txt
+  42783 INFO: Graph cross-reference written to C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\build\steamdeck-midi-receiver-2\xref-steamdeck-midi-receiver-2.html
+  42869 INFO: checking PYZ
+  42870 INFO: Building PYZ because PYZ-00.toc is non existent
+  42870 INFO: Building PYZ (ZlibArchive) C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\build\steamdeck-midi-receiver-2\PYZ-00.pyz
+  44466 INFO: Building PYZ (ZlibArchive) C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\build\steamdeck-midi-receiver-2\PYZ-00.pyz completed successfully.
+  44512 INFO: checking PKG
+  44514 INFO: Building PKG because PKG-00.toc is non existent
+  44514 INFO: Building PKG (CArchive) STEAMDECK-MIDI-RECEIVER-2.pkg
+  56900 INFO: Building PKG (CArchive) STEAMDECK-MIDI-RECEIVER-2.pkg completed successfully.
+  56912 INFO: Bootloader C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv-build\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\run.exe
+  56912 INFO: checking EXE
+  56913 INFO: Building EXE because EXE-00.toc is non existent
+  56913 INFO: Building EXE from EXE-00.toc
+  56915 INFO: Copying bootloader EXE to C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\dist\STEAMDECK-MIDI-RECEIVER-2.exe
+  57036 INFO: Copying icon to EXE
+  57068 INFO: Copying version information to EXE
+  57170 INFO: Copying 0 resources to EXE
+  57171 INFO: Embedding manifest in EXE
+  57272 INFO: Appending PKG archive to EXE
+  57435 INFO: Fixing EXE headers
+  58132 INFO: Building EXE from EXE-00.toc completed successfully.
+  58159 INFO: checking PKG
+  58160 INFO: Building PKG because PKG-01.toc is non existent
+  58160 INFO: Building PKG (CArchive) STEAMDECK-MIDI-RECEIVER-2-Tray.pkg
+  69835 INFO: Building PKG (CArchive) STEAMDECK-MIDI-RECEIVER-2-Tray.pkg completed successfully.
+  69849 INFO: Bootloader C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv-build\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\runw.exe
+  69850 INFO: checking EXE
+  69850 INFO: Building EXE because EXE-01.toc is non existent
+  69850 INFO: Building EXE from EXE-01.toc
+  69851 INFO: Copying bootloader EXE to C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\dist\STEAMDECK-MIDI-RECEIVER-2-Tray.exe
+  69968 INFO: Copying icon to EXE
+  70060 INFO: Copying version information to EXE
+  70092 INFO: Copying 0 resources to EXE
+  70093 INFO: Embedding manifest in EXE
+  70180 INFO: Appending PKG archive to EXE
+  70365 INFO: Fixing EXE headers
+  71709 INFO: Building EXE from EXE-01.toc completed successfully.
+  71722 INFO: Build complete! The results are available in: C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\dist
+RAIL_EXIT 0

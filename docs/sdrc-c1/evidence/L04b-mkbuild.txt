@@ -1,0 +1,7 @@
+PORCELAIN_AFTER_A1 0
+CHECKIGNORE .gitignore:25:build/	build/windows-file-version.txt
+VENV_BUILD_EXISTS True
+BUILD_EXISTS_BEFORE False
+CREATED C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\build items=0
+PORCELAIN_AFTER_MKDIR 0
+RAIL_EXIT 0

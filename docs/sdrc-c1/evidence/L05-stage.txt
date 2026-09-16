@@ -1,0 +1,105 @@
+HEAD 2e4292a75f08674fdf5c78358485b27c2d3bd913 EXPECTED 2e4292a75f08674fdf5c78358485b27c2d3bd913
+== DIST / INSTALLER-OUTPUT
+  C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\dist\STEAMDECK-MIDI-RECEIVER-2-Tray.exe 20998625 2026-09-16T09:14:40.9604499Z
+  C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\dist\STEAMDECK-MIDI-RECEIVER-2.exe 21003745 2026-09-16T09:14:27.3834916Z
+  C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\installer-output\STEAMDECK-MIDI-RECEIVER-2-Setup-0.5.0.exe 43981989 2026-09-16T09:14:53.0442852Z
+SRC STEAMDECK-MIDI-RECEIVER-2-Setup-0.5.0.exe 43981989 9232d8c4a2673dd1c3ec1bc35c9f87b9bc00c528114d71dec88892065c1565a1
+SRC STEAMDECK-MIDI-RECEIVER-2.exe 21003745 2fcb2868d847615b5dd8b78732b654c857d48872f7125ab014a51253797f9b1c
+SRC STEAMDECK-MIDI-RECEIVER-2-Tray.exe 20998625 1550c0ce838f43d42b8fd7e707dff4ce61d2e1d6e7ccc339c2e8d43b631f9c96
+== FINGERPRINT (build-written)
+  """Build fingerprint metadata for runtime diagnostics."""
+  
+  APP_VERSION = "0.5.0"
+  GIT_COMMIT = "2e4292a75f08674fdf5c78358485b27c2d3bd913"
+  GIT_COMMIT_SHORT = "2e4292a75f08"
+  BUILD_TIME_UTC = "2026-09-16T09:12:21Z"
+PORCELAIN_BEFORE_RESTORE
+   M windows/build_fingerprint.py
+RESTORE_EXIT 0
+PORCELAIN_AFTER_RESTORE_LINES 0
+IGNORED_AFTER
+  !! .showready/
+  !! .venv-build/
+  !! .venv/
+  !! build/
+  !! deck/__pycache__/
+  !! dist/
+  !! installer-output/
+  !! protocol/__pycache__/
+  !! tests/__pycache__/
+  !! windows/__pycache__/
+  !! windows/engines/__pycache__/
+TRACKED_FINGERPRINT_NOW
+  """Build fingerprint metadata for runtime diagnostics."""
+  
+  APP_VERSION = "0.5.0"
+  GIT_COMMIT = "source"
+  GIT_COMMIT_SHORT = "source"
+  BUILD_TIME_UTC = "source"
+== VERSIONS
+TRACKED pyver pid=358440 exit=0 gone=True
+PYTHON 3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]
+TRACKED pyiver pid=363488 exit=0 gone=True
+PYINSTALLER 6.22.3
+TRACKED piplist pid=354408 exit=0 gone=True
+PIP altgraph==0.17.5
+PIP blinker==1.9.0
+PIP click==8.5.0
+PIP Flask==3.1.3
+PIP itsdangerous==2.2.0
+PIP Jinja2==3.1.6
+PIP MarkupSafe==3.0.3
+PIP mido==1.3.3
+PIP packaging==26.3
+PIP pefile==2024.8.26
+PIP pillow==12.3.0
+PIP pip==26.2.1
+PIP pyinstaller==6.22.3
+PIP pyinstaller-hooks-contrib==2026.7
+PIP pystray==0.19.5
+PIP python-rtmidi==1.5.8
+PIP pywin32-ctypes==0.2.3
+PIP setuptools==84.0.0
+PIP six==1.17.0
+PIP Werkzeug==3.1.8
+TRACKED pystraysrc pid=363940 exit=0 gone=True
+PYSTRAY_PKG_FILES ['__init__.py', '__pycache__', '_appindicator.py', '_base.py', '_darwin.py', '_dummy.py', '_gtk.py', '_info.py', '_util', '_win32.py', '_xorg.py']
+TRACKED pyver2 pid=362392 exit=0 gone=True
+ISCC C:\Users\Ben\AppData\Local\Programs\Inno Setup 6\ISCC.exe FileVersion=0.0.0.0 ProductVersion=0.0.0.0
+== PYSTRAY IN BUNDLE: build workpath TOCs
+  TOC Analysis-00.toc pystray_backends=[pystray._appindicator,pystray._base,pystray._darwin,pystray._dummy,pystray._gtk,pystray._info,pystray._util,pystray._win32,pystray._xorg]
+  TOC EXE-00.toc pystray_backends=[]
+  TOC EXE-01.toc pystray_backends=[]
+  TOC PKG-00.toc pystray_backends=[]
+  TOC PKG-01.toc pystray_backends=[]
+  TOC PYZ-00.toc pystray_backends=[pystray._appindicator,pystray._base,pystray._darwin,pystray._dummy,pystray._gtk,pystray._info,pystray._util,pystray._win32,pystray._xorg]
+== STAGE
+CREATED C:\Users\Ben\Documents\steamdeck-midi-showready
+CREATED C:\Users\Ben\Documents\steamdeck-midi-showready\candidate-2e4292a
+COPY STEAMDECK-MIDI-RECEIVER-2-Setup-0.5.0.exe staged_sha256=9232d8c4a2673dd1c3ec1bc35c9f87b9bc00c528114d71dec88892065c1565a1 equals_source=True source_still_exists=True
+COPY STEAMDECK-MIDI-RECEIVER-2.exe staged_sha256=2fcb2868d847615b5dd8b78732b654c857d48872f7125ab014a51253797f9b1c equals_source=True source_still_exists=True
+COPY STEAMDECK-MIDI-RECEIVER-2-Tray.exe staged_sha256=1550c0ce838f43d42b8fd7e707dff4ce61d2e1d6e7ccc339c2e8d43b631f9c96 equals_source=True source_still_exists=True
+== STAGING LISTING
+  BUILD-INFO.txt 1331 2d38a29a7f7fabb619ac4e112b458df18589fb40e7e52adc02347c4d212957ef
+  SHA256SUMS.txt 308 5257148507d793f57b84d42faa1f00196b1a03a742905998561c4644f769079d
+  STEAMDECK-MIDI-RECEIVER-2.exe 21003745 2fcb2868d847615b5dd8b78732b654c857d48872f7125ab014a51253797f9b1c
+  STEAMDECK-MIDI-RECEIVER-2-Setup-0.5.0.exe 43981989 9232d8c4a2673dd1c3ec1bc35c9f87b9bc00c528114d71dec88892065c1565a1
+  STEAMDECK-MIDI-RECEIVER-2-Tray.exe 20998625 1550c0ce838f43d42b8fd7e707dff4ce61d2e1d6e7ccc339c2e8d43b631f9c96
+== PYSTRAY IN BUNDLE: archive viewer on the STAGED console exe
+TRACKED archive_viewer pid=360592 exit=0 gone=True
+ARCHIVE_VIEWER_LINES 966
+   1, 3514249, 1451, 'pystray'
+   0, 3515700, 2292, 'pystray._appindicator'
+   0, 3517992, 10566, 'pystray._base'
+   0, 3528558, 5545, 'pystray._darwin'
+   0, 3534103, 231, 'pystray._dummy'
+   0, 3534334, 1558, 'pystray._gtk'
+   0, 3535892, 152, 'pystray._info'
+   1, 3536044, 935, 'pystray._util'
+   0, 3536979, 3937, 'pystray._util.gtk'
+   0, 3540916, 1633, 'pystray._util.notify_dbus'
+   0, 3542549, 5241, 'pystray._util.win32'
+   0, 3547790, 8012, 'pystray._win32'
+   0, 3555802, 8867, 'pystray._xorg'
+   10844752, 2548450, 6945272, 1, 'b', 'python312.dll'
+RAIL_EXIT 0

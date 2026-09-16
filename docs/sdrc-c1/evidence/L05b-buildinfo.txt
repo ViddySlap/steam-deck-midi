@@ -1,0 +1,20 @@
+  CANDIDATE 2e4292a75f08674fdf5c78358485b27c2d3bd913
+  VERSION 0.5.0
+  PYTHON 3.12.10 (.venv-build created by build_exe_v2.ps1 with py -3.12; v0.4.9 installed exes bundle python312.dll)
+  PYINSTALLER 6.22.3
+  ISCC C:\Users\Ben\AppData\Local\Programs\Inno Setup 6\ISCC.exe FileVersion=0.0.0.0 ProductVersion=0.0.0.0
+  BUILD_FINGERPRINT_BUILD_TIME_UTC 2026-09-16T09:12:21Z
+  BUILD_FINGERPRINT_GIT_COMMIT 2e4292a75f08674fdf5c78358485b27c2d3bd913
+  BUILD_HOST viddyslaptop (Windows), clone C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc
+  COMMAND powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\windows\build_installer_v2.ps1" -RepoRoot "C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc"
+    (build_installer_v2.ps1 runs build_exe_v2.ps1 -RepoRoot <clone>, which runs .venv-build\Scripts\python.exe -m PyInstaller --clean --noconfirm steamdeck-midi-receiver-2.spec; then ISCC.exe /DAppVersion=0.5.0 installer\windows\steamdeck-midi-receiver-2.iss)
+  PRECONDITION the empty gitignored build\ directory was created in the clone before this build (build_exe_v2.ps1:81 writes build\windows-file-version.txt before anything creates build\; first attempt exit 1)
+  STAGED_BY sdrc C1 (copied from dist\ and installer-output\, never moved, never run)
+  ISCC_ENGINE_VERSION Inno Setup 6.7.1 (the compiler's own banner in the build log; ISCC.exe file VersionInfo reads 0.0.0.0)
+  BUILD_RUN build_installer_v2.ps1 root pid 353404 exit 0, 2026-09-16T09:12:20.72Z to 2026-09-16T09:14:53.25Z, 152.5 s
+LIST BUILD-INFO.txt 1573 d9b9daefabe3c8be4c1c82833d1ac18055f88cc82f378d6aa59c788f91115ebc
+LIST SHA256SUMS.txt 308 5257148507d793f57b84d42faa1f00196b1a03a742905998561c4644f769079d
+LIST STEAMDECK-MIDI-RECEIVER-2.exe 21003745 2fcb2868d847615b5dd8b78732b654c857d48872f7125ab014a51253797f9b1c
+LIST STEAMDECK-MIDI-RECEIVER-2-Setup-0.5.0.exe 43981989 9232d8c4a2673dd1c3ec1bc35c9f87b9bc00c528114d71dec88892065c1565a1
+LIST STEAMDECK-MIDI-RECEIVER-2-Tray.exe 20998625 1550c0ce838f43d42b8fd7e707dff4ce61d2e1d6e7ccc339c2e8d43b631f9c96
+RAIL_EXIT 0

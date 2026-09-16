@@ -1,0 +1,56 @@
+INFO build fingerprint: version=0.5.0 commit=2e4292a75f08 built_utc=2026-09-16T09:12:21Z
+INFO selected MIDI output port: name=DECK_IN index=n/a
+INFO mapping UI available at http://127.0.0.1:47311
+Exception in thread tray:
+Traceback (most recent call last):
+  File "threading.py", line 1075, in _bootstrap_inner
+INFO listening on udp://127.0.0.1:46211
+  File "threading.py", line 1012, in run
+  File "pystray\_base.py", line 212, in run
+  File "pystray\_base.py", line 379, in _run
+NotImplementedError
+INFO action=BTN_A state=down seq=1
+INFO action=BTN_B state=down seq=2
+INFO action=BTN_X state=down seq=3
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "windows\receiver.py", line 901, in _handle_axis_event
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "windows\receiver.py", line 901, in _handle_axis_event
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "windows\receiver.py", line 901, in _handle_axis_event
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "windows\receiver.py", line 901, in _handle_axis_event
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "windows\receiver.py", line 901, in _handle_axis_event
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "windows\receiver.py", line 901, in _handle_axis_event
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "windows\receiver.py", line 901, in _handle_axis_event
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "windows\receiver.py", line 901, in _handle_axis_event
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+ERROR engine_registry.on_axis_event failed
+Traceback (most recent call last):
+  File "windows\receiver.py", line 901, in _handle_axis_event
+AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+INFO released note mapping for BTN_A
+INFO action=BTN_A state=up seq=13
+INFO released note mapping for BTN_B
+INFO action=BTN_B state=up seq=14
+INFO released note mapping for BTN_X
+INFO action=BTN_X state=up seq=15

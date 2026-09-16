@@ -1,0 +1,12 @@
+EXE C:\Users\Ben\Documents\steamdeck-midi-showready\candidate-2e4292a\STEAMDECK-MIDI-RECEIVER-2.exe
+EXE_SHA256 2fcb2868d847615b5dd8b78732b654c857d48872f7125ab014a51253797f9b1c
+FIXTURE_COPIED 11 files, manifest verified, into C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-c1\smoke\config
+ACTIVE_PRESET EDM Show.json
+PORTS udp=46211 ui=47311 (checked free: no UDP endpoint and no TCP connection on either)
+ENV PYSTRAY_BACKEND=dummy BROWSER=C:/Users/Ben/Documents/project-workspaces/steam-deck-midi-rc/.venv/Scripts/python.exe -c pass %s TMP=TEMP=C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-c1
+C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-c1\L06-smoke.ps1 : The property 'Count' cannot be found on this object. 
+Verify that the property exists.
+    + CategoryInfo          : NotSpecified: (:) [L06-smoke.ps1], PropertyNotFoundException
+    + FullyQualifiedErrorId : PropertyNotFoundStrict,L06-smoke.ps1
+ 
+RAIL_EXIT 1

@@ -1,0 +1,61 @@
+NOW_UTC 2026-09-16T09:10:08.6624285Z
+== CLONE
+HEAD a4b2c01a0db154a610111edb83bf581f88c4220e
+BRANCH chain/steamdeck-20260914
+PORCELAIN_LINES 0
+VERSION_FILE 0.5.0
+EXISTS .venv True
+EXISTS .venv-build False
+EXISTS build False
+EXISTS dist False
+EXISTS installer-output False
+EXISTS .showready True
+IGNORED_TOPLEVEL
+  !! .showready/
+  !! .venv/
+  !! deck/__pycache__/
+  !! protocol/__pycache__/
+  !! tests/__pycache__/
+  !! windows/__pycache__/
+  !! windows/engines/__pycache__/
+== INSTALLED PYTHON DLL LISTING (read-only)
+PYTHON_DLL_COUNT 0
+INSTALL_FILES
+  receiver.ico 65398 2026-04-28T00:29:48.0000000Z
+  STEAMDECK-MIDI-RECEIVER-2-Tray.exe 20934288 2026-08-06T20:10:42.0000000Z
+  STEAMDECK-MIDI-RECEIVER-2.exe 20938896 2026-08-06T20:10:36.0000000Z
+  unins000.dat 71404 2026-08-06T20:11:53.3238706Z
+  unins000.exe 4422914 2026-08-06T20:11:45.7790480Z
+EXE_BYTES_SEARCH STEAMDECK-MIDI-RECEIVER-2.exe opened FileAccess.Read: python312.dllx2
+EXE_VERSIONINFO STEAMDECK-MIDI-RECEIVER-2.exe FileVersion=0.4.9 ProductVersion=0.4.9
+EXE_BYTES_SEARCH STEAMDECK-MIDI-RECEIVER-2-Tray.exe opened FileAccess.Read: python312.dllx2
+EXE_VERSIONINFO STEAMDECK-MIDI-RECEIVER-2-Tray.exe FileVersion=0.4.9 ProductVersion=0.4.9
+== PY LAUNCHER
+   -V:3.14[-64] *   C:\Users\Ben\AppData\Local\Python\pythoncore-3.14-64\python.exe
+   -V:3.12[-64]     C:\Users\Ben\AppData\Local\Python\pythoncore-3.12-64\python.exe
+== ISCC
+ISCC_ON_PATH False
+ISCC_X86 False
+ISCC_PERUSER True
+== PROCESSES (read-only)
+  16020 loopMIDI.exe session=1 created=2026-08-16T06:29:31.9633500Z exe=C:\Program Files (x86)\Tobias Erichsen\loopMIDI\loopMIDI.exe
+  8920 msedgewebview2.exe session=1 created=2026-09-16T03:44:03.7673810Z exe=C:\Program Files (x86)\Microsoft\EdgeWebView\Application\153.0.4234.32\msedgewebview2.exe
+  18788 msedgewebview2.exe session=1 created=2026-08-16T06:29:23.6380230Z exe=C:\Program Files (x86)\Microsoft\EdgeWebView\Application\151.0.4129.86\msedgewebview2.exe
+  18836 msedgewebview2.exe session=1 created=2026-08-16T06:29:23.6539750Z exe=C:\Program Files (x86)\Microsoft\EdgeWebView\Application\151.0.4129.86\msedgewebview2.exe
+  19708 msedgewebview2.exe session=1 created=2026-08-16T06:29:24.0925410Z exe=C:\Program Files (x86)\Microsoft\EdgeWebView\Application\151.0.4129.86\msedgewebview2.exe
+  19736 msedgewebview2.exe session=1 created=2026-08-16T06:29:24.0945550Z exe=C:\Program Files (x86)\Microsoft\EdgeWebView\Application\151.0.4129.86\msedgewebview2.exe
+  20064 msedgewebview2.exe session=1 created=2026-08-16T06:29:24.1316980Z exe=C:\Program Files (x86)\Microsoft\EdgeWebView\Application\151.0.4129.86\msedgewebview2.exe
+  20632 msedgewebview2.exe session=1 created=2026-08-16T06:29:24.2274250Z exe=C:\Program Files (x86)\Microsoft\EdgeWebView\Application\151.0.4129.86\msedgewebview2.exe
+  22536 msedgewebview2.exe session=1 created=2026-09-16T03:44:04.0133160Z exe=C:\Program Files (x86)\Microsoft\EdgeWebView\Application\153.0.4234.32\msedgewebview2.exe
+  47716 msedgewebview2.exe session=1 created=2026-09-16T03:44:03.7215500Z exe=C:\Program Files (x86)\Microsoft\EdgeWebView\Application\153.0.4234.32\msedgewebview2.exe
+  61768 msedgewebview2.exe session=1 created=2026-09-16T03:44:03.9396350Z exe=C:\Program Files (x86)\Microsoft\EdgeWebView\Application\153.0.4234.32\msedgewebview2.exe
+  63320 msedgewebview2.exe session=1 created=2026-09-16T03:44:03.9392840Z exe=C:\Program Files (x86)\Microsoft\EdgeWebView\Application\153.0.4234.32\msedgewebview2.exe
+  64364 msedgewebview2.exe session=1 created=2026-09-16T03:44:03.9666580Z exe=C:\Program Files (x86)\Microsoft\EdgeWebView\Application\153.0.4234.32\msedgewebview2.exe
+  5268 STEAMDECK-MIDI-RECEIVER-2-Tray.exe session=1 created=2026-08-16T06:29:37.4311370Z exe=C:\Program Files\STEAMDECK MIDI Receiver 2\STEAMDECK-MIDI-RECEIVER-2-Tray.exe
+  23640 STEAMDECK-MIDI-RECEIVER-2-Tray.exe session=1 created=2026-08-16T06:29:37.8390240Z exe=C:\Program Files\STEAMDECK MIDI Receiver 2\STEAMDECK-MIDI-RECEIVER-2-Tray.exe
+== PORTS
+  UDP 0.0.0.0:45123 pid=23640
+  TCP 127.0.0.1:7723 pid=23640
+== FIXTURE MANIFEST
+FIXTURE_ENTRIES 11 MISMATCHES 0
+RAIL_EXIT 0

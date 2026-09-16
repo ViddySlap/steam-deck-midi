@@ -1,0 +1,16 @@
+Set-Content : Could not find a part of the path 
+'C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\build\windows-file-version.txt'.
+At C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\windows\build_exe_v2.ps1:81 char:1
++ Set-Content -Path $versionInfoPath -Value $versionText -Encoding ASCI ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Users\Ben\Do...ile-version.txt:String) [Set-Content], DirectoryNotFo 
+   undException
+    + FullyQualifiedErrorId : GetContentWriterDirectoryNotFoundError,Microsoft.PowerShell.Commands.SetContentCommand
+ 
+Failed to build receiver EXE before installer packaging.
+At C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\scripts\windows\build_installer_v2.ps1:17 char:5
++     throw "Failed to build receiver EXE before installer packaging."
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Failed to build...ller packaging.:String) [], RuntimeException
+    + FullyQualifiedErrorId : Failed to build receiver EXE before installer packaging.
+ 
