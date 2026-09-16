@@ -542,8 +542,16 @@ def run_arm(name: str, tree: Path, python: str, scratch: Path, stop: str,
 
     crashes_before = crash_reports()
     log_path = work / "bridge.log"
+    # WINDOWS: the child MUST be its own process group. Without
+    # CREATE_NEW_PROCESS_GROUP, the CTRL_BREAK_EVENT the stop arm sends goes to
+    # the whole group - it killed the PowerShell host and the ssh rail running
+    # this instrument and left the console in the PS debugger
+    # (IDLE_EXIT=-1073741510, STATUS_CONTROL_C_EXIT). A stop arm must reach the
+    # bridge and nothing else.
+    creation_flags = subprocess.CREATE_NEW_PROCESS_GROUP if os.name == "nt" else 0
     with open(log_path, "wb") as log:
-        proc = subprocess.Popen(argv, cwd=str(tree), stdout=log, stderr=subprocess.STDOUT, env=env)
+        proc = subprocess.Popen(argv, cwd=str(tree), stdout=log, stderr=subprocess.STDOUT,
+                                env=env, creationflags=creation_flags)
     record["pid"] = proc.pid
     own = {proc.pid}
 
@@ -637,8 +645,19 @@ def run_arm(name: str, tree: Path, python: str, scratch: Path, stop: str,
         # ---- stop arm ------------------------------------------------------
         stop_started = time.monotonic()
         if stop == "sigint":
-            proc.send_signal(signal.SIGINT if os.name != "nt" else signal.CTRL_BREAK_EVENT)
+            if os.name == "nt":
+                # CTRL_BREAK_EVENT, into the child's OWN group. Windows has no
+                # SIGINT delivery to another process that is both reliable and
+                # safe for the sender, so this arm measures an ABRUPT stop on
+                # Windows and a graceful KeyboardInterrupt on the Mac. The
+                # record says which, so a reader cannot mistake the two.
+                record["stop_mechanism"] = "CTRL_BREAK_EVENT to a new process group"
+                proc.send_signal(signal.CTRL_BREAK_EVENT)
+            else:
+                record["stop_mechanism"] = "SIGINT"
+                proc.send_signal(signal.SIGINT)
         elif stop == "shutdown":
+            record["stop_mechanism"] = "POST /api/shutdown"
             try:
                 request = urllib.request.Request(
                     f"http://127.0.0.1:{ui_port}/api/shutdown", method="POST", data=b"")
