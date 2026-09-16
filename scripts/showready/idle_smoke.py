@@ -326,9 +326,15 @@ def wait_for_quiet(timeout: float = 1800.0) -> dict:
 def process_cpu_seconds(pid: int) -> float | None:
     """Cumulative CPU seconds for `pid`, all threads.
 
-    Mac/posix: `ps -o cputime= -p <pid>` ([DD-]HH:MM:SS.ss or MM:SS.ss).
-    Windows:   GetProcessTimes (kernel + user), via ctypes. py-spy is NOT
-               installed and must not be installed.
+    Mac/posix: `ps -o cputime= -p <pid>` ([DD-]HH:MM:SS.ss or MM:SS.ss). The
+               bridge is a single process there (the venv python is the real
+               interpreter, not a launcher), so no tree walk is needed.
+    Windows:   GetProcessTimes summed over the process AND ITS DESCENDANTS,
+               because the venv's Scripts\\python.exe re-execs the real
+               interpreter. py-spy is NOT installed and must not be installed.
+
+    PROVEN IN BOTH DIRECTIONS on each machine by the --cpu-self-test arm: a
+    child spinning a whole core must read near 100%, and a sleeping child near 0.
     """
     if os.name == "nt":
         return _windows_cpu_seconds(pid)
@@ -350,31 +356,94 @@ def process_cpu_seconds(pid: int) -> float | None:
     return seconds + days * 86400.0
 
 
+def _windows_process_tree(pid: int) -> list[int]:
+    """`pid` and every descendant, via a Toolhelp32 snapshot.
+
+    The venv's `Scripts\\python.exe` is a launcher that re-execs the real
+    interpreter, so the pid we start is NOT the pid that burns CPU. Measuring
+    only the parent reported 0.0% for a process spinning a whole core - a
+    detector that could only ever pass.
+    """
+    import ctypes
+    from ctypes import wintypes
+
+    TH32CS_SNAPPROCESS = 0x00000002
+    INVALID_HANDLE_VALUE = ctypes.c_void_p(-1).value
+
+    class PROCESSENTRY32(ctypes.Structure):
+        _fields_ = [("dwSize", wintypes.DWORD), ("cntUsage", wintypes.DWORD),
+                    ("th32ProcessID", wintypes.DWORD),
+                    ("th32DefaultHeapID", ctypes.POINTER(ctypes.c_ulong)),
+                    ("th32ModuleID", wintypes.DWORD), ("cntThreads", wintypes.DWORD),
+                    ("th32ParentProcessID", wintypes.DWORD),
+                    ("pcPriClassBase", ctypes.c_long), ("dwFlags", wintypes.DWORD),
+                    ("szExeFile", ctypes.c_char * 260)]
+
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel32.CreateToolhelp32Snapshot.restype = wintypes.HANDLE
+    kernel32.CloseHandle.argtypes = [wintypes.HANDLE]
+    snapshot = kernel32.CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)
+    if not snapshot or snapshot == INVALID_HANDLE_VALUE:
+        return [pid]
+    children: dict[int, list[int]] = {}
+    try:
+        entry = PROCESSENTRY32()
+        entry.dwSize = ctypes.sizeof(PROCESSENTRY32)
+        if not kernel32.Process32First(snapshot, ctypes.byref(entry)):
+            return [pid]
+        while True:
+            children.setdefault(entry.th32ParentProcessID, []).append(entry.th32ProcessID)
+            if not kernel32.Process32Next(snapshot, ctypes.byref(entry)):
+                break
+    finally:
+        kernel32.CloseHandle(snapshot)
+    tree, queue = [], [pid]
+    while queue:
+        current = queue.pop()
+        if current in tree:
+            continue
+        tree.append(current)
+        queue.extend(children.get(current, []))
+    return tree
+
+
 def _windows_cpu_seconds(pid: int) -> float | None:
+    """Kernel + user CPU seconds for `pid` AND its descendants."""
     import ctypes
     from ctypes import wintypes
 
     PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
     kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
-    handle = kernel32.OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, False, pid)
-    if not handle:
-        return None
-    try:
-        creation = wintypes.FILETIME()
-        exit_time = wintypes.FILETIME()
-        kernel = wintypes.FILETIME()
-        user = wintypes.FILETIME()
-        ok = kernel32.GetProcessTimes(handle, ctypes.byref(creation), ctypes.byref(exit_time),
-                                      ctypes.byref(kernel), ctypes.byref(user))
-        if not ok:
-            return None
+    # HANDLE is pointer-sized. Left as the default c_int, a 64-bit handle is
+    # TRUNCATED and every call downstream is against the wrong object.
+    kernel32.OpenProcess.restype = wintypes.HANDLE
+    kernel32.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+    kernel32.CloseHandle.argtypes = [wintypes.HANDLE]
+    kernel32.GetProcessTimes.argtypes = [
+        wintypes.HANDLE, ctypes.POINTER(wintypes.FILETIME),
+        ctypes.POINTER(wintypes.FILETIME), ctypes.POINTER(wintypes.FILETIME),
+        ctypes.POINTER(wintypes.FILETIME)]
 
-        def to_seconds(ft):
-            return ((ft.dwHighDateTime << 32) | ft.dwLowDateTime) / 1e7
+    def to_seconds(ft):
+        return ((ft.dwHighDateTime << 32) | ft.dwLowDateTime) / 1e7
 
-        return to_seconds(kernel) + to_seconds(user)
-    finally:
-        kernel32.CloseHandle(handle)
+    total, seen_any = 0.0, False
+    for target in _windows_process_tree(pid):
+        handle = kernel32.OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, False, target)
+        if not handle:
+            continue
+        try:
+            creation = wintypes.FILETIME()
+            exit_time = wintypes.FILETIME()
+            kernel = wintypes.FILETIME()
+            user = wintypes.FILETIME()
+            if kernel32.GetProcessTimes(handle, ctypes.byref(creation), ctypes.byref(exit_time),
+                                        ctypes.byref(kernel), ctypes.byref(user)):
+                total += to_seconds(kernel) + to_seconds(user)
+                seen_any = True
+        finally:
+            kernel32.CloseHandle(handle)
+    return total if seen_any else None
 
 
 def free_port() -> int:
@@ -657,6 +726,16 @@ def run_arm(name: str, tree: Path, python: str, scratch: Path, stop: str,
                 record["stop_mechanism"] = "SIGINT"
                 proc.send_signal(signal.SIGINT)
         elif stop == "shutdown":
+            if no_ui:
+                # There is no HTTP server to POST to. Saying so beats recording
+                # a 17 s "exit" that is really this instrument's own kill.
+                record["verdict"] = "NOT_APPLICABLE"
+                record["reason"] = "--no-ui has no HTTP surface; POST /api/shutdown cannot apply"
+                record["stop_mechanism"] = "none (--no-ui)"
+                proc.kill()
+                proc.wait(timeout=10)
+                record["exit_seconds"] = None
+                return record
             record["stop_mechanism"] = "POST /api/shutdown"
             try:
                 request = urllib.request.Request(
@@ -707,6 +786,46 @@ def run_arm(name: str, tree: Path, python: str, scratch: Path, stop: str,
     return record
 
 
+def cpu_self_test(python: str) -> dict:
+    """Prove the CPU reader fires and does not fire, ON THIS MACHINE.
+
+    A CPU instrument that reads the wrong process reports 0.0% for everything
+    and can only ever PASS. That is exactly what happened on the laptop: the
+    venv launcher re-execs the real interpreter, so measuring the pid we
+    started gave 0.0% for a child burning a whole core. Every gate runs this
+    before believing any CPU number.
+
+    Declared: busy >= 50% of one core, idle <= 5%.
+    """
+    result = {"machine": platform.system(), "python": python,
+              "declared": {"busy_min_percent": 50.0, "idle_max_percent": 5.0}}
+    flags = subprocess.CREATE_NEW_PROCESS_GROUP if os.name == "nt" else 0
+    spin = "import time\nend=time.monotonic()+6.0\nwhile time.monotonic()<end: pass"
+    for name, code in (("busy", spin), ("idle", "import time; time.sleep(6)")):
+        proc = subprocess.Popen([python, "-c", code], creationflags=flags)
+        try:
+            time.sleep(0.5)
+            c0 = process_cpu_seconds(proc.pid)
+            w0 = time.monotonic()
+            time.sleep(4.0)
+            c1 = process_cpu_seconds(proc.pid)
+            wall = time.monotonic() - w0
+        finally:
+            proc.wait(timeout=30)
+        percent = None if (c0 is None or c1 is None) else round(100.0 * (c1 - c0) / wall, 2)
+        result[name] = {"pid": proc.pid, "cpu_seconds": None if c0 is None or c1 is None
+                        else round(c1 - c0, 4), "percent_of_one_core": percent}
+    busy = result["busy"]["percent_of_one_core"]
+    idle = result["idle"]["percent_of_one_core"]
+    result["passed"] = (busy is not None and idle is not None
+                        and busy >= 50.0 and idle <= 5.0)
+    if not result["passed"]:
+        result["reason"] = ("the CPU reader cannot distinguish a spinning process from a "
+                            "sleeping one on this machine; every CPU number it produces "
+                            "is meaningless")
+    return result
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--tree", type=Path, default=ROOT,
@@ -723,7 +842,15 @@ def main(argv=None) -> int:
     parser.add_argument("--engines-update-hz", type=float, default=None,
                         help="sensitivity control: force this update_hz on the qualifying engine")
     parser.add_argument("--stop", choices=("sigint", "shutdown", "both"), default="both")
+    parser.add_argument("--cpu-self-test", action="store_true",
+                        help="prove the CPU reader fires and does not fire on this machine, "
+                             "then exit")
     args = parser.parse_args(argv)
+
+    if args.cpu_self_test:
+        check = cpu_self_test(args.python)
+        print(json.dumps(check, indent=1))
+        return 0 if check["passed"] else 1
 
     scratch = args.scratch.resolve()
     scratch.mkdir(parents=True, exist_ok=True)
@@ -762,6 +889,15 @@ def main(argv=None) -> int:
             print(json.dumps(result, indent=1))
             return 2
 
+    # Never believe a CPU number from a reader that has not been shown to work
+    # on THIS machine, in both directions.
+    result["cpu_self_test"] = cpu_self_test(args.python)
+    if not result["cpu_self_test"]["passed"]:
+        result["verdict"] = "INVALID"
+        result["reason"] = result["cpu_self_test"]["reason"]
+        print(json.dumps(result, indent=1))
+        return 2
+
     stops = ("sigint", "shutdown") if args.stop == "both" else (args.stop,)
     for stop in stops:
         arm = run_arm(
@@ -771,9 +907,10 @@ def main(argv=None) -> int:
             expect_no_sidecar=(platform.system() == "Darwin" and not args.no_ui))
         result["arms"].append(arm)
 
-    verdicts = [a["verdict"] for a in result["arms"]]
+    verdicts = [a["verdict"] for a in result["arms"] if a["verdict"] != "NOT_APPLICABLE"]
     result["verdict"] = ("INVALID" if "INVALID" in verdicts
-                         else "FAIL" if "FAIL" in verdicts else "PASS")
+                         else "FAIL" if "FAIL" in verdicts
+                         else "PASS" if verdicts else "NOT_APPLICABLE")
     if args.out:
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(json.dumps(result, indent=1) + "\n", encoding="utf-8")
