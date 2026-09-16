@@ -396,7 +396,7 @@ one of them.
 | `shasum -a 256 -c scripts/showready/SHA256SUMS` | 18 of 18 OK |
 | `git diff -- tests/ui_controller_geometry.cjs` | EMPTY - the criteria file is untouched |
 | `git diff -- windows/midi.py windows/receiver.py windows/config.py windows/engines/ protocol/` | EMPTY |
-| `scripts/showready/ab_run.py --candidate <this commit> --preset '.showready/fixtures/mac/presets/EDM Show.json' --section windows --script .../deck-script.json` | recorded in section 10 below, measured AFTER this commit exists, because `--candidate` archives a REVISION and not the working tree |
+| `scripts/showready/ab_run.py --candidate <this commit> --preset '.showready/fixtures/mac/presets/EDM Show.json' --section windows --script .../deck-script.json` | PASSED at commit 845357e: 732 steps, 56/56 mappings exercised, 1531 messages per arm, different_mappings [] and unexercised_mappings [] in both B1 and B2. Section 10. |
 
 No laptop act: P2 does not touch the laptop, so no guard snapshot, no browser listing, no
 bundle. No timing or CPU arm, so the per-arm quiet gate, the vault-sync sample and the
@@ -416,7 +416,21 @@ evidence about this link. NAMED because it is an easy way to ship a green bar 1 
 the wrong tree: unlike `ui_geometry.py`, whose `--revision` defaults to tracked working bytes,
 `ab_run.py` has no working-tree mode.
 
-BAR1_RESULT_PLACEHOLDER
+RE-RUN AT THE REAL COMMIT. `--candidate 845357ea1c5fb4195f152bc6a865e36676be825c`, which is
+this link's own commit, against the v0.4.9 baseline arm, EDM Show, `--section windows`:
+
+    {"result": "/tmp/sdpolish-p2/bar1/mac-edm-p2.json.gz", "passed": true, "error": null,
+     "comparisons": {"B1": {"totals": {"steps": 732, "mappings": 56, "mappings_exercised": 56,
+                                       "messages_A": 1531, "messages_B": 1531},
+                            "different_mappings": [], "unexercised_mappings": []},
+                     "B2": {... identical ...}}}
+
+PASSED. 732 steps, 56 of 56 mappings exercised on BOTH arms, 1531 MIDI messages on each side
+in each of the two candidate arms, `different_mappings: []` and `unexercised_mappings: []`.
+The receipt's `candidate` field reads `845357ea1c5fb4195f152bc6a865e36676be825c`, so the arm
+identity is checkable and is this link's tree, not its predecessor's. All three arms' cleanup
+exit codes are -15 (the instrument's own SIGTERM teardown) and no `ab_run.py` process remains.
+Show-ready bar 1 for EDM Show is therefore unmoved by this link, which is what item (f) asks.
 
 ## FOR P3 AND THE GATE
 
