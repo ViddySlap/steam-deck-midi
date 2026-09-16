@@ -1,0 +1,10 @@
+{"repeat": 2, "arm": "CLOSED", "try": 1, "start": "18:04:23", "end": "18:05:34", "samples": 14, "max_load1": 2.85, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 4, "arm": "CLOSED", "try": 1, "start": "18:06:49", "end": "18:08:00", "samples": 14, "max_load1": 2.91, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 6, "arm": "CLOSED", "try": 1, "start": "18:09:15", "end": "18:10:27", "samples": 14, "max_load1": 3.09, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 8, "arm": "CLOSED", "try": 1, "start": "18:11:42", "end": "18:12:53", "samples": 15, "max_load1": 3.09, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 10, "arm": "CLOSED", "try": 1, "start": "18:14:08", "end": "18:15:20", "samples": 14, "max_load1": 3.87, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 12, "arm": "CLOSED", "try": 1, "start": "18:17:15", "end": "18:18:27", "samples": 14, "max_load1": 3.85, "load1_over_5": [], "hogs_over_50pct_10s": [{"first": 1789517838.528817, "last": 1789517903.6029282, "command": "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd", "max": 92.5}], "valid": false}
+{"repeat": 14, "arm": "CLOSED", "try": 1, "start": "18:19:42", "end": "18:20:54", "samples": 15, "max_load1": 2.97, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 16, "arm": "CLOSED", "try": 1, "start": "18:22:10", "end": "18:23:21", "samples": 14, "max_load1": 2.36, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 19, "arm": "CLOSED", "try": 1, "start": "18:26:44", "end": "18:27:56", "samples": 15, "max_load1": 2.26, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+ARM_VALIDITY INVALID PRESENT 9 arms

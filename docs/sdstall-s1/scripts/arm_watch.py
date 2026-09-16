@@ -163,6 +163,9 @@ def main():
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--stack-budget-file', type=Path)
     p.add_argument('--stack-budget', type=int, default=10)
+    p.add_argument('--fine-always', action='store_true',
+                   help='MASTER 13 17:39: arm fine sampling FROM THE FIRST ARM instead of at the '
+                        '200 ms trigger. For the DIAGNOSTIC-UNDER-LOAD session only.')
     a = p.parse_args()
     a.out.mkdir(parents=True, exist_ok=True)
     stacks_dir = a.out / (a.label + '.stacks')
@@ -176,7 +179,7 @@ def main():
     gapf = (a.out / (a.label + '.gaps.jsonl')).open('w', buffering=1)
     qf = (a.out / (a.label + '.recvq.jsonl')).open('w', buffering=1)
     lock = threading.Lock()
-    st = {'fine': False, 'bridge_pid': None, 'udp_port': None, 'stacks': 0, 'episode_sampled': False,
+    st = {'fine': bool(a.fine_always), 'fine_always': bool(a.fine_always), 'bridge_pid': None, 'udp_port': None, 'stacks': 0, 'episode_sampled': False,
           'max_recvq_bytes': 0, 'max_backlog_s': 0.0, 'episodes_over_200ms': 0, 'episodes_over_1s': 0,
           'max_record_silence_s': 0.0, 'lms_polls': 0, 'lms_seconds': 0.0, 'sample_seconds': 0.0,
           'statuses_seen': set(), 'fine_statuses_seen': set(), 'fine_samples': 0,
@@ -301,13 +304,16 @@ def main():
                 if now >= next_fine:
                     next_fine = now + FINE_INTERVAL_S
                     threading.Thread(target=lambda b=backlog, n=q: emit(env_sample(True, b, n)), daemon=True).start()
-            elif st['fine']:
+            elif st['fine'] and not a.fine_always:
                 st['fine'] = False
                 with lock:
                     gapf.write(json.dumps({'record': 'gap_closed', 't': now,
                                            'hms': time.strftime('%H:%M:%S', time.localtime(now)),
                                            'episode_seconds': now - episode_start if episode_start else None,
                                            'backlog_s': backlog, 'recvq_bytes': q}) + '\n')
+        if a.fine_always and now >= next_fine:
+            next_fine = now + FINE_INTERVAL_S
+            threading.Thread(target=lambda b=backlog, n=q: emit(env_sample(True, b, n)), daemon=True).start()
         if now >= next_env:
             next_env = now + ENV_INTERVAL_S
             threading.Thread(target=lambda b=backlog, n=q: emit(env_sample(False, b, n)), daemon=True).start()

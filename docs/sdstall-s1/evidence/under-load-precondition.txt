@@ -1,0 +1,21 @@
+=== S1 own measurement of the DIAGNOSTIC-UNDER-LOAD precondition ===
+date: 2026-09-15 17:47:56 MDT
+--- sysctl -n vm.loadavg ---
+{ 2.93 3.03 3.34 }
+--- ~/.lmstudio/bin/lms ps (READ-ONLY, the only lms verb this link runs) ---
+
+IDENTIFIER                          MODEL                               STATUS    SIZE         CONTEXT    PARALLEL    DEVICE    TTL
+qwen3-coder-30b-a3b-instruct-mlx    qwen3-coder-30b-a3b-instruct-mlx    IDLE      17.19 GB     262144     4           Local        
+text-embedding-bge-m3               text-embedding-bge-m3               IDLE      634.55 MB    8192       -           Local        
+
+--- ps -A -o pcpu=,pid=,command= | grep -iE 'qwen-bench|local-LLM-|drive-iteration|run-watcher|run2.sh' ---
+  2.0 16999 /opt/homebrew/bin/node /Users/viddyslap/Documents/project-workspaces/local-LLM-engine/engine/server.mjs --port 8899 --state-root /Users/viddyslap/.p
+--- count above 20 pct of one core ---
+       0
+--- top 5 non-exempt processes ---
+ 25.6   398 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 24.2   800 /usr/libexec/networkserviceproxy
+ 20.0 62224 /Users/viddyslap/.local/bin/claude --dangerously-skip-permissions --setting-sources user,project,local --channels plugin:fakecha
+ 16.2 91201 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer) --type=rendere
+ 15.3 18429 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebK
+  8.3   428 /usr/libexec/nehelper

@@ -71,7 +71,37 @@ def build(args):
     """timing_ab.run()'s preamble, same calls in the same order."""
     validate_scratch(args.scratch)
     args.scratch.mkdir(parents=True, exist_ok=True)
-    work = Path(tempfile.mkdtemp(prefix='timing-', dir=args.scratch)).resolve()
+    # `.metadata_never_index` keeps Spotlight (fseventsd/mds/mds_stores) off the
+    # candidate tree. Extracting a fresh tree drove load1 from 2.2 to 13.5 on this
+    # Mac and made every arm INVALID under the EXTENDED LOAD VALIDITY cap; the
+    # flag file is the unprivileged, reversible way to stop it. See the report.
+    (args.scratch / '.metadata_never_index').touch()
+    if args.work:
+        work = Path(args.work).resolve()
+        reused = (work / 'candidate').is_dir() and (work / 'script.json').is_file()
+        work.mkdir(parents=True, exist_ok=True)
+        (work / '.metadata_never_index').touch()
+        if reused:
+            # The pinned instrument builds ONE candidate tree per run and serves
+            # every arm from it (timing_ab.run() lines 787-800). Reusing it across
+            # this revision's arms is the same design, and it is what keeps
+            # Spotlight from re-indexing a new copy before every single arm.
+            script = read_json(args.script)
+            validate(script)
+            verified = verify_fixtures(args.fixtures)
+            preset = args.preset.resolve()
+            if str(preset) not in verified or preset.name != 'EDM Show.json':
+                raise ValueError('Requires verified EDM Show fixture')
+            raw = read_json(preset)
+            meta = {'work': str(work), 'candidate': read_json(work / 'candidate.json'),
+                    'candidate_tree_reused': True,
+                    'script_file_sha256': sha(args.script.read_bytes()),
+                    'preset_sha256': sha(preset.read_bytes()),
+                    'instrument_sha256': {str(p.relative_to(timing_ab.ROOT)): sha(p.read_bytes())
+                                          for p in timing_ab.KIT.iterdir() if p.is_file()}}
+            return work, work / 'candidate', script, effective(raw, 'windows')['mappings'], meta
+    else:
+        work = Path(tempfile.mkdtemp(prefix='timing-', dir=args.scratch)).resolve()
     script = read_json(args.script)
     validate(script)
     verified = verify_fixtures(args.fixtures)
@@ -95,7 +125,8 @@ def build(args):
     (config / 'windows_midi_map.json').write_bytes(preset.read_bytes())
     (work / 'script.json').write_bytes(canonical(script))
     mappings = effective(raw, 'windows')['mappings']
-    meta = {'work': str(work), 'candidate': candidate,
+    (work / 'candidate.json').write_bytes(canonical(candidate))
+    meta = {'work': str(work), 'candidate': candidate, 'candidate_tree_reused': False,
             'script_file_sha256': sha(args.script.read_bytes()),
             'preset_sha256': sha(preset.read_bytes()),
             'instrument_sha256': {str(p.relative_to(timing_ab.ROOT)): sha(p.read_bytes())
@@ -106,6 +137,9 @@ def build(args):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--candidate', required=True)
+    p.add_argument('--work', type=Path,
+                   help='Explicit work dir; reused across this revision arms if it already '
+                        'holds candidate/ and script.json, so the tree is extracted ONCE')
     p.add_argument('--tree-from', type=Path,
                    help='Use this already-extracted tree instead of a local git archive (laptop)')
     p.add_argument('--repo', type=Path, default=ROOT)

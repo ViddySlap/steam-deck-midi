@@ -1,0 +1,83 @@
+2026-09-15T17:38:11 ARMS START target=8 maxarms=14 work=C:\Users\Ben\AppData\Local\Temp\sdwin\sdstall-s1
+2026-09-15T17:38:11 ARM 1 rev=base label=win-a01-base
+{"repeat": 1, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdstall-s1\win-a01-base.json.gz
+2026-09-15T17:40:06 ARM 1 exit 0
+2026-09-15T17:40:06 COUNT base=1/8 head=0/8 tried base=1 head=0
+2026-09-15T17:40:06 ARM 2 rev=head label=win-a02-head
+{"repeat": 2, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdstall-s1\win-a02-head.json.gz
+2026-09-15T17:41:54 ARM 2 exit 0
+2026-09-15T17:41:54 COUNT base=1/8 head=1/8 tried base=1 head=1
+2026-09-15T17:41:54 ARM 3 rev=base label=win-a03-base
+{"repeat": 3, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdstall-s1\win-a03-base.json.gz
+2026-09-15T17:43:25 ARM 3 exit 0
+2026-09-15T17:43:25 COUNT base=2/8 head=1/8 tried base=2 head=1
+2026-09-15T17:43:25 ARM 4 rev=head label=win-a04-head
+{"repeat": 4, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdstall-s1\win-a04-head.json.gz
+2026-09-15T17:44:56 ARM 4 exit 0
+2026-09-15T17:44:56 COUNT base=2/8 head=2/8 tried base=2 head=2
+2026-09-15T17:44:56 ARM 5 rev=base label=win-a05-base
+{"repeat": 5, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdstall-s1\win-a05-base.json.gz
+2026-09-15T17:46:26 ARM 5 exit 0
+2026-09-15T17:46:26 COUNT base=3/8 head=2/8 tried base=3 head=2
+2026-09-15T17:46:26 ARM 6 rev=head label=win-a06-head
+{"repeat": 6, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdstall-s1\win-a06-head.json.gz
+2026-09-15T17:47:56 ARM 6 exit 0
+2026-09-15T17:47:56 COUNT base=3/8 head=3/8 tried base=3 head=3
+2026-09-15T17:47:56 ARM 7 rev=base label=win-a07-base
+{"repeat": 7, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdstall-s1\win-a07-base.json.gz
+2026-09-15T17:49:27 ARM 7 exit 0
+2026-09-15T17:49:27 COUNT base=4/8 head=3/8 tried base=4 head=3
+2026-09-15T17:49:27 ARM 8 rev=head label=win-a08-head
+{"repeat": 8, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdstall-s1\win-a08-head.json.gz
+2026-09-15T17:50:58 ARM 8 exit 0
+2026-09-15T17:50:58 COUNT base=4/8 head=4/8 tried base=4 head=4
+2026-09-15T17:50:58 ARM 9 rev=base label=win-a09-base
+{"repeat": 9, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdstall-s1\win-a09-base.json.gz
+2026-09-15T17:52:28 ARM 9 exit 0
+2026-09-15T17:52:28 COUNT base=5/8 head=4/8 tried base=5 head=4
+2026-09-15T17:52:28 ARM 10 rev=head label=win-a10-head
+{"repeat": 10, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdstall-s1\win-a10-head.json.gz
+2026-09-15T17:53:58 ARM 10 exit 0
+2026-09-15T17:53:58 COUNT base=5/8 head=5/8 tried base=5 head=5
+2026-09-15T17:53:58 ARM 11 rev=base label=win-a11-base
+{"repeat": 11, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdstall-s1\win-a11-base.json.gz
+2026-09-15T17:55:28 ARM 11 exit 0
+2026-09-15T17:55:28 COUNT base=6/8 head=5/8 tried base=6 head=5
+2026-09-15T17:55:28 ARM 12 rev=head label=win-a12-head
+{"repeat": 12, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdstall-s1\win-a12-head.json.gz
+2026-09-15T17:56:58 ARM 12 exit 0
+2026-09-15T17:56:58 COUNT base=6/8 head=6/8 tried base=6 head=6
+2026-09-15T17:56:58 ARM 13 rev=base label=win-a13-base
+{"repeat": 13, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdstall-s1\win-a13-base.json.gz
+2026-09-15T17:58:30 ARM 13 exit 0
+2026-09-15T17:58:30 COUNT base=7/8 head=6/8 tried base=7 head=6
+2026-09-15T17:58:30 ARM 14 rev=head label=win-a14-head
+{"repeat": 14, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdstall-s1\win-a14-head.json.gz
+2026-09-15T18:00:00 ARM 14 exit 0
+2026-09-15T18:00:00 COUNT base=7/8 head=7/8 tried base=7 head=7
+2026-09-15T18:00:00 ARM 15 rev=base label=win-a15-base
+{"repeat": 15, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdstall-s1\win-a15-base.json.gz
+2026-09-15T18:01:31 ARM 15 exit 0
+2026-09-15T18:01:31 COUNT base=8/8 head=7/8 tried base=8 head=7
+2026-09-15T18:01:31 ARM 16 rev=head label=win-a16-head
+{"repeat": 16, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdstall-s1\win-a16-head.json.gz
+2026-09-15T18:03:01 ARM 16 exit 0
+2026-09-15T18:03:01 COUNT base=8/8 head=8/8 tried base=8 head=8
+2026-09-15T18:03:01 ARMS END base=8 head=8
+ARMS_DONE

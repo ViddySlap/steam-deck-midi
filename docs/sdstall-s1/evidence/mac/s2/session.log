@@ -1,0 +1,84 @@
+2026-09-15 18:03:07 CONTINUATION s2 start; sampler pid 62096; driver pid 62092; targets base=8 head=8 from arm 1
+2026-09-15 18:03:07   quiet: load1 2.08
+2026-09-15 18:03:07 ARM 1 rev=base sha=70cebd0 label=s2-a01-base
+2026-09-15 18:04:21 ARM 1 exit 0 provisional validity 0
+2026-09-15 18:04:21 COUNT extra base=1/8 head=0/8 tried base=1 head=0
+2026-09-15 18:04:21   quiet: load1 2.60
+2026-09-15 18:04:21 ARM 2 rev=head sha=e291976 label=s2-a02-head
+2026-09-15 18:05:35 ARM 2 exit 0 provisional validity 0
+2026-09-15 18:05:35 COUNT extra base=1/8 head=1/8 tried base=1 head=1
+2026-09-15 18:05:35   quiet: load1 3.10
+2026-09-15 18:05:35 ARM 3 rev=base sha=70cebd0 label=s2-a03-base
+2026-09-15 18:06:49 ARM 3 exit 0 provisional validity 0
+2026-09-15 18:06:49 COUNT extra base=2/8 head=1/8 tried base=2 head=1
+2026-09-15 18:06:49   quiet: load1 2.99
+2026-09-15 18:06:49 ARM 4 rev=head sha=e291976 label=s2-a04-head
+2026-09-15 18:08:02 ARM 4 exit 0 provisional validity 0
+2026-09-15 18:08:02 COUNT extra base=2/8 head=2/8 tried base=2 head=2
+2026-09-15 18:08:02   quiet: load1 2.75
+2026-09-15 18:08:02 ARM 5 rev=base sha=70cebd0 label=s2-a05-base
+2026-09-15 18:09:15 ARM 5 exit 0 provisional validity 0
+2026-09-15 18:09:15 COUNT extra base=3/8 head=2/8 tried base=3 head=2
+2026-09-15 18:09:15   quiet: load1 2.63
+2026-09-15 18:09:15 ARM 6 rev=head sha=e291976 label=s2-a06-head
+2026-09-15 18:10:28 ARM 6 exit 0 provisional validity 0
+2026-09-15 18:10:28 COUNT extra base=3/8 head=3/8 tried base=3 head=3
+2026-09-15 18:10:28   quiet: load1 2.67
+2026-09-15 18:10:28 ARM 7 rev=base sha=70cebd0 label=s2-a07-base
+2026-09-15 18:11:41 ARM 7 exit 0 provisional validity 0
+2026-09-15 18:11:41 COUNT extra base=4/8 head=3/8 tried base=4 head=3
+2026-09-15 18:11:41   quiet: load1 2.81
+2026-09-15 18:11:41 ARM 8 rev=head sha=e291976 label=s2-a08-head
+2026-09-15 18:12:55 ARM 8 exit 0 provisional validity 0
+2026-09-15 18:12:55 COUNT extra base=4/8 head=4/8 tried base=4 head=4
+2026-09-15 18:12:55   quiet: load1 3.00
+2026-09-15 18:12:55 ARM 9 rev=base sha=70cebd0 label=s2-a09-base
+2026-09-15 18:14:08 ARM 9 exit 0 provisional validity 0
+2026-09-15 18:14:08 COUNT extra base=5/8 head=4/8 tried base=5 head=4
+2026-09-15 18:14:08   quiet: load1 3.16
+2026-09-15 18:14:08 ARM 10 rev=head sha=e291976 label=s2-a10-head
+2026-09-15 18:15:21 ARM 10 exit 0 provisional validity 0
+2026-09-15 18:15:21 COUNT extra base=5/8 head=5/8 tried base=5 head=5
+2026-09-15 18:15:21   quiet: load1 3.40
+2026-09-15 18:15:21 ARM 11 rev=base sha=70cebd0 label=s2-a11-base
+2026-09-15 18:16:35 ARM 11 exit 0 provisional validity 1
+2026-09-15 18:16:35 COUNT extra base=5/8 head=5/8 tried base=6 head=5
+2026-09-15 18:17:15   quiet: load1 3.83
+2026-09-15 18:17:15 ARM 12 rev=head sha=e291976 label=s2-a12-head
+2026-09-15 18:18:28 ARM 12 exit 0 provisional validity 0
+2026-09-15 18:18:28 COUNT extra base=5/8 head=6/8 tried base=6 head=6
+2026-09-15 18:18:28   quiet: load1 3.63
+2026-09-15 18:18:28 ARM 13 rev=base sha=70cebd0 label=s2-a13-base
+2026-09-15 18:19:42 ARM 13 exit 0 provisional validity 0
+2026-09-15 18:19:42 COUNT extra base=6/8 head=6/8 tried base=7 head=6
+2026-09-15 18:19:42   quiet: load1 2.62
+2026-09-15 18:19:42 ARM 14 rev=head sha=e291976 label=s2-a14-head
+2026-09-15 18:20:56 ARM 14 exit 0 provisional validity 0
+2026-09-15 18:20:56 COUNT extra base=6/8 head=7/8 tried base=7 head=7
+2026-09-15 18:20:56   quiet: load1 2.19
+2026-09-15 18:20:56 ARM 15 rev=base sha=70cebd0 label=s2-a15-base
+2026-09-15 18:22:09 ARM 15 exit 0 provisional validity 0
+2026-09-15 18:22:09 COUNT extra base=7/8 head=7/8 tried base=8 head=7
+2026-09-15 18:22:09   quiet: load1 1.70
+2026-09-15 18:22:09 ARM 16 rev=head sha=e291976 label=s2-a16-head
+2026-09-15 18:23:23 ARM 16 exit 0 provisional validity 0
+2026-09-15 18:23:23 COUNT extra base=7/8 head=8/8 tried base=8 head=8
+2026-09-15 18:23:23   quiet: load1 1.86
+2026-09-15 18:23:23 ARM 17 rev=base sha=70cebd0 label=s2-a17-base
+2026-09-15 18:24:36 ARM 17 exit 0 provisional validity 0
+2026-09-15 18:24:36 COUNT extra base=8/8 head=8/8 tried base=9 head=8
+2026-09-15 18:24:36 FINAL validity base exit 1 ARM_VALIDITY INVALID PRESENT 9 arms
+2026-09-15 18:24:36 FINAL validity head exit 1 ARM_VALIDITY INVALID PRESENT 8 arms
+2026-09-15 18:24:36 CONTINUATION s2 end extra base=8 head=8
+2026-09-15 18:25:30 CONTINUATION s2 start; sampler pid 42821; driver pid 42817; targets base=1 head=1 from arm 18
+2026-09-15 18:25:30   quiet: load1 2.94
+2026-09-15 18:25:30 ARM 18 rev=base sha=70cebd0 label=s2-a18-base
+2026-09-15 18:26:44 ARM 18 exit 0 provisional validity 0
+2026-09-15 18:26:44 COUNT extra base=1/1 head=0/1 tried base=1 head=0
+2026-09-15 18:26:44   quiet: load1 2.05
+2026-09-15 18:26:44 ARM 19 rev=head sha=e291976 label=s2-a19-head
+2026-09-15 18:27:58 ARM 19 exit 0 provisional validity 0
+2026-09-15 18:27:58 COUNT extra base=1/1 head=1/1 tried base=1 head=1
+2026-09-15 18:27:58 FINAL validity base exit 1 ARM_VALIDITY INVALID PRESENT 10 arms
+2026-09-15 18:27:58 FINAL validity head exit 1 ARM_VALIDITY INVALID PRESENT 9 arms
+2026-09-15 18:27:58 CONTINUATION s2 end extra base=1 head=1

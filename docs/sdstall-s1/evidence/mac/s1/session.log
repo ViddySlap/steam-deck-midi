@@ -1,0 +1,115 @@
+2026-09-15 17:05:14 SESSION s1 start; sampler pid 23572; driver pid 23567
+2026-09-15 17:05:14 PREBUILD base tree at /tmp/sdstall/base-70cebd0/s1/timing-s1
+2026-09-15 17:05:15 PREBUILD base exit 1 files=1356
+2026-09-15 17:05:15 PREBUILD head tree at /tmp/sdstall/head-e291976/s1/timing-s1
+2026-09-15 17:05:16 PREBUILD head exit 1 files=1612
+2026-09-15 17:06:51 QUIET load1 < 4.0 for 60 s (now 2.69)
+2026-09-15 17:06:51 ARM 1 rev=base sha=70cebd0 label=s1-a01-base scratch=/tmp/sdstall/base-70cebd0/s1 work=/tmp/sdstall/base-70cebd0/s1/timing-s1
+2026-09-15 17:08:04 ARM 1 exit 0
+2026-09-15 17:08:04 ARM 1 provisional validity 0
+2026-09-15 17:08:04 COUNT base=1/8 head=0/8 tried base=1 head=0
+2026-09-15 17:08:04 ARM 2 rev=head sha=e291976 label=s1-a02-head scratch=/tmp/sdstall/head-e291976/s1 work=/tmp/sdstall/head-e291976/s1/timing-s1
+2026-09-15 17:09:17 ARM 2 exit 0
+2026-09-15 17:09:17 ARM 2 provisional validity 0
+2026-09-15 17:09:17 COUNT base=1/8 head=1/8 tried base=1 head=1
+2026-09-15 17:09:17 ARM 3 rev=base sha=70cebd0 label=s1-a03-base scratch=/tmp/sdstall/base-70cebd0/s1 work=/tmp/sdstall/base-70cebd0/s1/timing-s1
+2026-09-15 17:10:31 ARM 3 exit 0
+2026-09-15 17:10:31 ARM 3 provisional validity 0
+2026-09-15 17:10:31 COUNT base=2/8 head=1/8 tried base=2 head=1
+2026-09-15 17:10:31 ARM 4 rev=head sha=e291976 label=s1-a04-head scratch=/tmp/sdstall/head-e291976/s1 work=/tmp/sdstall/head-e291976/s1/timing-s1
+2026-09-15 17:11:44 ARM 4 exit 0
+2026-09-15 17:11:44 ARM 4 provisional validity 1
+2026-09-15 17:11:44 COUNT base=2/8 head=1/8 tried base=2 head=2
+2026-09-15 17:11:44 ARM 5 rev=base sha=70cebd0 label=s1-a05-base scratch=/tmp/sdstall/base-70cebd0/s1 work=/tmp/sdstall/base-70cebd0/s1/timing-s1
+2026-09-15 17:12:57 ARM 5 exit 0
+2026-09-15 17:12:57 ARM 5 provisional validity 0
+2026-09-15 17:12:57 COUNT base=3/8 head=1/8 tried base=3 head=2
+2026-09-15 17:12:57 ARM 6 rev=head sha=e291976 label=s1-a06-head scratch=/tmp/sdstall/head-e291976/s1 work=/tmp/sdstall/head-e291976/s1/timing-s1
+2026-09-15 17:14:11 ARM 6 exit 0
+2026-09-15 17:14:11 ARM 6 provisional validity 0
+2026-09-15 17:14:11 COUNT base=3/8 head=2/8 tried base=3 head=3
+2026-09-15 17:14:11 ARM 7 rev=base sha=70cebd0 label=s1-a07-base scratch=/tmp/sdstall/base-70cebd0/s1 work=/tmp/sdstall/base-70cebd0/s1/timing-s1
+2026-09-15 17:15:24 ARM 7 exit 0
+2026-09-15 17:15:24 ARM 7 provisional validity 1
+2026-09-15 17:15:24 COUNT base=3/8 head=2/8 tried base=4 head=3
+2026-09-15 17:15:24 ARM 8 rev=head sha=e291976 label=s1-a08-head scratch=/tmp/sdstall/head-e291976/s1 work=/tmp/sdstall/head-e291976/s1/timing-s1
+2026-09-15 17:16:37 ARM 8 exit 0
+2026-09-15 17:16:38 ARM 8 provisional validity 1
+2026-09-15 17:16:38 COUNT base=3/8 head=2/8 tried base=4 head=4
+2026-09-15 17:16:38 ARM 9 rev=base sha=70cebd0 label=s1-a09-base scratch=/tmp/sdstall/base-70cebd0/s1 work=/tmp/sdstall/base-70cebd0/s1/timing-s1
+2026-09-15 17:17:51 ARM 9 exit 0
+2026-09-15 17:17:51 ARM 9 provisional validity 1
+2026-09-15 17:17:51 COUNT base=3/8 head=2/8 tried base=5 head=4
+2026-09-15 17:17:51 ARM 10 rev=head sha=e291976 label=s1-a10-head scratch=/tmp/sdstall/head-e291976/s1 work=/tmp/sdstall/head-e291976/s1/timing-s1
+2026-09-15 17:19:04 ARM 10 exit 0
+2026-09-15 17:19:04 ARM 10 provisional validity 1
+2026-09-15 17:19:04 COUNT base=3/8 head=2/8 tried base=5 head=5
+2026-09-15 17:19:04 ARM 11 rev=base sha=70cebd0 label=s1-a11-base scratch=/tmp/sdstall/base-70cebd0/s1 work=/tmp/sdstall/base-70cebd0/s1/timing-s1
+2026-09-15 17:19:28 CONTINUATION s1 start; sampler pid 29481; driver pid 29475; targets base=5 head=6 from arm 12
+2026-09-15 17:20:58   quiet: load1 3.69
+2026-09-15 17:20:58 ARM 12 rev=base sha=70cebd0 label=s1-a12-base
+2026-09-15 17:22:11 ARM 12 exit 0 provisional validity 0
+2026-09-15 17:22:11 COUNT extra base=1/5 head=0/6 tried base=1 head=0
+2026-09-15 17:22:11   quiet: load1 3.01
+2026-09-15 17:22:11 ARM 13 rev=head sha=e291976 label=s1-a13-head
+2026-09-15 17:23:25 ARM 13 exit 0 provisional validity 0
+2026-09-15 17:23:25 COUNT extra base=1/5 head=1/6 tried base=1 head=1
+2026-09-15 17:23:25   quiet: load1 2.97
+2026-09-15 17:23:25 ARM 14 rev=base sha=70cebd0 label=s1-a14-base
+2026-09-15 17:24:38 ARM 14 exit 0 provisional validity 0
+2026-09-15 17:24:38 COUNT extra base=2/5 head=1/6 tried base=2 head=1
+2026-09-15 17:24:38   quiet: load1 2.71
+2026-09-15 17:24:38 ARM 15 rev=head sha=e291976 label=s1-a15-head
+2026-09-15 17:25:51 ARM 15 exit 0 provisional validity 0
+2026-09-15 17:25:51 COUNT extra base=2/5 head=2/6 tried base=2 head=2
+2026-09-15 17:25:51   quiet: load1 2.79
+2026-09-15 17:25:51 ARM 16 rev=base sha=70cebd0 label=s1-a16-base
+2026-09-15 17:27:05 ARM 16 exit 0 provisional validity 0
+2026-09-15 17:27:05 COUNT extra base=3/5 head=2/6 tried base=3 head=2
+2026-09-15 17:27:05   quiet: load1 2.18
+2026-09-15 17:27:05 ARM 17 rev=head sha=e291976 label=s1-a17-head
+2026-09-15 17:28:18 ARM 17 exit 0 provisional validity 0
+2026-09-15 17:28:18 COUNT extra base=3/5 head=3/6 tried base=3 head=3
+2026-09-15 17:28:18   quiet: load1 2.20
+2026-09-15 17:28:18 ARM 18 rev=base sha=70cebd0 label=s1-a18-base
+2026-09-15 17:29:32 ARM 18 exit 0 provisional validity 0
+2026-09-15 17:29:32 COUNT extra base=4/5 head=3/6 tried base=4 head=3
+2026-09-15 17:29:32   quiet: load1 2.07
+2026-09-15 17:29:32 ARM 19 rev=head sha=e291976 label=s1-a19-head
+2026-09-15 17:30:45 ARM 19 exit 0 provisional validity 0
+2026-09-15 17:30:45 COUNT extra base=4/5 head=4/6 tried base=4 head=4
+2026-09-15 17:30:45   quiet: load1 2.05
+2026-09-15 17:30:45 ARM 20 rev=base sha=70cebd0 label=s1-a20-base
+2026-09-15 17:31:59 ARM 20 exit 0 provisional validity 0
+2026-09-15 17:31:59 COUNT extra base=5/5 head=4/6 tried base=5 head=4
+2026-09-15 17:31:59   quiet: load1 1.66
+2026-09-15 17:31:59 ARM 21 rev=head sha=e291976 label=s1-a21-head
+2026-09-15 17:33:12 ARM 21 exit 0 provisional validity 0
+2026-09-15 17:33:12 COUNT extra base=5/5 head=5/6 tried base=5 head=5
+2026-09-15 17:33:12   quiet: load1 2.81
+2026-09-15 17:33:12 ARM 22 rev=head sha=e291976 label=s1-a22-head
+2026-09-15 17:34:25 ARM 22 exit 0 provisional validity 0
+2026-09-15 17:34:25 COUNT extra base=5/5 head=6/6 tried base=5 head=6
+2026-09-15 17:34:25 FINAL validity base exit 1 ARM_VALIDITY INVALID PRESENT 10 arms
+2026-09-15 17:34:25 FINAL validity head exit 1 ARM_VALIDITY INVALID PRESENT 11 arms
+2026-09-15 17:34:25 CONTINUATION s1 end extra base=5 head=6
+2026-09-15 17:36:43 CONTINUATION s1 start; sampler pid 91143; driver pid 91138; targets base=0 head=1 from arm 23
+2026-09-15 17:36:43   quiet: load1 3.16
+2026-09-15 17:36:43 ARM 23 rev=head sha=e291976 label=s1-a23-head
+2026-09-15 17:37:56 ARM 23 exit 0 provisional validity 0
+2026-09-15 17:37:56 COUNT extra base=0/0 head=1/1 tried base=0 head=1
+2026-09-15 17:37:56 FINAL validity base exit 1 ARM_VALIDITY INVALID PRESENT 10 arms
+2026-09-15 17:37:56 FINAL validity head exit 1 ARM_VALIDITY INVALID PRESENT 12 arms
+2026-09-15 17:37:56 CONTINUATION s1 end extra base=0 head=1
+2026-09-15 17:38:41 CONTINUATION s1 start; sampler pid 97603; driver pid 97599; targets base=0 head=1 from arm 24
+2026-09-15 17:38:41   quiet: load1 3.60
+2026-09-15 17:38:41 ARM 24 rev=head sha=e291976 label=s1-a24-head
+2026-09-15 17:39:55 ARM 24 exit 0 provisional validity 1
+2026-09-15 17:39:55 COUNT extra base=0/0 head=0/1 tried base=0 head=1
+2026-09-15 17:41:35   quiet: load1 3.94
+2026-09-15 17:41:35 ARM 25 rev=head sha=e291976 label=s1-a25-head
+2026-09-15 17:42:48 ARM 25 exit 0 provisional validity 0
+2026-09-15 17:42:48 COUNT extra base=0/0 head=1/1 tried base=0 head=2
+2026-09-15 17:42:48 FINAL validity base exit 1 ARM_VALIDITY INVALID PRESENT 10 arms
+2026-09-15 17:42:48 FINAL validity head exit 1 ARM_VALIDITY INVALID PRESENT 14 arms
+2026-09-15 17:42:48 CONTINUATION s1 end extra base=0 head=1

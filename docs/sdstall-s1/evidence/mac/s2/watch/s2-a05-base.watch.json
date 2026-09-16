@@ -1,0 +1,30 @@
+{
+ "fine": false,
+ "fine_always": false,
+ "bridge_pid": 80028,
+ "udp_port": 55785,
+ "stacks": 0,
+ "episode_sampled": false,
+ "max_recvq_bytes": 503,
+ "max_backlog_s": 0.029667114917309553,
+ "episodes_over_200ms": 0,
+ "episodes_over_1s": 0,
+ "max_record_silence_s": 2.5881829261779785,
+ "lms_polls": 14,
+ "lms_seconds": 1.9700355529785156,
+ "sample_seconds": 0.0,
+ "statuses_seen": [
+  "IDLE"
+ ],
+ "fine_statuses_seen": [],
+ "fine_samples": 0,
+ "processingprompt_fine": 0,
+ "processingprompt_any": 0,
+ "recvq_unreadable": 4,
+ "label": "s2-a05-base",
+ "armdir": "/private/tmp/sdstall/base-70cebd0/s2/timing-s2/r5-CLOSED-try1",
+ "script_bytes_per_s": 16954.8,
+ "fine_trigger_s": 0.2,
+ "stack_trigger_s": 1.0,
+ "note": "backlog_s = Recv-Q bytes on this arm UDP port / 16954.8 bytes-per-second; record_silence is a diagnostic only (natural silences reach 3.2 s)"
+}

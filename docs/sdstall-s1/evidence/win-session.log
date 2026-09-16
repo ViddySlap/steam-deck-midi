@@ -1,0 +1,76 @@
+2026-09-15 17:34:48 WIN SESSION start target=8 maxarms=14
+2026-09-15 17:34:48 MAC load1 at start: { 2.82 2.59 3.49 }
+2026-09-15 17:34:51 GUARD snapshot exit 0 GUARD GREEN: snapshot; protected state observed; pythonProcesses=0 
+2026-09-15 17:34:55 MAC SHA256 base.zip 438e04911ac54f30e7f1d917947547c13c37a7310cd6bdf25f4c3f6e356d6d2b (59672838 bytes)
+2026-09-15 17:34:55 MAC SHA256 head.zip c5ecb494363995188ec1630fc950d98a53f65a704e26ab996dca6095f68cdcdc (62697845 bytes)
+2026-09-15 17:34:55 MAC SHA256 fixtures.zip  ( bytes)
+2026-09-15 17:34:55 MAC SHA256 closed_only.py 44b8fb1f5a87e1951c128f9034ca8d672d17b351479f16236490f3c0b017639c
+2026-09-15 17:35:01 PUT base.zip ok
+2026-09-15 17:35:09 PUT head.zip ok
+2026-09-15 17:35:09 PUT fixtures.zip FAILED
+2026-09-15 17:36:25 WIN SESSION start target=8 maxarms=14
+2026-09-15 17:36:25 MAC load1 at start: { 3.31 2.78 3.47 }
+2026-09-15 17:36:27 GUARD snapshot exit 0 GUARD GREEN: snapshot; protected state observed; pythonProcesses=0 
+2026-09-15 17:36:30 MAC SHA256 base.zip 438e04911ac54f30e7f1d917947547c13c37a7310cd6bdf25f4c3f6e356d6d2b (59672838 bytes)
+2026-09-15 17:36:30 MAC SHA256 head.zip c5ecb494363995188ec1630fc950d98a53f65a704e26ab996dca6095f68cdcdc (62697845 bytes)
+2026-09-15 17:36:30 MAC SHA256 fixtures.zip a806a8b85141ca26403dec41a3313db1a35a7df265603bb50b296e262c8d7ad2 (17198 bytes)
+2026-09-15 17:36:30 MAC SHA256 closed_only.py 44b8fb1f5a87e1951c128f9034ca8d672d17b351479f16236490f3c0b017639c
+2026-09-15 17:36:38 PUT base.zip ok
+2026-09-15 17:36:45 PUT head.zip ok
+2026-09-15 17:36:47 PUT fixtures.zip ok
+2026-09-15 17:36:48 PUT closed_only.py ok
+2026-09-15 17:38:10 SETUP exit 0
+  SHA256 base.zip 438e04911ac54f30e7f1d917947547c13c37a7310cd6bdf25f4c3f6e356d6d2b bytes=59672838
+  SHA256_MATCH base.zip
+  SHA256 head.zip c5ecb494363995188ec1630fc950d98a53f65a704e26ab996dca6095f68cdcdc bytes=62697845
+  SHA256_MATCH head.zip
+  SHA256 fixtures.zip a806a8b85141ca26403dec41a3313db1a35a7df265603bb50b296e262c8d7ad2 bytes=17198
+  SHA256_MATCH fixtures.zip
+  EXPANDED base files=1355
+  EXPANDED head files=1611
+  EXPANDED fixtures files=18
+  PRESET_EXISTS=True
+  BASE_WIN_RECV=True
+  HEAD_WIN_RECV=True
+  BASE_HAS_RECEIVER_TASKS=False
+  HEAD_HAS_RECEIVER_TASKS=True
+  SETUP_OK
+2026-09-15 17:38:10 MAC load1 before arms: { 3.58 3.00 3.47 }
+2026-09-15 18:03:01 ARMS exit 0
+2026-09-15 18:03:01 MAC load1 after arms: { 2.00 1.87 2.28 }
+  WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdstall-s1\win-a16-head.json.gz
+  2026-09-15T18:03:01 ARM 16 exit 0
+  2026-09-15T18:03:01 COUNT base=8/8 head=8/8 tried base=8 head=8
+  2026-09-15T18:03:01 ARMS END base=8 head=8
+  ARMS_DONE
+2026-09-15 18:03:02 RESULTS LIST exit 0
+2026-09-15 18:03:03 GET win-a01-base.json.gz ok
+2026-09-15 18:03:04 GET win-a02-head.json.gz ok
+2026-09-15 18:03:05 GET win-a03-base.json.gz ok
+2026-09-15 18:03:06 GET win-a04-head.json.gz ok
+2026-09-15 18:03:07 GET win-a05-base.json.gz ok
+2026-09-15 18:03:09 GET win-a06-head.json.gz ok
+2026-09-15 18:03:10 GET win-a07-base.json.gz ok
+2026-09-15 18:03:12 GET win-a08-head.json.gz ok
+2026-09-15 18:03:13 GET win-a09-base.json.gz ok
+2026-09-15 18:03:15 GET win-a10-head.json.gz ok
+2026-09-15 18:03:16 GET win-a11-base.json.gz ok
+2026-09-15 18:03:18 GET win-a12-head.json.gz ok
+2026-09-15 18:03:19 GET win-a13-base.json.gz ok
+2026-09-15 18:03:20 GET win-a14-head.json.gz ok
+2026-09-15 18:03:22 GET win-a15-base.json.gz ok
+2026-09-15 18:03:23 GET win-a16-head.json.gz ok
+2026-09-15 18:03:24 GET arms.log ok
+2026-09-15 18:03:24 GET python-pids.txt ok
+2026-09-15 18:03:27 TEARDOWN exit 0
+  RECORDED_PIDS=16
+  RECORDED_PIDS_STILL_ALIVE=0
+  BROWSER_PROCESSES=0
+  PYTHON_PROCESSES=0
+  PROTECTED_RUNNING=3
+  PROTECTED name=loopMIDI pid=16020
+  PROTECTED name=STEAMDECK-MIDI-RECEIVER-2-Tray pid=5268
+  PROTECTED name=STEAMDECK-MIDI-RECEIVER-2-Tray pid=23640
+  TEARDOWN_REPORT_OK
+2026-09-15 18:03:29 GUARD compare exit 0 GUARD GREEN: compare; protected state observed; pythonProcesses=0 
+2026-09-15 18:03:29 WIN SESSION end

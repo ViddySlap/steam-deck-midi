@@ -1,0 +1,34 @@
+{
+ "label": "win-a11-base",
+ "result_file": "/tmp/sdstall/win/win-a11-base.json.gz",
+ "stall_threshold_ms": 1000.0,
+ "timer_capable_kinds": [
+  "macro_cc",
+  "relative_cc",
+  "staged_note_macro"
+ ],
+ "recvq_filling_threshold_s": 0.2,
+ "mapping_types_loaded": 56,
+ "arms": [
+  {
+   "repeat": 11,
+   "label": "win-a11-base",
+   "timed_messages": 9638,
+   "stall_samples_over_1s": 0,
+   "samples_over_100ms": 409,
+   "max_m_bridge_ms": 249.6603,
+   "counts": {
+    "verdict_17_02": {},
+    "verdict_recvq": {},
+    "agreement": {}
+   },
+   "survives_17_02": 0,
+   "agree_real": 0,
+   "disagree": 0,
+   "arm_has_a_real_stall": false,
+   "worst_20_stalls": [],
+   "wall_anchor_epoch": null,
+   "recvq_records": 0
+  }
+ ]
+}
