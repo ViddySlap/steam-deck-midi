@@ -1,0 +1,20 @@
+COPY_START_UTC 2026-09-16T09:23:20.3543731Z
+== installed-program src=C:\Program Files\STEAMDECK MIDI Receiver 2 bytes=46535321
+installed-program BEFORE_READ_UTC 2026-09-16T09:23:20.3894847Z files=44
+installed-program COPY_DONE_UTC 2026-09-16T09:23:20.9124170Z
+installed-program FILES before=44 after=44 copy=44 EQUAL=44 LIVE_APPEND_PREFIX_OK=0 BAD=0 COPY_BYTES=46535321 COPY_ERRORS=0
+installed-program MANIFEST C:\Users\Ben\Documents\steamdeck-midi-showready\rollback-v0.4.9\MANIFEST-installed-program.sha256.tsv
+== config src=C:\Program Files\STEAMDECK MIDI Receiver 2\config bytes=99046
+config BEFORE_READ_UTC 2026-09-16T09:23:22.2523960Z files=38
+config COPY_DONE_UTC 2026-09-16T09:23:22.2890899Z
+config FILES before=38 after=38 copy=38 EQUAL=38 LIVE_APPEND_PREFIX_OK=0 BAD=0 COPY_BYTES=99046 COPY_ERRORS=0
+config MANIFEST C:\Users\Ben\Documents\steamdeck-midi-showready\rollback-v0.4.9\MANIFEST-config.sha256.tsv
+== localappdata src=C:\Users\Ben\AppData\Local\STEAMDECK MIDI Receiver 2 bytes=3777200
+localappdata BEFORE_READ_UTC 2026-09-16T09:23:22.3606229Z files=4
+localappdata COPY_DONE_UTC 2026-09-16T09:23:22.3848850Z
+localappdata FILES before=4 after=4 copy=4 EQUAL=4 LIVE_APPEND_PREFIX_OK=0 BAD=0 COPY_BYTES=3777200 COPY_ERRORS=0
+localappdata MANIFEST C:\Users\Ben\Documents\steamdeck-midi-showready\rollback-v0.4.9\MANIFEST-localappdata.sha256.tsv
+CONFIG_CROSS program_copy_config=38 config_copy=38 mismatches=0
+COPY_END_UTC 2026-09-16T09:23:22.4395449Z
+COPY RESULT GREEN
+RAIL_EXIT 0

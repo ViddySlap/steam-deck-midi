@@ -1,0 +1,12 @@
+CREATED C:\Users\Ben\Documents\steamdeck-midi-showready\rollback-v0.4.9
+CREATED C:\Users\Ben\Documents\steamdeck-midi-showready\rollback-v0.4.9\installer
+CURL_ARGV curl.exe -L --fail --max-time 120 -sS -o C:\Users\Ben\Documents\steamdeck-midi-showready\rollback-v0.4.9\installer\STEAMDECK-MIDI-RECEIVER-2-Setup-0.4.9.exe https://github.com/ViddySlap/steam-deck-midi/releases/download/v0.4.9/STEAMDECK-MIDI-RECEIVER-2-Setup-0.4.9.exe
+CURL_PID 354368 started=2026-09-16T09:22:26.0821797Z
+CURL_EXIT 0 elapsed_s=5.2
+CURL_STDERR 
+CURL_PID_ALIVE False
+FILE C:\Users\Ben\Documents\steamdeck-midi-showready\rollback-v0.4.9\installer\STEAMDECK-MIDI-RECEIVER-2-Setup-0.4.9.exe
+SIZE 43881072 expected=43881072 equal=True
+SHA256 05a46159b762f33a757218817830666beaa07a629d121a89b75debaa6de351a5 expected=05a46159b762f33a757218817830666beaa07a629d121a89b75debaa6de351a5 equal=True
+INSTALLER VERIFIED (not run)
+RAIL_EXIT 0

@@ -1,0 +1,3 @@
+# installer manifest; source GitHub release v0.4.9 asset; downloaded on the laptop with curl.exe 2026-09-16T09:22:26Z
+# columns: relative_path<TAB>length<TAB>sha256<TAB>github_size<TAB>github_digest
+installer\STEAMDECK-MIDI-RECEIVER-2-Setup-0.4.9.exe	43881072	05a46159b762f33a757218817830666beaa07a629d121a89b75debaa6de351a5	43881072	sha256:05a46159b762f33a757218817830666beaa07a629d121a89b75debaa6de351a5

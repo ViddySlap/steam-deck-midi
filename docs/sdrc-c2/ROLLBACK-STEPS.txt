@@ -1,0 +1,82 @@
+STEAMDECK MIDI Receiver 2 - rollback steps (v0.5.0 back to v0.4.9)
+Written 2026-09-16 by an agent (sdrc C2). For Ben at the laptop, no agent needed.
+
+This folder: C:\Users\Ben\Documents\steamdeck-midi-showready\rollback-v0.4.9\
+  installer\STEAMDECK-MIDI-RECEIVER-2-Setup-0.4.9.exe   the v0.4.9 installer from GitHub (43881072 bytes, sha256 05a46159b762f33a757218817830666beaa07a629d121a89b75debaa6de351a5)
+  installed-program\   byte copy of C:\Program Files\STEAMDECK MIDI Receiver 2\ (44 files, includes config\)
+  config\              byte copy of C:\Program Files\STEAMDECK MIDI Receiver 2\config\ (38 files)
+  localappdata\        byte copy of C:\Users\Ben\AppData\Local\STEAMDECK MIDI Receiver 2\ (logs only)
+  MANIFEST-*.sha256.tsv  path, size and sha256 of every file
+
+IMPORTANT: the config backup is your config as of 2026-09-16 09:23 UTC (03:23 Mountain).
+If you change presets, macros or settings before you install 0.5.0, this backup does NOT have
+those changes. In that case copy C:\Program Files\STEAMDECK MIDI Receiver 2\config\ again to a new
+folder here (for example config-2026-09-18\) right before installing, and use that folder
+wherever these steps say ROLLBACK\config.
+
+ROLLBACK below means C:\Users\Ben\Documents\steamdeck-midi-showready\rollback-v0.4.9
+PROGRAM below means C:\Program Files\STEAMDECK MIDI Receiver 2
+
+A. WHICH VERSION IS RUNNING
+1. Open http://127.0.0.1:7723/ (tray icon menu: Open Web UI).
+2. v0.5.0 shows "v0.5.0" in the status bar at the bottom right. v0.4.9 shows no version there.
+3. To be sure, open http://127.0.0.1:7723/api/version
+   v0.5.0 answers {"version":"0.5.0", ...}. v0.4.9 answers "404 Not Found" (it has no such page).
+
+B. BEFORE THE 0.5.0 INSTALLER RUNS (one time, while still on v0.4.9)
+The installer REPLACES PROGRAM\config\engines.factory\osc_sync.json. Today that file holds your
+real Resolume OSC preset path in the key "osc_preset_path". The 0.5.0 file has no such key, so
+OSC Sync would fall back to a default path. The installer never touches PROGRAM\config\engines\,
+so put the path there first:
+1. Open PROGRAM\config\engines.factory\osc_sync.json in Notepad. Copy the text inside the quotes
+   after "osc_preset_path": (it starts with C:/Users/ and ends with .xml). Close without saving.
+   (The same file is also in ROLLBACK\config\engines.factory\osc_sync.json.)
+2. Create a new file PROGRAM\config\engines\osc_sync.json with exactly this, pasting the path
+   between the quotes (keep the forward slashes):
+   {
+     "name": "OSC Sync",
+     "type": "osc_sync",
+     "enabled": true,
+     "osc_preset_path": "PASTE THE PATH HERE"
+   }
+3. Save. (Every other OSC Sync setting in the factory file equals the program's built-in default in
+   both v0.4.9 and v0.5.0, so this short file behaves the same as the full one. v0.4.9 also reads
+   it, so it is safe to leave in place.)
+Then installing 0.5.0 is your call: quit the tray from its menu and run
+C:\Users\Ben\Documents\steamdeck-midi-showready\candidate-2e4292a\STEAMDECK-MIDI-RECEIVER-2-Setup-0.5.0.exe
+
+C. ROLL BACK TO v0.4.9 (after a 0.5.0 install)
+1. Right-click the STEAMDECK tray icon (notification area) and choose Quit. Wait until it is gone.
+2. Run ROLLBACK\installer\STEAMDECK-MIDI-RECEIVER-2-Setup-0.4.9.exe (Windows asks for admin).
+   Keep the same install folder. Untick "Launch" on the last page.
+3. Copy everything in ROLLBACK\config\ over PROGRAM\config\ and choose "Replace the files".
+   Why this is still needed: the installer overwrites windows_midi_map.json, actions.yaml,
+   windows_receiver_settings.example.json and every engines.factory\*.json with its own copies
+   (its engines.factory\osc_sync.json may not have your real path). It does NOT overwrite
+   windows_receiver_settings.local.json, presets\default.json, macro_library.json or
+   engines\README.md if they exist, and never touches your other presets, presets\.active,
+   osc_relay.json or engines\*.json. But 0.5.0 may have changed those files while it ran
+   (saved presets, macros, active preset, OSC relay, engine settings). The copy puts all 38 back.
+4. Start the tray from the Start menu: STEAMDECK MIDI Receiver 2.
+5. Check A: http://127.0.0.1:7723/api/version must say 404 Not Found.
+6. In loopMIDI, DECK_IN is listed. Press a Deck button you know; the loopMIDI data counter
+   moves and the matching control reacts in Resolume.
+
+D. IF THE v0.4.9 INSTALLER MISBEHAVES (fallback)
+1. Quit the tray from its menu (as in C1). Check Task Manager: no STEAMDECK-MIDI-RECEIVER-2 process.
+2. Copy everything in ROLLBACK\installed-program\ over PROGRAM\ and choose "Replace the files"
+   (Windows asks for admin). This restores the v0.4.9 exes, scripts, uninstaller and config\.
+3. Start the tray from the Start menu, then do C5 and C6.
+
+E. WHAT A ROLLBACK LEAVES BEHIND
+- PROGRAM\config\engines\osc_sync.json (from B): v0.4.9 reads it and gets the same settings.
+- PROGRAM\config\state\ (0.5.0 autopilot memory): v0.4.9 never reads it.
+- PROGRAM\config\bridge.local.json (only if you changed the preset section in 0.5.0): v0.4.9
+  never reads it.
+- Leftover .tmp files starting with a dot in config\: never read.
+- Anything NEW you created in 0.5.0 stays: a new preset in config\presets\ or a new engine file in
+  config\engines\. v0.4.9 lists every preset and loads every engines\*.json. If you made any,
+  compare PROGRAM\config\engines\ with ROLLBACK\config\engines\ and move any extra file (other than
+  osc_sync.json) out to a folder here. Do not select a preset that was created in 0.5.0.
+- The program files themselves: nothing extra. The installer script is byte-identical in v0.4.9
+  and 0.5.0, so both write the same file names.

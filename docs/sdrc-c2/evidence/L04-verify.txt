@@ -1,0 +1,27 @@
+STEPS sha256=4d57354adf99a3dc0c377d1c73c0668035da022b32192e5389f73a369d046d83 expected=4d57354adf99a3dc0c377d1c73c0668035da022b32192e5389f73a369d046d83 equal=True
+INSTALLER len=43881072 sha=05a46159b762f33a757218817830666beaa07a629d121a89b75debaa6de351a5 equal=True
+LISTING entries=107 files=92 bytes=94321324 written=C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-c2\rollback-listing.tsv
+VERIFY installed-program rows=44 ok=44 bad=0 extra=0
+VERIFY config rows=38 ok=38 bad=0 extra=0
+VERIFY localappdata rows=4 ok=4 bad=0 extra=0
+LOCATION C:\Users\Ben\Documents\steamdeck-midi-showready\rollback-v0.4.9
+LOCATION under_C_Users_Ben_Documents=True under_Temp=False under_OneDrive=False
+REPARSE C:\Users\Ben\Documents False
+REPARSE C:\Users\Ben\Documents\steamdeck-midi-showready False
+REPARSE C:\Users\Ben\Documents\steamdeck-midi-showready\rollback-v0.4.9 False
+OSC installed_keys=enabled,epsilon_float,inputs,inter_message_delay_ms,mask_with_master,name,osc,osc_preset_path,rest,sync_indicator_path,type
+OSC candidate_keys=enabled,epsilon_float,inputs,inter_message_delay_ms,mask_with_master,name,osc,rest,sync_indicator_path,type
+OSC installed has osc_preset_path=True starts_C:/Users/=True ends_.xml=True has_backslash=False has_quote=False is_USERNAME_placeholder=False
+OSC other_keys_equal_to_candidate=True installed_minus_candidate=osc_preset_path
+OSC engines_user_override_present=False
+RECORDED curl pid=354368 alive=False
+PYTHON_TOTAL 0
+LANE_PATH_PROCESS_COUNT (excluding this powershell) 0
+PROCESSES_RUNNING_FROM_ROLLBACK 0
+PROTECTED pid=5268 name=STEAMDECK-MIDI-RECEIVER-2-Tray session=1 start=2026-08-16T06:29:37.4311374Z
+PROTECTED pid=16020 name=loopMIDI session=1 start=2026-08-16T06:29:31.9633505Z
+PROTECTED pid=23640 name=STEAMDECK-MIDI-RECEIVER-2-Tray session=1 start=2026-08-16T06:29:37.8390240Z
+BROWSER_COUNT 0
+NOW_UTC 2026-09-16T09:25:54.0405813Z
+VERIFY GREEN
+RAIL_EXIT 0
