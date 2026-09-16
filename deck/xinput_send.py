@@ -336,6 +336,12 @@ class AxisSample:
     value: int
 
 
+@dataclass(frozen=True)
+class ButtonSample:
+    action: str
+    state: str
+
+
 class HidrawAxisReader:
     _STATIC_AXIS_MAP = [
         # (action, byte_offset, center_offset, signed)
@@ -354,11 +360,21 @@ class HidrawAxisReader:
         ("GYRO_YAW", 32),
         ("GYRO_ROLL", 34),
     ]
+    _BUTTON_BITS = [
+        # (action, byte_offset, bit_mask) - buttons the HID report carries but
+        # Steam Input does not expose as keycodes. Confirmed on the live Deck
+        # 2026-09-16, each isolated against an idle baseline.
+        ("QAM", 14, 0x04),
+        ("LEFT_STICK_TOUCH", 13, 0x40),
+        ("RIGHT_STICK_TOUCH", 13, 0x80),
+    ]
 
     def __init__(self, deadzone: int = 1000, device_path: str | None = None) -> None:
         self._deadzone = deadzone
         self._device_path = device_path
         self._queue: queue.Queue[AxisSample] = queue.Queue()
+        self._button_queue: queue.Queue[ButtonSample] = queue.Queue()
+        self._button_state: dict[str, bool] = {}
         self._stop = threading.Event()
         self._file: object = None
         self._thread: threading.Thread | None = None
@@ -486,6 +502,18 @@ class HidrawAxisReader:
     def _parse_report(self, data: bytes) -> None:
         if data[0] != 0x01 or data[2] != 0x09:
             return
+        # Edge-triggered: one event per press and per release, never per report.
+        # Sits above the gyro early-return so it runs on every report.
+        for action, offset, mask in self._BUTTON_BITS:
+            down = bool(data[offset] & mask)
+            if down != self._button_state.get(action, False):
+                self._button_state[action] = down
+                try:
+                    self._button_queue.put_nowait(
+                        ButtonSample(action=action, state="down" if down else "up")
+                    )
+                except queue.Full:
+                    pass
         for action, offset, center, signed in self._STATIC_AXIS_MAP:
             if signed:
                 raw = struct.unpack_from("<h", data, offset)[0]
@@ -534,6 +562,16 @@ class HidrawAxisReader:
                         self._queue.put_nowait(AxisSample(action=action, value=pos))
                     except queue.Full:
                         pass
+
+    def drain_buttons(self) -> list[ButtonSample]:
+        # FIFO, not latest-wins: a down/up pair must survive in order.
+        out: list[ButtonSample] = []
+        while True:
+            try:
+                out.append(self._button_queue.get_nowait())
+            except queue.Empty:
+                break
+        return out
 
     def drain(self) -> dict[str, int]:
         latest: dict[str, int] = {}
@@ -803,6 +841,20 @@ def run_sender(
                                 seq += 1
                                 axis_last_sent[axis_action] = now
                                 next_heartbeat_at = now + HEARTBEAT_INTERVAL_SECONDS
+
+                        for button in axis_reader.drain_buttons():
+                            send_action(
+                                sock,
+                                resolved_targets,
+                                action=button.action,
+                                state=button.state,
+                                seq=seq,
+                                profile_name=resolved_profile_name,
+                                profile_hash=profile_hash,
+                            )
+                            observe()
+                            seq += 1
+                            next_heartbeat_at = now + HEARTBEAT_INTERVAL_SECONDS
 
                 except KeyboardInterrupt:
                     print("stopping sender")
