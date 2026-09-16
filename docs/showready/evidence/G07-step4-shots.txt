@@ -1,0 +1,76 @@
+MODE Shots LABEL shots EXE_SHA256 2fcb2868d847615b5dd8b78732b654c857d48872f7125ab014a51253797f9b1c
+PORTS udp=46411 ui=47411 free-checked
+BROWSERS_BEFORE 0
+ARGV C:\Users\Ben\Documents\steamdeck-midi-showready\candidate-2e4292a\STEAMDECK-MIDI-RECEIVER-2.exe --listen 127.0.0.1:46411 --map "C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\pfcopy3\config\windows_midi_map.json" --dry-run --no-pulse --no-osc-relay --no-browser --no-engines --ui-port 47411
+ROOT_PID 361012
+UI_READY_S 1.03 VERSION {"build_time_utc":"2026-09-16T09:12:21Z","frozen":true,"git_commit":"2e4292a75f08674fdf5c78358485b27c2d3bd913","version":"0.5.0"}
+
+PID_TREE 361012,350360
+  361012 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=358600
+  350360 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=361012
+LISTENERS
+  UDP 127.0.0.1:46411
+  TCP 127.0.0.1:47411
+EDGE C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe 153.0.4234.32 NODE C:\Program Files\nodejs\node.exe
+NODE_EXIT 0 NODE_TREE_SEEN 351456,357896,358460,346640,364740,364248,360524,365232,355456,363188
+  BROWSER_ROOT_PID null
+  PASS front door ready: 23 labels, live {"ready":true,"version":null}
+  PNG C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\run-shots\png\laptop-exe-1-controller-front-door.png
+  PASS drill-in L2 card open {"title":"L2","rows":["L2_SOFT","L2_FULL","L2_SOFT_LAYER_2","L2_FULL_LAYER_2","L_TRIGGER_PRESSURE"]}
+  PNG C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\run-shots\png\laptop-exe-2-drill-in-l2.png
+  PASS List view shown {"list":true}
+  PNG C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\run-shots\png\laptop-exe-3-list-view.png
+  PASS back to Controller, live {"back":true}
+  PASS A held lights A {"lit":true}
+  PNG C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\run-shots\png\laptop-exe-4-a-held-lit.png
+  PASS left stick pushed moves dot {"cx0":"305","cx1":"335"}
+  PNG C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\run-shots\png\laptop-exe-5-left-stick-dot.png
+  PASS no page errors {"errors":[]}
+  BROWSER_CLOSED null
+  FAILED 0
+OWNED_BROWSER_TREE_GONE 351456 True
+OWNED_BROWSER_TREE_GONE 357896 True
+OWNED_BROWSER_TREE_GONE 358460 True
+OWNED_BROWSER_TREE_GONE 346640 True
+OWNED_BROWSER_TREE_GONE 364740 True
+OWNED_BROWSER_TREE_GONE 364248 True
+OWNED_BROWSER_TREE_GONE 360524 True
+OWNED_BROWSER_TREE_GONE 365232 True
+OWNED_BROWSER_TREE_GONE 355456 True
+OWNED_BROWSER_TREE_GONE 363188 True
+POST /api/shutdown 202
+EXIT_CODE 0 EXIT_S 0.667
+PID_GONE 350360 True
+PID_GONE 361012 True
+PORTS_FREE udp=True ui=True
+LANE_OR_STAGING_PROCESSES 0
+PYTHON_TOTAL 0
+BROWSERS_AFTER 0
+BROWSERS_EQUAL True
+== EXE STDERR tail
+  INFO selected MIDI output port: name=DECK_IN index=n/a
+  INFO mapping UI available at http://127.0.0.1:47411
+  Exception in thread tray:
+  Traceback (most recent call last):
+    File "threading.py", line 1075, in _bootstrap_inner
+  INFO listening on udp://127.0.0.1:46411
+    File "threading.py", line 1012, in run
+    File "pystray\_base.py", line 212, in run
+    File "pystray\_base.py", line 379, in _run
+  NotImplementedError
+  INFO action=BTN_A state=down seq=8
+  INFO released note mapping for BTN_A
+  INFO action=BTN_A state=up seq=10
+  ERROR engine_registry.on_axis_event failed
+  Traceback (most recent call last):
+    File "windows\receiver.py", line 901, in _handle_axis_event
+  AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+  ERROR engine_registry.on_axis_event failed
+  Traceback (most recent call last):
+    File "windows\receiver.py", line 901, in _handle_axis_event
+  AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+  ERROR engine_registry.on_axis_event failed
+  Traceback (most recent call last):
+    File "windows\receiver.py", line 901, in _handle_axis_event
+  AttributeError: 'NoneType' object has no attribute 'on_axis_event'
+RAIL_EXIT 0

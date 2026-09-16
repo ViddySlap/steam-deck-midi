@@ -1,0 +1,3 @@
+tests/test_showready_instrument.py:74:        expected = (Path(os.environ['LOCALAPPDATA']) / 'Temp/sdwin/w3'
+scripts/showready/ab_run.py:28:        return Path(os.environ['LOCALAPPDATA']) / 'Temp/sdwin/w3'
+scripts/showready/ab_run.py:33:    allowed = Path(os.environ['LOCALAPPDATA']) / 'Temp/sdwin' if os.name == 'nt' else Path('/tmp')

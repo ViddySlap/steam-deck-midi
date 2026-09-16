@@ -1,0 +1,34 @@
+PFCOPY files=38 c2_manifest_rows=38 equal=38 differ=0
+INSTALL_EMU ignoreversion windows_midi_map.json existed=True -> WRITTEN
+INSTALL_EMU ignoreversion windows_receiver_settings.example.json existed=True -> WRITTEN
+INSTALL_EMU onlyifdoesntexist windows_receiver_settings.local.json existed=True -> KEPT
+INSTALL_EMU onlyifdoesntexist presets\default.json existed=True -> KEPT
+INSTALL_EMU onlyifdoesntexist macro_library.json existed=True -> KEPT
+INSTALL_EMU onlyifdoesntexist engines\README.md existed=True -> KEPT
+INSTALL_EMU ignoreversion actions.yaml existed=True -> WRITTEN
+INSTALL_EMU ignoreversion engines.factory\audio_opacity.json existed=True -> WRITTEN
+INSTALL_EMU ignoreversion engines.factory\autopilot.json existed=True -> WRITTEN
+INSTALL_EMU ignoreversion engines.factory\autopilot_ptz.json existed=True -> WRITTEN
+INSTALL_EMU ignoreversion engines.factory\bumper_blast.json existed=True -> WRITTEN
+INSTALL_EMU ignoreversion engines.factory\chaser_stack_dispatcher.json existed=True -> WRITTEN
+INSTALL_EMU ignoreversion engines.factory\flash_blast.json existed=True -> WRITTEN
+INSTALL_EMU ignoreversion engines.factory\global_color.json existed=True -> WRITTEN
+INSTALL_EMU ignoreversion engines.factory\gyro_feedback.json existed=True -> WRITTEN
+INSTALL_EMU ignoreversion engines.factory\l_stick_layer.json existed=True -> WRITTEN
+INSTALL_EMU ignoreversion engines.factory\nestdrop.json existed=True -> WRITTEN
+INSTALL_EMU ignoreversion engines.factory\osc_sync.json existed=True -> WRITTEN
+INSTALL_EMU ignoreversion engines.factory\ptz_visca.json existed=True -> WRITTEN
+INSTALL_EMU ignoreversion engines.factory\stageflow_bridge.json existed=True -> WRITTEN
+INSTALL_EMU ignoreversion engines.factory\steam_input_layer_tracker.json existed=True -> WRITTEN
+EMU factory osc_sync has osc_preset_path=False user engines\osc_sync.json=False
+OVERRIDE written engines\osc_sync.json keys=name,type,enabled,osc_preset_path (value not printed)
+UNPARSABLE_ENGINE_JSON engines\README.md original_parses=False changed_by_rewrite=False
+NONLOOPBACK_SCAN C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\emulated-install2\config ipv4_non_loopback=0 urls_non_loopback=0 host_keys_non_loopback=0
+ConvertFrom-Json : Invalid JSON primitive: .
+At C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\prep_configs.ps1:89 char:246
++ ...  Get-Content -LiteralPath $j.FullName -Raw | ConvertFrom-Json; if ($o ...
++                                                  ~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [ConvertFrom-Json], ArgumentException
+    + FullyQualifiedErrorId : System.ArgumentException,Microsoft.PowerShell.Commands.ConvertFromJsonCommand
+ 
+RAIL_EXIT 1

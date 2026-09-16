@@ -1,0 +1,5 @@
+tests/ui_controller_check.cjs exit 0
+tests/ui_controller_macro_check.cjs exit 0
+tests/ui_reload_check.cjs exit 0
+tests/ui_sections_check.cjs exit 0
+tests/ui_version_check.cjs exit 0

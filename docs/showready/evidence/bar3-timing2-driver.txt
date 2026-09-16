@@ -1,0 +1,17 @@
+PINS exit 0
+SAMPLER pid 9636
+== sens quiet 04:49:11
+QUIET waited 60 s load1=2.06
+PGREP_BEFORE_SENS exit=1
+== sens start 04:50:11
+   sens EXIT=1 05:01:57
+PGREP_AFTER_SENS exit=1
+== clean quiet 05:01:57
+QUIET waited 61 s load1=2.09
+PGREP_BEFORE_CLEAN exit=1
+== clean start 05:02:58
+   clean EXIT=0 05:22:28
+PGREP_AFTER_CLEAN exit=1
+VALIDITY sens exit 1
+VALIDITY clean exit 1
+MAC TIMING DONE 05:22:33

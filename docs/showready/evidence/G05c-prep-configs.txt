@@ -1,0 +1,11 @@
+PFCOPY files=38 c2_manifest_rows=38 equal=38 differ=0
+EMU factory osc_sync has osc_preset_path=False user engines\osc_sync.json=False
+OVERRIDE written engines\osc_sync.json keys=name,type,enabled,osc_preset_path (value not printed)
+NONLOOPBACK_SCAN C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\emulated-install3\config ipv4_non_loopback=0 urls_non_loopback=0 host_keys_non_loopback=0
+ENABLED_ENGINE_FILES C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\emulated-install3\config engines.factory\osc_sync.json=osc_sync engines.factory\stageflow_bridge.json=stageflow_bridge
+NONLOOPBACK_SCAN C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\emulated-override3\config ipv4_non_loopback=0 urls_non_loopback=0 host_keys_non_loopback=0
+ENABLED_ENGINE_FILES C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\emulated-override3\config engines\osc_sync.json=osc_sync engines.factory\osc_sync.json=osc_sync engines.factory\stageflow_bridge.json=stageflow_bridge
+B5 removed osc_preset_path from engines.factory\osc_sync.json
+NONLOOPBACK_SCAN C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\b53\config ipv4_non_loopback=0 urls_non_loopback=0 host_keys_non_loopback=0
+ENABLED_ENGINE_FILES C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\b53\config engines.factory\osc_sync.json=osc_sync engines.factory\stageflow_bridge.json=stageflow_bridge
+RAIL_EXIT 0

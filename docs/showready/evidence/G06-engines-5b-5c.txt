@@ -1,0 +1,199 @@
+######## b5
+MODE Engines LABEL b5 EXE_SHA256 2fcb2868d847615b5dd8b78732b654c857d48872f7125ab014a51253797f9b1c
+PORTS udp=46411 ui=47411 free-checked
+BROWSERS_BEFORE 0
+SINK pid_tree=364980,356608 rest=127.0.0.1:48180 osc=127.0.0.1:48170
+ARGV C:\Users\Ben\Documents\steamdeck-midi-showready\candidate-2e4292a\STEAMDECK-MIDI-RECEIVER-2.exe --listen 127.0.0.1:46411 --map "C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\b53\config\windows_midi_map.json" --dry-run --no-pulse --no-osc-relay --no-browser --ui-port 47411
+ROOT_PID 365432
+UI_READY_S 1.09 VERSION {"build_time_utc":"2026-09-16T09:12:21Z","frozen":true,"git_commit":"2e4292a75f08674fdf5c78358485b27c2d3bd913","version":"0.5.0"}
+
+PID_TREE 365432,356416
+  365432 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=358712
+  356416 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=365432
+LISTENERS
+  UDP 127.0.0.1:46411
+  TCP 127.0.0.1:47411
+GET /api/engines 200
+  ENGINE OSC Sync type=osc_sync active=True
+  ENGINE StageFlow Bridge type=stageflow_bridge active=True
+POST /api/engines/osc-sync/resync 200 {"ok":true,"target_count":207}
+
+GET /api/logs/tail 200 matching_lines=1
+  LOG {"count":34,"lines":["2026-09-16 03:40:53,320 INFO root build fingerprint: version=0.5.0 commit=2e4292a75f08 built_utc=2026-09-16T09:12:21Z","2026-09-16 03:40:53,323 INFO root selected MIDI output port: name=DECK_IN index=n/a","2026-09-16 03:40:53,327 INFO windows.engines.registry auto-merging factory default for engine type 'autopilot' (not in engines/)","2026-09-16 03:40:53,329 INFO windows.engines.registry auto-merging factory default for engine type 'autopilot_ptz' (not in engines/)","2026-09-16 03:40:53,331 INFO windows.engines.registry auto-merging factory default for engine type 'bumper_blast' (not in engines/)","2026-09-16 03:40:53,333 INFO windows.engines.registry auto-merging factory default for engine type 'chaser_stack_dispatcher' (not in engines/)","2026-09-16 03:40:53,335 INFO windows.engines.registry auto-merging factory default for engine type 'flash_blast' (not in engines/)","2026-09-16 03:40:53,337 INFO windows.engines.registry auto-merging factory default for engine type 'gyro_feedback' (not in engines/)","2026-09-16 03:40:53,338 INFO windows.engines.registry auto-merging factory default for engine type 'l_stick_layer' (not in engines/)","2026-09-16 03:40:53,339 INFO windows.engines.registry auto-merging factory default for engine type 'nestdrop' (not in engines/)","2026-09-16 03:40:53,339 INFO windows.engines.registry auto-merging factory default for engine type 'osc_sync' (not in engines/)","2026-09-16 03:40:53,339 INFO windows.engines.registry auto-merging factory default for engine type 'ptz_visca' (not in engines/)","2026-09-16 03:40:53,339 INFO windows.engines.registry auto-merging factory default for engine type 'stageflow_bridge' (not in engines/)","2026-09-16 03:40:53,339 INFO windows.engines.registry auto-merging factory default for engine type 'steam_input_layer_tracker' (not in engines/)","2026-09-16 03:40:53,339 INFO windows.engines.registry engine Audio Engine is disabled in config; skipping","2026-09-16 03:40:53,340 INFO windows.engines.registry engine Layer 9/10 Auto-Bypass is disabled in config; skipping","2026-09-16 03:40:53,340 INFO windows.engines.registry engine Global Color is disabled in config; skipping","2026-09-16 03:40:53,340 INFO windows.engines.registry engine Autopilot is disabled in config; skipping","2026-09-16 03:40:53,340 INFO windows.engines.registry engine Autopilot PTZ is disabled in config; skipping","2026-09-16 03:40:53,340 INFO windows.engines.registry engine Bumper Blast is disabled in config; skipping","2026-09-16 03:40:53,340 INFO windows.engines.registry engine Chaser Stack Dispatcher is disabled in config; skipping","2026-09-16 03:40:53,340 INFO windows.engines.registry engine Flash Blast is disabled in config; skipping","2026-09-16 03:40:53,340 INFO windows.engines.registry engine Gyro Feedback is disabled in config; skipping","2026-09-16 03:40:53,340 INFO windows.engines.registry engine Left Stick Layer is disabled in config; skipping","2026-09-16 03:40:53,340 INFO windows.engines.registry engine NestDrop is disabled in config; skipping","2026-09-16 03:40:53,341 INFO windows.engines.registry loaded engine OSC Sync (type=osc_sync)","2026-09-16 03:40:53,341 INFO windows.engines.registry engine PTZ VISCA is disabled in config; skipping","2026-09-16 03:40:53,341 INFO windows.engines.registry loaded engine StageFlow Bridge (type=stageflow_bridge)","2026-09-16 03:40:53,341 INFO windows.engines.registry engine SteamInput Layer Tracker is disabled in config; skipping","2026-09-16 03:40:53,342 INFO root engine config: path=C:\\Users\\<user>\\AppData\\Local\\Temp\\sdwin\\sdrc-gate\\b53\\config\\engines count=2 active=2","2026-09-16 03:40:53,410 INFO root mapping UI available at http://127.0.0.1:47411","2026-09-16 03:40:53,427 INFO windows.receiver listening on udp://127.0.0.1:46411","2026-09-16 03:40:53,427 INFO windows.receiver engines loaded: OSC Sync(osc_sync), StageFlow Bridge(stageflow_bridge)","2026-09-16 03:40:58,742 INFO windows.engines.osc_sync osc_sync: parsed 207 wigglable targets from C:\\Users\\<user>\\OneDrive\\Documents\\Resolume Arena\\Shortcuts\\OSC\\STEAMDECK V2.xml"],"log_file":null}
+OSC_SYNC_RESOLVED shape=<home>\OneDrive\Documents\Resolume Arena\Shortcuts\OSC\STEAMDECK V2.xml exists=True targets=207
+HOME_DEFAULT osc_preset shape=<home>\OneDrive\Documents\Resolume Arena\Shortcuts\OSC\STEAMDECK V2.xml exists=True
+HOME_DEFAULT comp shape=<home>\OneDrive\Documents\Resolume Arena\Compositions\5-5-26 STEAMDECK V2.avc exists=True
+CONFIG osc_sync 200 keys=live_swappable,loaded,path,restart_required_reason,source,spec,type,user_files
+CONFIG stageflow_bridge 200 keys=live_swappable,loaded,path,restart_required_reason,source,spec,type,user_files
+POST /api/shutdown 202
+EXIT_CODE 0 EXIT_S 0.601
+SINK_COUNTS {"tcp_connections": 0, "udp_datagrams": 0, "http_first_lines": []}
+PID_GONE 356416 True
+PID_GONE 356608 True
+PID_GONE 364980 True
+PID_GONE 365432 True
+PORTS_FREE udp=True ui=True
+LANE_OR_STAGING_PROCESSES 1
+  365336 C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe
+PYTHON_TOTAL 2
+BROWSERS_AFTER 0
+BROWSERS_EQUAL True
+== EXE STDERR tail
+  INFO engine Global Color is disabled in config; skipping
+  INFO engine Autopilot is disabled in config; skipping
+  INFO engine Autopilot PTZ is disabled in config; skipping
+  INFO engine Bumper Blast is disabled in config; skipping
+  INFO engine Chaser Stack Dispatcher is disabled in config; skipping
+  INFO engine Flash Blast is disabled in config; skipping
+  INFO engine Gyro Feedback is disabled in config; skipping
+  INFO engine Left Stick Layer is disabled in config; skipping
+  INFO engine NestDrop is disabled in config; skipping
+  INFO loaded engine OSC Sync (type=osc_sync)
+  INFO engine PTZ VISCA is disabled in config; skipping
+  INFO loaded engine StageFlow Bridge (type=stageflow_bridge)
+  INFO engine SteamInput Layer Tracker is disabled in config; skipping
+  INFO engine config: path=<home>\AppData\Local\Temp\sdwin\sdrc-gate\b53\config\engines count=2 active=2
+  INFO mapping UI available at http://127.0.0.1:47411
+  INFO listening on udp://127.0.0.1:46411
+  Exception in thread tray:
+  INFO engines loaded: OSC Sync(osc_sync), StageFlow Bridge(stageflow_bridge)
+  Traceback (most recent call last):
+    File "threading.py", line 1075, in _bootstrap_inner
+    File "threading.py", line 1012, in run
+    File "pystray\_base.py", line 212, in run
+    File "pystray\_base.py", line 379, in _run
+  NotImplementedError
+  INFO osc_sync: parsed 207 wigglable targets from <home>\OneDrive\Documents\Resolume Arena\Shortcuts\OSC\STEAMDECK V2.xml
+RAIL_EXIT 0
+######## emu-nooverride
+MODE Engines LABEL emu-nooverride EXE_SHA256 2fcb2868d847615b5dd8b78732b654c857d48872f7125ab014a51253797f9b1c
+PORTS udp=46411 ui=47411 free-checked
+BROWSERS_BEFORE 0
+SINK pid_tree=365472,346652 rest=127.0.0.1:48180 osc=127.0.0.1:48170
+ARGV C:\Users\Ben\Documents\steamdeck-midi-showready\candidate-2e4292a\STEAMDECK-MIDI-RECEIVER-2.exe --listen 127.0.0.1:46411 --map "C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\emulated-install3\config\windows_midi_map.json" --dry-run --no-pulse --no-osc-relay --no-browser --ui-port 47411
+ROOT_PID 363536
+UI_READY_S 1.1 VERSION {"build_time_utc":"2026-09-16T09:12:21Z","frozen":true,"git_commit":"2e4292a75f08674fdf5c78358485b27c2d3bd913","version":"0.5.0"}
+
+PID_TREE 363536,364352
+  363536 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=363188
+  364352 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=363536
+LISTENERS
+  UDP 127.0.0.1:46411
+  TCP 127.0.0.1:47411
+GET /api/engines 200
+  ENGINE OSC Sync type=osc_sync active=True
+  ENGINE StageFlow Bridge type=stageflow_bridge active=True
+POST /api/engines/osc-sync/resync 200 {"ok":true,"target_count":207}
+
+GET /api/logs/tail 200 matching_lines=1
+  LOG {"count":34,"lines":["2026-09-16 03:41:10,828 INFO root build fingerprint: version=0.5.0 commit=2e4292a75f08 built_utc=2026-09-16T09:12:21Z","2026-09-16 03:41:10,875 INFO root selected MIDI output port: name=DECK_IN index=n/a","2026-09-16 03:41:10,886 INFO windows.engines.registry auto-merging factory default for engine type 'autopilot' (not in engines/)","2026-09-16 03:41:10,888 INFO windows.engines.registry auto-merging factory default for engine type 'autopilot_ptz' (not in engines/)","2026-09-16 03:41:10,890 INFO windows.engines.registry auto-merging factory default for engine type 'bumper_blast' (not in engines/)","2026-09-16 03:41:10,893 INFO windows.engines.registry auto-merging factory default for engine type 'chaser_stack_dispatcher' (not in engines/)","2026-09-16 03:41:10,895 INFO windows.engines.registry auto-merging factory default for engine type 'flash_blast' (not in engines/)","2026-09-16 03:41:10,897 INFO windows.engines.registry auto-merging factory default for engine type 'gyro_feedback' (not in engines/)","2026-09-16 03:41:10,899 INFO windows.engines.registry auto-merging factory default for engine type 'l_stick_layer' (not in engines/)","2026-09-16 03:41:10,900 INFO windows.engines.registry auto-merging factory default for engine type 'nestdrop' (not in engines/)","2026-09-16 03:41:10,900 INFO windows.engines.registry auto-merging factory default for engine type 'osc_sync' (not in engines/)","2026-09-16 03:41:10,900 INFO windows.engines.registry auto-merging factory default for engine type 'ptz_visca' (not in engines/)","2026-09-16 03:41:10,900 INFO windows.engines.registry auto-merging factory default for engine type 'stageflow_bridge' (not in engines/)","2026-09-16 03:41:10,900 INFO windows.engines.registry auto-merging factory default for engine type 'steam_input_layer_tracker' (not in engines/)","2026-09-16 03:41:10,901 INFO windows.engines.registry engine Audio Engine is disabled in config; skipping","2026-09-16 03:41:10,901 INFO windows.engines.registry engine Layer 9/10 Auto-Bypass is disabled in config; skipping","2026-09-16 03:41:10,901 INFO windows.engines.registry engine Global Color is disabled in config; skipping","2026-09-16 03:41:10,902 INFO windows.engines.registry engine Autopilot is disabled in config; skipping","2026-09-16 03:41:10,902 INFO windows.engines.registry engine Autopilot PTZ is disabled in config; skipping","2026-09-16 03:41:10,902 INFO windows.engines.registry engine Bumper Blast is disabled in config; skipping","2026-09-16 03:41:10,902 INFO windows.engines.registry engine Chaser Stack Dispatcher is disabled in config; skipping","2026-09-16 03:41:10,902 INFO windows.engines.registry engine Flash Blast is disabled in config; skipping","2026-09-16 03:41:10,902 INFO windows.engines.registry engine Gyro Feedback is disabled in config; skipping","2026-09-16 03:41:10,902 INFO windows.engines.registry engine Left Stick Layer is disabled in config; skipping","2026-09-16 03:41:10,902 INFO windows.engines.registry engine NestDrop is disabled in config; skipping","2026-09-16 03:41:10,903 INFO windows.engines.registry loaded engine OSC Sync (type=osc_sync)","2026-09-16 03:41:10,903 INFO windows.engines.registry engine PTZ VISCA is disabled in config; skipping","2026-09-16 03:41:10,903 INFO windows.engines.registry loaded engine StageFlow Bridge (type=stageflow_bridge)","2026-09-16 03:41:10,903 INFO windows.engines.registry engine SteamInput Layer Tracker is disabled in config; skipping","2026-09-16 03:41:10,904 INFO root engine config: path=C:\\Users\\<user>\\AppData\\Local\\Temp\\sdwin\\sdrc-gate\\emulated-install3\\config\\engines count=2 active=2","2026-09-16 03:41:10,974 INFO root mapping UI available at http://127.0.0.1:47411","2026-09-16 03:41:10,991 INFO windows.receiver listening on udp://127.0.0.1:46411","2026-09-16 03:41:10,991 INFO windows.receiver engines loaded: OSC Sync(osc_sync), StageFlow Bridge(stageflow_bridge)","2026-09-16 03:41:15,748 INFO windows.engines.osc_sync osc_sync: parsed 207 wigglable targets from C:\\Users\\<user>\\OneDrive\\Documents\\Resolume Arena\\Shortcuts\\OSC\\STEAMDECK V2.xml"],"log_file":null}
+OSC_SYNC_RESOLVED shape=<home>\OneDrive\Documents\Resolume Arena\Shortcuts\OSC\STEAMDECK V2.xml exists=True targets=207
+HOME_DEFAULT osc_preset shape=<home>\OneDrive\Documents\Resolume Arena\Shortcuts\OSC\STEAMDECK V2.xml exists=True
+HOME_DEFAULT comp shape=<home>\OneDrive\Documents\Resolume Arena\Compositions\5-5-26 STEAMDECK V2.avc exists=True
+CONFIG osc_sync 200 keys=live_swappable,loaded,path,restart_required_reason,source,spec,type,user_files
+CONFIG stageflow_bridge 200 keys=live_swappable,loaded,path,restart_required_reason,source,spec,type,user_files
+POST /api/shutdown 202
+EXIT_CODE 0 EXIT_S 0.805
+SINK_COUNTS {"tcp_connections": 0, "udp_datagrams": 0, "http_first_lines": []}
+PID_GONE 346652 True
+PID_GONE 363536 True
+PID_GONE 364352 True
+PID_GONE 365472 True
+PORTS_FREE udp=True ui=True
+LANE_OR_STAGING_PROCESSES 0
+PYTHON_TOTAL 0
+BROWSERS_AFTER 0
+BROWSERS_EQUAL True
+== EXE STDERR tail
+  INFO engine Global Color is disabled in config; skipping
+  INFO engine Autopilot is disabled in config; skipping
+  INFO engine Autopilot PTZ is disabled in config; skipping
+  INFO engine Bumper Blast is disabled in config; skipping
+  INFO engine Chaser Stack Dispatcher is disabled in config; skipping
+  INFO engine Flash Blast is disabled in config; skipping
+  INFO engine Gyro Feedback is disabled in config; skipping
+  INFO engine Left Stick Layer is disabled in config; skipping
+  INFO engine NestDrop is disabled in config; skipping
+  INFO loaded engine OSC Sync (type=osc_sync)
+  INFO engine PTZ VISCA is disabled in config; skipping
+  INFO loaded engine StageFlow Bridge (type=stageflow_bridge)
+  INFO engine SteamInput Layer Tracker is disabled in config; skipping
+  INFO engine config: path=<home>\AppData\Local\Temp\sdwin\sdrc-gate\emulated-install3\config\engines count=2 active=2
+  INFO mapping UI available at http://127.0.0.1:47411
+  INFO listening on udp://127.0.0.1:46411
+  Exception in thread tray:
+  INFO engines loaded: OSC Sync(osc_sync), StageFlow Bridge(stageflow_bridge)
+  Traceback (most recent call last):
+    File "threading.py", line 1075, in _bootstrap_inner
+    File "threading.py", line 1012, in run
+    File "pystray\_base.py", line 212, in run
+    File "pystray\_base.py", line 379, in _run
+  NotImplementedError
+  INFO osc_sync: parsed 207 wigglable targets from <home>\OneDrive\Documents\Resolume Arena\Shortcuts\OSC\STEAMDECK V2.xml
+RAIL_EXIT 0
+######## emu-override
+MODE Engines LABEL emu-override EXE_SHA256 2fcb2868d847615b5dd8b78732b654c857d48872f7125ab014a51253797f9b1c
+PORTS udp=46411 ui=47411 free-checked
+BROWSERS_BEFORE 0
+SINK pid_tree=358536,355800 rest=127.0.0.1:48180 osc=127.0.0.1:48170
+ARGV C:\Users\Ben\Documents\steamdeck-midi-showready\candidate-2e4292a\STEAMDECK-MIDI-RECEIVER-2.exe --listen 127.0.0.1:46411 --map "C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\emulated-override3\config\windows_midi_map.json" --dry-run --no-pulse --no-osc-relay --no-browser --ui-port 47411
+ROOT_PID 356068
+UI_READY_S 0.61 VERSION {"build_time_utc":"2026-09-16T09:12:21Z","frozen":true,"git_commit":"2e4292a75f08674fdf5c78358485b27c2d3bd913","version":"0.5.0"}
+
+PID_TREE 356068,356752
+  356068 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=365012
+  356752 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=356068
+LISTENERS
+  UDP 127.0.0.1:46411
+  TCP 127.0.0.1:47411
+GET /api/engines 200
+  ENGINE OSC Sync type=osc_sync active=True
+  ENGINE StageFlow Bridge type=stageflow_bridge active=True
+POST /api/engines/osc-sync/resync 200 {"ok":true,"target_count":207}
+
+GET /api/logs/tail 200 matching_lines=1
+  LOG {"count":33,"lines":["2026-09-16 03:41:27,300 INFO root build fingerprint: version=0.5.0 commit=2e4292a75f08 built_utc=2026-09-16T09:12:21Z","2026-09-16 03:41:27,302 INFO root selected MIDI output port: name=DECK_IN index=n/a","2026-09-16 03:41:27,307 INFO windows.engines.registry auto-merging factory default for engine type 'autopilot' (not in engines/)","2026-09-16 03:41:27,309 INFO windows.engines.registry auto-merging factory default for engine type 'autopilot_ptz' (not in engines/)","2026-09-16 03:41:27,311 INFO windows.engines.registry auto-merging factory default for engine type 'bumper_blast' (not in engines/)","2026-09-16 03:41:27,313 INFO windows.engines.registry auto-merging factory default for engine type 'chaser_stack_dispatcher' (not in engines/)","2026-09-16 03:41:27,315 INFO windows.engines.registry auto-merging factory default for engine type 'flash_blast' (not in engines/)","2026-09-16 03:41:27,317 INFO windows.engines.registry auto-merging factory default for engine type 'gyro_feedback' (not in engines/)","2026-09-16 03:41:27,319 INFO windows.engines.registry auto-merging factory default for engine type 'l_stick_layer' (not in engines/)","2026-09-16 03:41:27,320 INFO windows.engines.registry auto-merging factory default for engine type 'nestdrop' (not in engines/)","2026-09-16 03:41:27,320 INFO windows.engines.registry auto-merging factory default for engine type 'ptz_visca' (not in engines/)","2026-09-16 03:41:27,320 INFO windows.engines.registry auto-merging factory default for engine type 'stageflow_bridge' (not in engines/)","2026-09-16 03:41:27,320 INFO windows.engines.registry auto-merging factory default for engine type 'steam_input_layer_tracker' (not in engines/)","2026-09-16 03:41:27,320 INFO windows.engines.registry engine Audio Engine is disabled in config; skipping","2026-09-16 03:41:27,321 INFO windows.engines.registry engine Layer 9/10 Auto-Bypass is disabled in config; skipping","2026-09-16 03:41:27,321 INFO windows.engines.registry engine Global Color is disabled in config; skipping","2026-09-16 03:41:27,321 INFO windows.engines.registry loaded engine OSC Sync (type=osc_sync)","2026-09-16 03:41:27,322 INFO windows.engines.registry engine Autopilot is disabled in config; skipping","2026-09-16 03:41:27,322 INFO windows.engines.registry engine Autopilot PTZ is disabled in config; skipping","2026-09-16 03:41:27,322 INFO windows.engines.registry engine Bumper Blast is disabled in config; skipping","2026-09-16 03:41:27,322 INFO windows.engines.registry engine Chaser Stack Dispatcher is disabled in config; skipping","2026-09-16 03:41:27,322 INFO windows.engines.registry engine Flash Blast is disabled in config; skipping","2026-09-16 03:41:27,322 INFO windows.engines.registry engine Gyro Feedback is disabled in config; skipping","2026-09-16 03:41:27,322 INFO windows.engines.registry engine Left Stick Layer is disabled in config; skipping","2026-09-16 03:41:27,323 INFO windows.engines.registry engine NestDrop is disabled in config; skipping","2026-09-16 03:41:27,323 INFO windows.engines.registry engine PTZ VISCA is disabled in config; skipping","2026-09-16 03:41:27,323 INFO windows.engines.registry loaded engine StageFlow Bridge (type=stageflow_bridge)","2026-09-16 03:41:27,323 INFO windows.engines.registry engine SteamInput Layer Tracker is disabled in config; skipping","2026-09-16 03:41:27,323 INFO root engine config: path=C:\\Users\\<user>\\AppData\\Local\\Temp\\sdwin\\sdrc-gate\\emulated-override3\\config\\engines count=2 active=2","2026-09-16 03:41:27,393 INFO root mapping UI available at http://127.0.0.1:47411","2026-09-16 03:41:27,409 INFO windows.receiver listening on udp://127.0.0.1:46411","2026-09-16 03:41:27,409 INFO windows.receiver engines loaded: OSC Sync(osc_sync), StageFlow Bridge(stageflow_bridge)","2026-09-16 03:41:31,736 INFO windows.engines.osc_sync osc_sync: parsed 207 wigglable targets from C:/Users/<user>/OneDrive/Documents/Resolume Arena/Shortcuts/OSC/STEAMDECK V2.xml"],"log_file":null}
+OSC_SYNC_RESOLVED shape=C:/Users/<user>/OneDrive/Documents/Resolume Arena/Shortcuts/OSC/STEAMDECK V2.xml exists=True targets=207
+HOME_DEFAULT osc_preset shape=<home>\OneDrive\Documents\Resolume Arena\Shortcuts\OSC\STEAMDECK V2.xml exists=True
+HOME_DEFAULT comp shape=<home>\OneDrive\Documents\Resolume Arena\Compositions\5-5-26 STEAMDECK V2.avc exists=True
+CONFIG osc_sync 200 keys=live_swappable,loaded,path,restart_required_reason,source,spec,type,user_files
+CONFIG stageflow_bridge 200 keys=live_swappable,loaded,path,restart_required_reason,source,spec,type,user_files
+POST /api/shutdown 202
+EXIT_CODE 0 EXIT_S 0.781
+SINK_COUNTS {"tcp_connections": 0, "udp_datagrams": 0, "http_first_lines": []}
+PID_GONE 355800 True
+PID_GONE 356068 True
+PID_GONE 356752 True
+PID_GONE 358536 True
+PORTS_FREE udp=True ui=True
+LANE_OR_STAGING_PROCESSES 0
+PYTHON_TOTAL 0
+BROWSERS_AFTER 0
+BROWSERS_EQUAL True
+== EXE STDERR tail
+  INFO engine Global Color is disabled in config; skipping
+  INFO loaded engine OSC Sync (type=osc_sync)
+  INFO engine Autopilot is disabled in config; skipping
+  INFO engine Autopilot PTZ is disabled in config; skipping
+  INFO engine Bumper Blast is disabled in config; skipping
+  INFO engine Chaser Stack Dispatcher is disabled in config; skipping
+  INFO engine Flash Blast is disabled in config; skipping
+  INFO engine Gyro Feedback is disabled in config; skipping
+  INFO engine Left Stick Layer is disabled in config; skipping
+  INFO engine NestDrop is disabled in config; skipping
+  INFO engine PTZ VISCA is disabled in config; skipping
+  INFO loaded engine StageFlow Bridge (type=stageflow_bridge)
+  INFO engine SteamInput Layer Tracker is disabled in config; skipping
+  INFO engine config: path=<home>\AppData\Local\Temp\sdwin\sdrc-gate\emulated-override3\config\engines count=2 active=2
+  INFO mapping UI available at http://127.0.0.1:47411
+  INFO listening on udp://127.0.0.1:46411
+  INFO engines loaded: OSC Sync(osc_sync), StageFlow Bridge(stageflow_bridge)
+  Exception in thread tray:
+  Traceback (most recent call last):
+    File "threading.py", line 1075, in _bootstrap_inner
+    File "threading.py", line 1012, in run
+    File "pystray\_base.py", line 212, in run
+    File "pystray\_base.py", line 379, in _run
+  NotImplementedError
+  INFO osc_sync: parsed 207 wigglable targets from C:/Users/<user>/OneDrive/Documents/Resolume Arena/Shortcuts/OSC/STEAMDECK V2.xml
+RAIL_EXIT 0

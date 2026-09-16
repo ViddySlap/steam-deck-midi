@@ -1,0 +1,16 @@
+{"repeat": 1, "arm": "CLOSED", "try": 1, "start": "05:02:59", "end": "05:04:11", "samples": 14, "max_load1": 2.67, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 1, "arm": "CLOSED-B", "try": 1, "start": "05:05:26", "end": "05:06:37", "samples": 15, "max_load1": 2.4, "load1_over_5": [], "hogs_over_50pct_10s": [{"first": 1789556772.370538, "last": 1789556782.387897, "command": "/opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/ViddyVault --continuous", "max": 89.0}], "valid": false}
+{"repeat": 1, "arm": "OPEN", "try": 1, "start": "05:04:13", "end": "05:05:24", "samples": 14, "max_load1": 2.79, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 2, "arm": "CLOSED", "try": 1, "start": "05:06:40", "end": "05:07:51", "samples": 14, "max_load1": 2.68, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 2, "arm": "CLOSED-B", "try": 1, "start": "05:09:10", "end": "05:10:22", "samples": 14, "max_load1": 3.9, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 2, "arm": "OPEN", "try": 1, "start": "05:07:55", "end": "05:09:07", "samples": 14, "max_load1": 4.26, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 3, "arm": "CLOSED", "try": 1, "start": "05:10:26", "end": "05:11:37", "samples": 14, "max_load1": 3.45, "load1_over_5": [], "hogs_over_50pct_10s": [{"first": 1789557062.7819378, "last": 1789557072.783544, "command": "/opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/ViddyVault --continuous", "max": 90.0}], "valid": false}
+{"repeat": 3, "arm": "CLOSED-B", "try": 1, "start": "05:13:00", "end": "05:14:11", "samples": 14, "max_load1": 3.3, "load1_over_5": [], "hogs_over_50pct_10s": [{"first": 1789557233.018477, "last": 1789557243.038523, "command": "/opt/homebrew/bin/node /opt/homebrew/lib/node_modules/obsidian-headless/cli.js sync --path /Users/viddyslap/Documents/ViddyVault --continuous", "max": 89.5}], "valid": false}
+{"repeat": 3, "arm": "OPEN", "try": 1, "start": "05:11:43", "end": "05:12:55", "samples": 14, "max_load1": 3.01, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 4, "arm": "CLOSED", "try": 1, "start": "05:14:17", "end": "05:15:29", "samples": 15, "max_load1": 3.69, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 4, "arm": "CLOSED-B", "try": 1, "start": "05:16:55", "end": "05:18:07", "samples": 14, "max_load1": 3.16, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 4, "arm": "OPEN", "try": 1, "start": "05:15:36", "end": "05:16:48", "samples": 15, "max_load1": 3.27, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 5, "arm": "CLOSED", "try": 1, "start": "05:18:14", "end": "05:19:26", "samples": 14, "max_load1": 3.05, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 5, "arm": "CLOSED-B", "try": 1, "start": "05:20:56", "end": "05:22:07", "samples": 14, "max_load1": 3.29, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+{"repeat": 5, "arm": "OPEN", "try": 1, "start": "05:19:35", "end": "05:20:47", "samples": 14, "max_load1": 3.42, "load1_over_5": [], "hogs_over_50pct_10s": [], "valid": true}
+ARM_VALIDITY INVALID PRESENT 15 arms

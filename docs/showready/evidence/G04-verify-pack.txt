@@ -1,0 +1,60 @@
+== LOCATIONS
+LOC C:\Users\Ben\Documents\steamdeck-midi-showready\candidate-2e4292a exists=True under_C_Users_Ben_Documents=True onedrive_in_path=False reparse=False
+LOC C:\Users\Ben\Documents\steamdeck-midi-showready\rollback-v0.4.9 exists=True under_C_Users_Ben_Documents=True onedrive_in_path=False reparse=False
+ONEDRIVE_DOCS_COPY C:\Users\Ben\OneDrive\Documents\steamdeck-midi-showready exists=False
+DOCUMENTS_KNOWN_FOLDER C:\Users\Ben\OneDrive\Documents
+== STAGING
+  BUILD-INFO.txt 1573 2026-09-16T09:15:25.4728693Z
+  SHA256SUMS.txt 308 2026-09-16T09:15:12.0145496Z
+  STEAMDECK-MIDI-RECEIVER-2-Setup-0.5.0.exe 43981989 2026-09-16T09:14:53.0442852Z
+  STEAMDECK-MIDI-RECEIVER-2-Tray.exe 20998625 2026-09-16T09:14:40.9604499Z
+  STEAMDECK-MIDI-RECEIVER-2.exe 21003745 2026-09-16T09:14:27.3834916Z
+STAGING_SHA256SUMS entries=3 bad=0
+BUILD_INFO_CANDIDATE_LINE CANDIDATE 2e4292a75f08674fdf5c78358485b27c2d3bd913
+== ROLLBACK
+INSTALLER_0.4.9 len=43881072 sha256=05a46159b762f33a757218817830666beaa07a629d121a89b75debaa6de351a5
+ROLLBACK_MANIFEST installed-program rows=44 ok=44 bad=0 extra=0
+ROLLBACK_MANIFEST config rows=38 ok=38 bad=0 extra=0
+ROLLBACK_MANIFEST localappdata rows=4 ok=4 bad=0 extra=0
+== INSTALLED PROGRAM vs C2 MANIFEST (read-only, the installer never ran)
+PROGRAM_VS_MANIFEST rows=44 ok=44 bad=0 extra=0
+== ROLLBACK-STEPS paths
+STEPS exists=True sha256=4d57354adf99a3dc0c377d1c73c0668035da022b32192e5389f73a369d046d83
+STEP_PATH exists=False C:\Program
+STEP_PATH exists=False C:\Users\Ben\AppData\Local\STEAMDECK
+STEP_PATH exists=True C:\Users\Ben\Documents\steamdeck-midi-showready\candidate-2e4292a\STEAMDECK-MIDI-RECEIVER-2-Setup-0.5.0.exe
+STEP_PATH exists=True C:\Users\Ben\Documents\steamdeck-midi-showready\rollback-v0.4.9
+STEP_PATH exists=True C:\Users\Ben\Documents\steamdeck-midi-showready\rollback-v0.4.9\
+STEP_PATH exists=True PROGRAM\config\
+STEP_PATH exists=False PROGRAM\config\bridge.local.json
+STEP_PATH exists=True PROGRAM\config\engines.factory\osc_sync.json
+STEP_PATH exists=True PROGRAM\config\engines\
+STEP_PATH exists=False PROGRAM\config\engines\osc_sync.json
+STEP_PATH exists=False PROGRAM\config\state\
+STEP_PATH exists=True ROLLBACK\config
+STEP_PATH exists=True ROLLBACK\config\
+STEP_PATH exists=True ROLLBACK\config\engines.factory\osc_sync.json
+STEP_PATH exists=True ROLLBACK\config\engines\
+STEP_PATH exists=True ROLLBACK\installed-program\
+STEP_PATH exists=True ROLLBACK\installer\STEAMDECK-MIDI-RECEIVER-2-Setup-0.4.9.exe
+== PROCESSES FROM STAGING OR ROLLBACK
+STAGING_OR_ROLLBACK_PROCESSES 0
+== INTERPRETERS
+PYDLL C:\Program Files\STEAMDECK MIDI Receiver 2\STEAMDECK-MIDI-RECEIVER-2.exe python312.dllx2 FileVersion=0.4.9
+PYDLL C:\Users\Ben\Documents\steamdeck-midi-showready\candidate-2e4292a\STEAMDECK-MIDI-RECEIVER-2.exe python312.dllx2 FileVersion=0.5.0
+PYDLL C:\Users\Ben\Documents\steamdeck-midi-showready\candidate-2e4292a\STEAMDECK-MIDI-RECEIVER-2-Tray.exe python312.dllx2 FileVersion=0.5.0
+CLOCKINFO EXE C:\Users\Ben\Documents\project-workspaces\steam-deck-midi-rc\.venv\Scripts\python.exe
+CLOCKINFO VERSION 3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]
+CLOCKINFO BITS 64
+CLOCKINFO CLOCK monotonic implementation=GetTickCount64() resolution=0.015625 monotonic=True adjustable=False
+CLOCKINFO CLOCK perf_counter implementation=QueryPerformanceCounter() resolution=1e-07 monotonic=True adjustable=False
+CLOCKINFO CLOCK time implementation=GetSystemTimeAsFileTime() resolution=0.015625 monotonic=False adjustable=True
+CLOCK_PID 359692 exit=0 gone=True
+== MUTATIONS (copies only)
+MUT_C pristine copy entries=1 bad=0
+MUT_C flipped byte offset=10499312 entries=  SUMS_BAD STEAMDECK-MIDI-RECEIVER-2-Tray.exe bad=1
+MUT_C restored entries=1 bad=0
+MUT_D pristine rows=38 ok=38 bad=0 extra=0
+MUT_D altered actions.yaml sha256_copy rows=  MANIFEST_BAD actions.yaml ok=38 bad=37 extra=1
+MUT_D restored rows=38 ok=38 bad=0 extra=0
+RAIL_EXIT 0

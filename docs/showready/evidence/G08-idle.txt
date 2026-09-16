@@ -1,0 +1,257 @@
+V049_COPY sha256=1a76c5cb69d1b36f38d58d93229d933c399354b7b0ac9a6cb0236019f7b06451 installed_manifest=1a76c5cb69d1b36f38d58d93229d933c399354b7b0ac9a6cb0236019f7b06451
+CPU_SELF_TEST exit=0 pid=365068 gone=True
+  SELFTEST {
+  SELFTEST  "machine": "Windows",
+  SELFTEST  "python": "C:\\Users\\Ben\\Documents\\project-workspaces\\steam-deck-midi-rc\\.venv\\Scripts\\python.exe",
+  SELFTEST  "declared": {
+  SELFTEST   "busy_min_percent": 50.0,
+  SELFTEST   "idle_max_percent": 5.0
+  SELFTEST  },
+  SELFTEST  "busy": {
+  SELFTEST   "pid": 366260,
+  SELFTEST   "cpu_seconds": 3.6094,
+  SELFTEST   "percent_of_one_core": 86.18
+  SELFTEST  },
+  SELFTEST  "idle": {
+  SELFTEST   "pid": 366208,
+  SELFTEST   "cpu_seconds": 0.0,
+  SELFTEST   "percent_of_one_core": 0.0
+  SELFTEST  },
+  SELFTEST  "passed": true
+  SELFTEST }
+######## idle-cand-1
+MODE Idle LABEL idle-cand-1 EXE_SHA256 2fcb2868d847615b5dd8b78732b654c857d48872f7125ab014a51253797f9b1c
+PORTS udp=46411 ui=47411 free-checked
+BROWSERS_BEFORE 0
+ARGV C:\Users\Ben\Documents\steamdeck-midi-showready\candidate-2e4292a\STEAMDECK-MIDI-RECEIVER-2.exe --listen 127.0.0.1:46411 --map "C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\pfcopy3\config\windows_midi_map.json" --dry-run --no-pulse --no-osc-relay --no-browser --no-engines --no-ui
+ROOT_PID 359428
+PID_TREE 359428,364588
+  359428 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=360980
+  364588 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=359428
+LISTENERS
+  UDP 127.0.0.1:46411
+IDLE_CPU_PERCENT_ONE_CORE 0.65 cpu_s=0.3906 wall_s=60.14 tree=359428,364588
+STOP owned pid tree root 359428
+  SUCCESS: The process with PID 364588 (child process of PID 359428) has been terminated.
+  SUCCESS: The process with PID 359428 (child process of PID 360980) has been terminated.
+PID_GONE 359428 True
+PID_GONE 364588 True
+PORTS_FREE udp=True ui=True
+LANE_OR_STAGING_PROCESSES 0
+PYTHON_TOTAL 0
+BROWSERS_AFTER 0
+BROWSERS_EQUAL True
+== EXE STDERR tail
+  INFO build fingerprint: version=0.5.0 commit=2e4292a75f08 built_utc=2026-09-16T09:12:21Z
+  INFO selected MIDI output port: name=DECK_IN index=n/a
+  INFO listening on udp://127.0.0.1:46411
+######## idle-v049-1
+MODE Idle LABEL idle-v049-1 EXE_SHA256 1a76c5cb69d1b36f38d58d93229d933c399354b7b0ac9a6cb0236019f7b06451
+PORTS udp=46411 ui=47411 free-checked
+BROWSERS_BEFORE 0
+ARGV C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\v049exe\STEAMDECK-MIDI-RECEIVER-2.exe --listen 127.0.0.1:46411 --map "C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\pfcopy3\config\windows_midi_map.json" --dry-run --no-pulse --no-osc-relay --no-engines --no-ui
+ROOT_PID 366456
+PID_TREE 366456,366208
+  366456 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=360980
+  366208 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=366456
+LISTENERS
+  UDP 127.0.0.1:46411
+IDLE_CPU_PERCENT_ONE_CORE 0.156 cpu_s=0.0938 wall_s=60.28 tree=366456,366208
+STOP owned pid tree root 366456
+  SUCCESS: The process with PID 366208 (child process of PID 366456) has been terminated.
+  SUCCESS: The process with PID 366456 (child process of PID 360980) has been terminated.
+PID_GONE 366208 True
+PID_GONE 366456 True
+PORTS_FREE udp=True ui=True
+LANE_OR_STAGING_PROCESSES 0
+PYTHON_TOTAL 0
+BROWSERS_AFTER 0
+BROWSERS_EQUAL True
+== EXE STDERR tail
+  INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+  INFO selected MIDI output port: name=DECK_IN index=n/a
+  INFO listening on udp://127.0.0.1:46411
+######## idle-cand-2
+MODE Idle LABEL idle-cand-2 EXE_SHA256 2fcb2868d847615b5dd8b78732b654c857d48872f7125ab014a51253797f9b1c
+PORTS udp=46411 ui=47411 free-checked
+BROWSERS_BEFORE 0
+ARGV C:\Users\Ben\Documents\steamdeck-midi-showready\candidate-2e4292a\STEAMDECK-MIDI-RECEIVER-2.exe --listen 127.0.0.1:46411 --map "C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\pfcopy3\config\windows_midi_map.json" --dry-run --no-pulse --no-osc-relay --no-browser --no-engines --no-ui
+ROOT_PID 360084
+PID_TREE 360084,364572
+  360084 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=360980
+  364572 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=360084
+LISTENERS
+  UDP 127.0.0.1:46411
+IDLE_CPU_PERCENT_ONE_CORE 0.65 cpu_s=0.3906 wall_s=60.13 tree=360084,364572
+STOP owned pid tree root 360084
+  SUCCESS: The process with PID 364572 (child process of PID 360084) has been terminated.
+  SUCCESS: The process with PID 360084 (child process of PID 360980) has been terminated.
+PID_GONE 360084 True
+PID_GONE 364572 True
+PORTS_FREE udp=True ui=True
+LANE_OR_STAGING_PROCESSES 0
+PYTHON_TOTAL 0
+BROWSERS_AFTER 0
+BROWSERS_EQUAL True
+== EXE STDERR tail
+  INFO build fingerprint: version=0.5.0 commit=2e4292a75f08 built_utc=2026-09-16T09:12:21Z
+  INFO selected MIDI output port: name=DECK_IN index=n/a
+  INFO listening on udp://127.0.0.1:46411
+######## idle-v049-2
+MODE Idle LABEL idle-v049-2 EXE_SHA256 1a76c5cb69d1b36f38d58d93229d933c399354b7b0ac9a6cb0236019f7b06451
+PORTS udp=46411 ui=47411 free-checked
+BROWSERS_BEFORE 0
+ARGV C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\v049exe\STEAMDECK-MIDI-RECEIVER-2.exe --listen 127.0.0.1:46411 --map "C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\pfcopy3\config\windows_midi_map.json" --dry-run --no-pulse --no-osc-relay --no-engines --no-ui
+ROOT_PID 364872
+PID_TREE 364872,362440
+  364872 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=360980
+  362440 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=364872
+LISTENERS
+  UDP 127.0.0.1:46411
+IDLE_CPU_PERCENT_ONE_CORE 0.052 cpu_s=0.0312 wall_s=60.13 tree=364872,362440
+STOP owned pid tree root 364872
+  SUCCESS: The process with PID 362440 (child process of PID 364872) has been terminated.
+  SUCCESS: The process with PID 364872 (child process of PID 360980) has been terminated.
+PID_GONE 362440 True
+PID_GONE 364872 True
+PORTS_FREE udp=True ui=True
+LANE_OR_STAGING_PROCESSES 0
+PYTHON_TOTAL 0
+BROWSERS_AFTER 0
+BROWSERS_EQUAL True
+== EXE STDERR tail
+  INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+  INFO selected MIDI output port: name=DECK_IN index=n/a
+  INFO listening on udp://127.0.0.1:46411
+######## idle-cand-3
+MODE Idle LABEL idle-cand-3 EXE_SHA256 2fcb2868d847615b5dd8b78732b654c857d48872f7125ab014a51253797f9b1c
+PORTS udp=46411 ui=47411 free-checked
+BROWSERS_BEFORE 0
+ARGV C:\Users\Ben\Documents\steamdeck-midi-showready\candidate-2e4292a\STEAMDECK-MIDI-RECEIVER-2.exe --listen 127.0.0.1:46411 --map "C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\pfcopy3\config\windows_midi_map.json" --dry-run --no-pulse --no-osc-relay --no-browser --no-engines --no-ui
+ROOT_PID 362404
+PID_TREE 362404,366308
+  362404 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=360980
+  366308 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=362404
+LISTENERS
+  UDP 127.0.0.1:46411
+IDLE_CPU_PERCENT_ONE_CORE 0.494 cpu_s=0.2969 wall_s=60.13 tree=362404,366308
+STOP owned pid tree root 362404
+  SUCCESS: The process with PID 366308 (child process of PID 362404) has been terminated.
+  SUCCESS: The process with PID 362404 (child process of PID 360980) has been terminated.
+PID_GONE 362404 True
+PID_GONE 366308 True
+PORTS_FREE udp=True ui=True
+LANE_OR_STAGING_PROCESSES 0
+PYTHON_TOTAL 0
+BROWSERS_AFTER 0
+BROWSERS_EQUAL True
+== EXE STDERR tail
+  INFO build fingerprint: version=0.5.0 commit=2e4292a75f08 built_utc=2026-09-16T09:12:21Z
+  INFO selected MIDI output port: name=DECK_IN index=n/a
+  INFO listening on udp://127.0.0.1:46411
+######## idle-v049-3
+MODE Idle LABEL idle-v049-3 EXE_SHA256 1a76c5cb69d1b36f38d58d93229d933c399354b7b0ac9a6cb0236019f7b06451
+PORTS udp=46411 ui=47411 free-checked
+BROWSERS_BEFORE 0
+ARGV C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\v049exe\STEAMDECK-MIDI-RECEIVER-2.exe --listen 127.0.0.1:46411 --map "C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\pfcopy3\config\windows_midi_map.json" --dry-run --no-pulse --no-osc-relay --no-engines --no-ui
+ROOT_PID 362424
+PID_TREE 362424,356484
+  362424 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=360980
+  356484 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=362424
+LISTENERS
+  UDP 127.0.0.1:46411
+IDLE_CPU_PERCENT_ONE_CORE 0.104 cpu_s=0.0625 wall_s=60.13 tree=362424,356484
+STOP owned pid tree root 362424
+  SUCCESS: The process with PID 356484 (child process of PID 362424) has been terminated.
+  SUCCESS: The process with PID 362424 (child process of PID 360980) has been terminated.
+PID_GONE 356484 True
+PID_GONE 362424 True
+PORTS_FREE udp=True ui=True
+LANE_OR_STAGING_PROCESSES 0
+PYTHON_TOTAL 0
+BROWSERS_AFTER 0
+BROWSERS_EQUAL True
+== EXE STDERR tail
+  INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+  INFO selected MIDI output port: name=DECK_IN index=n/a
+  INFO listening on udp://127.0.0.1:46411
+######## shutdown-cand
+MODE Idle LABEL shut-cand EXE_SHA256 2fcb2868d847615b5dd8b78732b654c857d48872f7125ab014a51253797f9b1c
+PORTS udp=46411 ui=47411 free-checked
+BROWSERS_BEFORE 0
+ARGV C:\Users\Ben\Documents\steamdeck-midi-showready\candidate-2e4292a\STEAMDECK-MIDI-RECEIVER-2.exe --listen 127.0.0.1:46411 --map "C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\pfcopy3\config\windows_midi_map.json" --dry-run --no-pulse --no-osc-relay --no-browser --no-engines --ui-port 47411
+ROOT_PID 353072
+UI_READY_S 1.09 VERSION {"build_time_utc":"2026-09-16T09:12:21Z","frozen":true,"git_commit":"2e4292a75f08674fdf5c78358485b27c2d3bd913","version":"0.5.0"}
+
+PID_TREE 353072,355668
+  353072 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=360980
+  355668 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=353072
+LISTENERS
+  UDP 127.0.0.1:46411
+  TCP 127.0.0.1:47411
+IDLE_CPU_PERCENT_ONE_CORE 0.309 cpu_s=0.0625 wall_s=20.2 tree=353072,355668
+POST /api/shutdown 202
+EXIT_CODE 0 EXIT_S 0.763
+PID_GONE 353072 True
+PID_GONE 355668 True
+PORTS_FREE udp=True ui=True
+LANE_OR_STAGING_PROCESSES 0
+PYTHON_TOTAL 0
+BROWSERS_AFTER 0
+BROWSERS_EQUAL True
+== EXE STDERR tail
+  INFO build fingerprint: version=0.5.0 commit=2e4292a75f08 built_utc=2026-09-16T09:12:21Z
+  INFO selected MIDI output port: name=DECK_IN index=n/a
+  INFO mapping UI available at http://127.0.0.1:47411
+  INFO listening on udp://127.0.0.1:46411
+  Exception in thread tray:
+  Traceback (most recent call last):
+    File "threading.py", line 1075, in _bootstrap_inner
+    File "threading.py", line 1012, in run
+    File "pystray\_base.py", line 212, in run
+    File "pystray\_base.py", line 379, in _run
+  NotImplementedError
+######## shutdown-v049
+MODE Idle LABEL shut-v049 EXE_SHA256 1a76c5cb69d1b36f38d58d93229d933c399354b7b0ac9a6cb0236019f7b06451
+PORTS udp=46411 ui=47411 free-checked
+BROWSERS_BEFORE 0
+ARGV C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\v049exe\STEAMDECK-MIDI-RECEIVER-2.exe --listen 127.0.0.1:46411 --map "C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate\pfcopy3\config\windows_midi_map.json" --dry-run --no-pulse --no-osc-relay --no-engines --ui-port 47411
+ROOT_PID 364108
+UI_READY_S 90.06 VERSION <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+PID_TREE 364108,339956
+  364108 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=360980
+  339956 STEAMDECK-MIDI-RECEIVER-2.exe session=0 parent=364108
+LISTENERS
+  UDP 127.0.0.1:46411
+  TCP 127.0.0.1:47411
+IDLE_CPU_PERCENT_ONE_CORE 0.078 cpu_s=0.0156 wall_s=20.12 tree=364108,339956
+POST /api/shutdown 404
+SHUTDOWN_TIMEOUT
+STOP owned pid tree root 364108
+  SUCCESS: The process with PID 339956 (child process of PID 364108) has been terminated.
+  SUCCESS: The process with PID 364108 (child process of PID 360980) has been terminated.
+PID_GONE 339956 True
+PID_GONE 364108 True
+PORTS_FREE udp=True ui=True
+LANE_OR_STAGING_PROCESSES 0
+PYTHON_TOTAL 0
+BROWSERS_AFTER 0
+BROWSERS_EQUAL True
+== EXE STDERR tail
+  INFO build fingerprint: version=0.4.9 commit=2ae8f4ef55bf built_utc=2026-08-06T20:09:39Z
+  INFO selected MIDI output port: name=DECK_IN index=n/a
+  INFO mapping UI available at http://127.0.0.1:47411
+  Exception in thread tray:
+  Traceback (most recent call last):
+    File "threading.py", line 1075, in _bootstrap_inner
+  INFO listening on udp://127.0.0.1:46411
+    File "threading.py", line 1012, in run
+    File "pystray\_base.py", line 212, in run
+    File "pystray\_base.py", line 379, in _run
+  NotImplementedError
+RAIL_EXIT 0

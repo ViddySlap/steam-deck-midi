@@ -1,0 +1,36 @@
+2026-09-16T03:59:45 ORDER base,head,base,head
+2026-09-16T03:59:45 ARM 1 rev=base label=win-a01-base
+{"repeat": 1, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate-w100\win-a01-base.json.gz
+2026-09-16T04:01:47 ARM 1 exit 0
+2026-09-16T04:01:47 ARM 2 rev=head label=win-a02-head
+{"repeat": 2, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate-w100\win-a02-head.json.gz
+2026-09-16T04:03:48 ARM 2 exit 0
+2026-09-16T04:03:48 ARM 3 rev=base label=win-a03-base
+{"repeat": 3, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate-w100\win-a03-base.json.gz
+2026-09-16T04:05:21 ARM 3 exit 0
+2026-09-16T04:05:21 ARM 4 rev=head label=win-a04-head
+{"repeat": 4, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate-w100\win-a04-head.json.gz
+2026-09-16T04:06:57 ARM 4 exit 0
+ARMS_DONE
+2026-09-16T04:06:58 ORDER head,base,head,base
+2026-09-16T04:06:58 ARM 5 rev=head label=win-a05-head
+{"repeat": 5, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate-w100\win-a05-head.json.gz
+2026-09-16T04:08:33 ARM 5 exit 0
+2026-09-16T04:08:33 ARM 6 rev=base label=win-a06-base
+{"repeat": 6, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate-w100\win-a06-base.json.gz
+2026-09-16T04:10:08 ARM 6 exit 0
+2026-09-16T04:10:08 ARM 7 rev=head label=win-a07-head
+{"repeat": 7, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate-w100\win-a07-head.json.gz
+2026-09-16T04:11:43 ARM 7 exit 0
+2026-09-16T04:11:43 ARM 8 rev=base label=win-a08-base
+{"repeat": 8, "arm": "CLOSED", "load": "verified", "accepted": true, "passed": true, "accepted_so_far": 1, "timed_midi_messages": 9638, "minimum_timed_midi_messages": 1000, "timing_status": "VALID", "every_message_timed_midi_messages": 9638, "every_message_timing_status": "VALID"}
+WROTE C:\Users\Ben\AppData\Local\Temp\sdwin\sdrc-gate-w100\win-a08-base.json.gz
+2026-09-16T04:13:18 ARM 8 exit 0
+ARMS_DONE
