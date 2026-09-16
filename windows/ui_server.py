@@ -329,6 +329,64 @@ class MappingUIServer:
             })
         return presets
 
+    def _live_axis_ranges(self, static_ranges: dict) -> dict:
+        """Overlay the hardware axis bounds with the bounds actually in force.
+
+        The live view has to draw on the same scale the bridge maps from. When
+        it does not, a control that drives Resolume across its whole range
+        appears to barely move, which reads as a bug in the view. Everything
+        here is read from the live configuration - mapping input_range and
+        deadzone from the active preset, gyro bounds from the loaded
+        gyro_feedback engine - so a retune moves the display with it and no
+        range is duplicated in the static map.
+        """
+        ranges = copy.deepcopy(static_ranges)
+        try:
+            raw = self._load_raw_json()
+            effective = select_preset_section(raw, self.bridge_settings.preset_section)
+            mappings = effective.get("mappings") or {}
+        except Exception:
+            # A bad or absent preset must never cost us the controller view.
+            mappings = {}
+        for action, bounds in ranges.items():
+            spec = mappings.get(action)
+            if not isinstance(spec, dict):
+                continue
+            span = spec.get("input_range")
+            if (isinstance(span, (list, tuple)) and len(span) == 2
+                    and all(isinstance(v, (int, float)) and not isinstance(v, bool) for v in span)):
+                low, high = float(span[0]), float(span[1])
+                if low < bounds["min"]:
+                    bounds["min"] = low
+                bounds["max"] = high
+                # A unipolar floor above rest is a deadzone; say so explicitly
+                # rather than letting the bar start part-filled.
+                if low > bounds["rest"]:
+                    bounds["deadzone"] = low - bounds["rest"]
+            deadzone = spec.get("deadzone")
+            if isinstance(deadzone, (int, float)) and not isinstance(deadzone, bool) and deadzone > 0:
+                bounds["deadzone"] = max(float(deadzone), float(bounds.get("deadzone", 0.0)))
+        if self.engine_registry is not None:
+            status, payload = engine_config_api.get_engine_config(self.engine_registry, "gyro_feedback")
+            spec = payload.get("spec") if status == 200 else None
+            if isinstance(spec, dict):
+                axes = spec.get("axes") or {}
+                per_axis = spec.get("axis_raw") or {}
+                deadzone = spec.get("deadzone", 0)
+                for axis_name, action in axes.items():
+                    bounds = ranges.get(action)
+                    if not isinstance(bounds, dict):
+                        continue
+                    override = per_axis.get(axis_name) or {}
+                    low = override.get("raw_min", spec.get("raw_min"))
+                    high = override.get("raw_max", spec.get("raw_max"))
+                    if not isinstance(low, (int, float)) or not isinstance(high, (int, float)):
+                        continue
+                    bounds["min"], bounds["max"], bounds["rest"] = float(low), float(high), 0.0
+                    if isinstance(deadzone, (int, float)):
+                        bounds["deadzone"] = float(deadzone)
+        return ranges
+
     def _load_actions(self) -> list[str]:
         try:
             import yaml  # type: ignore[import-untyped]
@@ -479,7 +537,9 @@ class MappingUIServer:
 
         # The controller relation and its anchor coordinates have one owner.
         def controller_map() -> dict:
-            return json.loads((static_dir / "controller/controller_map.json").read_text(encoding="utf-8"))
+            base = json.loads((static_dir / "controller/controller_map.json").read_text(encoding="utf-8"))
+            base["axis_ranges"] = self._live_axis_ranges(base.get("axis_ranges", {}))
+            return base
 
         @app.route("/api/controller-map", methods=["GET"])
         def get_controller_map() -> Response:

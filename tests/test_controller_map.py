@@ -27,7 +27,7 @@ class ControllerMapTests(unittest.TestCase):
 
     def test_control_schema_and_anchors(self):
         self.assertEqual(self.map["schema_version"], 1)
-        self.assertEqual(len(self.controls), 23)
+        self.assertEqual(len(self.controls), 24)
         for key in ("id", "label"):
             self.assertEqual(len({c[key] for c in self.controls}), len(self.controls))
         kinds = {"button", "dpad", "stick", "trigger", "bumper", "back_button", "menu", "trackpad", "gyro"}
@@ -37,7 +37,7 @@ class ControllerMapTests(unittest.TestCase):
                 self.assertTrue(control["label"].strip())
                 self.assertIn(control["kind"], kinds)
                 self.assertTrue(control["groups"])
-                self.assertLessEqual(set(control["groups"]), {"tap", "long_press", "layer_2", "analog"})
+                self.assertLessEqual(set(control["groups"]), {"tap", "long_press", "layer_2", "touch", "analog"})
                 for group in control["groups"].values():
                     self.assertIsInstance(group, list)
                     self.assertTrue(group)
@@ -57,6 +57,8 @@ class ControllerMapTests(unittest.TestCase):
                     expected = "tap"
                     if action.endswith("_LAYER_2"):
                         expected = "layer_2"
+                    elif action.endswith("_TOUCH"):
+                        expected = "touch"
                     elif action.endswith("_LONG_PRESS"):
                         expected = "long_press"
                     elif re.search(r"_(AXIS|PRESSURE|POS|PITCH|YAW|ROLL)$", action):

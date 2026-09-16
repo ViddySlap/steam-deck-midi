@@ -196,8 +196,8 @@ const settle = async () => { for (let i = 0; i < 40; i++) await Promise.resolve(
   assert.equal(id('mappingSidebar').hidden, true);
   assert.equal(id('viewController').getAttribute('aria-pressed'), 'true');
   const arrows = doc.querySelectorAll('.controller-arrow');
-  assert.equal(arrows.length, 23, 'exactly 23 visible arrows');
-  assert.equal(doc.querySelectorAll('.controller-label').length, 23);
+  assert.equal(arrows.length, 24, 'exactly 24 visible arrows');
+  assert.equal(doc.querySelectorAll('.controller-label').length, 24);
   assert.deepEqual(arrows.map(a => a.getAttribute('data-control-arrow')), relation.controls.map(c => c.id));
   const art = doc.querySelector('.controller-art');
   assert.deepEqual(art.querySelectorAll('[data-control]').map(n => n.dataset.control).sort(), relation.controls.map(c => c.id).sort(), 'original artwork covers each control once');
@@ -298,7 +298,7 @@ const settle = async () => { for (let i = 0; i < 40; i++) await Promise.resolve(
   assert.equal(failed.document.getElementById('editorContent').hidden, false, 'asset failure leaves List usable');
   await checkEditing();
   await checkLive();
-  console.log('UI controller behavior: PASS (23 arrows, map anchors/shapes, front door, storage, drill-in, List handoff, commit, sections, reload, Escape, unique IDs, asset failure)');
+  console.log('UI controller behavior: PASS (24 arrows, map anchors/shapes, front door, storage, drill-in, List handoff, commit, sections, reload, Escape, unique IDs, asset failure)');
 })().catch(error => { console.error(error); process.exitCode = 1; });
 
 async function checkEditing() {
@@ -568,13 +568,13 @@ async function checkLive() {
   }
   axis('L_STICK_X_AXIS', 16324); axis('L_STICK_Y_AXIS', -16601);
   axis('R_STICK_X_AXIS', -33048); axis('R_STICK_Y_AXIS', 33103);
-  axis('L_TRIGGER_PRESSURE', 32768); axis('R_TRIGGER_PRESSURE', 65535);
+  axis('L_TRIGGER_PRESSURE', 16384); axis('R_TRIGGER_PRESSURE', 32767);
   h.frame();
   assert.equal(Number(dot('left_stick').getAttribute('cx')), LS.x+16324/32649*30, 'axis moves stick dot to computed X');
   assert.equal(Number(dot('left_stick').getAttribute('cy')), LS.y+16601/33202*30, 'axis moves stick dot to computed Y');
   assert.equal(Number(dot('right_stick').getAttribute('cx')), RS.x-30);
   assert.equal(Number(dot('right_stick').getAttribute('cy')), RS.y-30, 'positive wire Y points up');
-  assert.equal(Number(bar('l2').getAttribute('width')), 32768/65535*64, 'trigger pressure sets proportional bar width');
+  assert.equal(Number(bar('l2').getAttribute('width')), 16384/32767*64, 'trigger pressure sets proportional bar width');
   assert.equal(Number(bar('r2').getAttribute('width')), 64);
   axis('L_STICK_X_AXIS', 99999); axis('R_TRIGGER_PRESSURE', -100); h.frame();
   assert.equal(Number(dot('left_stick').getAttribute('cx')), LS.x+30, 'stick values clamp');

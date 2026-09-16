@@ -214,6 +214,9 @@
         "analog": [
           "L_STICK_X_AXIS",
           "L_STICK_Y_AXIS"
+        ],
+        "touch": [
+          "LEFT_STICK_TOUCH"
         ]
       },
       "notes": "The stick click and four digital directions share this physical stick. Digital directions are tap actions; continuous X/Y values are analog. L3/R3 are not separate arrows.",
@@ -251,6 +254,9 @@
         "analog": [
           "R_STICK_X_AXIS",
           "R_STICK_Y_AXIS"
+        ],
+        "touch": [
+          "RIGHT_STICK_TOUCH"
         ]
       },
       "notes": "The stick click and four digital directions share this physical stick. Digital directions are tap actions; continuous X/Y values are analog. L3/R3 are not separate arrows.",
@@ -589,6 +595,25 @@
         "x": 600,
         "y": 665
       }
+    },
+    {
+      "id": "qam",
+      "label": "QAM (three dots)",
+      "kind": "menu",
+      "anchor": {
+        "x": 980,
+        "y": 270
+      },
+      "groups": {
+        "tap": [
+          "QAM"
+        ]
+      },
+      "notes": "The three-dot Quick Access button, lower right. Steam Input does not expose it, so the sender reads it straight from the controller's HID report (byte 14, bit 0x04, confirmed 2026-09-16). It needs no Steam Input binding, and in desktop mode nothing else consumes it.",
+      "label_anchor": {
+        "x": 1330,
+        "y": 530
+      }
     }
   ],
   "scene_view_box": [
@@ -620,12 +645,12 @@
     },
     "L_TRIGGER_PRESSURE": {
       "min": 0,
-      "max": 65535,
+      "max": 32767,
       "rest": 0
     },
     "R_TRIGGER_PRESSURE": {
       "min": 0,
-      "max": 65535,
+      "max": 32767,
       "rest": 0
     },
     "L_PAD_X_POS": {

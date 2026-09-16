@@ -531,7 +531,7 @@ committed `scripts/showready/timing_script.json`; the gate does not edit or
 regenerate the release workload in place.
 
 The E4 generator selects events from the pinned full Deck script (logical
-SHA256 `9256621abf62eb21e6c345ef286b6b7fcc087a2db87b8f682ce7fcf7703a993e`).
+SHA256 `4833fd173df64ef6782422cd3264291f47e9ff8480b1517a703d518991182c34`).
 It changes only selection, order and pacing. Regeneration is exclusive-create:
 
 ```bash
@@ -543,9 +543,11 @@ shasum -a 256 -c scripts/showready/SHA256SUMS
 cmp scripts/showready/timing_script.json /tmp/sdlive-gate/regenerated-timing.json
 ```
 
-The generator command reports composition and duration: 124 button events
-(62 IDs, exactly one down/up pair each), 15,246 axis events and 5,143 legal
-heartbeat timer probes. Schedule: 70.400000882 seconds. Button down dwell is
+The generator command reports composition and duration: 130 button events
+(65 IDs, exactly one down/up pair each), 15,246 axis events and 5,242 legal
+heartbeat timer probes. Schedule: 71.450000882 seconds. Regenerated 2026-09-16
+when QAM, LEFT_STICK_TOUCH and RIGHT_STICK_TOUCH joined the action vocabulary;
+the three earlier IDs and the worst-case segment are unchanged. Button down dwell is
 100 ms, release gap 250 ms; an additional 2.25 s settles timers before the
 worst case, and after the last axis. Button timers may overlap during the
 button segment; attribution retains their initiating input. Bar 1 still uses
@@ -580,7 +582,7 @@ qualify. Speed must remain 1. Mac Python-client runs are always DIAGNOSTIC;
 Mac qualification requires the real Chromium client through `--client-cmd`.
 Windows may use the Python client only under the fallback described below.
 
-Nominal schedule costs, computed as `70.400000882 * 3 * R / 60`:
+Nominal schedule costs, computed as `71.450000882 * 3 * R / 60`:
 R=5 clean = 17.600000221 minutes; R=3 sensitivity = 10.560000132 minutes.
 E4's R=1 Python validation measured about 74 seconds of replay per arm.
 Budget about 19-21 minutes for each qualifying clean command, 12-14 minutes

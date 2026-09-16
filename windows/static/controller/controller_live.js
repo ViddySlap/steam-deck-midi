@@ -6,7 +6,7 @@ const ControllerLive = (() => {
   const FOLLOW_KEY = 'steamdeck.controllerFollow';
   const FLASH_MS = 150, PAD_MS = 300;
   const RETRY_MIN = 250, RETRY_MAX = 8000;
-  const TAGS = {tap: 'tap', long_press: 'hold', layer_2: 'L2', analog: 'analog'};
+  const TAGS = {tap: 'tap', long_press: 'hold', layer_2: 'L2', touch: 'touch', analog: 'analog'};
   const el = id => document.getElementById(id);
   const svg = (tag, attrs) => {
     const node = document.createElementNS('http://www.w3.org/2000/svg', tag);
@@ -60,9 +60,15 @@ const ControllerLive = (() => {
     for (const text of art.querySelectorAll('text')) if (text.textContent === 'GYRO') text.style.display = 'none';
 
     function normalized(action) {
+      // Ranges arrive from the bridge already reflecting the live mapping, so
+      // full travel here means full travel in Resolume, deadzone included.
       const range = map.axis_ranges[action];
       const value = Math.max(range.min, Math.min(range.max, axes.get(action) ?? range.rest)) - range.rest;
-      return value / (value < 0 ? range.rest - range.min : range.max - range.rest);
+      const dead = range.deadzone || 0;
+      const span = (value < 0 ? range.rest - range.min : range.max - range.rest) - dead;
+      if (span <= 0) return 0;
+      if (Math.abs(value) <= dead) return 0;
+      return Math.sign(value) * (Math.abs(value) - dead) / span;
     }
     function paintSoon() {
       if (enabled() && frame === null && !painting) frame = requestAnimationFrame(paint);

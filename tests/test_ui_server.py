@@ -8,6 +8,9 @@ import unittest
 from pathlib import Path
 import tempfile
 
+from unittest.mock import patch
+
+from windows import ui_server as ui_server_module
 from windows.ui_server import MappingUIServer, _detect_conflicts, INTENTIONAL_SAME_CHANNEL_CC
 
 
@@ -454,6 +457,71 @@ class MappingUIServerAPITests(unittest.TestCase):
         resp = self.client.get("/api/mappings")
         data = resp.get_json()
         self.assertEqual(data["mappings"]["BTN_A"]["cc"], 77)
+
+
+class LiveAxisRangeTests(unittest.TestCase):
+    """The controller view must be told the ranges actually in force.
+
+    Hardware full-scale is not what the bridge maps from: a trigger's
+    input_range floor is a deadzone and the gyro engine uses a far narrower
+    raw band. Serving the static hardware numbers made a full-travel control
+    look like it barely moved.
+    """
+
+    RANGES = {
+        "R_TRIGGER_PRESSURE": {"min": 0, "max": 32767, "rest": 0},
+        "L_STICK_X_AXIS": {"min": -32768, "max": 32767, "rest": 0},
+        "GYRO_PITCH": {"min": -32767, "max": 32767, "rest": 0},
+        "GYRO_YAW": {"min": -32767, "max": 32767, "rest": 0},
+    }
+
+    def _server(self, mappings, engine_registry=None):
+        base = {"macro_settings": {"fade_duration_seconds": 2.0, "update_hz": 30},
+                "mappings": mappings}
+        server, *_ = _make_server(base_map=base)
+        server.engine_registry = engine_registry
+        return server
+
+    def test_mapping_input_range_becomes_range_and_deadzone(self):
+        server = self._server({
+            "R_TRIGGER_PRESSURE": {"type": "axis_to_cc", "cc": 2, "channel": 0,
+                                   "deadzone": 5500, "input_range": [5500, 32767],
+                                   "output_range": [0, 127]},
+        })
+        ranges = server._live_axis_ranges(self.RANGES)
+        self.assertEqual(ranges["R_TRIGGER_PRESSURE"]["max"], 32767)
+        self.assertEqual(ranges["R_TRIGGER_PRESSURE"]["deadzone"], 5500)
+        # An unmapped axis keeps its hardware bounds and gains no deadzone.
+        self.assertEqual(ranges["L_STICK_X_AXIS"]["max"], 32767)
+        self.assertNotIn("deadzone", ranges["L_STICK_X_AXIS"])
+
+    def test_gyro_bounds_come_from_the_live_engine_including_per_axis_override(self):
+        class _Registry:
+            user_dir = "unused"
+
+        spec = {"axes": {"pitch": "GYRO_PITCH", "yaw": "GYRO_YAW"},
+                "raw_min": -750, "raw_max": 750, "deadzone": 100,
+                "axis_raw": {"pitch": {"raw_min": -550, "raw_max": 550}}}
+        server = self._server({}, engine_registry=_Registry())
+        with patch.object(ui_server_module.engine_config_api, "get_engine_config",
+                          return_value=(200, {"spec": spec})):
+            ranges = server._live_axis_ranges(self.RANGES)
+        self.assertEqual((ranges["GYRO_PITCH"]["min"], ranges["GYRO_PITCH"]["max"]), (-550.0, 550.0))
+        self.assertEqual((ranges["GYRO_YAW"]["min"], ranges["GYRO_YAW"]["max"]), (-750.0, 750.0))
+        self.assertEqual(ranges["GYRO_PITCH"]["deadzone"], 100.0)
+
+    def test_endpoint_serves_the_live_ranges_and_a_broken_preset_is_survivable(self):
+        server = self._server({
+            "R_TRIGGER_PRESSURE": {"type": "axis_to_cc", "cc": 2, "channel": 0,
+                                   "input_range": [5500, 32767], "output_range": [0, 127]},
+        })
+        client = server._app.test_client()
+        served = client.get("/api/controller-map").get_json()["axis_ranges"]
+        self.assertEqual(served["R_TRIGGER_PRESSURE"]["deadzone"], 5500)
+        # The view is worth more than the overlay: an unreadable preset must
+        # degrade to hardware bounds, never to a 500.
+        with patch.object(type(server), "_load_raw_json", side_effect=OSError("gone")):
+            self.assertEqual(client.get("/api/controller-map").status_code, 200)
 
 
 class MappingUIServerPresetTests(unittest.TestCase):
