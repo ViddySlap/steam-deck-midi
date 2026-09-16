@@ -401,7 +401,9 @@ const ControllerView = (() => {
     const width = picture.clientWidth, height = picture.clientHeight;
     if (!width || !height) return;
     scene.setAttribute('viewBox', `0 0 ${width} ${height}`);
-    const labelWidth = Math.min(146, width / 6 - 10);
+    // Never narrower than the longest label's own content: a bank that clips a name
+    // leaves the picture scrolling sideways. Never wider than the designed 146.
+    const labelWidth = Math.max(132, Math.min(146, width / 6 - 10));
     const scale = Math.min((width - 2 * (labelWidth + 18)) / map.view_box[2], (height - 100) / map.view_box[3]);
     const ox = (width - map.view_box[2] * scale) / 2;
     const oy = (height - map.view_box[3] * scale) / 2;

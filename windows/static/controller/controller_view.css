@@ -44,10 +44,17 @@
 .controller-action { font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 11px; overflow-wrap: anywhere; }
 .controller-description { color: var(--text-mid); font-size: 12px; margin: 4px 0 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .controller-open-list { color: var(--accent); }
+/* Narrow viewports keep the card as a side column. A bottom drawer could not show a
+   control's title, tabs and first action rows without scrolling; a 300px column can. */
 @media (max-width: 1250px) {
-  .controller-layout:not(:has(#controllerCard[hidden])) { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(300px, 1fr) 170px; gap: 10px; }
+  .controller-layout:not(:has(#controllerCard[hidden])) { grid-template-columns: minmax(0, 1fr) 300px; gap: 10px; }
   .mapping-views { margin-bottom: 10px; }
   #tab-editor:has(#controllerView:not([hidden])) { padding: 12px; }
+  #controllerCard { padding: 12px; }
+  .controller-card-hint { margin-top: 6px; }
+  .controller-tabs { margin-top: 10px; }
+  .controller-group { margin-top: 12px; }
+  .controller-row { padding: 8px 0; }
 }
 .controller-arrow-head { fill: var(--text-mid); pointer-events: none; }
 .controller-arrow-head.control-selected { fill: var(--accent); }

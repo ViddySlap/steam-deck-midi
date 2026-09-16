@@ -554,32 +554,38 @@ async function checkLive() {
   input('DPAD_UP_LONG_PRESS', 'up'); h.frame();
   assert.equal(label('dpad_up').querySelector('.controller-live-tag').hidden, true);
 
-  assert.equal(Number(dot('left_stick').getAttribute('cx')), 280, 'wire zero is centered; sender already subtracts rest offset');
+  // Anchors come from the owned map, not from literals: the drawn arrangement moves
+  // when the map moves, and these assertions are about the live overlay's arithmetic.
+  const anchorOf = id => relation.controls.find(c => c.id === id).anchor;
+  const LS = anchorOf('left_stick'), RS = anchorOf('right_stick'), LP = anchorOf('left_pad');
+  assert.equal(Number(dot('left_stick').getAttribute('cx')), LS.x, 'wire zero is centered; sender already subtracts rest offset');
   const stickCaptions=doc.querySelector('.controller-art').querySelectorAll('text').filter(t => ['L3','R3'].includes(t.textContent));
   assert.equal(stickCaptions.length,2,'both stick captions are observed');
   for (const caption of stickCaptions) {
-    assert.equal(Number(caption.getAttribute('y')),153,'stick caption stays above the centered live dot');
+    const own = caption.textContent === 'L3' ? 'left_stick' : 'right_stick';
+    assert.ok(Number(caption.getAttribute('y')) < Number(dot(own).getAttribute('cy')),
+      'stick caption stays above the centered live dot');
   }
   axis('L_STICK_X_AXIS', 16324); axis('L_STICK_Y_AXIS', -16601);
   axis('R_STICK_X_AXIS', -33048); axis('R_STICK_Y_AXIS', 33103);
   axis('L_TRIGGER_PRESSURE', 32768); axis('R_TRIGGER_PRESSURE', 65535);
   h.frame();
-  assert.equal(Number(dot('left_stick').getAttribute('cx')), 280+16324/32649*30, 'axis moves stick dot to computed X');
-  assert.equal(Number(dot('left_stick').getAttribute('cy')), 190, 'axis moves stick dot to computed Y');
-  assert.equal(Number(dot('right_stick').getAttribute('cx')), 870);
-  assert.equal(Number(dot('right_stick').getAttribute('cy')), 145, 'positive wire Y points up');
+  assert.equal(Number(dot('left_stick').getAttribute('cx')), LS.x+16324/32649*30, 'axis moves stick dot to computed X');
+  assert.equal(Number(dot('left_stick').getAttribute('cy')), LS.y+16601/33202*30, 'axis moves stick dot to computed Y');
+  assert.equal(Number(dot('right_stick').getAttribute('cx')), RS.x-30);
+  assert.equal(Number(dot('right_stick').getAttribute('cy')), RS.y-30, 'positive wire Y points up');
   assert.equal(Number(bar('l2').getAttribute('width')), 32768/65535*64, 'trigger pressure sets proportional bar width');
   assert.equal(Number(bar('r2').getAttribute('width')), 64);
   axis('L_STICK_X_AXIS', 99999); axis('R_TRIGGER_PRESSURE', -100); h.frame();
-  assert.equal(Number(dot('left_stick').getAttribute('cx')), 310, 'stick values clamp');
+  assert.equal(Number(dot('left_stick').getAttribute('cx')), LS.x+30, 'stick values clamp');
   assert.equal(Number(bar('r2').getAttribute('width')), 0, 'trigger values clamp');
   axis('L_STICK_X_AXIS', 0); axis('L_STICK_Y_AXIS', 0); h.frame();
-  assert.equal(Number(dot('left_stick').getAttribute('cx')), 280);
-  assert.equal(Number(dot('left_stick').getAttribute('cy')), 175);
+  assert.equal(Number(dot('left_stick').getAttribute('cx')), LS.x);
+  assert.equal(Number(dot('left_stick').getAttribute('cy')), LS.y);
   assert.equal(dot('left_pad').style.opacity, '0', 'no touch is implied before pad events');
   axis('L_PAD_X_POS', 32767); axis('L_PAD_Y_POS', -32768); h.frame();
-  assert.equal(Number(dot('left_pad').getAttribute('cx')), 340);
-  assert.equal(Number(dot('left_pad').getAttribute('cy')), 350);
+  assert.equal(Number(dot('left_pad').getAttribute('cx')), LP.x+30);
+  assert.equal(Number(dot('left_pad').getAttribute('cy')), LP.y+30);
   assert.equal(dot('left_pad').style.opacity, '1');
   h.tick(299); h.frame(); assert.equal(dot('left_pad').style.opacity, '1');
   h.tick(1); h.frame(); assert.equal(dot('left_pad').style.opacity, '0', 'pad fades after 300 ms without position events');
@@ -656,7 +662,7 @@ async function checkLive() {
   assert.equal(h.frame(),1,'500 axis events produce at most one render per frame');
   assert.equal(h.renderedFrames-before,1);
   assert.equal(paints,1,'burst paints each shape exactly once');
-  assert.equal(Number(dot('left_stick').getAttribute('cx')),280+499/32649*30,'burst paints latest axis value');
+  assert.equal(Number(dot('left_stick').getAttribute('cx')),LS.x+499/32649*30,'burst paints latest axis value');
   assert.equal(h.frame(),0,'burst leaves no rendering backlog');
 
   // Loss, reconnect, cancellation and late-delivery races use actual shipped handlers.

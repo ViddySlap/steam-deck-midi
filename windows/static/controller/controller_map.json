@@ -12,8 +12,8 @@
       "label": "A",
       "kind": "button",
       "anchor": {
-        "x": 1000,
-        "y": 220
+        "x": 1002,
+        "y": 226
       },
       "groups": {
         "tap": [
@@ -25,7 +25,7 @@
       },
       "label_anchor": {
         "x": 1330,
-        "y": 270
+        "y": 330
       }
     },
     {
@@ -33,8 +33,8 @@
       "label": "B",
       "kind": "button",
       "anchor": {
-        "x": 1040,
-        "y": 180
+        "x": 1042,
+        "y": 186
       },
       "groups": {
         "tap": [
@@ -46,7 +46,7 @@
       },
       "label_anchor": {
         "x": 1330,
-        "y": 200
+        "y": 250
       }
     },
     {
@@ -54,8 +54,8 @@
       "label": "X",
       "kind": "button",
       "anchor": {
-        "x": 960,
-        "y": 180
+        "x": 962,
+        "y": 186
       },
       "groups": {
         "tap": [
@@ -67,12 +67,16 @@
       },
       "label_anchor": {
         "x": 1330,
-        "y": 340
+        "y": 410
       },
       "leader_via": [
         [
-          960,
-          255
+          1090,
+          262
+        ],
+        [
+          962,
+          262
         ]
       ]
     },
@@ -81,8 +85,8 @@
       "label": "Y",
       "kind": "button",
       "anchor": {
-        "x": 1000,
-        "y": 140
+        "x": 1002,
+        "y": 146
       },
       "groups": {
         "tap": [
@@ -94,7 +98,7 @@
       },
       "label_anchor": {
         "x": 1330,
-        "y": 130
+        "y": 170
       }
     },
     {
@@ -102,8 +106,8 @@
       "label": "D-pad Up",
       "kind": "dpad",
       "anchor": {
-        "x": 200,
-        "y": 240
+        "x": 185,
+        "y": 150
       },
       "groups": {
         "tap": [
@@ -115,7 +119,7 @@
       },
       "label_anchor": {
         "x": -130,
-        "y": 205
+        "y": 170
       }
     },
     {
@@ -123,8 +127,8 @@
       "label": "D-pad Down",
       "kind": "dpad",
       "anchor": {
-        "x": 200,
-        "y": 320
+        "x": 185,
+        "y": 220
       },
       "groups": {
         "tap": [
@@ -136,7 +140,7 @@
       },
       "label_anchor": {
         "x": -130,
-        "y": 345
+        "y": 330
       }
     },
     {
@@ -144,8 +148,8 @@
       "label": "D-pad Left",
       "kind": "dpad",
       "anchor": {
-        "x": 160,
-        "y": 280
+        "x": 145,
+        "y": 185
       },
       "groups": {
         "tap": [
@@ -157,7 +161,7 @@
       },
       "label_anchor": {
         "x": -130,
-        "y": 275
+        "y": 250
       }
     },
     {
@@ -165,8 +169,8 @@
       "label": "D-pad Right",
       "kind": "dpad",
       "anchor": {
-        "x": 240,
-        "y": 280
+        "x": 225,
+        "y": 185
       },
       "groups": {
         "tap": [
@@ -178,12 +182,16 @@
       },
       "label_anchor": {
         "x": -130,
-        "y": 415
+        "y": 410
       },
       "leader_via": [
         [
-          240,
-          390
+          110,
+          262
+        ],
+        [
+          234,
+          262
         ]
       ]
     },
@@ -192,8 +200,8 @@
       "label": "Left stick",
       "kind": "stick",
       "anchor": {
-        "x": 280,
-        "y": 175
+        "x": 305,
+        "y": 190
       },
       "groups": {
         "tap": [
@@ -211,16 +219,26 @@
       "notes": "The stick click and four digital directions share this physical stick. Digital directions are tap actions; continuous X/Y values are analog. L3/R3 are not separate arrows.",
       "label_anchor": {
         "x": -130,
-        "y": 130
-      }
+        "y": 450
+      },
+      "leader_via": [
+        [
+          150,
+          285
+        ],
+        [
+          305,
+          285
+        ]
+      ]
     },
     {
       "id": "right_stick",
       "label": "Right stick",
       "kind": "stick",
       "anchor": {
-        "x": 900,
-        "y": 175
+        "x": 895,
+        "y": 190
       },
       "groups": {
         "tap": [
@@ -238,16 +256,16 @@
       "notes": "The stick click and four digital directions share this physical stick. Digital directions are tap actions; continuous X/Y values are analog. L3/R3 are not separate arrows.",
       "label_anchor": {
         "x": 1330,
-        "y": 410
+        "y": 450
       },
       "leader_via": [
         [
-          960,
-          265
+          1050,
+          285
         ],
         [
-          900,
-          260
+          895,
+          285
         ]
       ]
     },
@@ -256,7 +274,7 @@
       "label": "L1",
       "kind": "bumper",
       "anchor": {
-        "x": 240,
+        "x": 200,
         "y": 90
       },
       "groups": {
@@ -270,14 +288,20 @@
       "label_anchor": {
         "x": 180,
         "y": -90
-      }
+      },
+      "leader_via": [
+        [
+          280,
+          90
+        ]
+      ]
     },
     {
       "id": "r1",
       "label": "R1",
       "kind": "bumper",
       "anchor": {
-        "x": 960,
+        "x": 1000,
         "y": 90
       },
       "groups": {
@@ -291,14 +315,20 @@
       "label_anchor": {
         "x": 1020,
         "y": -90
-      }
+      },
+      "leader_via": [
+        [
+          920,
+          90
+        ]
+      ]
     },
     {
       "id": "l2",
       "label": "L2",
       "kind": "trigger",
       "anchor": {
-        "x": 210,
+        "x": 175,
         "y": 50
       },
       "groups": {
@@ -325,7 +355,7 @@
       "label": "R2",
       "kind": "trigger",
       "anchor": {
-        "x": 990,
+        "x": 1025,
         "y": 50
       },
       "groups": {
@@ -428,8 +458,8 @@
       "label": "START",
       "kind": "menu",
       "anchor": {
-        "x": 925,
-        "y": 105
+        "x": 978,
+        "y": 116
       },
       "groups": {
         "tap": [
@@ -437,17 +467,23 @@
         ]
       },
       "label_anchor": {
-        "x": 760,
-        "y": -90
-      }
+        "x": 1330,
+        "y": 90
+      },
+      "leader_via": [
+        [
+          1050,
+          110
+        ]
+      ]
     },
     {
       "id": "select",
       "label": "SELECT",
       "kind": "menu",
       "anchor": {
-        "x": 275,
-        "y": 105
+        "x": 222,
+        "y": 116
       },
       "groups": {
         "tap": [
@@ -455,17 +491,23 @@
         ]
       },
       "label_anchor": {
-        "x": 440,
-        "y": -90
-      }
+        "x": -130,
+        "y": 90
+      },
+      "leader_via": [
+        [
+          150,
+          110
+        ]
+      ]
     },
     {
       "id": "left_pad",
       "label": "Left trackpad",
       "kind": "trackpad",
       "anchor": {
-        "x": 310,
-        "y": 320
+        "x": 300,
+        "y": 340
       },
       "groups": {
         "tap": [
@@ -488,26 +530,16 @@
       "notes": "All four digital directions and their LONG_PRESS actions belong to this trackpad. X/Y_POS are continuous pad position, not stick axes. No separate pad click Action ID exists.",
       "label_anchor": {
         "x": -130,
-        "y": 485
-      },
-      "leader_via": [
-        [
-          190,
-          400
-        ],
-        [
-          310,
-          400
-        ]
-      ]
+        "y": 490
+      }
     },
     {
       "id": "right_pad",
       "label": "Right trackpad",
       "kind": "trackpad",
       "anchor": {
-        "x": 890,
-        "y": 320
+        "x": 900,
+        "y": 340
       },
       "groups": {
         "tap": [
@@ -530,18 +562,8 @@
       "notes": "All four digital directions and their LONG_PRESS actions belong to this trackpad. X/Y_POS are continuous pad position, not stick axes. No separate pad click Action ID exists.",
       "label_anchor": {
         "x": 1330,
-        "y": 480
-      },
-      "leader_via": [
-        [
-          1010,
-          400
-        ],
-        [
-          890,
-          400
-        ]
-      ]
+        "y": 490
+      }
     },
     {
       "id": "gyro",

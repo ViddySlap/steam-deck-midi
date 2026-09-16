@@ -71,16 +71,22 @@ def _m4(by_id):
 
 
 def _m5(by_id):
-    # dpad_right's waypoint drops three scene pixels toward left_pad's horizontal leg.
-    # A NEAR MISS on purpose: measured 4.63 px at 1920x1080 against the 6 px floor, with
-    # leader-intersections still GREEN, so criterion c is the only thing that can catch it.
-    by_id['dpad_right']['leader_via']=[[240,393]]
+    # dpad_right's corridor drops from scene y 262 to 282, three scene pixels short of
+    # left_stick's corridor at 285. A NEAR MISS on purpose, with leader-intersections
+    # still GREEN, so criterion c is the only thing that can catch it. The waypoint is
+    # sized to the picture: P2 moved dpad_right onto a two-bend corridor route, and the
+    # old single waypoint at (240,393) became an actual crossing, which the pre-existing
+    # leader-intersections criterion already catches and which therefore proves nothing
+    # about c.
+    by_id['dpad_right']['leader_via']=[[110,282],[234,282]]
 
 
 def _m6(raw):
     # Push the card header down only for controls that own an analog group - r2 does,
-    # btn_a and dpad_up do not - so the 1024x768 drawer clips the title, tabs and rows.
-    return raw+b'\n#controllerCard:has(.controller-group[data-group="analog"]) .controller-card-header { margin-top: 260px; }\n'
+    # btn_a and dpad_up do not - so the 1024x768 card clips its rows and, because opening
+    # a card focuses the title, scrolls itself off scrollTop 0. The push is sized to the
+    # card, which at 1024x768 is now a full-height 300px column, not a 170px drawer.
+    return raw+b'\n#controllerCard:has(.controller-group[data-group="analog"]) .controller-card-header { margin-top: 900px; }\n'
 
 
 FILE_MUTATIONS=[
