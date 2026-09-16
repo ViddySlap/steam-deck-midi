@@ -114,7 +114,7 @@ peeled commit with `git rev-parse 'v0.4.9^{commit}'` (e66ff44...).
 the rail transport contract. After an intentional reviewed kit change:
 
 ```bash
-{ find scripts/showready -type f ! -name SHA256SUMS -exec shasum -a 256 {} \;; shasum -a 256 tests/ui_controller_geometry.cjs; } | LC_ALL=C sort > /tmp/sdwin-w1/SHA256SUMS
+{ find scripts/showready -type f ! -name SHA256SUMS -not -path '*/__pycache__/*' -exec shasum -a 256 {} \;; shasum -a 256 tests/ui_controller_geometry.cjs; } | LC_ALL=C sort > /tmp/sdwin-w1/SHA256SUMS
 cp /tmp/sdwin-w1/SHA256SUMS scripts/showready/SHA256SUMS
 ```
 
@@ -335,35 +335,110 @@ the scan count (0) with every engines-on arm.
 ## Controller geometry (Mac, real Chromium)
 
 ```bash
-scripts/showready/ui_geometry.sh --chromium '/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell' --scratch /tmp/sdfix-u1/geometry --single-process --mutations
+scripts/showready/ui_geometry.sh --chromium '/Users/viddyslap/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell' --scratch /tmp/sdpolish-p1/geometry --single-process --mutations
 ```
+
+SCRATCH is a PATTERN, not a lap name: any `/tmp/sd<lap>-<link>/...` (or the
+`/private/tmp` form macOS resolves it to) is accepted and everything else is
+refused, so a new lap needs no edit here. `deck_script.scratch_ok` owns the
+predicate and `tests/test_showready_scratch_pattern.py` asserts both directions.
+Create `.metadata_never_index` in the scratch BEFORE the first file is written.
 
 The wrapper copies tracked working files and verified Mac fixtures into a unique
 scratch tree. It boots the UI with dummy tray, no-op browser, dry-run MIDI,
 engines/pulse/OSC relay off, and free loopback TCP 17841 / UDP 47841 (override
 with --ui-port / --listen-port). It terminates and waits for its bridge PID,
 then requires os.kill(pid, 0) to report absence. receipt.json records commands,
-exit codes, scratch paths, effective settings and teardown. No laptop acts.
+exit codes, scratch paths, effective settings, the pristine failure list, the
+mutation table and teardown. No laptop acts.
 Use --revision <sha> for a before-repair control with the current detector.
 
 The standalone detector boots nothing:
-`node tests/ui_controller_geometry.cjs URL CHROMIUM --single-process --out DIR`.
+`node tests/ui_controller_geometry.cjs URL CHROMIUM --single-process --out DIR
+[--only-viewport WxH] [--closed-only]`.
 Set PLAYWRIGHT_CORE to an installed playwright-core module if the gate's Mac
-path differs. It measures 23 labels/shapes/leaders, all pairwise label overlaps
-and leader-segment intersections, each endpoint's own shape boundary (3 px),
-all SVG text against lines/arrowhead triangles, pane containment/scroll and
-label centre hit-testing at four viewport sizes, closed, A open, and the label
-nearest the open card. It also clicks every label and compares drill-in actions
-with the owned map. PNGs and raw page-coordinate geometry accompany assertions.
-The check is deliberately outside unittest discovery; unittest pins its bytes.
+path differs.
 
---mutations requires pristine GREEN, then each planted DOM fault to exit 1 at
-its named real-geometry assertion, then restored GREEN in a fresh browser page:
-(m1) swap A/B leader targets, (m2) overlap A/B labels, (m3) put A under the status
-bar. All mutations live in browser DOMs served from the scratch fixture copy;
-no production file or preset is mutated. Each mutant's log retains its RED.
+LIVE-VIEW AWARE. It NEVER waits on `networkidle`: the Controller view holds an
+open EventSource, so the network never goes idle. It waits for the 23
+`.controller-label` elements AND `#controllerLiveStatus` reading `live`, then
+drives real UDP axis packets at the bridge's own listen address so the stick
+dots are off centre, both trigger bars are non-zero and the gyro dots are drawn.
+`<tag>.stream-live-with-overlays-drawn` asserts that state per measurement, so a
+run that lost the stream cannot pass the obstacle criteria vacuously.
+
+VIEWPORTS AND STATES: 1024x768, 1366x768, 1440x900 and 1920x1080, card closed
+and with EACH of the 23 cards opened in turn (P2 may move any control, so a
+crowded card anywhere has to fail, not only the two an older loop happened to
+open). 8,175 assertions per full run.
+
+CRITERIA. Every sdfix criterion still binds: 23 labels/shapes/leaders/arrowheads,
+all pairwise label overlaps, leader-segment intersections, each endpoint on its
+own shape boundary (3 px), scene text against lines and arrowhead triangles,
+pane containment, page/pane scroll, label centre hit-testing, card inside the
+pane, and the drill-in action list against the owned map. Live-overlay text is
+judged by criterion b2, not by `glyph-clear`, because it is an overlay and not
+scene art. Added in sdpolish P1:
+
+- `b.no-leader-through-other-control` - no leader segment, bend or arrowhead
+  intersects or touches (distance 0) the geometry box of any OTHER control's
+  `data-control` shape, live trigger track or live bar.
+- `b2.no-live-overlay-over-card-or-label` - with a card open, no stick dot,
+  trigger bar, track or gyro dot intersects the open card or any of the 23
+  label boxes.
+- `c.leader-clearance-6px` - the minimum distance between any two DIFFERENT
+  leaders' segments, bends and arrowheads is >= 6.0 px. The measured minimum and
+  the pair are reported for every viewport and card state, pass or fail.
+- `d.drawer-rows-visible` - at 1024x768 ONLY, with each card open in turn, the
+  card title, its tabs and the first two action rows (all rows if fewer) have
+  their bounding boxes fully inside the card's visible area, with the card's own
+  scrollTop at 0.
+
+--mutations. m1-m3 are planted in the live DOM by the check; m4-m6 are planted
+in the SERVED STATIC FILES of the scratch tree, so the fault reaches the browser
+the way a real layout regression would, and the original bytes are written back
+and re-compared after each. (m1) swap A/B leader targets, (m2) overlap A/B
+labels, (m3) put A under the status bar, (m4) `controller_map.json` routes
+dpad_up's leader through the L2 trigger track, (m5) `controller_map.json` drops
+dpad_right's waypoint three scene pixels toward left_pad's leg - a deliberate
+near miss, 4.63 px against the 6 px floor with `leader-intersections` still
+GREEN, so only criterion c can catch it, (m6) `controller_view.css` pushes the
+card header down for controls that own an analog group, which catches r2 and
+leaves btn_a's line byte-identical. `--only-mutation mN` runs one.
+
+A mutation is PROVEN by what it changed in its own assertion's line. A boolean
+flip (PASS pristine -> FAIL mutated) is the strong case. Where an assertion is
+ALREADY RED on today's picture a flip is unavailable and proves nothing, so the
+mutation must instead put a planted MARKER into that assertion's detail that the
+pristine detail does not carry (or, with a leading `!`, remove one the pristine
+detail does), and the restored run must return the line to the pristine line
+byte for byte. Assertions listed as `unchanged` must be identical to pristine,
+which is how selectivity is shown. `--pristine-may-fail` records a RED pristine
+run instead of aborting; it does NOT weaken any of the above. Drop it once the
+picture is green - the gate runs without it.
 A browser launch failure is a nonzero result, never geometry credit. Try default
 launch first, then --single-process (one browser at a time), and record errors.
+
+## Laptop bundle route (pinned)
+
+Code reaches the laptop clone by bundle only, NEVER a GitHub fetch from the
+laptop. `scripts/showready/pull_bundle.ps1` is docs/sdpick-k1's verified script
+with `-Bundle <path>` in place of the hardcoded `sdpick.bundle` name; nothing
+else differs, and `tests/test_showready_pull_bundle.py` asserts that line by
+line together with both parameters and every exit code.
+
+```bash
+# On the Mac, from the run root:
+git bundle create /tmp/sd<lap>-<link>/steamdeck.bundle <clone HEAD>..<Mac HEAD> chain/steamdeck-20260914
+shasum -a 256 /tmp/sd<lap>-<link>/steamdeck.bundle
+scripts/showready/win_rail.sh put /tmp/sd<lap>-<link>/steamdeck.bundle 'C:\Users\Ben\AppData\Local\Temp\sdwin\<link>\steamdeck.bundle'
+scripts/showready/win_rail.sh put scripts/showready/pull_bundle.ps1 'C:\Users\Ben\AppData\Local\Temp\sdwin\<link>\pull_bundle.ps1'
+scripts/showready/win_rail.sh run 'powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\Ben\AppData\Local\Temp\sdwin\<link>\pull_bundle.ps1 -Bundle C:\Users\Ben\AppData\Local\Temp\sdwin\<link>\steamdeck.bundle -Expected <full Mac HEAD sha>'
+```
+
+Record every output line and the exit code. EXIT CODES: 0 success only, 3 dirty
+clone, 4 `git bundle verify`, 5 fetch, 6 FETCH_HEAD != -Expected, 7 `merge
+--ff-only`, 8 HEAD or porcelain after the merge.
 
 ## Bar 3 timing instrument (sdlive E3)
 

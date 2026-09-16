@@ -71,6 +71,24 @@ def effective(raw, section=None):
     return {**selected, 'mappings': {**raw.get('shared', {}).get('mappings', {}), **selected['mappings']}}
 
 
+# A lap's scratch is /tmp/sd<lap>-<link>/... (/private/tmp is the same directory on
+# macOS). A pattern, not a hard-coded lap name, so a new lap needs no edit here - and
+# still nothing outside that shape, so no arm can be pointed at the run root or a vault.
+SCRATCH_PATTERN = re.compile(r'^/(?:private/)?tmp/sd[a-z0-9]+-[a-z0-9]+(?:/|$)')
+
+
+def scratch_ok(path):
+    """True only for a scratch under /tmp/sd<lap>-<link>/ or its /private/tmp form.
+
+    A `..` segment is refused outright: a caller that has not resolved its path could
+    otherwise satisfy the prefix and still land anywhere on the disk.
+    """
+    text = str(path)
+    if '..' in text.split('/'):
+        return False
+    return bool(SCRATCH_PATTERN.match(text))
+
+
 def verify_fixtures(root):
     """Verify BOTH W2 manifests and every recorded byte before consumption."""
     verified = {}

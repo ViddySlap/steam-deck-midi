@@ -23,8 +23,11 @@ def verify_pins(root):
         if name in pins or not re.fullmatch(r'[0-9a-f]{64}', digest):
             raise AssertionError('Invalid or duplicate pin: ' + name)
         pins[name] = digest
+    # __pycache__ is a build artefact of whoever imported a module, not an instrument
+    # file: including it would make the pin set depend on import order (sdpolish P1).
     actual = {p.relative_to(root).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
-              for p in kit.rglob('*') if p.is_file() and p.name != 'SHA256SUMS'}
+              for p in kit.rglob('*') if p.is_file() and p.name != 'SHA256SUMS'
+              and '__pycache__' not in p.parts}
     geometry = root / 'tests/ui_controller_geometry.cjs'
     actual['tests/ui_controller_geometry.cjs'] = hashlib.sha256(geometry.read_bytes()).hexdigest()
     if not actual or pins != actual:
