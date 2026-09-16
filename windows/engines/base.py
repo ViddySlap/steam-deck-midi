@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 import math
-import time
 from typing import Callable
 
 from windows.midi import MidiOut
+from windows.clock import now as clock_now
 
 # Bounds for every engine tick/update rate, shared so one hand-edited config
 # or one PUT /api/engines/<type>/config cannot stop or spin the receive loop.
@@ -55,7 +55,7 @@ class Engine:
         config: dict,
         midi_out: MidiOut,
         *,
-        clock: Callable[[], float] = time.monotonic,
+        clock: Callable[[], float] = clock_now,
     ) -> None:
         self.name = name
         self._config = config

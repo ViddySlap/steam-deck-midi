@@ -34,7 +34,6 @@ MIDI shortcut preset (uniqueId 1778510000003).
 from __future__ import annotations
 
 import logging
-import time
 from typing import Any, Callable
 
 from windows.engines._resolume_lookup import find_effect_params, find_param_value
@@ -42,6 +41,7 @@ from windows.engines.base import Engine
 from windows.engines.osc_client import OscClient
 from windows.engines.resolume_rest import ResolumeRestClient, ResolumeRestError
 from windows.midi import MidiOut
+from windows.clock import now as clock_now
 
 LOGGER = logging.getLogger(__name__)
 
@@ -80,7 +80,7 @@ class BumperBlastEngine(Engine):
         config: dict,
         midi_out: MidiOut,
         *,
-        clock: Callable[[], float] = time.monotonic,
+        clock: Callable[[], float] = clock_now,
         rest_client: ResolumeRestClient | None = None,
         osc_client: OscClient | None = None,
     ) -> None:

@@ -46,6 +46,7 @@ from typing import Any, Callable
 from windows.engines.base import Engine
 from windows.engines.osc_client import OscClient
 from windows.midi import MidiOut
+from windows.clock import now as clock_now
 
 LOGGER = logging.getLogger(__name__)
 
@@ -184,7 +185,7 @@ class GlobalColorEngine(Engine):
         config: dict,
         midi_out: MidiOut,
         *,
-        clock: Callable[[], float] = time.monotonic,
+        clock: Callable[[], float] = clock_now,
         osc_client: OscClient | None = None,
     ) -> None:
         super().__init__(name, config, midi_out, clock=clock)

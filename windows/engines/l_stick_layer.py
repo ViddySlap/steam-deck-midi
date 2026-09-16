@@ -44,11 +44,11 @@ state; the state changes which CC set the analog re-emit uses.
 from __future__ import annotations
 
 import logging
-import time
 from typing import Callable
 
 from windows.engines.base import Engine
 from windows.midi import MidiOut
+from windows.clock import now as clock_now
 
 LOGGER = logging.getLogger(__name__)
 
@@ -77,7 +77,7 @@ class LStickLayerEngine(Engine):
         config: dict,
         midi_out: MidiOut,
         *,
-        clock: Callable[[], float] = time.monotonic,
+        clock: Callable[[], float] = clock_now,
     ) -> None:
         super().__init__(name, config, midi_out, clock=clock)
 

@@ -5,8 +5,8 @@ from __future__ import annotations
 import logging
 import math
 import threading
-import time
 from pathlib import Path
+from windows.clock import now as clock_now
 
 LOGGER = logging.getLogger(__name__)
 
@@ -56,7 +56,7 @@ class PresetWatcher(threading.Thread):
             delay = self.poll_interval
             try:
                 current = self._scan()
-                now = time.monotonic()
+                now = clock_now()
                 if self._snapshot is None:
                     # A scan failure at startup may have hidden a change.
                     pending_since = now

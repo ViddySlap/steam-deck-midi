@@ -47,6 +47,7 @@ from typing import Callable
 from windows.engines.base import Engine, clamp_tick_hz
 from windows.engines.osc_client import OscClient
 from windows.midi import MidiOut
+from windows.clock import now as clock_now
 
 LOGGER = logging.getLogger(__name__)
 
@@ -77,7 +78,7 @@ class AudioOpacityEngine(Engine):
         config: dict,
         midi_out: MidiOut,
         *,
-        clock: Callable[[], float] = time.monotonic,
+        clock: Callable[[], float] = clock_now,
     ) -> None:
         super().__init__(name, config, midi_out, clock=clock)
 

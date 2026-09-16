@@ -36,7 +36,6 @@ lives in ``visca_sender.py``; this engine only decides *what* to send.
 from __future__ import annotations
 
 import logging
-import time
 from typing import Callable
 
 from windows.engines.base import Engine, clamp_tick_hz
@@ -50,6 +49,7 @@ from windows.engines.visca_sender import (
     PtzViscaSender,
 )
 from windows.midi import MidiOut
+from windows.clock import now as clock_now
 
 LOGGER = logging.getLogger(__name__)
 
@@ -89,7 +89,7 @@ class PtzViscaEngine(Engine):
         config: dict,
         midi_out: MidiOut,
         *,
-        clock: Callable[[], float] = time.monotonic,
+        clock: Callable[[], float] = clock_now,
         sender: "PtzViscaSender | None" = None,
         osc_client: "OscClient | None" = None,
     ) -> None:

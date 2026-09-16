@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-import time
 from dataclasses import dataclass
 from typing import NamedTuple
 from typing import Sequence
+from windows.clock import now as clock_now
 
 
 class MidiError(RuntimeError):
@@ -236,7 +236,7 @@ class MidoMidiIn(MidiIn):
         self._port_name = resolved_port_name
         self._pending_clock: list[MidiClockMessage] = []
         self._pending_cc: list[MidiControlChange] = []
-        self._clock = time.monotonic
+        self._clock = clock_now
 
     @property
     def port_name(self) -> str:

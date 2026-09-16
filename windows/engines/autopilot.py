@@ -56,6 +56,7 @@ from windows.engines.base import Engine, clamp_tick_hz
 from windows.engines.osc_client import OscClient
 from windows.engines.resolume_rest import ResolumeRestClient, ResolumeRestError
 from windows.midi import MidiOut
+from windows.clock import now as clock_now
 
 LOGGER = logging.getLogger(__name__)
 
@@ -118,7 +119,7 @@ class ChannelState:
     beat_in_clip: int = 0
     visible_layer: int | None = None
     target_layer: int | None = None
-    crossfade_start_time: float | None = None  # wall clock (time.monotonic) at fade start
+    crossfade_start_time: float | None = None  # bridge clock (windows.clock.now) at fade start
 
     # bag-random per layer (RANDOM mode)
     bag: dict[int, list[int]] = field(default_factory=dict)
@@ -142,7 +143,7 @@ class AutopilotEngine(Engine):
         config: dict,
         midi_out: MidiOut,
         *,
-        clock: Callable[[], float] = time.monotonic,
+        clock: Callable[[], float] = clock_now,
         rest_client: ResolumeRestClient | None = None,
         osc_client: OscClient | None = None,
         rng: random.Random | None = None,

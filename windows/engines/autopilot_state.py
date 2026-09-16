@@ -24,9 +24,9 @@ import math
 import os
 import tempfile
 import threading
-import time
 from pathlib import Path
 from typing import Callable
+from windows.clock import now as clock_now
 
 LOGGER = logging.getLogger(__name__)
 
@@ -124,7 +124,7 @@ class AutopilotStateWriter:
         self,
         path: Path,
         *,
-        clock: Callable[[], float] = time.monotonic,
+        clock: Callable[[], float] = clock_now,
     ) -> None:
         self.path = Path(path)
         self._clock = clock
@@ -163,10 +163,10 @@ class AutopilotStateWriter:
 
     def flush(self, timeout: float = 5.0) -> bool:
         """Wait until the last submitted document is written. True if it succeeded."""
-        deadline = time.monotonic() + timeout
+        deadline = clock_now() + timeout
         with self._cond:
             while self._completed < self._submitted:
-                remaining = deadline - time.monotonic()
+                remaining = deadline - clock_now()
                 if remaining <= 0:
                     return False
                 self._cond.wait(remaining)

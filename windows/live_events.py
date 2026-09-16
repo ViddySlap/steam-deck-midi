@@ -17,6 +17,7 @@ import threading
 import time
 
 from windows.midi import MidiOut
+from windows.clock import now as clock_now
 
 _CURRENT_ACTION = ContextVar("live_midi_action", default=None)
 
@@ -56,7 +57,7 @@ class LiveEvents:
     MAX_CLIENTS = 16
     MAX_ACTIONS = 512
 
-    def __init__(self, capacity=1024, clock=time.monotonic):
+    def __init__(self, capacity=1024, clock=clock_now):
         if capacity < 1:
             raise ValueError("capacity must be positive")
         self._events = deque(maxlen=capacity)

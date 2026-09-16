@@ -54,6 +54,7 @@ from windows.engines.osc_preset import (
 )
 from windows.engines.resolume_rest import ResolumeRestClient, ResolumeRestError
 from windows.midi import MidiOut
+from windows.clock import now as clock_now
 
 LOGGER = logging.getLogger(__name__)
 
@@ -95,7 +96,7 @@ class OscSyncEngine(Engine):
         config: dict,
         midi_out: MidiOut,
         *,
-        clock: Callable[[], float] = time.monotonic,
+        clock: Callable[[], float] = clock_now,
         rest_client: ResolumeRestClient | None = None,
         osc_client: OscClient | None = None,
         sleep: Callable[[float], None] = time.sleep,

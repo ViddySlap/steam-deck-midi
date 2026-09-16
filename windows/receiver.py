@@ -5,7 +5,6 @@ from __future__ import annotations
 import logging
 import socket
 import threading
-import time
 from collections import deque
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -25,6 +24,7 @@ from windows.config import (
 )
 from windows.live_events import action_context, attributed, current_action, safe_publish
 from windows.midi import MidiControlChange, MidiError, MidiIn, MidiOut
+from windows.clock import now as clock_now
 
 
 LOGGER = logging.getLogger(__name__)
@@ -134,7 +134,7 @@ class ActionReceiver:
         rate_limit_window_seconds: float = 1.0,
         rate_limit_max_events: int = 200,
         rate_limit_cooldown_seconds: float = 1.0,
-        clock: Callable[[], float] = time.monotonic,
+        clock: Callable[[], float] = clock_now,
         engine_registry: Any = None,
         live_events=None,
     ) -> None:
@@ -1040,7 +1040,7 @@ def serve_forever(
             _drain_midi_feedback(receiver, midi_in, engine_registry)
             _drain_midi_clock(pulse_in, engine_registry)
             if engine_registry is not None:
-                engine_registry.tick(time.monotonic())
+                engine_registry.tick(clock_now())
             if reload_event is not None and reload_event.is_set():
                 reload_event.clear()
                 if reload_config_fn is not None:
@@ -1073,7 +1073,7 @@ def serve_forever(
                 _drain_midi_feedback(receiver, midi_in, engine_registry)
                 _drain_midi_clock(pulse_in, engine_registry)
                 if engine_registry is not None:
-                    engine_registry.tick(time.monotonic())
+                    engine_registry.tick(clock_now())
                 receiver.advance_fades()
                 receiver.check_timeouts()
                 continue
@@ -1081,7 +1081,7 @@ def serve_forever(
             _drain_midi_feedback(receiver, midi_in, engine_registry)
             _drain_midi_clock(pulse_in, engine_registry)
             if engine_registry is not None:
-                engine_registry.tick(time.monotonic())
+                engine_registry.tick(clock_now())
             receiver.advance_fades()
             receiver.check_timeouts()
     except KeyboardInterrupt:
@@ -1125,7 +1125,7 @@ def _handle_feedback_message(
     message: MidiControlChange,
     engine_registry=None,
 ) -> None:
-    now = time.monotonic()
+    now = clock_now()
     route = receiver.classify_midi_feedback(
         message.channel,
         message.control,

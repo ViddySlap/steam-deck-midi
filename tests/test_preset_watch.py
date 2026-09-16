@@ -9,6 +9,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import Mock, patch
 
+import windows.preset_watch
 from windows.preset_watch import PresetWatcher
 from tests import test_win_recv_settings as startup
 from windows import win_recv
@@ -24,7 +25,15 @@ class FakeEvent:
 
     def set(self):
         self.count += 1
-        self.when = time.monotonic()
+        # Stamp from the SAME seam the watcher reads, so a test that fakes the
+        # clock sees a fake `when`. This used to read time.monotonic() and get
+        # a faked value only because the old patch target
+        # ('windows.preset_watch.time.monotonic') reached through the module
+        # attribute into the shared stdlib `time` module and monkeypatched it
+        # for the whole process, this line included. That was a side effect of
+        # the patch, not a seam. The watcher now reads windows.clock.now, so
+        # the stamp names that seam explicitly and the global patch is gone.
+        self.when = windows.preset_watch.clock_now()
         self.signal.set()
 
 
@@ -90,7 +99,7 @@ class PresetWatcherTests(unittest.TestCase):
         # Drive the real polling loop over real files, with deterministic quiet
         # boundaries. A separate daemon-thread test checks the real 1 s bound.
         with patch.object(watcher._stop_event, 'wait', side_effect=advance), \
-             patch('windows.preset_watch.time.monotonic', side_effect=lambda:now):
+             patch('windows.preset_watch.clock_now', side_effect=lambda:now):
             watcher.run()
         self.assertTrue(self.event.signal.is_set())
         self.assertEqual(self.event.count, 1)

@@ -63,11 +63,11 @@ ignores it entirely (never crashes, never lets it flip state).
 from __future__ import annotations
 
 import logging
-import time
 from typing import Any, Callable
 
 from windows.engines.base import Engine
 from windows.midi import MidiOut
+from windows.clock import now as clock_now
 
 LOGGER = logging.getLogger(__name__)
 
@@ -179,7 +179,7 @@ class GyroFeedbackEngine(Engine):
         config: dict,
         midi_out: MidiOut,
         *,
-        clock: Callable[[], float] = time.monotonic,
+        clock: Callable[[], float] = clock_now,
         # Back-compat: older callers/tests passed an osc client. Accept and
         # ignore so construction never breaks; this engine emits MIDI only.
         osc_client: Any = None,
