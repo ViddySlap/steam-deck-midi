@@ -8,13 +8,13 @@ Executor: claude-rc claude-opus-5 on the Mac, unsandboxed. Branch `chain/steamde
 
 ## VERDICT IN ONE PARAGRAPH
 
-0.5.0 is built from CANDIDATE 2e4292a, staged at `C:\Users\Ben\Documents\steamdeck-midi-showready\candidate-2e4292a\` and never run; nothing was installed. **Bar 1 QUALIFIED**: every mapping in EDM Show (56) and PTZ (52), and default (56), sends byte-identical MIDI to v0.4.9 on the Mac and on the laptop (0 different, 0 not covered), and the five MIDI-emitting engines are identical in process; the qualification is only the three username hunks by which your installed build (orphan d136787) differs from the v0.4.9 tag, none on a MIDI path. **Bar 2 PASS**: the laptop clone at CANDIDATE ran `1099 tests OK (skipped=6)`, exit 0. **Bar 3 NOT COUNTED**: on the Mac with real Chromium the view open added 0.028-0.034 ms at p50 and 0.067-0.094 ms at p99 on M_bridge against about 1.02 ms allowed, in two fresh qualifying runs whose 2 ms controls went RED by over 5 seconds, but BOTH runs are void under the extended load cap because another lane's local-LLM bench and the vault sync were busy during arms; the laptop cannot count (its 2 ms control goes INVALID on Windows, as before). **Bar 5 PASS**: the v0.4.9 installer (43,881,072 bytes, sha256 = GitHub's digest) and byte copies of the program (44/44) and your config (38/38) are on the laptop, re-verified from a fresh read, and the installed program is still byte-identical. An install from STAGING keeps OSC Sync working with or without the override (207 targets, same file). One finding for the master, not a bar: the built exe idles 0.494 points of one core above v0.4.9 (0.2 rule; absolute 0.5-0.65%).
+0.5.0 is built from CANDIDATE 2e4292a, staged at `C:\Users\Ben\Documents\steamdeck-midi-showready\candidate-2e4292a\` and never run; nothing was installed. **Bar 1 QUALIFIED**: every mapping in EDM Show (56) and PTZ (52), and default (56), sends byte-identical MIDI to v0.4.9 on the Mac and on the laptop (0 different, 0 not covered), and the five MIDI-emitting engines are identical in process; the qualification is only the three username hunks by which your installed build (orphan d136787) differs from the v0.4.9 tag, none on a MIDI path. **Bar 2 PASS**: the laptop clone at CANDIDATE ran `1099 tests OK (skipped=6)`, exit 0. **Bar 3 PASS** (Mac, real Chromium, declared M_bridge rule, run 3): with the controller view open the bridge added 0.015 ms at p50, 0.015 ms at p95 and 0.026 ms at p99 against 1.014 / 1.020 / 1.033 ms allowed, all 24 arms VALID under the extended load cap, and the planted 2 ms fault went RED by about 5 seconds; two earlier runs gave the same PASS but were void by other lanes' load, and the laptop cannot count (its 2 ms control goes INVALID on Windows, as before). The locked rule printed beside it is RED at p99 on M_total (4.649 > 2.003 ms), which is the rig's own pacing, not the bridge (section 3). **Bar 5 PASS**: the v0.4.9 installer (43,881,072 bytes, sha256 = GitHub's digest) and byte copies of the program (44/44) and your config (38/38) are on the laptop, re-verified from a fresh read, and the installed program is still byte-identical. An install from STAGING keeps OSC Sync working with or without the override (207 targets, same file). One finding for the master, not a bar: the built exe idles 0.494 points of one core above v0.4.9 (0.2 rule; absolute 0.5-0.65%).
 
 | Bar | Verdict | The number that decides it |
 | --- | --- | --- |
 | 1 MIDI byte-identical to v0.4.9 | **QUALIFIED (by name)** | EDM Show 56/56 and PTZ 52/52 mappings exercised, 0 different, on the Mac AND the laptop; 5 engines identical in process. QUALIFIED only because the installed build came from orphan d136787, which differs from tag e66ff44 in exactly 3 username hunks (below) |
 | 2 Full suite on Windows | **PASS** | laptop clone at CANDIDATE: `Ran 1099 tests`, `OK (skipped=6)`, exit 0; Mac `Ran 1099 tests`, `OK (skipped=2)`, exit 0 |
-| 3 No added delay, view open vs closed | **NOT COUNTED** | M_bridge abs(OPEN-CLOSED) p99 0.094 ms (run 1) and 0.067 ms (run 2) vs floor + 1.0 = 1.045 / 1.019 ms, PASS by the instrument with sensitivity RED both times; both runs VOID under the extended load cap (foreign bench + vault sync); laptop sensitivity INVALID |
+| 3 No added delay, view open vs closed | **PASS** (Mac, M_bridge) | run 3: M_bridge abs(OPEN-CLOSED) p50/p95/p99 0.015 / 0.015 / 0.026 ms vs floor + 1.0 = 1.014 / 1.020 / 1.033 ms, `bar3_counts: true`, 24/24 arms VALID under the extended cap, sensitivity RED (p99 10428 ms). Runs 1 and 2 same PASS but VOID by foreign load. Laptop not counted (sensitivity INVALID) |
 | 5 Rollback ready | **PASS** | v0.4.9 installer 43881072 bytes, sha256 05a46159...51a5 = GitHub digest, re-read on the laptop; rollback manifests 44/44, 38/38, 4/4; installed program 44/44 still equal (installer never ran) |
 | 4 Ben's 15 minutes | OWED TO BEN | checklist at the end |
 
@@ -114,16 +114,16 @@ That comparison was NOT clean (3 differing blobs), so bar 1 is **QUALIFIED**, wi
 
 ## 3. BAR 3 - TIMING
 
-**Bar 3 on the Mac is a PASS by the instrument in TWO fresh qualifying runs, and BOTH runs are VOID under the extended load cap (MASTER 13, 15:21 (3) and 17:18/19:42), so bar 3 is NOT COUNTED by this gate.** The void comes from named foreign load: other lanes' processes and the vault sync. It does not come from this lane's work and it does not come from the candidate. The sensitivity control went RED on M_bridge in both runs, so the rule is valid and the instrument resolves 2 ms. The Mac could not hold a quiet 32 minutes within 90 minutes; NEEDS-MASTER written.
+**Bar 3 on the Mac PASSES on the declared M_bridge rule in run 3, the COUNTED run: 24/24 arms VALID by the instrument AND under the extended load cap, sensitivity RED.** Runs 1 and 2, measured first, gave the same PASS but are VOID under the extended cap because of named foreign load (other lanes' processes and the vault sync). They are reported beside run 3, not counted. The locked rule, printed beside in every run, is RED at p99 on M_total in run 3 and at p95 in run 2 and PASS in run 1: M_total includes the rig's own input-to-heartbeat pacing (p99 about 1,655 ms in EVERY arm, open or closed), which is why the lane declared M_bridge.
 
-Commands, run exactly as scripts/showready/README.md gives them, sensitivity first, one at a time, nothing else of this lane in flight (the laptop was idle; its guard compare ran BEFORE run 2):
+Commands, run exactly as scripts/showready/README.md gives them, sensitivity first, one at a time, nothing else of this lane in flight (the laptop was idle; its guard compare ran BEFORE run 2; the report commit fb9fa49 was pushed BEFORE run 3):
 
 ```
 .venv/bin/python -B scripts/showready/timing_ab.py --rule m_bridge --candidate 2e4292a75f08674fdf5c78358485b27c2d3bd913 --script scripts/showready/timing_script.json --repeats 3 --control sensitivity --scratch /tmp/sdrc-gate/timing2/mac-mbridge-sensitivity --out /tmp/sdrc-gate/timing2/mac-mbridge-sensitivity.json.gz --client-cmd '["node",".../scripts/showready/timing_browser.cjs","{url}","{stop}","{receipt}",".../chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell","--single-process"]'
 .venv/bin/python -B scripts/showready/timing_ab.py --rule m_bridge --candidate 2e4292a75f08674fdf5c78358485b27c2d3bd913 --script scripts/showready/timing_script.json --repeats 5 --scratch /tmp/sdrc-gate/timing2/mac-mbridge-clean --out /tmp/sdrc-gate/timing2/mac-mbridge-clean.json.gz --sensitivity-result /tmp/sdrc-gate/timing2/mac-mbridge-sensitivity.json.gz --client-cmd <same>
 ```
 
-Run 1 used `/tmp/sdrc-gate/timing/...`, identical otherwise. Every scratch had `.metadata_never_index` created before the first file. Pins 19/19 OK before each run. Per-arm quiet gate: load1 < 4.0 for 60 s immediately before each command (waited 60 s, 60 s, 60 s, 61 s; load1 2.10, 2.26, 2.06, 2.09). `pgrep -f "while True: pass"` exit 1, empty, before and after every command and inside the instrument before and after every arm (all 48 arms `empty`). Instrument `foreign_lines` 0 before and after every arm. Tables recomputed independently from raw samples with `docs/sdbar3-gate/gate_table.py` (0 re-derived M_bridge mismatches, 0 per-arm stat mismatches against the instrument, in all four results).
+Run 1 used `/tmp/sdrc-gate/timing/...` and run 3 `/tmp/sdrc-gate/timing3/...`, identical otherwise. Every scratch had `.metadata_never_index` created before the first file. Pins 19/19 OK before each run. Per-arm quiet gate: load1 < 4.0 for 60 s immediately before each command (waited 60 s, 60 s, 60 s, 61 s, 61 s, 60 s; load1 2.10, 2.26, 2.06, 2.09, 2.21, 1.97). `pgrep -f "while True: pass"` exit 1, empty, before and after every command and inside the instrument before and after every arm (all 72 arms `empty`). Instrument `foreign_lines` 0 before and after every arm. Tables recomputed independently from raw samples with `docs/sdbar3-gate/gate_table.py` (0 re-derived M_bridge mismatches, 0 per-arm stat mismatches against the instrument, in all six results).
 
 ### M_bridge and M_total side by side (pooled, ms)
 
@@ -133,32 +133,39 @@ Run 1 used `/tmp/sdrc-gate/timing/...`, identical otherwise. Every scratch had `
 | 1 clean R=5 | 04:28-04:47 | 0.011 / 0.017 / 0.045 | **0.034 / 0.048 / 0.094** | **PASS** (<= 1.011 / 1.017 / 1.045) | 0.011 / 0.123 / 1.971 | 0.028 / 0.189 / 2.326 | PASS | 0, true |
 | 2 sens R=3 | 04:50-05:02 | 0.008 / 0.009 / 0.038 | 5153.207 / 10442.217 / 10857.613 | **RED** | 0.003 / 1.510 / 2.380 | 5153.143 / 10323.796 / 9212.363 | RED | 1, false; `m_bridge_sensitivity_timing_red: true` |
 | 2 clean R=5 | 05:03-05:22 | 0.000 / 0.000 / 0.019 | **0.028 / 0.039 / 0.067** | **PASS** (<= 1.000 / 1.000 / 1.019) | 0.004 / 0.109 / 0.807 | 0.023 / 1.457 / 1.166 | **RED at p95** (1.457 > 1.109) | 0, true |
+| **3 sens R=3 (COUNTED)** | 05:25-05:37 | 0.011 / 0.012 / 0.014 | 4972.108 / 10016.358 / 10428.145 | **RED** | 0.008 / 0.736 / 0.442 | 4972.034 / 9897.230 / 8773.009 | RED | 1, false; `m_bridge_sensitivity_timing_red: true` |
+| **3 clean R=5 (COUNTED)** | 05:38-05:58 | 0.014 / 0.020 / 0.033 | **0.015 / 0.015 / 0.026** | **PASS** (<= 1.014 / 1.020 / 1.033) | 0.006 / 1.732 / 1.003 | 0.013 / 1.566 / 4.649 | **RED at p99** (4.649 > 2.003) | 0, **true** |
+
+Pooled per arm, run 3 clean (COUNTED, n = 48,190 per arm type): M_bridge CLOSED 1.127 / 1.623 / 1.795 (max 19.895), OPEN 1.143 / 1.638 / 1.822 (max 9.819), CLOSED-B 1.113 / 1.603 / 1.762 (max 15.922). M_total CLOSED 1.192 / 120.663 / 1655.263, OPEN 1.205 / 122.228 / 1659.912, CLOSED-B 1.186 / 122.395 / 1656.266.
 
 Pooled per arm, run 2 clean (n = 48,190 every-message timed MIDI per arm type): M_bridge CLOSED 1.134 / 1.632 / 1.816 (max 13.065), OPEN 1.162 / 1.671 / 1.883 (max 31.831), CLOSED-B 1.134 / 1.632 / 1.797 (max 24.922). M_total CLOSED 1.199 / 120.360 / 1655.308, OPEN 1.222 / 121.817 / 1654.142, CLOSED-B 1.203 / 120.251 / 1654.501. (M_total includes the rig's own pacing between an input and the heartbeat that releases a delayed output: that is why its p99 is 1.6 s in every arm, open or closed, and why the declared metric is M_bridge.)
 
 ### Worst-case six-axis segment `simultaneous-sticks-triggers-60hz` (pooled, ms, n = 45,080 per arm type)
 
-| Run 2 clean | CLOSED p50/p95/p99/max | OPEN | CLOSED-B | floor | abs(OPEN-CLOSED) | within |
+| Run | CLOSED p50/p95/p99/max | OPEN | CLOSED-B | floor | abs(OPEN-CLOSED) | within |
 | --- | --- | --- | --- | --- | --- | --- |
-| M_bridge | 1.176 / 1.640 / 1.822 / 13.065 | 1.199 / 1.678 / 1.884 / 31.831 | 1.180 / 1.639 / 1.803 / 24.922 | 0.004 / 0.001 / 0.019 | 0.022 / 0.038 / 0.061 | yes |
-| M_total | 1.176 / 1.641 / 1.822 | 1.199 / 1.678 / 1.884 | 1.180 / 1.639 / 1.803 | 0.004 / 0.001 / 0.019 | 0.022 / 0.038 / 0.061 | yes |
+| **3 (COUNTED) M_bridge** | 1.170 / 1.632 / 1.799 / 19.895 | 1.183 / 1.642 / 1.816 / 9.819 | 1.161 / 1.611 / 1.769 / 15.922 | 0.009 / 0.021 / 0.030 | 0.013 / 0.010 / 0.018 | yes |
+| **3 (COUNTED) M_total** | 1.170 / 1.632 / 1.799 | 1.183 / 1.642 / 1.816 | 1.161 / 1.611 / 1.769 | 0.009 / 0.021 / 0.030 | 0.013 / 0.010 / 0.018 | yes |
+| 2 M_bridge | 1.176 / 1.640 / 1.822 / 13.065 | 1.199 / 1.678 / 1.884 / 31.831 | 1.180 / 1.639 / 1.803 / 24.922 | 0.004 / 0.001 / 0.019 | 0.022 / 0.038 / 0.061 | yes |
+| 2 M_total | 1.176 / 1.641 / 1.822 | 1.199 / 1.678 / 1.884 | 1.180 / 1.639 / 1.803 | 0.004 / 0.001 / 0.019 | 0.022 / 0.038 / 0.061 | yes |
 
 Run 1 clean, same segment: M_bridge abs(OPEN-CLOSED) 0.026 / 0.046 / 0.084 vs floor 0.011 / 0.017 / 0.051, within; M_total the same values.
 
 ### Arms, drops, client
 
-Every arm of all four results: accepted, passed, load `verified`, 9,638 timed MIDI (every-message and first-packet sets), 20,513 packets with t1_pre and t1_post, bridge pid gone, bytes identical to CLOSED. OPEN arms: live client proven, snapshot client count exactly 1 throughout, stream dropped **0**, 16,015-16,095 data events per clean OPEN arm, Chromium pids gone. Publisher snapshot overwrite count 23,990 per arm (coalescing, not dropping, and equal in every arm incl. CLOSED).
+Every arm of all six results: accepted, passed, load `verified`, 9,638 timed MIDI (every-message and first-packet sets), 20,513 packets with t1_pre and t1_post, bridge pid gone, bytes identical to CLOSED. OPEN arms: live client proven, snapshot client count exactly 1 throughout, stream dropped **0**, 16,010-16,095 data events per clean OPEN arm, Chromium pids gone. Publisher snapshot overwrite count 23,990 per arm (coalescing, not dropping, and equal in every arm incl. CLOSED).
 
-### Why both runs are VOID (whole-machine sampler every 5 s, `docs/sdauto-gate/scripts/machine_sampler.py`; `arm_validity.py` per arm)
+### Validity of each run under the extended cap (whole-machine sampler every 5 s, `docs/sdauto-gate/scripts/machine_sampler.py`; `arm_validity.py` per arm)
 
 | Run | arm_validity.py | Counted foreign load inside an arm window |
 | --- | --- | --- |
 | 1 | ALL VALID 9 + 15 arms, max in-arm load1 3.88 | `node .../local-LLM-h14/qwen-bench/../sandbox/broker.mjs prove-gate` **79.3%** at 04:18:12 in sens r1 CLOSED-B: a local-LLM-* bench process above 5% in-arm COUNTS, so the sensitivity run is void and the clean run's receipt with it |
 | 2 | **INVALID PRESENT** (sens and clean), max in-arm load1 4.61 | the vault sync `obsidian-headless/cli.js sync` 88-100% for > 10 s in sens r3 CLOSED-B, clean r1 CLOSED-B, clean r3 CLOSED and CLOSED-B; `grep -rl --exclude-dir=workspace build-spec-null /Users/viddyslap/.pi-harness-sc...` (not this lane) 56-76% for ~95 s across sens r1 OPEN and CLOSED-B; the same qwen-bench broker **98.0%** at 04:56:21 in sens r2 OPEN; `git clone --no-hardlinks` 96.2% once in sens r2 OPEN |
+| **3** | **ALL VALID 9 + 15 arms**, max in-arm load1 **3.62** | **none**: 0 local-LLM-* processes above 5% in any arm, 0 non-lane processes above 50% in any in-arm sample |
 
-Recorded, not counted (lane infrastructure): the engine `local-LLM-engine/engine/server.mjs` above 25% in 67 (run 1) and 66 (run 2) in-arm samples, max 85.7% and 90.2%, and `local-LLM-engine/ops/harness-advance.mjs` up to 51.6%: both NEEDS-MASTER lines in the LANE LOG. WindowServer and kernel_task recorded only.
+Recorded, not counted (lane infrastructure): the engine `local-LLM-engine/engine/server.mjs` above 25% in 67 / 66 / 58 in-arm samples (runs 1 / 2 / 3), max 85.7% / 90.2% / 73.9%, and `local-LLM-engine/ops/harness-advance.mjs` up to 51.6% (run 3: 32.8%): both NEEDS-MASTER lines in the LANE LOG. WindowServer and kernel_task recorded only.
 
-What this does and does not say: in four qualifying results the view open added 0.03 to 0.09 ms at p99 on M_bridge, the same order as the noise floor, and the planted 2 ms fault was seen as a 5-second jump both times. The measurement is not in doubt; the validity stamp is, because another lane's bench and the vault sync were busy during arms. sdbar3's LANDED M_bridge PASS at 70cebd0 (0.017 / 0.004 / 0.009 ms against 1.018 / 1.064 / 1.073 ms) stands on its own run.
+What this says: in three clean qualifying runs the view open added 0.026 to 0.094 ms at p99 on M_bridge, the same order as the noise floor, and the planted 2 ms fault was seen as a 5-second jump all three times. Run 3 is the one that carries the validity stamp. sdbar3's LANDED M_bridge PASS at 70cebd0 (0.017 / 0.004 / 0.009 ms against 1.018 / 1.064 / 1.073 ms) stands on its own run.
 
 ### Laptop
 
@@ -257,8 +264,8 @@ Both builds bundle **Python 3.12** (C1 built with 3.12.10; C1's archive viewer l
 | STAGING SHA256SUMS.txt | 3 entries, 0 bad (G04) |
 | processes running from STAGING or ROLLBACK | 0 (G04, G11) |
 | installed program folder = C2 MANIFEST | 44/44 (G04) |
-| `git ls-remote --tags origin v0.5.0` | empty (11:23:54Z) |
-| GitHub releases API tag v0.5.0 | HTTP 404 (11:23:54Z); v0.4.9 asset re-read: 43881072 bytes, `sha256:05a46159...51a5` |
+| `git ls-remote --tags origin v0.5.0` | empty (11:59:18Z) |
+| GitHub releases API tag v0.5.0 | HTTP 404 (11:59:18Z); v0.4.9 asset re-read: 43881072 bytes, `sha256:05a46159...51a5` |
 | `git ls-remote origin main` | `5d778eb90a2baa85b98ffa9ff11571a9aca0ce39`: unchanged; this lap did not move it |
 
 ## 7. LAPTOP STATE, BOTH ENDS (G01 at 09:30:10Z, G12 at 10:48:58Z)
@@ -324,7 +331,7 @@ engine_ab with LOCALAPPDATA UNSET: Mac, every run above under `env -u LOCALAPPDA
 
 | Reading | Gate start (09:29:52Z) | Gate end |
 | --- | --- | --- |
-| `git ls-remote origin main` | `5d778eb90a2baa85b98ffa9ff11571a9aca0ce39 refs/heads/main` | same at 11:23:54Z |
+| `git ls-remote origin main` | `5d778eb90a2baa85b98ffa9ff11571a9aca0ce39 refs/heads/main` | same at 11:59:18Z (gate end) |
 | `git ls-remote --tags origin` | 42 tag refs, newest v0.4.9 -> e66ff44 | identical, `diff` exit 0 (no v0.5.0) |
 | `git tag --list 'v0.5*'` (local) | 0 | 0 |
 
@@ -333,7 +340,7 @@ engine_ab with LOCALAPPDATA UNSET: Mac, every run above under `env -u LOCALAPPDA
 | Mutation | RED | Restored |
 | --- | --- | --- |
 | (a) EDM Show BTN_A note +1 in the candidate arm's copy (`ab_run.py --candidate 2e4292a... --preset <mac EDM Show> --section windows --control sensitivity --mapping BTN_A`) | **exit 1**, `different_mappings: ["BTN_A"]` in B1 and B2, 56/56 exercised | unmutated `mac-edm` run: exit 0, 0 different |
-| (b) 2 ms publisher delay (`timing_ab.py --rule m_bridge ... --control sensitivity`, R=3) | **exit 1**, `m_bridge_sensitivity_timing_red: true`, M_bridge abs(OPEN-CLOSED) p99 10574.606 ms (run 1) and 10857.613 ms (run 2) | clean R=5 without the delay: exit 0, p99 0.094 / 0.067 ms, within (both runs load-VOID, see bar 3) |
+| (b) 2 ms publisher delay (`timing_ab.py --rule m_bridge ... --control sensitivity`, R=3) | **exit 1**, `m_bridge_sensitivity_timing_red: true`, M_bridge abs(OPEN-CLOSED) p99 10428.145 ms (run 3, COUNTED; runs 1 and 2: 10574.606 and 10857.613 ms) | clean R=5 without the delay: exit 0, `bar3_counts: true`, p99 0.026 ms, within (run 3) |
 | (c) one byte flipped (offset 10499312, XOR 0xFF) in a COPY of the staged tray exe, checked against its SHA256SUMS line | **RED**: `SUMS_BAD STEAMDECK-MIDI-RECEIVER-2-Tray.exe` | byte written back: 1 entry, 0 bad |
 | (d) `actions.yaml` sha256 set to 64 zeros in a COPY of MANIFEST-config.sha256.tsv | **RED**: `MANIFEST_BAD actions.yaml`, 37 ok 1 bad | line restored: 38 ok, 0 bad |
 
@@ -364,7 +371,7 @@ engine_ab with LOCALAPPDATA UNSET: Mac, every run above under `env -u LOCALAPPDA
 - **The laptop rig's over-100 ms rate:** on the laptop, in the closed-arm rig where the sender shares the bridge's process, 3 to 7 percent of messages take over 100 ms from send to MIDI record, at BOTH revisions, never reaching 1,000 ms. UNATTRIBUTED between bridge receive lag and in-process sender contention; separating them needs a receive-seam timestamp the instrument does not take. It is present at BASE as strongly as at HEAD, so the installed v0.4.9 has it too and nothing in the candidate introduces it; the one topology difference that could explain it is the one the show does not have, because on Friday the sender is the Steam Deck across a network, not a thread inside the bridge's own process (master 13, 19:23 (1) and (2)). THIS GATE'S READING: 1.04% to 11.11% per arm today (section 7e), and the BASE/HEAD asymmetry followed arm ORDER, not revision.
 - **AG finding F4, PRE-EXISTING:** `stageflow_bridge` resolves `comp_path` under HOME but never reads it at runtime (docs/sdauto-gate/REPORT.md; master 13, 16:32).
 - **Bar 3 history:** sdauto's bar 3 RED stands on its own run and is HELD owner sdstall; sdstall measured NOT REPRODUCED on a quiet Mac and a quiet laptop (59 CLOSED arms, zero samples over 1,000 ms at BASE and HEAD, both readings agreeing) with the INFERENCE-ACTIVE case UNTESTED because the lms split went degenerate.
-- **Windows bar 3 does not count:** the pinned 2 ms sensitivity control cannot produce a valid OPEN arm on the laptop (this gate: `URLError timed out`, exit 3; sdlive EG: UDP intake overflow), so laptop timing is diagnostic only; Mac bar 3 is NOT COUNTED this gate by foreign load (section 3). Your bar 4 hardware check cannot see millisecond delay.
+- **Windows bar 3 does not count:** the pinned 2 ms sensitivity control cannot produce a valid OPEN arm on the laptop (this gate: `URLError timed out`, exit 3; sdlive EG: UDP intake overflow), so laptop timing is diagnostic only; Mac bar 3 PASSES on run 3 (section 3). Your bar 4 hardware check cannot see millisecond delay.
 - **The Windows UI sidecar visibility limit (a limit of the ARM, not the product; source docs/sdpolish-p0/REPORT.md):** "the UI sidecar arm proves the sidecar constructs without raising in a session-0 service context; it does NOT prove a tray icon is visible, and the bridge logged neither a tray start nor the `system tray unavailable:` warning that windows/win_recv.py emits on failure." sdpolish PG did not measure visibility (its report says only that the sidecar is available in the rail session), so this limit ships as written. In THIS gate's exe runs the sidecar was the dummy backend on purpose (no icon possible).
 - **GET /api/midi/ports** is tested on the Mac only, because on the laptop it would enumerate loopMIDI.
 - **Windows idle CPU of the built exe:** 0.494-point mean paired difference vs v0.4.9 (section 7e), over the 0.2 rule, tripwire on 2 pairs; unattributed; for the master.
