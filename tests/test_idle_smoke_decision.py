@@ -18,10 +18,19 @@ KIT = Path(__file__).resolve().parents[1] / "scripts" / "showready"
 
 
 def _load():
+    # Never write bytecode into scripts/showready: SHA256SUMS pins the EXACT
+    # file set there (tests/test_showready_rail.verify_pins rglobs the kit), so
+    # a stray __pycache__ from this import would turn the pin check red - an
+    # order-dependent failure that depends on which test ran first.
+    previous = sys.dont_write_bytecode
+    sys.dont_write_bytecode = True
     spec = importlib.util.spec_from_file_location("idle_smoke_under_test", KIT / "idle_smoke.py")
     module = importlib.util.module_from_spec(spec)
     sys.modules[spec.name] = module
-    spec.loader.exec_module(module)
+    try:
+        spec.loader.exec_module(module)
+    finally:
+        sys.dont_write_bytecode = previous
     return module
 
 

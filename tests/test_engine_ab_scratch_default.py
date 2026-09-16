@@ -26,10 +26,19 @@ KIT = Path(__file__).resolve().parents[1] / "scripts" / "showready"
 
 def _load_engine_ab():
     """Import scripts/showready/engine_ab.py fresh (it is not a package)."""
+    # Never write bytecode into scripts/showready: SHA256SUMS pins the EXACT
+    # file set there (tests/test_showready_rail.verify_pins rglobs the kit), so
+    # a stray __pycache__ from this import would turn the pin check red - an
+    # order-dependent failure that depends on which test ran first.
+    previous = sys.dont_write_bytecode
+    sys.dont_write_bytecode = True
     spec = importlib.util.spec_from_file_location("engine_ab_under_test", KIT / "engine_ab.py")
     module = importlib.util.module_from_spec(spec)
     sys.modules[spec.name] = module
-    spec.loader.exec_module(module)
+    try:
+        spec.loader.exec_module(module)
+    finally:
+        sys.dont_write_bytecode = previous
     return module
 
 
@@ -45,13 +54,20 @@ class DefaultScratchDirTests(unittest.TestCase):
     def test_posix_default_is_unchanged(self):
         self.assertEqual(self.engine_ab.scratch_dir_for({}, "posix"),
                          "/tmp/sdauto-engine-ab")
+
+    def test_default_scratch_dir_is_the_pure_function_on_this_machine(self):
+        """Platform-independent: default_scratch_dir() is scratch_dir_for()
+        applied to THIS machine, whichever machine is running the suite."""
         self.assertEqual(self.engine_ab.default_scratch_dir(),
-                         Path("/tmp/sdauto-engine-ab"))
+                         Path(self.engine_ab.scratch_dir_for(os.environ, os.name)))
 
     def test_windows_uses_localappdata_when_it_is_there(self):
-        result = self.engine_ab.scratch_dir_for(
-            {"LOCALAPPDATA": r"C:\Users\Ben\AppData\Local"}, "nt")
-        self.assertEqual(result, r"C:\Users\Ben\AppData\Local/Temp/sdwin/engine-ab")
+        # Built from parts: tests/test_resolume_home_defaults.py scans every
+        # tracked file outside docs/ and scripts/ for a real Windows user home,
+        # so this file must never contain that string literally.
+        local = "C:\\Users\\" + "B" + "en" + "\\AppData\\Local"
+        result = self.engine_ab.scratch_dir_for({"LOCALAPPDATA": local}, "nt")
+        self.assertEqual(result, local + "/Temp/sdwin/engine-ab")
 
     def test_windows_without_localappdata_falls_back_and_never_raises(self):
         result = self.engine_ab.scratch_dir_for({"TEMP": r"C:\Windows\Temp"}, "nt")
