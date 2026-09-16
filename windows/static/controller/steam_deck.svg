@@ -28,7 +28,7 @@
     <path data-control="dpad_right" d="M206 169 H240 V201 H206 L194 185 Z"/>
     <rect data-control="left_pad" x="258" y="295" width="84" height="90" rx="12"/>
     <rect data-control="right_pad" x="858" y="295" width="84" height="90" rx="12"/>
-    <circle data-control="qam" cx="980" cy="270" r="12"/>
+    <circle data-control="qam" cx="1000" cy="375" r="12"/>
   </g>
   <g fill="none" stroke="var(--border-hi)" stroke-width="2" stroke-dasharray="8 6">
     <rect x="190" y="423" width="170" height="127" rx="24"/>
@@ -49,6 +49,6 @@
     <text x="305" y="168" font-size="12">L3</text><text x="895" y="168" font-size="12">R3</text>
     <text x="328" y="492" font-size="16">REAR</text><text x="872" y="492" font-size="16">REAR</text>
     <text x="600" y="507">GYRO</text>
-    <text x="980" y="276" font-size="14" letter-spacing="2">...</text>
+    <text x="1000" y="381" font-size="14" letter-spacing="2">...</text>
   </g>
 </svg>

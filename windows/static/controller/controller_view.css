@@ -83,6 +83,9 @@
 .controller-art .control-down { fill: var(--accent); stroke: var(--text); opacity: 1; }
 .controller-label.control-down { color: var(--text); border-color: var(--accent); background: var(--accent-dim); }
 .controller-label.control-down small { display: none; }
+.controller-art .control-touch { stroke: var(--accent); stroke-width: 4; stroke-dasharray: 7 5; }
+.controller-label.control-touch { color: var(--text); border-color: var(--accent); border-style: dashed; }
+.controller-label.control-touch small { display: none; }
 .controller-label.control-down > span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .controller-live-tag { font-size: 10px; color: var(--text); white-space: nowrap; }
 .controller-live-overlay { pointer-events: none; }

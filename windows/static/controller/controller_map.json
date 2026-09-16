@@ -461,7 +461,7 @@
     },
     {
       "id": "start",
-      "label": "START",
+      "label": "SELECT (right)",
       "kind": "menu",
       "anchor": {
         "x": 978,
@@ -469,7 +469,7 @@
       },
       "groups": {
         "tap": [
-          "START"
+          "SELECT"
         ]
       },
       "label_anchor": {
@@ -481,11 +481,12 @@
           1050,
           110
         ]
-      ]
+      ],
+      "notes": "Right menu button (three lines, Steam's button_menu). It has always emitted the SELECT action and toggles the bumper/trigger layer."
     },
     {
       "id": "select",
-      "label": "SELECT",
+      "label": "START (left)",
       "kind": "menu",
       "anchor": {
         "x": 222,
@@ -493,7 +494,7 @@
       },
       "groups": {
         "tap": [
-          "SELECT"
+          "START"
         ]
       },
       "label_anchor": {
@@ -505,7 +506,8 @@
           150,
           110
         ]
-      ]
+      ],
+      "notes": "Left menu button (two squares, Steam's button_escape). It has always emitted the START action and toggles the ABXY layer; the names are swapped relative to Xbox convention."
     },
     {
       "id": "left_pad",
@@ -569,7 +571,13 @@
       "label_anchor": {
         "x": 1330,
         "y": 490
-      }
+      },
+      "leader_via": [
+        [
+          1060,
+          322
+        ]
+      ]
     },
     {
       "id": "gyro",
@@ -601,15 +609,15 @@
       "label": "QAM (three dots)",
       "kind": "menu",
       "anchor": {
-        "x": 980,
-        "y": 270
+        "x": 1000,
+        "y": 375
       },
       "groups": {
         "tap": [
           "QAM"
         ]
       },
-      "notes": "The three-dot Quick Access button, lower right. Steam Input does not expose it, so the sender reads it straight from the controller's HID report (byte 14, bit 0x04, confirmed 2026-09-16). It needs no Steam Input binding, and in desktop mode nothing else consumes it.",
+      "notes": "The three-dot Quick Access button, lower right, beside the right trackpad. Steam Input does not expose it, so the sender reads it straight from the controller's HID report (byte 14, bit 0x04, confirmed 2026-09-16). It needs no Steam Input binding, and in desktop mode nothing else consumes it.",
       "label_anchor": {
         "x": 1330,
         "y": 530

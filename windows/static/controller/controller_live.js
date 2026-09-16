@@ -92,11 +92,17 @@ const ControllerLive = (() => {
       for (const control of map.controls) {
         const visual = visuals.get(control.id);
         const groups = Object.keys(TAGS).filter(name => control.groups[name]?.some(id => pressed.has(id)));
-        const down = groups.length > 0;
+        // A resting thumb on a stick is a touch, not a press: draw it as an
+        // outline so a click (filled) stays unmistakable.
+        const touchOnly = groups.length === 1 && groups[0] === 'touch';
+        const down = groups.length > 0 && !touchOnly;
         visual.shape.classList.toggle('control-down', down);
+        visual.shape.classList.toggle('control-touch', touchOnly);
         labels.get(control.id).classList.toggle('control-down', down);
-        visual.tag.textContent = groups.map(name => TAGS[name]).join(' ');
-        visual.tag.hidden = !down;
+        labels.get(control.id).classList.toggle('control-touch', touchOnly);
+        visual.tag.textContent = groups.map(name =>
+          name === 'tap' && control.kind === 'stick' ? 'click' : TAGS[name]).join(' ');
+        visual.tag.hidden = groups.length === 0;
         const analog = control.groups.analog;
         if (visual.dot) {
           visual.dot.setAttribute('cx', control.anchor.x + normalized(analog[0]) * 30);
