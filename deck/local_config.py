@@ -31,6 +31,13 @@ class DeckRuntimeSettings:
     api_bind: str = "127.0.0.1"
     api_port: int = 7724
     api_token: str | None = None
+    # "keys": buttons come from Steam Input keycodes over XI2 (legacy path).
+    # "hidraw": the sender streams raw button state and the receiver decodes
+    # layers and long press (ADR 0003). Needs a receiver that understands it.
+    button_source: str = "keys"
+
+
+BUTTON_SOURCES = ("keys", "hidraw")
 
 
 def validate_ipv4_address(value: str) -> str:
@@ -98,6 +105,9 @@ def runtime_settings_from_dict(raw: dict) -> DeckRuntimeSettings:
     api_bind = raw.get("api_bind", "127.0.0.1")
     api_port = raw.get("api_port", 7724)
     api_token = raw.get("api_token")
+    button_source = raw.get("button_source", "keys")
+    if button_source not in BUTTON_SOURCES:
+        raise ValueError(f"button_source must be one of {', '.join(BUTTON_SOURCES)}")
     validate_api_bind(api_bind)
     if type(api_port) is not int or not 1 <= api_port <= 65535:
         raise ValueError("api_port must be an integer between 1 and 65535")
@@ -152,6 +162,7 @@ def runtime_settings_from_dict(raw: dict) -> DeckRuntimeSettings:
         api_bind=api_bind,
         api_port=api_port,
         api_token=api_token,
+        button_source=button_source,
     )
 
 
@@ -171,6 +182,7 @@ def write_runtime_settings(path: str, settings: DeckRuntimeSettings) -> None:
         "api_bind": settings.api_bind,
         "api_port": settings.api_port,
         "api_token": settings.api_token,
+        "button_source": settings.button_source,
         "presets": [
             {"name": preset.name, "host": preset.host, "port": preset.port}
             for preset in settings.presets

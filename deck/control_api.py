@@ -107,7 +107,8 @@ class SenderController:
                           targets=[(p.host, p.port) for p in selected],
                           profile_name=self.settings.profile_name, profile_hash=self.settings.profile_hash,
                           stop_event=self.stop_event, on_status=self._observe,
-                          bindings_document=copy.deepcopy(self.bindings), manage_terminal=False)
+                          bindings_document=copy.deepcopy(self.bindings), manage_terminal=False,
+                          button_source=self.settings.button_source)
             def worker():
                 try:
                     result = self.run(**kwargs)

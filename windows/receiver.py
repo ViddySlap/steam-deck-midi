@@ -10,7 +10,14 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Callable
 
-from protocol.messages import ActionEvent, AxisEvent, HeartbeatEvent, ProtocolError, parse_action_event
+from protocol.messages import (
+    ActionEvent,
+    AxisEvent,
+    ButtonStateEvent,
+    HeartbeatEvent,
+    ProtocolError,
+    parse_action_event,
+)
 from windows.config import (
     AxisToCCMapping,
     AxisSplitCCMapping,
@@ -25,6 +32,7 @@ from windows.config import (
 from windows.live_events import action_context, attributed, current_action, safe_publish
 from windows.midi import MidiControlChange, MidiError, MidiIn, MidiOut
 from windows.clock import now as clock_now
+from windows.raw_buttons import RawButtonConfig, RawButtonDecoder
 
 
 LOGGER = logging.getLogger(__name__)
@@ -137,6 +145,7 @@ class ActionReceiver:
         clock: Callable[[], float] = clock_now,
         engine_registry: Any = None,
         live_events=None,
+        raw_button_config: RawButtonConfig | None = None,
     ) -> None:
         self.state_version = 0
         self.stop_event = threading.Event()
@@ -166,6 +175,10 @@ class ActionReceiver:
         self._abxy_layer_publisher = self._build_layer_publisher("START")
         self._bumper_layer_publisher = self._build_layer_publisher("SELECT")
         self._gyro_layer_publisher = self._build_layer_publisher("L4")
+        # Buttons from the Deck's raw HID state (ADR 0003). Idle until the
+        # first ButtonStateEvent arrives, so the Steam Input key path is
+        # unaffected on a Deck that still sends keycode actions.
+        self._raw_buttons = RawButtonDecoder(raw_button_config)
         self._tracked_macro_keys = {
             (mapping.channel, mapping.cc)
             for mapping in mappings.values()
@@ -266,6 +279,38 @@ class ActionReceiver:
                 safe_publish(self._live_events, {"kind": "axis", "action": event.action,
                                                  "value": event.value})
             return self._handle_axis_event(event)
+        if isinstance(event, ButtonStateEvent):
+            return self._handle_button_state(event, timestamp)
+        return self._handle_action_event(event, timestamp)
+
+    def _handle_button_state(self, event: ButtonStateEvent, timestamp: float) -> bool:
+        decoded = self._raw_buttons.feed(event, timestamp, self._mappings.__contains__)
+        handled = self._handle_decoded_buttons(decoded, event.seq, timestamp)
+        self._publish_raw_layers(timestamp)
+        return handled
+
+    def _handle_decoded_buttons(
+        self, decoded: list[tuple[str, str]], seq: int, timestamp: float
+    ) -> bool:
+        handled = True
+        for action, state in decoded:
+            event = ActionEvent(kind="action", action=action, state=state, seq=seq)
+            handled = self._handle_action_event(event, timestamp) and handled
+        return handled
+
+    def _publish_raw_layers(self, timestamp: float) -> None:
+        # The decoder owns layer state, so the publishers are set absolutely
+        # (idempotent) rather than toggled; this also announces the known
+        # boot state (both layers off) as soon as the Deck's state arrives.
+        abxy, bumper = self._raw_buttons.layers
+        self._set_layer_state(
+            self._abxy_layer_publisher, LAYER_2 if abxy else LAYER_1, timestamp, "raw-buttons"
+        )
+        self._set_layer_state(
+            self._bumper_layer_publisher, LAYER_2 if bumper else LAYER_1, timestamp, "raw-buttons"
+        )
+
+    def _handle_action_event(self, event: ActionEvent, timestamp: float) -> bool:
         if not self._allow_event(event, timestamp):
             return False
         if self._live_events is not None:
@@ -285,6 +330,10 @@ class ActionReceiver:
         self.advance_fades(now=timestamp)
         self.advance_relative_ccs(now=timestamp)
         self.advance_staged_note_macros(now=timestamp)
+        stale = self._raw_buttons.check_stale(timestamp)
+        if stale:
+            LOGGER.warning("raw button state went silent; releasing %s held input(s)", len(stale))
+            self._handle_decoded_buttons(stale, 0, timestamp)
         if not self._sender_states:
             return False
 

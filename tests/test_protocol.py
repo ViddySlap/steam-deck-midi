@@ -5,10 +5,12 @@ import unittest
 from protocol.messages import (
     ActionEvent,
     AxisEvent,
+    ButtonStateEvent,
     HeartbeatEvent,
     ProtocolError,
     encode_action_event,
     encode_axis_event,
+    encode_button_state_event,
     encode_heartbeat_event,
     parse_action_event,
 )
@@ -96,3 +98,39 @@ class ParseAxisEventTests(unittest.TestCase):
             parse_action_event(
                 b'{"kind":"axis","action":"L_STICK_X_AXIS","value":1.5,"seq":1}'
             )
+
+
+class ButtonStateEventTests(unittest.TestCase):
+    FIELDS = dict(
+        seq=12,
+        deck_ms=987654,
+        buttons=bytes([0x80, 0x10, 0x08, 0, 0, 0x40, 0x04, 0]),
+        left_pad_pressure=3612,
+        right_pad_pressure=0,
+        left_pad_x=-32766,
+        left_pad_y=29016,
+        right_pad_x=32767,
+        right_pad_y=-32768,
+        left_trigger=32767,
+        right_trigger=0,
+    )
+
+    def test_round_trips(self) -> None:
+        event = parse_action_event(encode_button_state_event(**self.FIELDS))
+        self.assertEqual(event, ButtonStateEvent(kind="buttons", **self.FIELDS))
+
+    def test_rejects_bad_fields(self) -> None:
+        good = encode_button_state_event(**self.FIELDS).decode("utf-8")
+        cases = {
+            "short buttons": good.replace('"b":"8010080000400400"', '"b":"8010"'),
+            "non-hex buttons": good.replace('"b":"8010080000400400"', '"b":"zz10080000400400"'),
+            "negative time": good.replace('"t":987654', '"t":-1'),
+            "pressure too big": good.replace('"lp":3612', '"lp":70000'),
+            "position out of range": good.replace('"lx":-32766', '"lx":-40000'),
+            "bool trigger": good.replace('"rt":0', '"rt":false'),
+        }
+        for name, payload in cases.items():
+            with self.subTest(name=name):
+                self.assertNotEqual(payload, good)
+                with self.assertRaises(ProtocolError):
+                    parse_action_event(payload.encode("utf-8"))

@@ -16,14 +16,24 @@ import struct
 import sys
 import threading
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
-from deck.transport import parse_target, parse_targets, send_action, send_axis, send_heartbeat
+from deck.transport import (
+    parse_target,
+    parse_targets,
+    send_action,
+    send_axis,
+    send_button_state,
+    send_heartbeat,
+)
 
 
 HEARTBEAT_INTERVAL_SECONDS = 0.5
 AXIS_MIN_INTERVAL = 1.0 / 60.0
+# Raw button state (button_source="hidraw") is sent on every button change,
+# and otherwise at least this often so a lost datagram corrects itself.
+RAW_BUTTON_RESEND_SECONDS = 0.05
 _HIDIOCSFEATURE = (1 << 30) | (65 << 16) | (0x48 << 8) | 0x06
 # HIDIOCGRAWINFO = _IOR('H', 0x03, struct hidraw_devinfo) — 8 bytes (u32 bustype, s16 vendor, s16 product)
 _HIDIOCGRAWINFO = (2 << 30) | (8 << 16) | (0x48 << 8) | 0x03
@@ -342,6 +352,45 @@ class ButtonSample:
     state: str
 
 
+@dataclass(frozen=True)
+class RawButtonState:
+    """Raw controller state for the receiver to decode (ADR 0003)."""
+
+    deck_ms: int
+    buttons: bytes  # report bytes 8-15
+    left_pad_pressure: int
+    right_pad_pressure: int
+    left_pad_x: int
+    left_pad_y: int
+    right_pad_x: int
+    right_pad_y: int
+    left_trigger: int
+    right_trigger: int
+
+    def same_inputs(self, other: "RawButtonState | None") -> bool:
+        return other is not None and replace(self, deck_ms=0) == replace(other, deck_ms=0)
+
+
+def raw_button_state_from_report(data: bytes, now: float) -> RawButtonState:
+    # Offsets: wiki/reference/hidraw-button-bits.md. Pad X/Y s16 at 16-22,
+    # triggers u16 at 44/46, pad pressure u16 at 56/58.
+    lx, ly, rx, ry = struct.unpack_from("<hhhh", data, 16)
+    lt, rt = struct.unpack_from("<HH", data, 44)
+    lp, rp = struct.unpack_from("<HH", data, 56)
+    return RawButtonState(
+        deck_ms=int(now * 1000),
+        buttons=bytes(data[8:16]),
+        left_pad_pressure=lp,
+        right_pad_pressure=rp,
+        left_pad_x=lx,
+        left_pad_y=ly,
+        right_pad_x=rx,
+        right_pad_y=ry,
+        left_trigger=lt,
+        right_trigger=rt,
+    )
+
+
 class HidrawAxisReader:
     _STATIC_AXIS_MAP = [
         # (action, byte_offset, center_offset, signed)
@@ -369,9 +418,22 @@ class HidrawAxisReader:
         ("RIGHT_STICK_TOUCH", 13, 0x80),
     ]
 
-    def __init__(self, deadzone: int = 1000, device_path: str | None = None) -> None:
+    def __init__(
+        self,
+        deadzone: int = 1000,
+        device_path: str | None = None,
+        *,
+        raw_buttons: bool = False,
+    ) -> None:
         self._deadzone = deadzone
         self._device_path = device_path
+        # raw_buttons: stream whole button state for the receiver to decode
+        # instead of emitting the _BUTTON_BITS actions here (never both).
+        self._raw_buttons = raw_buttons
+        self._raw_lock = threading.Lock()
+        self._raw_latest: RawButtonState | None = None
+        self._raw_changes: queue.Queue[RawButtonState] = queue.Queue()
+        self._raw_changed = threading.Event()
         self._queue: queue.Queue[AxisSample] = queue.Queue()
         self._button_queue: queue.Queue[ButtonSample] = queue.Queue()
         self._button_state: dict[str, bool] = {}
@@ -502,9 +564,11 @@ class HidrawAxisReader:
     def _parse_report(self, data: bytes) -> None:
         if data[0] != 0x01 or data[2] != 0x09:
             return
+        if self._raw_buttons:
+            self._record_raw_state(raw_button_state_from_report(data, time.monotonic()))
         # Edge-triggered: one event per press and per release, never per report.
         # Sits above the gyro early-return so it runs on every report.
-        for action, offset, mask in self._BUTTON_BITS:
+        for action, offset, mask in ([] if self._raw_buttons else self._BUTTON_BITS):
             down = bool(data[offset] & mask)
             if down != self._button_state.get(action, False):
                 self._button_state[action] = down
@@ -563,6 +627,32 @@ class HidrawAxisReader:
                     except queue.Full:
                         pass
 
+    def _record_raw_state(self, state: RawButtonState) -> None:
+        with self._raw_lock:
+            previous = self._raw_latest
+            self._raw_latest = state
+        if previous is None or previous.buttons != state.buttons:
+            # FIFO so a tap shorter than one send-loop pass still arrives as
+            # a press followed by a release.
+            self._raw_changes.put_nowait(state)
+            self._raw_changed.set()
+
+    def drain_raw_button_changes(self) -> list[RawButtonState]:
+        self._raw_changed.clear()
+        out: list[RawButtonState] = []
+        while True:
+            try:
+                out.append(self._raw_changes.get_nowait())
+            except queue.Empty:
+                return out
+
+    def latest_raw_button_state(self) -> RawButtonState | None:
+        with self._raw_lock:
+            return self._raw_latest
+
+    def wait_raw_button_change(self, timeout: float) -> None:
+        self._raw_changed.wait(timeout)
+
     def drain_buttons(self) -> list[ButtonSample]:
         # FIFO, not latest-wins: a down/up pair must survive in order.
         out: list[ButtonSample] = []
@@ -609,6 +699,12 @@ def build_parser() -> argparse.ArgumentParser:
         "--profile-hash",
         default=None,
         help="optional profile hash sent over the network",
+    )
+    parser.add_argument(
+        "--button-source",
+        choices=("keys", "hidraw"),
+        default="keys",
+        help="keys: Steam Input keycodes over XI2; hidraw: stream raw button state (ADR 0003)",
     )
     parser.add_argument(
         "--gyro-trigger",
@@ -727,6 +823,7 @@ def run_sender(
     on_status=None,
     bindings_document: dict | None = None,
     manage_terminal: bool = True,
+    button_source: str = "keys",
 ) -> int:
     try:
         loaded_profile_name, bindings = (load_bindings(bindings_path) if bindings_document is None
@@ -749,26 +846,38 @@ def run_sender(
         if on_status is not None:
             on_status(seq=seq, heartbeat_at=heartbeat_at)
     held_keys: set[str] = set()
-    try:
-        listener = Xi2RawListener(int(device_id))
-    except OSError as exc:
-        print(f"Error: failed to start XI2 listener: {exc}")
+    if button_source not in ("keys", "hidraw"):
+        print(f"Error: invalid button source: {button_source}")
         return 2
-    except ValueError:
-        print(f"Error: invalid device id: {device_id}")
-        return 2
+    raw_buttons = button_source == "hidraw"
+    listener = None
+    if not raw_buttons:
+        try:
+            listener = Xi2RawListener(int(device_id))
+        except OSError as exc:
+            print(f"Error: failed to start XI2 listener: {exc}")
+            return 2
+        except ValueError:
+            print(f"Error: invalid device id: {device_id}")
+            return 2
 
-    print_sender_binding_audit(bindings)
-    print(f"watching XI2 raw key events for device {device_id} and sending to {resolved_targets}")
+    if raw_buttons:
+        print(f"buttons: raw hidraw state (Steam Input keys ignored), sending to {resolved_targets}")
+    else:
+        print_sender_binding_audit(bindings)
+        print(f"watching XI2 raw key events for device {device_id} and sending to {resolved_targets}")
     print("gyro: always-on (L4 freed; bridge owns tap/hold + feedback state)")
 
     axis_last_sent: dict[str, float] = {}
+    raw_last_sent: RawButtonState | None = None
+    raw_last_sent_at = 0.0
 
     with contextlib.ExitStack() as resources:
-        resources.callback(listener.close)
+        if listener is not None:
+            resources.callback(listener.close)
         sock = resources.enter_context(socket.socket(socket.AF_INET, socket.SOCK_DGRAM))
         with TerminalNoEcho() if manage_terminal else contextlib.nullcontext():
-            with HidrawAxisReader() as axis_reader:
+            with HidrawAxisReader(raw_buttons=raw_buttons) as axis_reader:
                 # Gyro is always-on: the bridge gyro router owns routing +
                 # tap/hold via L4, so the sender streams PITCH/YAW/ROLL
                 # continuously and no longer gates gyro on L4.
@@ -776,7 +885,8 @@ def run_sender(
                 selector = None
                 try:
                     selector = selectors.DefaultSelector()
-                    selector.register(listener.fileno(), selectors.EVENT_READ)
+                    if listener is not None:
+                        selector.register(listener.fileno(), selectors.EVENT_READ)
                     next_heartbeat_at = time.monotonic() + HEARTBEAT_INTERVAL_SECONDS
                     while not stop_event.is_set():
                         now = time.monotonic()
@@ -791,7 +901,13 @@ def run_sender(
                             if x11_timeout is None
                             else min(x11_timeout, AXIS_MIN_INTERVAL)
                         )
-                        events = selector.select(timeout)
+                        if listener is not None:
+                            events = selector.select(timeout)
+                        else:
+                            # No X11 fd to wait on: wake on a button change
+                            # so raw state goes out without loop latency.
+                            axis_reader.wait_raw_button_change(timeout)
+                            events = []
                         if stop_event.is_set():
                             break
                         now = time.monotonic()
@@ -856,6 +972,22 @@ def run_sender(
                             seq += 1
                             next_heartbeat_at = now + HEARTBEAT_INTERVAL_SECONDS
 
+                        if raw_buttons:
+                            pending = axis_reader.drain_raw_button_changes()
+                            latest = axis_reader.latest_raw_button_state()
+                            if not pending and latest is not None and latest is not raw_last_sent:
+                                since = now - raw_last_sent_at
+                                if since >= RAW_BUTTON_RESEND_SECONDS or (
+                                    since >= AXIS_MIN_INTERVAL and not latest.same_inputs(raw_last_sent)
+                                ):
+                                    pending = [latest]
+                            for state in pending:
+                                send_button_state(sock, resolved_targets, state=state, seq=seq)
+                                observe()
+                                seq += 1
+                                raw_last_sent, raw_last_sent_at = state, now
+                                next_heartbeat_at = now + HEARTBEAT_INTERVAL_SECONDS
+
                 except KeyboardInterrupt:
                     print("stopping sender")
                 finally:
@@ -875,6 +1007,7 @@ def main(argv: list[str] | None = None) -> int:
         profile_name=args.profile_name,
         profile_hash=args.profile_hash,
         gyro_trigger=args.gyro_trigger,
+        button_source=args.button_source,
     )
 
 

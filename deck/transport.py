@@ -8,7 +8,12 @@ import socket
 import time
 
 from deck.local_config import validate_target_host
-from protocol.messages import encode_action_event, encode_axis_event, encode_heartbeat_event
+from protocol.messages import (
+    encode_action_event,
+    encode_axis_event,
+    encode_button_state_event,
+    encode_heartbeat_event,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -101,6 +106,29 @@ def send_axis(
     seq: int,
 ) -> None:
     payload = encode_axis_event(action=action, value=value, seq=seq)
+    _send_payload(sock, target, payload)
+
+
+def send_button_state(
+    sock: socket.socket,
+    target: tuple[str, int] | list[tuple[str, int]],
+    *,
+    state,
+    seq: int,
+) -> None:
+    payload = encode_button_state_event(
+        seq=seq,
+        deck_ms=state.deck_ms,
+        buttons=state.buttons,
+        left_pad_pressure=state.left_pad_pressure,
+        right_pad_pressure=state.right_pad_pressure,
+        left_pad_x=state.left_pad_x,
+        left_pad_y=state.left_pad_y,
+        right_pad_x=state.right_pad_x,
+        right_pad_y=state.right_pad_y,
+        left_trigger=state.left_trigger,
+        right_trigger=state.right_trigger,
+    )
     _send_payload(sock, target, payload)
 
 
