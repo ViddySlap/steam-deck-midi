@@ -44,7 +44,7 @@ import time
 from collections import deque
 from typing import Callable
 
-from windows.engines.base import Engine
+from windows.engines.base import Engine, clamp_tick_hz
 from windows.engines.osc_client import OscClient
 from windows.midi import MidiOut
 
@@ -121,7 +121,7 @@ class AudioOpacityEngine(Engine):
 
         # Tunable defaults
         self._sample_size = int(config.get("sample_size", 8))
-        self._update_hz = float(config.get("update_hz", 30.0))
+        self._update_hz = clamp_tick_hz(config.get("update_hz", 30.0), default=30.0)
         self._tipping_point = float(defaults.get("tipping_point", 0.65))
         self._duration_seconds = float(defaults.get("duration_seconds", 1.0))
         self._attack_seconds = float(defaults.get("attack_seconds", 0.0))

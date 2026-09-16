@@ -32,7 +32,7 @@ import time
 from typing import Any, Callable
 
 from windows.engines._resolume_lookup import find_effect_params, find_param_value
-from windows.engines.base import Engine
+from windows.engines.base import Engine, clamp_tick_hz
 from windows.engines.osc_client import OscClient
 from windows.engines.resolume_rest import ResolumeRestClient, ResolumeRestError
 from windows.midi import MidiOut
@@ -98,7 +98,7 @@ class ChaserStackDispatcherEngine(Engine):
             inputs.get("disengage_threshold", DEFAULT_DISENGAGE_THRESHOLD)
         )
 
-        self._tick_hz = float(config.get("tick_hz", DEFAULT_TICK_HZ))
+        self._tick_hz = clamp_tick_hz(config.get("tick_hz", DEFAULT_TICK_HZ), default=DEFAULT_TICK_HZ)
 
         defaults = config.get("defaults", {})
         self._min_step = float(defaults.get("min_step", DEFAULT_MIN_STEP))

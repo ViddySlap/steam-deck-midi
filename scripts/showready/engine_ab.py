@@ -55,6 +55,15 @@ CONTROLS = {
         "COLUMN_PREV_NOTES = frozenset({82, 86})",
         "COLUMN_PREV_NOTES = frozenset({82, 96})",
     ),
+    # F6: one-character edit to a compared audio_opacity OSC ADDRESS. Only
+    # reachable when --audio-opacity-protocol osc, which is the point: under
+    # the old hardcoded "midi" this control could not go RED at all.
+    "sensitivity-audio_opacity-osc": (
+        "audio_opacity",
+        "windows/engines/audio_opacity.py",
+        'self._osc_logo_path = str(osc.get("logo_path", "/composition/groups/2/master"))',
+        'self._osc_logo_path = str(osc.get("logo_path", "/composition/groups/3/master"))',
+    ),
     # One-bit edit to the l_stick_layer positive-direction CC number it emits.
     "sensitivity-l_stick_layer": (
         "l_stick_layer",
@@ -69,8 +78,51 @@ REQUIRED = {
     "l_stick_layer": ("midi",),
     "gyro_feedback": ("midi",),
     "global_color": ("midi", "osc"),
+    # audio_opacity emits on ONE surface, chosen by outputs.protocol, so its
+    # required surface is a FUNCTION of the protocol under test - see
+    # required_surfaces(). This entry is the midi-protocol case.
     "audio_opacity": ("midi",),
 }
+
+
+def required_surfaces(engine_type: str, audio_opacity_protocol: str = "midi") -> tuple[str, ...]:
+    """Minimum observations for one engine on every judged arm.
+
+    F6: audio_opacity emits EITHER midi OR osc, never both, so requiring the
+    surface it is not configured for would be a guaranteed RED rather than a
+    coverage check. The protocol is a run parameter; everything else is fixed.
+    """
+    if engine_type == "audio_opacity":
+        return (audio_opacity_protocol,)
+    return REQUIRED[engine_type]
+
+
+def scratch_dir_for(environ, os_name: str) -> str:
+    """Resolve the default scratch state dir as a STRING, for any environment.
+
+    F5 (sdauto AG): this was `os.environ["LOCALAPPDATA"]` evaluated while the
+    argument parser was being BUILT, so engine_ab.py exited 1 with
+    `KeyError: 'LOCALAPPDATA'` on the laptop under the rail - before it read a
+    single argument, so not even an explicit --scratch could avoid it. A
+    non-interactive ssh session's environment has no LOCALAPPDATA. Every
+    fallback below is a directory Windows always has.
+
+    Returns a string rather than a Path so the Windows branches are testable
+    from macOS, where `Path` cannot instantiate a WindowsPath.
+    """
+    if os_name != "nt":
+        return "/tmp/sdauto-engine-ab"
+    local = environ.get("LOCALAPPDATA")
+    if local:
+        return f"{local}/Temp/sdwin/engine-ab"
+    temp = environ.get("TEMP") or environ.get("TMP")
+    if temp:
+        return f"{temp}/sdwin/engine-ab"
+    return f"{tempfile.gettempdir()}/sdwin/engine-ab"
+
+
+def default_scratch_dir() -> Path:
+    return Path(scratch_dir_for(os.environ, os.name))
 
 
 def sha(data: bytes) -> str:
@@ -489,7 +541,7 @@ def build_script(section: dict, engine_states: dict, autopilot_cfg: dict) -> dic
 # ------------------------------------------------------------ orchestrator ----
 
 
-def engine_configs(repo: Path, baseline: str) -> dict[str, dict]:
+def engine_configs(repo: Path, baseline: str, audio_opacity_protocol: str = "osc") -> dict[str, dict]:
     """Factory stanzas from the BASELINE revision, loopback-rewritten, identical for every arm."""
     from ab_run import git
 
@@ -498,7 +550,13 @@ def engine_configs(repo: Path, baseline: str) -> dict[str, dict]:
         raw = json.loads(git(repo, "show", f"{baseline}:config/engines.factory/{engine_type}.json"))
         outputs = raw.setdefault("outputs", {})
         if engine_type == "audio_opacity":
-            outputs["protocol"] = "midi"
+            # F6 (sdauto AG): this was hardcoded to "midi", so the OSC branch of
+            # audio_opacity._send_master was NEVER compared - and the INSTALLED
+            # laptop config carries no `protocol` key at all, so the code
+            # default "osc" is what actually ships. The protocol is a run
+            # parameter now; the gate runs engine_ab.py once per protocol so
+            # both output surfaces are compared.
+            outputs["protocol"] = audio_opacity_protocol
         if "osc" in outputs or engine_type in ("autopilot", "global_color", "audio_opacity"):
             osc = outputs.setdefault("osc", {})
             osc["host"] = "127.0.0.1"
@@ -547,7 +605,8 @@ def compare(a: dict, b: dict) -> dict:
     }
 
 
-def coverage_table(script: dict, captures: dict[str, dict], judged: tuple[str, ...]) -> list[dict]:
+def coverage_table(script: dict, captures: dict[str, dict], judged: tuple[str, ...],
+                   audio_opacity_protocol: str = "midi") -> list[dict]:
     """Active engines need observations on every judged arm; zero is RED.
 
     An engine the preset turns OFF must stay silent on every input-driven step:
@@ -573,7 +632,7 @@ def coverage_table(script: dict, captures: dict[str, dict], judged: tuple[str, .
                 if kinds - {"load", "refresh", "shutdown"}:
                     row["covered"] = False
                 continue
-            for need in REQUIRED[engine_type]:
+            for need in required_surfaces(engine_type, audio_opacity_protocol):
                 if counts[need] == 0:
                     row["covered"] = False
         if engine_type == "autopilot" and active:
@@ -616,7 +675,7 @@ def run(args) -> dict:
     validate_scratch(args.scratch)
     args.scratch.mkdir(parents=True, exist_ok=True)
     work = Path(tempfile.mkdtemp(prefix="engine-ab-", dir=args.scratch)).resolve()
-    configs = engine_configs(repo, args.baseline)
+    configs = engine_configs(repo, args.baseline, args.audio_opacity_protocol)
     script = build_script(section, engine_states, configs["autopilot"])
     script_bytes = canonical(script) + b"\n"
     (work / "script.json").write_bytes(script_bytes)
@@ -632,6 +691,7 @@ def run(args) -> dict:
         "section": args.section,
         "engine_states": engine_states,
         "engine_states_missing_from_preset": missing_states,
+        "audio_opacity_protocol": args.audio_opacity_protocol,
         "fixture_sha256": verified,
         "instrument_sha256": {n: sha((KIT / n).read_bytes()) for n in ("engine_ab.py", "ab_run.py", "deck_script.py")},
         "config_sha256": {t: sha(canonical(c)) for t, c in configs.items()},
@@ -720,7 +780,7 @@ def run(args) -> dict:
     # A control's mutated arms are expected to lose observations; judge A only.
     judged = ("A",) if args.control else tuple(captures)
     result["coverage_judged_arms"] = list(judged)
-    table = coverage_table(script, captures, judged)
+    table = coverage_table(script, captures, judged, args.audio_opacity_protocol)
     result["coverage"] = table
     uncovered = [row["engine"] for row in table if not row["covered"]]
     if uncovered:
@@ -752,11 +812,20 @@ def main(argv=None) -> int:
     parser.add_argument("--out", type=Path)
     parser.add_argument("--repo", type=Path, default=ROOT)
     parser.add_argument("--fixtures", type=Path, default=ROOT / ".showready/fixtures")
-    default_scratch = (Path(os.environ["LOCALAPPDATA"]) / "Temp/sdwin/engine-ab") if os.name == "nt" else Path("/tmp/sdauto-engine-ab")
-    parser.add_argument("--scratch", type=Path, default=default_scratch)
+    parser.add_argument("--scratch", type=Path, default=None,
+                        help="scratch state dir (default: default_scratch_dir())")
     parser.add_argument("--python", default=sys.executable, help="interpreter for the arms (the checkout venv)")
     parser.add_argument("--control", choices=sorted(CONTROLS))
+    parser.add_argument("--audio-opacity-protocol", choices=("midi", "osc"), default="osc",
+                        help="audio_opacity output surface to compare. Default osc: the "
+                             "installed config has no protocol key, so osc is what ships. "
+                             "Run once per protocol to compare both (F6).")
     args = parser.parse_args(argv)
+    if args.scratch is None:
+        # Resolved AFTER parsing, so engine_ab works in an environment with no
+        # LOCALAPPDATA (F5: this used to raise KeyError while the parser was
+        # being BUILT, before argv was looked at, and exited 1 on the laptop).
+        args.scratch = default_scratch_dir()
     if args.runner:
         return run_arm(args)
     if not (args.candidate and args.preset and args.out):

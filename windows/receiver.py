@@ -30,6 +30,11 @@ from windows.midi import MidiControlChange, MidiError, MidiIn, MidiOut
 LOGGER = logging.getLogger(__name__)
 
 LAYER_UNKNOWN = "unknown"
+
+# Floor for the computed UDP socket timeout in serve_forever (P0).
+# 0.0 means non-blocking, a negative value raises ValueError, and a
+# sub-millisecond value is a busy spin: all three are receive-loop deaths.
+MIN_SOCKET_TIMEOUT_SECONDS = 0.001
 LAYER_1 = "layer_1"
 LAYER_2 = "layer_2"
 STICK_ACTIONS = frozenset(
@@ -1055,6 +1060,13 @@ def serve_forever(
                     engine_tick = engine_registry.shortest_tick_interval()
                     if engine_tick is not None:
                         timeout = min(timeout, engine_tick)
+                # Floor (P0). settimeout(0.0) puts the socket in NON-BLOCKING
+                # mode, where recvfrom raises BlockingIOError - which is not
+                # socket.timeout, so it escapes the handler below and kills the
+                # receive loop; a negative value raises ValueError outright; and
+                # a very small value is a busy spin. Engine rates are clamped at
+                # assignment, so this is the last line of defence, not the first.
+                timeout = max(MIN_SOCKET_TIMEOUT_SECONDS, min(timeout, poll_interval))
                 sock.settimeout(timeout)
                 payload, addr = sock.recvfrom(4096)
             except socket.timeout:

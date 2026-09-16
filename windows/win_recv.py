@@ -213,9 +213,28 @@ def _open_browser_delayed(url: str, delay: float = 1.2) -> None:
     threading.Thread(target=_open, daemon=True, name="browser-open").start()
 
 
+# Exit code for a --tray launch on macOS (P0, lap sdpolish). Refused rather
+# than warned: windows/tray.py imports ctypes.wintypes, pystray's AppKit
+# backend must own the main thread, and acquire_single_instance_lock uses the
+# INSTALLED Windows tray's mutex name. scripts/mac/run_receiver.command already
+# carries a comment forbidding it; nothing on this machine launches it.
+TRAY_UNSUPPORTED_EXIT_CODE = 2
+TRAY_UNSUPPORTED_MESSAGE = (
+    "--tray is not supported on macOS. The tray needs the main thread and the "
+    "Windows-only single-instance mutex. Run the bridge without --tray and stop "
+    "it with POST /api/shutdown."
+)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
+
+    # BEFORE the log tee and BEFORE acquire_single_instance_lock, so a darwin
+    # --tray launch never touches either.
+    if getattr(args, "tray", False) and sys.platform == "darwin":
+        print(TRAY_UNSUPPORTED_MESSAGE, file=sys.stderr)
+        return TRAY_UNSUPPORTED_EXIT_CODE
 
     logging.basicConfig(
         level=logging.DEBUG if args.verbose else logging.INFO,

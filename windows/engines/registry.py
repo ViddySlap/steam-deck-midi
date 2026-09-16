@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import logging
+import math
 from pathlib import Path
 from typing import Callable, Iterable
 
@@ -201,11 +202,43 @@ class EngineRegistry:
                 LOGGER.exception("engine %s tick failed", engine.name)
 
     def shortest_tick_interval(self) -> float | None:
-        intervals = [
-            engine.tick_interval_seconds()
-            for engine in self._engines
-            if engine.active and engine.tick_interval_seconds() is not None
-        ]
+        """Shortest tick interval any ACTIVE engine wants, or None.
+
+        Engine rates are clamped at assignment (windows/engines/base.py
+        clamp_tick_hz), so this should never see a bad value. It is still
+        defensive: this call sits OUTSIDE the per-engine tick try/except in
+        `tick()`, so before P0 one engine raising here killed the whole
+        receive loop. An engine that raises, or returns a non-finite or
+        non-positive interval, is logged and skipped rather than propagated.
+        """
+        intervals: list[float] = []
+        for engine in self._engines:
+            if not engine.active:
+                continue
+            try:
+                interval = engine.tick_interval_seconds()
+            except Exception:
+                LOGGER.exception(
+                    "engine %s tick_interval_seconds failed; skipping it", engine.name
+                )
+                continue
+            if interval is None:
+                continue
+            try:
+                interval = float(interval)
+            except (TypeError, ValueError):
+                LOGGER.error(
+                    "engine %s tick_interval_seconds returned %r; skipping it",
+                    engine.name, interval,
+                )
+                continue
+            if not math.isfinite(interval) or interval <= 0.0:
+                LOGGER.error(
+                    "engine %s tick_interval_seconds returned %r; skipping it",
+                    engine.name, interval,
+                )
+                continue
+            intervals.append(interval)
         return min(intervals) if intervals else None
 
     def set_active_by_type(self, type_name: str, active: bool) -> bool:

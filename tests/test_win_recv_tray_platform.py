@@ -78,12 +78,43 @@ class MainTrayAndBrowserTests(unittest.TestCase):
         tray.run_in_thread.assert_called_once_with()
         tray.stop.assert_called_once_with()
 
-    def test_darwin_tray_mode_still_runs_tray_mode(self):
+    def test_darwin_tray_mode_is_refused_with_exit_2(self):
+        """P0(c): --tray on darwin is refused before any tray module is touched.
+
+        REPLACES test_darwin_tray_mode_still_runs_tray_mode, whose assertion
+        (darwin --tray runs tray mode, rc 0) is the behaviour P0 removes.
+        Nothing on the Mac launches --tray: scripts/mac/run_receiver.command
+        line 40 already carries a comment forbidding it, and a repo-wide grep
+        of mac/ and scripts/mac/ found no launch.
+        """
         fake_tray, seen = self.boot("darwin", "--tray")
-        self.assertEqual(seen["rc"], 0)
-        self.assertEqual(fake_tray.run_tray_mode.call_count, 1)
-        self.assertEqual(fake_tray.run_tray_mode.call_args.kwargs["stop_bridge"], seen["receiver"].request_shutdown)
+        self.assertEqual(seen["rc"], win_recv.TRAY_UNSUPPORTED_EXIT_CODE)
+        self.assertEqual(seen["rc"], 2)
+        self.assertEqual(fake_tray.run_tray_mode.call_count, 0)
         self.assertEqual(fake_tray.ReceiverTray.call_count, 0)
+        # Refused BEFORE the log tee and the single-instance mutex, whose name
+        # belongs to the INSTALLED Windows tray.
+        self.assertEqual(fake_tray.setup_log_tee.call_count, 0)
+        self.assertEqual(fake_tray.acquire_single_instance_lock.call_count, 0)
+        # ...and before the bridge itself.
+        self.assertNotIn("receiver", seen)
+
+    def test_tray_mode_is_allowed_on_win32_and_linux(self):
+        for platform in ("win32", "linux"):
+            with self.subTest(platform=platform):
+                fake_tray, seen = self.boot(platform, "--tray")
+                self.assertEqual(seen["rc"], 0)
+                self.assertEqual(fake_tray.run_tray_mode.call_count, 1)
+                self.assertEqual(
+                    fake_tray.run_tray_mode.call_args.kwargs["stop_bridge"],
+                    seen["receiver"].request_shutdown,
+                )
+                self.assertEqual(fake_tray.ReceiverTray.call_count, 0)
+
+    def test_the_refusal_message_is_plain_ascii(self):
+        self.assertTrue(win_recv.TRAY_UNSUPPORTED_MESSAGE.isascii())
+        self.assertIn("--tray", win_recv.TRAY_UNSUPPORTED_MESSAGE)
+        self.assertIn("macOS", win_recv.TRAY_UNSUPPORTED_MESSAGE)
 
     def _browser_boot(self, *extra):
         def join_browser_threads(receiver):
@@ -117,7 +148,10 @@ class MainTrayAndBrowserTests(unittest.TestCase):
         fake_tray.acquire_single_instance_lock.return_value = (None, False)
         fake_tray.setup_log_tee.return_value = None
         argv = ["--map", str(self.base), "--tray", "--ui-port", "7799", *extra]
-        with patch.dict(sys.modules, {"windows.tray": fake_tray}), \
+        # P0: --tray is refused on darwin, and this exercises the
+        # single-instance path, not the platform rule.
+        with patch.object(win_recv.sys, "platform", "win32"), \
+             patch.dict(sys.modules, {"windows.tray": fake_tray}), \
              patch("webbrowser.open") as browser_open, \
              patch.object(win_recv, "open_midi_output") as open_out, \
              patch.object(win_recv, "serve_forever") as serve:

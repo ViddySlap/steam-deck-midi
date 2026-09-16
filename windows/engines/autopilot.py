@@ -52,7 +52,7 @@ from pathlib import Path
 from typing import Callable
 
 from windows.engines import autopilot_state
-from windows.engines.base import Engine
+from windows.engines.base import Engine, clamp_tick_hz
 from windows.engines.osc_client import OscClient
 from windows.engines.resolume_rest import ResolumeRestClient, ResolumeRestError
 from windows.midi import MidiOut
@@ -157,7 +157,7 @@ class AutopilotEngine(Engine):
         beats_lookup = tuple(inputs.get("beats_lookup", DEFAULT_BEATS_LOOKUP))
         self._beats_lookup: tuple[int, ...] = tuple(int(b) for b in beats_lookup)
         self._transition_max = float(inputs.get("transition_max_seconds", DEFAULT_TRANSITION_MAX))
-        self._update_hz = float(config.get("update_hz", 30))
+        self._update_hz = clamp_tick_hz(config.get("update_hz", 30), default=30.0)
 
         self._channels: dict[str, ChannelConfig] = {}
         self._states: dict[str, ChannelState] = {}

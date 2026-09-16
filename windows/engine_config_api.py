@@ -13,11 +13,13 @@ Every other type answers 409 restart_required and writes nothing.
 from __future__ import annotations
 
 import json
+import math
 import os
 import tempfile
 from pathlib import Path
 from typing import Any
 
+from windows.engines.base import MAX_TICK_HZ, MIN_TICK_HZ
 from windows.engines.registry import (
     build_engine,
     effective_engine_spec,
@@ -74,6 +76,37 @@ class _ApplyFailed(RuntimeError):
     pass
 
 
+# Engine tick/update rate fields. Out of [MIN_TICK_HZ, MAX_TICK_HZ] these used
+# to be accepted by the isolation probe (which never calls
+# tick_interval_seconds) and then stop or spin the receive loop through
+# EngineRegistry.shortest_tick_interval. Engines now clamp at assignment, so a
+# bad value can no longer hurt the bridge; the 400 exists so a PUT that would
+# have been silently clamped is REFUSED and nothing is written, rather than
+# leaving the caller believing a rate it did not get.
+RATE_FIELDS: tuple[str, ...] = ("update_hz", "tick_hz", "stream_hz")
+
+
+def _rate_field_error(spec: dict) -> str | None:
+    """Name the first out-of-range rate field, or None if all are sane."""
+    for field in RATE_FIELDS:
+        if field not in spec:
+            continue
+        raw = spec[field]
+        if isinstance(raw, bool) or not isinstance(raw, (int, float)):
+            return (f"{field} must be a number from {MIN_TICK_HZ:g} to "
+                    f"{MAX_TICK_HZ:g} (got {raw!r})")
+        value = float(raw)
+        if math.isnan(value):
+            return f"{field} must be a number from {MIN_TICK_HZ:g} to {MAX_TICK_HZ:g} (got NaN)"
+        if math.isinf(value):
+            return (f"{field} must be a number from {MIN_TICK_HZ:g} to "
+                    f"{MAX_TICK_HZ:g} (got {'inf' if value > 0 else '-inf'})")
+        if not (MIN_TICK_HZ <= value <= MAX_TICK_HZ):
+            return (f"{field} must be a number from {MIN_TICK_HZ:g} to "
+                    f"{MAX_TICK_HZ:g} (got {value:g})")
+    return None
+
+
 def get_engine_config(registry: Any, type_name: str) -> tuple[int, dict]:
     if registry is None or registry.user_dir is None:
         return 404, {"error": "no engine registry"}
@@ -107,6 +140,11 @@ def put_engine_config(registry: Any, receiver_tasks: Any, type_name: str, body: 
     if body.get("type", type_name) != type_name:
         return 400, {"error": f"stanza type {body.get('type')!r} does not match {type_name!r}"}
     spec = {**body, "type": type_name}
+    rate_error = _rate_field_error(spec)
+    if rate_error is not None:
+        # Refused BEFORE the isolation probe and before any file is written.
+        return 400, {"error": f"invalid {type_name} config: {rate_error}",
+                     "type": type_name, "field": rate_error.split()[0]}
     if not spec.get("enabled", True):
         return 409, {"error": "restart_required", "type": type_name,
                      "reason": "enabled=false unloads the engine; the live API only replaces a loaded engine"}

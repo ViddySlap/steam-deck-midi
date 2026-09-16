@@ -268,6 +268,12 @@ class WinRecvWiringTests(unittest.TestCase):
         if tray:
             argv.append("--tray")
         with contextlib.ExitStack() as stack:
+            if tray:
+                # P0: --tray is refused on darwin (exit 2). This boot exercises
+                # tray-mode WIRING, not the platform rule, so it declares a
+                # platform where the tray exists. The rule itself is covered by
+                # test_win_recv_tray_platform.
+                stack.enter_context(patch.object(win_recv.sys, "platform", "win32"))
             stack.enter_context(patch.object(win_recv, "open_midi_output", return_value=midi))
             stack.enter_context(patch.object(win_recv, "open_midi_input", return_value=None))
             stack.enter_context(patch.object(win_recv, "serve_forever",

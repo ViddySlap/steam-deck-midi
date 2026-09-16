@@ -110,9 +110,23 @@ class LiveEvents:
             self._version += 1
             self._publish_lock.release()
 
+    # Bounded retry (P0). Both retry paths below used to spin with at most
+    # time.sleep(0), which yields but does not deschedule: a writer that stalls
+    # mid-publication (odd version) pinned a reader thread at a full core. After
+    # SPIN_BEFORE_BACKOFF attempts the reader sleeps for real, which costs a
+    # reader nothing in the common case (publication is a few microseconds) and
+    # caps the cost of the pathological one.
+    SPIN_BEFORE_BACKOFF = 64
+    BACKOFF_SECONDS = 0.001
+
     def _copy(self):
         # A reader can wait/retry; publication never waits for a reader.
+        attempts = 0
         while True:
+            if attempts >= self.SPIN_BEFORE_BACKOFF:
+                time.sleep(self.BACKOFF_SECONDS)
+            else:
+                attempts += 1
             version = self._version
             if version % 2:
                 time.sleep(0)

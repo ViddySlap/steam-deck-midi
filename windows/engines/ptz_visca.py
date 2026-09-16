@@ -39,7 +39,7 @@ import logging
 import time
 from typing import Callable
 
-from windows.engines.base import Engine
+from windows.engines.base import Engine, clamp_tick_hz
 from windows.engines.osc_client import OscClient
 from windows.engines.visca_sender import (
     PAN_LEFT,
@@ -123,7 +123,7 @@ class PtzViscaEngine(Engine):
         # --- stop-safety knobs ---------------------------------------------
         self._redundant_stops = int(config.get("redundant_stops", 3))
         self._drop_timeout_ms = int(config.get("drop_timeout_ms", 250))
-        self._stream_hz = int(config.get("stream_hz", 60))
+        self._stream_hz = clamp_tick_hz(config.get("stream_hz", 60), default=60.0)
 
         # --- camera-select (locked + conflict-audited; UNUSED until v2) ----
         # select_channel/left/right CCs (14 / 94 / 95) live in the canonical

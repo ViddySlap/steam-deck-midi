@@ -2,10 +2,41 @@
 
 from __future__ import annotations
 
+import math
 import time
 from typing import Callable
 
 from windows.midi import MidiOut
+
+# Bounds for every engine tick/update rate, shared so one hand-edited config
+# or one PUT /api/engines/<type>/config cannot stop or spin the receive loop.
+# These are the same bounds the mapping UI already enforces
+# (windows/static/index.html: update_hz min 1, max 120).
+MIN_TICK_HZ: float = 1.0
+MAX_TICK_HZ: float = 120.0
+
+
+def clamp_tick_hz(value: object, *, default: float) -> float:
+    """Clamp a configured tick/update rate into [MIN_TICK_HZ, MAX_TICK_HZ].
+
+    Never raises. A value that is not a finite number (None, a string, NaN)
+    falls back to `default`, which is itself clamped. Callers clamp AT THE
+    POINT OF ASSIGNMENT so every downstream division is safe by construction;
+    tests/test_config_divisor_tripwire.py enforces that placement.
+    """
+    try:
+        hz = float(value)  # type: ignore[arg-type]
+    except (TypeError, ValueError):
+        hz = float(default)
+    if math.isnan(hz):
+        hz = float(default)
+        if math.isnan(hz):
+            hz = MIN_TICK_HZ
+    if hz < MIN_TICK_HZ:
+        return MIN_TICK_HZ
+    if hz > MAX_TICK_HZ:
+        return MAX_TICK_HZ
+    return hz
 
 
 class Engine:

@@ -282,6 +282,56 @@ filter decides differently). Coverage in a control run is judged on arm A.
 The copied trees, script, captures and arm logs stay in the reported work
 folder; each arm process has exited before the result is written.
 
+## Idle CPU and shutdown instrument (sdpolish P0)
+
+`idle_smoke.py` is the rerunnable form of the tray CPU check. It boots the
+NON-TRAY bridge as a real subprocess on loopback ports the installed tray does
+not own, idles it, measures process CPU as a CPU-TIME DELTA as a percentage of
+ONE core, then stops it twice - once by SIGINT and once by POST /api/shutdown -
+and proves the process gone.
+
+NEVER `--tray`. See "Never-touch rules": the installed tray owns UDP 45123 and
+TCP 7723, and this instrument picks other ports and asserts it.
+
+DECLARED BEFORE DATA: CPU <= 5% of one core, exit within 5 s, no new crash
+report in `~/Library/Logs/DiagnosticReports`.
+
+ON THE MAC IT RUNS WITHOUT `PYSTRAY_BACKEND=dummy` (MASTER 13, 14:28), so the
+REAL tray path executes and the darwin no-sidecar line is asserted. Every other
+load rule still applies, and `BROWSER` stays a no-op. This is the ONE exception
+to the dummy-backend clause; do not copy it to another instrument.
+
+The load preflight (spinners, load1, foreign_lines, the vault sync, free
+memory) runs INSIDE the script, before and after every arm. An arm whose
+preflight fails is INVALID - never PASS and never FAIL. A quiet gate waits for
+load1 < 4.0 AND a quiet vault sync before each arm, because the sync is bursty
+and a gate before the arm beats voiding it afterwards.
+
+QUALIFYING commands (both machines, every gate):
+
+```
+# HEAD, no engines: the tray class
+BROWSER=/usr/bin/true .venv/bin/python -B scripts/showready/idle_smoke.py \
+  --scratch /tmp/sdpolish-p0/smoke --label mac-head --out /tmp/sdpolish-p0/mac-head.json
+
+# HEAD, engines ON, from a loopback-rewritten scratch copy of the factory configs
+BROWSER=/usr/bin/true .venv/bin/python -B scripts/showready/idle_smoke.py --engines \
+  --scratch /tmp/sdpolish-p0/smoke --label mac-head-engines --out /tmp/sdpolish-p0/mac-head-engines.json
+```
+
+SENSITIVITY. `--engines-update-hz <hz>` forces that rate onto autopilot in the
+scratch copy. Run it against a `git archive` extract of the BASE revision: the
+BASE arm must FAIL and the HEAD arm must PASS. MEASURED IN P0 ON THE MAC:
+`--engines-update-hz 0` fires (BASE dies with ZeroDivisionError, HEAD passes at
+0.94%), while `--engines-update-hz 100000` DOES NOT (BASE 4.88%, HEAD 1.38%,
+against a 5% bar) - and 1e9 at BASE reaches only 4.585%, so the huge-rate shape
+is not a CPU-detectable event on this machine at any rate. Use 0.
+
+ENGINES-ON RULE: the factory configs point at Ben's Resolume network and at
+real PTZ cameras. `--engines` copies them to scratch, rewrites every address to
+loopback, and REFUSES THE BOOT if the scan finds any non-loopback target. Record
+the scan count (0) with every engines-on arm.
+
 ## Controller geometry (Mac, real Chromium)
 
 ```bash

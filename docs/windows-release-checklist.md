@@ -66,6 +66,15 @@ On the target Windows machine:
 5. In Resolume, enable MIDI input on `DECK_IN`.
 6. Keep Resolume MIDI output on that port disabled.
 
+## Idle CPU and shutdown
+
+Run `scripts/showready/idle_smoke.py` on BOTH machines against the release
+candidate and record the table (CPU % of one core, exit seconds per stop arm,
+crash reports, preflight, engines-on loopback scan count). Declared bar: CPU
+<= 5% of one core, exit within 5 s, zero new crash reports. A Windows HEAD arm
+more than 0.2 points above the v0.4.9 tag tree is a FINDING to attribute, not
+a hold. See scripts/showready/README.md.
+
 ## Upgrade Behavior
 
 - installer updates the packaged EXE and example config files

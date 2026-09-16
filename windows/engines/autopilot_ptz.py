@@ -56,7 +56,7 @@ from collections import deque
 from enum import IntEnum
 from typing import Callable
 
-from windows.engines.base import Engine
+from windows.engines.base import Engine, clamp_tick_hz
 from windows.engines.osc_client import OscClient
 from windows.midi import MidiOut
 
@@ -106,7 +106,7 @@ class AutopilotPtzEngine(Engine):
 
         beats_lookup = tuple(inputs.get("beats_lookup", DEFAULT_BEATS_LOOKUP))
         self._beats_lookup: tuple[int, ...] = tuple(int(b) for b in beats_lookup)
-        self._update_hz = float(config.get("update_hz", 30))
+        self._update_hz = clamp_tick_hz(config.get("update_hz", 30), default=30.0)
 
         # OSC client for clip-connect writes.
         osc_cfg = outputs.get("osc", {})
