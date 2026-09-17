@@ -38,8 +38,8 @@ BUTTON_BITS: dict[str, tuple[int, int]] = {
     "DPAD_DOWN": (9, 0x08),
     "DPAD_LEFT": (9, 0x04),
     "DPAD_RIGHT": (9, 0x02),
-    "VIEW": (9, 0x10),  # left menu button (two squares); bit-table "SELECT"
-    "MENU": (9, 0x40),  # right menu button (three lines); bit-table "START"
+    "VIEW": (9, 0x10),  # left menu button (two squares): SELECT
+    "MENU": (9, 0x40),  # right menu button (three lines): START
     "L5": (9, 0x80),
     "R5": (10, 0x01),
     "L3": (10, 0x40),
@@ -52,11 +52,13 @@ BUTTON_BITS: dict[str, tuple[int, int]] = {
 }
 
 # Inputs that never change with a layer and never long-press.
-# The menu buttons keep Steam Input's swapped names: the left button has
-# always emitted START and the right one SELECT (steam-input-layers.md).
+# Menu buttons (Ben, 2026-09-16): left = SELECT = bumper/trigger layer,
+# right = START = ABXY layer. Under Steam Input the physical sides were the
+# other way round; the action/layer pairing is unchanged because the bridge's
+# layer lamps and layer tracker key on START (CC78) and SELECT (CC79).
 PLAIN_ACTIONS: dict[str, str] = {
-    "VIEW": "START",
-    "MENU": "SELECT",
+    "VIEW": "SELECT",
+    "MENU": "START",
     "L3": "LEFT_STICK_CLICK_L3",
     "R3": "RIGHT_STICK_CLICK_R3",
     "L4": "L4",
@@ -86,12 +88,26 @@ LONG_PRESS_ACTIONS: dict[str, str] = {
 LAYER_SUFFIX = "_LAYER_2"
 LONG_PRESS_SUFFIX = "_LONG_PRESS"
 
-LAYER_TOGGLES = {"VIEW": "abxy", "MENU": "bumper"}
+LAYER_TOGGLES = {"VIEW": "bumper", "MENU": "abxy"}
+
+# First combo (Ben, 2026-09-16): hold QAM with a thumb RESTING on the left
+# trackpad (touch, not click) to scroll. The zone under the thumb picks the
+# direction, split on the diagonals, and it follows the thumb live while QAM
+# stays held. Stops when QAM is released or the thumb lifts.
+LEFT_PAD_TOUCH_BIT = (10, 0x08)
+QAM_SCROLL_LEFT = "QAM_SCROLL_LEFT"
+QAM_SCROLL_RIGHT = "QAM_SCROLL_RIGHT"
+QAM_SCROLL_UP = "QAM_SCROLL_UP"
+QAM_SCROLL_DOWN = "QAM_SCROLL_DOWN"
 
 
 @dataclass(frozen=True)
 class RawButtonConfig:
     long_press_ms: int = 500
+    # A short press that had to wait for release (long press possible) is
+    # emitted as a real press of this length, not a zero-length blip: two
+    # zero-length toggles in a row cancel out and never paint in the UI.
+    deferred_tap_seconds: float = 0.08
     # No state for this long while anything is held -> release it all.
     stale_release_seconds: float = 0.5
     # Measured 2026-09-16: resting thumb <= 1,478, lowest real click 3,271.
@@ -101,6 +117,11 @@ class RawButtonConfig:
     trigger_soft_off: int = 4000
     # The right pad is Ben's mouse; its state is carried but not mapped.
     right_pad_clicks: bool = False
+    # QAM scroll combo hysteresis, so a thumb resting on a zone boundary does
+    # not flicker: switching axis needs the other axis ahead by this ratio,
+    # and flipping direction on the same axis needs this far past centre.
+    scroll_axis_ratio: float = 1.25
+    scroll_flip_margin: int = 2000
 
 
 @dataclass
@@ -118,7 +139,9 @@ class RawButtonDecoder:
         self.bumper_layer = False
         self.active = False  # True once any raw state has arrived
         self._held: dict[str, _Held] = {}
+        self._deferred_ups: dict[str, float] = {}  # action -> local release time
         self._analog_on: dict[str, bool] = {}
+        self._scroll_action: str | None = None
         self._last_state_at: float | None = None
 
     @property
@@ -134,9 +157,9 @@ class RawButtonDecoder:
         self.active = True
         self._last_state_at = now
         pressed = self._pressed_inputs(event)
-        out: list[DecodedEvent] = []
+        out: list[DecodedEvent] = self.due_releases(now)
         for name in [n for n in self._held if n not in pressed]:
-            out.extend(self._release(name))
+            out.extend(self._release(name, now))
         for name in pressed:
             if name not in self._held:
                 out.extend(self._press(name, event, has_mapping))
@@ -148,19 +171,64 @@ class RawButtonDecoder:
             ):
                 held.long_fired = True
                 out.append((held.long_action, "down"))
+        out.extend(self._update_qam_scroll(event))
         return out
 
-    def check_stale(self, now: float) -> list[DecodedEvent]:
-        if self._last_state_at is None or not (self._held or any(self._analog_on.values())):
-            return []
-        if now - self._last_state_at < self.config.stale_release_seconds:
+    def _update_qam_scroll(self, event: ButtonStateEvent) -> list[DecodedEvent]:
+        offset, mask = LEFT_PAD_TOUCH_BIT
+        active = "QAM" in self._held and bool(event.buttons[offset - 8] & mask)
+        target = self._scroll_direction(event.left_pad_x, event.left_pad_y) if active else None
+        if target == self._scroll_action:
             return []
         out: list[DecodedEvent] = []
+        if self._scroll_action is not None:
+            out.append((self._scroll_action, "up"))
+        if target is not None:
+            out.append((target, "down"))
+        self._scroll_action = target
+        return out
+
+    def _scroll_direction(self, x: int, y: int) -> str:
+        current, cfg = self._scroll_action, self.config
+        if current in (QAM_SCROLL_LEFT, QAM_SCROLL_RIGHT):
+            horizontal = abs(y) <= abs(x) * cfg.scroll_axis_ratio
+        elif current in (QAM_SCROLL_UP, QAM_SCROLL_DOWN):
+            horizontal = abs(x) > abs(y) * cfg.scroll_axis_ratio
+        else:
+            horizontal = abs(x) >= abs(y)
+        if horizontal:
+            if current == QAM_SCROLL_RIGHT and x > -cfg.scroll_flip_margin:
+                return QAM_SCROLL_RIGHT
+            if current == QAM_SCROLL_LEFT and x < cfg.scroll_flip_margin:
+                return QAM_SCROLL_LEFT
+            return QAM_SCROLL_RIGHT if x >= 0 else QAM_SCROLL_LEFT
+        # Pad Y is positive toward the top.
+        if current == QAM_SCROLL_UP and y > -cfg.scroll_flip_margin:
+            return QAM_SCROLL_UP
+        if current == QAM_SCROLL_DOWN and y < cfg.scroll_flip_margin:
+            return QAM_SCROLL_DOWN
+        return QAM_SCROLL_UP if y > 0 else QAM_SCROLL_DOWN
+
+    def due_releases(self, now: float) -> list[DecodedEvent]:
+        due = [action for action, at in self._deferred_ups.items() if at <= now]
+        for action in due:
+            del self._deferred_ups[action]
+        return [(action, "up") for action in due]
+
+    def check_stale(self, now: float) -> list[DecodedEvent]:
+        out: list[DecodedEvent] = self.due_releases(now)
+        if self._last_state_at is None or not (self._held or any(self._analog_on.values())):
+            return out
+        if now - self._last_state_at < self.config.stale_release_seconds:
+            return out
         for held in self._held.values():
             if held.long_action is None:
                 out.append((held.action, "up"))
             elif held.long_fired:
                 out.append((held.long_action, "up"))
+        if self._scroll_action is not None:
+            out.append((self._scroll_action, "up"))
+            self._scroll_action = None
         self._held.clear()
         self._analog_on.clear()
         return out
@@ -210,13 +278,18 @@ class RawButtonDecoder:
             self.bumper_layer = not self.bumper_layer
         return [(action, "down")]
 
-    def _release(self, name: str) -> list[DecodedEvent]:
+    def _release(self, name: str, now: float) -> list[DecodedEvent]:
         held = self._held.pop(name)
         if held.long_action is None:
             return [(held.action, "up")]
         if held.long_fired:
             return [(held.long_action, "up")]
-        return [(held.action, "down"), (held.action, "up")]
+        out: list[DecodedEvent] = []
+        if self._deferred_ups.pop(held.action, None) is not None:
+            out.append((held.action, "up"))  # a still-pending earlier tap ends first
+        self._deferred_ups[held.action] = now + self.config.deferred_tap_seconds
+        out.append((held.action, "down"))
+        return out
 
     def _resolve(self, name: str, event: ButtonStateEvent) -> str:
         """Pick the action at press time; a hold keeps it even if a layer flips."""

@@ -84,10 +84,10 @@ class RawButtonReceiverTests(unittest.TestCase):
         self.send(t=90, now=0.09)
         self.assertEqual(self.midi.calls, [("note_on", 0, 36, 127), ("note_off", 0, 36, 0)])
 
-    def test_left_menu_button_switches_abxy_layer_and_lamp(self) -> None:
+    def test_right_menu_button_switches_abxy_layer_and_lamp(self) -> None:
         self.send(t=0, now=0.0)
         self.midi.calls.clear()
-        self.send("VIEW", t=10, now=0.01)
+        self.send("MENU", t=10, now=0.01)
         self.send(t=100, now=0.1)
         self.send("A", t=200, now=0.2)
         self.assertEqual(
@@ -101,8 +101,8 @@ class RawButtonReceiverTests(unittest.TestCase):
             ],
         )
 
-    def test_right_menu_button_switches_bumper_layer(self) -> None:
-        self.send("MENU", t=0, now=0.0)
+    def test_left_menu_button_switches_bumper_layer(self) -> None:
+        self.send("VIEW", t=0, now=0.0)
         self.send(t=100, now=0.1)
         self.midi.calls.clear()
         self.send("L1", t=200, now=0.2)
@@ -115,6 +115,17 @@ class RawButtonReceiverTests(unittest.TestCase):
         self.assertEqual(self.midi.calls, [])
         self.send(t=120, now=0.12)
         self.assertEqual(self.midi.calls, [("cc", 0, 23, 127)])
+
+    def test_dpad_note_tap_is_a_real_press(self) -> None:
+        self.receiver._mappings["DPAD_DOWN"] = note("DPAD_DOWN", 98)
+        self.receiver._mappings["DPAD_DOWN_LONG_PRESS"] = note("DPAD_DOWN_LONG_PRESS", 99)
+        self.send(t=0, now=0.0)
+        self.midi.calls.clear()
+        self.send("DPAD_DOWN", t=10, now=0.01)
+        self.send(t=110, now=0.11)
+        self.assertEqual(self.midi.calls, [("note_on", 0, 98, 127)])
+        self.receiver.check_timeouts(now=0.2)
+        self.assertEqual(self.midi.calls, [("note_on", 0, 98, 127), ("note_off", 0, 98, 0)])
 
     def test_dpad_hold_starts_fade_instead_of_click(self) -> None:
         self.send(t=0, now=0.0)

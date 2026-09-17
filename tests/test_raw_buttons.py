@@ -22,6 +22,7 @@ def state(
     lp: int = 0,
     rp: int = 0,
     lx: int = 0,
+    ly: int = 0,
     rx: int = 0,
     lt: int = 0,
     rt: int = 0,
@@ -38,7 +39,7 @@ def state(
         left_pad_pressure=lp,
         right_pad_pressure=rp,
         left_pad_x=lx,
-        left_pad_y=0,
+        left_pad_y=ly,
         right_pad_x=rx,
         right_pad_y=0,
         left_trigger=lt,
@@ -72,10 +73,10 @@ class PlainButtonTests(unittest.TestCase):
         )
         self.assertEqual(h.feed(state("LEFT_STICK_TOUCH")), [("LEFT_STICK_CLICK_L3", "up")])
 
-    def test_menu_buttons_keep_steam_input_names(self) -> None:
+    def test_left_menu_is_select_and_right_is_start(self) -> None:
         h = Harness()
-        self.assertEqual(h.feed(state("VIEW")), [("START", "down")])
-        self.assertEqual(h.feed(state("MENU")), [("START", "up"), ("SELECT", "down")])
+        self.assertEqual(h.feed(state("MENU")), [("START", "down")])
+        self.assertEqual(h.feed(state("VIEW")), [("START", "up"), ("SELECT", "down")])
 
     def test_every_bit_decodes_alone(self) -> None:
         for name in BUTTON_BITS:
@@ -86,23 +87,23 @@ class PlainButtonTests(unittest.TestCase):
 
 
 class LayerTests(unittest.TestCase):
-    def test_left_menu_button_toggles_abxy_layer(self) -> None:
+    def test_right_menu_button_toggles_abxy_layer(self) -> None:
         h = Harness()
         self.assertEqual(h.feed(state("A")), [("BTN_A", "down")])
         h.feed(state())
-        h.feed(state("VIEW"))
+        h.feed(state("MENU"))
         h.feed(state())
         self.assertTrue(h.decoder.abxy_layer)
         self.assertEqual(h.feed(state("A")), [("BTN_A_LAYER_2", "down")])
         h.feed(state())
-        h.feed(state("VIEW"))
+        h.feed(state("MENU"))
         h.feed(state())
         self.assertFalse(h.decoder.abxy_layer)
         self.assertEqual(h.feed(state("B")), [("BTN_B", "down")])
 
-    def test_right_menu_button_toggles_bumpers_and_triggers(self) -> None:
+    def test_left_menu_button_toggles_bumpers_and_triggers(self) -> None:
         h = Harness()
-        h.feed(state("MENU"))
+        h.feed(state("VIEW"))
         h.feed(state())
         self.assertEqual(
             h.feed(state("L1", "R2_FULL", rt=32000)),
@@ -111,7 +112,7 @@ class LayerTests(unittest.TestCase):
 
     def test_layers_are_independent(self) -> None:
         h = Harness()
-        h.feed(state("MENU"))
+        h.feed(state("VIEW"))
         h.feed(state())
         self.assertEqual(h.feed(state("A")), [("BTN_A", "down")])
         h.feed(state())
@@ -119,9 +120,9 @@ class LayerTests(unittest.TestCase):
 
     def test_unlayered_inputs_keep_base_action_inside_a_layer(self) -> None:
         h = Harness()
-        h.feed(state("VIEW"))
-        h.feed(state())
         h.feed(state("MENU"))
+        h.feed(state())
+        h.feed(state("VIEW"))
         h.feed(state())
         self.assertEqual(
             h.feed(state("L4", "R5", "L3")),
@@ -131,8 +132,8 @@ class LayerTests(unittest.TestCase):
     def test_action_is_latched_at_press_across_a_layer_flip(self) -> None:
         h = Harness()
         self.assertEqual(h.feed(state("A")), [("BTN_A", "down")])
-        self.assertEqual(h.feed(state("A", "VIEW")), [("START", "down")])
-        self.assertEqual(h.feed(state("VIEW")), [("BTN_A", "up")])
+        self.assertEqual(h.feed(state("A", "MENU")), [("START", "down")])
+        self.assertEqual(h.feed(state("MENU")), [("BTN_A", "up")])
 
     def test_layers_start_off(self) -> None:
         self.assertEqual(RawButtonDecoder().layers, (False, False))
@@ -143,9 +144,28 @@ class LongPressTests(unittest.TestCase):
         h = Harness()
         self.assertEqual(h.feed(state("DPAD_LEFT", t=1000)), [])
         self.assertEqual(h.feed(state("DPAD_LEFT", t=1100)), [])
+        self.assertEqual(h.feed(state(t=1130)), [("DPAD_LEFT", "down")])
+        # Emitted as a real press, released a moment later, not a zero-length blip.
+        self.assertEqual(h.decoder.due_releases(h.now + 0.07), [])
+        self.assertEqual(h.decoder.due_releases(h.now + 0.08), [("DPAD_LEFT", "up")])
+        self.assertEqual(h.decoder.due_releases(h.now + 1.0), [])
+
+    def test_rapid_taps_each_get_their_own_press(self) -> None:
+        h = Harness()
+        h.feed(state("DPAD_LEFT", t=0))
+        self.assertEqual(h.feed(state(t=60)), [("DPAD_LEFT", "down")])
+        h.feed(state("DPAD_LEFT", t=90))
+        # The first tap's release is still pending when the second one lands.
         self.assertEqual(
-            h.feed(state(t=1130)), [("DPAD_LEFT", "down"), ("DPAD_LEFT", "up")]
+            h.feed(state(t=150)), [("DPAD_LEFT", "up"), ("DPAD_LEFT", "down")]
         )
+
+    def test_due_release_is_emitted_on_the_next_state(self) -> None:
+        h = Harness()
+        h.feed(state("DPAD_UP", t=0))
+        h.feed(state(t=100))
+        h.now += 0.2
+        self.assertEqual(h.feed(state(t=400)), [("DPAD_UP", "up")])
 
     def test_hold_fires_long_once_and_never_short(self) -> None:
         h = Harness()
@@ -160,9 +180,7 @@ class LongPressTests(unittest.TestCase):
         h = Harness()
         h.feed(state("DPAD_DOWN", t=5000))
         h.now += 3.0
-        self.assertEqual(
-            h.feed(state(t=5120)), [("DPAD_DOWN", "down"), ("DPAD_DOWN", "up")]
-        )
+        self.assertEqual(h.feed(state(t=5120)), [("DPAD_DOWN", "down")])
 
     def test_no_long_mapping_means_instant_press(self) -> None:
         h = Harness(mapped=set())
@@ -209,6 +227,68 @@ class TrackpadTests(unittest.TestCase):
         self.assertEqual(enabled.feed(state(rp=6000, rx=100)), [("R_PAD_RIGHT", "down")])
 
 
+class QamScrollComboTests(unittest.TestCase):
+    def test_qam_alone_does_not_scroll(self) -> None:
+        h = Harness(mapped=set())
+        self.assertEqual(h.feed(state("QAM")), [("QAM", "down")])
+        self.assertEqual(h.feed(state()), [("QAM", "up")])
+
+    def test_resting_thumb_zone_picks_direction(self) -> None:
+        for (x, y), expected in {
+            (20000, 3000): "QAM_SCROLL_RIGHT",
+            (-20000, -3000): "QAM_SCROLL_LEFT",
+            (2000, 25000): "QAM_SCROLL_UP",
+            (-2000, -25000): "QAM_SCROLL_DOWN",
+            (400, -100): "QAM_SCROLL_RIGHT",  # near the middle leans
+        }.items():
+            with self.subTest(x=x, y=y):
+                h = Harness(mapped=set())
+                self.assertEqual(
+                    h.feed(touching("QAM", lx=x, ly=y)), [("QAM", "down"), (expected, "down")]
+                )
+
+    def test_follows_thumb_live_and_stops_on_release(self) -> None:
+        h = Harness(mapped=set())
+        h.feed(touching("QAM", lx=20000))
+        self.assertEqual(h.feed(touching("QAM", lx=21000)), [])
+        self.assertEqual(
+            h.feed(touching("QAM", lx=1000, ly=26000)),
+            [("QAM_SCROLL_RIGHT", "up"), ("QAM_SCROLL_UP", "down")],
+        )
+        self.assertEqual(h.feed(touching(lx=1000, ly=26000)), [("QAM", "up"), ("QAM_SCROLL_UP", "up")])
+
+    def test_lifting_the_thumb_stops_scroll(self) -> None:
+        h = Harness(mapped=set())
+        h.feed(touching("QAM", lx=-20000))
+        self.assertEqual(h.feed(state("QAM", lx=-20000)), [("QAM_SCROLL_LEFT", "up")])
+
+    def test_boundary_hysteresis(self) -> None:
+        h = Harness(mapped=set())
+        h.feed(touching("QAM", lx=10000, ly=9000))
+        # Diagonal wobble and a small drift past centre keep the current direction.
+        self.assertEqual(h.feed(touching("QAM", lx=10000, ly=11000)), [])
+        self.assertEqual(h.feed(touching("QAM", lx=-1500, ly=0)), [])
+        self.assertEqual(
+            h.feed(touching("QAM", lx=-2500, ly=0)),
+            [("QAM_SCROLL_RIGHT", "up"), ("QAM_SCROLL_LEFT", "down")],
+        )
+
+    def test_silence_releases_scroll(self) -> None:
+        h = Harness(mapped=set())
+        h.feed(touching("QAM", ly=-20000))
+        self.assertEqual(
+            h.decoder.check_stale(h.now + 1.0), [("QAM", "up"), ("QAM_SCROLL_DOWN", "up")]
+        )
+
+
+def touching(*held: str, lx: int = 0, ly: int = 0) -> ButtonStateEvent:
+    """A thumb resting on the left pad: touch bit set, pressure below a click."""
+    event = state(*held, lp=300, lx=lx, ly=ly)
+    buttons = bytearray(event.buttons)
+    buttons[10 - 8] |= 0x08
+    return ButtonStateEvent(**{**event.__dict__, "buttons": bytes(buttons)})
+
+
 class TriggerTests(unittest.TestCase):
     def test_soft_pull_from_analog_full_pull_from_bit(self) -> None:
         h = Harness()
@@ -245,7 +325,7 @@ class StaleReleaseTests(unittest.TestCase):
 
     def test_layers_survive_stale_release(self) -> None:
         h = Harness()
-        h.feed(state("VIEW"))
+        h.feed(state("MENU"))
         h.decoder.check_stale(h.now + 1.0)
         self.assertTrue(h.decoder.abxy_layer)
 

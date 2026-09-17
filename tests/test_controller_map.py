@@ -37,7 +37,7 @@ class ControllerMapTests(unittest.TestCase):
                 self.assertTrue(control["label"].strip())
                 self.assertIn(control["kind"], kinds)
                 self.assertTrue(control["groups"])
-                self.assertLessEqual(set(control["groups"]), {"tap", "long_press", "layer_2", "touch", "analog"})
+                self.assertLessEqual(set(control["groups"]), {"tap", "long_press", "layer_2", "touch", "combo", "analog"})
                 for group in control["groups"].values():
                     self.assertIsInstance(group, list)
                     self.assertTrue(group)
@@ -59,6 +59,8 @@ class ControllerMapTests(unittest.TestCase):
                         expected = "layer_2"
                     elif action.endswith("_TOUCH"):
                         expected = "touch"
+                    elif action.startswith("QAM_"):
+                        expected = "combo"
                     elif action.endswith("_LONG_PRESS"):
                         expected = "long_press"
                     elif re.search(r"_(AXIS|PRESSURE|POS|PITCH|YAW|ROLL)$", action):

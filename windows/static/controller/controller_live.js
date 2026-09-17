@@ -6,7 +6,7 @@ const ControllerLive = (() => {
   const FOLLOW_KEY = 'steamdeck.controllerFollow';
   const FLASH_MS = 150, PAD_MS = 300;
   const RETRY_MIN = 250, RETRY_MAX = 8000;
-  const TAGS = {tap: 'tap', long_press: 'hold', layer_2: 'L2', touch: 'touch', analog: 'analog'};
+  const TAGS = {tap: 'tap', long_press: 'hold', layer_2: 'L2', touch: 'touch', combo: 'combo', analog: 'analog'};
   const el = id => document.getElementById(id);
   const svg = (tag, attrs) => {
     const node = document.createElementNS('http://www.w3.org/2000/svg', tag);

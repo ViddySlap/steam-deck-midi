@@ -40,6 +40,11 @@ actions:
   - RIGHT_STICK_CLICK_R3
   # Read straight from the HID report, not via Steam Input (2026-09-16).
   - QAM
+  # Combo: hold QAM with a thumb resting on the left trackpad (2026-09-16).
+  - QAM_SCROLL_LEFT
+  - QAM_SCROLL_RIGHT
+  - QAM_SCROLL_UP
+  - QAM_SCROLL_DOWN
   - LEFT_STICK_TOUCH
   - RIGHT_STICK_TOUCH
   - L4

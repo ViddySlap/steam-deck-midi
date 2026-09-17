@@ -330,6 +330,9 @@ class ActionReceiver:
         self.advance_fades(now=timestamp)
         self.advance_relative_ccs(now=timestamp)
         self.advance_staged_note_macros(now=timestamp)
+        due = self._raw_buttons.due_releases(timestamp)
+        if due:
+            self._handle_decoded_buttons(due, 0, timestamp)
         stale = self._raw_buttons.check_stale(timestamp)
         if stale:
             LOGGER.warning("raw button state went silent; releasing %s held input(s)", len(stale))

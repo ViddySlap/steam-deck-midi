@@ -4,7 +4,7 @@
  */
 const ControllerView = (() => {
   'use strict';
-  const GROUP_ORDER = [['tap', 'TAP'], ['long_press', 'LONG PRESS'], ['layer_2', 'LAYER 2'], ['touch', 'TOUCH'], ['analog', 'ANALOG']];
+  const GROUP_ORDER = [['tap', 'TAP'], ['long_press', 'LONG PRESS'], ['layer_2', 'LAYER 2'], ['touch', 'TOUCH'], ['combo', 'COMBO'], ['analog', 'ANALOG']];
   const STORAGE_KEY = 'steamdeck.mappingView';
   let map = null;
   let activeControl = null;

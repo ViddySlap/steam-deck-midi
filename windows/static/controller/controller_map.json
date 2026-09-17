@@ -461,7 +461,7 @@
     },
     {
       "id": "start",
-      "label": "SELECT (right)",
+      "label": "START (right)",
       "kind": "menu",
       "anchor": {
         "x": 978,
@@ -469,7 +469,7 @@
       },
       "groups": {
         "tap": [
-          "SELECT"
+          "START"
         ]
       },
       "label_anchor": {
@@ -482,11 +482,11 @@
           110
         ]
       ],
-      "notes": "Right menu button (three lines, Steam's button_menu). It has always emitted the SELECT action and toggles the bumper/trigger layer."
+      "notes": "Right menu button (three lines). Emits START and toggles the ABXY layer (Ben, 2026-09-16; under Steam Input this button was SELECT)."
     },
     {
       "id": "select",
-      "label": "START (left)",
+      "label": "SELECT (left)",
       "kind": "menu",
       "anchor": {
         "x": 222,
@@ -494,7 +494,7 @@
       },
       "groups": {
         "tap": [
-          "START"
+          "SELECT"
         ]
       },
       "label_anchor": {
@@ -507,7 +507,7 @@
           110
         ]
       ],
-      "notes": "Left menu button (two squares, Steam's button_escape). It has always emitted the START action and toggles the ABXY layer; the names are swapped relative to Xbox convention."
+      "notes": "Left menu button (two squares). Emits SELECT and toggles the bumper/trigger layer (Ben, 2026-09-16; under Steam Input this button was START)."
     },
     {
       "id": "left_pad",
@@ -615,9 +615,15 @@
       "groups": {
         "tap": [
           "QAM"
+        ],
+        "combo": [
+          "QAM_SCROLL_LEFT",
+          "QAM_SCROLL_RIGHT",
+          "QAM_SCROLL_UP",
+          "QAM_SCROLL_DOWN"
         ]
       },
-      "notes": "The three-dot Quick Access button, lower right, beside the right trackpad. Steam Input does not expose it, so the sender reads it straight from the controller's HID report (byte 14, bit 0x04, confirmed 2026-09-16). It needs no Steam Input binding, and in desktop mode nothing else consumes it.",
+      "notes": "The three-dot Quick Access button, lower right, beside the right trackpad. Steam Input does not expose it, so the sender reads it straight from the controller's HID report (byte 14, bit 0x04, confirmed 2026-09-16). It needs no Steam Input binding, and in desktop mode nothing else consumes it. Combo: hold QAM with a thumb resting on the left trackpad to scroll; the zone under the thumb (left, right, up, down) picks QAM_SCROLL_* and follows the thumb live.",
       "label_anchor": {
         "x": 1330,
         "y": 530
