@@ -8,7 +8,7 @@ import json
 from deck_script import canonical, packet, read_json, seal, sender_axes, sha, validate
 from timing_subset_check import check_subset
 
-DECK_SHA256 = '4833fd173df64ef6782422cd3264291f47e9ff8480b1517a703d518991182c34'
+DECK_SHA256 = '3de3e0f0d8a8a3d9f4dbe393a6d05b940023d363d55315b4ee737cd5542e6bb5'
 WORST_CASE = 'simultaneous-sticks-triggers-60hz'
 SIMULTANEOUS_AXES = ('L_STICK_X_AXIS', 'L_STICK_Y_AXIS', 'R_STICK_X_AXIS',
                      'R_STICK_Y_AXIS', 'L_TRIGGER_PRESSURE', 'R_TRIGGER_PRESSURE')

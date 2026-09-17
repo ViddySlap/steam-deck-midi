@@ -531,7 +531,7 @@ committed `scripts/showready/timing_script.json`; the gate does not edit or
 regenerate the release workload in place.
 
 The E4 generator selects events from the pinned full Deck script (logical
-SHA256 `4833fd173df64ef6782422cd3264291f47e9ff8480b1517a703d518991182c34`).
+SHA256 `3de3e0f0d8a8a3d9f4dbe393a6d05b940023d363d55315b4ee737cd5542e6bb5`).
 It changes only selection, order and pacing. Regeneration is exclusive-create:
 
 ```bash
@@ -543,11 +543,12 @@ shasum -a 256 -c scripts/showready/SHA256SUMS
 cmp scripts/showready/timing_script.json /tmp/sdlive-gate/regenerated-timing.json
 ```
 
-The generator command reports composition and duration: 130 button events
-(65 IDs, exactly one down/up pair each), 15,246 axis events and 5,242 legal
-heartbeat timer probes. Schedule: 71.450000882 seconds. Regenerated 2026-09-16
-when QAM, LEFT_STICK_TOUCH and RIGHT_STICK_TOUCH joined the action vocabulary;
-the three earlier IDs and the worst-case segment are unchanged. Button down dwell is
+The generator command reports composition and duration: 138 button events
+(69 IDs, exactly one down/up pair each), 15,246 axis events and 5,374 legal
+heartbeat timer probes. Schedule: 72.850000882 seconds. Regenerated 2026-09-16
+when QAM, LEFT_STICK_TOUCH and RIGHT_STICK_TOUCH joined the action vocabulary,
+and again the same day for the QAM scroll combo (QAM_SCROLL_LEFT/RIGHT/UP/DOWN);
+the earlier IDs and the worst-case segment are unchanged. Button down dwell is
 100 ms, release gap 250 ms; an additional 2.25 s settles timers before the
 worst case, and after the last axis. Button timers may overlap during the
 button segment; attribution retains their initiating input. Bar 1 still uses
