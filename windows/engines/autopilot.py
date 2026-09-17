@@ -25,10 +25,18 @@ entirely from that cache so the beat/hot path is OSC-only. There is no
 periodic REST polling — the old ~1 Hz mouse-override poll was removed because
 it dropped Steam Deck MIDI sends during shows.
 
-Per-channel MODE (NONE/LINEAR/RANDOM, v0.4.1):
-- NONE  — cycle layer masters; clips stay where they are.
-- LINEAR — also advance clips left-to-right (+1 with wrap) at each cycle.
-- RANDOM — also draw a clip from a per-layer shuffled bag at each cycle.
+Per-channel MODE (NONE/LINEAR/RANDOM; semantics revised 2026-09-16, v0.5.2):
+- NONE   — cycle layer masters only. No clip changes and no column switching.
+- LINEAR — at each cycle wrap, step the channel's layer group to its next
+           column (1 -> 2 -> 3 -> next column). A channel with no group to
+           advance (FX, layer 5) steps its own clips left-to-right instead.
+- RANDOM — at each cycle wrap, draw a clip per layer from a shuffled bag
+           (and advance the group column, unchanged from v0.4.x).
+
+Transition time belongs to autopilot: while a channel is disabled its layers'
+transition durations are held at 0, so manual column/clip triggers are
+instant. The stored value is kept and pushed again the moment the channel is
+re-enabled.
 
 Steam Deck column quantize (v0.4.1 fix): Resolume's MIDI shortcut binds
 `/composition/groups/1/connect{prev,next}column` on channel 0 to four notes —
@@ -364,6 +372,11 @@ class AutopilotEngine(Engine):
                     payload,
                     new_val,
                 )
+                if new_val and state.enabled:
+                    self._send_layer_transition(payload, state.transition_seconds)
+                if not new_val and state.enabled:
+                    # No longer autopilot's layer: hand it back at 0.
+                    self._send_layer_transition(payload, 0.0)
                 # If the visible layer was unselected, advance to next selected.
                 if not new_val and state.visible_layer == payload:
                     self._snap_to_first_selected(ch_key)
@@ -476,12 +489,20 @@ class AutopilotEngine(Engine):
         state.enabled = new_val
         LOGGER.info("autopilot %s: enabled=%s", ch_key, new_val)
         if new_val:
-            # On enable, snap masters to the first selected layer.
+            # On enable, snap masters to the first selected layer (this also
+            # pushes the stored transition time back to the layers).
             self._snap_to_first_selected(ch_key)
+        else:
+            # Off means manual control: no lingering autopilot crossfades.
+            for layer in state.selected_layers():
+                self._send_layer_transition(layer, 0.0)
 
     def _apply_transition(self, state: ChannelState, new_seconds: float) -> None:
         state.transition_seconds = new_seconds
-        # Push to Resolume per-layer transition param immediately.
+        # Only an enabled channel owns its layers' transition time; a disabled
+        # one just remembers the value for the next enable.
+        if not state.enabled:
+            return
         for layer in state.selected_layers():
             self._send_layer_transition(layer, new_seconds)
 
@@ -555,7 +576,8 @@ class AutopilotEngine(Engine):
         channels, self._restored_channels = self._restored_channels, []
         for ch_key in channels:
             state = self._states[ch_key]
-            self._apply_transition(state, state.transition_seconds)
+            # A disabled channel already zeroed its layers when it was turned
+            # off, so only an enabled one has Resolume side effects to replay.
             if state.enabled:
                 self._apply_enable(ch_key, True)
 
@@ -658,9 +680,7 @@ class AutopilotEngine(Engine):
                 state.beat_in_clip += 1
                 if state.beat_in_clip >= state.beats_per_clip:
                     state.beat_in_clip = 0
-                    if state.clip_mode != ClipMode.NONE:
-                        self._fire_next_clip(state, layer)
-                        self._send_layer_transition(layer, state.transition_seconds)
+                    self._advance_on_wrap(ch_key, state, [layer], single_layer=True)
                 continue
 
             # Multi-layer path.
@@ -679,14 +699,9 @@ class AutopilotEngine(Engine):
             state.beat_in_clip = 0
             state.cycle_index = (state.cycle_index + 1) % len(selected)
             if state.cycle_index == 0:
-                # Cycle complete — fire clip advance on every selected layer
-                # and re-apply transition seconds (handles user re-ordering layers).
-                for layer in selected:
-                    self._fire_next_clip(state, layer)
-                    self._send_layer_transition(layer, state.transition_seconds)
-                # ...and step the whole group to its next column, so the loop
-                # is: layer 1 -> 2 -> 3 -> column advance + back to layer 1.
-                self._fire_group_column_advance(ch_key)
+                # Cycle complete: advance content per MODE, so the loop reads
+                # layer 1 -> 2 -> 3 -> (advance) -> back to layer 1.
+                self._advance_on_wrap(ch_key, state, selected, single_layer=False)
             target = selected[state.cycle_index]
             state.target_layer = target
             state.crossfade_start_time = now
@@ -768,6 +783,37 @@ class AutopilotEngine(Engine):
         if fired >= MAX_FALLBACK_CATCHUP_BEATS:
             # Too far behind to be meaningful -- resync to now.
             self._fallback_next_beat_at = now + beat_seconds
+
+    def _advance_on_wrap(
+        self, ch_key: str, state: ChannelState, layers: list[int], *, single_layer: bool
+    ) -> None:
+        """What a completed layer cycle does to content, per MODE."""
+        if state.clip_mode == ClipMode.NONE:
+            return  # layers only: no clip changes, no column switching
+        # Re-apply transition seconds (handles user re-ordering layers).
+        for layer in layers:
+            self._send_layer_transition(layer, state.transition_seconds)
+        if state.clip_mode == ClipMode.RANDOM:
+            for layer in layers:
+                self._fire_next_clip(state, layer)
+            if not single_layer:
+                self._fire_group_column_advance(ch_key)
+            return
+        # LINEAR: step the whole group one column. A channel with no group
+        # column to advance steps its own clips left-to-right instead.
+        if self._can_advance_column(ch_key):
+            self._fire_group_column_advance(ch_key)
+            return
+        for layer in layers:
+            self._fire_next_clip(state, layer)
+
+    def _can_advance_column(self, ch_key: str) -> bool:
+        channel_config = self._channels.get(ch_key)
+        return (
+            channel_config is not None
+            and channel_config.column_advance
+            and channel_config.group is not None
+        )
 
     def _fire_group_column_advance(self, ch_key: str) -> None:
         """Advance the channel's layer group to its next column.

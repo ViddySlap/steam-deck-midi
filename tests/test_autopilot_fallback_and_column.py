@@ -71,14 +71,16 @@ def _engine(osc: FakeOsc, **overrides) -> AutopilotEngine:
     )
 
 
-def _enable_video(engine: AutopilotEngine, layers=(1, 2, 3), beats: int = 1) -> None:
+def _enable_video(
+    engine: AutopilotEngine, layers=(1, 2, 3), beats: int = 1, mode: ClipMode = ClipMode.LINEAR
+) -> None:
     """Turn the video channel on with `layers` selected, via its real CCs."""
     engine.on_midi_in(14, 60, 127, 0.0)          # enable
     for layer, cc in zip((1, 2, 3), (64, 65, 66)):
         engine.on_midi_in(14, cc, 127 if layer in layers else 0, 0.0)
     state = engine._states["video"]
     state.beats_per_clip = beats
-    state.clip_mode = ClipMode.NONE
+    state.clip_mode = mode
 
 
 class ColumnAdvanceTests(unittest.TestCase):
@@ -111,6 +113,7 @@ class ColumnAdvanceTests(unittest.TestCase):
         self.engine.on_midi_in(14, 84, 127, 0.0)
         self.engine.on_midi_in(14, 85, 127, 0.0)
         self.engine._states["logo"].beats_per_clip = 1
+        self.engine._states["logo"].clip_mode = ClipMode.LINEAR
         self.osc.sent.clear()
         self._beat(self.engine, 4)
         self.assertIn("/composition/groups/2/connectnextcolumn", self.osc.paths("connectnextcolumn"))
@@ -137,6 +140,31 @@ class ColumnAdvanceTests(unittest.TestCase):
         self.assertEqual(self.osc.paths("connectnextcolumn"), [])
         clip_hits = self.osc.paths("/composition/layers/5/clips/")
         self.assertGreaterEqual(len(clip_hits), 2)
+
+    def test_none_mode_cycles_layers_without_switching_columns_or_clips(self) -> None:
+        self.engine._layer_clips.update({1: [1, 2, 3], 2: [1, 2, 3], 3: [1, 2, 3]})
+        _enable_video(self.engine, layers=(1, 2, 3), beats=1, mode=ClipMode.NONE)
+        self.osc.sent.clear()
+        self._beat(self.engine, 8)
+        self.assertEqual(self.osc.paths("connectnextcolumn"), [])
+        self.assertEqual(self.osc.paths("/clips/"), [])
+        self.assertTrue(self.osc.paths("/master"), "layers still cycle")
+
+    def test_linear_mode_steps_columns_not_individual_clips(self) -> None:
+        self.engine._layer_clips.update({1: [1, 2, 3], 2: [1, 2, 3], 3: [1, 2, 3]})
+        _enable_video(self.engine, layers=(1, 2, 3), beats=1, mode=ClipMode.LINEAR)
+        self.osc.sent.clear()
+        self._beat(self.engine, 8)
+        self.assertEqual(len(self.osc.paths("connectnextcolumn")), 2)
+        self.assertEqual(self.osc.paths("/clips/"), [])
+
+    def test_random_mode_is_unchanged(self) -> None:
+        self.engine._layer_clips.update({1: [1, 2, 3], 2: [1, 2, 3], 3: [1, 2, 3]})
+        _enable_video(self.engine, layers=(1, 2, 3), beats=1, mode=ClipMode.RANDOM)
+        self.osc.sent.clear()
+        self._beat(self.engine, 5)
+        self.assertEqual(len(self.osc.paths("/clips/")), 3, "one random clip per layer per wrap")
+        self.assertEqual(len(self.osc.paths("connectnextcolumn")), 1)
 
     def test_column_advance_off_disables_it(self) -> None:
         cfg = _config()
@@ -219,3 +247,43 @@ class FallbackClockTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TransitionOwnershipTests(unittest.TestCase):
+    """Autopilot owns layer transition time only while its channel is on."""
+
+    def setUp(self) -> None:
+        self.osc = FakeOsc()
+        self.engine = _engine(self.osc)
+        _enable_video(self.engine, layers=(1, 2, 3))
+        self.engine.on_midi_in(14, 62, 127, 0.0)  # transition to max (5 s)
+        self.osc.sent.clear()
+
+    def durations(self) -> dict[str, object]:
+        return {a: v for a, v in self.osc.sent if a.endswith("/transition/duration")}
+
+    def test_disable_zeroes_selected_layers(self) -> None:
+        self.engine.on_midi_in(14, 60, 0, 1.0)
+        self.assertEqual(
+            self.durations(),
+            {f"/composition/layers/{n}/transition/duration": 0.0 for n in (1, 2, 3)},
+        )
+
+    def test_enable_restores_the_stored_time(self) -> None:
+        self.engine.on_midi_in(14, 60, 0, 1.0)
+        self.osc.sent.clear()
+        self.engine.on_midi_in(14, 60, 127, 2.0)
+        self.assertEqual(set(self.durations().values()), {0.5})  # 5 s of Resolume's 10 s range
+
+    def test_transition_changes_while_disabled_are_remembered_not_sent(self) -> None:
+        self.engine.on_midi_in(14, 60, 0, 1.0)
+        self.osc.sent.clear()
+        self.engine.on_midi_in(14, 62, 0, 1.5)  # fader to 0 while off
+        self.assertEqual(self.durations(), {})
+        self.engine.on_midi_in(14, 62, 127, 1.6)  # and back up
+        self.engine.on_midi_in(14, 60, 127, 2.0)
+        self.assertEqual(set(self.durations().values()), {0.5})
+
+    def test_deselected_layer_is_handed_back_at_zero(self) -> None:
+        self.engine.on_midi_in(14, 66, 0, 1.0)  # layer 3 off
+        self.assertEqual(self.durations().get("/composition/layers/3/transition/duration"), 0.0)
