@@ -29,13 +29,23 @@ Design decisions implemented (locked 2026-06-02, workflow.md § Design decisions
 
 4. **One bound UDP socket, fire-and-forget** (the ``visca_sender`` module).
 
+5. **Bind the camera network only while active, and recover by itself.** No
+   socket exists until the engine is active (the PTZ preset). While active and
+   unbound, ``tick`` retries the bind every ``BIND_RETRY_SECONDS``; a send
+   OSError (dongle pulled) drops the socket back into that loop. Deactivate /
+   shutdown stops every camera, then closes the socket. ``camera_nic_ip`` is an
+   explicit IPv4 (always wins) or ``auto`` / blank: the source address the OS
+   routes to the first camera, accepted only inside that camera's /24.
+
 Camera/VISCA/byte facts: wiki/reference/ptz-cameras.md. The VISCA transport
 lives in ``visca_sender.py``; this engine only decides *what* to send.
 """
 
 from __future__ import annotations
 
+import ipaddress
 import logging
+import socket
 from typing import Callable
 
 from windows.engines.base import Engine, clamp_tick_hz
@@ -65,6 +75,74 @@ DEFAULT_AXIS_CENTERS: dict[str, int] = {
 
 _SURFACES = ("pantilt", "zoom")
 
+# Camera-network sender states (status()["sender"]).
+SENDER_CONNECTED = "connected"
+SENDER_WAITING = "waiting"
+SENDER_INACTIVE = "inactive"
+
+# While active and unbound, retry the camera-network bind this often.
+BIND_RETRY_SECONDS = 2.0
+
+AUTO_NIC = "auto"
+
+
+def is_auto_nic(value: object) -> bool:
+    """True for the ``auto`` setting; blank (or null) means auto too."""
+    return value is None or str(value).strip().lower() in ("", AUTO_NIC)
+
+
+def is_ipv4(value: object) -> bool:
+    """A dotted-quad IPv4 string (``192.168.0.203``), nothing else."""
+    if not isinstance(value, str) or value.count(".") != 3:
+        return False
+    try:
+        ipaddress.IPv4Address(value)
+    except ValueError:
+        return False
+    return True
+
+
+def config_error(spec: dict) -> "str | None":
+    """Name the first bad camera-network field in a stanza, or None.
+
+    Used by ``engine_config_api.put_engine_config`` so a bad PUT answers 400
+    before anything is written. The message starts with the field name.
+    """
+    if "camera_nic_ip" in spec:
+        raw = spec["camera_nic_ip"]
+        if raw is not None and not isinstance(raw, str):
+            return f"camera_nic_ip must be an IPv4 address, auto, or blank (got {raw!r})"
+        if not is_auto_nic(raw) and not is_ipv4(str(raw).strip()):
+            return (f"camera_nic_ip must be an IPv4 address like 192.168.0.100, "
+                    f"auto, or blank (got {raw!r})")
+    if "cameras" in spec:
+        cams = spec["cameras"]
+        if not isinstance(cams, dict):
+            return "cameras must be an object of camera number -> IPv4 address"
+        for key, ip in cams.items():
+            if not is_ipv4(ip):
+                return (f"cameras.{key} must be an IPv4 address like "
+                        f"192.168.0.203 (got {ip!r})")
+    return None
+
+
+def route_source_ip(camera_ip: str, port: int = 52381) -> str:
+    """The local address the OS would send from to reach ``camera_ip``.
+
+    ``connect()`` on a UDP socket only picks a route; no packet is sent.
+    Raises OSError when there is no route at all.
+    """
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        sock.connect((camera_ip, int(port)))
+        return str(sock.getsockname()[0])
+    finally:
+        sock.close()
+
+
+def _default_sender_factory(ip: str, port: int) -> PtzViscaSender:
+    return PtzViscaSender(ip, port, raise_on_error=True)
+
 
 def apply_curve(t: float, curve: str) -> float:
     """Map a normalized magnitude 0..1 through the response curve.
@@ -92,11 +170,16 @@ class PtzViscaEngine(Engine):
         clock: Callable[[], float] = clock_now,
         sender: "PtzViscaSender | None" = None,
         osc_client: "OscClient | None" = None,
+        sender_factory: "Callable[[str, int], PtzViscaSender] | None" = None,
+        source_resolver: "Callable[[str], str] | None" = None,
     ) -> None:
         super().__init__(name, config, midi_out, clock=clock)
 
         # --- transport / network (config-driven, never hardcoded) ----------
-        self._camera_nic_ip = str(config.get("camera_nic_ip", "192.168.0.100"))
+        # camera_nic_ip: explicit IPv4 (always wins) or "auto" / blank.
+        raw_nic = config.get("camera_nic_ip", "192.168.0.100")
+        self._camera_nic_ip = "" if raw_nic is None else str(raw_nic).strip()
+        self._nic_auto = is_auto_nic(self._camera_nic_ip)
         self._visca_port = int(config.get("visca_port", 52381))
         self._cameras: dict[str, str] = {
             str(k): str(v) for k, v in config.get("cameras", {}).items()
@@ -259,25 +342,136 @@ class PtzViscaEngine(Engine):
         self._last_stop_reason: "str | None" = None
         self._streaming = False
 
-        # --- VISCA sender (lazy-safe: degrade to None without the dongle) ---
-        if sender is not None:
-            self._sender: "PtzViscaSender | None" = sender
+        # --- VISCA sender: bound only while active (see _try_bind) ----------
+        # No socket in __init__: the PUT isolation probe and inactive presets
+        # never touch the camera network. `sender` (tests) is a pre-built
+        # sender: adopted as connected when active, and reused on rebind.
+        if sender_factory is not None:
+            self._sender_factory = sender_factory
+        elif sender is not None:
+            self._sender_factory = lambda _ip, _port: sender
         else:
-            try:
-                self._sender = PtzViscaSender(self._camera_nic_ip, self._visca_port)
-            except OSError:
-                LOGGER.warning(
-                    "ptz_visca: VISCA socket bind to %s failed (camera NIC absent?); "
-                    "sender unbound — engine loads but sends nothing",
-                    self._camera_nic_ip,
-                )
-                self._sender = None
+            self._sender_factory = _default_sender_factory
+        self._source_resolver = source_resolver or (
+            lambda ip: route_source_ip(ip, self._visca_port)
+        )
+        self._sender: "PtzViscaSender | None" = None
+        self._bound_ip: "str | None" = None
+        self._last_bind_error: "str | None" = None
+        self._last_bind_attempt: "float | None" = None
+        self._announced_state: "str | None" = None
+        self._releasing = False
+        self._shut_down = False
+        if not self.active:
+            self._sender_state = SENDER_INACTIVE
+        elif sender is not None:
+            self._sender = sender
+            self._bound_ip = None if self._nic_auto else self._camera_nic_ip
+            self._sender_state = SENDER_CONNECTED
+        else:
+            # The first tick (or set_active(True)) binds immediately.
+            self._sender_state = SENDER_WAITING
 
     # ------------------------------------------------------------------
     # Helpers
 
     def _target_ip(self, group: str) -> "str | None":
         return self._targets.get(group)
+
+    # ------------------------------------------------------------------
+    # Camera network (bind while active, retry, recover)
+
+    def _first_camera_ip(self) -> "str | None":
+        def order(key: str) -> tuple:
+            return (0, int(key), key) if key.isdigit() else (1, 0, key)
+        for key in sorted(self._cameras, key=order):
+            if is_ipv4(self._cameras[key]):
+                return self._cameras[key]
+        return None
+
+    def _resolve_source_ip(self) -> "tuple[str | None, str | None]":
+        """(source ip, None) to bind, or (None, why not)."""
+        if not self._nic_auto:
+            return self._camera_nic_ip, None
+        cam = self._first_camera_ip()
+        if cam is None:
+            return None, "auto: no camera address configured"
+        try:
+            src = self._source_resolver(cam)
+        except (OSError, ValueError) as exc:
+            return None, f"auto: no route to camera {cam} ({exc})"
+        if not is_ipv4(src) or ipaddress.IPv4Address(src) not in ipaddress.IPv4Network(
+            f"{cam}/24", strict=False
+        ):
+            return None, f"auto: no local address on the {cam} /24 network (route uses {src})"
+        return src, None
+
+    def _try_bind(self, now: float) -> bool:
+        """One bind attempt. Never raises; logs only on a state change."""
+        if self._shut_down or not self.active:
+            return False
+        self._last_bind_attempt = now
+        ip, why = self._resolve_source_ip()
+        if ip is None:
+            self._set_sender_state(SENDER_WAITING, why)
+            return False
+        try:
+            sender = self._sender_factory(ip, self._visca_port)
+        except Exception as exc:  # noqa: BLE001 - OSError expected; never raise from a hook
+            self._set_sender_state(SENDER_WAITING, f"{ip} not available: {exc}")
+            return False
+        self._sender = sender
+        self._bound_ip = ip
+        self._set_sender_state(SENDER_CONNECTED, None)
+        return True
+
+    def _set_sender_state(self, state: str, error: "str | None") -> None:
+        self._sender_state = state
+        self._last_bind_error = error
+        if state == self._announced_state:
+            return
+        previous, self._announced_state = self._announced_state, state
+        if state == SENDER_CONNECTED:
+            LOGGER.info("ptz_visca: camera network connected via %s", self._bound_ip)
+        elif state == SENDER_WAITING:
+            LOGGER.warning("ptz_visca: waiting for camera network (%s)", error)
+        elif previous is not None:
+            LOGGER.info("ptz_visca: camera network released (PTZ inactive)")
+
+    def _close_sender(self) -> None:
+        sender, self._sender, self._bound_ip = self._sender, None, None
+        if sender is not None:
+            try:
+                sender.close()
+            except Exception:  # noqa: BLE001
+                LOGGER.debug("ptz_visca: sender close failed", exc_info=True)
+
+    def _send(self, method: str, *args) -> None:
+        """Call one sender method; a send OSError drops back to the retry loop."""
+        sender = self._sender
+        if sender is None:
+            return
+        try:
+            getattr(sender, method)(*args)
+        except OSError as exc:
+            via = self._bound_ip
+            self._close_sender()
+            if self._releasing:
+                return
+            # tick makes the next bind attempt BIND_RETRY_SECONDS from now.
+            self._last_bind_attempt = self._clock()
+            self._set_sender_state(SENDER_WAITING, f"send via {via} failed: {exc}")
+
+    def _release_network(self, reason: str) -> None:
+        """Stop every camera, then close the socket and go inactive."""
+        self._releasing = True
+        try:
+            self._stop_all_groups(reason)
+        finally:
+            self._releasing = False
+        self._close_sender()
+        self._last_bind_attempt = None
+        self._set_sender_state(SENDER_INACTIVE, None)
 
     # ------------------------------------------------------------------
     # Global movement-speed scaling (CC-driven, persistent)
@@ -359,10 +553,10 @@ class PtzViscaEngine(Engine):
         old_ip = self._targets.get(group)
         if new_ip == old_ip:
             return  # already there -> no STOP, no state reset
-        if self._sender is not None and old_ip is not None:
+        if old_ip is not None:
             for _ in range(self._redundant_stops):
-                self._sender.send_stop(old_ip)
-                self._sender.send_zoom_stop(old_ip)
+                self._send("send_stop", old_ip)
+                self._send("send_zoom_stop", old_ip)
         self._reset_surface_state(group)
         self._targets[group] = new_ip
         self._selected_index[group] = index
@@ -461,9 +655,9 @@ class PtzViscaEngine(Engine):
         self._centered[group]["pantilt"] = False
         self._moving[group]["pantilt"] = True
         self._last_axis_time[group]["pantilt"] = now
-        if self._sender is not None and ip is not None:
+        if ip is not None:
             # speed `or 1` keeps a STOP-nibble axis's speed byte in range.
-            self._sender.send_pantilt(ip, p_speed or 1, t_speed or 1, p_dir, t_dir)
+            self._send("send_pantilt", ip, p_speed or 1, t_speed or 1, p_dir, t_dir)
         self._update_streaming()
 
     def _handle_zoom_axis(self, group: str, value: int, now: float) -> None:
@@ -484,10 +678,10 @@ class PtzViscaEngine(Engine):
         if self._sender is None or ip is None:
             return
         if speed == 0:
-            self._sender.send_zoom(ip, "stop", 0)
+            self._send("send_zoom", ip, "stop", 0)
         else:
             direction = "out" if self._zoom_inverted.get(group) else "in"
-            self._sender.send_zoom(ip, direction, speed)
+            self._send("send_zoom", ip, direction, speed)
 
     def _set_zoom_inverted(self, group: str, inverted: bool) -> None:
         """Single mutation point for the latched zoom direction.
@@ -573,19 +767,27 @@ class PtzViscaEngine(Engine):
 
     def _send_stop_burst(self, group: str, surface: str, reason: str) -> None:
         ip = self._target_ip(group)
-        if self._sender is not None and ip is not None:
+        if ip is not None:
             for _ in range(self._redundant_stops):
                 if surface == "pantilt":
-                    self._sender.send_stop(ip)
+                    self._send("send_stop", ip)
                 else:
-                    self._sender.send_zoom_stop(ip)
+                    self._send("send_zoom_stop", ip)
         self._last_stop_reason = reason
 
     def tick(self, now: float) -> None:
         """Drop watchdog: if a moving surface goes stale, inject STOP.
 
-        Local time check only — no network reads, ADR-0001 clean.
+        Local time check only — no network reads, ADR-0001 clean. Also the
+        camera-network retry: while active and unbound, one bind attempt every
+        BIND_RETRY_SECONDS. An inactive engine does no retry work at all.
         """
+        if not self.active:
+            return
+        if self._sender is None:
+            last = self._last_bind_attempt
+            if last is None or now < last or now - last >= BIND_RETRY_SECONDS:
+                self._try_bind(now)
         for group in self._groups:
             for surface in _SURFACES:
                 if not self._moving[group][surface]:
@@ -615,30 +817,32 @@ class PtzViscaEngine(Engine):
         return min(base, watchdog)
 
     def set_active(self, active: bool) -> None:
-        """Stop every camera on an active->inactive transition (toggle-off).
+        """Stop every camera and release the socket on toggle-off; bind on.
 
         The registry flips ``active`` without teardown, so a held stick at
         toggle-off would otherwise strand a moving camera. Analogous to
-        ``l_stick_layer._release_active_ccs``.
+        ``l_stick_layer._release_active_ccs``. Activating tries the bind at
+        once; a failure leaves ``tick`` retrying every BIND_RETRY_SECONDS.
         """
         was_active = self.active
         super().set_active(active)
         if was_active and not active:
-            self._stop_all_groups("toggle")
+            self._release_network("toggle")
+        elif self.active and self._sender is None:
+            self._try_bind(self._clock())
 
     def shutdown(self) -> None:
         """Stop pan/tilt AND zoom on every group, then close the sender."""
-        self._stop_all_groups("shutdown")
-        if self._sender is not None:
-            self._sender.close()
+        self._release_network("shutdown")
+        self._shut_down = True
 
     def _stop_all_groups(self, reason: str) -> None:
         for group in self._groups:
             ip = self._target_ip(group)
-            if self._sender is not None and ip is not None:
+            if ip is not None:
                 for _ in range(self._redundant_stops):
-                    self._sender.send_stop(ip)
-                    self._sender.send_zoom_stop(ip)
+                    self._send("send_stop", ip)
+                    self._send("send_zoom_stop", ip)
             self._centered[group] = {s: True for s in _SURFACES}
             self._moving[group] = {s: False for s in _SURFACES}
             self._pan[group] = (0, PT_STOP)
@@ -660,7 +864,10 @@ class PtzViscaEngine(Engine):
         s.update(
             {
                 "camera_nic_ip": self._camera_nic_ip,
-                "sender": "bound" if self._sender is not None else "unbound",
+                "sender": self._sender_state,
+                "bound_ip": self._bound_ip,
+                "cameras": dict(self._cameras),
+                "last_bind_error": self._last_bind_error,
                 "targets": dict(self._targets),
                 "selected": dict(self._selected_index),
                 "streaming": self._streaming,

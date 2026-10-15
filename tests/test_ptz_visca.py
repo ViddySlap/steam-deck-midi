@@ -17,6 +17,8 @@ from windows.engines.ptz_visca import (
     DEFAULT_AXIS_CENTERS,
     PtzViscaEngine,
     apply_curve,
+    config_error,
+    route_source_ip,
 )
 from windows.engines.registry import EngineRegistry, _ENGINE_TYPES
 from windows.engines.visca_sender import (
@@ -302,11 +304,16 @@ class SkeletonTests(unittest.TestCase):
         eng.tick(0.0)
         self.assertEqual(sender.calls, [])
 
-    def test_unbound_sender_when_nic_absent(self) -> None:
-        # Bogus (unbindable) NIC IP -> bind raises -> engine degrades to None.
+    def test_waiting_sender_when_nic_absent(self) -> None:
+        # Bogus (unbindable) NIC IP -> real bind raises -> engine waits, no raise.
         eng = PtzViscaEngine("PTZ", _ptz_config(camera_nic_ip="203.0.113.255"), RecordingMidiOut())
         self.assertIsNone(eng._sender)
-        self.assertEqual(eng.status()["sender"], "unbound")
+        eng.tick(0.0)
+        self.assertIsNone(eng._sender)
+        status = eng.status()
+        self.assertEqual(status["sender"], "waiting")
+        self.assertIsNone(status["bound_ip"])
+        self.assertIn("203.0.113.255", status["last_bind_error"])
         # Motion still no-ops cleanly without a sender.
         eng.on_axis_event("L_STICK_X_AXIS", LX + 30000, 0.0)
 
@@ -1055,6 +1062,298 @@ class PhysicalButtonSelectTests(unittest.TestCase):
         eng.on_note_in(0, 81, 127, 0.0)  # select note -> retarget, zoom-invert intact
         self.assertEqual(eng._targets["left"], CAM2)
         self.assertTrue(eng._zoom_inverted["left"])
+
+
+# ---------------------------------------------------------------------------
+# Camera network: bind only while active, 2 s retry, recovery, auto source
+# ---------------------------------------------------------------------------
+
+
+class BreakableSender(FakeSender):
+    """FakeSender whose sends raise OSError once `broken` is set (dongle pulled)."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.broken = False
+
+    def _check(self) -> None:
+        if self.broken:
+            raise OSError(10049, "The requested address is not valid in its context")
+
+    def send_pantilt(self, *args) -> None:
+        self._check()
+        super().send_pantilt(*args)
+
+    def send_zoom(self, *args) -> None:
+        self._check()
+        super().send_zoom(*args)
+
+    def send_stop(self, ip) -> None:
+        self._check()
+        super().send_stop(ip)
+
+    def send_zoom_stop(self, ip) -> None:
+        self._check()
+        super().send_zoom_stop(ip)
+
+
+class FakeSenderFactory:
+    """Stands in for the socket bind: fails while `fail` is set."""
+
+    def __init__(self, fail: bool = False) -> None:
+        self.fail = fail
+        self.binds: list[str] = []
+        self.senders: list[BreakableSender] = []
+
+    def __call__(self, ip: str, port: int) -> BreakableSender:
+        self.binds.append(ip)
+        if self.fail:
+            raise OSError(10049, "The requested address is not valid in its context")
+        sender = BreakableSender()
+        self.senders.append(sender)
+        return sender
+
+
+class FakeResolver:
+    def __init__(self, result: "str | Exception") -> None:
+        self.result = result
+        self.asked: list[str] = []
+
+    def __call__(self, camera_ip: str) -> str:
+        self.asked.append(camera_ip)
+        if isinstance(self.result, Exception):
+            raise self.result
+        return self.result
+
+
+PTZ_LOGGER = "windows.engines.ptz_visca"
+
+
+def _net_engine(factory, clock=None, resolver=None, **overrides):
+    clock = clock or FakeClock()
+    eng = PtzViscaEngine(
+        "PTZ VISCA",
+        _ptz_config(**overrides),
+        RecordingMidiOut(),
+        clock=clock,
+        sender_factory=factory,
+        source_resolver=resolver,
+        osc_client=FakeOsc(),
+    )
+    return eng, clock
+
+
+class CameraNetworkLifecycleTests(unittest.TestCase):
+    def test_no_bind_in_init_or_while_inactive(self) -> None:
+        factory = FakeSenderFactory()
+        _net_engine(factory)  # active engine: still no bind at construction
+        self.assertEqual(factory.binds, [])
+        eng, clock = _net_engine(factory, enabled=False)
+        registry = EngineRegistry([eng])
+        for _ in range(5):
+            clock.advance(3.0)
+            registry.tick(clock.now)
+            eng.tick(clock.now)  # direct call too: an inactive engine does no retry work
+        self.assertEqual(factory.binds, [])
+        status = eng.status()
+        self.assertEqual((status["sender"], status["bound_ip"]), ("inactive", None))
+
+    def test_bind_on_activate(self) -> None:
+        factory = FakeSenderFactory()
+        eng, _ = _net_engine(factory, enabled=False)
+        eng.set_active(True)
+        self.assertEqual(factory.binds, ["192.168.0.100"])
+        status = eng.status()
+        self.assertEqual((status["sender"], status["bound_ip"]), ("connected", "192.168.0.100"))
+        self.assertIsNone(status["last_bind_error"])
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 30000, 0.0)
+        self.assertTrue(factory.senders[0].of("pantilt"))
+
+    def test_active_engine_binds_on_first_tick(self) -> None:
+        factory = FakeSenderFactory()
+        eng, clock = _net_engine(factory)
+        self.assertEqual(eng.status()["sender"], "waiting")
+        EngineRegistry([eng]).tick(clock.now)
+        self.assertEqual(eng.status()["sender"], "connected")
+        self.assertEqual(factory.binds, ["192.168.0.100"])
+
+    def test_failed_bind_retries_only_after_2s_and_logs_transitions_only(self) -> None:
+        factory = FakeSenderFactory(fail=True)
+        eng, clock = _net_engine(factory, enabled=False)
+        with self.assertLogs(PTZ_LOGGER, "INFO") as logs:
+            eng.set_active(True)  # t=0: attempt 1 fails
+            self.assertEqual(len(factory.binds), 1)
+            status = eng.status()
+            self.assertEqual(status["sender"], "waiting")
+            self.assertIn("192.168.0.100", status["last_bind_error"])
+            for t in (0.5, 1.0, 1.99):
+                clock.now = t
+                eng.tick(t)
+            self.assertEqual(len(factory.binds), 1)  # no retry inside the 2 s window
+            clock.now = 2.0
+            eng.tick(2.0)
+            self.assertEqual(len(factory.binds), 2)
+            clock.now = 4.0
+            eng.tick(4.0)
+            self.assertEqual(len(factory.binds), 3)
+            factory.fail = False  # dongle plugged in
+            clock.now = 5.0
+            eng.tick(5.0)
+            self.assertEqual(len(factory.binds), 3)
+            clock.now = 6.0
+            eng.tick(6.0)
+        self.assertEqual(len(factory.binds), 4)
+        self.assertEqual(eng.status()["sender"], "connected")
+        self.assertIsNone(eng.status()["last_bind_error"])
+        waiting = [m for m in logs.output if "waiting for camera network" in m]
+        connected = [m for m in logs.output if "camera network connected via 192.168.0.100" in m]
+        self.assertEqual((len(waiting), len(connected)), (1, 1))
+
+    def test_send_oserror_drops_to_retry_loop_and_recovers(self) -> None:
+        factory = FakeSenderFactory()
+        eng, clock = _net_engine(factory, enabled=False)
+        clock.now = 10.0
+        eng.set_active(True)
+        first = factory.senders[0]
+        first.broken = True  # dongle pulled
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 30000, 10.0)  # must not raise
+        self.assertTrue(first.closed)
+        status = eng.status()
+        self.assertEqual((status["sender"], status["bound_ip"]), ("waiting", None))
+        self.assertIn("192.168.0.100", status["last_bind_error"])
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 30000, 10.1)  # no sender: quiet no-op
+        clock.now = 11.0
+        eng.tick(11.0)
+        self.assertEqual(len(factory.binds), 1)  # 2 s retry spacing
+        clock.now = 12.0
+        eng.tick(12.0)
+        self.assertEqual(len(factory.binds), 2)
+        self.assertEqual(eng.status()["sender"], "connected")
+        second = factory.senders[1]
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 30000, 12.0)
+        self.assertTrue(second.of("pantilt"))
+
+    def test_deactivate_stops_cameras_then_closes_socket(self) -> None:
+        factory = FakeSenderFactory()
+        eng, clock = _net_engine(factory, enabled=False)
+        eng.set_active(True)
+        sender = factory.senders[0]
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 30000, 0.0)  # moving
+        sender.calls.clear()
+        eng.set_active(False)
+        self.assertEqual(sender.of("stop"), [("stop", CAM1)] * 3)
+        self.assertEqual(sender.of("zoom_stop"), [("zoom_stop", CAM1)] * 3)
+        self.assertTrue(sender.closed)
+        status = eng.status()
+        self.assertEqual((status["sender"], status["bound_ip"]), ("inactive", None))
+        clock.advance(10.0)
+        eng.tick(clock.now)
+        self.assertEqual(len(factory.binds), 1)  # inactive: no rebind
+        eng.set_active(True)  # PTZ preset loaded again
+        self.assertEqual(len(factory.binds), 2)
+        self.assertEqual(eng.status()["sender"], "connected")
+
+    def test_shutdown_closes_and_never_rebinds(self) -> None:
+        factory = FakeSenderFactory()
+        eng, clock = _net_engine(factory, enabled=False)
+        eng.set_active(True)
+        eng.shutdown()
+        self.assertTrue(factory.senders[0].closed)
+        self.assertEqual(eng.status()["sender"], "inactive")
+        eng.set_active(True)
+        clock.advance(5.0)
+        eng.tick(clock.now)
+        self.assertEqual(len(factory.binds), 1)
+
+    def test_status_exposes_camera_network_keys(self) -> None:
+        factory = FakeSenderFactory()
+        eng, _ = _net_engine(factory, enabled=False)
+        eng.set_active(True)
+        status = eng.status()
+        for key in ("sender", "bound_ip", "camera_nic_ip", "cameras", "last_bind_error", "targets"):
+            self.assertIn(key, status)
+        self.assertEqual(status["camera_nic_ip"], "192.168.0.100")
+        self.assertEqual(status["cameras"]["1"], CAM1)
+        json.dumps(status)
+
+
+class CameraNicAutoTests(unittest.TestCase):
+    def test_auto_accepts_same_slash24_source(self) -> None:
+        factory = FakeSenderFactory()
+        resolver = FakeResolver("192.168.0.57")
+        eng, _ = _net_engine(factory, resolver=resolver, enabled=False, camera_nic_ip="auto")
+        eng.set_active(True)
+        self.assertEqual(resolver.asked, [CAM1])  # the first configured camera
+        self.assertEqual(factory.binds, ["192.168.0.57"])
+        status = eng.status()
+        self.assertEqual((status["sender"], status["bound_ip"], status["camera_nic_ip"]),
+                         ("connected", "192.168.0.57", "auto"))
+
+    def test_auto_rejects_a_different_subnet(self) -> None:
+        for setting in ("auto", "", None):
+            with self.subTest(setting=setting):
+                factory = FakeSenderFactory()
+                resolver = FakeResolver("10.10.10.5")  # default route, dongle absent
+                eng, clock = _net_engine(factory, resolver=resolver, enabled=False,
+                                         camera_nic_ip=setting)
+                eng.set_active(True)
+                self.assertEqual(factory.binds, [])
+                status = eng.status()
+                self.assertEqual(status["sender"], "waiting")
+                self.assertIn("10.10.10.5", status["last_bind_error"])
+                # Retries keep checking the route every 2 s.
+                clock.advance(2.0)
+                eng.tick(clock.now)
+                self.assertEqual(len(resolver.asked), 2)
+                resolver.result = "192.168.0.100"  # dongle plugged in
+                clock.advance(2.0)
+                eng.tick(clock.now)
+                self.assertEqual(factory.binds, ["192.168.0.100"])
+
+    def test_auto_with_no_route_waits(self) -> None:
+        factory = FakeSenderFactory()
+        eng, _ = _net_engine(factory, resolver=FakeResolver(OSError(10051, "unreachable")),
+                             enabled=False, camera_nic_ip="auto")
+        eng.set_active(True)
+        self.assertEqual(eng.status()["sender"], "waiting")
+        self.assertEqual(factory.binds, [])
+
+    def test_explicit_address_always_wins(self) -> None:
+        factory = FakeSenderFactory()
+        resolver = FakeResolver("192.168.0.57")
+        eng, _ = _net_engine(factory, resolver=resolver, enabled=False,
+                             camera_nic_ip="192.168.0.100")
+        eng.set_active(True)
+        self.assertEqual(resolver.asked, [])
+        self.assertEqual(factory.binds, ["192.168.0.100"])
+
+    def test_real_route_lookup_sends_nothing_and_returns_loopback(self) -> None:
+        self.assertEqual(route_source_ip("127.0.0.1"), "127.0.0.1")
+
+
+class CameraConfigValidationTests(unittest.TestCase):
+    def test_accepts_ipv4_auto_and_blank(self) -> None:
+        for nic in ("192.168.0.100", "auto", "", " 192.168.0.100 "):
+            with self.subTest(nic=nic):
+                self.assertIsNone(config_error(_ptz_config(camera_nic_ip=nic)))
+
+    def test_rejects_bad_addresses(self) -> None:
+        cams = {"1": CAM1, "2": "192.168.0.204", "3": "192.168.0.205"}
+        cases = [
+            ({"camera_nic_ip": "192.168.0"}, "camera_nic_ip"),
+            ({"camera_nic_ip": "192.168.0.256"}, "camera_nic_ip"),
+            ({"camera_nic_ip": "laptop"}, "camera_nic_ip"),
+            ({"camera_nic_ip": 100}, "camera_nic_ip"),
+            ({"cameras": {**cams, "2": "192.168.0.999"}}, "cameras.2"),
+            ({"cameras": {**cams, "3": ""}}, "cameras.3"),
+            ({"cameras": {**cams, "1": None}}, "cameras.1"),
+            ({"cameras": "192.168.0.203"}, "cameras"),
+        ]
+        for override, field in cases:
+            with self.subTest(override=override):
+                error = config_error(_ptz_config(**override))
+                self.assertIsNotNone(error)
+                self.assertEqual(error.split()[0], field)
 
 
 if __name__ == "__main__":

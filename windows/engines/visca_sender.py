@@ -114,9 +114,14 @@ class PtzViscaSender:
         port: int = VISCA_PORT,
         *,
         sock: "socket.socket | None" = None,
+        raise_on_error: bool = False,
     ) -> None:
         self._camera_nic_ip = camera_nic_ip
         self._port = int(port)
+        # The engine sets this so a send OSError (dongle pulled, source address
+        # gone) reaches it and it can drop back to its rebind loop. Default off:
+        # direct users keep the swallow-and-log behaviour.
+        self._raise_on_error = bool(raise_on_error)
         # Per-camera-IP monotonic sequence counters (uint32, wrap at 0xFFFFFFFF).
         self._seq: dict[str, int] = {}
         if sock is not None:
@@ -141,6 +146,8 @@ class PtzViscaSender:
         try:
             self._sock.sendto(frame, (ip, self._port))
         except OSError:
+            if self._raise_on_error:
+                raise
             # Swallow — never stall the receiver loop on a transient send error.
             LOGGER.debug("VISCA send failed to %s", ip)
 

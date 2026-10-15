@@ -17,9 +17,10 @@ import math
 import os
 import tempfile
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from windows.engines.base import MAX_TICK_HZ, MIN_TICK_HZ
+from windows.engines.ptz_visca import config_error as ptz_visca_config_error
 from windows.engines.registry import (
     build_engine,
     effective_engine_spec,
@@ -107,6 +108,19 @@ def _rate_field_error(spec: dict) -> str | None:
     return None
 
 
+# Per-type field checks, run beside _rate_field_error: refused with 400 BEFORE
+# the isolation probe and before any file is written. Each returns a message
+# that starts with the field name, or None.
+TYPE_FIELD_CHECKS: dict[str, Callable[[dict], "str | None"]] = {
+    "ptz_visca": ptz_visca_config_error,
+}
+
+
+def _type_field_error(type_name: str, spec: dict) -> str | None:
+    check = TYPE_FIELD_CHECKS.get(type_name)
+    return check(spec) if check is not None else None
+
+
 def get_engine_config(registry: Any, type_name: str) -> tuple[int, dict]:
     if registry is None or registry.user_dir is None:
         return 404, {"error": "no engine registry"}
@@ -140,7 +154,7 @@ def put_engine_config(registry: Any, receiver_tasks: Any, type_name: str, body: 
     if body.get("type", type_name) != type_name:
         return 400, {"error": f"stanza type {body.get('type')!r} does not match {type_name!r}"}
     spec = {**body, "type": type_name}
-    rate_error = _rate_field_error(spec)
+    rate_error = _rate_field_error(spec) or _type_field_error(type_name, spec)
     if rate_error is not None:
         # Refused BEFORE the isolation probe and before any file is written.
         return 400, {"error": f"invalid {type_name} config: {rate_error}",
@@ -162,7 +176,8 @@ def put_engine_config(registry: Any, receiver_tasks: Any, type_name: str, body: 
 
     try:
         # Isolation probe. Discarded without shutdown(): some engines' shutdown
-        # sends (ptz_visca VISCA stops), and construction starts no threads.
+        # sends (ptz_visca VISCA stops), and construction starts no threads
+        # (ptz_visca binds no socket until it is activated).
         build_engine(spec, _SilentMidiOut(), state_dir=None)
     except Exception as exc:  # noqa: BLE001 - the message is the answer
         return 400, {"error": f"invalid {type_name} config: {exc}"}

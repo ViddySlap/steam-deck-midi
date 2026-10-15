@@ -431,6 +431,7 @@
 
   /* ── Settings grid ── */
   .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  #ptzSection[hidden] { display: none; }
 
   /* ── Status bar ── */
   .statusbar {
@@ -622,6 +623,24 @@
 
     <!-- Engines tab -->
     <div class="tab-pane" id="tab-engines">
+      <div class="section" id="ptzSection" hidden>
+        <div class="section-title">PTZ cameras</div>
+        <div class="row">
+          <div class="field"><label for="ptzCam1">Cam 1</label><input type="text" id="ptzCam1" class="ptz-input" spellcheck="false"></div>
+          <div class="field"><label for="ptzCam2">Cam 2</label><input type="text" id="ptzCam2" class="ptz-input" spellcheck="false"></div>
+          <div class="field"><label for="ptzCam3">Cam 3</label><input type="text" id="ptzCam3" class="ptz-input" spellcheck="false"></div>
+        </div>
+        <div class="field">
+          <label for="ptzNicIp">Camera network address</label>
+          <input type="text" id="ptzNicIp" class="ptz-input" spellcheck="false" placeholder="auto (leave blank)">
+          <div class="field-hint">the laptop's address on the camera network, e.g. 192.168.0.100, or leave blank for auto</div>
+        </div>
+        <div style="font-size:13px" id="ptzLiveStatus"></div>
+        <div class="action-row">
+          <button class="btn btn-primary" id="btnSavePtz">Save cameras</button>
+          <span id="ptzSaveStatus" style="opacity:0.7;font-size:13px"></span>
+        </div>
+      </div>
       <div class="section">
         <div class="section-title">Engines</div>
         <div id="enginesList">
@@ -968,6 +987,7 @@ async function loadAll(section = selectedSection, {preserveEdits = false} = {}) 
     renderMacroLibrary();
     renderSectionSelector();
     renderEngines();
+    renderPtzPanel();
     if (selected) renderEditor(selected);
     status('Ready', 'ok');
     setDirty(false);
@@ -995,6 +1015,7 @@ async function pollStateVersion() {
       if (hasUnsavedEdits()) showPresetChangeNotice();
       else await loadAll(selectedSection, {preserveEdits: true});
     }
+    await refreshPtzStatus();
   } catch (e) {
     // A later poll retries. Failed requests never replace a draft or version.
   } finally {
@@ -2099,13 +2120,90 @@ async function toggleEngine(cb) {
       });
     }
     engineStates[type] = active;
+    if (isLocalSection()) {
+      const live = engineCatalog.find(e => e.type === type);
+      if (live) live.active = active;
+    }
     setDirty(true);
   } catch (e) {
     toast('Engine change failed: ' + e.message, 'err');
   } finally {
     await renderEngines();
+    renderPtzPanel();
   }
 }
+
+// ─────────────────────────────────────────────────────────────────
+// PTZ cameras (shown while this bridge's ptz_visca engine is active)
+// ─────────────────────────────────────────────────────────────────
+let ptzFormDirty = false;
+function ptzStatusText(e) {
+  if (!e || !e.active || e.sender === 'inactive') return 'PTZ inactive in this preset';
+  if (e.sender === 'connected') return `Connected via ${e.bound_ip}`;
+  return 'Waiting for camera network';
+}
+function showPtzStatus(e) {
+  const el = document.getElementById('ptzLiveStatus');
+  el.textContent = ptzStatusText(e);
+  el.title = (e && e.last_bind_error) || '';
+  el.style.color = e && e.active && e.sender === 'waiting' ? 'var(--warning)' : '';
+}
+function fillPtzForm(spec) {
+  const cams = spec.cameras || {};
+  for (const n of ['1', '2', '3']) document.getElementById('ptzCam' + n).value = cams[n] || '';
+  const nic = spec.camera_nic_ip == null ? '' : String(spec.camera_nic_ip).trim();
+  document.getElementById('ptzNicIp').value = nic.toLowerCase() === 'auto' ? '' : nic;
+}
+async function renderPtzPanel() {
+  const panel = document.getElementById('ptzSection');
+  const engine = engineCatalog.find(e => e.type === 'ptz_visca');
+  panel.hidden = !(isLocalSection() && engine && engine.active);
+  if (panel.hidden) return;
+  showPtzStatus(engine);
+  if (ptzFormDirty) return;
+  try {
+    const cfg = await apiFetch('/api/engines/ptz_visca/config');
+    if (!ptzFormDirty) fillPtzForm(cfg.spec || {});
+  } catch (e) {
+    document.getElementById('ptzSaveStatus').textContent = 'Could not read PTZ config: ' + e.message;
+  }
+}
+async function refreshPtzStatus() {
+  if (document.getElementById('ptzSection').hidden) return;
+  try {
+    const er = await apiFetch('/api/engines');
+    showPtzStatus((er.engines || []).find(e => e.type === 'ptz_visca'));
+  } catch (e) {
+    // The next poll retries.
+  }
+}
+document.querySelectorAll('.ptz-input').forEach(input => {
+  input.addEventListener('input', () => { ptzFormDirty = true; });
+});
+document.getElementById('btnSavePtz').addEventListener('click', async () => {
+  const btn = document.getElementById('btnSavePtz');
+  const msg = document.getElementById('ptzSaveStatus');
+  btn.disabled = true;
+  msg.textContent = 'Saving…';
+  msg.style.color = '';
+  try {
+    const cfg = await apiFetch('/api/engines/ptz_visca/config');
+    const spec = {...cfg.spec, cameras: {...(cfg.spec.cameras || {})}};
+    for (const n of ['1', '2', '3']) spec.cameras[n] = document.getElementById('ptzCam' + n).value.trim();
+    spec.camera_nic_ip = document.getElementById('ptzNicIp').value.trim() || 'auto';
+    await apiFetch('/api/engines/ptz_visca/config', {
+      method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(spec),
+    });
+    ptzFormDirty = false;
+    msg.textContent = 'Saved';
+    await refreshPtzStatus();
+  } catch (e) {
+    msg.textContent = 'Save failed: ' + e.message;
+    msg.style.color = '#f88';
+  } finally {
+    btn.disabled = false;
+  }
+});
 
 document.getElementById('btnResyncOscWiggles').addEventListener('click', async () => {
   const status = document.getElementById('resyncStatus');

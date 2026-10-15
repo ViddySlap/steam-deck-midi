@@ -426,5 +426,71 @@ class SwapDuringTrafficTests(_TreeMixin, unittest.TestCase):
         self.assertEqual(with_put, baseline)
 
 
+class PtzViscaConfigTests(_TreeMixin, unittest.TestCase):
+    """Camera-network fields: bad IPs answer 400 and write nothing; a remap swaps cleanly.
+
+    Every camera and the source address are loopback, so no VISCA packet can
+    reach a real camera.
+    """
+
+    def setUp(self):
+        self.make_tree(factory_types=("ptz_visca",))
+        spec = self.factory_spec("ptz_visca")
+        spec["camera_nic_ip"] = "127.0.0.1"
+        spec["cameras"] = {"1": "127.0.0.21", "2": "127.0.0.22", "3": "127.0.0.23"}
+        (self.factory_dir / "ptz_visca.json").write_text(json.dumps(spec, indent=2), encoding="utf-8")
+        self.tasks = ReceiverTaskQueue()
+
+    def test_bad_camera_network_fields_answer_400_and_write_nothing(self):
+        registry = self.load()
+        old = registry.get_by_type("ptz_visca")
+        client = self.server(registry, self.tasks)._app.test_client()
+        good = self.factory_spec("ptz_visca")
+        cases = [
+            ({**good, "cameras": {**good["cameras"], "2": "192.168.0.999"}}, "cameras.2"),
+            ({**good, "cameras": {**good["cameras"], "1": "cam-one"}}, "cameras.1"),
+            ({**good, "cameras": {**good["cameras"], "3": 205}}, "cameras.3"),
+            ({**good, "cameras": ["127.0.0.21"]}, "cameras"),
+            ({**good, "camera_nic_ip": "192.168.0"}, "camera_nic_ip"),
+            ({**good, "camera_nic_ip": "automatic"}, "camera_nic_ip"),
+            ({**good, "camera_nic_ip": 100}, "camera_nic_ip"),
+        ]
+        with _ReceiverThread(self.tasks):
+            for body, field in cases:
+                with self.subTest(field=field, body=str(body.get(field.split(".")[0]))[:60]):
+                    response = client.put("/api/engines/ptz_visca/config", json=body)
+                    self.assertEqual(response.status_code, 400, response.get_json())
+                    self.assertEqual(response.get_json()["field"], field)
+                    self.assertIn("invalid ptz_visca config", response.get_json()["error"])
+        self.assertEqual([p.name for p in self.user_dir.iterdir()], [])
+        self.assertIs(registry.get_by_type("ptz_visca"), old)
+
+    def test_auto_and_blank_source_are_accepted(self):
+        for value in ("auto", "", "AUTO"):
+            with self.subTest(value=value):
+                self.assertIsNone(engine_config_api._type_field_error(
+                    "ptz_visca", {**self.factory_spec("ptz_visca"), "camera_nic_ip": value}))
+
+    def test_camera_remap_swaps_cleanly_and_closes_the_old_socket(self):
+        registry = self.load()
+        old = registry.get_by_type("ptz_visca")
+        old.set_active(True)  # bind now (loopback source)
+        self.assertEqual(old.status()["sender"], "connected")
+        client = self.server(registry, self.tasks)._app.test_client()
+        spec = {**self.factory_spec("ptz_visca"),
+                "cameras": {"1": "127.0.0.31", "2": "127.0.0.32", "3": "127.0.0.33"}}
+        with _ReceiverThread(self.tasks):
+            response = client.put("/api/engines/ptz_visca/config", json=spec)
+        self.assertEqual(response.status_code, 200, response.get_json())
+        new = registry.get_by_type("ptz_visca")
+        self.assertIsNot(new, old)
+        self.assertIsNone(old._sender)
+        self.assertEqual(old.status()["sender"], "inactive")
+        status = new.status()
+        self.assertEqual((status["sender"], status["bound_ip"]), ("connected", "127.0.0.1"))
+        self.assertEqual(status["cameras"]["1"], "127.0.0.31")
+        self.assertEqual(status["targets"]["left"], "127.0.0.31")
+
+
 if __name__ == "__main__":
     unittest.main()
