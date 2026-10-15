@@ -62,6 +62,9 @@ class MacroCCMapping:
     cc: int
     gesture: str
     fade_duration_seconds: float | None = None
+    # Macros sharing a group are mutually exclusive: turning one on turns the
+    # others off (snap on click, crossfade on long press).
+    exclusive_group: str | None = None
 
 
 @dataclass(frozen=True)
@@ -309,6 +312,11 @@ def _parse_mapping(action: str, spec: dict[str, object]) -> MidiMapping:
             if not isinstance(fade_override, (int, float)) or float(fade_override) <= 0:
                 raise ConfigError(f"fade_duration_seconds for {action} must be a positive number")
             fade_override = float(fade_override)
+        group = spec.get("exclusive_group")
+        if group is not None:
+            if not isinstance(group, str):
+                raise ConfigError(f"exclusive_group for {action} must be a string")
+            group = group.strip() or None
         return MacroCCMapping(
             action=action,
             kind="macro_cc",
@@ -316,6 +324,7 @@ def _parse_mapping(action: str, spec: dict[str, object]) -> MidiMapping:
             cc=cc,
             gesture=gesture,
             fade_duration_seconds=fade_override,
+            exclusive_group=group,
         )
     if kind == "relative_cc":
         channel = _read_byte(spec, "channel", maximum=15, default=0)

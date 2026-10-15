@@ -188,6 +188,14 @@ class LongPressTests(unittest.TestCase):
         self.assertEqual(h.feed(state("DPAD_RIGHT", t=900)), [])
         self.assertEqual(h.feed(state(t=950)), [("DPAD_RIGHT", "up")])
 
+    def test_face_button_long_press_only_when_mapped(self) -> None:
+        h = Harness(mapped={"BTN_X_LONG_PRESS"})
+        h.feed(state("X", t=0))
+        self.assertEqual(h.feed(state("X", t=500)), [("BTN_X_LONG_PRESS", "down")])
+        self.assertEqual(h.feed(state(t=600)), [("BTN_X_LONG_PRESS", "up")])
+        # A has no long mapping: still fires on press, no waiting.
+        self.assertEqual(h.feed(state("A", t=1000)), [("BTN_A", "down")])
+
     def test_threshold_is_configurable(self) -> None:
         h = Harness(long_press_ms=300)
         h.feed(state("DPAD_UP", t=0))

@@ -265,7 +265,9 @@ class RawButtonDecoder:
         has_mapping: Callable[[str], bool],
     ) -> list[DecodedEvent]:
         action = self._resolve(name, event)
-        long_capable = name in LONG_PRESS_ACTIONS or name in ("LPAD", "RPAD")
+        # Face buttons long-press too, but only when the preset maps the
+        # long action (e.g. BTN_X_LONG_PRESS); unmapped ones fire on press.
+        long_capable = name in LONG_PRESS_ACTIONS or name in ABXY_ACTIONS or name in ("LPAD", "RPAD")
         long_action = action + LONG_PRESS_SUFFIX
         if long_capable and has_mapping(long_action):
             self._held[name] = _Held(action, long_action, event.deck_ms)

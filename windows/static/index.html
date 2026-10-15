@@ -1334,6 +1334,9 @@ function renderFields(type, spec, container = document.getElementById('fields'),
       fld('f_fade', 'Fade duration override (s)',
         numOpt('f_fade', s.fade_duration_seconds??null, 0.1, 30, 0.1),
         'Blank = use global setting from Global Settings tab'),
+      fld('f_xgroup', 'Exclusive group',
+        Object.assign(document.createElement('input'), { type: 'text', value: s.exclusive_group ?? '', placeholder: 'none' }),
+        'Macros with the same group name turn each other off'),
     );
   } else if (type === 'relative_cc') {
     row(
@@ -1420,6 +1423,8 @@ function readFields(type, container = null, prefix = '') {
     const spec = { type:'macro_cc', channel:n('f_ch'), cc:n('f_cc'), gesture:v('f_gesture') };
     const fadeStr = v('f_fade').trim();
     if (fadeStr) spec.fade_duration_seconds = parseFloat(fadeStr);
+    const group = v('f_xgroup').trim();
+    if (group) spec.exclusive_group = group;
     return spec;
   }
   if (type === 'relative_cc')

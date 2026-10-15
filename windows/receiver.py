@@ -686,6 +686,15 @@ class ActionReceiver:
 
         current_value = self._macro_values.get(key, self._macro_settings.min_value)
         target_value = self._toggle_target(current_value)
+        duration = (
+            mapping.fade_duration_seconds
+            if mapping.fade_duration_seconds is not None
+            else self._macro_settings.fade_duration_seconds
+        )
+        if mapping.exclusive_group and target_value > self._macro_settings.min_value:
+            self._release_exclusive_partners(
+                mapping, timestamp, fade_seconds=None if mapping.gesture == "click" else duration
+            )
 
         if mapping.gesture == "click":
             self._send_macro_value(mapping.channel, mapping.cc, target_value)
@@ -694,11 +703,6 @@ class ActionReceiver:
         if key not in self._macro_values:
             self._send_macro_value(mapping.channel, mapping.cc, current_value)
 
-        duration = (
-            mapping.fade_duration_seconds
-            if mapping.fade_duration_seconds is not None
-            else self._macro_settings.fade_duration_seconds
-        )
         self._active_macro_fades[key] = ActiveMacroFade(
             channel=mapping.channel,
             cc=mapping.cc,
@@ -917,6 +921,42 @@ class ActionReceiver:
         self._set_layer_state(
             self._gyro_layer_publisher, LAYER_1, timestamp, "startup-seed"
         )
+
+    def _release_exclusive_partners(
+        self, mapping: MacroCCMapping, timestamp: float, *, fade_seconds: float | None
+    ) -> None:
+        """Turn off every other macro CC in mapping's exclusive group.
+
+        fade_seconds None snaps them to min (a click); otherwise each partner
+        fades from where it is to min over the same time as the engaging
+        macro fades up, which makes a hold a crossfade.
+        """
+        own = (mapping.channel, mapping.cc)
+        low = self._macro_settings.min_value
+        partners = {
+            (m.channel, m.cc)
+            for m in self._mappings.values()
+            if isinstance(m, MacroCCMapping)
+            and m.exclusive_group == mapping.exclusive_group
+            and (m.channel, m.cc) != own
+        }
+        for channel, cc in sorted(partners):
+            key = (channel, cc)
+            fading = self._active_macro_fades.pop(key, None)
+            current = self._macro_values.get(key, low)
+            if fading is None and current <= low:
+                continue
+            if fade_seconds is None:
+                self._send_macro_value(channel, cc, low)
+            else:
+                self._active_macro_fades[key] = ActiveMacroFade(
+                    channel=channel,
+                    cc=cc,
+                    start_value=current,
+                    target_value=low,
+                    start_time=timestamp,
+                    duration_seconds=fade_seconds,
+                )
 
     def _toggle_target(self, current_value: int) -> int:
         midpoint = (self._macro_settings.min_value + self._macro_settings.max_value) / 2

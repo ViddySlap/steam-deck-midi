@@ -105,6 +105,8 @@ def _mapping_to_dict(m: MidiMapping) -> dict[str, Any]:
                               "cc": m.cc, "gesture": m.gesture}
         if m.fade_duration_seconds is not None:
             d["fade_duration_seconds"] = m.fade_duration_seconds
+        if m.exclusive_group:
+            d["exclusive_group"] = m.exclusive_group
         return d
     if isinstance(m, RelativeCCMapping):
         return {"type": "relative_cc", "channel": m.channel, "cc": m.cc,

@@ -849,6 +849,65 @@ class ActionReceiverTests(unittest.TestCase):
             ],
         )
 
+    def _mirror_receiver(self) -> ActionReceiver:
+        def macro(action, cc, gesture):
+            return MacroCCMapping(action=action, kind="macro_cc", channel=0, cc=cc,
+                                  gesture=gesture, exclusive_group="mirror")
+        return ActionReceiver(
+            self.midi,
+            {
+                "DPAD_LEFT": macro("DPAD_LEFT", 23, "click"),
+                "DPAD_LEFT_LONG_PRESS": macro("DPAD_LEFT_LONG_PRESS", 23, "long_press"),
+                "BTN_X": macro("BTN_X", 24, "click"),
+                "BTN_X_LONG_PRESS": macro("BTN_X_LONG_PRESS", 24, "long_press"),
+            },
+            timeout_seconds=1.0,
+            macro_settings=MacroSettings(fade_duration_seconds=2.0, update_hz=10),
+        )
+
+    def _press(self, receiver, action, seq, now) -> None:
+        receiver.handle_datagram(
+            ('{"action":"%s","state":"down","seq":%d}' % (action, seq)).encode(), self.addr, now=now)
+        receiver.handle_datagram(
+            ('{"action":"%s","state":"up","seq":%d}' % (action, seq + 1)).encode(), self.addr, now=now)
+
+    def test_exclusive_click_snaps_partner_off(self) -> None:
+        receiver = self._mirror_receiver()
+        self._press(receiver, "DPAD_LEFT", 1, 0.0)  # look 2 on
+        self._press(receiver, "BTN_X", 3, 1.0)  # look 3 on -> look 2 off
+        self.assertEqual(self.midi.calls, [("cc", 0, 23, 127), ("cc", 0, 23, 0), ("cc", 0, 24, 127)])
+
+    def test_exclusive_long_press_crossfades(self) -> None:
+        receiver = self._mirror_receiver()
+        self._press(receiver, "DPAD_LEFT", 1, 0.0)  # look 2 on (127)
+        self.midi.calls.clear()
+        self._press(receiver, "BTN_X_LONG_PRESS", 3, 10.0)
+        receiver.advance_fades(now=11.0)
+        self.assertEqual(receiver._macro_values[(0, 23)], 64)  # halfway down
+        self.assertEqual(receiver._macro_values[(0, 24)], 64)  # halfway up
+        receiver.advance_fades(now=12.0)
+        self.assertEqual(receiver._macro_values[(0, 23)], 0)
+        self.assertEqual(receiver._macro_values[(0, 24)], 127)
+        self.assertFalse(receiver._active_macro_fades)
+
+    def test_exclusive_turning_active_off_leaves_partner_alone(self) -> None:
+        receiver = self._mirror_receiver()
+        self._press(receiver, "BTN_X", 1, 0.0)  # look 3 on
+        self._press(receiver, "BTN_X", 3, 1.0)  # look 3 off
+        self.assertEqual(self.midi.calls, [("cc", 0, 24, 127), ("cc", 0, 24, 0)])
+
+    def test_exclusive_group_parses_and_serializes(self) -> None:
+        from windows.config import _parse_mapping
+        from windows.ui_server import _mapping_to_dict
+        spec = {"type": "macro_cc", "channel": 0, "cc": 24, "gesture": "click",
+                "exclusive_group": "mirror"}
+        m = _parse_mapping("BTN_X", spec)
+        self.assertEqual(m.exclusive_group, "mirror")
+        self.assertEqual(_mapping_to_dict(m)["exclusive_group"], "mirror")
+        plain = _parse_mapping("BTN_X", {**spec, "exclusive_group": "  "})
+        self.assertIsNone(plain.exclusive_group)
+        self.assertNotIn("exclusive_group", _mapping_to_dict(plain))
+
     def test_macro_fades_continue_after_sender_timeout(self) -> None:
         receiver = ActionReceiver(
             self.midi,
