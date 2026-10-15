@@ -1052,6 +1052,27 @@ class PhysicalButtonSelectTests(unittest.TestCase):
         self.assertEqual(phys._targets["left"], midi._targets["left"])
         self.assertEqual(phys._selected_index["left"], midi._selected_index["left"])
 
+    def test_button_select_echoes_to_touchosc(self) -> None:
+        eng, _ = self._discrete()
+        eng.on_note_in(0, 81, 127, 0.0)  # left -> Cam 2
+        eng.on_note_in(0, 85, 127, 0.0)  # right -> Cam 3
+        sel = [m for m in eng._osc.sent if "/select/" in m[0]]
+        self.assertEqual(sel, [
+            ("/composition/video/effects/ptzselect/effect/select/leftselect", 0.5),
+            ("/composition/video/effects/ptzselect/effect/select/rightselect", 1.0),
+        ])
+
+    def test_button_select_no_echo_when_unchanged(self) -> None:
+        eng, _ = self._discrete()
+        eng.on_note_in(0, 80, 127, 0.0)  # left already on Cam 1
+        self.assertEqual([m for m in eng._osc.sent if "/select/" in m[0]], [])
+
+    def test_touchosc_select_is_not_echoed(self) -> None:
+        # The CC path came FROM the param; echoing it back would be a loop.
+        eng, _ = self._discrete()
+        eng.on_midi_in(SELECT_CH, LEFT_SELECT_CC, 2, 0.0)
+        self.assertEqual([m for m in eng._osc.sent if "/select/" in m[0]], [])
+
     def test_bumper_and_select_notes_coexist(self) -> None:
         # The zoom-invert bumper (note 60/61) and select notes share on_note_in.
         eng, sender = self._discrete()

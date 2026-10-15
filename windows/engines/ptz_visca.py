@@ -294,6 +294,14 @@ class PtzViscaEngine(Engine):
                 "/composition/video/effects/ptzselect/effect/zoomdir",
             )
         )
+        # Physical (Deck-button) selects are echoed here so the TouchOSC Cam
+        # buttons and the PTZ SELECT dashboard follow: <base>/<group>select.
+        self._select_osc_base = str(
+            config.get(
+                "select_osc_base",
+                "/composition/video/effects/ptzselect/effect/select",
+            )
+        )
         osc_cfg = config.get("osc", {})
         self._osc = osc_client or OscClient(
             str(osc_cfg.get("host", "127.0.0.1")),
@@ -755,16 +763,37 @@ class PtzViscaEngine(Engine):
         if sel_ch is not None and sel_ch != channel:
             return
         mode = cfg.get("mode", "discrete")
+        group: "str | None" = None
+        index = 0
         if mode == "discrete":
             entry = cfg.get("discrete_notes", {}).get(str(note))
             if entry:
-                self._select_camera(str(entry[0]), int(entry[1]))
+                group, index = str(entry[0]), int(entry[1])
         elif mode == "cycle":
             group = cfg.get("cycle_notes", {}).get(str(note))
             if group:
                 # 1 -> 2 -> 3 -> 1; _select_camera STOP-then-retargets each step.
-                nxt = (self._selected_index.get(group, 1) % 3) + 1
-                self._select_camera(group, nxt)
+                index = (self._selected_index.get(group, 1) % 3) + 1
+        if not group:
+            return
+        before = self._selected_index.get(group)
+        self._select_camera(group, index)
+        if self._selected_index.get(group) != before:
+            self._broadcast_select(group)
+
+    def _broadcast_select(self, group: str) -> None:
+        """Echo a button-driven select to the PTZ SELECT choice param.
+
+        Resolume relays the param to TouchOSC, so the Cam buttons light for
+        Deck-button selects too. Its MIDI echo (CC 94/95) lands on
+        _select_camera as a no-op because the camera is already selected.
+        Choice params take a normalized float: Cam 1/2/3 -> 0, 0.5, 1.
+        """
+        if self._osc is None:
+            return
+        steps = max(1, len(self._cameras) - 1)
+        index = self._selected_index.get(group, 1)
+        self._osc.send(f"{self._select_osc_base}/{group}select", (index - 1) / steps)
 
     # ------------------------------------------------------------------
     # Stop-safety
