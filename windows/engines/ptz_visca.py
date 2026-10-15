@@ -43,6 +43,7 @@ lives in ``visca_sender.py``; this engine only decides *what* to send.
 
 from __future__ import annotations
 
+import errno
 import ipaddress
 import logging
 import socket
@@ -84,6 +85,15 @@ SENDER_INACTIVE = "inactive"
 BIND_RETRY_SECONDS = 2.0
 
 AUTO_NIC = "auto"
+
+# Send errors that mean this laptop's camera-network address is gone (dongle
+# pulled, adapter down). Only these drop the socket into the rebind loop; a
+# per-camera error (one BirdDog powered off: host unreachable) is swallowed so
+# the other cameras keep their control. Windows reports WSA codes in errno.
+_NETWORK_GONE_ERRNOS = frozenset({
+    errno.EADDRNOTAVAIL, errno.ENETDOWN, errno.ENETUNREACH,
+    10049, 10050, 10051,  # WSAEADDRNOTAVAIL, WSAENETDOWN, WSAENETUNREACH
+})
 
 
 def is_auto_nic(value: object) -> bool:
@@ -454,6 +464,9 @@ class PtzViscaEngine(Engine):
         try:
             getattr(sender, method)(*args)
         except OSError as exc:
+            if exc.errno not in _NETWORK_GONE_ERRNOS:
+                LOGGER.debug("ptz_visca: %s failed for one camera: %s", method, exc)
+                return
             via = self._bound_ip
             self._close_sender()
             if self._releasing:

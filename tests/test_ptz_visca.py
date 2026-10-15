@@ -1233,6 +1233,21 @@ class CameraNetworkLifecycleTests(unittest.TestCase):
         eng.on_axis_event("L_STICK_X_AXIS", LX + 30000, 12.0)
         self.assertTrue(second.of("pantilt"))
 
+    def test_one_unreachable_camera_keeps_the_socket(self) -> None:
+        factory = FakeSenderFactory()
+        eng, clock = _net_engine(factory, enabled=False)
+        eng.set_active(True)
+        sender = factory.senders[0]
+
+        def host_unreachable(*_args) -> None:
+            raise OSError(10065, "A socket operation was attempted to an unreachable host")
+
+        sender.send_pantilt = host_unreachable
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 30000, 0.0)  # must not raise
+        self.assertFalse(sender.closed)
+        self.assertEqual(eng.status()["sender"], "connected")
+        self.assertEqual(len(factory.binds), 1)
+
     def test_deactivate_stops_cameras_then_closes_socket(self) -> None:
         factory = FakeSenderFactory()
         eng, clock = _net_engine(factory, enabled=False)
