@@ -34,7 +34,10 @@ AXIS_MIN_INTERVAL = 1.0 / 60.0
 # Raw button state (button_source="hidraw") is sent on every button change,
 # and otherwise at least this often so a lost datagram corrects itself.
 RAW_BUTTON_RESEND_SECONDS = 0.05
-_HIDIOCSFEATURE = (1 << 30) | (65 << 16) | (0x48 << 8) | 0x06
+# HIDIOCSFEATURE(len) = _IOC(_IOC_WRITE|_IOC_READ, 'H', 0x06, len) — direction 3, not 1.
+# Kernels through 6.11 ignored the direction bits; SteamOS 3.8's 6.18 rejects
+# a write-only number with EINVAL, so the sender died claiming the controller.
+_HIDIOCSFEATURE = (3 << 30) | (65 << 16) | (0x48 << 8) | 0x06
 # HIDIOCGRAWINFO = _IOR('H', 0x03, struct hidraw_devinfo) — 8 bytes (u32 bustype, s16 vendor, s16 product)
 _HIDIOCGRAWINFO = (2 << 30) | (8 << 16) | (0x48 << 8) | 0x03
 

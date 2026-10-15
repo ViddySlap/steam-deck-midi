@@ -8,6 +8,8 @@ from pathlib import Path
 
 from deck.xinput_send import (
     HidrawDiscoveryError,
+    _HIDIOCGRAWINFO,
+    _HIDIOCSFEATURE,
     Xi2KeyEvent,
     _hidraw_matches_steam_gamepad,
     build_action_token_index,
@@ -204,6 +206,16 @@ class SharedProtocolEncodingTests(unittest.TestCase):
         self.assertEqual(event.action, "BTN_A")
         self.assertEqual(event.state, "down")
         self.assertEqual(event.seq, 1)
+
+
+class HidrawIoctlNumberTests(unittest.TestCase):
+    # Values of the kernel's own <linux/hidraw.h> macros. A wrong direction
+    # bit is tolerated by older kernels and rejected (EINVAL) by 6.18+.
+    def test_set_feature_is_read_write(self) -> None:
+        self.assertEqual(_HIDIOCSFEATURE, 0xC0414806)
+
+    def test_get_raw_info_is_read(self) -> None:
+        self.assertEqual(_HIDIOCGRAWINFO, 0x80084803)
 
 
 class HidrawDiscoveryTests(unittest.TestCase):
