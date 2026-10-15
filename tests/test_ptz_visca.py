@@ -144,6 +144,8 @@ def _ptz_config(**overrides) -> dict:
         "select_channel": 14,
         "left_select_cc": 94,
         "right_select_cc": 95,
+        # The pre-2026-10-15 suite assumes every speed starts at full ceiling.
+        "default_speed_scale": 1.0,
         "groups": {
             "left": {
                 "stick_x": "L_STICK_X_AXIS",
@@ -1390,6 +1392,146 @@ class CameraConfigValidationTests(unittest.TestCase):
                 error = config_error(_ptz_config(**override))
                 self.assertIsNotNone(error)
                 self.assertEqual(error.split()[0], field)
+
+
+
+# ---------------------------------------------------------------------------
+# Per-camera speed memory (Red West 2026-10-15)
+# ---------------------------------------------------------------------------
+
+SPEED_BASE = "/composition/video/effects/ptzselect/effect/speed"
+SELECT_CH = 14
+
+
+def _speed_engine(clock: FakeClock | None = None, **overrides):
+    overrides.setdefault("groups", _TWO_GROUPS)
+    return _engine(clock=clock, **overrides)
+
+
+def _speed_sends(eng) -> list:
+    return [(a, v) for a, v in eng._osc.sent if a.startswith(SPEED_BASE)]
+
+
+class PerCameraSpeedTests(unittest.TestCase):
+    def test_factory_default_is_half_speed(self) -> None:
+        cfg = _ptz_config(groups=_TWO_GROUPS)
+        del cfg["default_speed_scale"]
+        eng = PtzViscaEngine(
+            "PTZ VISCA", cfg, RecordingMidiOut(),
+            clock=FakeClock(), sender=FakeSender(), osc_client=FakeOsc(),
+        )
+        self.assertEqual(eng.status()["camera_speed_scale"]["3"], {"pan_tilt": 0.5, "zoom": 0.5})
+        self.assertEqual(eng._eff_pan_max("left"), round(1 + 23 * 0.5))
+
+    def test_speed_follows_camera_across_a_switch(self) -> None:
+        eng, _ = _speed_engine()
+        eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 0, 0.0)  # left on cam 1 -> crawl
+        self.assertEqual(eng._eff_pan_max("left"), 1)
+        eng.on_midi_in(SELECT_CH, 94, 3, 0.0)  # left -> cam 3 (still full)
+        self.assertEqual(eng._eff_pan_max("left"), 24)
+        eng.on_midi_in(SELECT_CH, 94, 1, 0.0)  # back to cam 1 -> crawl again
+        self.assertEqual(eng._eff_pan_max("left"), 1)
+
+    def test_switch_writes_new_camera_speeds_to_faders(self) -> None:
+        eng, _ = _speed_engine()
+        eng.on_midi_in(SPEED_CH, R_ZOOM_CC, 0, 0.0)  # right on cam 2: zoom 0
+        eng._osc.sent.clear()
+        eng.on_midi_in(SELECT_CH, 94, 2, 0.0)  # left -> cam 2
+        self.assertEqual(
+            _speed_sends(eng),
+            [(SPEED_BASE + "/leftpantiltspeed", 1.0), (SPEED_BASE + "/leftzoomspeed", 0.0)],
+        )
+
+    def test_unchanged_select_writes_nothing(self) -> None:
+        eng, _ = _speed_engine()
+        eng.on_midi_in(SELECT_CH, 94, 1, 0.0)  # already cam 1
+        self.assertEqual(_speed_sends(eng), [])
+
+    def test_echo_of_our_write_is_dropped(self) -> None:
+        eng, _ = _speed_engine()
+        eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 64, 0.0)  # cam 1 -> 64/127
+        eng.on_midi_in(SELECT_CH, 94, 3, 0.0)  # left -> cam 3, writes 1.0
+        eng.on_midi_in(SELECT_CH, 94, 1, 0.0)  # back to cam 1, writes 64/127
+        # Resolume echoes both writes late and rounded one step down.
+        eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 126, 0.0)
+        eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 63, 0.0)
+        self.assertEqual(eng._pan_tilt_scale["left"], 64 / 127)
+        self.assertEqual(eng._cam_pan_tilt_scale["3"], 1.0)
+
+    def test_real_fader_move_after_switch_is_kept(self) -> None:
+        eng, _ = _speed_engine()
+        eng.on_midi_in(SELECT_CH, 94, 3, 0.0)  # writes 1.0 (expects 127)
+        eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 40, 0.0)  # Ben moves the fader
+        self.assertEqual(eng._cam_pan_tilt_scale["3"], 40 / 127)
+
+    def test_echo_memory_expires(self) -> None:
+        clock = FakeClock()
+        eng, _ = _speed_engine(clock=clock)
+        eng.on_midi_in(SELECT_CH, 94, 3, 0.0)  # writes 1.0
+        clock.advance(2.0)
+        eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 127, 0.0)  # no longer an echo
+        eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 10, 0.0)
+        self.assertEqual(eng._cam_pan_tilt_scale["3"], 10 / 127)
+
+    def test_both_sides_on_one_camera_share_its_speed(self) -> None:
+        eng, _ = _speed_engine()
+        eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 0, 0.0)  # left on cam 1 -> crawl
+        eng.on_midi_in(SELECT_CH, 95, 1, 0.0)  # right -> cam 1
+        self.assertEqual(eng._eff_pan_max("right"), 1)
+        eng.on_midi_in(SPEED_CH, R_PT_CC, 127, 0.0)  # right fader, same camera
+        self.assertEqual(eng._eff_pan_max("left"), 24)
+
+    def test_deck_button_select_also_moves_faders(self) -> None:
+        notes = {"103": ["left", 2]}
+        eng, _ = _speed_engine(physical_select={"channel": 0, "discrete_notes": notes})
+        eng.on_midi_in(SPEED_CH, R_PT_CC, 20, 0.0)  # cam 2 via right
+        eng._osc.sent.clear()
+        eng.on_note_in(0, 103, 127, 0.0)
+        self.assertIn((SPEED_BASE + "/leftpantiltspeed", 20 / 127), _speed_sends(eng))
+
+    def test_tick_resyncs_faders_periodically(self) -> None:
+        clock = FakeClock()
+        eng, _ = _speed_engine(clock=clock)
+        eng.tick(clock.now)  # first active tick asserts every side
+        self.assertEqual(len(_speed_sends(eng)), 4)
+        eng._osc.sent.clear()
+        clock.advance(1.0)
+        eng.tick(clock.now)
+        self.assertEqual(_speed_sends(eng), [])  # not due yet
+        clock.advance(1.0)
+        eng.tick(clock.now)
+        self.assertEqual(len(_speed_sends(eng)), 4)
+
+    def test_resync_skips_a_camera_being_adjusted(self) -> None:
+        clock = FakeClock(100.0)
+        eng, _ = _speed_engine(clock=clock)
+        eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 30, clock.now)  # left/cam 1 dragged
+        eng.tick(clock.now)
+        sends = _speed_sends(eng)
+        self.assertEqual([a for a, _ in sends if "/left" in a], [])
+        self.assertEqual(len([a for a, _ in sends if "/right" in a]), 2)
+        clock.advance(4.0)  # idle again
+        eng._osc.sent.clear()
+        eng.tick(clock.now)
+        self.assertIn((SPEED_BASE + "/leftpantiltspeed", 30 / 127), _speed_sends(eng))
+
+    def test_reactivation_resyncs_at_once(self) -> None:
+        clock = FakeClock()
+        eng, _ = _speed_engine(clock=clock)
+        eng.tick(clock.now)
+        eng.set_active(False)
+        eng.set_active(True)
+        eng._osc.sent.clear()
+        clock.advance(0.1)
+        eng.tick(clock.now)
+        self.assertEqual(len(_speed_sends(eng)), 4)
+
+    def test_status_reports_camera_speeds(self) -> None:
+        eng, _ = _speed_engine()
+        eng.on_midi_in(SPEED_CH, PT_SPEED_CC, 0, 0.0)
+        s = eng.status()
+        self.assertEqual(s["camera_speed_scale"]["1"]["pan_tilt"], 0.0)
+        json.dumps(s)
 
 
 if __name__ == "__main__":

@@ -84,6 +84,10 @@ SENDER_INACTIVE = "inactive"
 # While active and unbound, retry the camera-network bind this often.
 BIND_RETRY_SECONDS = 2.0
 
+# How long a speed value written to Resolume is remembered so its CC echo can
+# be recognised and dropped (Resolume echoes within a few ms).
+SPEED_ECHO_SECONDS = 1.0
+
 AUTO_NIC = "auto"
 
 # Send errors that mean this laptop's camera-network address is gone (dongle
@@ -264,9 +268,34 @@ class PtzViscaEngine(Engine):
         self._pan_speed_floor = int(config.get("pan_speed_floor", 1))
         self._tilt_speed_floor = int(config.get("tilt_speed_floor", 1))
         self._zoom_speed_floor = int(config.get("zoom_speed_floor", 1))
-        # Per-group persistent scales (default 1.0). Seeded once groups are built.
-        self._pan_tilt_scale: dict[str, float] = {}
-        self._zoom_scale: dict[str, float] = {}
+        # --- per-camera speed memory (Red West 2026-10-15) ------------------
+        # The speed belongs to the CAMERA, not the stick: a speed CC sets the
+        # scale of the camera its side is driving, and a side's ceilings come
+        # from whichever camera it has selected. On a camera switch (and on a
+        # periodic resync while nobody is touching that camera's fader) the
+        # engine writes the camera's scales to the PTZ SELECT speed params, so
+        # Resolume moves the TouchOSC faders to match. Each write comes back as
+        # a speed CC (Wire On Change); those echoes are recognised by value and
+        # dropped so they can never overwrite a camera or round it down.
+        self._default_speed_scale = min(
+            1.0, max(0.0, float(config.get("default_speed_scale", 0.5)))
+        )
+        self._speed_osc_base = str(
+            config.get(
+                "speed_osc_base",
+                "/composition/video/effects/ptzselect/effect/speed",
+            )
+        )
+        self._speed_resync_seconds = float(config.get("speed_resync_seconds", 2.0))
+        self._speed_idle_seconds = float(config.get("speed_idle_seconds", 3.0))
+        self._speed_cc_for: dict[tuple[str, str], int] = {
+            v: k for k, v in self._speed_cc_map.items()
+        }
+        self._cam_pan_tilt_scale: dict[str, float] = {}
+        self._cam_zoom_scale: dict[str, float] = {}
+        self._cam_speed_touched: dict[str, float] = {}
+        self._speed_echoes: dict[int, list[tuple[int, float]]] = {}
+        self._next_speed_resync: "float | None" = None
 
         # --- per-side zoom-direction toggle (latching; spec ptz-zoom-dir-feedback
         #     2026-06-03) -------------------------------------------------------
@@ -312,9 +341,9 @@ class PtzViscaEngine(Engine):
         self._groups: dict[str, dict] = {
             str(gname): dict(gcfg) for gname, gcfg in config.get("groups", {}).items()
         }
-        # Seed per-group speed scales now that the group set is known.
-        self._pan_tilt_scale = {g: 1.0 for g in self._groups}
-        self._zoom_scale = {g: 1.0 for g in self._groups}
+        # Every camera starts at the default speed scale.
+        self._cam_pan_tilt_scale = {c: self._default_speed_scale for c in self._cameras}
+        self._cam_zoom_scale = {c: self._default_speed_scale for c in self._cameras}
         # Per-group current target camera IP + selected index. Startup is the
         # group's `startup_camera`; the select CCs (and physical buttons) flip
         # both at runtime via `_select_camera`.
@@ -501,17 +530,91 @@ class PtzViscaEngine(Engine):
     def _lerp(floor: float, top: float, s: float) -> float:
         return floor + (top - floor) * s
 
+    def _selected_cam(self, group: str) -> str:
+        return str(self._selected_index.get(group, 1))
+
+    def _scale_table(self, surface: str) -> dict[str, float]:
+        return self._cam_pan_tilt_scale if surface == "pantilt" else self._cam_zoom_scale
+
+    def _group_scale(self, group: str, surface: str) -> float:
+        """The scale of the camera ``group`` is driving, for ``surface``."""
+        return self._scale_table(surface).get(
+            self._selected_cam(group), self._default_speed_scale
+        )
+
+    @property
+    def _pan_tilt_scale(self) -> dict[str, float]:
+        """Per-side view of the per-camera pan/tilt scales (status + tests)."""
+        return {g: self._group_scale(g, "pantilt") for g in self._groups}
+
+    @property
+    def _zoom_scale(self) -> dict[str, float]:
+        """Per-side view of the per-camera zoom scales (status + tests)."""
+        return {g: self._group_scale(g, "zoom") for g in self._groups}
+
     def _eff_pan_max(self, group: str) -> int:
-        s = self._pan_tilt_scale.get(group, 1.0)
+        s = self._group_scale(group, "pantilt")
         return max(1, round(self._lerp(self._pan_speed_floor, self._pan_speed_max, s)))
 
     def _eff_tilt_max(self, group: str) -> int:
-        s = self._pan_tilt_scale.get(group, 1.0)
+        s = self._group_scale(group, "pantilt")
         return max(1, round(self._lerp(self._tilt_speed_floor, self._tilt_speed_max, s)))
 
     def _eff_zoom_max(self, group: str) -> int:
-        s = self._zoom_scale.get(group, 1.0)
+        s = self._group_scale(group, "zoom")
         return max(1, round(self._lerp(self._zoom_speed_floor, self._zoom_speed_max, s)))
+
+    def _set_camera_speed(self, group: str, surface: str, cc: int, value: int) -> None:
+        """A speed CC sets the scale of the camera ``group`` is driving."""
+        if group not in self._groups:
+            return
+        now = self._clock()
+        if self._is_speed_echo(cc, value, now):
+            return
+        cam = self._selected_cam(group)
+        self._scale_table(surface)[cam] = min(1.0, max(0.0, value / 127.0))
+        self._cam_speed_touched[cam] = now
+
+    def _is_speed_echo(self, cc: int, value: int, now: float) -> bool:
+        """True (and consumed) if ``value`` is Resolume echoing our own write.
+
+        Every value written in the last SPEED_ECHO_SECONDS is remembered per
+        CC, so a late echo of an older write is caught too. +-1 covers the
+        float -> CC rounding in the Wire patch.
+        """
+        pending = [(v, d) for v, d in self._speed_echoes.get(cc, []) if now <= d]
+        hit = next((i for i, (v, _) in enumerate(pending) if abs(v - value) <= 1), None)
+        if hit is not None:
+            pending.pop(hit)
+        self._speed_echoes[cc] = pending
+        return hit is not None
+
+    def _broadcast_speeds(self, group: str) -> None:
+        """Write ``group``'s current camera speeds to the PTZ SELECT params."""
+        if self._osc is None or group not in self._groups:
+            return
+        deadline = self._clock() + SPEED_ECHO_SECONDS
+        for surface in ("pantilt", "zoom"):
+            scale = self._group_scale(group, surface)
+            self._osc.send(f"{self._speed_osc_base}/{group}{surface}speed", scale)
+            cc = self._speed_cc_for.get((group, surface))
+            if cc is not None:
+                echoes = self._speed_echoes.setdefault(cc, [])
+                echoes.append((round(scale * 127), deadline))
+                del echoes[:-8]
+
+    def _resync_speeds(self, now: float) -> None:
+        """Re-assert every side's speeds unless its camera is being adjusted.
+
+        Idempotent absolute state, so a Resolume restart or a dropped packet
+        heals within one period. A camera whose fader moved in the last
+        ``speed_idle_seconds`` is skipped so a drag is never fought.
+        """
+        for group in self._groups:
+            touched = self._cam_speed_touched.get(self._selected_cam(group))
+            if touched is not None and 0 <= now - touched < self._speed_idle_seconds:
+                continue
+            self._broadcast_speeds(group)
 
     def on_midi_in(self, channel: int, cc: int, value: int, now: float) -> None:
         """Consume the feedback-port CCs this engine owns (all on channel 14).
@@ -544,12 +647,7 @@ class PtzViscaEngine(Engine):
             entry = self._speed_cc_map.get(cc)
             if entry is not None:
                 group, surface = entry
-                scale = min(1.0, max(0.0, value / 127.0))
-                if surface == "pantilt":
-                    if group in self._pan_tilt_scale:
-                        self._pan_tilt_scale[group] = scale
-                elif group in self._zoom_scale:
-                    self._zoom_scale[group] = scale
+                self._set_camera_speed(group, surface, cc, value)
                 return
             # --- per-side zoom-direction (absolute set from TouchOSC IN/OUT) ---
             dir_group = self._zoom_dir_cc_map.get(cc)
@@ -582,6 +680,8 @@ class PtzViscaEngine(Engine):
         self._targets[group] = new_ip
         self._selected_index[group] = index
         self._last_stop_reason = "select"
+        # The faders follow the camera: show the new camera's saved speeds.
+        self._broadcast_speeds(group)
 
     def _reset_surface_state(self, group: str) -> None:
         """Clear a group's motion + stop-safety latches across a camera switch.
@@ -830,6 +930,11 @@ class PtzViscaEngine(Engine):
             last = self._last_bind_attempt
             if last is None or now < last or now - last >= BIND_RETRY_SECONDS:
                 self._try_bind(now)
+        if self._speed_resync_seconds > 0:
+            due = self._next_speed_resync
+            if due is None or now >= due or now < due - self._speed_resync_seconds:
+                self._next_speed_resync = now + self._speed_resync_seconds
+                self._resync_speeds(now)
         for group in self._groups:
             for surface in _SURFACES:
                 if not self._moving[group][surface]:
@@ -870,6 +975,8 @@ class PtzViscaEngine(Engine):
         super().set_active(active)
         if was_active and not active:
             self._release_network("toggle")
+            # Re-activating re-asserts the speeds on its first tick.
+            self._next_speed_resync = None
         elif self.active and self._sender is None:
             self._try_bind(self._clock())
 
@@ -917,6 +1024,13 @@ class PtzViscaEngine(Engine):
                 "last_stop_reason": self._last_stop_reason,
                 "pan_tilt_speed_scale": dict(self._pan_tilt_scale),
                 "zoom_speed_scale": dict(self._zoom_scale),
+                "camera_speed_scale": {
+                    c: {
+                        "pan_tilt": self._cam_pan_tilt_scale.get(c),
+                        "zoom": self._cam_zoom_scale.get(c),
+                    }
+                    for c in self._cameras
+                },
                 "zoom_direction": {
                     g: ("out" if self._zoom_inverted.get(g) else "in")
                     for g in self._groups
