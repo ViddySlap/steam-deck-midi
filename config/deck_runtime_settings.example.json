@@ -9,5 +9,6 @@
   "presets": [],
   "api_bind": "127.0.0.1",
   "api_port": 7724,
-  "api_token": null
+  "api_token": null,
+  "button_source": "hidraw"
 }

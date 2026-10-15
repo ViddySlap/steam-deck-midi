@@ -21,7 +21,7 @@ cat >"${LAUNCHER_PATH}" <<'EOF'
 Type=Application
 Version=1.0
 Name=STEAMDECK MIDI Installer 2
-Comment=Install or update Steam Deck MIDI v2
+Comment=Install or update the Steam Deck MIDI sender (v3, hidraw buttons)
 Exec=sh -c 'SCRIPT_DIR="$(dirname "$1")"; chmod +x "$SCRIPT_DIR/STEAMDECK-MIDI-SENDER-SETUP-2.sh"; exec "$SCRIPT_DIR/STEAMDECK-MIDI-SENDER-SETUP-2.sh"' sh %k
 Terminal=true
 Categories=Utility;
