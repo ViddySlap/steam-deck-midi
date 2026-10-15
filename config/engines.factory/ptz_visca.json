@@ -40,8 +40,33 @@
   "physical_select": {
     "mode": "discrete",
     "channel": 0,
-    "comment": "Physical Deck-button camera-select DROPPED 2026-06-03: Ben uses the TouchOSC thumb-reachable cam clusters for control-group select and reserves the Deck back buttons for speed toggles. Note maps emptied to avoid a live collision with the PTZ preset's L_PAD notes 82-87 on ch0. Engine code + tests retained; to re-enable, repopulate discrete_notes/cycle_notes with FREE notes audited against the default MIDI map.",
-    "discrete_notes": {},
+    "comment": "PTZ preset buttons (2026-10-14, Red West): A/B/Y = right stick cam 1/2/3 (notes 100-102), D-pad down/right/up = left stick cam 1/2/3 (notes 103-105). The PTZ preset maps those buttons to these notes; the engine is inactive in every other preset.",
+    "discrete_notes": {
+      "100": [
+        "right",
+        1
+      ],
+      "101": [
+        "right",
+        2
+      ],
+      "102": [
+        "right",
+        3
+      ],
+      "103": [
+        "left",
+        1
+      ],
+      "104": [
+        "left",
+        2
+      ],
+      "105": [
+        "left",
+        3
+      ]
+    },
     "cycle_notes": {}
   },
   "groups": {
