@@ -227,6 +227,14 @@ TRAY_UNSUPPORTED_MESSAGE = (
 
 
 def main(argv: list[str] | None = None) -> int:
+    # The PTZ overlay runs as a child of the bridge from the same executable
+    # (the frozen build has no separate overlay exe). Hand off before the
+    # bridge parser, the log tee and the single-instance lock.
+    raw_argv = sys.argv[1:] if argv is None else argv
+    if "--ptz-overlay" in raw_argv:
+        from windows.ptz_overlay import main as overlay_main
+        return overlay_main(raw_argv)
+
     parser = build_parser()
     args = parser.parse_args(argv)
 
@@ -426,6 +434,9 @@ def main(argv: list[str] | None = None) -> int:
     # OSC fan-out relay. Core infrastructure, not an engine -- deliberately
     # has no per-preset toggle, because an off toggle here would kill OSC
     # feedback to every control surface at once with no visible symptom.
+    from windows.ptz_overlay_host import PtzOverlayHost
+    ptz_overlay_host = PtzOverlayHost(engine_registry, ui_port=args.ui_port)
+
     osc_relay = None
     osc_relay_controller = None
     if not args.no_osc_relay:
@@ -444,7 +455,7 @@ def main(argv: list[str] | None = None) -> int:
             osc_relay_load_error = str(exc)
         else:
             if osc_relay_config.active:
-                osc_relay = OscRelay(osc_relay_config)
+                osc_relay = OscRelay(osc_relay_config, observer=ptz_overlay_host.observe_osc)
                 if not osc_relay.start():
                     osc_relay = None
             else:
@@ -452,6 +463,7 @@ def main(argv: list[str] | None = None) -> int:
         # PUT /api/osc-relay replaces the running relay through this owner.
         osc_relay_controller = OscRelayController(
             osc_relay_path, osc_relay, osc_relay_config, load_error=osc_relay_load_error,
+            observer=ptz_overlay_host.observe_osc,
         )
 
     receiver_tasks = ReceiverTaskQueue()
@@ -478,6 +490,7 @@ def main(argv: list[str] | None = None) -> int:
             pulse_port=pulse_in.port_name if pulse_in is not None else None,
             receiver_tasks=receiver_tasks,
             osc_relay_controller=osc_relay_controller,
+            ptz_overlay_host=ptz_overlay_host,
             requested_ports={
                 "output": args.midi_port,
                 "feedback": args.feedback_port,
@@ -488,6 +501,8 @@ def main(argv: list[str] | None = None) -> int:
         )
         ui_server.run_in_thread()
         logging.info("mapping UI available at %s", ui_server.url)
+        # The overlay polls the UI server, so it only makes sense with one.
+        ptz_overlay_host.start()
         if not args.tray and not args.no_browser:
             # Tray mode shows the browser via the tray menu instead.
             _open_browser_delayed(ui_server.url)
@@ -533,6 +548,7 @@ def main(argv: list[str] | None = None) -> int:
             preset_watcher.stop()
             preset_watcher.join()
             midi_out.close()
+            ptz_overlay_host.stop()
             if osc_relay_controller is not None:
                 osc_relay_controller.shutdown()
             if ui_server is not None:
@@ -545,6 +561,7 @@ def main(argv: list[str] | None = None) -> int:
         preset_watcher.stop()
         preset_watcher.join()
         midi_out.close()
+        ptz_overlay_host.stop()
         if osc_relay_controller is not None:
             osc_relay_controller.shutdown()
         if ui_server is not None:

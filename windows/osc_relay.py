@@ -162,8 +162,12 @@ def _silence_windows_connreset(sock: socket.socket) -> None:
 class OscRelay:
     """Background thread that fans inbound datagrams out to N destinations."""
 
-    def __init__(self, config: OscRelayConfig) -> None:
+    def __init__(self, config: OscRelayConfig, observer=None) -> None:
         self._config = config
+        # Optional read-only tap, called with each datagram AFTER it has been
+        # forwarded (the PTZ overlay watches Layer 4 cuts here). Its errors are
+        # swallowed so it can never delay or stop the relay.
+        self._observer = observer
         self._recv_sock: socket.socket | None = None
         self._send_sock: socket.socket | None = None
         self._thread: threading.Thread | None = None
@@ -276,6 +280,12 @@ class OscRelay:
                     with self._lock:
                         self.packets_out += 1
 
+            if self._observer is not None:
+                try:
+                    self._observer(data)
+                except Exception as exc:  # noqa: BLE001 - never let the tap hurt the relay
+                    LOGGER.debug("osc_relay: observer failed: %s", exc)
+
     def stats(self) -> dict[str, object]:
         with self._lock:
             return {
@@ -329,12 +339,13 @@ class OscRelayController:
         *,
         load_error: str | None = None,
         relay_factory=None,
+        observer=None,
     ) -> None:
         self.config_path = Path(config_path)
         self._relay = relay
         self._config = config
         self._load_error = load_error
-        self._factory = relay_factory or OscRelay
+        self._factory = relay_factory or (lambda config: OscRelay(config, observer=observer))
         self._lock = threading.Lock()
 
     @property

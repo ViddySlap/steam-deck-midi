@@ -50,6 +50,8 @@ Later links must extend this inventory with every new UI or control action.
 | PUT | `/api/engines/<type_name>/config` | Loopback only: validate a stanza by building the engine in isolation, write config/engines/<type>.json atomically and swap the live instance on the receiver thread; 400 naming the field for a tick rate (`update_hz`, `tick_hz`, `stream_hz`) outside 1-120, NaN or infinite; 409 restart_required for types that cannot swap live. |
 | GET | `/api/osc-relay` | Loopback only: return the OSC relay config, file path, running flag and packet stats. |
 | PUT | `/api/osc-relay` | Loopback only: validate relay config, restart the relay on it and write osc_relay.json atomically; a bind failure restores the previous relay and file. |
+| GET | `/api/ptz-overlay` | PTZ camera overlay state, polled by the overlay process: enabled, ptz_active, visible, live_camera (from Layer 4 cuts in the relayed Resolume OSC), sticks {left, right: {camera, zoom}}, overlay_running. |
+| POST | `/api/ptz-overlay` | Loopback only: body {enabled: bool} switches the overlay on or off (web UI switch). Not persisted; every bridge start comes up enabled. |
 | GET | `/api/midi/ports` | Loopback only: list MIDI input and output port names and the bridge's requested and resolved output, feedback and pulse ports. Never opens a port. |
 | GET | `/api/logs/tail` | Loopback only: return the newest ?lines=N (1..1000, default 200) log records from the in-memory ring, plus the tray log file path in tray mode. |
 
@@ -77,6 +79,8 @@ reading the body, regardless of forwarded headers, like `POST /api/shutdown`.
 | PUT `/api/engines/<type_name>/config` | 200 {ok, type, source: "user", path, spec, active} | 400 {error, type, field} when `update_hz`, `tick_hz` or `stream_hz` is outside [1, 120], NaN, infinite or not a number - refused BEFORE the isolation probe and before anything is written; 400 body not an object, `type` mismatch, or the engine class raised while being built from the stanza; 404 as GET; 409 `restart_required` (type below, `enabled: false`, or type not loaded); 409 `config_file_conflict` when a user file other than `<type>.json` declares the type; 503 no receiver loop; 500 write or build failure. Every refusal writes nothing. |
 | GET `/api/osc-relay` | 200 {path, config, load_error, running, stats} | 404 when started with --no-osc-relay |
 | PUT `/api/osc-relay` | 200 {ok, path, config, load_error, running, stats} | 400 invalid config (same rules as startup, including destination == listen); 404 --no-osc-relay; 500 bind or write failure, with the previous relay running again and the file unchanged |
+| GET `/api/ptz-overlay` | 200 {enabled, ptz_active, visible, live_camera, sticks, overlay_running} | 404 when the bridge runs without the overlay host |
+| POST `/api/ptz-overlay` | 200 same shape as GET | 400 enabled is not a boolean; 403 not loopback; 404 no overlay host |
 | GET `/api/midi/ports` | 200 {inputs, outputs, error, selected: {output, feedback, pulse: {requested, resolved}}} | a missing MIDI backend returns 200 with null lists and `error` |
 | GET `/api/logs/tail?lines=N` | 200 {lines, count, log_file} | 400 N not an integer in 1..1000; 503 no ring installed |
 

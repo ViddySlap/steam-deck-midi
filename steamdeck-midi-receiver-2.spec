@@ -28,11 +28,16 @@ hiddenimports = [
     "mido.backends.rtmidi",
     "windows.ui_server",
     "windows.tray",
+    "windows.ptz_overlay",
+    "windows.ptz_overlay_host",
     "pystray",
     "pystray._win32",
     "PIL",
     "PIL.Image",
     "PIL.ImageDraw",
+    "PIL.ImageChops",
+    "PIL.ImageFilter",
+    "PIL.ImageFont",
 ] + flask_hiddenimports + jinja2_hiddenimports + werkzeug_hiddenimports
 
 

@@ -636,6 +636,13 @@
           <div class="field-hint">the laptop's address on the camera network, e.g. 192.168.0.100, or leave blank for auto</div>
         </div>
         <div style="font-size:13px" id="ptzLiveStatus"></div>
+        <div class="field" style="margin-top:10px">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="ptzOverlayToggle">
+            Camera overlay on this laptop's screen
+          </label>
+          <div class="field-hint" id="ptzOverlayHint">live camera glow and stick indicators over Resolume's previews. Ctrl+Alt+O on the laptop unlocks it to move or resize; Ctrl+Alt+H hides it. Comes back on whenever the bridge restarts.</div>
+        </div>
         <div class="action-row">
           <button class="btn btn-primary" id="btnSavePtz">Save cameras</button>
           <span id="ptzSaveStatus" style="opacity:0.7;font-size:13px"></span>
@@ -2165,6 +2172,7 @@ async function renderPtzPanel() {
   panel.hidden = !(isLocalSection() && engine && engine.active);
   if (panel.hidden) return;
   showPtzStatus(engine);
+  refreshPtzOverlay();
   if (ptzFormDirty) return;
   try {
     const cfg = await apiFetch('/api/engines/ptz_visca/config');
@@ -2181,7 +2189,37 @@ async function refreshPtzStatus() {
   } catch (e) {
     // The next poll retries.
   }
+  await refreshPtzOverlay();
 }
+let ptzOverlayBusy = false;
+async function refreshPtzOverlay() {
+  if (ptzOverlayBusy) return;
+  const box = document.getElementById('ptzOverlayToggle');
+  try {
+    const st = await apiFetch('/api/ptz-overlay');
+    box.disabled = false;
+    box.checked = !!st.enabled;
+  } catch (e) {
+    box.disabled = true;
+  }
+}
+document.getElementById('ptzOverlayToggle').addEventListener('change', async (ev) => {
+  const box = ev.target;
+  ptzOverlayBusy = true;
+  box.disabled = true;
+  try {
+    const st = await apiFetch('/api/ptz-overlay', {
+      method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({enabled: box.checked}),
+    });
+    box.checked = !!st.enabled;
+  } catch (e) {
+    box.checked = !box.checked;
+    document.getElementById('ptzSaveStatus').textContent = 'Overlay switch failed: ' + e.message;
+  } finally {
+    box.disabled = false;
+    ptzOverlayBusy = false;
+  }
+});
 document.querySelectorAll('.ptz-input').forEach(input => {
   input.addEventListener('input', () => { ptzFormDirty = true; });
 });

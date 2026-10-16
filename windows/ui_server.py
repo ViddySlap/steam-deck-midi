@@ -234,6 +234,7 @@ class MappingUIServer:
         live_events: LiveEvents | None = None,
         receiver_tasks: Any = None,
         osc_relay_controller: Any = None,
+        ptz_overlay_host: Any = None,
         requested_ports: dict[str, str | None] | None = None,
         log_ring: Any = None,
         log_file_path: Path | None = None,
@@ -262,6 +263,7 @@ class MappingUIServer:
         self.pulse_port = pulse_port
         self.receiver_tasks = receiver_tasks
         self.osc_relay_controller = osc_relay_controller
+        self.ptz_overlay_host = ptz_overlay_host
         self.requested_ports = requested_ports or {}
         self.log_ring = log_ring
         self.log_file_path = log_file_path
@@ -1040,6 +1042,24 @@ class MappingUIServer:
                 return jsonify({"error": str(exc)}), 400
             except (OscRelayUpdateError, OSError) as exc:
                 return jsonify({"error": str(exc)}), 500
+
+        @app.route("/api/ptz-overlay", methods=["GET"])
+        def get_ptz_overlay() -> Response:
+            if self.ptz_overlay_host is None:
+                return jsonify({"error": "ptz overlay is not available"}), 404
+            return jsonify(self.ptz_overlay_host.state())
+
+        @app.route("/api/ptz-overlay", methods=["POST"])
+        def post_ptz_overlay() -> Response:
+            if not _remote_is_loopback():
+                return _loopback_refusal()
+            if self.ptz_overlay_host is None:
+                return jsonify({"error": "ptz overlay is not available"}), 404
+            body = request.get_json(force=True, silent=True) or {}
+            enabled = body.get("enabled")
+            if not isinstance(enabled, bool):
+                return jsonify({"error": "enabled must be true or false"}), 400
+            return jsonify(self.ptz_overlay_host.set_enabled(enabled))
 
         @app.route("/api/midi/ports", methods=["GET"])
         def get_midi_ports() -> Response:
