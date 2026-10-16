@@ -316,6 +316,12 @@ class ActionReceiver:
         if self._live_events is not None:
             safe_publish(self._live_events, {"kind": "input", "action": event.action,
                                              "state": event.state})
+        # Engines see every input, mapped or not (stick touch has no mapping).
+        if self._engine_registry is not None:
+            try:
+                self._engine_registry.on_input_event(event.action, event.state, self._clock())
+            except Exception:  # noqa: BLE001 - engines shouldn't break the loop
+                LOGGER.exception("engine_registry.on_input_event failed")
         self._update_layer_state_from_action(event, timestamp)
         self._refresh_staged_note_macros(event.action, timestamp)
         try:

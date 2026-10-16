@@ -176,6 +176,16 @@ class EngineRegistry:
             except Exception:
                 LOGGER.exception("engine %s on_axis_event failed", engine.name)
 
+    def on_input_event(self, action: str, state: str, now: float) -> None:
+        """Fan digital input events (mapped or not) to every active engine."""
+        for engine in self._engines:
+            if not engine.active:
+                continue
+            try:
+                engine.on_input_event(action, state, now)
+            except Exception:
+                LOGGER.exception("engine %s on_input_event failed", engine.name)
+
     def get_by_type(self, type_name: str) -> Engine | None:
         """Look up the (single) loaded engine for a given type, or None."""
         for engine in self._engines:

@@ -137,7 +137,27 @@ def config_error(spec: dict) -> "str | None":
             if not is_ipv4(ip):
                 return (f"cameras.{key} must be an IPv4 address like "
                         f"192.168.0.203 (got {ip!r})")
+    deadzone_keys = ("deadzone", "deadzone_untouched")
+    for key in deadzone_keys:
+        if key in spec and not _is_deadzone(spec[key]):
+            return f"{key} must be a whole number from 0 to 32766 (got {spec[key]!r})"
+    groups = spec.get("groups", {})
+    if isinstance(groups, dict):
+        for gname, gcfg in groups.items():
+            if not isinstance(gcfg, dict):
+                continue
+            for key in deadzone_keys:
+                if key in gcfg and not _is_deadzone(gcfg[key]):
+                    return (f"groups.{gname}.{key} must be a whole number from 0 to "
+                            f"32766 (got {gcfg[key]!r})")
+            touch = gcfg.get("touch_action")
+            if touch is not None and not (isinstance(touch, str) and touch):
+                return f"groups.{gname}.touch_action must be an action name or null"
     return None
+
+
+def _is_deadzone(value: object) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool) and 0 <= value < 32767
 
 
 def route_source_ip(camera_ip: str, port: int = 52381) -> str:
@@ -208,6 +228,12 @@ class PtzViscaEngine(Engine):
         self._zoom_speed_max = int(config.get("zoom_speed_max", 7))
         self._invert_pan = bool(config.get("invert_pan", False))
         self._invert_tilt = bool(config.get("invert_tilt", False))
+        # Touch-aware stick deadzone: while the stick's touch sensor reads
+        # untouched, the wider `deadzone_untouched` applies, so a stick that
+        # springs back short of center (measured 4,178-4,517 on 2026-10-16)
+        # stops the camera instead of creeping. Defaults to `deadzone`, so a
+        # config without it behaves exactly as before.
+        self._deadzone_untouched = int(config.get("deadzone_untouched", self._deadzone))
         self._zoom_deadzone = int(config.get("zoom_deadzone", self._deadzone))
         self._trigger_max = int(config.get("trigger_max", 32767))
 
@@ -364,6 +390,30 @@ class PtzViscaEngine(Engine):
                 self._stick_axis_to_group[str(gcfg["stick_y"])] = (gname, "y")
             if gcfg.get("zoom_axis"):
                 self._zoom_axis_to_group[str(gcfg["zoom_axis"])] = gname
+
+        # Per-stick deadzones (group keys override the globals) and the
+        # touch-aware switch. A group with no `touch_action` always uses its
+        # touched deadzone, which is the pre-0.5.4 behaviour.
+        self._touch_action_to_group: dict[str, str] = {}
+        self._group_deadzone: dict[str, int] = {}
+        self._group_deadzone_untouched: dict[str, int] = {}
+        self._touched: dict[str, bool] = {}
+        # After a release the wide deadzone stays latched until the stick is
+        # back inside the touched deadzone or pushed past the untouched one,
+        # so touching a stick parked at 4,500 does not start a creep.
+        self._wide_latch: dict[str, bool] = {}
+        self._last_stick_raw: dict[str, dict[str, "int | None"]] = {}
+        for gname, gcfg in self._groups.items():
+            dz = int(gcfg.get("deadzone", self._deadzone))
+            self._group_deadzone[gname] = dz
+            self._group_deadzone_untouched[gname] = int(
+                gcfg.get("deadzone_untouched",
+                         config.get("deadzone_untouched", dz)))
+            if gcfg.get("touch_action"):
+                self._touch_action_to_group[str(gcfg["touch_action"])] = gname
+            self._touched[gname] = False
+            self._wide_latch[gname] = True
+            self._last_stick_raw[gname] = {"x": None, "y": None}
 
         # --- motion + safety state (per group) -----------------------------
         # _pan/_tilt hold (speed, direction-nibble); direction == PT_STOP when
@@ -698,20 +748,23 @@ class PtzViscaEngine(Engine):
         self._last_axis_time[group] = {s: 0.0 for s in _SURFACES}
         self._update_streaming()
 
-    def axis_to_speed(self, raw: int, center: int, speed_max: int) -> tuple[int, int]:
+    def axis_to_speed(self, raw: int, center: int, speed_max: int,
+                      deadzone: "int | None" = None) -> tuple[int, int]:
         """Map a raw signed axis value to a (speed, sign) pair.
 
         Subtracts the calibrated center, applies deadzone + curve, scales to a
         1-based VISCA speed byte. Returns (0, 0) within the deadzone — the
         caller emits STOP for that axis. VISCA speed bytes are 1-based: just
         past the deadzone yields speed 1, full deflection yields ``speed_max``.
+        ``deadzone`` defaults to the global ``deadzone``.
         """
+        dz = self._deadzone if deadzone is None else deadzone
         v = raw - center
         mag = abs(v)
-        if mag <= self._deadzone:
+        if mag <= dz:
             return 0, 0
-        span = self._input_max - self._deadzone
-        t = (mag - self._deadzone) / span if span > 0 else 1.0
+        span = self._input_max - dz
+        t = (mag - dz) / span if span > 0 else 1.0
         t = min(1.0, max(0.0, t))
         t = apply_curve(t, self._curve)
         speed = 1 + round(t * (speed_max - 1))
@@ -754,15 +807,83 @@ class PtzViscaEngine(Engine):
             self._handle_zoom_axis(zgroup, value, now)
 
     def _handle_stick_axis(self, group: str, axis: str, value: int, now: float) -> None:
+        self._last_stick_raw[group][axis] = value
+        self._update_wide_latch(group)
+        self._apply_stick_axis(group, axis, value)
+        self._emit_drive(group, now)
+
+    def _apply_stick_axis(self, group: str, axis: str, value: int) -> None:
         gcfg = self._groups[group]
+        dz = self._stick_deadzone(group)
         if axis == "x":
             center = self._axis_centers.get(str(gcfg.get("stick_x")), 0)
-            speed, sign = self.axis_to_speed(value, center, self._eff_pan_max(group))
+            speed, sign = self.axis_to_speed(value, center, self._eff_pan_max(group), dz)
             self._pan[group] = (0, PT_STOP) if speed == 0 else (speed, self._pan_dir(sign))
         else:
             center = self._axis_centers.get(str(gcfg.get("stick_y")), 0)
-            speed, sign = self.axis_to_speed(value, center, self._eff_tilt_max(group))
+            speed, sign = self.axis_to_speed(value, center, self._eff_tilt_max(group), dz)
             self._tilt[group] = (0, PT_STOP) if speed == 0 else (speed, self._tilt_dir(sign))
+
+    # ------------------------------------------------------------------
+    # Touch-aware deadzone
+
+    def _stick_deadzone(self, group: str) -> int:
+        """The stick deadzone in force for ``group`` right now."""
+        if group not in self._touch_action_to_group.values():
+            return self._group_deadzone[group]
+        if self._touched[group] and not self._wide_latch[group]:
+            return self._group_deadzone[group]
+        return self._group_deadzone_untouched[group]
+
+    def _stick_offset(self, group: str) -> int:
+        """Largest centered deflection of ``group``'s stick (0 if unknown)."""
+        gcfg = self._groups[group]
+        offset = 0
+        for axis, key in (("x", "stick_x"), ("y", "stick_y")):
+            raw = self._last_stick_raw[group][axis]
+            if raw is not None:
+                center = self._axis_centers.get(str(gcfg.get(key)), 0)
+                offset = max(offset, abs(raw - center))
+        return offset
+
+    def _update_wide_latch(self, group: str) -> None:
+        if not (self._touched[group] and self._wide_latch[group]):
+            return
+        offset = self._stick_offset(group)
+        if (offset <= self._group_deadzone[group]
+                or offset > self._group_deadzone_untouched[group]):
+            self._wide_latch[group] = False
+
+    def on_input_event(self, action: str, state: str, now: float) -> None:
+        group = self._touch_action_to_group.get(action)
+        if group is None:
+            return
+        touched = state == "down"
+        if touched == self._touched[group]:
+            return
+        self._touched[group] = touched
+        if touched:
+            self._update_wide_latch(group)
+        else:
+            self._wide_latch[group] = True
+        # The Deck sends no axis event while a released stick sits still, so
+        # re-apply the new deadzone to the last position now. Only a moving
+        # stick is re-evaluated: a touch change never starts motion (the drop
+        # watchdog may have stopped it on purpose).
+        if not self._moving[group]["pantilt"]:
+            return
+        before = (self._pan[group], self._tilt[group])
+        for axis in ("x", "y"):
+            raw = self._last_stick_raw[group][axis]
+            if raw is not None:
+                self._apply_stick_axis(group, axis, raw)
+        if (self._pan[group], self._tilt[group]) == before:
+            return
+        stopping = self._pan[group][1] == PT_STOP and self._tilt[group][1] == PT_STOP
+        if stopping:
+            LOGGER.info("ptz_visca: %s stick %s, stopped at offset %d (deadzone %d)",
+                        group, "touched" if touched else "released",
+                        self._stick_offset(group), self._stick_deadzone(group))
         self._emit_drive(group, now)
 
     def _emit_drive(self, group: str, now: float) -> None:
@@ -1021,6 +1142,16 @@ class PtzViscaEngine(Engine):
                 "selected": dict(self._selected_index),
                 "streaming": self._streaming,
                 "moving": {g: dict(self._moving[g]) for g in self._groups},
+                "stick_deadzone": {
+                    g: {
+                        "touch_action": self._groups[g].get("touch_action"),
+                        "touched": self._touched[g],
+                        "deadzone": self._group_deadzone[g],
+                        "deadzone_untouched": self._group_deadzone_untouched[g],
+                        "in_force": self._stick_deadzone(g),
+                    }
+                    for g in self._groups
+                },
                 "last_stop_reason": self._last_stop_reason,
                 "pan_tilt_speed_scale": dict(self._pan_tilt_scale),
                 "zoom_speed_scale": dict(self._zoom_scale),

@@ -93,6 +93,15 @@ class Engine:
         deck-side absolute-state signals) override this. Default no-op.
         """
 
+    def on_input_event(self, action: str, state: str, now: float) -> None:
+        """Called for every digital input event arriving from the deck.
+
+        `action` is the action ID (e.g. "LEFT_STICK_TOUCH"), `state` is
+        "down" or "up". Fired whether or not the action has a MIDI mapping,
+        so engines can read inputs the preset leaves unmapped (stick touch
+        drives ptz_visca's touch-aware deadzone). Default no-op.
+        """
+
     def on_midi_clock(self, message_type: str, now: float) -> None:
         """Called for every MIDI System Real-Time clock message.
 

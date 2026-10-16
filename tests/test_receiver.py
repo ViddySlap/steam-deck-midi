@@ -22,7 +22,11 @@ class FakeEngineRegistry:
     def __init__(self) -> None:
         self.midi_in_calls: list[tuple[int, int, int, float]] = []
         self.note_in_calls: list[tuple[int, int, int, float]] = []
+        self.input_calls: list[tuple[str, str]] = []
         self.engines: list = []
+
+    def on_input_event(self, action: str, state: str, now: float) -> None:
+        self.input_calls.append((action, state))
 
     def on_midi_in(self, channel: int, cc: int, value: int, now: float) -> None:
         self.midi_in_calls.append((channel, cc, value, now))
@@ -1749,6 +1753,19 @@ class EngineFanoutOfDeckCCTests(unittest.TestCase):
         self.midi = FakeMidiOut()
         self.registry = FakeEngineRegistry()
         self.addr = ("10.10.10.2", 45123)
+
+    def test_unmapped_input_event_fans_out_to_engines(self) -> None:
+        receiver = ActionReceiver(self.midi, {}, timeout_seconds=1.0,
+                                  engine_registry=self.registry)
+        receiver.handle_datagram(
+            encode_action_event(action="LEFT_STICK_TOUCH", state="down", seq=1),
+            self.addr, now=0.0)
+        receiver.handle_datagram(
+            encode_action_event(action="LEFT_STICK_TOUCH", state="up", seq=2),
+            self.addr, now=0.5)
+        self.assertEqual(self.registry.input_calls,
+                         [("LEFT_STICK_TOUCH", "down"), ("LEFT_STICK_TOUCH", "up")])
+        self.assertEqual(self.midi.calls, [])
 
     def test_axis_to_cc_emit_fans_out_to_engines(self) -> None:
         mapping = AxisToCCMapping(

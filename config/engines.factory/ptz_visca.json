@@ -10,6 +10,7 @@
     "3": "192.168.0.205"
   },
   "deadzone": 3500,
+  "deadzone_untouched": 5000,
   "curve": "linear",
   "pan_speed_max": 24,
   "tilt_speed_max": 20,
@@ -76,7 +77,8 @@
       "zoom_axis": "L_TRIGGER_PRESSURE",
       "zoom_invert_note": 60,
       "zoom_invert_channel": 0,
-      "startup_camera": 1
+      "startup_camera": 1,
+      "touch_action": "LEFT_STICK_TOUCH"
     },
     "right": {
       "stick_x": "R_STICK_X_AXIS",
@@ -84,7 +86,8 @@
       "zoom_axis": "R_TRIGGER_PRESSURE",
       "zoom_invert_note": 62,
       "zoom_invert_channel": 0,
-      "startup_camera": 2
+      "startup_camera": 2,
+      "touch_action": "RIGHT_STICK_TOUCH"
     }
   }
 }

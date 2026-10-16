@@ -1534,5 +1534,141 @@ class PerCameraSpeedTests(unittest.TestCase):
         json.dumps(s)
 
 
+
+def _touch_groups(**left_extra) -> dict:
+    left = {
+        "stick_x": "L_STICK_X_AXIS",
+        "stick_y": "L_STICK_Y_AXIS",
+        "zoom_axis": "L_TRIGGER_PRESSURE",
+        "zoom_invert_note": 60,
+        "startup_camera": 1,
+        "touch_action": "LEFT_STICK_TOUCH",
+    }
+    left.update(left_extra)
+    return {"left": left}
+
+
+class TouchDeadzoneTests(unittest.TestCase):
+    """0.5.4: the wider deadzone applies while the stick is untouched."""
+
+    def _touch_engine(self, clock=None, **left_extra):
+        return _engine(clock=clock, deadzone_untouched=5000,
+                       groups=_touch_groups(**left_extra))
+
+    def test_no_touch_action_keeps_single_deadzone(self) -> None:
+        eng, sender = _engine(deadzone_untouched=5000)  # group has no touch_action
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 4500, 0.0)
+        self.assertTrue(sender.of("pantilt"))  # 4500 > 3500: moves as before
+        self.assertEqual(eng.status()["stick_deadzone"]["left"]["in_force"], 3500)
+
+    def test_missing_deadzone_untouched_is_inert(self) -> None:
+        eng, sender = _engine(groups=_touch_groups())
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 4000, 0.0)  # untouched, dz falls back to 3500
+        self.assertTrue(sender.of("pantilt"))
+
+    def test_untouched_uses_wide_deadzone(self) -> None:
+        eng, sender = self._touch_engine()
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 4500, 0.0)
+        self.assertEqual(sender.of("pantilt"), [])
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 20000, 0.0)  # missed touch, big flick still moves
+        self.assertTrue(sender.of("pantilt"))
+
+    def test_touched_uses_narrow_deadzone(self) -> None:
+        eng, sender = self._touch_engine()
+        eng.on_input_event("LEFT_STICK_TOUCH", "down", 0.0)
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 4000, 0.0)
+        self.assertTrue(sender.of("pantilt"))
+        self.assertEqual(eng.status()["stick_deadzone"]["left"]["in_force"], 3500)
+
+    def test_release_short_of_center_stops_without_new_axis_event(self) -> None:
+        eng, sender = self._touch_engine()
+        eng.on_input_event("LEFT_STICK_TOUCH", "down", 0.0)
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 20000, 0.0)
+        eng.on_axis_event("L_STICK_X_AXIS", LX - 4517, 0.0)  # springs back short of center
+        self.assertNotEqual(sender.of("pantilt")[-1][4], PT_STOP)  # still moving at 4517
+        sender.calls.clear()
+        eng.on_input_event("LEFT_STICK_TOUCH", "up", 0.0)  # no axis event follows
+        self.assertEqual(len(sender.of("stop")), 3)
+        self.assertFalse(eng.status()["moving"]["left"]["pantilt"])
+
+    def test_touch_change_never_starts_motion(self) -> None:
+        clock = FakeClock()
+        eng, sender = self._touch_engine(clock=clock)
+        eng.on_input_event("LEFT_STICK_TOUCH", "down", clock.now)
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 6000, clock.now)
+        clock.advance(0.3)
+        eng.tick(clock.now)  # drop watchdog stops the parked stick
+        sender.calls.clear()
+        eng.on_input_event("LEFT_STICK_TOUCH", "up", clock.now)
+        eng.on_input_event("LEFT_STICK_TOUCH", "down", clock.now)
+        self.assertEqual(sender.of("pantilt"), [])
+
+    def test_touching_a_parked_stick_keeps_wide_deadzone(self) -> None:
+        eng, sender = self._touch_engine()
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 4500, 0.0)  # parked, untouched
+        eng.on_input_event("LEFT_STICK_TOUCH", "down", 0.0)
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 4600, 0.0)  # thumb resting, small jitter
+        self.assertEqual(sender.of("pantilt"), [])
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 6000, 0.0)  # pushed past 5000: latch clears
+        self.assertTrue(sender.of("pantilt"))
+        sender.calls.clear()
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 4000, 0.0)  # now narrow 3500 applies
+        self.assertNotEqual(sender.of("pantilt")[-1][4], PT_STOP)
+
+    def test_latch_clears_once_stick_returns_to_center(self) -> None:
+        eng, sender = self._touch_engine()
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 4500, 0.0)
+        eng.on_input_event("LEFT_STICK_TOUCH", "down", 0.0)
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 100, 0.0)  # back inside 3500
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 4000, 0.0)
+        self.assertTrue(sender.of("pantilt"))
+
+    def test_per_stick_deadzones_override_globals(self) -> None:
+        eng, sender = self._touch_engine(deadzone=2000, deadzone_untouched=6000)
+        st = eng.status()["stick_deadzone"]["left"]
+        self.assertEqual((st["deadzone"], st["deadzone_untouched"]), (2000, 6000))
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 5500, 0.0)  # untouched: inside 6000
+        self.assertEqual(sender.of("pantilt"), [])
+        eng.on_input_event("LEFT_STICK_TOUCH", "down", 0.0)
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 100, 0.0)
+        eng.on_axis_event("L_STICK_X_AXIS", LX + 2500, 0.0)  # touched: past 2000
+        self.assertTrue(sender.of("pantilt"))
+
+    def test_other_inputs_ignored(self) -> None:
+        eng, sender = self._touch_engine()
+        eng.on_input_event("RIGHT_STICK_TOUCH", "down", 0.0)
+        eng.on_input_event("A", "down", 0.0)
+        self.assertFalse(eng.status()["stick_deadzone"]["left"]["touched"])
+
+    def test_config_validation(self) -> None:
+        self.assertIsNone(config_error(_ptz_config(deadzone_untouched=5000,
+                                                   groups=_touch_groups(deadzone=3000))))
+        cases = [
+            ({"deadzone_untouched": -1}, "deadzone_untouched"),
+            ({"deadzone": "big"}, "deadzone"),
+            ({"groups": _touch_groups(deadzone_untouched=40000)}, "groups.left.deadzone_untouched"),
+            ({"groups": _touch_groups(touch_action=5)}, "groups.left.touch_action"),
+        ]
+        for overrides, field in cases:
+            with self.subTest(field=field):
+                err = config_error(_ptz_config(**overrides))
+                self.assertIsNotNone(err)
+                self.assertTrue(err.startswith(field), err)
+
+    def test_registry_forwards_input_events(self) -> None:
+        from windows.engines.base import Engine
+        seen = []
+
+        class Probe(Engine):
+            def on_input_event(self, action, state, now):
+                seen.append((action, state))
+
+        probe = Probe("probe", {}, RecordingMidiOut())
+        probe.set_active(True)
+        reg = EngineRegistry([probe])
+        reg.on_input_event("LEFT_STICK_TOUCH", "down", 0.0)
+        self.assertEqual(seen, [("LEFT_STICK_TOUCH", "down")])
+
+
 if __name__ == "__main__":
     unittest.main()
