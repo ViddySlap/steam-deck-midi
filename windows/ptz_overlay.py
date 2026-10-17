@@ -95,11 +95,14 @@ class OverlayState:
         self.ptz_active = False
         self.sticks = {"left": (None, "in"), "right": (None, "in")}
         self.live: int | None = None
+        self.toast: dict | None = None
+        self.holding: list = []
         self.version = 0
 
     def snapshot(self) -> tuple:
         with self.lock:
-            return (self.bridge_ok, self.ptz_active, dict(self.sticks), self.live)
+            return (self.bridge_ok, self.ptz_active, dict(self.sticks), self.live,
+                    self.toast, list(self.holding))
 
     def update(self, **kw) -> None:
         with self.lock:
@@ -150,7 +153,9 @@ def poll_bridge(state: OverlayState, stop: threading.Event) -> None:
                 sticks[g] = (int(cam) if cam is not None else None, str(stick.get("zoom", "in")))
             live = st.get("live_camera")
             state.update(bridge_ok=True, ptz_active=bool(st.get("visible")), sticks=sticks,
-                         live=int(live) if live is not None else None)
+                         live=int(live) if live is not None else None,
+                         toast=st.get("preset_toast") or None,
+                         holding=list(st.get("preset_holding") or []))
         except Exception as exc:
             LOGGER.debug("bridge poll failed: %s", exc)
             state.update(bridge_ok=False)
@@ -194,7 +199,7 @@ def _font(px: float) -> ImageFont.FreeTypeFont:
 
 
 def render(win_w: int, win_h: int, box_w: int, box_h: int, snap: tuple, unlocked: bool) -> Image.Image:
-    bridge_ok, ptz_active, sticks, live = snap
+    bridge_ok, ptz_active, sticks, live, toast, holding = snap
     show = unlocked or (bridge_ok and ptz_active)
     img = Image.new("RGBA", (win_w, win_h), (0, 0, 0, 1 if unlocked else 0))
     if not show:
@@ -263,6 +268,35 @@ def render(win_w: int, win_h: int, box_w: int, box_h: int, snap: tuple, unlocked
             mx = ox + (x0 + x1) / 2
             d.rounded_rectangle(s(mx - 62 * k, cy - 15 * k, mx + 62 * k, cy + 15 * k), radius=15 * k * S, fill=YEL + (255,))
             d.text(s(mx, cy), f"LIVE  CAM {cam}", font=F(15), fill=BLK + (255,), anchor="mm")
+
+    # Preset save feedback, centred on that camera's preview: a progress pill
+    # while a button is held, then SAVED (green) or FAILED (red).
+    if not unlocked:
+        for h in holding:
+            cam = h.get("camera")
+            if cam not in g.slots:
+                continue
+            x0, y0, x1, y1 = g.slots[cam]
+            mx, my = ox + (x0 + x1) / 2, oy + (y0 + y1) / 2
+            w2, h2 = 150 * k, 34 * k
+            d.rounded_rectangle(s(mx - w2, my - h2, mx + w2, my + h2), radius=14 * k * S,
+                                fill=(15, 15, 15, 225), outline=CYA + (255,), width=max(1, int(3 * k * S)))
+            d.text(s(mx, my - 9 * k), f"HOLD {h.get('label')} TO SAVE", font=F(20), fill=WHT + (255,), anchor="mm")
+            bx0, bx1, by0, by1 = mx - 120 * k, mx + 120 * k, my + 12 * k, my + 22 * k
+            d.rounded_rectangle(s(bx0, by0, bx1, by1), radius=5 * k * S, fill=GRY + (255,))
+            p = max(0.0, min(1.0, float(h.get("progress") or 0.0)))
+            if p > 0:
+                d.rounded_rectangle(s(bx0, by0, bx0 + (bx1 - bx0) * p, by1), radius=5 * k * S, fill=CYA + (255,))
+        if toast and toast.get("camera") in g.slots:
+            x0, y0, x1, y1 = g.slots[toast["camera"]]
+            mx, my = ox + (x0 + x1) / 2, oy + (y0 + y1) / 2
+            ok = toast.get("kind") == "saved"
+            col = GRN if ok else (220, 38, 38)
+            text = f"PRESET {toast.get('label')} SAVED" if ok else f"PRESET {toast.get('label')} NOT SAVED"
+            w2, h2 = 170 * k, 34 * k
+            d.rounded_rectangle(s(mx - w2, my - h2, mx + w2, my + h2), radius=14 * k * S,
+                                fill=col + (240,), outline=WHT + (255,), width=max(1, int(3 * k * S)))
+            d.text(s(mx, my), text, font=F(24), fill=WHT + (255,), anchor="mm")
 
     if unlocked:
         bx0, by0, bx1, by1 = ox, oy, ox + box_w, oy + box_h

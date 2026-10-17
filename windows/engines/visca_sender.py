@@ -18,13 +18,15 @@ Raw un-framed VISCA on UDP 52381 gets zero reply — the Sony header is required
 This module is pure transport: it decides *how* to put a command on the wire,
 never *what* to send (that is the engine's job). Speed/direction inputs are
 clamped defensively to the verified ranges. Sends are fire-and-forget: no
-retry, no blocking, no reply read — ACK/completion (90 41 FF / 90 51 FF) are
-ignored for motion (recon rate-stress: 60 cmds @ 49 Hz, 0 errors).
+retry, no blocking. ACK/completion (90 41 FF / 90 51 FF) are ignored for
+motion (recon rate-stress: 60 cmds @ 49 Hz, 0 errors); ``poll_replies`` reads
+them without blocking so a preset save can be confirmed by the camera.
 """
 
 from __future__ import annotations
 
 import logging
+import select
 import socket
 import struct
 
@@ -94,6 +96,34 @@ def zoom_payload(direction: str, speed: int) -> bytes:
     return bytes([0x81, 0x01, 0x04, 0x07, nibble | p, 0xFF])
 
 
+# CAM_Memory: the camera stores pan, tilt, zoom and focus in its own memory.
+MEMORY_SET, MEMORY_RECALL = 0x01, 0x02
+MEMORY_SLOT_MAX = 0xFE
+
+
+def memory_payload(op: int, slot: int) -> bytes:
+    """CAM_Memory ``81 01 04 3F 0p pp FF``: op 01 = set, 02 = recall.
+
+    Probed 2026-10-17 on an X5 Ultra: slot 0x64 (100) answers ACK + completion
+    for both set and recall within ~16 ms.
+    """
+    pp = max(0, min(MEMORY_SLOT_MAX, int(slot)))
+    return bytes([0x81, 0x01, 0x04, 0x3F, op, pp, 0xFF])
+
+
+def parse_reply(data: bytes) -> "tuple[int, str] | None":
+    """A camera reply frame -> (sequence, kind) or None if it is not one.
+
+    kind is ``ack`` (90 4y), ``done`` (90 5y) or ``error`` (90 6y). The camera
+    echoes the command's sequence number in the Sony header.
+    """
+    if len(data) < 11 or data[0:2] != b"\x01\x11" or data[8] != 0x90:
+        return None
+    seq = struct.unpack(">I", data[4:8])[0]
+    kind = {0x40: "ack", 0x50: "done", 0x60: "error"}.get(data[9] & 0xF0)
+    return None if kind is None else (seq, kind)
+
+
 # ---------------------------------------------------------------------------
 # Sender
 # ---------------------------------------------------------------------------
@@ -139,7 +169,8 @@ class PtzViscaSender:
 
     # -- low-level send -----------------------------------------------------
 
-    def _send(self, ip: str, payload: bytes) -> None:
+    def _send(self, ip: str, payload: bytes) -> int:
+        """Send one framed payload; returns the sequence number it carried."""
         seq = self._seq.get(ip, 0)
         frame = build_frame(payload, seq)
         self._seq[ip] = (seq + 1) & 0xFFFFFFFF
@@ -150,6 +181,7 @@ class PtzViscaSender:
                 raise
             # Swallow — never stall the receiver loop on a transient send error.
             LOGGER.debug("VISCA send failed to %s", ip)
+        return seq
 
     # -- command API (used by the engine) -----------------------------------
 
@@ -168,6 +200,37 @@ class PtzViscaSender:
     def send_zoom_stop(self, ip: str) -> None:
         """Zoom STOP (00)."""
         self._send(ip, zoom_payload("stop", 0))
+
+    def send_memory_set(self, ip: str, slot: int) -> int:
+        """Store the camera's current position in ``slot``; returns the seq."""
+        return self._send(ip, memory_payload(MEMORY_SET, slot))
+
+    def send_memory_recall(self, ip: str, slot: int) -> int:
+        """Drive the camera to the position stored in ``slot``; returns the seq."""
+        return self._send(ip, memory_payload(MEMORY_RECALL, slot))
+
+    def poll_replies(self, limit: int = 256) -> "list[tuple[str, int, str]]":
+        """Drain waiting camera replies without blocking: (ip, seq, kind).
+
+        Motion replies are read and thrown away here too, which keeps the
+        socket's receive buffer from filling with 60 Hz ACKs.
+        """
+        out: list[tuple[str, int, str]] = []
+        recv = getattr(self._sock, "recvfrom", None)
+        if recv is None:
+            return out
+        for _ in range(limit):
+            try:
+                ready, _w, _x = select.select([self._sock], [], [], 0)
+                if not ready:
+                    break
+                data, addr = recv(64)
+            except (OSError, ValueError, TypeError):
+                break
+            parsed = parse_reply(data)
+            if parsed is not None:
+                out.append((str(addr[0]), parsed[0], parsed[1]))
+        return out
 
     def close(self) -> None:
         try:

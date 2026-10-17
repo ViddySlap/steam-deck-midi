@@ -89,5 +89,55 @@
       "startup_camera": 2,
       "touch_action": "RIGHT_STICK_TOUCH"
     }
+  },
+  "presets": {
+    "enabled": true,
+    "comment": "Camera presets (2026-10-17): tap = recall, hold hold_seconds = save to the camera's own memory, slot = slot_base + offset. ABXY act on the right stick's camera, D-pad on the left stick's. Buttons: action -> [stick, slot offset, overlay label].",
+    "hold_seconds": 2.5,
+    "slot_base": 100,
+    "confirm_seconds": 1.5,
+    "toast_seconds": 2.5,
+    "buttons": {
+      "BTN_A": [
+        "right",
+        0,
+        "A"
+      ],
+      "BTN_B": [
+        "right",
+        1,
+        "B"
+      ],
+      "BTN_X": [
+        "right",
+        2,
+        "X"
+      ],
+      "BTN_Y": [
+        "right",
+        3,
+        "Y"
+      ],
+      "DPAD_UP": [
+        "left",
+        4,
+        "UP"
+      ],
+      "DPAD_RIGHT": [
+        "left",
+        5,
+        "RIGHT"
+      ],
+      "DPAD_DOWN": [
+        "left",
+        6,
+        "DOWN"
+      ],
+      "DPAD_LEFT": [
+        "left",
+        7,
+        "LEFT"
+      ]
+    }
   }
 }

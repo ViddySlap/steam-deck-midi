@@ -123,8 +123,10 @@ class PtzOverlayHost:
         engine = self._ptz_engine()
         active = bool(engine is not None and engine.active)
         sticks: dict = {}
+        presets: dict = {}
         if engine is not None:
             status = engine.status()
+            presets = status.get("presets") or {}
             selected = status.get("selected") or {}
             zoom = status.get("zoom_direction") or {}
             for group in ("left", "right"):
@@ -138,6 +140,8 @@ class PtzOverlayHost:
             "visible": self.enabled and active,
             "live_camera": self.live_camera,
             "sticks": sticks,
+            "preset_toast": presets.get("toast"),
+            "preset_holding": presets.get("holding") or [],
             "overlay_running": self.running,
         }
 

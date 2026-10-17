@@ -90,6 +90,25 @@ SPEED_ECHO_SECONDS = 1.0
 
 AUTO_NIC = "auto"
 
+# Camera presets (2026-10-17): tap = recall, hold = save. Each button belongs
+# to one stick and acts on the camera that stick is driving; the slot is
+# `slot_base + offset` in that camera's own memory. ABXY -> right stick,
+# D-pad -> left stick. Action -> [group, slot offset, overlay label].
+DEFAULT_PRESET_BUTTONS: dict[str, list] = {
+    "BTN_A": ["right", 0, "A"],
+    "BTN_B": ["right", 1, "B"],
+    "BTN_X": ["right", 2, "X"],
+    "BTN_Y": ["right", 3, "Y"],
+    "DPAD_UP": ["left", 4, "UP"],
+    "DPAD_RIGHT": ["left", 5, "RIGHT"],
+    "DPAD_DOWN": ["left", 6, "DOWN"],
+    "DPAD_LEFT": ["left", 7, "LEFT"],
+}
+_LAYER_2_SUFFIX = "_LAYER_2"
+# A hold shorter than this never shows the save progress on the overlay, so
+# an ordinary tap does not flash it.
+PRESET_PROGRESS_AFTER_SECONDS = 0.3
+
 # Send errors that mean this laptop's camera-network address is gone (dongle
 # pulled, adapter down). Only these drop the socket into the rebind loop; a
 # per-camera error (one BirdDog powered off: host unreachable) is swallowed so
@@ -439,6 +458,28 @@ class PtzViscaEngine(Engine):
         self._last_stop_reason: "str | None" = None
         self._streaming = False
 
+        # --- camera presets: tap recalls, hold saves (2026-10-17) -----------
+        # The save is confirmed by the camera's completion reply (read in
+        # tick), and only then does the overlay toast say SAVED.
+        pcfg = dict(config.get("presets", {}))
+        self._presets_enabled = bool(pcfg.get("enabled", False))
+        self._preset_hold_seconds = float(pcfg.get("hold_seconds", 2.5))
+        self._preset_slot_base = int(pcfg.get("slot_base", 100))
+        self._preset_confirm_seconds = float(pcfg.get("confirm_seconds", 1.5))
+        self._preset_toast_seconds = float(pcfg.get("toast_seconds", 2.5))
+        self._preset_buttons: dict[str, tuple[str, int, str]] = {}
+        for action, spec in dict(pcfg.get("buttons", DEFAULT_PRESET_BUTTONS)).items():
+            group, offset = str(spec[0]), int(spec[1])
+            label = str(spec[2]) if len(spec) > 2 else action
+            self._preset_buttons[str(action)] = (group, offset, label)
+        # base action -> the press being held (camera fixed at press time)
+        self._preset_held: dict[str, dict] = {}
+        # saves sent and waiting for the camera's completion reply
+        self._preset_pending: list[dict] = []
+        self._preset_toast: "dict | None" = None
+        self._preset_toast_id = 0
+        self._last_preset: "dict | None" = None
+
         # --- VISCA sender: bound only while active (see _try_bind) ----------
         # No socket in __init__: the PUT isolation probe and inactive presets
         # never touch the camera network. `sender` (tests) is a pre-built
@@ -543,17 +584,20 @@ class PtzViscaEngine(Engine):
             except Exception:  # noqa: BLE001
                 LOGGER.debug("ptz_visca: sender close failed", exc_info=True)
 
-    def _send(self, method: str, *args) -> None:
-        """Call one sender method; a send OSError drops back to the retry loop."""
+    def _send(self, method: str, *args):
+        """Call one sender method and return its result (None if not sent).
+
+        A send OSError drops back to the retry loop.
+        """
         sender = self._sender
         if sender is None:
-            return
+            return None
         try:
-            getattr(sender, method)(*args)
+            return getattr(sender, method)(*args)
         except OSError as exc:
             if exc.errno not in _NETWORK_GONE_ERRNOS:
                 LOGGER.debug("ptz_visca: %s failed for one camera: %s", method, exc)
-                return
+                return None
             via = self._bound_ip
             self._close_sender()
             if self._releasing:
@@ -855,6 +899,8 @@ class PtzViscaEngine(Engine):
             self._wide_latch[group] = False
 
     def on_input_event(self, action: str, state: str, now: float) -> None:
+        if self._handle_preset_input(action, state, now):
+            return
         group = self._touch_action_to_group.get(action)
         if group is None:
             return
@@ -1017,6 +1063,131 @@ class PtzViscaEngine(Engine):
         self._osc.send(f"{self._select_osc_base}/{group}select", (index - 1) / steps)
 
     # ------------------------------------------------------------------
+    # Camera presets: tap = recall, hold = save
+
+    def _handle_preset_input(self, action: str, state: str, now: float) -> bool:
+        """Track a preset button. True if ``action`` is one (consumed).
+
+        A press might become a save, so the recall waits for the release: a
+        release before ``hold_seconds`` recalls, and the save itself fires
+        from ``tick`` the moment the hold crosses ``hold_seconds``. The
+        camera is the one the button's stick drives at press time.
+        """
+        if not self._presets_enabled:
+            return False
+        base = action[: -len(_LAYER_2_SUFFIX)] if action.endswith(_LAYER_2_SUFFIX) else action
+        spec = self._preset_buttons.get(base)
+        if spec is None:
+            return False
+        group, offset, label = spec
+        if state == "down":
+            if base not in self._preset_held and group in self._groups:
+                cam = self._selected_cam(group)
+                self._preset_held[base] = {
+                    "group": group,
+                    "camera": cam,
+                    "ip": self._cameras.get(cam),
+                    "slot": self._preset_slot_base + offset,
+                    "label": label,
+                    "down_at": now,
+                    "saved": False,
+                }
+            return True
+        held = self._preset_held.pop(base, None)
+        if held is not None and not held["saved"]:
+            self._recall_preset(held, now)
+        return True
+
+    def _recall_preset(self, held: dict, now: float) -> None:
+        ip = held["ip"]
+        if ip is None or self._sender is None:
+            LOGGER.info("ptz_visca: preset %s recall on cam %s skipped (no camera link)",
+                        held["label"], held["camera"])
+            return
+        self._send("send_memory_recall", ip, held["slot"])
+        self._last_preset = {"op": "recall", "camera": int(held["camera"]),
+                             "label": held["label"], "slot": held["slot"], "at": now}
+        LOGGER.info("ptz_visca: recall preset %s on cam %s (slot %d)",
+                    held["label"], held["camera"], held["slot"])
+
+    def _save_preset(self, held: dict, now: float) -> None:
+        held["saved"] = True
+        ip = held["ip"]
+        seq = None
+        if ip is not None and self._sender is not None:
+            seq = self._send("send_memory_set", ip, held["slot"])
+        if seq is None:
+            LOGGER.warning("ptz_visca: preset %s save on cam %s not sent",
+                           held["label"], held["camera"])
+            self._show_preset_toast(held, "failed", now)
+            return
+        self._preset_pending.append({**held, "seq": seq,
+                                     "deadline": now + self._preset_confirm_seconds})
+        self._last_preset = {"op": "save", "camera": int(held["camera"]),
+                             "label": held["label"], "slot": held["slot"], "at": now}
+        LOGGER.info("ptz_visca: save preset %s on cam %s (slot %d, seq %s)",
+                    held["label"], held["camera"], held["slot"], seq)
+
+    def _show_preset_toast(self, held: dict, kind: str, now: float) -> None:
+        self._preset_toast_id += 1
+        self._preset_toast = {
+            "id": self._preset_toast_id,
+            "camera": int(held["camera"]),
+            "label": held["label"],
+            "kind": kind,  # "saved" | "failed"
+            "until": now + self._preset_toast_seconds,
+        }
+
+    def _preset_tick(self, now: float) -> None:
+        for held in self._preset_held.values():
+            if not held["saved"] and now - held["down_at"] >= self._preset_hold_seconds:
+                self._save_preset(held, now)
+        # Always drain replies: it also keeps motion ACKs from piling up.
+        poll = getattr(self._sender, "poll_replies", None)
+        replies = poll() if poll is not None else []
+        for ip, seq, kind in replies:
+            if kind == "ack":
+                continue
+            match = next((p for p in self._preset_pending
+                          if p["ip"] == ip and p["seq"] == seq), None)
+            if match is None:
+                continue
+            self._preset_pending.remove(match)
+            ok = kind == "done"
+            LOGGER.info("ptz_visca: preset %s on cam %s %s", match["label"],
+                        match["camera"], "saved" if ok else "REJECTED by the camera")
+            self._show_preset_toast(match, "saved" if ok else "failed", now)
+        for pending in [p for p in self._preset_pending if now >= p["deadline"]]:
+            self._preset_pending.remove(pending)
+            LOGGER.warning("ptz_visca: preset %s on cam %s: no reply from the camera",
+                           pending["label"], pending["camera"])
+            self._show_preset_toast(pending, "failed", now)
+
+    def _preset_status(self) -> dict:
+        now = self._clock()
+        toast = self._preset_toast
+        if toast is not None and now >= toast["until"]:
+            toast = None
+        holding = [
+            {
+                "camera": int(h["camera"]),
+                "label": h["label"],
+                "progress": min(1.0, (now - h["down_at"]) / self._preset_hold_seconds)
+                if self._preset_hold_seconds > 0 else 1.0,
+            }
+            for h in self._preset_held.values()
+            if not h["saved"] and now - h["down_at"] >= PRESET_PROGRESS_AFTER_SECONDS
+        ]
+        return {
+            "enabled": self._presets_enabled,
+            "hold_seconds": self._preset_hold_seconds,
+            "slot_base": self._preset_slot_base,
+            "toast": None if toast is None else {k: v for k, v in toast.items() if k != "until"},
+            "holding": holding,
+            "last": self._last_preset,
+        }
+
+    # ------------------------------------------------------------------
     # Stop-safety
 
     def _enter_center(self, group: str, surface: str, reason: str) -> None:
@@ -1056,6 +1227,8 @@ class PtzViscaEngine(Engine):
             if due is None or now >= due or now < due - self._speed_resync_seconds:
                 self._next_speed_resync = now + self._speed_resync_seconds
                 self._resync_speeds(now)
+        if self._presets_enabled:
+            self._preset_tick(now)
         for group in self._groups:
             for surface in _SURFACES:
                 if not self._moving[group][surface]:
@@ -1095,6 +1268,8 @@ class PtzViscaEngine(Engine):
         was_active = self.active
         super().set_active(active)
         if was_active and not active:
+            self._preset_held.clear()
+            self._preset_pending.clear()
             self._release_network("toggle")
             # Re-activating re-asserts the speeds on its first tick.
             self._next_speed_resync = None
@@ -1153,6 +1328,7 @@ class PtzViscaEngine(Engine):
                     for g in self._groups
                 },
                 "last_stop_reason": self._last_stop_reason,
+                "presets": self._preset_status(),
                 "pan_tilt_speed_scale": dict(self._pan_tilt_scale),
                 "zoom_speed_scale": dict(self._zoom_scale),
                 "camera_speed_scale": {
