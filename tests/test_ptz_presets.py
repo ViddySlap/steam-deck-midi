@@ -101,9 +101,9 @@ class PresetTapTests(unittest.TestCase):
             _press(eng, clock, action, 0.1)
         got = [c[1:3] for c in sender.of("mem_recall")]
         self.assertEqual(got, [(CAM2, 100), (CAM2, 101), (CAM2, 102), (CAM2, 103),
-                               (CAM1, 103), (CAM1, 102), (CAM1, 100), (CAM1, 101)])
+                               (CAM1, 103), (CAM1, 101), (CAM1, 100), (CAM1, 102)])
 
-    def test_dpad_and_abxy_share_a_cameras_slots_mirrored(self) -> None:
+    def test_dpad_and_abxy_share_a_cameras_slots_by_position(self) -> None:
         # Saved on D-pad down with cam 1 on the left stick, recalled with A
         # once cam 1 is on the right stick (Ben, 2026-10-17).
         eng, sender, clock = _engine()
@@ -115,7 +115,7 @@ class PresetTapTests(unittest.TestCase):
         self.assertEqual([c[1:3] for c in sender.of("mem_recall")],
                          [(CAM1, 100), (CAM1, 101), (CAM1, 102), (CAM1, 103)])
         eng.on_midi_in(14, 94, 3, clock())  # left stick -> cam 3
-        for action in ("DPAD_DOWN", "DPAD_LEFT", "DPAD_RIGHT", "DPAD_UP"):
+        for action in ("DPAD_DOWN", "DPAD_RIGHT", "DPAD_LEFT", "DPAD_UP"):
             _press(eng, clock, action, 0.1)
         self.assertEqual([c[1:3] for c in sender.of("mem_recall")][4:],
                          [(CAM3, 100), (CAM3, 101), (CAM3, 102), (CAM3, 103)])
@@ -232,7 +232,7 @@ class PresetSaveTests(unittest.TestCase):
     def test_custom_slot_base_and_hold(self) -> None:
         eng, sender, clock = _engine({"enabled": True, "slot_base": 20, "hold_seconds": 1.0})
         _press(eng, clock, "DPAD_LEFT", 1.05)
-        self.assertEqual([c[1:3] for c in sender.of("mem_set")], [(CAM1, 21)])
+        self.assertEqual([c[1:3] for c in sender.of("mem_set")], [(CAM1, 22)])
 
 
 class MemoryWireTests(unittest.TestCase):
