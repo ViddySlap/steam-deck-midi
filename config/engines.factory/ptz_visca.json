@@ -92,7 +92,7 @@
   },
   "presets": {
     "enabled": true,
-    "comment": "Camera presets (2026-10-17): tap = recall, hold hold_seconds = save to the camera's own memory, slot = slot_base + offset. ABXY act on the right stick's camera, D-pad on the left stick's. Buttons: action -> [stick, slot offset, overlay label].",
+    "comment": "Camera presets (2026-10-17): tap = recall, hold hold_seconds = save to the camera's own memory, slot = slot_base + offset. ABXY act on the right stick's camera, D-pad on the left stick's; the two share a camera's 4 slots, mirrored: D-pad down = A, left = B, right = X, up = Y. Buttons: action -> [stick, slot offset, overlay label].",
     "hold_seconds": 2.5,
     "slot_base": 100,
     "confirm_seconds": 1.5,
@@ -118,25 +118,25 @@
         3,
         "Y"
       ],
-      "DPAD_UP": [
-        "left",
-        4,
-        "UP"
-      ],
-      "DPAD_RIGHT": [
-        "left",
-        5,
-        "RIGHT"
-      ],
       "DPAD_DOWN": [
         "left",
-        6,
+        0,
         "DOWN"
       ],
       "DPAD_LEFT": [
         "left",
-        7,
+        1,
         "LEFT"
+      ],
+      "DPAD_RIGHT": [
+        "left",
+        2,
+        "RIGHT"
+      ],
+      "DPAD_UP": [
+        "left",
+        3,
+        "UP"
       ]
     }
   }

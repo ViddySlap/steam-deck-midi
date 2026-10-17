@@ -93,16 +93,19 @@ AUTO_NIC = "auto"
 # Camera presets (2026-10-17): tap = recall, hold = save. Each button belongs
 # to one stick and acts on the camera that stick is driving; the slot is
 # `slot_base + offset` in that camera's own memory. ABXY -> right stick,
-# D-pad -> left stick. Action -> [group, slot offset, overlay label].
+# D-pad -> left stick. The two clusters share a camera's 4 presets, mirrored
+# across the Deck (Ben): D-pad down = A, left = B, right = X, up = Y, so a
+# preset saved from either side is there on the other.
+# Action -> [group, slot offset, overlay label].
 DEFAULT_PRESET_BUTTONS: dict[str, list] = {
     "BTN_A": ["right", 0, "A"],
     "BTN_B": ["right", 1, "B"],
     "BTN_X": ["right", 2, "X"],
     "BTN_Y": ["right", 3, "Y"],
-    "DPAD_UP": ["left", 4, "UP"],
-    "DPAD_RIGHT": ["left", 5, "RIGHT"],
-    "DPAD_DOWN": ["left", 6, "DOWN"],
-    "DPAD_LEFT": ["left", 7, "LEFT"],
+    "DPAD_DOWN": ["left", 0, "DOWN"],
+    "DPAD_LEFT": ["left", 1, "LEFT"],
+    "DPAD_RIGHT": ["left", 2, "RIGHT"],
+    "DPAD_UP": ["left", 3, "UP"],
 }
 _LAYER_2_SUFFIX = "_LAYER_2"
 # A hold shorter than this never shows the save progress on the overlay, so
