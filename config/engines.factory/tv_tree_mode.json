@@ -1,0 +1,39 @@
+{
+  "name": "TV Tree Mode",
+  "type": "tv_tree_mode",
+  "enabled": true,
+  "start_active": false,
+  "channel": 3,
+  "toggle_action": "RIGHT_STICK_CLICK_R3",
+  "blackout_toggle_action": "R5",
+  "blackout_hold_action": "R4",
+  "link_ccs": {
+    "blackout": 1,
+    "chase_up": 2,
+    "chase_down": 3,
+    "chase_around": 4,
+    "chase_tv": 5,
+    "ball_x": 6,
+    "ball_y": 7,
+    "spin": 8
+  },
+  "mode_cc": 20,
+  "chase_buttons": {
+    "BTN_Y": "chase_up",
+    "BTN_A": "chase_down",
+    "BTN_X": "chase_around",
+    "BTN_B": "chase_tv"
+  },
+  "suppress_channel": 0,
+  "suppress_notes": [36, 37, 38, 39, 40, 41, 42, 43, 76, 77],
+  "stick_deadzone": 3500,
+  "stick_max": 32767,
+  "stick_invert_y": false,
+  "gyro_axis": "GYRO_PITCH",
+  "gyro_span": 450,
+  "gyro_deadzone": 25,
+  "gyro_invert": false,
+  "spin_rest": 0.15,
+  "spin_gain": 1.0,
+  "pause_engines": ["l_stick_layer", "gyro_feedback"]
+}

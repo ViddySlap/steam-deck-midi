@@ -23,6 +23,7 @@ from windows.engines.osc_sync import OscSyncEngine
 from windows.engines.ptz_visca import PtzViscaEngine
 from windows.engines.stageflow_bridge import StageFlowBridgeEngine
 from windows.engines.steam_input_layer_tracker import SteamInputLayerTrackerEngine
+from windows.engines.tv_tree_mode import TvTreeModeEngine
 from windows.midi import MidiOut
 
 NoteEmitFilter = Callable[[int, int, int, float], bool]
@@ -45,6 +46,7 @@ _ENGINE_TYPES: dict[str, type[Engine]] = {
     NestdropEngine.type_name: NestdropEngine,
     PtzViscaEngine.type_name: PtzViscaEngine,
     StageFlowBridgeEngine.type_name: StageFlowBridgeEngine,
+    TvTreeModeEngine.type_name: TvTreeModeEngine,
 }
 
 _USER_DIR_NAME = "engines"

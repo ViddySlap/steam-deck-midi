@@ -53,6 +53,7 @@ RESTART_REQUIRED_REASONS: dict[str, str] = {
         "the receiver thread while the pass holds composition master at 0"
     ),
     "stageflow_bridge": "shutdown is a no-op: its OSC socket and rescan thread would outlive the swap",
+    "tv_tree_mode": "pauses l_stick_layer and gyro_feedback while its mode is on; a swap mid-mode would leave them paused",
 }
 
 

@@ -95,6 +95,7 @@ EXPECTED_ENGINE_CLOCK_DEFAULTS = [
     "ptz_visca.PtzViscaEngine",
     "stageflow_bridge.StageFlowBridgeEngine",
     "steam_input_layer_tracker.SteamInputLayerTrackerEngine",
+    "tv_tree_mode.TvTreeModeEngine",
 ]
 
 class BridgeClockSourceScanTests(unittest.TestCase):
