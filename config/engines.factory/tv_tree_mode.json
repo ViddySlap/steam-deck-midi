@@ -35,5 +35,6 @@
   "gyro_invert": false,
   "spin_rest": 0.15,
   "spin_gain": 1.0,
-  "pause_engines": ["l_stick_layer", "gyro_feedback"]
+  "pause_engines": ["l_stick_layer", "gyro_feedback"],
+  "exit_actions": ["L4"]
 }

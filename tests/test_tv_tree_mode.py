@@ -170,5 +170,47 @@ class TvTreeModeTests(unittest.TestCase):
         self.assertEqual(len(out.ccs), n + 1)
 
 
+class RealGyroEngineTests(unittest.TestCase):
+    """The real gyro_feedback engine is paused in the mode and works again after it."""
+
+    def _setup(self):
+        from windows.engines.gyro_feedback import GyroFeedbackEngine
+        root = Path(__file__).resolve().parents[1] / "config" / "engines.factory"
+        gcfg = json.loads((root / "gyro_feedback.json").read_text(encoding="utf-8"))
+        tcfg = json.loads(FACTORY.read_text(encoding="utf-8"))
+        tcfg["start_active"] = True
+        out = RecordingMidiOut()
+        gyro = GyroFeedbackEngine("Gyro", gcfg, out, clock=lambda: 0.0)
+        tree = TvTreeModeEngine("Tree", tcfg, out, clock=lambda: 0.0)
+        reg = EngineRegistry([gyro, tree])     # gyro first, as in the loaded registry
+        tree.bind_registry(reg)
+        return reg, gyro, tree, out, gcfg
+
+    def _l4_tap(self, reg, gcfg, t):
+        ch, cc = int(gcfg.get("l4_channel", 2)), int(gcfg.get("l4_cc", 74))
+        # receiver order: input event to engines first, then the button's mapped CC
+        reg.on_input_event("L4", "down", t); reg.on_midi_in(ch, cc, 127, t)
+        reg.on_input_event("L4", "up", t + 0.05); reg.on_midi_in(ch, cc, 0, t + 0.05)
+
+    def test_gyro_paused_in_mode_and_back_after_r3(self):
+        reg, gyro, tree, out, gcfg = self._setup()
+        reg.on_input_event("RIGHT_STICK_CLICK_R3", "down", 0.0)
+        self.assertTrue(tree.mode)
+        self.assertFalse(gyro.active)
+        reg.on_input_event("RIGHT_STICK_CLICK_R3", "down", 1.0)
+        self.assertFalse(tree.mode)
+        self.assertTrue(gyro.active)
+        self._l4_tap(reg, gcfg, 2.0)
+        self.assertTrue(gyro.status()["midi_active"])
+
+    def test_l4_in_mode_exits_and_counts_as_the_gyro_tap(self):
+        reg, gyro, tree, out, gcfg = self._setup()
+        reg.on_input_event("RIGHT_STICK_CLICK_R3", "down", 0.0)
+        self._l4_tap(reg, gcfg, 1.0)
+        self.assertFalse(tree.mode)
+        self.assertTrue(gyro.active)
+        self.assertTrue(gyro.status()["midi_active"])
+
+
 if __name__ == "__main__":
     unittest.main()

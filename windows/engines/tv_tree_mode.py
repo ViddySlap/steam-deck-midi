@@ -18,7 +18,8 @@ is ON:
 
 and the preset's own notes for ABXY, R4 and R5 are dropped (note-emit
 filter), the left-stick layer engine and the gyro engine are paused so
-the stick and gyro do only tree jobs. Everything else (L2/R2 flashes,
+the stick and gyro do only tree jobs. Pressing L4 (the gyro engine's button)
+turns the mode off, and that same press reaches the gyro engine. Everything else (L2/R2 flashes,
 bumpers, pads) keeps its preset behaviour. With the mode OFF the engine
 emits nothing and filters nothing, so the Deck behaves like EDM Show.
 
@@ -108,6 +109,10 @@ class TvTreeModeEngine(Engine):
         self._spin_gain = float(config.get("spin_gain", 1.0))
 
         self._paused_types = [str(t) for t in config.get("pause_engines", ["l_stick_layer", "gyro_feedback"])]
+        # Pressing one of these while the mode is on turns the mode off first. The receiver
+        # fans input events to engines BEFORE emitting the button's own MIDI, so L4's CC 74
+        # then reaches the resumed gyro_feedback engine and the same press works as the tap.
+        self._exit_actions = frozenset(str(a) for a in config.get("exit_actions", ["L4"]))
 
         self._registry = None
         self._mode = False
@@ -156,6 +161,9 @@ class TvTreeModeEngine(Engine):
                     self._enter_mode()
             return
         if not self._mode:
+            return
+        if down and action in self._exit_actions:
+            self._exit_mode()
             return
         if action == self._blackout_toggle_action:
             if down:
